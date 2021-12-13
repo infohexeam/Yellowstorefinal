@@ -18,12 +18,19 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
+   
+
+    use AuthenticatesUsers;
+
     public function showLoginForm()
     {
         return view('admin.login');
     }
 
-    use AuthenticatesUsers;
+    public function username()
+    {
+        return 'name';
+    }
 
     /**
      * Where to redirect users after login.
