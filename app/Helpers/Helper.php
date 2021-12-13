@@ -30,6 +30,7 @@ class Helper
         else
             return '0';
     }
+<<<<<<< HEAD
 
     public static function findHoliday($store_id)
     {
@@ -49,6 +50,14 @@ class Helper
 
 
 
+=======
+    
+    
+    
+    
+    
+    
+>>>>>>> 7c06085fc85b7ad5cea1e1eb7cc41d049fa527aa
     public static function storeRating($store_id)
     {
         $sumRating = Trn_ReviewsAndRating::where('store_id', $store_id)->sum('rating');
