@@ -28,10 +28,7 @@ class Helper {
             return '0';
     }
     
-    public static function storeSuperadminPhone($store_id)
-    {
-        return '0101010101';
-    }
+    
     
     
     
