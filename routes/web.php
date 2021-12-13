@@ -30,7 +30,7 @@ Route::get('/admin-dashboard', function () {
     return view('admin.dashboard');
 });
 
-// Auth::routes();
+Auth::routes();
 Route::get('/qr', 'store\CouponController@makeQr');
 Route::get('/geotest', 'store\CouponController@geotest');
 
