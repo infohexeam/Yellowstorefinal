@@ -34,17 +34,18 @@
                    @csrf
                         <div class="row">
 
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-label">Select Customer</label>
-                                        <select name="customer_id" id="customer_id" class="form-control select2-show-search" data-placeholder="Select Customer" >
-                                             <option value="" >Select Customer</option>
-                                             @foreach ($customer as $data)
-                                                  <option value="{{ $data->customer_id }}" >{{ $data->customer_first_name }} {{ $data->customer_last_name }} - {{ $data->customer_mobile_number }} </option>
-                                             @endforeach
-                                        </select>
-                                 </div>
-                            </div>
+                            <!--<div class="col-md-12">-->
+                            <!--    <div class="form-group">-->
+                            <!--        <label class="form-label">Select Customer</label>-->
+                            <!--            <select name="customer_id2" id="customer_id2" class="form-control select2-show-search" data-placeholder="Select Customer" >-->
+                            <!--                 <option value="" >Select Customer</option>-->
+                            <!--                 @foreach ($customer as $data)-->
+                            <!--                      <option value="{{ $data->customer_id }}" >{{ $data->customer_first_name }} {{ $data->customer_last_name }} - {{ $data->customer_mobile_number }} </option>-->
+                            <!--                 @endforeach-->
+                            <!--            </select>-->
+                            <!--     </div>-->
+                            <!--</div>-->
+                            <input type="hidden" name="customer_id" name="customer_id" value="3"/>
 
                              <div class="col-md-12">
                                 <div class="form-group">
@@ -415,7 +416,7 @@ var countPro = 0;
                          countPro++;
                          customer_name = result['customer_first_name']+' '+result['customer_last_name'];
                          //  alert(customer_name);
-                         $('#cname').text(customer_name);
+                        // $('#cname').text(customer_name);
                          html = '<tr id="tr'+countPro+'"><td> <input type="hidden" class=".classCustomerID" name="customer_id" value="'+customer_id+'"> <input type="hidden" class=".classProductID" name="product_id[]" value="'+product_res[0]+'"> <input type="hidden" class=".classProductInvID" name="product_varient_id[]" value="'+product_res[1]+'"> '+product_name+' </td><td><input type="hidden" class=".classQuantity" name="quantity[]" value="'+quantity+'">'+quantity+' <i class="fa fa-times"></i> <input type="hidden" class=".classSingleQuantityRate" name="single_quantity_rate[]" value="'+(rate/ quantity)+'">'+ (rate/ quantity) +'</td><td><input type="hidden" class=".classDiscountAmount" name="discount_amount[]" value="'+total_discount+'"><input type="hidden" class=".classDiscountPercentage" name="discount_percentage[]" value="'+0+'">'+total_discount+'</td><td><input type="hidden" class=".classTotalTax" name="total_tax[]" value="'+tax.toFixed(2)+'">'+tax_value+'</td><td class="price"><input type="hidden" class=".classTotalAmount" name="total_amount[]" value="'+parseFloat(total_amount).toFixed(2)+'">'+parseFloat(total_amount).toFixed(2)+'</td><td><a class="btn btn-sm btn-danger text-white" id="removeBtn" onclick="removetr('+countPro+')" class=".removeBtn">Remove</a></td></tr>';
                          $('#myTable tr:last').after(html);
                          $('.total_sum').remove();

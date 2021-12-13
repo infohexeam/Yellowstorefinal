@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row">
+   <div class="row" style="min-height: 70vh;">
       <div class="col-md-12">
          <div class="card">
             <div class="card-header">
@@ -29,13 +29,13 @@
                   enctype="multipart/form-data">
                   @csrf
                   <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group">
                            <label class="form-label">Category Type</label>
                            <input type="text" class="form-control" name="category_name" value="{{old('category_name')}}" placeholder="Category Type">
                         </div>
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group">
                            <label class="form-label"> Business Type</label>
                     <select name="business_type_id" required="" class="form-control" >
@@ -47,7 +47,7 @@
 
                         </div>
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group">
                            <label class="form-label">Category Icon [150*150]</label>
                            <input type="file" class="form-control" accept="image/x-png,image/jpg,image/jpeg" required
@@ -100,6 +100,8 @@
                </form>
 
       </div>
+   </div>
+</div>
    </div>
 </div>
 @endsection

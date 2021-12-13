@@ -1327,9 +1327,18 @@ class StoreController extends Controller
                 
                     
                   $salesData = $salesData->where('trn_store_orders.store_id', $request->store_id)
-                    ->orderBy('trn_store_orders.order_id', 'DESC')
-                    ->get();
+                    ->orderBy('trn_store_orders.order_id', 'DESC');
                     
+                    if(isset($request->page))
+                    {
+                        $salesData = $salesData->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $salesData = $salesData->paginate(10);
+                    }
+                    
+
                 foreach($salesData as $sd)
                 {
                     $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
@@ -1492,9 +1501,17 @@ class StoreController extends Controller
                     }
                     
                   $salesData = $salesData->where('trn_store_orders.store_id', $request->store_id)->where('trn_store_orders.order_type', 'APP')
-                    ->orderBy('trn_store_orders.order_id', 'DESC')
-                    ->get();
+                    ->orderBy('trn_store_orders.order_id', 'DESC');
                     
+                    if(isset($request->page))
+                    {
+                        $salesData = $salesData->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $salesData = $salesData->paginate(10);
+                    }
+
                 foreach($salesData as $sd)
                 {
                     $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
@@ -1659,9 +1676,19 @@ class StoreController extends Controller
                 
                     
                   $salesData = $salesData->where('trn_store_orders.store_id', $request->store_id)->where('trn_store_orders.order_type', 'POS')
-                    ->orderBy('trn_store_orders.order_id', 'DESC')
-                    ->get();
+                    ->orderBy('trn_store_orders.order_id', 'DESC');
                     
+                    
+                    if(isset($request->page))
+                    {
+                        $salesData = $salesData->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $salesData = $salesData->paginate(10);
+                    }
+                    
+
                 foreach($salesData as $sd)
                 {
                     $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
@@ -1823,15 +1850,23 @@ class StoreController extends Controller
                         }
                         
                     
-                $inventoryData = $inventoryData->get();
+                $inventoryData = $inventoryData->groupBy('product_varient_id');
                 
-              //  dd($inventoryData);
+                    if(isset($request->page))
+                    {
+                        $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $inventoryData = $inventoryData->paginate(10);
+                    }
                 
-                $inventoryData = collect($inventoryData);
-                        $inventoryDatas = $inventoryData->unique('product_varient_id');
-                          $dataReViStoreSS =   $inventoryDatas->values()->all();
+
+                // $inventoryData = collect($inventoryData);
+                //         $inventoryDatas = $inventoryData->unique('product_varient_id');
+                //           $dataReViStoreSS =   $inventoryDatas->values()->all();
                 
-                $data['inventoryData'] = $dataReViStoreSS;
+                $data['inventoryData'] = $inventoryData;
                 $data['status'] = 1;
                 $data['message'] = "Success";
             }
@@ -1936,18 +1971,32 @@ class StoreController extends Controller
                             {
                               $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id',$request->sub_category_id);
                             }
+                            
+                $inventoryData = $inventoryData->groupBy('product_varient_id');
+
+                    if(isset($request->page))
+                    {
+                        $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $inventoryData = $inventoryData->paginate(10);
+                    }
                            
                         
 
-               $inventoryData = $inventoryData->get();
+              // $inventoryData = $inventoryData->get();
                 
-              //  dd($inventoryData);
+        
                 
-                $inventoryData = collect($inventoryData);
-                        $inventoryDatas = $inventoryData->unique('product_varient_id');
-                          $dataReViStoreSS =   $inventoryDatas->values()->all();
+                // $inventoryData = collect($inventoryData);
+                //         $inventoryDatas = $inventoryData->unique('product_varient_id');
+                //           $dataReViStoreSS =   $inventoryDatas->values()->all();
+                          
+                    
+                    
                 
-                $data['inventoryData'] = $dataReViStoreSS;
+                $data['inventoryData'] = $inventoryData;
                 
                 $data['status'] = 1;
                 $data['message'] = "Success";
@@ -2063,9 +2112,20 @@ class StoreController extends Controller
                 
                     
                     $paymentReport = $paymentReport->where('trn_store_orders.store_id', $store_id)->where('trn_store_orders.order_type', 'APP')
-                    ->orderBy('trn_store_orders.order_id', 'DESC')
-                    ->get();
+                    ->orderBy('trn_store_orders.order_id', 'DESC');
                     
+                    
+                    if(isset($request->page))
+                    {
+                        $paymentReport = $paymentReport->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $paymentReport = $paymentReport->paginate(10);
+                    }
+                    
+                    
+
                     foreach($paymentReport as $sd)
                     {
                         $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
@@ -2187,6 +2247,8 @@ class StoreController extends Controller
                     'trn_store_orders.created_at',
                     'trn_store_orders.amount_reduced_by_coupon',
                     'trn_store_orders.order_type',
+                    'trn_store_orders.delivery_date',
+                    'trn_store_orders.delivery_time',
 
                     'trn_store_customers.customer_id',
                     'trn_store_customers.customer_first_name',
@@ -2206,7 +2268,8 @@ class StoreController extends Controller
                     )
                     ->join('trn_store_customers','trn_store_customers.customer_id','=','trn_store_orders.customer_id')
                     ->leftjoin('mst_delivery_boys','mst_delivery_boys.delivery_boy_id','=','trn_store_orders.delivery_boy_id')
-                    ->leftjoin('mst_stores','mst_stores.store_id','=','trn_store_orders.store_id');
+                    ->leftjoin('mst_stores','mst_stores.store_id','=','trn_store_orders.store_id')
+                    ->whereIn('status_id',[7,8,9]);
                     
               
                     $a1 =Carbon:: parse($request->date_from)->startOfDay();
@@ -2245,9 +2308,18 @@ class StoreController extends Controller
                 
                     
                   $deliveryReport = $deliveryReport->where('trn_store_orders.store_id', $store_id)
-                    ->orderBy('trn_store_orders.order_id', 'DESC')
-                    ->get();
+                    ->orderBy('trn_store_orders.order_id', 'DESC');
                     
+                    if(isset($request->page))
+                    {
+                        $deliveryReport = $deliveryReport->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $deliveryReport = $deliveryReport->paginate(10);
+                    }
+                    
+
                     
                     foreach($deliveryReport as $sd)
                     {

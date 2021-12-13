@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row">
+   <div class="row" style="min-height: 70vh;">
       <div class="col-md-12">
          <div class="card">
             <div class="card-header">
@@ -29,7 +29,7 @@
                         @csrf
                         <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                          <div class="form-group">
                            <label class="form-label">Country</label>
                             <select name="country_id" required="" class="form-control" id="country" >
@@ -41,7 +41,7 @@
                            </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                          <div class="form-group">
                            <label class="form-label">State</label>
                                 <select required name="state_id"  class="form-control" id="state" >
@@ -53,7 +53,7 @@
                            </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                          <div class="form-group">
   <label class="form-label">District Name</label>
                             <input type="text"  placeholder="District Name" value="{{$district->district_name}}" required class="form-control" name="district_name" >
@@ -80,6 +80,7 @@
 
       </div>
    </div>
+</div>
 </div>
 
 <script type="text/javascript">

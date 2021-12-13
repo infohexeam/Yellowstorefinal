@@ -38,6 +38,7 @@ use App\Models\admin\Trn_CustomerDeviceToken;
 use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Trn_StoreDeviceToken;
 use App\Models\admin\Trn_StoreWebToken;
+use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
 class DeliveryBoyOrderController extends Controller
 {
@@ -322,7 +323,7 @@ class DeliveryBoyOrderController extends Controller
                             $delivery_boy_id = $request->delivery_boy_id;
                            // dd(Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
                             
-                            if($data['orderDetails']  = Trn_store_order::select('order_id','delivery_accept','delivery_address','delivery_date','delivery_time','store_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount','delivery_charge')->where('order_id',$order_id)->where('delivery_boy_id',$delivery_boy_id)->first())
+                            if($data['orderDetails']  = Trn_store_order::select('order_id','service_order','service_booking_order','time_slot','delivery_accept','delivery_address','delivery_date','delivery_time','store_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount','delivery_charge')->where('order_id',$order_id)->where('delivery_boy_id',$delivery_boy_id)->first())
                             {
                                 
                                 if(!isset($data['orderDetails']->delivery_accept))
@@ -370,11 +371,21 @@ class DeliveryBoyOrderController extends Controller
                                 $data['orderDetails']->store_latitude = @$storeData->latitude;
                                 $data['orderDetails']->store_longitude = @$storeData->longitude;
                                 $data['orderDetails']->store_place = @$storeData->place;
+                                
+                                if(isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0))
+                                {
+                                    $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
+                                    $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start."-".@$deliveryTimeSlot->time_end;
+                                    $data['orderDetails']->delivery_type = 2; //slot delivery
+                                }
+                                else // timeslot null or zero
+                                {
+                                    $data['orderDetails']->delivery_type = 1; // immediate delivery
+                                    $data['orderDetails']->time_slot = '';
+                                }
 
-                                $data['orderDetails']->delivery_type = null;
                                 $data['orderDetails']->delivery_date = Carbon::parse($data['orderDetails']->delivery_date)->format('d-m-Y');
                                 $data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->delivery_date)->format('h:i');
-                                $data['orderDetails']->time_slot = null;
                                 $data['orderDetails']->processed_by = null;
 
                                 $invoice_data = \DB::table('trn_order_invoices')->where('order_id',$order_id)->first();
@@ -383,7 +394,7 @@ class DeliveryBoyOrderController extends Controller
                     
                                 $orderAddress = Trn_customerAddress::find($data['orderDetails']->delivery_address);
 
-                                  $dist = Helper::haversineGreatCircleDistance($storeData->latitude,$storeData->longitude,$orderAddress->latitude,$orderAddress->longitude);
+                                  $dist = Helper::haversineGreatCircleDistance(@$storeData->latitude,@$storeData->longitude,@$orderAddress->latitude,@$orderAddress->longitude);
 
                                 //  $settingsRow = Trn_store_setting::where('store_id',$data['orderDetails']->store_id)
                                 //     ->where('service_start', '<=' , $dist)
@@ -428,7 +439,7 @@ class DeliveryBoyOrderController extends Controller
                                 }
                                 $data['orderDetails']->order_date = Carbon::parse($data['orderDetails']->created_at)->format('d-m-Y');
                                 
-                                if($data['orderDetails']->payment_type_id == 2)
+                                if($data['orderDetails']->payment_type_id != 2)
                                 $data['orderDetails']->payment_type = 'Offline';
                                 else
                                 $data['orderDetails']->payment_type = 'Online';
@@ -659,13 +670,15 @@ class DeliveryBoyOrderController extends Controller
                                        
                                        Trn_store_order::where('order_id',$order_id)->update([
                                            'status_id' => $request->status_id,
+                                           'delivery_date' => Carbon::now()->format('Y-m-d'),
+                                           'delivery_time' => Carbon::now()->format('H:i'),
                                            'delivery_status_id' => 3
                                            ]);
                                         
                                         $order = Trn_store_order::Find($order_id);
     
-                                        $order->delivery_date = Carbon::now()->format('Y-m-d');
-                                        $order->delivery_time = Carbon::now()->format('H:i'); 
+                                        // $order->delivery_date = Carbon::now()->format('Y-m-d');
+                                        // $order->delivery_time = Carbon::now()->format('H:i'); 
                                         
                                     $configPoint = Trn_configure_points::find(1);
                                     $orderAmount  = $configPoint->order_amount;
@@ -688,6 +701,14 @@ class DeliveryBoyOrderController extends Controller
                         $cr->reward_point_status = 1;
                         $cr->discription = "First order points";
                         $cr->save();
+                        
+                         $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$customer_id)->get();
+                                foreach($customerDevice as $cd)
+                                {
+                                    $title = 'Points creadited';
+                                    $body = 'First order points credited successully..';
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token,$title,$body);
+                                }
                         
                         
                          // referal - point

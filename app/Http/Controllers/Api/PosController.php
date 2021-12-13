@@ -265,6 +265,7 @@ class PosController extends Controller
                                         {
                                             foreach($data['productDetails'] as $product){
                                                 $product->product_base_image = '/assets/uploads/products/base_product/base_image/'.$product->product_base_image;
+                                                $product->product_varient_base_image = '/assets/uploads/products/base_product/base_image/'.$product->product_varient_base_image;
                                                 $taxData = Mst_Tax::find(@$product->tax_id);
                                                 $product->tax_name = @$taxData->tax_name;
                                                 $product->tax_value = @$taxData->tax_value;

@@ -121,12 +121,13 @@ $date = Carbon\Carbon::now();
 
                                     <td>{{ @$subadmin->name}}</td>
                         <td>
-                           <button type="button" class="btn btn-sm @if($dispute->dispute_status == '1') btn-success @elseif($dispute->dispute_status == '2') btn-danger @else btn-warning @endif"
+                           <button type="button" class="btn btn-sm @if($dispute->dispute_status == '1') btn-success @elseif($dispute->dispute_status == '2') btn-danger @elseif($dispute->dispute_status == '4') btn-info @else btn-warning @endif"
                            data-toggle="modal" data-target="#StockModal{{$dispute->dispute_id}}" >
 
                             @if($dispute->dispute_status == '1' )Closed
                                 @elseif($dispute->dispute_status == '2') Open
                                 @elseif($dispute->dispute_status == '3') Inprogress
+                                @elseif($dispute->dispute_status == '4') Return
                                 @else 
                            @endif
                            </button>
@@ -173,6 +174,7 @@ $date = Carbon\Carbon::now();
                               <option {{$dispute->dispute_status == '1' ? 'selected':''}} value="1"> Closed     </option>
                               <option {{$dispute->dispute_status == '2' ? 'selected':''}} value="2"> Open     </option>
                               <option {{$dispute->dispute_status == '3' ? 'selected':''}} value="3"> Inprogress     </option>
+                              <option {{$dispute->dispute_status == '4' ? 'selected':''}} value="4"> Return     </option>
                            </select>
                   </div>
 
@@ -218,6 +220,7 @@ $date = Carbon\Carbon::now();
                                        @if($dispute->dispute_status == '1' )Closed
                                             @elseif($dispute->dispute_status == '2') Open
                                             @elseif($dispute->dispute_status == '3') Inprogress
+                                            @elseif($dispute->dispute_status == '4') Return
                                             @else 
                                        @endif
                                     </h6></td>
@@ -266,6 +269,11 @@ $date = Carbon\Carbon::now();
                               
                               <tr>
                                 <td><h6>Discription : {{@$dispute->discription}}
+                               </h6></td>
+                             </tr>
+                             
+                              <tr>
+                                <td><h6>Store Response : {{@$dispute->store_response}}
                                </h6></td>
                              </tr>
                                  

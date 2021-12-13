@@ -523,7 +523,8 @@ class DeliveryBoyController extends Controller
                     'trn_store_orders.subadmin_id',
                     'trn_store_orders.product_total_amount',
                     'trn_store_orders.delivery_charge',
-                    
+                                        'trn_store_orders.payment_type_id',
+
                     'trn_store_orders.status_id',
                    
                     'trn_store_orders.delivery_boy_id',
@@ -531,6 +532,9 @@ class DeliveryBoyController extends Controller
                     'trn_store_orders.created_at',
                     'trn_store_orders.updated_at',
                     
+                                        'trn_store_orders.delivery_date',
+                                        'trn_store_orders.delivery_time',
+
                     'trn_store_orders.order_type',
 
                     'trn_store_customers.customer_id',
@@ -559,12 +563,12 @@ class DeliveryBoyController extends Controller
                     
                     if(isset($request->date_from))
                     {
-                      $deliveryReport = $deliveryReport->whereDate('trn_store_orders.created_at','>=',$a1);
+                      $deliveryReport = $deliveryReport->whereDate('trn_store_orders.delivery_date','>=',$request->date_from);
                     }
                     
                     if(isset($request->date_to))
                     {
-                      $deliveryReport = $deliveryReport->whereDate('trn_store_orders.created_at','<=',$a2);
+                      $deliveryReport = $deliveryReport->whereDate('trn_store_orders.delivery_date','<=',$request->date_to);
                     }
                     
                     
@@ -590,9 +594,19 @@ class DeliveryBoyController extends Controller
                 
                     
                   $deliveryReport = $deliveryReport->where('trn_store_orders.delivery_boy_id', $delivery_boy_id)
-                    ->orderBy('trn_store_orders.updated_at', 'DESC')
-                    ->get();
+                    ->orderBy('trn_store_orders.updated_at', 'DESC');
                     
+                    
+                    if(isset($request->page))
+                    {
+                        $deliveryReport = $deliveryReport->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $deliveryReport = $deliveryReport->paginate(10);
+                    }
+                        
+
                     
                     foreach($deliveryReport as $sd)
                     {

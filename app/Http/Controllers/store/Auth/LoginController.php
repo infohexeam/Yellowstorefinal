@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\admin\Mst_store;
 use App\Models\admin\Trn_StoreAdmin;
 use Crypt;
+use App\Models\admin\Trn_StoreWebToken;
 
 use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
@@ -166,6 +167,10 @@ class LoginController extends Controller
 
      public function logout(Request $request)
     {
+                $store_id  = Auth::guard('store')->user()->store_id;
+
+        Trn_StoreWebToken::where('store_id',$store_id)->delete();
+
         Auth::guard('store')->logout();
         $cookie = \Cookie::forget('first_time');
 

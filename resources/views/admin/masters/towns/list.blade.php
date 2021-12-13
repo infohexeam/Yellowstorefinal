@@ -35,7 +35,7 @@
                         @endif
                                 <br>
                             <div class="table-responsive">
-                            <table id="exampletable" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -57,10 +57,10 @@
                                         <td>
                                             <form action="{{route('admin.destroy_town',$data->town_id)}}" method="POST">
                                                 @csrf
-                                                <a href="{{url('admin/town/edit/'.$data->town_id)}}" class="btn btn-sm btn-cyan">Edit</a>
+                                                <a href="{{url('admin/town/edit/'.$data->town_id)}}" class="btn btn-sm btn-cyan"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
 
                                                 @method('POST')
-                                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -96,7 +96,7 @@
                <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h5 class="modal-title" id="example-Modal3">Add Town</h5>
+                        <h5 class="modal-title" id="example-Modal3">Add New Town</h5>
                         <button type="button" class="close" data-dismiss="modal" onclick="clearTax()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>

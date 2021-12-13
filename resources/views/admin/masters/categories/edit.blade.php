@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-  <div class="row">
+  <div class="row" style="min-height: 70vh;">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
@@ -29,7 +29,7 @@
             @csrf
             <div class="form-body">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-label">Category Type</label>
                     <input type="hidden" class="form-control" name="category_id" value="{{$category->category_id}}" >
@@ -37,7 +37,7 @@
                     <input type="text" class="form-control" name="category_name" value="{{old('category_name',$category->category_name)}}" placeholder="Category Type">
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-label">Business Type</label>
                     <select name="business_type_id" required="" class="form-control" >
@@ -48,11 +48,11 @@
                       </select>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <div class="form-group">
                     <label class="form-label">Icon [150*150]</label>
                     <input type="file"  class="form-control" accept="image/x-png,image/jpg,image/jpeg"
-                    name="category_icon" value="{{old('category_icon',$category->category_icon)}}" placeholder="category Image">
+                    name="category_icon" value="{{old('category_icon',$category->category_icon)}}" placeholder="category Image"><br>
                     <img src="{{asset('/assets/uploads/category/icons/'.$category->category_icon)}}"  width="100" style="height:60px" "width :50px">
                   </div>
                 </div>
@@ -82,5 +82,8 @@
           </div> --}}
         </div>
       </div>
+    </div>
+     </div>
+    </div>
     </div>
     @endsection

@@ -24,6 +24,7 @@ class Mst_dispute extends Model
                             'subadmin_id',
                             'dispute_status',
                             'order_item_id',
+                            'store_response',
     						  ];
 
 

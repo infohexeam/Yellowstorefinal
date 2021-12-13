@@ -560,6 +560,7 @@ class CouponController extends Controller
       // echo "token : ".$request->token;
 
         $store_id  = Auth::guard('store')->user()->store_id;
+        //Trn_StoreWebToken::where('store_id',$store_id)->delete();
 
         $storeData = Trn_StoreAdmin::where('store_id','=',$store_id)->where('role_id','=',0)->first();
     

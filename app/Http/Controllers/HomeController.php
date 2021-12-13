@@ -10,6 +10,8 @@ use App\User;
 use App\Models\admin\Mst_store_link_subadmin;
 use App\Models\admin\Mst_store;
 use App\Models\admin\Trn_StoreAdmin;
+use DB;
+use App\Models\admin\Trn_store_order;
 
 class HomeController extends Controller
 {
@@ -30,11 +32,33 @@ class HomeController extends Controller
      */
     public function index()
     {
+       
        $pageTitle = "Home Page";
        $user_role_id = Auth()->user()->user_role_id;
+        $ordersData = Trn_store_order::take(7)->get();
+
        if($user_role_id == 0)
        {
-        return view('admin.home',compact('pageTitle'));
+           $users = Mst_store::select(\DB::raw("COUNT(*) as count"),DB::raw("Month(created_at) as months"))
+                    ->whereYear('created_at', date('Y'))
+                    ->groupBy(\DB::raw("Month(created_at)"))
+                    ->get()->toArray();
+                   
+
+            $return = [];
+            for($i=1; $i<=12; $i++)
+            {
+                $months = array_column($users,'months');
+                $key = array_search($i, $months);
+                if($key !== false)
+                {
+                $return[] = $users[$key]['count'];
+                }else {
+                $return[] = 0;
+                }
+            }
+            
+        return view('admin.home',compact('pageTitle','return','ordersData'));
        }else
        {
         $user_id = Auth()->user()->id;

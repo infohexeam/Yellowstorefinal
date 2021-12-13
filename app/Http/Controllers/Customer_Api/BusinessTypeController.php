@@ -34,6 +34,7 @@ use App\Models\admin\Mst_GlobalProducts;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_ProductVariantAttribute;
 use App\Models\admin\Trn_RecentlyVisitedStore;
+use App\Models\admin\Trn_StoreTimeSlot;
 
 use App\Models\admin\Mst_product_image;
 use App\Models\admin\Trn_GlobalProductImage;
@@ -304,8 +305,21 @@ class BusinessTypeController extends Controller
                                 }
                                 else
                                 {
-                                    $latitude = $cusData->latitude;
-                                    $longitude = $cusData->longitude;
+                                    $cusAddData = Trn_customerAddress::where('customer_id','=',$request->customer_id)->where('default_status',1)->first();
+    
+                                   if(isset($cusAddData))
+                                   {
+                                      $cusAddDataLat =  $cusAddData->latitude;
+                                      $cusAddDataLog =  $cusAddData->longitude;
+                                   }
+                                   else
+                                   {
+                                      $cusAddDataLat =  $cusAddDataLat;
+                                      $cusAddDataLog =  $cusAddDataLog; 
+                                   }
+                               
+                                    $latitude = $cusAddDataLat;
+                                    $longitude = $cusAddDataLog;
                                 }
                             $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                         * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
@@ -343,42 +357,51 @@ class BusinessTypeController extends Controller
                           $dataReViStore =   $recentlyVisitedS->values()->all();
 
 
-                        $data['recentlyVisitedStores'] = $dataReViStore;
+                        $recentlyVisitedStores = $dataReViStore;
                         
                         $recentStoreArray[] = 0;
+                        $recentlyVisStrs = array();
 
-                    foreach($data['recentlyVisitedStores'] as $recentlyVisitedStore){
-                     
-                        $recentStoreArray[] = $recentlyVisitedStore->store_id;
-                        if(isset($recentlyVisitedStore->profile_image))
+                    foreach($recentlyVisitedStores as $recentlyVisitedStore){
+                        //   $toDay = Carbon::now()->format('l');
+                        //   $thisTime = Carbon::now()->format('H:i');
+
+                        $timeslotdata = Helper::findHoliday($recentlyVisitedStore->store_id);
+
+                        if($timeslotdata == true)
                         {
-                            $recentlyVisitedStore->store_image =  '/assets/uploads/store_images/images/'.$recentlyVisitedStore->profile_image;
-                        }
-                        else
-                        {
-                            $recentlyVisitedStore->store_image =  Helper::default_store_image();
-                        }
-                    
+                           $recentlyVisitedStore->thisTime = $timeslotdata;
+                            $recentStoreArray[] = $recentlyVisitedStore->store_id;
+                            if(isset($recentlyVisitedStore->profile_image))
+                            {
+                                $recentlyVisitedStore->store_image =  '/assets/uploads/store_images/images/'.$recentlyVisitedStore->profile_image;
+                            }
+                            else
+                            {
+                                $recentlyVisitedStore->store_image =  Helper::default_store_image();
+                            }
                         
-                        $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id','=',$recentlyVisitedStore->store_id)->orderBy('product_id','DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
-                        $catData = Mst_categories::whereIn('category_id',$storeProductData)->where('category_status',1)->get()->pluck('category_name')->toArray();
-                        $catString = implode(', ',@$catData);
-                        if(isset($catString))
-                        $string = substr(@$catString,0,27);
-                        else
-                        $string = null;
-                        
-                        $recentlyVisitedStore->categories =  @$string;
-                        // $recentlyVisitedStore->rating = number_format((float)4.20, 1, '.', '');
-                        // $recentlyVisitedStore->ratingCount = 120;
-                        
-                         $recentlyVisitedStore->rating = Helper::storeRating($recentlyVisitedStore->store_id);
-                        $recentlyVisitedStore->ratingCount = Helper::storeRatingCount($recentlyVisitedStore->store_id);
                             
+                            $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id','=',$recentlyVisitedStore->store_id)->orderBy('product_id','DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
+                            $catData = Mst_categories::whereIn('category_id',$storeProductData)->where('category_status',1)->get()->pluck('category_name')->toArray();
+                            $catString = implode(', ',@$catData);
+                            if(isset($catString))
+                            $string = substr(@$catString,0,27);
+                            else
+                            $string = null;
                             
+                            $recentlyVisitedStore->categories =  @$string;
+                            // $recentlyVisitedStore->rating = number_format((float)4.20, 1, '.', '');
+                            // $recentlyVisitedStore->ratingCount = 120;
+                            
+                             $recentlyVisitedStore->rating = Helper::storeRating($recentlyVisitedStore->store_id);
+                            $recentlyVisitedStore->ratingCount = Helper::storeRatingCount($recentlyVisitedStore->store_id);
+                             $recentlyVisStrs[] =    $recentlyVisitedStore;
+                        }    
                     }
                     
                     
+                     $data['recentlyVisitedStores']   = $recentlyVisStrs;
                         
                       
                    
@@ -392,8 +415,20 @@ class BusinessTypeController extends Controller
                     else
                     {
                         $cusData = Trn_store_customer::find($request->customer_id);
-                        $latitude = $cusData->latitude;
-                        $longitude = $cusData->longitude;
+                        $cusAddData = Trn_customerAddress::where('customer_id','=',$request->customer_id)->where('default_status',1)->first();
+    
+                                   if(isset($cusAddData))
+                                   {
+                                      $cusAddDataLat =  $cusAddData->latitude;
+                                      $cusAddDataLog =  $cusAddData->longitude;
+                                   }
+                                   else
+                                   {
+                                      $cusAddDataLat =  $cusAddDataLat;
+                                      $cusAddDataLog =  $cusAddDataLog; 
+                                   }
+                        $latitude = $cusAddDataLat;
+                        $longitude = $cusAddDataLog;
                     }
                     
                     if(isset($latitude) && isset($longitude))
@@ -408,11 +443,11 @@ class BusinessTypeController extends Controller
                                                 + sin(radians(" .$latitude. ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $stores          =       $stores->having('distance', '<', 10);
                         $stores          =       $stores->orderBy('distance', 'asc');
-                        $data['nearByStores'] = $stores->get();
+                        $nearByStoresData = $stores->get();
                     }
                     else
                     {
-                         $data['nearByStores']  = Mst_store::join('trn__store_admins','trn__store_admins.store_id','=','mst_stores.store_id')
+                         $nearByStoresData  = Mst_store::join('trn__store_admins','trn__store_admins.store_id','=','mst_stores.store_id')
                             ->where('trn__store_admins.role_id',0)->where('mst_stores.online_status',1)
                             ->where('mst_stores.business_type_id',$business_type_id)
                             ->where('trn__store_admins.store_account_status',1)->orderBy('mst_stores.store_id', 'ASC')->limit(3)->get();
@@ -420,39 +455,50 @@ class BusinessTypeController extends Controller
                     }
                   
                         $nearStoreArray[] = 0;
-                        foreach($data['nearByStores'] as $nearByStore){
+                        $nearByStoreFinal = array();
+                        foreach($nearByStoresData as $nearByStore){
                             
-                            $nearStoreArray[] = $nearByStore->store_id;
-                          
-                            if(isset($nearByStore->profile_image))
+                            $timeslotdata = Helper::findHoliday($nearByStore->store_id);
+
+                        if($timeslotdata == true)
                             {
-                              $nearByStore->store_image =  '/assets/uploads/store_images/images/'.$nearByStore->profile_image;
+                                
+                                $nearStoreArray[] = $nearByStore->store_id;
+                              
+                                if(isset($nearByStore->profile_image))
+                                {
+                                  $nearByStore->store_image =  '/assets/uploads/store_images/images/'.$nearByStore->profile_image;
+                                }
+                                else
+                                {
+                                  $nearByStore->store_image =  Helper::default_store_image();
+                                }
+                                
+                                $storeProductData1 = Mst_store_product::select('product_cat_id')->where('store_id','=',$nearByStore->store_id)->orderBy('product_id','DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
+                                $catData1 = Mst_categories::whereIn('category_id',$storeProductData1)->where('category_status',1)->get()->pluck('category_name')->toArray();
+                                $catString1 = implode(', ',@$catData1);
+                                if(isset($catString1))
+                                $string1 = substr(@$catString1,0,27);
+                                else
+                                $string1 = null;
+        
+                                $nearByStore->categories =  @$string1;
+                                
+                                
+                                // $nearByStore->rating = number_format((float)4.20, 1, '.', '');
+                                // $nearByStore->ratingCount = 120;
+                                
+                                $nearByStore->rating = Helper::storeRating($nearByStore->store_id);
+                                $nearByStore->ratingCount = Helper::storeRatingCount($nearByStore->store_id);
+                                $nearByStoreFinal[] =  $nearByStore;
+                                
                             }
-                            else
-                            {
-                              $nearByStore->store_image =  Helper::default_store_image();
-                            }
-                            
-                            $storeProductData1 = Mst_store_product::select('product_cat_id')->where('store_id','=',$nearByStore->store_id)->orderBy('product_id','DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
-                            $catData1 = Mst_categories::whereIn('category_id',$storeProductData1)->where('category_status',1)->get()->pluck('category_name')->toArray();
-                            $catString1 = implode(', ',@$catData1);
-                            if(isset($catString1))
-                            $string1 = substr(@$catString1,0,27);
-                            else
-                            $string1 = null;
-    
-                            $nearByStore->categories =  @$string1;
-                            
-                            
-                            // $nearByStore->rating = number_format((float)4.20, 1, '.', '');
-                            // $nearByStore->ratingCount = 120;
-                            
-                            $nearByStore->rating = Helper::storeRating($nearByStore->store_id);
-                            $nearByStore->ratingCount = Helper::storeRatingCount($nearByStore->store_id);
                         }
                         
                         // other stores
                        // dd($nearStoreArray);
+                       
+                       $data['nearByStores'] = $nearByStoreFinal;
                         
                         
                          $otherStores =  Mst_store::join('trn__store_admins','trn__store_admins.store_id','=','mst_stores.store_id')
@@ -473,36 +519,45 @@ class BusinessTypeController extends Controller
                             
                             $otherStores = $otherStores->get();
                             
-                           $data['otherStores']  = $otherStores;
+                           $otherStoresFinal = array();
                             
-                        foreach($data['otherStores'] as $otherStores){
+                        foreach($otherStores as $otherStores){
+                            
+                            $timeslotdata = Helper::findHoliday($otherStores->store_id);
+
+                        if($timeslotdata == true)
+                            {
                            
-                            if(isset($otherStores->profile_image))
-                            {
-                              $otherStores->store_image =  '/assets/uploads/store_images/images/'.$otherStores->profile_image;
-                            }
-                            else
-                            {
-                              $otherStores->store_image =  Helper::default_store_image();
-                            }
-                            
-                            $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id','=',$otherStores->store_id)->orderBy('product_id','DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
-                            $catData2 = Mst_categories::whereIn('category_id',$storeProductData2)->where('category_status',1)->get()->pluck('category_name')->toArray();
-                            $catString2 = implode(', ',@$catData2);
-                            if(isset($catString2))
-                            $string2 = substr(@$catString2,0,27);
-                            else
-                            $string2 = null;
-    
-                            $otherStores->categories =  @$string2;
-                            
-                            
-                            // $otherStores->rating = number_format((float)4.20, 1, '.', '');
-                            // $otherStores->ratingCount = 120;
-                            
+                                if(isset($otherStores->profile_image))
+                                {
+                                  $otherStores->store_image =  '/assets/uploads/store_images/images/'.$otherStores->profile_image;
+                                }
+                                else
+                                {
+                                  $otherStores->store_image =  Helper::default_store_image();
+                                }
+                                
+                                $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id','=',$otherStores->store_id)->orderBy('product_id','DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
+                                $catData2 = Mst_categories::whereIn('category_id',$storeProductData2)->where('category_status',1)->get()->pluck('category_name')->toArray();
+                                $catString2 = implode(', ',@$catData2);
+                                if(isset($catString2))
+                                $string2 = substr(@$catString2,0,27);
+                                else
+                                $string2 = null;
+        
+                                $otherStores->categories =  @$string2;
+                                
+                                
+                                // $otherStores->rating = number_format((float)4.20, 1, '.', '');
+                                // $otherStores->ratingCount = 120;
+                                
                                 $otherStores->rating = Helper::storeRating($otherStores->store_id);
                                 $otherStores->ratingCount = Helper::storeRatingCount($otherStores->store_id);
+                                $otherStoresFinal[] = $otherStores;
+                            }
                         }
+                        
+                        $data['otherStores'] = $otherStoresFinal;
                         $data['message'] = 'success';
                         $data['status'] = 1;
                     }

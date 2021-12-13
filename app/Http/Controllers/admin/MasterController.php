@@ -394,7 +394,7 @@ class MasterController extends Controller
 		[
 		    'category_id'       => 'required',
 		    'sub_category_name'       => 'required|unique:mst__sub_categories',
-			'sub_category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
+			'sub_category_icon'        => 'image|mimes:jpeg,png,jpg',
 			'sub_category_description' => 'required',
 			'business_type_id'		=> 'required',
 
@@ -464,7 +464,7 @@ class MasterController extends Controller
 		[
 		    'category_id'       => 'required',
 		    'sub_category_name'       => 'required',
-			'sub_category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
+			'sub_category_icon'        => 'image|mimes:jpeg,png,jpg',
 			'sub_category_description' => 'required',
 			'business_type_id'		=> 'required',
 

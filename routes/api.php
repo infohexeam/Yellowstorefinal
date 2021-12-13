@@ -369,6 +369,7 @@ Route::get('customer/logout','Customer_Api\CustomerController@logout');
  
 //customer home
 Route::get('customer/home','Customer_Api\ProductController@homePage');
+Route::get('customer/home2','Customer_Api\BusinessTypeController@homePage');
 Route::get('customer/business-type/home','Customer_Api\BusinessTypeController@BTHomePage');
 Route::get('customer/store-home','Customer_Api\ProductController@homePageStore');
 Route::get('customer/category-home','Customer_Api\ProductController@homePageCategory');

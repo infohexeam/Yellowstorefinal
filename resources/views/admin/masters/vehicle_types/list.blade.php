@@ -22,7 +22,7 @@
                                    <i class="fa fa-recycle"></i> Restore Vehicle Type </a> @endif
                                 <br>
                             <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="example" class="table table-striped table-bordered text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -42,10 +42,10 @@
                                         <td>
                                             <form action="{{route('admin.destroy_vehicle_type',$vehicle_type->vehicle_type_id)}}" method="POST">
                                                 @csrf
-                                                    <a class="btn btn-sm btn-cyan"  data-toggle="modal" data-target="#StockModal{{$vehicle_type->vehicle_type_id}}"
-                                            >Edit</a>
+                                                    <a class="btn btn-sm btn-cyan"  data-toggle="modal" data-target="#StockModal{{$vehicle_type->vehicle_type_id}}" style="color: white;"
+                                            ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
                                                 @method('POST')
-                                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -116,7 +116,7 @@
                <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h5 class="modal-title" id="example-Modal3">Add Vehicle Type</h5>
+                        <h5 class="modal-title" id="example-Modal3">Edit Vehicle Type</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>

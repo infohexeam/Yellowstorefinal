@@ -42,6 +42,7 @@ use App\Models\admin\Mst_order_link_delivery_boy;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Mst_Issues;
 use App\Models\admin\Mst_dispute;
+use App\Models\admin\Sys_IssueType;
 
 
 
@@ -85,7 +86,29 @@ class DisputeController extends Controller
                                             $dispute->issue = $issue->issue;
                                             $customer = Trn_store_customer::find($dispute->customer_id);
                                             $dispute->customer_name = @$customer->customer_first_name." ".@$customer->customer_last_name;
-                                        
+                                            
+                                            $issueType = Sys_IssueType::find($dispute->issue_id);
+
+                                            if(isset($issueType->issue_type))
+                                            $dispute->issue_type = @$issueType->issue_type;
+                                            else
+                                            $dispute->issue_type = '';
+                                            
+                                          
+                                            
+                                              if(isset($dispute->discription))
+                                               $dispute->discription = $dispute->discription; 
+                                               else
+                                               $dispute->discription = ''; 
+            
+                                               
+                                               if(isset($dispute->store_response))
+                                               $dispute->store_response = $dispute->store_response; 
+                                               else
+                                               $dispute->store_response = '';
+                                           
+                                           
+
                                         }
                                         $data['status'] = 1;
                                         $data['message'] = "success";
@@ -110,6 +133,8 @@ class DisputeController extends Controller
                                             }
                                         }
                                         
+                                        
+                                        
                                         $disputesData = $disputesData->select("*")->orderBy('dispute_id','DESC')->get();
                                         $data['disputeDetails'] = $disputesData;
                                         foreach($data['disputeDetails'] as $dispute){
@@ -117,7 +142,27 @@ class DisputeController extends Controller
                                             $dispute->issue = $issue->issue;
                                             $customer = Trn_store_customer::find($dispute->customer_id);
                                             $dispute->customer_name = @$customer->customer_first_name." ".@$customer->customer_last_name;
-                                        
+                                            
+                                            $issueType = Sys_IssueType::find($dispute->issue_id);
+
+                                            if(isset($issueType->issue_type))
+                                            $dispute->issue_type = @$issueType->issue_type;
+                                            else
+                                            $dispute->issue_type = '';
+                                            
+                                          
+                                            
+                                              if(isset($dispute->discription))
+                                               $dispute->discription = $dispute->discription; 
+                                               else
+                                               $dispute->discription = ''; 
+            
+                                               
+                                               if(isset($dispute->store_response))
+                                               $dispute->store_response = $dispute->store_response; 
+                                               else
+                                               $dispute->store_response = '';
+                                               
                                         }
                                         $data['status'] = 1;
                                         $data['message'] = "success";
@@ -162,16 +207,34 @@ class DisputeController extends Controller
                 if(isset($request->dispute_id) && Mst_dispute::find($request->dispute_id))
                 {
                    
-                                    if($data['disputeDetails']  = \DB::table("mst_disputes")
-                                    ->where('dispute_id',$request->dispute_id)
+                                    if($data['disputeDetails']  = Mst_dispute::where('dispute_id',$request->dispute_id)
                                     ->select("*")->first())
                                     {
                                             $issue = Mst_Issues::find($data['disputeDetails']->issue_id);
                                             $data['disputeDetails']->issue = $issue->issue;
+                                            $issueType = Sys_IssueType::find($data['disputeDetails']->issue_id);
+
+                                            if(isset($issueType->issue_type))
+                                            $data['disputeDetails']->issue_type = @$issueType->issue_type;
+                                            else
+                                            $data['disputeDetails']->issue_type = '';
+
                                             $customer = Trn_store_customer::find($data['disputeDetails']->customer_id);
                                             $data['disputeDetails']->customer_name = @$customer->customer_first_name." ".@$customer->customer_last_name;
                                         
                                         
+                                           if(isset($data['disputeDetails']->discription))
+                                           $data['disputeDetails']->discription = $data['disputeDetails']->discription; 
+                                           else
+                                           $data['disputeDetails']->discription = ''; 
+        
+                                           
+                                           if(isset($data['disputeDetails']->store_response))
+                                           $data['disputeDetails']->store_response = $data['disputeDetails']->store_response; 
+                                           else
+                                           $data['disputeDetails']->store_response = ''; 
+                                           
+                                            
                                         $data['status'] = 1;
                                         $data['message'] = "success";
                                         return response($data);
@@ -221,8 +284,14 @@ class DisputeController extends Controller
                         {
                             $disputeData['dispute_status'] = $request->dispute_status; // status
                             
-                            if(isset($request->discription))
-                            $disputeData['discription'] = $request->discription; // status
+                            //if(isset($request->discription))
+                           // $disputeData['discription'] = $request->discription; // status
+                            
+                            
+                            if(isset($request->store_response))
+                            $disputeData['store_response'] = $request->store_response; // store_response
+                            
+                            
                           
                                     
                             if(Mst_dispute::where('dispute_id',$request->dispute_id)->update($disputeData))

@@ -104,6 +104,7 @@ class CustomerController extends Controller
                                                          $data['customer_id'] = $user->customer_id;
                                                          $data['customer_first_name'] = $user->customer_first_name;
                                                          $data['customer_mobile_number'] = $user->customer_mobile_number;
+                                                         $data['referral_id'] = $user->referral_id;
                                                          
                                                          // customer reward
                                                          $rewardCount = Mst_RewardToCustomer::where('customer_mobile_number',$user->customer_mobile_number)->count();
@@ -314,7 +315,16 @@ class CustomerController extends Controller
                             $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
                             $cr->reward_point_status = 1;
                             $cr->discription = 'Registration points';
-                            $cr->save();
+                            if($cr->save())
+                            {
+                                 $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$customer_id)->get();
+                                foreach($customerDevice as $cd)
+                                {
+                                    $title = 'Points creadited';
+                                    $body = 'Registration points credited successully..';
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token,$title,$body);
+                                }
+                            }
                     
                     }
 
@@ -655,6 +665,9 @@ class CustomerController extends Controller
                     $data['customerData']->customerAddress = Trn_customerAddress::where('customer_id',$request->customer_id)->get();
                     foreach($data['customerData']->customerAddress as $a)
                     {
+                        if(!isset($a->default_status))
+                        $a->default_status = 0;
+                        
                        $a->stateData = @$a->stateFunction['state_name']; 
                        $a->districtData = @$a->districtFunction['district_name']; 
                     }
@@ -713,7 +726,7 @@ class CustomerController extends Controller
                             
                             if($request->default_status != 1)
                             {
-                                $addr->default_status = $request->default_status;
+                                $addr->default_status = 0;
                             }
                             else
                             {
@@ -774,6 +787,23 @@ class CustomerController extends Controller
     
                         if(!$validator->fails() )
                         {
+                            
+                            if($request->default_status == 1)
+                            {
+                                 $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)->update(['default_status' => 0]);
+
+                            }
+                            else{
+                                
+                                
+                                
+                                $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)->first();
+                     Trn_customerAddress::where('customer_address_id',$countAddress->customer_address_id)->update(['default_status' => 1]);
+
+                            
+
+                            }
+                            
     
                            // $addr = Trn_customerAddress::find($request->customer_address_id);
                             $addr['address'] = $request->address;
@@ -803,8 +833,17 @@ class CustomerController extends Controller
                             
                             if(Trn_customerAddress::where('customer_address_id',$request->customer_address_id)->update($addr))
                             {
-                                $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)
-                                ->where('customer_address_id','!=',$request->customer_address_id)->update(['default_status' => 0]);
+                                // $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)
+                                // ->where('customer_address_id','!=',$request->customer_address_id)->update(['default_status' => 0]);
+                                
+                                
+                                 if($request->default_status != 1)
+                        {
+                                $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)->first();
+                     Trn_customerAddress::where('customer_address_id',$countAddress->customer_address_id)->update(['default_status' => 1]);
+
+                            }
+                            
 
                                 $data['status'] = 1;
                                 $data['message'] = "Address updated";
@@ -857,6 +896,12 @@ class CustomerController extends Controller
                         $addr = Trn_customerAddress::find($request->customer_address_id);
                         if($addr->delete())
                         {
+                            if($secAddress =  Trn_customerAddress::where('customer_id',$addr->customer_id)->first())
+                            {
+                                $secAddress->default_status = 1;
+                                $secAddress->update();
+                            }
+
                             $data['status'] = 1;
                             $data['message'] = "Address removed";
                             return response($data);

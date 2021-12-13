@@ -169,11 +169,26 @@ class ProductController extends Controller
                                 $store_id = $request->store_id;
                                 if($request->category_id == 0)
                                 {
-                                    if($data['productDetails']  = Mst_store_product::join('mst_store_categories','mst_store_categories.category_id','=','mst_store_products.product_cat_id')->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")->where('mst_store_products.store_id',$store_id)->orderBy('mst_store_products.product_id', 'DESC')->select('mst_store_products.product_id','mst_store_products.product_cat_id','mst_store_products.product_name','mst_store_products.product_code','mst_store_products.product_price','mst_store_products.product_price_offer','mst_store_products.product_base_image','mst_store_categories.category_name','mst_store_categories.category_id','mst_store_products.product_status')->get())
+                                    if(1)
                                     {
-                                        foreach($data['productDetails'] as $product){
+$productDetails  = Mst_store_product::join('mst_store_categories','mst_store_categories.category_id','=','mst_store_products.product_cat_id')
+                                    ->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")->where('mst_store_products.store_id',$store_id)
+                                    ->orderBy('mst_store_products.product_id', 'DESC')
+                                        ->select('mst_store_products.product_id','mst_store_products.product_cat_id','mst_store_products.product_name','mst_store_products.product_code','mst_store_products.product_price','mst_store_products.product_price_offer','mst_store_products.product_base_image','mst_store_categories.category_name','mst_store_categories.category_id','mst_store_products.product_status');
+                                        if(isset($request->page))
+                                            {
+                                                $productDetails = $productDetails->paginate(10, ['data'], 'page', $request->page);
+                                            }
+                                            else
+                                            {
+                                                $productDetails = $productDetails->paginate(10);
+                                            }
+                    
+                                        foreach($productDetails as $product){
                                             $product->product_base_image = '/assets/uploads/products/base_product/base_image/'.$product->product_base_image;
                                         }
+                                        
+                                        $data['productDetails'] = $productDetails;
                                         $data['status'] = 1;
                                         $data['message'] = "success";
                                         return response($data);
@@ -186,14 +201,30 @@ class ProductController extends Controller
                                 }
                                 else
                                 {
-                                    if($data['productDetails']  = Mst_store_product::join('mst_store_categories','mst_store_categories.category_id','=','mst_store_products.product_cat_id')
+                                    if(1)
+                                    {
+                                        
+                                      $productDetails =    Mst_store_product::join('mst_store_categories','mst_store_categories.category_id','=','mst_store_products.product_cat_id')
                                     ->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")
                                     ->where('mst_store_products.product_cat_id',$category_id)->where('mst_store_products.store_id',$store_id)->orderBy('mst_store_products.product_id', 'DESC')
-                                    ->select('mst_store_products.product_id','mst_store_products.product_cat_id','mst_store_products.product_name','mst_store_products.product_code','mst_store_products.product_price','mst_store_products.product_price_offer','mst_store_products.product_base_image','mst_store_categories.category_name','mst_store_categories.category_id','mst_store_products.product_status')->get())
-                                    {
+                                    ->select('mst_store_products.product_id','mst_store_products.product_cat_id','mst_store_products.product_name','mst_store_products.product_code','mst_store_products.product_price','mst_store_products.product_price_offer','mst_store_products.product_base_image','mst_store_categories.category_name','mst_store_categories.category_id','mst_store_products.product_status');
+                                    
+                                        
+                                          if(isset($request->page))
+                                            {
+                                                $productDetails = $productDetails->paginate(10, ['data'], 'page', $request->page);
+                                            }
+                                            else
+                                            {
+                                                $productDetails = $productDetails->paginate(10);
+                                            }
+                                            
                                         foreach($data['productDetails'] as $product){
                                             $product->product_base_image = '/assets/uploads/products/base_product/base_image/'.$product->product_base_image;
                                         }
+                                        
+                                        $data['productDetails'] = $productDetails;
+
                                         $data['status'] = 1;
                                         $data['message'] = "success";
                                         return response($data);
@@ -651,7 +682,7 @@ class ProductController extends Controller
                                     $imageData= [
                                         'product_image'      => $product_image,
                                         'product_id' => $id,
-                                        'product_varient_id' => $id,
+                                        'product_varient_id' => 0,
                                         'image_flag'         => 1,
                                         'created_at'         => Carbon::now(),
                                         'updated_at'         => Carbon::now(),
@@ -1871,7 +1902,17 @@ class ProductController extends Controller
                                                 $productVar->product_varient_price    = $request->regular_price;
                                                 $productVar->product_varient_offer_price    = $request->sale_price;
                                                 $productVar->product_varient_base_image = null;
+                                                
+                                    if($request->product_type == 2)
+                                    {
+                                                $productVar->stock_count                 = 1; 
+                                    }
+                                    else
+                                    {
                                                 $productVar->stock_count                 = 0; 
+
+                                    }
+                                    
                 
                                                 if($productVar->save())
                                                 {
@@ -2069,7 +2110,17 @@ class ProductController extends Controller
                                 $productVar->product_varient_price    = $request->var_regular_price;
                                 $productVar->product_varient_offer_price    = $request->var_sale_price;
                                 $productVar->product_varient_base_image = null;
-                                $productVar->stock_count                 = 0; 
+                                
+                                if($productData->product_type == 2)
+                                    {
+                                                $productVar->stock_count                 = 1; 
+                                    }
+                                    else
+                                    {
+                                                $productVar->stock_count                 = 0; 
+
+                                    }
+                                    
 
                                 if($productVar->save())
                                 {
@@ -2692,9 +2743,17 @@ class ProductController extends Controller
                                
                     
                     $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-                    ->groupBy('trn__recently_visited_products.product_varient_id','trn__recently_visited_products.customer_id',DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
-                    ->get();
-               
+                    ->groupBy('trn__recently_visited_products.product_varient_id','trn__recently_visited_products.customer_id',DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
+
+                    if(isset($request->page))
+                    {
+                        $dataRV = $dataRV->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $dataRV = $dataRV->paginate(10);
+                    }
+                    
                
                 foreach($dataRV as $d)
                 {
@@ -2801,9 +2860,19 @@ class ProductController extends Controller
                    
                    
                    $dataRVS = $dataRVS->groupBy('trn__recently_visited_stores.store_id','trn__recently_visited_stores.customer_id',DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-                    ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
-                    ->get();
+                    ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC');
                     
+                    
+                    if(isset($request->page))
+                    {
+                        $dataRVS = $dataRVS->paginate(10, ['data'], 'page', $request->page);
+                    }
+                    else
+                    {
+                        $dataRVS = $dataRVS->paginate(10);
+                    }
+                    
+
                     $dataRVSs = array();
                     foreach($dataRVS as $d)
                     {
@@ -2831,32 +2900,32 @@ class ProductController extends Controller
                         
                         $d->order_per_visit = $puchasedCount;
                         
-                        if(isset($request->visit_count) && !isset($request->order_per_visit))
-                        {
-                            if($request->visit_count == $visitCount){
-                                $dataRVSs[] = $d;
-                            }
-                        }elseif(!isset($request->visit_count) && isset($request->order_per_visit))
-                        {
-                           if($request->order_per_visit == $puchasedCount){
-                                $dataRVSs[] = $d;
-                            }
+                        // if(isset($request->visit_count) && !isset($request->order_per_visit))
+                        // {
+                        //     if($request->visit_count == $visitCount){
+                        //         $dataRVSs[] = $d;
+                        //     }
+                        // }elseif(!isset($request->visit_count) && isset($request->order_per_visit))
+                        // {
+                        //   if($request->order_per_visit == $puchasedCount){
+                        //         $dataRVSs[] = $d;
+                        //     }
                             
-                        }elseif(isset($request->visit_count) && isset($request->order_per_visit))
-                        {
-                            if(($request->visit_count == $visitCount) && ($request->order_per_visit == $puchasedCount)){
-                                $dataRVSs[] = $d;
-                            }
-                        }
-                        else
-                        {
-                                $dataRVSs[] = $d;
-                        }
+                        // }elseif(isset($request->visit_count) && isset($request->order_per_visit))
+                        // {
+                        //     if(($request->visit_count == $visitCount) && ($request->order_per_visit == $puchasedCount)){
+                        //         $dataRVSs[] = $d;
+                        //     }
+                        // }
+                        // else
+                        // {
+                        //         $dataRVSs[] = $d;
+                        // }
 
                     }
                
                
-                    $data['recentVisitedStoreReport'] = $dataRVSs;
+                    $data['recentVisitedStoreReport'] = $dataRVS;
 
                     $data['status'] = 1;
                     $data['message'] = "success";

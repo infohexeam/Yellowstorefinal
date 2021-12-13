@@ -24,7 +24,7 @@
                            @endif
                                 <br>
                             <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="example" class="table table-striped table-bordered  text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -46,10 +46,10 @@
                                         <td>
                                             <form action="{{route('admin.destroy_tax',$tax->tax_id)}}" method="POST">
                                                 @csrf
-                                                    <a class="btn btn-sm btn-cyan text-white"  data-toggle="modal" data-target="#StockModal{{$tax->tax_id}}" >View</a>
-                                                        <a href="{{ url('admin/tax/edit/'.$tax->tax_id )}} " class="btn btn-sm btn-cyan" >Edit</a>
+                                                    <a class="btn btn-sm btn-cyan text-white"  data-toggle="modal" data-target="#StockModal{{$tax->tax_id}}" ><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                                                        <a href="{{ url('admin/tax/edit/'.$tax->tax_id )}} " class="btn btn-sm btn-cyan" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
                                                         @method('POST')
-                                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                             </form>
                                         </td>
                                     </tr>

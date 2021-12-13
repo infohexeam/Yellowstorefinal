@@ -1965,6 +1965,17 @@ public function statusProduct(Request $request,Mst_store_product $product,$produ
 
           $order->status_id = $request->status_id;
           
+           if($request->status_id == 8)
+          {
+               if($order->order_type == 'APP')
+              {
+                  if(($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id))
+                  {
+                    return redirect()->back()->withErrors(['delivery boy not assigned']);
+                  }
+              }
+              
+          }
           
           if($request->status_id == 9)
           {
@@ -2000,6 +2011,15 @@ public function statusProduct(Request $request,Mst_store_product $product,$produ
                         $cr->reward_point_status = 1;
                         $cr->discription = "First order points";
                         $cr->save();
+                        
+                        $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$customer_id)->get();
+
+                            foreach($customerDevice as $cd)
+                            {
+                                $title = 'Points creadited';
+                                $body = 'First order points credited successully..';
+                                $data['response'] =  $this->customerNotification($cd->customer_device_token,$title,$body);
+                            }
                         
                         
                          // referal - point
@@ -2913,7 +2933,7 @@ public function destroyAttr_Group(Request $request,Mst_attribute_group $attribut
 
         $store_order->order_number = $orderNumberPrefix.@$orderNumber;
             
-        $store_order->customer_id = $request->get('customer_id');
+        $store_order->customer_id = 3;
         $store_order->store_id =  Auth::guard('store')->user()->store_id;
         $store_order->subadmin_id =  Auth::guard('store')->user()->subadmin_id;
         $store_order->product_total_amount =  $request->get('full_amount');

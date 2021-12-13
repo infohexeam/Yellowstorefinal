@@ -205,18 +205,26 @@
                                  <option value=""> Select Status</option>
                             
                               @foreach ($status as $key)
-                                  @if($key->status_id >= $order->status_id )
-                                      <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} 
-                                      value="
-                                      @if($key->status_id != $order->status_id )
-                                        {{ $key->status_id}}
-                                      @endif
+                                     @if($order->status_id != 9)
 
-                                      "> 
+                                      @if(($key->status_id >= $order->status_id ) || ($key->status_id == 5 ))
+                                          <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} 
+                                              value="
+                                              @if($key->status_id != $order->status_id )
+                                                {{ $key->status_id}}
+                                              @endif
+        
+                                              "> 
+                                              
+                                              {{ $key->status}}
+                                        </option>
+                                      @endif
                                       
-                                      {{ $key->status}}
-                                      </option>
-                                  @endif
+                                      @else
+                                          @if($key->status_id == 9)
+                                            <option  value="9"> {{ $key->status}} </option>
+                                          @endif
+                                      @endif
                               @endforeach
                            </select>
                   </div>

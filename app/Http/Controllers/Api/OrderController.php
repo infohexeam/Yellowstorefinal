@@ -48,9 +48,11 @@ use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_CustomerDeviceToken;
+use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
 
 use App\Models\admin\Trn_customerAddress;
+use App\Models\admin\Trn_DeliveryBoyLocation;
 
 class OrderController extends Controller
 {
@@ -163,14 +165,21 @@ class OrderController extends Controller
                         {
                             $order_id = $request->order_id;
                             $store_id = $request->store_id;
-                           // dd(Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
+                           // dd(Trn_store_order::select('order_id','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
                             
-                            if($data['orderDetails']  = Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount','order_type','delivery_address')->where('order_id',$order_id)->where('store_id',$store_id)->first())
+                            if($data['orderDetails']  = Trn_store_order::select('order_id','delivery_accept','product_varient_id','service_order','service_booking_order','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount','order_type','delivery_address')->where('order_id',$order_id)->where('store_id',$store_id)->first())
                             {
+                                
+                                 if(!isset($data['orderDetails']->order_note))
+                                    $data['orderDetails']->order_note = '';
                                
+                               if(!isset($data['orderDetails']->delivery_accept))
+                               $data['orderDetails']->delivery_accept = '0';
+                                
                                 if(isset($data['orderDetails']->customer_id))
                                 {
                                     $customerData = Trn_store_customer::find($data['orderDetails']->customer_id);
+                                //    dd($customerData);
                                     // $data['orderDetails']->customer_name = $customerData->customer_first_name." ".$customerData->customer_last_name;
                                    
                                 $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
@@ -184,29 +193,91 @@ class OrderController extends Controller
                                 $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
                                }
                                
-                                    $data['orderDetails']->customer_name = $customerAddressData->name;
-                               
+                                if($data['orderDetails']->order_type != 'POS')
+                                {
+
+                                    if(isset($customerAddressData->name))
+                                     {
+                                     $data['orderDetails']->customer_name = @$customerAddressData->name;
+                                    }else{
+                                    $data['orderDetails']->customer_name = $customerData->customer_first_name." ".$customerData->customer_last_name;
+                                    }  
+                                
+                                }
+                                else
+                                {
+                                    $data['orderDetails']->customer_name = $customerData->customer_first_name." ".$customerData->customer_last_name;
+
+                                }
+                             
+
                                if(isset($customerAddressData->address))
-                                $data['orderDetails']->customer_address = $customerAddressData->address;
+                                $data['orderDetails']->customer_address = @$customerAddressData->address;
                                 else
                                 $data['orderDetails']->customer_address = ' ';
+                                
+                                if(isset($customerAddressData->longitude))
+                                $data['orderDetails']->c_longitude = @$customerAddressData->longitude;
+                                else
+                                $data['orderDetails']->c_longitude = ' ';
+                                
+                                if(isset($customerAddressData->latitude))
+                                $data['orderDetails']->c_latitude = @$customerAddressData->latitude;
+                                else
+                                $data['orderDetails']->c_latitude = ' ';
+                                
+                                if(isset($customerAddressData->place))
+                                $data['orderDetails']->c_place = @$customerAddressData->place;
+                                else
+                                $data['orderDetails']->c_place = ' ';
 
                                 if(isset($customerAddressData->pincode))
-                                $data['orderDetails']->customer_pincode = $customerAddressData->pincode;
+                                $data['orderDetails']->customer_pincode = @$customerAddressData->pincode;
                                 else
                                 $data['orderDetails']->customer_pincode = ' ';
 
 
                                 $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
-                                    $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
+                                    if(isset($deliveryBoy->delivery_boy_name))
+                                        $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
+                                    else
+                                        $data['orderDetails']->delivery_boy = '';
+
+                                    if(isset($deliveryBoy->delivery_boy_mobile))
+                                        $data['orderDetails']->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
+                                    else
+                                        $data['orderDetails']->delivery_boy_mobile = '';
+                                        
+                                $deliveryBoyLoc = Trn_DeliveryBoyLocation::where('delivery_boy_id',$data['orderDetails']->delivery_boy_id)
+                                ->orderBy('dbl_id','DESC')->first();
+                                
+                                if(isset($deliveryBoyLoc->latitude))
+                                    $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
+                                else
+                                    $data['orderDetails']->db_latitude = '';
+                                
+                                if(isset($deliveryBoyLoc->longitude))
+                                    $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
+                                else
+                                    $data['orderDetails']->db_longitude = '';        
+                                    
+                                // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
+                                // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
+
+
+                                
                                 }
                                 else
                                 {
-                                    $data['orderDetails']->customer_name = null;
-                                    $data['orderDetails']->delivery_boy = null;
-                                    $data['orderDetails']->customer_mobile = null;
-                                    $data['orderDetails']->customer_address = null;
-                                    $data['orderDetails']->customer_pincode = null;
+                                    $data['orderDetails']->customer_name = '';
+                                    $data['orderDetails']->delivery_boy = '';
+                                    $data['orderDetails']->customer_mobile = '';
+                                    $data['orderDetails']->customer_address = '';
+                                    $data['orderDetails']->customer_pincode = '';
+                                    $data['orderDetails']->db_latitude = '';
+                                    $data['orderDetails']->db_longitude = '';
+
+
 
                                 }
 
@@ -215,8 +286,20 @@ class OrderController extends Controller
                                 $data['orderDetails']->store_primary_address = $storeData->store_primary_address;
                                 $data['orderDetails']->store_mobile = $storeData->store_mobile;
 
-                                $data['orderDetails']->delivery_type = null;
-                                $data['orderDetails']->time_slot = null;
+
+                            if(isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0))
+                            {
+                                $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
+                                $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start."-".@$deliveryTimeSlot->time_end;
+                                $data['orderDetails']->delivery_type = 2; //slot delivery
+
+                            }
+                            else // timeslot null or zero
+                            {
+                                $data['orderDetails']->delivery_type = 1; // immediate delivery
+                                $data['orderDetails']->time_slot = '';
+                            }
+                         
                                 $data['orderDetails']->processed_by = null;
 
                                 $invoice_data = \DB::table('trn_order_invoices')->where('order_id',$order_id)->first();
@@ -309,6 +392,23 @@ class OrderController extends Controller
                                     
                                     $value['taxSplitups']  = $splitdata;
                                 }
+                                
+                                
+                                  $data['orderDetails']->serviceData = new \stdClass();
+                                if($data['orderDetails']->service_booking_order == 1)
+                                {
+                                    $serviceData = Mst_store_product_varient::find(@$data['orderDetails']->product_varient_id);
+                                    @$serviceData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/'.@$serviceData->product_varient_base_image;
+                                    $baseProductDetail = Mst_store_product::find(@$serviceData->product_id);
+                                    $serviceData->product_base_image = '/assets/uploads/products/base_product/base_image/'.@$baseProductDetail->product_base_image;
+                                    
+                                    if(@$baseProductDetail->product_name != @$serviceData->variant_name)
+                                    $serviceData->product_name = @$baseProductDetail->product_name." ". @$serviceData->productDetail->variant_name;
+                                    else
+                                    $serviceData->product_name = @$baseProductDetail->product_name;
+                                    $data['orderDetails']->serviceData = $serviceData; 
+
+                                } 
 
                                 $data['status'] = 1;
                                 $data['message'] = "success";
@@ -513,7 +613,17 @@ class OrderController extends Controller
                                                 $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
                                                 $cr->reward_point_status = 1;
                                                 $cr->discription = "First order points";
-                                                $cr->save();
+                                                if($cr->save())
+                                                {
+                                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$refCusData->referred_by)->get();
+
+                                                        foreach($customerDevice as $cd)
+                                                        {
+                                                            $title = 'Points creadited';
+                                                            $body = 'First order points credited successully..';
+                                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token,$title,$body);
+                                                        }
+                                                }
                                                 
                                                 
                                                   // referal - point

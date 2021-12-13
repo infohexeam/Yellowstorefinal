@@ -454,11 +454,13 @@ class StoreOrderController extends Controller
                     
                     foreach($request->product_variants as $value)
                     {
-                        if($request->service_order != 1)
-                        {
-
                           $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                           $proData = Mst_store_product::find($varProdu->product_id);
+                          
+                        if($proData->service_type != 2)
+                        {
+
+                        
                            if(isset($varProdu))
                            {
                                if($value['quantity'] > $varProdu->stock_count)
@@ -547,6 +549,7 @@ class StoreOrderController extends Controller
                     $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
                     $store_order->order_type = 'APP';
                     
+                   
                     if(isset($request->amount_reduced_by_coupon))
                     $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
 
@@ -581,14 +584,18 @@ class StoreOrderController extends Controller
                     foreach($request->product_variants as $value)
                     {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
-                        Mst_store_product_varient::where('product_varient_id','=',$value['product_varient_id'])->decrement('stock_count',$value['quantity']);
+
+                        if($proData->service_type != 2)
+                        {
+                            Mst_store_product_varient::where('product_varient_id','=',$value['product_varient_id'])->decrement('stock_count',$value['quantity']);
+                        }
                         
                         if(!isset($value['discount_amount']))
                         {
                             $value['discount_amount'] = 0;
                         }
                         
-                        if($request->service_order != 1)
+                        if($proData->service_type != 2)
                         {
                          $negStock = -1 * abs($value['quantity']);
 
@@ -649,11 +656,15 @@ class StoreOrderController extends Controller
                    {
                        $title = 'Order Placed';
                        $body = 'Your order with order id '.$orderdatas->order_number.' has been saved successully..';
-                          
-                         //   $title = 'Title';
-                         //  $body = 'Body';
                        
-                     $data['response'] =  $this->customerNotification($cd->customer_device_token,$title,$body);
+                         $data['response'] =  $this->customerNotification($cd->customer_device_token,$title,$body);
+                     if(isset($request->reward_points_used) && ($request->reward_points_used != 0))
+                     {
+                          $title = 'Points Deducted';
+                       $body = $request->reward_points_used.' points deducted from your wallet';
+                       
+                         $data['response'] =  $this->customerNotification($cd->customer_device_token,$title,$body);
+                     }
                    }
                     
 
@@ -762,11 +773,17 @@ class StoreOrderController extends Controller
                            {
                                if($value['quantity'] > $varProdu->stock_count)
                                {
-                                  
-                                   $noStockProducts[] = $varProdu->product_varient_id ;
                                    
-                                   $data['message'] = 'Stock unavilable';
-                                   $data['status'] = 2;
+                                    $timeslotdata = Helper::findHoliday($proData->store_id);
+        
+                                    if($timeslotdata == false)
+                                    {
+                                                  
+                                       $noStockProducts[] = $varProdu->product_varient_id ;
+                                       
+                                       $data['message'] = 'Stock unavilable';
+                                       $data['status'] = 2;
+                                    }
                                   //  return response($data);
                                }
                            }
@@ -945,7 +962,7 @@ class StoreOrderController extends Controller
                  
 
                     $data['status'] = 1;
-                    $data['message'] = "Issue uploded.";
+                    $data['message'] = "Issue uploaded.";
                     return response($data);
 
 
@@ -1063,8 +1080,13 @@ class StoreOrderController extends Controller
                             $customer_id = $request->customer_id;
                            // dd(Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
                             
-                            if($data['orderDetails']  = Trn_store_order::select('order_id','delivery_accept','product_varient_id','service_order','service_booking_order','delivery_date','amount_reduced_by_rp','delivery_time','store_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('customer_id',$customer_id)->first())
+                            if($data['orderDetails']  = Trn_store_order::select('order_id','order_note','service_order','service_booking_order','time_slot','delivery_accept','product_varient_id','service_order','service_booking_order','delivery_date','amount_reduced_by_rp','delivery_time','store_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('customer_id',$customer_id)->first())
                             {
+                                
+                                if(!isset($data['orderDetails']->order_note))
+                                    $data['orderDetails']->order_note = '';
+
+                                
                                 
                                 if($data['orderDetails']->delivery_accept == 1)
                                 {
@@ -1099,11 +1121,11 @@ class StoreOrderController extends Controller
                                 }
                                 else
                                 {
-                                    $data['orderDetails']->customer_name = null;
-                                    $data['orderDetails']->delivery_boy = null;
-                                    $data['orderDetails']->customer_mobile = null;
-                                    $data['orderDetails']->customer_address = null;
-                                    $data['orderDetails']->customer_pincode = null;
+                                    $data['orderDetails']->customer_name = '';
+                                    $data['orderDetails']->delivery_boy = '';
+                                    $data['orderDetails']->customer_mobile = '';
+                                    $data['orderDetails']->customer_address = '';
+                                    $data['orderDetails']->customer_pincode = '';
 
                                 }
 
@@ -1112,10 +1134,22 @@ class StoreOrderController extends Controller
                                 $data['orderDetails']->store_primary_address = @$storeData->store_primary_address;
                                 $data['orderDetails']->store_mobile = @$storeData->store_mobile;
 
-                                $data['orderDetails']->delivery_type = null;
+
+                            if(isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0))
+                            {
+                                $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
+                                $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start."-".@$deliveryTimeSlot->time_end;
+                                $data['orderDetails']->delivery_type = 2; //slot delivery
+
+                            }
+                            else // timeslot null or zero
+                            {
+                                $data['orderDetails']->delivery_type = 1; // immediate delivery
+                                $data['orderDetails']->time_slot = '';
+                            }
+                            
                                 $data['orderDetails']->delivery_date = Carbon::parse($data['orderDetails']->delivery_date)->format('d-m-Y');
                                 $data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->updated_at)->format('h:i');
-                                $data['orderDetails']->time_slot = null;
                                 $data['orderDetails']->processed_by = null;
 
                                 $invoice_data = \DB::table('trn_order_invoices')->where('order_id',$order_id)->first();
@@ -1138,6 +1172,73 @@ class StoreOrderController extends Controller
                                 $data['orderDetails']->payment_type = 'Offline';
                                 else
                                 $data['orderDetails']->payment_type = 'Online';
+                                
+                                
+                                // dispute section
+                                if($disputeData = Mst_dispute::where('order_id',$request->order_id)->first())
+                                {
+                                   $data['orderDetails']->dispute_status = 1; 
+                                   //$data['orderDetails']->issue_id = $disputeData->issue_id; 
+                                   $data['orderDetails']->issue_id = @$disputeData->issues->issue_type->issue_type;
+                                   $data['orderDetails']->issues = @$disputeData->issues->issue;
+                                   if(isset($disputeData->issues->issue_type->issue_type))
+                                   $data['orderDetails']->issue_type = @$disputeData->issues->issue_type->issue_type; 
+                                   else
+                                   $data['orderDetails']->issue_type = ''; 
+
+                                   
+                                   if(isset($disputeData->dispute_status))
+                                   {
+                                       if($disputeData->dispute_status == 1)
+                                       {
+                                           $data['orderDetails']->issue_status = 'Closed';
+                                       }
+                                       elseif($disputeData->dispute_status == 2)
+                                       {
+                                           $data['orderDetails']->issue_status = 'Open';
+                                       }
+                                        elseif($disputeData->dispute_status == 3)
+                                       {
+                                           $data['orderDetails']->issue_status = 'Inprogress';
+                                       }
+                                        elseif($disputeData->dispute_status == 4)
+                                       {
+                                           $data['orderDetails']->issue_status = 'Return';
+                                       }
+                                       else
+                                       {
+                                           $data['orderDetails']->issue_status = '';
+                                       }
+                                   }
+                                   else
+                                   {
+                                           $data['orderDetails']->issue_status = '';
+                                   }
+                                   
+                                   if(isset($disputeData->discription))
+                                   $data['orderDetails']->discription = $disputeData->discription; 
+                                   else
+                                   $data['orderDetails']->discription = ''; 
+
+                                   
+                                   if(isset($disputeData->store_response))
+                                   $data['orderDetails']->store_response = $disputeData->store_response; 
+                                   else
+                                   $data['orderDetails']->store_response = ''; 
+
+                                }
+                                else
+                                {
+                                   $data['orderDetails']->dispute_status = 0; 
+                                    $data['orderDetails']->issue_id = ''; 
+                                   $data['orderDetails']->issues = ''; 
+                                   $data['orderDetails']->discription = ''; 
+                                   $data['orderDetails']->store_response = ''; 
+                                   $data['orderDetails']->issue_type = ''; 
+                                           $data['orderDetails']->issue_status = '';
+
+                                }
+                                
                                 
                                 $data['orderDetails']->invoice_link =  url('get/invoice/'.Crypt::encryptString($data['orderDetails']->order_id));
                                 $data['orderDetails']->item_list_link = url('item/list/'.Crypt::encryptString($data['orderDetails']->order_id));
@@ -1163,9 +1264,35 @@ class StoreOrderController extends Controller
 
                                 }
 
+                                $store_id = $data['orderDetails']->store_id;
 
                                 foreach ($data['orderDetails']->orderItems as $value) 
                                 {
+                                    
+                                    if($datazz = \DB::table("mst_disputes")->where('store_id',$store_id)->where('order_id',$order_id)->first()){
+                                     
+                                        $colorsArray = explode(",", $datazz->item_ids);
+                                        
+                                        $ordItemArr =  Trn_store_order_item::whereIn('order_item_id',$colorsArray)->get();
+                                        $colorsArray2 = array();
+                                        foreach($ordItemArr as $i)
+                                        {
+                                            $colorsArray2[] = $i->product_varient_id;
+                                        }
+                                        if(in_array($value->product_varient_id, $colorsArray2))
+                                        {
+                                            $value->dispute_status = 1;
+                                        }
+                                        else
+                                        {
+                                            $value->dispute_status = 0;
+                                        }
+      
+                                 }
+                                 else{
+                                        $value->dispute_status = 0;
+                                 }
+                                 
 
 
                                     $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);

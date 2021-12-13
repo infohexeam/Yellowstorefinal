@@ -144,8 +144,8 @@ $date = Carbon\Carbon::now();
                         <th class="wd-15p">{{__('Store')}}</th>
                         <th class="wd-15p">Store<br>Phone</th>
                         <th class="wd-15p">{{__('Subadmin')}}</th>
-                        <th class="wd-15p">Order<br>Status</th>
-                         <th class="wd-15p">Payment<br>Status</th>
+                        <!--<th class="wd-15p">Order<br>Status</th>-->
+                        <!-- <th class="wd-15p">Payment<br>Status</th>-->
                         <th class="wd-15p">{{__('Action')}}</th>
                      </tr>
                   </thead>
@@ -166,32 +166,32 @@ $date = Carbon\Carbon::now();
                         <td>{{ @$order->store['store_contact_person_phone_number']}}</td>
                         <td>{{ @$order->store->subadmin->name}}</td>
 
-                        <td>
-                    {{-- <form action="{{route('admin.status_order',$order->order_id)}}" method="POST"> --}}
+                    <!--    <td>-->
+                    <!--{{-- <form action="{{route('admin.status_order',$order->order_id)}}" method="POST"> --}}-->
 
-                             @csrf
-                              @method('POST')
-                               <button class="btn btn-sm
-                                @if($order->status_id == 1) btn-info @elseif($order->status_id == 5) btn-danger @else btn-success @endif">
+                    <!--         @csrf-->
+                    <!--          @method('POST')-->
+                    <!--           <button class="btn btn-sm-->
+                    <!--            @if($order->status_id == 1) btn-info @elseif($order->status_id == 5) btn-danger @else btn-success @endif">-->
                                
-                                @if(isset($order->status_id))
-                                {{ @$order->status->status }}
-                                @else
-                                --
-                               @endif
-                        </button>
-                    {{--  </form>  --}}
-                         </td>
-                          <td>
-                           <button type="button" class="btn btn-sm @if($order->payment_status == 0) btn-warning @elseif($order->payment_status == 1) btn-success @else btn-danger @endif"
-                           data-toggle="modal" data-target="#StockModal{{$order->order_id}}" >
+                    <!--            @if(isset($order->status_id))-->
+                    <!--            {{ @$order->status->status }}-->
+                    <!--            @else-->
+                    <!--            ---->
+                    <!--           @endif-->
+                    <!--    </button>-->
+                    <!--{{--  </form>  --}}-->
+                    <!--     </td>-->
+                          <!--<td>-->
+                          <!-- <button type="button" class="btn btn-sm @if($order->payment_status == 0) btn-warning @elseif($order->payment_status == 1) btn-success @else btn-danger @endif"-->
+                          <!-- data-toggle="modal" data-target="#StockModal{{$order->order_id}}" >-->
 
-                            @if($order->payment_status == 0 )Pending
-                                @elseif($order->payment_status == 1)Complete
-                                @else Canceled
-                           @endif
-                           </button>
-                               </td>
+                          <!--  @if($order->payment_status == 0 )Pending-->
+                          <!--      @elseif($order->payment_status == 1)Complete-->
+                          <!--      @else Canceled-->
+                          <!-- @endif-->
+                          <!-- </button>-->
+                          <!--     </td>-->
 
                         <td>
 

@@ -8,8 +8,9 @@ use App\Models\admin\Mst_store;
 @endphp
 <!-- ROW-1 -->
 <div class="row" style="min-height: 70vh;">
-   <div class="col-lg-12 col-md-12 col-sm-12 col-xl-6">
+   <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
       <div class="row">
+          <div class="row col-lg-6 col-md-12 col-sm-12 col-xl-6">
          <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
             <div class="card">
                <a href="{{ route('admin.list_customer') }}">
@@ -67,8 +68,117 @@ use App\Models\admin\Mst_store;
                </a>
             </div>
          </div>
+         </div>
+         <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mb-0">Recent Orders</h3>
+									</div>
+									<div class="card-body">
+										<div class="grid-margin">
+											<div class="">
+												<div class="table-responsive">
+													<table class="table card-table border table-vcenter text-nowrap align-items-center">
+														<thead class="">
+															<tr>
+																<th>Si.No</th>
+																<th>Order Number</th>
+																<th>Store</th>
+																<th>Total Amount</th>
+																<th>Status</th>
+															</tr>
+														</thead>
+														<tbody>
+                                                            @php
+                                                             $i = 0;
+                                                             @endphp
+                                                             @foreach ($ordersData as $row)
+                                                             <tr>
+                                                                <td>{{ ++$i }}</td>	
+																<td class="text-sm font-weight-600">{{ $row->order_number }}</td>
+																<td>{{ @$row->store->store_name }}</td>
+																<td>{{ @$row->product_total_amount }}</td>
+																<td>{{ @$row->status->status }}</td>
+															</tr>
+															 @endforeach
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+       
       </div>
    </div>
+    <div class="col-md-12 col-sm-12 ">
+                  <div id="container2"></div>
+        </div>
+        <?php 
+          $returnNum = array_map('intval', $return);
+        ?>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script type="text/javascript">
+    var users =  <?php echo json_encode($returnNum) ?>;
+
+    Highcharts.chart('container2', {
+        title: {
+            text: 'Registered Stores <?php echo date("Y"); ?> '
+        },
+        // subtitle: {
+        //     text: 'Source'
+        // },
+         xAxis: {
+            categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',  'September', 'October', 'November', 'December'],
+            title: {
+                text: 'Months'
+            } ,
+
+        //     labels: {
+        //   formatter: function() {
+        //     return Highcharts.dateFormat('%M %Y',users);
+        //   }
+        // }   
+        },
+
+        
+        yAxis: {
+            title: {
+                text: 'Number of New Registered Stores'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: true
+            }
+        },
+        series: [{
+            name: 'New Stores',
+            //data: [1,2,0,1,1,2,4,2,0,1,1,2]
+            data: users
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+});
+</script>
 
    <!-- COL END -->
 </div>

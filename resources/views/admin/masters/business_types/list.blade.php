@@ -78,11 +78,11 @@
                                        <form action="{{route('admin.destroy_business_type',$business_type->business_type_id)}}" method="POST">
                                          <a class="btn btn-sm btn-cyan"
                                              href="{{url('admin/business_type/edit/'.
-                                          $business_type->business_type_name_slug)}}">Edit</a>
+                                          $business_type->business_type_name_slug)}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
 
                                           @csrf
                                           @method('POST')
-                                          <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                          <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                        </form>
                                     </td>
                                  </tr>

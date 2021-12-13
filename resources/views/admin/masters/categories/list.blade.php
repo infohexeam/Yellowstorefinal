@@ -51,7 +51,7 @@
                      <div class="col-md-12">
                      <div class="form-group">
                            <center>
-                           <button type="submit" class="btn btn-raised btn-primary">
+                           <button type="submit" class="btn btn-raised btn-primary" style="border: none;">
                            <i class="fa fa-check-square-o"></i> Filter</button>
                            <button type="reset" class="btn btn-raised btn-success">Reset</button>
                           <a href="{{route('admin.list_category')}}"  class="btn btn-info">Cancel</a>
@@ -121,11 +121,11 @@
                                        <form action="{{route('admin.destroy_category',$category->category_id)}}" method="POST">
                                          <a class="btn btn-sm btn-cyan"
                                              href="{{url('admin/categories/edit/'.
-                                          $category->category_name_slug)}}">Edit</a>
-                                          <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$category->category_id}}" > View</button>
+                                          $category->category_name_slug)}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                                          <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$category->category_id}}" ><i class="fa fa-eye" aria-hidden="true"></i> View</button>
                                           @csrf
                                           @method('POST')
-                                          <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                          <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                        </form>
                                     </td>
                                  </tr>
@@ -142,7 +142,7 @@
                <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h5 class="modal-title" id="example-Modal3">{{$pageTitle}}</h5>
+                        <h5 class="modal-title" id="example-Modal3">Product Category -  {{ $category->category_name   }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
