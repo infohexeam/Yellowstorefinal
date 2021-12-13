@@ -30,7 +30,7 @@ Route::get('/admin-dashboard', function () {
     return view('admin.dashboard');
 });
 
-Auth::routes();
+// Auth::routes();
 Route::get('/qr', 'store\CouponController@makeQr');
 Route::get('/geotest', 'store\CouponController@geotest');
 
@@ -41,7 +41,7 @@ Route::get('/store/terms-and-condition', 'PublicController@showTC');
 // Super Admin login
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin-login', 'Auth\LoginController@store-login')->name('admin.login');
+// Route::get('/admin-login', 'Auth\LoginController@store-login')->name('admin.login');
 // Super Admin Forgot password
 Route::get('/admin-login', 'Auth\LoginController@showLoginForm')->name('admin.login');
 
