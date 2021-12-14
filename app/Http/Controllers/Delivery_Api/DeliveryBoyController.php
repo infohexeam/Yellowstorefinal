@@ -154,7 +154,7 @@ class DeliveryBoyController extends Controller
                 $validator = Validator::make($request->all(), 
                 [      
                     'delivery_boy_name' => 'required',  
-                    'delivery_boy_email' => 'required',
+                    //'delivery_boy_email' => 'required',
                     'availability_status' => 'required',
                 ],
                 [   
