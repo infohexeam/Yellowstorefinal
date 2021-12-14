@@ -148,8 +148,8 @@
 
                          <div class="col-md-6">
                      <div class="form-group">
-                       <label class="form-label">Agency Logo * [in png, jpeg or jpg]</label>
-                          <input type="file" accept="image/x-png,image/jpg,image/jpeg" required="" name="agency_logo" id="agency_logo" class="form-control" placeholder="Agency Logo" value="{{old('agency_logo')}}">
+                       <label class="form-label">Agency Logo [in png, jpeg or jpg]</label>
+                          <input type="file" accept="image/x-png,image/jpg,image/jpeg" name="agency_logo" id="agency_logo" class="form-control" placeholder="Agency Logo" value="{{old('agency_logo')}}">
                         </div>
                     </div>
                      <div class="col-md-12">

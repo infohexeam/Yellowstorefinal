@@ -1456,7 +1456,7 @@ class SettingController extends Controller
 			'district_id'                       => 'required',
 			'agency_username' 				    => 'required|unique:mst_store_agencies',
 			'agency_password'       	        => 'required|min:5|same:password_confirmation',
-			'agency_logo'					    => 'required|mimes:jpeg,png,jpg,gif,svg'
+			// 'agency_logo'					    => 'required|mimes:jpeg,png,jpg,gif,svg'
 
 
          ],
@@ -1472,7 +1472,7 @@ class SettingController extends Controller
 			'district_id.required'        		          => 'District  required',
 			'agency_username.required'        			  => 'Username required',
 			'agency_password.required'					  => 'Password Required',
-			'agency_logo.required'						  =>'Agency logo required'
+			// 'agency_logo.required'						  =>'Agency logo required'
 
 
 		]);
@@ -1516,12 +1516,12 @@ class SettingController extends Controller
 			$agency->agency_logo = $filename;
 */
 
-                        $photo = $request->file('agency_logo');
-                        $filename = time() . '.' . $photo->getClientOriginalExtension();
-                        $destinationPath = 'assets/uploads/agency/logos';
-                        $thumb_img = Image::make($photo->getRealPath());
-                        $thumb_img->save($destinationPath . '/' .$filename, 80);
-		            	$agency->agency_logo = $filename;
+                        // $photo = $request->file('agency_logo');
+                        // $filename = time() . '.' . $photo->getClientOriginalExtension();
+                        // $destinationPath = 'assets/uploads/agency/logos';
+                        // $thumb_img = Image::make($photo->getRealPath());
+                        // $thumb_img->save($destinationPath . '/' .$filename, 80);
+		            	// $agency->agency_logo = $filename;
 		}
 
 			$agency->save();
