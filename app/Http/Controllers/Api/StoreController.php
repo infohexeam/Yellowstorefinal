@@ -37,7 +37,7 @@ class StoreController extends Controller
             if(isset($request->store_id))
             {
                 $storeTownData = Mst_store::find($request->store_id)->town_id;
-                $storeVids = $storeVids->where('town_id',$storeTownData)->get();
+                $storeVids = $storeVids->where('town_id',$storeTownData);
 
             }
 
@@ -45,7 +45,7 @@ class StoreController extends Controller
             
             
             $data['videos'] = $storeVids;
-                        
+
             foreach( $data['videos'] as $v)
             {
                 $linkCode = ' ';
@@ -114,7 +114,7 @@ class StoreController extends Controller
             if(isset($request->customer_id))
             {
                 $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
-                $cusVids = $cusVids->where('town_id',$cusTownId)->get();
+                $cusVids = $cusVids->where('town_id',$cusTownId);
 
             }
             
@@ -190,7 +190,7 @@ class StoreController extends Controller
             if(isset($request->delivery_boy_id))
            {
                $dbTownId = Mst_delivery_boy::find($request->delivery_boy_id)->town_id;
-               $dboyVid = $dboyVid->where('town_id',$dbTownId)->get();
+               $dboyVid = $dboyVid->where('town_id',$dbTownId);
 
            }
            
