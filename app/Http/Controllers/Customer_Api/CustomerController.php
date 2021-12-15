@@ -650,7 +650,7 @@ class CustomerController extends Controller
         $data = array(); 
         
         try {
-                if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
+                if(isset($request->customer_id) && $cData = Trn_store_customer::find($request->customer_id))
                 {  
                     if(isset($request->country))
                     {
@@ -661,8 +661,11 @@ class CustomerController extends Controller
                     {
                        $stateId = State::where('state_name', 'LIKE', "%{$request->state}%")->first()->state_id;
                     }
-                    Trn_store_customer::where('customer_id',$request->customer_id)
-                    ->update(['country_id' => @$contryId ,'state_id' => @$stateId ]);
+
+                    if(!isset($cData->country_id) && !isset($cData->state_id))
+                    {
+                        Trn_store_customer::where('customer_id',$request->customer_id)->update(['country_id' => @$contryId ,'state_id' => @$stateId ]);
+                    }
                     
                     $data['customerData'] = Trn_store_customer::find($request->customer_id);
                     

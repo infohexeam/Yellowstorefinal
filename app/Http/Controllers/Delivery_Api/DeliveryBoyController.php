@@ -122,7 +122,7 @@ class DeliveryBoyController extends Controller
         $data = array(); 
         
         try {
-                if(isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id))
+                if(isset($request->delivery_boy_id) && $dboyData = Mst_delivery_boy::find($request->delivery_boy_id))
                 {  
 
                     if(isset($request->country))
@@ -134,7 +134,11 @@ class DeliveryBoyController extends Controller
                     {
                        $stateId = State::where('state_name', 'LIKE', "%{$request->state}%")->first()->state_id;
                     }
-                    Mst_delivery_boy::where('delivery_boy_id',$request->delivery_boy_id)>update(['country_id' => @$contryId ,'state_id' => @$stateId ]);
+                    if(!isset($dboyData->country_id) && !isset($dboyData->state_id))
+                    {
+                        Mst_delivery_boy::where('delivery_boy_id',$request->delivery_boy_id)>update(['country_id' => @$contryId ,'state_id' => @$stateId ]);
+                    }
+
 
                   $deliveryBoyData = Mst_delivery_boy::find($request->delivery_boy_id);
                   
