@@ -46,6 +46,11 @@ use App\Models\admin\Mst_store_product_varient;
 
 class ProductController extends Controller
 {
+
+ public function __construct()
+    {
+        $this->middleware('auth');
+    }
     
     
     public function listTownNames(Request $request)
