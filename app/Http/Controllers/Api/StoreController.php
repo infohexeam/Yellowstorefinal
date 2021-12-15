@@ -20,6 +20,8 @@ use App\Models\admin\Mst_Video;
 use App\Models\admin\Trn_StoreDeviceToken;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
+use App\Models\admin\Trn_store_customer;
+use App\Models\admin\Mst_delivery_boy;
 
 
 
@@ -31,8 +33,19 @@ class StoreController extends Controller
         $data = array();
         try {
 
-            $data['videos'] = Mst_Video::where('status',1)->where('visibility',1)->orderBy('video_id','DESC')->get();
+            $storeVids = Mst_Video::where('status',1)->where('visibility',1);
+            if(isset($request->store_id))
+            {
+                $storeTownData = Mst_store::find($request->store_id)->town_id;
+                $storeVids = $storeVids->where('town_id',$storeTownData)->get();
+
+            }
+
+            $storeVids = $storeVids->orderBy('video_id','DESC')->get();
             
+            
+            $data['videos'] = $storeVids;
+                        
             foreach( $data['videos'] as $v)
             {
                 $linkCode = ' ';
@@ -96,8 +109,19 @@ class StoreController extends Controller
         $data = array();
         try {
 
-            $data['videos'] = Mst_Video::where('status',1)->where('visibility',2)->orderBy('video_id','DESC')->get();
+            $cusVids = Mst_Video::where('status',1)->where('visibility',2);
             
+            if(isset($request->customer_id))
+            {
+                $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
+                $cusVids = $cusVids->where('town_id',$cusTownId)->get();
+
+            }
+            
+            $cusVids = $cusVids->orderBy('video_id','DESC')->get();
+            
+            $data['videos'] = $cusVids;
+                        
             foreach( $data['videos'] as $v)
             {
                 $linkCode = '';
@@ -160,8 +184,20 @@ class StoreController extends Controller
         $data = array();
         try {
 
-            $data['videos'] = Mst_Video::where('status',1)->where('visibility',3)->orderBy('video_id','DESC')->get();
+            $dboyVid = Mst_Video::where('status',1)->where('visibility',3);
             
+            
+            if(isset($request->delivery_boy_id))
+           {
+               $dbTownId = Mst_delivery_boy::find($request->delivery_boy_id)->town_id;
+               $dboyVid = $dboyVid->where('town_id',$dbTownId)->get();
+
+           }
+           
+           $dboyVid = $dboyVid->orderBy('video_id','DESC')->get();
+           
+           $data['videos'] = $dboyVid;
+                       
             foreach( $data['videos'] as $v)
             {
                 $linkCode = '';

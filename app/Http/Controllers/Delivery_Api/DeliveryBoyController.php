@@ -26,6 +26,9 @@ use App\Models\admin\Trn_DeliveryBoyLocation;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_DeliveryBoyDeviceToken;
 
+use App\Models\admin\State;
+use App\Models\admin\Country;
+
 class DeliveryBoyController extends Controller
 {
     public function loginDelivery(Request $request)
@@ -121,6 +124,18 @@ class DeliveryBoyController extends Controller
         try {
                 if(isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id))
                 {  
+
+                    if(isset($request->country))
+                    {
+                       $contryId = Country::where('country_name', 'LIKE', "%{$request->country}%")->first()->country_id;
+                       
+                    }
+                    if(isset($request->state))
+                    {
+                       $stateId = State::where('state_name', 'LIKE', "%{$request->state}%")->first()->state_id;
+                    }
+                    Mst_delivery_boy::where('delivery_boy_id',$request->delivery_boy_id)>update(['country_id' => @$contryId ,'state_id' => @$stateId ]);
+
                   $deliveryBoyData = Mst_delivery_boy::find($request->delivery_boy_id);
                   
                     $data['deliveryBoyData'] = $deliveryBoyData;
@@ -169,6 +184,12 @@ class DeliveryBoyController extends Controller
                         $dboy->delivery_boy_name = $request->delivery_boy_name;
                         $dboy->delivery_boy_email = $request->delivery_boy_email;
                         $dboy->availability_status = $request->availability_status;
+
+                        $dboy->country_id = $request->country_id;
+                        $dboy->state_id   = $request->state_id;
+                        $dboy->district_id   = $request->district_id;
+                        $dboy->town_id   = $request->town_id;
+
                         $dboy->update();
                         
                         $data['message'] = "success";

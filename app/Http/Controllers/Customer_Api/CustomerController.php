@@ -30,6 +30,9 @@ use App\Models\admin\Trn_StoreDeviceToken;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Mst_RewardToCustomer;
 
+use App\Models\admin\Country;
+use App\Models\admin\State;
+
 class CustomerController extends Controller
 {
     public function logout(Request $request)
@@ -649,6 +652,18 @@ class CustomerController extends Controller
         try {
                 if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
                 {  
+                    if(isset($request->country))
+                    {
+                       $contryId = Country::where('country_name', 'LIKE', "%{$request->country}%")->first()->country_id;
+                       
+                    }
+                    if(isset($request->state))
+                    {
+                       $stateId = State::where('state_name', 'LIKE', "%{$request->state}%")->first()->state_id;
+                    }
+                    Trn_store_customer::where('customer_id',$request->customer_id)
+                    ->update(['country_id' => @$contryId ,'state_id' => @$stateId ]);
+                    
                     $data['customerData'] = Trn_store_customer::find($request->customer_id);
                     
                     if(!isset($data['customerData']->customer_last_name))
@@ -997,7 +1012,11 @@ class CustomerController extends Controller
                         $customer->place   = $request->place;
 
 
-                    
+                        $customer->country_id = $request->country_id;
+                        $customer->state_id   = $request->state_id;
+                        $customer->district_id   = $request->district_id;
+                        $customer->town_id   = $request->town_id;
+
                         if($customer->update())
                         {
                             $data['status'] = 1;
