@@ -560,7 +560,7 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'Referal points creadited';
+                                        $title = 'Referal points credited';
                                         $body = $configPoint->referal_points . ' points credited to your wallet..';
                                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
                                     }
@@ -580,7 +580,7 @@ class OrderController extends Controller
                                         $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->referred_by)->get();
 
                                         foreach ($customerDevice as $cd) {
-                                            $title = 'Referal joiner points creadited';
+                                            $title = 'Referal joiner points credited';
                                             //  $body = 'Referal joiner points credited successully..';
                                             $body = $configPoint->joiner_points . ' points credited to your wallet..';
                                             $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -600,6 +600,14 @@ class OrderController extends Controller
                                 $cr->reward_point_status = 1;
                                 $cr->discription = null;
                                 $cr->save();
+
+                                $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
+
+                                foreach ($customerDevice as $cd) {
+                                    $title = 'Order points credited';
+                                    $body = $orderPointAmount . ' points credited to your wallet..';
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                }
                             }
 
                             // echo $orderPointAmount;die;
