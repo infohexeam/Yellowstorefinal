@@ -58,929 +58,800 @@ class OrderController extends Controller
 {
     public function listOrders(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {
-                    $store_id = $request->store_id;
-                     if( $query = Trn_store_order::select('order_id','order_number','created_at','status_id','customer_id','product_total_amount','order_type')->where('store_id',$request->store_id))
-                    {
-                        if(isset($request->order_number))
-                        {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                if ($query = Trn_store_order::select('order_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'order_type')->where('store_id', $request->store_id)) {
+                    if (isset($request->order_number)) {
                         $query->where('order_number', 'LIKE', "%{$request->order_number}%");
-                        }
-                        if(isset($request->from) && isset($request->to))
-                        {
-                        $query->whereDate('created_at','>=',$request->from)->whereDate('created_at','<=',$request->to);
-                        }
-                        if(isset($request->from) && !isset($request->to))
-                        {
-                            $query->whereDate('created_at','>=',$request->from);
-                        }
-                        if(!isset($request->from) && isset($request->to))
-                        {
-                        $query->whereDate('created_at','<=',$request->to);
-                        }
-                          
-                        if(isset($request->page))
-                        {
-                        $data['orderDetails'] = $query->orderBy('order_id','DESC')->paginate(10, ['data'], 'page', $request->page);
-                        }
-                        else
-                        {
-                        $data['orderDetails'] = $query->orderBy('order_id','DESC')->paginate(10);
-
-                        }
-                         
-
-                        foreach($data['orderDetails'] as $order)
-                        {
-                            if(isset($order->customer_id))
-                            {
-                                $customerData = Trn_store_customer::find($order->customer_id);
-                                $order->customer_name = @$customerData->customer_first_name." ".@$customerData->customer_last_name;
-                                $order->customer_mobile = @$customerData->customer_mobile_number;
-                            }
-                            else
-                            {
-                                $order->customer_name = null;
-                            }
-
-                            if(isset($order->status_id))
-                            {
-                                $statusData = Sys_store_order_status::find(@$order->status_id);
-                                $order->status_name = @$statusData->status;
-                            }
-                            else
-                            {
-                                $order->status_name = null;
-                            }
-                            $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
-                            $order->invoice_link =  url('get/invoice/'.Crypt::encryptString($order->order_id));
-                            $order->item_list_link = url('item/list/'.Crypt::encryptString($order->order_id));
-
-                        }
-                        $data['status'] = 1;
-                        $data['message'] = "success";
-                        return response($data);
                     }
-                    else{
-                        $data['status'] = 0;
-                        $data['message'] = "failed";
-                        return response($data);
+                    if (isset($request->from) && isset($request->to)) {
+                        $query->whereDate('created_at', '>=', $request->from)->whereDate('created_at', '<=', $request->to);
                     }
-                }
-                else
-                {
+                    if (isset($request->from) && !isset($request->to)) {
+                        $query->whereDate('created_at', '>=', $request->from);
+                    }
+                    if (!isset($request->from) && isset($request->to)) {
+                        $query->whereDate('created_at', '<=', $request->to);
+                    }
+
+                    if (isset($request->page)) {
+                        $data['orderDetails'] = $query->orderBy('order_id', 'DESC')->paginate(10, ['data'], 'page', $request->page);
+                    } else {
+                        $data['orderDetails'] = $query->orderBy('order_id', 'DESC')->paginate(10);
+                    }
+
+
+                    foreach ($data['orderDetails'] as $order) {
+                        if (isset($order->customer_id)) {
+                            $customerData = Trn_store_customer::find($order->customer_id);
+                            $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
+                            $order->customer_mobile = @$customerData->customer_mobile_number;
+                        } else {
+                            $order->customer_name = null;
+                        }
+
+                        if (isset($order->status_id)) {
+                            $statusData = Sys_store_order_status::find(@$order->status_id);
+                            $order->status_name = @$statusData->status;
+                        } else {
+                            $order->status_name = null;
+                        }
+                        $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
+                        $order->invoice_link =  url('get/invoice/' . Crypt::encryptString($order->order_id));
+                        $order->item_list_link = url('item/list/' . Crypt::encryptString($order->order_id));
+                    }
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function viewOrder(Request $request)
     {
-        $data = array(); 
-        
+        $data = array();
+
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {  
-                    $validator = Validator::make($request->all(),
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $validator = Validator::make(
+                    $request->all(),
                     [
                         'order_id'          => 'required',
                     ],
                     [
                         'order_id.required'        => 'Order not found',
-                    ]);
-                    
-                        if(!$validator->fails() && Trn_store_order::find($request->order_id))
-                        {
-                            $order_id = $request->order_id;
-                            $store_id = $request->store_id;
-                           // dd(Trn_store_order::select('order_id','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
-                            
-                            if($data['orderDetails']  = Trn_store_order::select('order_id','delivery_accept','product_varient_id','service_order','service_booking_order','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount','order_type','delivery_address')->where('order_id',$order_id)->where('store_id',$store_id)->first())
-                            {
-                                
-                                 if(!isset($data['orderDetails']->order_note))
-                                    $data['orderDetails']->order_note = '';
-                               
-                               if(!isset($data['orderDetails']->delivery_accept))
-                               $data['orderDetails']->delivery_accept = '0';
-                                
-                                if(isset($data['orderDetails']->customer_id))
-                                {
-                                    $customerData = Trn_store_customer::find($data['orderDetails']->customer_id);
-                                //    dd($customerData);
-                                    // $data['orderDetails']->customer_name = $customerData->customer_first_name." ".$customerData->customer_last_name;
-                                   
-                                $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
-                                
-                               if($data['orderDetails']->order_type == 'POS')
-                               {
-                                $customerAddressData = Trn_customerAddress::where('customer_id',$data['orderDetails']->customer_id)->where('default_status' , 1)->first();
-                               }
-                               else
-                               {
+                    ]
+                );
+
+                if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
+                    $order_id = $request->order_id;
+                    $store_id = $request->store_id;
+                    // dd(Trn_store_order::select('order_id','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
+
+                    if ($data['orderDetails']  = Trn_store_order::select('order_id', 'delivery_accept', 'product_varient_id', 'service_order', 'service_booking_order', 'time_slot', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'order_type', 'delivery_address')->where('order_id', $order_id)->where('store_id', $store_id)->first()) {
+
+                        if (!isset($data['orderDetails']->order_note))
+                            $data['orderDetails']->order_note = '';
+
+                        if (!isset($data['orderDetails']->delivery_accept))
+                            $data['orderDetails']->delivery_accept = '0';
+
+                        if (isset($data['orderDetails']->customer_id)) {
+                            $customerData = Trn_store_customer::find($data['orderDetails']->customer_id);
+                            //    dd($customerData);
+                            // $data['orderDetails']->customer_name = $customerData->customer_first_name." ".$customerData->customer_last_name;
+
+                            $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
+
+                            if ($data['orderDetails']->order_type == 'POS') {
+                                $customerAddressData = Trn_customerAddress::where('customer_id', $data['orderDetails']->customer_id)->where('default_status', 1)->first();
+                            } else {
                                 $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
-                               }
-                               
-                                if($data['orderDetails']->order_type != 'POS')
-                                {
+                            }
 
-                                    if(isset($customerAddressData->name))
-                                     {
-                                     $data['orderDetails']->customer_name = @$customerAddressData->name;
-                                    }else{
-                                    $data['orderDetails']->customer_name = $customerData->customer_first_name." ".$customerData->customer_last_name;
-                                    }  
-                                
+                            if ($data['orderDetails']->order_type != 'POS') {
+
+                                if (isset($customerAddressData->name)) {
+                                    $data['orderDetails']->customer_name = @$customerAddressData->name;
+                                } else {
+                                    $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
                                 }
-                                else
-                                {
-                                    $data['orderDetails']->customer_name = $customerData->customer_first_name." ".$customerData->customer_last_name;
+                            } else {
+                                $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                            }
 
-                                }
-                             
 
-                               if(isset($customerAddressData->address))
+                            if (isset($customerAddressData->address))
                                 $data['orderDetails']->customer_address = @$customerAddressData->address;
-                                else
+                            else
                                 $data['orderDetails']->customer_address = ' ';
-                                
-                                if(isset($customerAddressData->longitude))
+
+                            if (isset($customerAddressData->longitude))
                                 $data['orderDetails']->c_longitude = @$customerAddressData->longitude;
-                                else
+                            else
                                 $data['orderDetails']->c_longitude = ' ';
-                                
-                                if(isset($customerAddressData->latitude))
+
+                            if (isset($customerAddressData->latitude))
                                 $data['orderDetails']->c_latitude = @$customerAddressData->latitude;
-                                else
+                            else
                                 $data['orderDetails']->c_latitude = ' ';
-                                
-                                if(isset($customerAddressData->place))
+
+                            if (isset($customerAddressData->place))
                                 $data['orderDetails']->c_place = @$customerAddressData->place;
-                                else
+                            else
                                 $data['orderDetails']->c_place = ' ';
 
-                                if(isset($customerAddressData->pincode))
+                            if (isset($customerAddressData->pincode))
                                 $data['orderDetails']->customer_pincode = @$customerAddressData->pincode;
-                                else
+                            else
                                 $data['orderDetails']->customer_pincode = ' ';
 
 
-                                $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
-                                    if(isset($deliveryBoy->delivery_boy_name))
-                                        $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
-                                    else
-                                        $data['orderDetails']->delivery_boy = '';
-
-                                    if(isset($deliveryBoy->delivery_boy_mobile))
-                                        $data['orderDetails']->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
-                                    else
-                                        $data['orderDetails']->delivery_boy_mobile = '';
-                                        
-                                $deliveryBoyLoc = Trn_DeliveryBoyLocation::where('delivery_boy_id',$data['orderDetails']->delivery_boy_id)
-                                ->orderBy('dbl_id','DESC')->first();
-                                
-                                if(isset($deliveryBoyLoc->latitude))
-                                    $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
-                                else
-                                    $data['orderDetails']->db_latitude = '';
-                                
-                                if(isset($deliveryBoyLoc->longitude))
-                                    $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
-                                else
-                                    $data['orderDetails']->db_longitude = '';        
-                                    
-                                // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
-                                // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
-
-
-                                
-                                }
-                                else
-                                {
-                                    $data['orderDetails']->customer_name = '';
-                                    $data['orderDetails']->delivery_boy = '';
-                                    $data['orderDetails']->customer_mobile = '';
-                                    $data['orderDetails']->customer_address = '';
-                                    $data['orderDetails']->customer_pincode = '';
-                                    $data['orderDetails']->db_latitude = '';
-                                    $data['orderDetails']->db_longitude = '';
-
-
-
-                                }
-
-                                $storeData = Mst_store::find($request->store_id);
-                                $data['orderDetails']->store_name = $storeData->store_name;
-                                $data['orderDetails']->store_primary_address = $storeData->store_primary_address;
-                                $data['orderDetails']->store_mobile = $storeData->store_mobile;
-
-
-                            if(isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0))
-                            {
-                                $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
-                                $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start."-".@$deliveryTimeSlot->time_end;
-                                $data['orderDetails']->delivery_type = 2; //slot delivery
-
-                            }
-                            else // timeslot null or zero
-                            {
-                                $data['orderDetails']->delivery_type = 1; // immediate delivery
-                                $data['orderDetails']->time_slot = '';
-                            }
-                         
-                                $data['orderDetails']->processed_by = null;
-
-                                $invoice_data = \DB::table('trn_order_invoices')->where('order_id',$order_id)->first();
-                                $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
-                                $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
-                                
-
-                                if(isset($data['orderDetails']->status_id))
-                                {
-                                    $statusData = Sys_store_order_status::find($data['orderDetails']->status_id);
-                                    $data['orderDetails']->status_name = @$statusData->status;
-                                }
-                                else
-                                {
-                                    $data['orderDetails']->status_name = null;
-                                }
-                                $data['orderDetails']->order_date = Carbon::parse($data['orderDetails']->created_at)->format('d-m-Y');
-                                
-                                if($data['orderDetails']->payment_type_id == 1)
-                                $data['orderDetails']->payment_type = 'Offline';
-                                else
-                                $data['orderDetails']->payment_type = 'Online';
-                                $data['orderDetails']->invoice_link =  url('get/invoice/'.Crypt::encryptString($data['orderDetails']->order_id));
-                                $data['orderDetails']->item_list_link = url('item/list/'.Crypt::encryptString($data['orderDetails']->order_id));
-    
-                                
-                      
-    
-                                $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id',$data['orderDetails']->order_id)
-                                ->select('product_id','product_varient_id','order_item_id','quantity','discount_amount','discount_percentage','total_amount','tax_amount','unit_price','tick_status')
-                                ->get();
-
-
-                                foreach ($data['orderDetails']->orderItems as $value) 
-                                {
-                                    
-                                      
-                                 if($datazz = \DB::table("mst_disputes")->where('store_id',$store_id)->where('order_id',$order_id)->first()){
-                                     
-                                        $colorsArray = explode(",", $datazz->item_ids);
-                                        
-                                        $ordItemArr =  Trn_store_order_item::whereIn('order_item_id',$colorsArray)->get();
-                                        $colorsArray2 = array();
-                                        foreach($ordItemArr as $i)
-                                        {
-                                            $colorsArray2[] = $i->product_varient_id;
-                                        }
-                                        if(in_array($value->product_varient_id, $colorsArray2))
-                                        {
-                                            $value->dispute_status = 1;
-                                        }
-                                        else
-                                        {
-                                            $value->dispute_status = 0;
-                                        }
-      
-                                 }
-                                 else{
-                                        $value->dispute_status = 0;
-                                 }
-
-
-
-                                    $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
-                                    @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/'.@$value->productDetail->product_varient_base_image;
-                                    
-                                    $baseProductDetail = Mst_store_product::find($value->product_id);
-
-                                    $value->product_base_image = '/assets/uploads/products/base_product/base_image/'.@$baseProductDetail->product_base_image;
-                                    
-                                    if(@$baseProductDetail->product_name != @$value->productDetail->variant_name)
-                                    $value->product_name = @$baseProductDetail->product_name." ". @$value->productDetail->variant_name;
-                                    else
-                                    $value->product_name = @$baseProductDetail->product_name;
-
-                                    $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
-                                
-                                    $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',@$baseProductDetail->tax_id)->get();
-                                    $stax = 0;
-                                    
-
-                                    foreach($splitdata as $sd)
-                                    {
-                                        if(@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
-                                        $taxFullData->tax_value = 1;
-                                         
-                                        $stax = ($sd->split_tax_value * $value->tax_amount) / @$taxFullData->tax_value;
-                                        $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
-                                    }
-                                    
-                                    $value['taxSplitups']  = $splitdata;
-                                }
-                                
-                                
-                                  $data['orderDetails']->serviceData = new \stdClass();
-                                if($data['orderDetails']->service_booking_order == 1)
-                                {
-                                    $serviceData = Mst_store_product_varient::find(@$data['orderDetails']->product_varient_id);
-                                    @$serviceData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/'.@$serviceData->product_varient_base_image;
-                                    $baseProductDetail = Mst_store_product::find(@$serviceData->product_id);
-                                    $serviceData->product_base_image = '/assets/uploads/products/base_product/base_image/'.@$baseProductDetail->product_base_image;
-                                    
-                                    if(@$baseProductDetail->product_name != @$serviceData->variant_name)
-                                    $serviceData->product_name = @$baseProductDetail->product_name." ". @$serviceData->productDetail->variant_name;
-                                    else
-                                    $serviceData->product_name = @$baseProductDetail->product_name;
-                                    $data['orderDetails']->serviceData = $serviceData; 
-
-                                } 
-
-                                $data['status'] = 1;
-                                $data['message'] = "success";
-                                return response($data);
-                            }
+                            $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
+                            if (isset($deliveryBoy->delivery_boy_name))
+                                $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
                             else
-                            {
-                                $data['status'] = 0;
-                                $data['message'] = "failed";
-                                return response($data);
-                            }
+                                $data['orderDetails']->delivery_boy = '';
+
+                            if (isset($deliveryBoy->delivery_boy_mobile))
+                                $data['orderDetails']->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
+                            else
+                                $data['orderDetails']->delivery_boy_mobile = '';
+
+                            $deliveryBoyLoc = Trn_DeliveryBoyLocation::where('delivery_boy_id', $data['orderDetails']->delivery_boy_id)
+                                ->orderBy('dbl_id', 'DESC')->first();
+
+                            if (isset($deliveryBoyLoc->latitude))
+                                $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
+                            else
+                                $data['orderDetails']->db_latitude = '';
+
+                            if (isset($deliveryBoyLoc->longitude))
+                                $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
+                            else
+                                $data['orderDetails']->db_longitude = '';
+
+                            // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
+                            // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
+
+
+
+                        } else {
+                            $data['orderDetails']->customer_name = '';
+                            $data['orderDetails']->delivery_boy = '';
+                            $data['orderDetails']->customer_mobile = '';
+                            $data['orderDetails']->customer_address = '';
+                            $data['orderDetails']->customer_pincode = '';
+                            $data['orderDetails']->db_latitude = '';
+                            $data['orderDetails']->db_longitude = '';
                         }
-                        else
+
+                        $storeData = Mst_store::find($request->store_id);
+                        $data['orderDetails']->store_name = $storeData->store_name;
+                        $data['orderDetails']->store_primary_address = $storeData->store_primary_address;
+                        $data['orderDetails']->store_mobile = $storeData->store_mobile;
+
+
+                        if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
+                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
+                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                            $data['orderDetails']->delivery_type = 2; //slot delivery
+
+                        } else // timeslot null or zero
                         {
-                            $data['status'] = 0;
-                            $data['message'] = "failed";
-                            $data['message'] = "Order not found ";
-                            return response($data);
+                            $data['orderDetails']->delivery_type = 1; // immediate delivery
+                            $data['orderDetails']->time_slot = '';
                         }
-                }
-                else
-                {
+
+                        $data['orderDetails']->processed_by = null;
+
+                        $invoice_data = \DB::table('trn_order_invoices')->where('order_id', $order_id)->first();
+                        $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
+                        $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
+
+
+                        if (isset($data['orderDetails']->status_id)) {
+                            $statusData = Sys_store_order_status::find($data['orderDetails']->status_id);
+                            $data['orderDetails']->status_name = @$statusData->status;
+                        } else {
+                            $data['orderDetails']->status_name = null;
+                        }
+                        $data['orderDetails']->order_date = Carbon::parse($data['orderDetails']->created_at)->format('d-m-Y');
+
+                        if ($data['orderDetails']->payment_type_id == 1)
+                            $data['orderDetails']->payment_type = 'Offline';
+                        else
+                            $data['orderDetails']->payment_type = 'Online';
+                        $data['orderDetails']->invoice_link =  url('get/invoice/' . Crypt::encryptString($data['orderDetails']->order_id));
+                        $data['orderDetails']->item_list_link = url('item/list/' . Crypt::encryptString($data['orderDetails']->order_id));
+
+
+
+
+                        $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
+                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
+                            ->get();
+
+
+                        foreach ($data['orderDetails']->orderItems as $value) {
+
+
+                            if ($datazz = \DB::table("mst_disputes")->where('store_id', $store_id)->where('order_id', $order_id)->first()) {
+
+                                $colorsArray = explode(",", $datazz->item_ids);
+
+                                $ordItemArr =  Trn_store_order_item::whereIn('order_item_id', $colorsArray)->get();
+                                $colorsArray2 = array();
+                                foreach ($ordItemArr as $i) {
+                                    $colorsArray2[] = $i->product_varient_id;
+                                }
+                                if (in_array($value->product_varient_id, $colorsArray2)) {
+                                    $value->dispute_status = 1;
+                                } else {
+                                    $value->dispute_status = 0;
+                                }
+                            } else {
+                                $value->dispute_status = 0;
+                            }
+
+
+
+                            $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
+                            @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
+
+                            $baseProductDetail = Mst_store_product::find($value->product_id);
+
+                            $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+
+                            if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
+                                $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
+                            else
+                                $value->product_name = @$baseProductDetail->product_name;
+
+                            $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
+
+                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
+                            $stax = 0;
+
+
+                            foreach ($splitdata as $sd) {
+                                if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
+                                    $taxFullData->tax_value = 1;
+
+                                $stax = ($sd->split_tax_value * $value->tax_amount) / @$taxFullData->tax_value;
+                                $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
+                            }
+
+                            $value['taxSplitups']  = $splitdata;
+                        }
+
+
+                        $data['orderDetails']->serviceData = new \stdClass();
+                        if ($data['orderDetails']->service_booking_order == 1) {
+                            $serviceData = Mst_store_product_varient::find(@$data['orderDetails']->product_varient_id);
+                            @$serviceData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$serviceData->product_varient_base_image;
+                            $baseProductDetail = Mst_store_product::find(@$serviceData->product_id);
+                            $serviceData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+
+                            if (@$baseProductDetail->product_name != @$serviceData->variant_name)
+                                $serviceData->product_name = @$baseProductDetail->product_name . " " . @$serviceData->productDetail->variant_name;
+                            else
+                                $serviceData->product_name = @$baseProductDetail->product_name;
+                            $data['orderDetails']->serviceData = $serviceData;
+                        }
+
+                        $data['status'] = 1;
+                        $data['message'] = "success";
+                        return response($data);
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        return response($data);
+                    }
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
+                    $data['message'] = "Order not found ";
                     return response($data);
                 }
-                
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function listDeliveryBoys(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {
-                    $store_id = $request->store_id;
-                    if($data['deliveryBoysDetails'] = Mst_store_link_delivery_boy::join('mst_delivery_boys','mst_delivery_boys.delivery_boy_id','=','mst_store_link_delivery_boys.delivery_boy_id')
-                    ->select('mst_delivery_boys.delivery_boy_id',
-                    'mst_delivery_boys.delivery_boy_name',
-                    'mst_delivery_boys.delivery_boy_name',
-                    'mst_delivery_boys.delivery_boy_name',
-                    'mst_delivery_boys.delivery_boy_mobile')
-                    ->where('mst_store_link_delivery_boys.store_id',$request->store_id)
-                    ->where('mst_delivery_boys.availability_status',1)
-                    ->where('mst_delivery_boys.delivery_boy_status',1)
-                    ->get())
-                    {
-                       
-                        $data['status'] = 1;
-                        $data['message'] = "success";
-                        return response($data);
-                    }
-                    else
-                    {
-                        $data['status'] = 0;
-                        $data['message'] = "failed";
-                        return response($data);
-                    }
-                }
-                else
-                {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                if ($data['deliveryBoysDetails'] = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+                    ->select(
+                        'mst_delivery_boys.delivery_boy_id',
+                        'mst_delivery_boys.delivery_boy_name',
+                        'mst_delivery_boys.delivery_boy_name',
+                        'mst_delivery_boys.delivery_boy_name',
+                        'mst_delivery_boys.delivery_boy_mobile'
+                    )
+                    ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
+                    ->where('mst_delivery_boys.availability_status', 1)
+                    ->where('mst_delivery_boys.delivery_boy_status', 1)
+                    ->get()
+                ) {
+
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
 
-     public function listOrderStatus(Request $request)
+    public function listOrderStatus(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-            
-            if($data['orderStatusDetails'] = Sys_store_order_status::select('status_id','status')->get())
-            {
+
+            if ($data['orderStatusDetails'] = Sys_store_order_status::select('status_id', 'status')->get()) {
                 $data['status'] = 1;
                 $data['message'] = "success";
                 return response($data);
-            }
-            else
-            {
+            } else {
                 $data['status'] = 0;
                 $data['message'] = "failed";
                 return response($data);
             }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
-    
+
 
     public function updateOrder(Request $request)
     {
-        $data = array(); 
-        
+        $data = array();
+
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {  
-                    if(Trn_store_order::find($request->order_id))
-                    {
-                        $od = Trn_store_order::find($request->order_id);
-                            $validator = Validator::make($request->all(),
-                            [
-                                    'status_id'          => 'required',
-                            ],
-                            [
-                                    'status_id.required'        => 'Status not found',
-                            ]);
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                if (Trn_store_order::find($request->order_id)) {
+                    $od = Trn_store_order::find($request->order_id);
+                    $validator = Validator::make(
+                        $request->all(),
+                        [
+                            'status_id'          => 'required',
+                        ],
+                        [
+                            'status_id.required'        => 'Status not found',
+                        ]
+                    );
 
-                                if(!$validator->fails())
-                                {   
-                                    $order_id = $request->order_id;
-                                    $store_id = $request->store_id;
+                    if (!$validator->fails()) {
+                        $order_id = $request->order_id;
+                        $store_id = $request->store_id;
 
-                                    if(isset($request->status_id))
-                                    $orderdata2['order_note'] = $request->order_note;
-                                    
-                                    
-                                    $orderdata2['status_id'] = $request->status_id;
-                                    
-                                     if($request->status_id == 7)
-                                      {
-                                        $orderdata2['delivery_status_id'] = 1;
-                                      }
-                                      
-                                       else if($request->status_id == 8)
-                                      {
-                                        $orderdata2['delivery_status_id'] = 2;
-                                      }
-                                      
-                                      else if($request->status_id == 9)
-                                      {
-                                        $orderdata2['delivery_status_id'] = 3;
-                                      }
-                                      else
-                                      {
-                                        $orderdata2['delivery_status_id'] = null;
-                                      }
-                                      
-                                         if($request->status_id == 9)
-                                          {
-                                             // $order->delivery_date = Carbon::now()->format('Y-m-d');
-                                              // $order->delivery_time = Carbon::now()->format('H:i');
-                                              
-                                              $orderdata2['delivery_date'] = Carbon::now()->format('Y-m-d');
-                                              $orderdata2['delivery_time'] =  Carbon::now()->format('H:i');
-                                              $orderDataz = Trn_store_order::Find($order_id);
-
-                                            if($orderDataz->order_type == 'APP')
-                                            {
-                                               if(($orderDataz->delivery_boy_id == 0) || !isset($orderDataz->delivery_boy_id))
-                                                  {
-                                                    $data['status'] = 0;
-                                                    $data['message'] = "Delivery boy not assigned";
-                                                    return response($data);
-                                                  }
-                                            }
-                                            
-                                            // reward points 
-                                            
-                                            $configPoint = Trn_configure_points::find(1);
-                                            $orderAmount  = $configPoint->order_amount;
-                                            $orderPoint  = $configPoint->order_points;
-                                            
-                                            $orderAmounttoPointPercentage =  $orderPoint / $orderAmount;
-                                            $orderPointAmount =  $orderDataz->product_total_amount * $orderAmounttoPointPercentage ;
-                                            //echo $orderPointAmount;die;
-                                            
-                                            if(Trn_store_order::where('customer_id',$orderDataz->customer_id)->count() == 1)
-                                            {
-                                                 $configPoint = Trn_configure_points::find(1);
-                                                 
-                                                 // first - order - point
-                        
-                                                $cr = new Trn_customer_reward;
-                                                $cr->transaction_type_id = 0;
-                                                $cr->reward_points_earned = $configPoint->first_order_points;
-                                                $cr->customer_id = $orderDataz->customer_id;
-                                                $cr->order_id = $orderDataz->order_id;
-                                                $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-                                                $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                                                $cr->reward_point_status = 1;
-                                                $cr->discription = "First order points";
-                                                if($cr->save())
-                                                {
-                                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$refCusData->referred_by)->get();
-
-                                                        foreach($customerDevice as $cd)
-                                                        {
-                                                            $title = 'Points creadited';
-                                                            $body = 'First order points credited successully..';
-                                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token,$title,$body);
-                                                        }
-                                                }
-                                                
-                                                
-                                                  // referal - point
-                                                   $refCusData = Trn_store_customer::find($orderDataz->customer_id);
-                                                   if($refCusData->referred_by)
-                                                   {
-                                                        $crRef = new Trn_customer_reward;
-                                                        $crRef->transaction_type_id = 0;
-                                                        $crRef->reward_points_earned = $configPoint->referal_points;
-                                                        $crRef->customer_id = $refCusData->referred_by;
-                                                        $crRef->order_id = null;
-                                                        $crRef->reward_approved_date = Carbon::now()->format('Y-m-d');
-                                                        $crRef->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                                                        $crRef->reward_point_status = 1;
-                                                        $crRef->discription = "Referal points";
-                                                        $crRef->save();
-                                                        
-                                                        $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$refCusData->referred_by)->get();
-
-                                                        foreach($customerDevice as $cd)
-                                                        {
-                                                            $title = 'Points creadited';
-                                                            $body = 'Referal points credited successully..';
-                                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token,$title,$body);
-                                                        }
-                                                        
-                                                        
-                                                          // joiner - point
-                                                         $crJoin = new Trn_customer_reward;
-                                                        $crJoin->transaction_type_id = 0;
-                                                        $crJoin->reward_points_earned = $configPoint->joiner_points;
-                                                        $crJoin->customer_id = $orderDataz->customer_id;
-                                                        $crJoin->order_id = $orderDataz->order_id;
-                                                        $crJoin->reward_approved_date = Carbon::now()->format('Y-m-d');
-                                                        $crJoin->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                                                        $crJoin->reward_point_status = 1;
-                                                        $crJoin->discription = "Referal joiner points";
-                                                        if($crJoin->save())
-                                                        {
-                                                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$orderDataz->referred_by)->get();
-        
-                                                                foreach($customerDevice as $cd)
-                                                                {
-                                                                    $title = 'Points creadited';
-                                                                    $body = 'Referal joiner points credited successully..';
-                                                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token,$title,$body);
-                                                                }
-                                                        }
-                                                
-                   
-                   
-                                                    }
-                                                
-                                                
-                                                
-                                                
-                                            }
-                                            
-                                            if((Trn_customer_reward::where('order_id',$orderDataz->order_id)->count() < 1 ) || (Trn_store_order::where('customer_id',$orderDataz->customer_id)->count() >= 1))
-                                            {
-                                                $cr = new Trn_customer_reward;
-                                                $cr->transaction_type_id = 0;
-                                                $cr->reward_points_earned = $orderPointAmount;
-                                                $cr->customer_id = $orderDataz->customer_id;
-                                                $cr->order_id = $orderDataz->order_id;
-                                                $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-                                                $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                                                $cr->reward_point_status = 1;
-                                                $cr->discription = null;
-                                                $cr->save();
-                                            }
-                                            
-                                           // echo $orderPointAmount;die;
-              
-              
-                                          }
-                                    
-                                    $orderdata2['delivery_boy_id'] = $request->delivery_boy_id;
-                                    if($request->status_id == 7)
-                                    {
-                                        if($od->delivery_accept == null)
-                                        {
-                                            
-                                            $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id',$request->delivery_boy_id)->get();
-        
-                                                foreach($dBoyDevices as $cd)
-                                                {
-                                                    $title = 'Order Assigned';
-                                                    $body = 'New order('.$od->order_number.') arrived';
-                                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token,$title,$body);
-                                                }
-                                                
-                                        }
-                                        $orderdata2['delivery_accept'] = null;
-
-                                    }
-                                    Trn_store_order::where('order_id',$order_id)->update($orderdata2);
-                                    
-                                    if($request->status_id == 5)
-                                      {
-                                        $orderData = Trn_store_order_item::where('order_id',$order_id)->get();
-                                        //dd($orderData);
-                                        foreach($orderData as $o)
-                                        {
-                                            
-                                             $productVarOlddata = Mst_store_product_varient::find($o->product_varient_id);
-
-                                            $sd = new Mst_StockDetail;
-                                               $sd->store_id = $request->store_id;
-                                               $sd->product_id = $o->product_id;
-                                               $sd->stock = $o->quantity;
-                                               $sd->product_varient_id = $o->product_varient_id;
-                                               $sd->prev_stock = $productVarOlddata->stock_count;
-                                               $sd->save();
-                   
-                                          DB::table('mst_store_product_varients')->where('product_varient_id', $o->product_varient_id)->increment('stock_count',$o->quantity);
-                                        }
-                                      }
-          
-                                    
-                                    foreach($request->tickStatus as $key => $val)
-                                    {
-                                        $tickStatus['tick_status']= $val['tick_status'];
-                                        Trn_store_order_item::where('order_item_id',$val['order_item_id'])->update($tickStatus);
-                                    }
-                                    
-                                   
-                                    if(isset($request->delivery_boy_id))
-                                    {
-                                        $orderData= [
-                                            'order_id'      => $order_id,
-                                            'delivery_boy_id' => $request->delivery_boy_id,
-                                            'created_at'         => Carbon::now(),
-                                            'updated_at'         => Carbon::now(),
-                                            ];
-                
-                                            Mst_order_link_delivery_boy::insert($orderData);
-                                    }
+                        if (isset($request->status_id))
+                            $orderdata2['order_note'] = $request->order_note;
 
 
-                                    
+                        $orderdata2['status_id'] = $request->status_id;
 
-                                    $data['status'] = 1;
-                                    $data['message'] = "Order updated";
-                                    return response($data);
-                              
-                                }
-                                else
-                                {
+                        if ($request->status_id == 7) {
+                            $orderdata2['delivery_status_id'] = 1;
+                        } else if ($request->status_id == 8) {
+                            $orderdata2['delivery_status_id'] = 2;
+                        } else if ($request->status_id == 9) {
+                            $orderdata2['delivery_status_id'] = 3;
+                        } else {
+                            $orderdata2['delivery_status_id'] = null;
+                        }
+
+                        if ($request->status_id == 9) {
+                            // $order->delivery_date = Carbon::now()->format('Y-m-d');
+                            // $order->delivery_time = Carbon::now()->format('H:i');
+
+                            $orderdata2['delivery_date'] = Carbon::now()->format('Y-m-d');
+                            $orderdata2['delivery_time'] =  Carbon::now()->format('H:i');
+                            $orderDataz = Trn_store_order::Find($order_id);
+
+                            if ($orderDataz->order_type == 'APP') {
+                                if (($orderDataz->delivery_boy_id == 0) || !isset($orderDataz->delivery_boy_id)) {
                                     $data['status'] = 0;
-                                    $data['message'] = "failed";
-                                    $data['errors'] = $validator->errors();
+                                    $data['message'] = "Delivery boy not assigned";
                                     return response($data);
                                 }
+                            }
+
+                            // reward points 
+
+                            $configPoint = Trn_configure_points::find(1);
+                            $orderAmount  = $configPoint->order_amount;
+                            $orderPoint  = $configPoint->order_points;
+
+                            $orderAmounttoPointPercentage =  $orderPoint / $orderAmount;
+                            $orderPointAmount =  $orderDataz->product_total_amount * $orderAmounttoPointPercentage;
+                            //echo $orderPointAmount;die;
+
+                            if (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() == 1) {
+                                $configPoint = Trn_configure_points::find(1);
+
+                                // first - order - point
+
+                                $cr = new Trn_customer_reward;
+                                $cr->transaction_type_id = 0;
+                                $cr->reward_points_earned = $configPoint->first_order_points;
+                                $cr->customer_id = $orderDataz->customer_id;
+                                $cr->order_id = $orderDataz->order_id;
+                                $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                                $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                                $cr->reward_point_status = 1;
+                                $cr->discription = "First order points";
+                                if ($cr->save()) {
+                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
+
+                                    foreach ($customerDevice as $cd) {
+                                        $title = 'First order points creadited';
+                                        //  $body = 'First order points credited successully..';
+                                        $body = $configPoint->first_order_points . ' points credited to your wallet..';
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                    }
+                                }
+
+
+                                // referal - point
+                                $refCusData = Trn_store_customer::find($orderDataz->customer_id);
+                                if ($refCusData->referred_by) {
+                                    $crRef = new Trn_customer_reward;
+                                    $crRef->transaction_type_id = 0;
+                                    $crRef->reward_points_earned = $configPoint->referal_points;
+                                    $crRef->customer_id = $refCusData->referred_by;
+                                    $crRef->order_id = null;
+                                    $crRef->reward_approved_date = Carbon::now()->format('Y-m-d');
+                                    $crRef->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                                    $crRef->reward_point_status = 1;
+                                    $crRef->discription = "Referal points";
+                                    $crRef->save();
+
+                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
+
+                                    foreach ($customerDevice as $cd) {
+                                        $title = 'Referal points creadited';
+                                        $body = $configPoint->referal_points . ' points credited to your wallet..';
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                    }
+
+
+                                    // joiner - point
+                                    $crJoin = new Trn_customer_reward;
+                                    $crJoin->transaction_type_id = 0;
+                                    $crJoin->reward_points_earned = $configPoint->joiner_points;
+                                    $crJoin->customer_id = $orderDataz->customer_id;
+                                    $crJoin->order_id = $orderDataz->order_id;
+                                    $crJoin->reward_approved_date = Carbon::now()->format('Y-m-d');
+                                    $crJoin->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                                    $crJoin->reward_point_status = 1;
+                                    $crJoin->discription = "Referal joiner points";
+                                    if ($crJoin->save()) {
+                                        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->referred_by)->get();
+
+                                        foreach ($customerDevice as $cd) {
+                                            $title = 'Referal joiner points creadited';
+                                            //  $body = 'Referal joiner points credited successully..';
+                                            $body = $configPoint->joiner_points . ' points credited to your wallet..';
+                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        }
+                                    }
+                                }
+                            }
+
+                            if ((Trn_customer_reward::where('order_id', $orderDataz->order_id)->count() < 1) || (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() >= 1)) {
+                                $cr = new Trn_customer_reward;
+                                $cr->transaction_type_id = 0;
+                                $cr->reward_points_earned = $orderPointAmount;
+                                $cr->customer_id = $orderDataz->customer_id;
+                                $cr->order_id = $orderDataz->order_id;
+                                $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                                $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                                $cr->reward_point_status = 1;
+                                $cr->discription = null;
+                                $cr->save();
+                            }
+
+                            // echo $orderPointAmount;die;
+
+
                         }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "failed";
-                            $data['message'] = "Order not found ";
-                            return response($data);
+
+                        $orderdata2['delivery_boy_id'] = $request->delivery_boy_id;
+                        if ($request->status_id == 7) {
+                            if ($od->delivery_accept == null) {
+
+                                $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
+
+                                foreach ($dBoyDevices as $cd) {
+                                    $title = 'Order Assigned';
+                                    $body = 'New order(' . $od->order_number . ') arrived';
+                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body);
+                                }
+                            }
+                            $orderdata2['delivery_accept'] = null;
                         }
-                }
-                else
-                {
+                        Trn_store_order::where('order_id', $order_id)->update($orderdata2);
+
+                        if ($request->status_id == 5) {
+                            $orderData = Trn_store_order_item::where('order_id', $order_id)->get();
+                            //dd($orderData);
+                            foreach ($orderData as $o) {
+
+                                $productVarOlddata = Mst_store_product_varient::find($o->product_varient_id);
+
+                                $sd = new Mst_StockDetail;
+                                $sd->store_id = $request->store_id;
+                                $sd->product_id = $o->product_id;
+                                $sd->stock = $o->quantity;
+                                $sd->product_varient_id = $o->product_varient_id;
+                                $sd->prev_stock = $productVarOlddata->stock_count;
+                                $sd->save();
+
+                                DB::table('mst_store_product_varients')->where('product_varient_id', $o->product_varient_id)->increment('stock_count', $o->quantity);
+                            }
+                        }
+
+
+                        foreach ($request->tickStatus as $key => $val) {
+                            $tickStatus['tick_status'] = $val['tick_status'];
+                            Trn_store_order_item::where('order_item_id', $val['order_item_id'])->update($tickStatus);
+                        }
+
+
+                        if (isset($request->delivery_boy_id)) {
+                            $orderData = [
+                                'order_id'      => $order_id,
+                                'delivery_boy_id' => $request->delivery_boy_id,
+                                'created_at'         => Carbon::now(),
+                                'updated_at'         => Carbon::now(),
+                            ];
+
+                            Mst_order_link_delivery_boy::insert($orderData);
+                        }
+
+
+
+
+                        $data['status'] = 1;
+                        $data['message'] = "Order updated";
+                        return response($data);
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        $data['errors'] = $validator->errors();
+                        return response($data);
+                    }
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
+                    $data['message'] = "Order not found ";
                     return response($data);
                 }
-                
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function listDeliveryBoysByStatus(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {  
-                            $validator = Validator::make($request->all(),
-                            [
-                                    'work_status'          => 'required',
-                            ],
-                            [
-                                    'work_status.required'        => 'Work status required',
-                            ]);
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'work_status'          => 'required',
+                    ],
+                    [
+                        'work_status.required'        => 'Work status required',
+                    ]
+                );
 
-                                if(!$validator->fails())
-                                {   
-                                    $work_status = $request->work_status;
-                                    $store_id = $request->store_id;
-                                    $dboy = array();
-                                    
-                                    
-                                      $delivery_boys1 = Mst_store_link_delivery_boy::join('mst_delivery_boys','mst_delivery_boys.delivery_boy_id','=','mst_store_link_delivery_boys.delivery_boy_id')
-                                    ->where('mst_store_link_delivery_boys.store_id',$store_id)
-                                    ->pluck('mst_delivery_boys.delivery_boy_id')
-                                    ->toArray();
-                                    
-                                   
-                                    if($work_status == 1)
-                                    {
-                                     $assigned_delivery_boys = Trn_store_order::whereIn('delivery_boy_id',$delivery_boys1)
-                                    ->where('store_id',$store_id)
-                                    ->where('status_id',7)
-                                    ->where('delivery_status_id',$work_status)
-                                    ->orderBy('order_id','DESC')
-                                    ->get();
-                                    }
-                                    else if($work_status == 2)
-                                    {
-                                         $assigned_delivery_boys = Trn_store_order::whereIn('delivery_boy_id',$delivery_boys1)
-                                        ->where('store_id',$store_id)
-                                        ->where('status_id',8)
-                                        ->where('delivery_status_id',$work_status)
-                                        ->orderBy('order_id','DESC')
-                                        ->get();
-                                    }
-                                    else if ($work_status == 3){
-                                         $assigned_delivery_boys = Trn_store_order::whereIn('delivery_boy_id',$delivery_boys1)
-                                        ->where('store_id',$store_id)
-                                        ->where('status_id',9)
-                                        ->where('delivery_status_id',$work_status)
-                                        ->orderBy('order_id','DESC')
-                                        ->get();
-                                    }
-                                    else
-                                    {
-                                         $data['status'] = 0;
-                                         $data['message'] = "work status not exist";
-                                        return response($data);   
-                                    }
-                                    
-                                   
-                                    
-                                    foreach($assigned_delivery_boys as $ab){
-                                      $custData = Trn_store_customer::find(@$ab->customer_id);
-                                      $ab->customer = @$custData->customer_first_name." ".@$custData->customer_last_name;
-                                      $ab->orderDate = \Carbon\Carbon::parse($ab->created_at)->format('d-m-Y');
-                                      
-                                      
-                                      $deliveryBoy = \DB::table('mst_delivery_boys')
-                                      ->select('town_id','delivery_boy_id','delivery_boy_name','delivery_boy_mobile')
-                                      ->where('delivery_boy_id',@$ab->delivery_boy_id)
-                                      ->first();
-                            
-                                      $ab->town_id = @$deliveryBoy->town_id;
-                                      $ab->delivery_boy_id = @$deliveryBoy->delivery_boy_id;
-                                      $ab->delivery_boy_name = @$deliveryBoy->delivery_boy_name;
-                                      $ab->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
-                            
-                            
-                                    }
-
-                         $data['deliveryBoyDetails'] = $assigned_delivery_boys;
+                if (!$validator->fails()) {
+                    $work_status = $request->work_status;
+                    $store_id = $request->store_id;
+                    $dboy = array();
 
 
-                                    //   if($did = Mst_store_link_delivery_boy::join('mst_delivery_boys','mst_delivery_boys.delivery_boy_id','=','mst_store_link_delivery_boys.delivery_boy_id')
-                                    // ->select('mst_delivery_boys.delivery_boy_id',
-                                    // 'mst_delivery_boys.delivery_boy_name',
-                                    // 'mst_delivery_boys.delivery_boy_name',
-                                    // 'mst_delivery_boys.delivery_boy_name',
-                                    // 'mst_delivery_boys.delivery_boy_mobile')
-                                    // ->where('mst_store_link_delivery_boys.store_id',$request->store_id)
-                                    // ->get())
-                                    // {
-                                        
-                                    //   foreach($did as $value)
-                                    //   {
-                                    //     if($orderData = Trn_store_order::
-                                    //     where('delivery_boy_id',$value->delivery_boy_id)
-                                    //     // ->where('payment_type_id',2)
-                                    //     ->where('store_id',$request->store_id)
-                                    //     ->where('delivery_status_id',$work_status)
-                                    //     ->orderBy('delivery_boy_id','DESC')->first())
-                                    //     {
-                                    //         $custData = Trn_store_customer::find($orderData->customer_id);
-                                    //         $value->order_id = $orderData->order_id;
-                                    //         $value->order_number = $orderData->order_number;
-                                    //         $value->order_date = Carbon::parse($orderData->created_at)->format('d-m-Y');
-                                    //          $value->customer = @$custData->customer_first_name." ".@$custData->customer_last_name;
-                                    //         $dboy[] = $value;
-                                    //     }
-                                        
+                    $delivery_boys1 = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+                        ->where('mst_store_link_delivery_boys.store_id', $store_id)
+                        ->pluck('mst_delivery_boys.delivery_boy_id')
+                        ->toArray();
 
-                                    //     //  $value->orderData = Mst_order_link_delivery_boy::
-                                    //     //  join('trn_store_orders','trn_store_orders.order_id','=','mst_order_link_delivery_boys.order_id')
-                                    //     //  ->where('mst_order_link_delivery_boys.delivery_boy_id',$value->delivery_boy_id)
-                                    //     //  ->where('mst_order_link_delivery_boys.delivery_status_id',$work_status)
-                                    //     //  ->select('trn_store_orders.order_id',
-                                    //     //  'mst_order_link_delivery_boys.delivery_boy_id',
-                                    //     //  'mst_order_link_delivery_boys.delivery_status_id',
-                                    //     //  'trn_store_orders.order_number',
-                                    //     //  'trn_store_orders.customer_id'
-                                         
-                                    //     //  )
-                                    //     //  ->first();
 
-                                    //     //   $customerData = Trn_store_customer::where('customer_id',@$value->orderData->customer_id)
-                                    //     //   ->select('customer_id','customer_first_name','customer_last_name','customer_mobile_number')
-                                    //     //   ->first();
-                                          
-                                    //     //   $value->customerData = $customerData;
+                    if ($work_status == 1) {
+                        $assigned_delivery_boys = Trn_store_order::whereIn('delivery_boy_id', $delivery_boys1)
+                            ->where('store_id', $store_id)
+                            ->where('status_id', 7)
+                            ->where('delivery_status_id', $work_status)
+                            ->orderBy('order_id', 'DESC')
+                            ->get();
+                    } else if ($work_status == 2) {
+                        $assigned_delivery_boys = Trn_store_order::whereIn('delivery_boy_id', $delivery_boys1)
+                            ->where('store_id', $store_id)
+                            ->where('status_id', 8)
+                            ->where('delivery_status_id', $work_status)
+                            ->orderBy('order_id', 'DESC')
+                            ->get();
+                    } else if ($work_status == 3) {
+                        $assigned_delivery_boys = Trn_store_order::whereIn('delivery_boy_id', $delivery_boys1)
+                            ->where('store_id', $store_id)
+                            ->where('status_id', 9)
+                            ->where('delivery_status_id', $work_status)
+                            ->orderBy('order_id', 'DESC')
+                            ->get();
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "work status not exist";
+                        return response($data);
+                    }
 
-                                    //   }
 
-                                    // $data['deliveryBoyDetails'] = $dboy;
-                                    
-                                    //     $data['status'] = 1;
-                                    //     $data['message'] = "success";
-                                    //   // echo '<pre>';
-                                    //   // print_r($data);die;
-                                    //     return response($data);
-                                    // }
-                                    // else
-                                    // {
-                                    //     $data['status'] = 0;
-                                    //     $data['message'] = "failed";
-                                    //     return response($data);
-                                    // }
-                                $data['status'] = 1;
-                                         $data['message'] = "success";
-                                return response($data);   
 
-                                    
-                                
-                                }
-                                else
-                                {
-                                    $data['status'] = 0;
-                                    $data['message'] = "failed";
-                                    $data['errors'] = $validator->errors();
-                                    return response($data);
-                                }
-                      
-                }
-                else
-                {
+                    foreach ($assigned_delivery_boys as $ab) {
+                        $custData = Trn_store_customer::find(@$ab->customer_id);
+                        $ab->customer = @$custData->customer_first_name . " " . @$custData->customer_last_name;
+                        $ab->orderDate = \Carbon\Carbon::parse($ab->created_at)->format('d-m-Y');
+
+
+                        $deliveryBoy = \DB::table('mst_delivery_boys')
+                            ->select('town_id', 'delivery_boy_id', 'delivery_boy_name', 'delivery_boy_mobile')
+                            ->where('delivery_boy_id', @$ab->delivery_boy_id)
+                            ->first();
+
+                        $ab->town_id = @$deliveryBoy->town_id;
+                        $ab->delivery_boy_id = @$deliveryBoy->delivery_boy_id;
+                        $ab->delivery_boy_name = @$deliveryBoy->delivery_boy_name;
+                        $ab->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
+                    }
+
+                    $data['deliveryBoyDetails'] = $assigned_delivery_boys;
+
+
+                    //   if($did = Mst_store_link_delivery_boy::join('mst_delivery_boys','mst_delivery_boys.delivery_boy_id','=','mst_store_link_delivery_boys.delivery_boy_id')
+                    // ->select('mst_delivery_boys.delivery_boy_id',
+                    // 'mst_delivery_boys.delivery_boy_name',
+                    // 'mst_delivery_boys.delivery_boy_name',
+                    // 'mst_delivery_boys.delivery_boy_name',
+                    // 'mst_delivery_boys.delivery_boy_mobile')
+                    // ->where('mst_store_link_delivery_boys.store_id',$request->store_id)
+                    // ->get())
+                    // {
+
+                    //   foreach($did as $value)
+                    //   {
+                    //     if($orderData = Trn_store_order::
+                    //     where('delivery_boy_id',$value->delivery_boy_id)
+                    //     // ->where('payment_type_id',2)
+                    //     ->where('store_id',$request->store_id)
+                    //     ->where('delivery_status_id',$work_status)
+                    //     ->orderBy('delivery_boy_id','DESC')->first())
+                    //     {
+                    //         $custData = Trn_store_customer::find($orderData->customer_id);
+                    //         $value->order_id = $orderData->order_id;
+                    //         $value->order_number = $orderData->order_number;
+                    //         $value->order_date = Carbon::parse($orderData->created_at)->format('d-m-Y');
+                    //          $value->customer = @$custData->customer_first_name." ".@$custData->customer_last_name;
+                    //         $dboy[] = $value;
+                    //     }
+
+
+                    //     //  $value->orderData = Mst_order_link_delivery_boy::
+                    //     //  join('trn_store_orders','trn_store_orders.order_id','=','mst_order_link_delivery_boys.order_id')
+                    //     //  ->where('mst_order_link_delivery_boys.delivery_boy_id',$value->delivery_boy_id)
+                    //     //  ->where('mst_order_link_delivery_boys.delivery_status_id',$work_status)
+                    //     //  ->select('trn_store_orders.order_id',
+                    //     //  'mst_order_link_delivery_boys.delivery_boy_id',
+                    //     //  'mst_order_link_delivery_boys.delivery_status_id',
+                    //     //  'trn_store_orders.order_number',
+                    //     //  'trn_store_orders.customer_id'
+
+                    //     //  )
+                    //     //  ->first();
+
+                    //     //   $customerData = Trn_store_customer::where('customer_id',@$value->orderData->customer_id)
+                    //     //   ->select('customer_id','customer_first_name','customer_last_name','customer_mobile_number')
+                    //     //   ->first();
+
+                    //     //   $value->customerData = $customerData;
+
+                    //   }
+
+                    // $data['deliveryBoyDetails'] = $dboy;
+
+                    //     $data['status'] = 1;
+                    //     $data['message'] = "success";
+                    //   // echo '<pre>';
+                    //   // print_r($data);die;
+                    //     return response($data);
+                    // }
+                    // else
+                    // {
+                    //     $data['status'] = 0;
+                    //     $data['message'] = "failed";
+                    //     return response($data);
+                    // }
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
+                    $data['errors'] = $validator->errors();
                     return response($data);
                 }
-                
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
-
     }
 
 
@@ -989,14 +860,13 @@ class OrderController extends Controller
         $data = array();
         try {
 
-            $data['deiveryStatusList'] = Sys_DeliveryStatus::select('delivery_status_id','delivery_status')->get();
-            return response($data);  
-           
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            $data['deiveryStatusList'] = Sys_DeliveryStatus::select('delivery_status_id', 'delivery_status')->get();
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
 
             return response($response);
         }
@@ -1004,107 +874,109 @@ class OrderController extends Controller
 
     public function orderInvoice(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->order_id) && Trn_store_order::find($request->order_id))
-                {
-                    $order_id = $request->order_id;
-                    $order = Trn_store_order::where('order_id',$order_id)
-                    ->select('order_id','order_number','customer_id','store_id',
-                    'product_total_amount','payment_type_id','status_id','order_note','created_at')
+            if (isset($request->order_id) && Trn_store_order::find($request->order_id)) {
+                $order_id = $request->order_id;
+                $order = Trn_store_order::where('order_id', $order_id)
+                    ->select(
+                        'order_id',
+                        'order_number',
+                        'customer_id',
+                        'store_id',
+                        'product_total_amount',
+                        'payment_type_id',
+                        'status_id',
+                        'order_note',
+                        'created_at'
+                    )
                     ->first()->toArray();
-                    $customer = Trn_store_customer::where('customer_id',$order['customer_id'])
-                    ->select('customer_id','customer_first_name','customer_last_name',
-                    'customer_email','customer_mobile_number','customer_address','customer_location'
-                    ,'customer_pincode','country_id','state_id')
+                $customer = Trn_store_customer::where('customer_id', $order['customer_id'])
+                    ->select(
+                        'customer_id',
+                        'customer_first_name',
+                        'customer_last_name',
+                        'customer_email',
+                        'customer_mobile_number',
+                        'customer_address',
+                        'customer_location',
+                        'customer_pincode',
+                        'country_id',
+                        'state_id'
+                    )
                     ->first()->toArray();
-                    $status = Sys_store_order_status::find($order['status_id']);
-                    $order_items = Trn_store_order_item::where('order_id',$order_id)->get()->toArray();
-                    $store_data = Mst_store::where('store_id',$order['store_id'])->first()->toArray();
-                    $order['customerDetails'] = $customer;
-                    $order['orderStatus'] = $status;
-                    $order['orderItems'] = $order_items;
-                    $order['store_data'] = $store_data;
-                   // array_push($order, $customer);
+                $status = Sys_store_order_status::find($order['status_id']);
+                $order_items = Trn_store_order_item::where('order_id', $order_id)->get()->toArray();
+                $store_data = Mst_store::where('store_id', $order['store_id'])->first()->toArray();
+                $order['customerDetails'] = $customer;
+                $order['orderStatus'] = $status;
+                $order['orderItems'] = $order_items;
+                $order['store_data'] = $store_data;
+                // array_push($order, $customer);
 
-                    $data['orderDetails'] = $order;
-                    $data['status'] = 1;
-                    $data['message'] = "success";
-                    return response($data);
-
-                }
-                else
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Order not found ";
-                    return response($data);
-                }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+                $data['orderDetails'] = $order;
+                $data['status'] = 1;
+                $data['message'] = "success";
+                return response($data);
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Order not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function assignDeliveryBoy(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->order_id) && Trn_store_order::find($request->order_id))
-                {
-                    $order_id = $request->order_id;
-                    $validator = Validator::make($request->all(),
-                            [
-                                    'delivery_boy_id'          => 'required',
-                            ],
-                            [
-                                    'delivery_boy_id.required'        => 'Delivery boy not found',
-                            ]);
+            if (isset($request->order_id) && Trn_store_order::find($request->order_id)) {
+                $order_id = $request->order_id;
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'delivery_boy_id'          => 'required',
+                    ],
+                    [
+                        'delivery_boy_id.required'        => 'Delivery boy not found',
+                    ]
+                );
 
-                                if(!$validator->fails())
-                                {   
-                                    $delivery_boy_id = $request->delivery_boy_id;
+                if (!$validator->fails()) {
+                    $delivery_boy_id = $request->delivery_boy_id;
 
-                                    if(Trn_store_order::where('order_id',$order_id)->update(['delivery_boy_id' => $delivery_boy_id,'delivery_accept'=> null]))
-                                    {
-                                        $data['status'] = 1;
-                                        $data['message'] = "Assigned";
-                                        return response($data);
-                                    }
-                                    else
-                                    {
-                                        $data['status'] = 0;
-                                        $data['message'] = "failed";
-                                        return response($data);
-                                    }
-                                }
-                                else
-                                {
-                                    $data['status'] = 0;
-                                    $data['message'] = "failed";
-                                    $data['errors'] = $validator->errors();
-                                    return response($data);
-                                }
-
-                }
-                else
-                {
+                    if (Trn_store_order::where('order_id', $order_id)->update(['delivery_boy_id' => $delivery_boy_id, 'delivery_accept' => null])) {
+                        $data['status'] = 1;
+                        $data['message'] = "Assigned";
+                        return response($data);
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        return response($data);
+                    }
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Order not found ";
+                    $data['message'] = "failed";
+                    $data['errors'] = $validator->errors();
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Order not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
-
-    
 }
