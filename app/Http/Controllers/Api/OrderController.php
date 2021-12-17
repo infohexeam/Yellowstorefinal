@@ -266,6 +266,8 @@ class OrderController extends Controller
                         $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
                         $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
 
+                        dd($data['orderDetails']);
+
 
                         if (isset($data['orderDetails']->status_id)) {
                             $statusData = Sys_store_order_status::find($data['orderDetails']->status_id);
@@ -288,6 +290,7 @@ class OrderController extends Controller
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
                             ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
                             ->get();
+
 
 
                         foreach ($data['orderDetails']->orderItems as $value) {
