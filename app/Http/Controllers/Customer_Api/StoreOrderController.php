@@ -592,7 +592,7 @@ class StoreOrderController extends Controller
 
                     foreach ($customerDevice as $cd) {
                         $title = 'Order Placed';
-                        $body = 'Your order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+                        $body = 'Order placed with order id ' . $orderdatas->order_number;
                         $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
                     }
 
