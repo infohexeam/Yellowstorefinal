@@ -330,8 +330,9 @@ class OrderController extends Controller
 
                             $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
                             $stax = 0;
+                            // dd($splitdata);
 
-                            if (isset($splitdata)) {
+                            if (isset($taxFullData)) {
 
                                 foreach ($splitdata as $sd) {
                                     if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
