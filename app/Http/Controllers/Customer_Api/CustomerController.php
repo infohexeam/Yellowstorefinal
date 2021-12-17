@@ -105,22 +105,22 @@ class CustomerController extends Controller
 
                                     // customer reward
                                     $rewardCount = Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->count();
-                                    if ($rewardCount > 0) {
-                                        $rewards = Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->get();
-                                        Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->delete();
-                                        foreach ($rewards as $r) {
-                                            $cr1 = new Trn_customer_reward;
-                                            $cr1->transaction_type_id = 0;
-                                            $cr1->reward_points_earned = $r->reward_points;
-                                            $cr1->customer_id = $user->customer_id;
-                                            $cr1->order_id = null;
-                                            $cr1->reward_approved_date = $r->added_date;
-                                            $cr1->reward_point_expire_date = $r->added_date;
-                                            $cr1->reward_point_status = 1;
-                                            $cr1->discription = $r->reward_discription;
-                                            $cr1->save();
-                                        }
-                                    } else {
+                                    if ($rewardCount == 0) {
+                                    //     $rewards = Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->get();
+                                    //     Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->delete();
+                                    //     foreach ($rewards as $r) {
+                                    //         $cr1 = new Trn_customer_reward;
+                                    //         $cr1->transaction_type_id = 0;
+                                    //         $cr1->reward_points_earned = $r->reward_points;
+                                    //         $cr1->customer_id = $user->customer_id;
+                                    //         $cr1->order_id = null;
+                                    //         $cr1->reward_approved_date = $r->added_date;
+                                    //         $cr1->reward_point_expire_date = $r->added_date;
+                                    //         $cr1->reward_point_status = 1;
+                                    //         $cr1->discription = $r->reward_discription;
+                                    //         $cr1->save();
+                                    //     }
+                                    // } else {
                                         $customer_id  = $user->customer_id;
                                         $configPoint = Trn_configure_points::find(1);
                                         $orderAmount  = $configPoint->order_amount;
@@ -144,7 +144,7 @@ class CustomerController extends Controller
                                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
                                             }
                                         }
-                                    }
+                                   // }
                                 }
                             } else {
                                 $data['status'] = 2;
