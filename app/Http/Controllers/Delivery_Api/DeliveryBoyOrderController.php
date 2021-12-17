@@ -596,6 +596,17 @@ class DeliveryBoyOrderController extends Controller
                     $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
                     $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
 
+
+
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Order delivered';
+                        // $body = 'First order points credited successully..';
+                        $body = 'Order delivered with order id ' . $order->order_number;
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                    }
+
+
                     if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
                         $configPoint = Trn_configure_points::find(1);
 
