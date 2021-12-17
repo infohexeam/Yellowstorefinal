@@ -266,8 +266,6 @@ class OrderController extends Controller
                         $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
                         $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
 
-                        dd($data['orderDetails']);
-
 
                         if (isset($data['orderDetails']->status_id)) {
                             $statusData = Sys_store_order_status::find($data['orderDetails']->status_id);
@@ -285,6 +283,7 @@ class OrderController extends Controller
                         $data['orderDetails']->item_list_link = url('item/list/' . Crypt::encryptString($data['orderDetails']->order_id));
 
 
+                        dd($data['orderDetails']);
 
 
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
