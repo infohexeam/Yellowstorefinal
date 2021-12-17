@@ -593,8 +593,12 @@ class StoreOrderController extends Controller
                     foreach ($customerDevice as $cd) {
                         $title = 'Order Placed';
                         $body = 'Your order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-
                         $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                    }
+
+
+                    foreach ($customerDevice as $cd) {
+
                         if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
                             $title = 'Points Deducted';
                             $body = $request->reward_points_used . ' points deducted from your wallet';
