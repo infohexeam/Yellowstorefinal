@@ -331,6 +331,8 @@ class OrderController extends Controller
                             $stax = 0;
                             // dd($splitdata);
 
+                            $splitdata = new \stdClass();
+
                             if (isset($taxFullData)) {
                                 $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
 
@@ -342,7 +344,6 @@ class OrderController extends Controller
                                     $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
                                 }
                             }
-
 
                             $value['taxSplitups']  = @$splitdata;
                         }
