@@ -311,6 +311,7 @@ class OrderController extends Controller
                             } else {
                                 $value->dispute_status = 0;
                             }
+                            dd($data['orderDetails'], $data['orderDetails']->orderItems, $value);
 
 
 
@@ -344,7 +345,6 @@ class OrderController extends Controller
                         }
 
 
-                        dd($data['orderDetails'], $data['orderDetails']->orderItems);
 
 
 
