@@ -283,7 +283,6 @@ class OrderController extends Controller
                         $data['orderDetails']->item_list_link = url('item/list/' . Crypt::encryptString($data['orderDetails']->order_id));
 
 
-                        dd($data['orderDetails']);
 
 
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
@@ -343,6 +342,10 @@ class OrderController extends Controller
 
                             $value['taxSplitups']  = $splitdata;
                         }
+
+
+                        dd($data['orderDetails'], $data['orderDetails']->orderItems);
+
 
 
                         $data['orderDetails']->serviceData = new \stdClass();
