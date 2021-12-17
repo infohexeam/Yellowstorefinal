@@ -328,11 +328,11 @@ class OrderController extends Controller
 
                             $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
 
-                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
                             $stax = 0;
                             // dd($splitdata);
 
                             if (isset($taxFullData)) {
+                                $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
 
                                 foreach ($splitdata as $sd) {
                                     if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
@@ -344,7 +344,7 @@ class OrderController extends Controller
                             }
 
 
-                            $value['taxSplitups']  = $splitdata;
+                            $value['taxSplitups']  = @$splitdata;
                         }
 
 
