@@ -103,7 +103,7 @@ class CustomerController extends Controller
                                     $data['customer_mobile_number'] = $user->customer_mobile_number;
                                     $data['referral_id'] = $user->referral_id;
 
-                                    // customer reward
+                                    // customer reward 
                                     $rewardCount = Trn_customer_reward::where('customer_id', $user->customer_id)->count();
                                     if ($rewardCount == 0) {
                                         //     $rewards = Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->get();
