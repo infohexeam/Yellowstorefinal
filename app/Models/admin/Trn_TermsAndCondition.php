@@ -10,6 +10,6 @@ class Trn_TermsAndCondition extends Model
     protected $table = "trn__terms_and_conditions";
 
     protected $fillable = [
-                    'terms_and_condition'
+                    'terms_and_condition','role'
                ];
 }

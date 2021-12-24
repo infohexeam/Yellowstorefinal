@@ -676,6 +676,43 @@ class StoreSettingsController extends Controller
                     $store_id = $request->store_id;
                     $store  =    Mst_store::find($request->store_id);
                     
+                        $storeAdmData = Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
+                            $todayDate = Carbon::now()->addDays(3);
+                            $now = Carbon::now();
+                            $dateExp = Carbon::parse($storeAdmData->expiry_date);
+                            $diff = $dateExp->diffInDays($now) + 1;
+                            
+                            if(@$diff == 1){
+                                $dayString = 'day';
+                            }else{
+                                $dayString = 'days';
+    
+                            }
+                            
+                     if(($storeAdmData->store_account_status == 0) && ($todayDate > $storeAdmData->expiry_date) ){
+                         $expireMsgString = 'This account expires in '.@$diff." ".@$dayString;
+                         $expiredDays = @$diff;
+                     }
+                     else{
+                         $expireMsgString = '';
+                         $expiredDays = 1;
+
+                     }
+                    $data['expireMsgString'] = $expireMsgString; 
+                    
+                    if($expiredDays == 0)
+                    {
+                        $data['isExpired'] = 1; 
+                    }
+                    else{
+                        $data['isExpired'] = 0; 
+                    }
+                    
+
+                                       
+                    
+                    
+                    
                     
                     $recentvisitCountToday = Trn_RecentlyVisitedStore::whereDate('created_at', Carbon::today())
                     ->where('store_id',$request->store_id)->count();

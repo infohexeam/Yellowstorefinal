@@ -169,15 +169,15 @@
             </ul>
         </li>
       
-      
-      
-
-      {{-- <li class="slide">
+       <li class="slide">
         <a class="side-menu__item" href="{{route('admin.list_delivery_boy')}}">
-          <i class="side-menu__icon ti-shield"></i>
+          <i class="side-menu__icon ti ti-truck"></i>
           <span class="side-menu__label"> {{ __('Delivery Boys') }}</span>
         </a>
-      </li>  --}}
+      </li>
+      
+
+   
 
       <li class="slide">
         <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon
@@ -298,7 +298,8 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
         <ul class="slide-menu">
 
            <li><a class="slide-item" href="{{route('admin.password')}}">{{ __('Change Password') }}</a></li>
-           <li><a class="slide-item" href="{{route('admin.edit_terms')}}">{{ __('Terms & Conditions') }}</a></li>
+           <li><a class="slide-item" href="{{route('admin.edit_terms')}}">{{ __('Store Terms & Conditions') }}</a></li>
+           <li><a class="slide-item" href="{{route('admin.edit_terms_customer')}}">{{ __('Customer Terms & Conditions') }}</a></li>
 
         </ul>
       </li>
@@ -413,7 +414,7 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
        <li><a class="slide-item" href="{{route('admin.list_attribute_group')}}">{{ __('Attribute Group') }}</a></li>
      <li><a class="slide-item" href="{{route('admin.list_attribute_value')}}">{{ __('Attribute Value') }}</a></li>
                         <li><a class="slide-item" href="{{route('admin.list_vihicle_types')}}">{{ __('Vehicle Types') }}</a></li>
-  <li><a class="slide-item" href="{{route('admin.videos')}}">{{ __('Video') }}</a></li>
+  <!--<li><a class="slide-item" href="{{route('admin.videos')}}">{{ __('Video') }}</a></li>-->
                       <li><a class="slide-item" href="{{route('admin.sub_category')}}">{{ __('Product Sub Category') }}</a></li>
 
 

@@ -3733,6 +3733,33 @@ class StoreController extends Controller
   {
     $data['dispute_status']  = $request->dispute_status;
     $query = \DB::table("mst_disputes")->where('dispute_id', $dispute_id)->update($data);
+    $dispData =  \DB::table("mst_disputes")->where('dispute_id', $dispute_id)->first();
+        if($request->dispute_status == 1)
+       {
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+            $orderData = Trn_store_order::find($dispData->order_id);
+    
+                foreach ($customerDevice as $cd) {
+                    $title = 'Dispute closed';
+                    //  $body = 'First order points credited successully..';
+                    $body =  'Your dispute with order number'. $orderData->order_number . ' is closed by store..';
+                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                }
+       }
+    
+       if($request->dispute_status == 3)
+       {
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+            $orderData = Trn_store_order::find($dispData->order_id);
+    
+                foreach ($customerDevice as $cd) {
+                    $title = 'Dispute in progress';
+                    //  $body = 'First order points credited successully..';
+                    $body =  'Your dispute with order number'. $orderData->order_number . ' is in progress..';
+                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                }
+       }
+                               
     return redirect()->back()->with('status', 'Status updated successfully.');
   }
   public function currentIssues(Request $request)

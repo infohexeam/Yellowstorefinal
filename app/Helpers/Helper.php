@@ -15,6 +15,9 @@ use App\User;
 use App\Models\admin\Trn_ReviewsAndRating;
 use App\Models\admin\Mst_Subadmin_Detail;
 use App\Models\admin\Trn_StoreTimeSlot;
+use App\Models\admin\Trn_ProductVariantAttribute;
+use App\Models\admin\Mst_store_product_varient;
+
 
 
 class Helper {
@@ -39,6 +42,64 @@ class Helper {
         return $timeslotdata;
     
 
+    }
+    
+    public static function findServiceVariant($product_id)
+    {
+     $proData = Mst_store_product::find($product_id);
+     $productVar =  Mst_store_product_varient::where('product_id',$product_id)->first();
+        if($proData->service_type == 1)
+            return $productVar->product_varient_id;
+        else
+            return '0';
+    }
+    
+    public static function varAttrStatus($product_id)
+    {
+
+        // $proVaattrrCount = Trn_ProductVariantAttribute::where('product_varient_id', $product->product_varient_id)->count();
+        // if ($proVaattrrCount < 1) {
+        //     return 0;
+        //     } else {
+        //     return 1;
+        // }
+        
+        return 1;
+    }
+    
+    public static function productStock($product_id)
+    {
+       $stockSum = Mst_store_product_varient::where('product_id',$product_id)->sum('stock_count');
+        if($stockSum)
+        return $stockSum;
+        else
+        return 0;
+    }
+    
+    public static function productRating($product_id)
+    {
+        $sumRating = Trn_ReviewsAndRating::where('product_id', $product_id)->sum('rating');
+        $countRating = Trn_ReviewsAndRating::where('product_id', $product_id)->count();
+            if ($countRating == 0) {
+                        $countRating = 1;
+                    }
+        $ratingData = $sumRating / $countRating;
+        $rating = number_format((float)$ratingData, 2, '.', '');
+
+        if($rating)
+        return $rating;
+        else
+        return 0;
+    }
+    
+    public static function productRatingCount($product_id)
+    {
+        $countRating = Trn_ReviewsAndRating::where('product_id', $product_id)->count();
+
+        if($countRating)
+        return $countRating;
+        else
+        return 0;
     }
     
     public static function storeSuperadminPhone($store_id)

@@ -36,6 +36,7 @@ Route::get('/geotest', 'store\CouponController@geotest');
 
 Route::get('/transfer', 'store\StoreController@transfer');
 Route::get('/store/terms-and-condition', 'PublicController@showTC');
+Route::get('/customer/terms-and-condition', 'PublicController@showCusTC');
 
 
 // Super Admin login
@@ -646,7 +647,9 @@ Route::post('admin/agency/ajax/unique_username_company', 'SettingController@Chec
 
 
 Route::get('admin/update-terms', 'SettingController@updateTerms')->name('admin.edit_terms');
+Route::get('admin/customer/update-terms', 'SettingController@updateCusTerms')->name('admin.edit_terms_customer');
 Route::post('admin/update-tc', 'SettingController@updateTC')->name('admin.update_tc');
+Route::post('admin/customer/update-tc', 'SettingController@updateCusTC')->name('admin.update_cus_tc');
 
 
 });

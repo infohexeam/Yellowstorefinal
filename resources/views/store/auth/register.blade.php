@@ -298,7 +298,7 @@
                         
                     <label class="float-center">
                         <input required type="checkbox" name="tc" id=""> I Agree to the 
-                        <a target="_blank" href="{{ url('store/terms-and-condition') }}">Terms and Condition</a>
+                        <a target="_blank" href="{{ url('store/terms-and-condition') }}">Terms and Conditions</a>
                     </label>
 
                         <div class="container-login100-form-btn">

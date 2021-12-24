@@ -1886,8 +1886,9 @@ class StoreController extends Controller
                         }
                         
                     
-                $inventoryData = $inventoryData->groupBy('product_varient_id');
-                
+             
+                 $inventoryData = $inventoryData->orderBy('mst__stock_details.stock_detail_id','DESC');
+                 
                     if(isset($request->page))
                     {
                         $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
@@ -1896,11 +1897,18 @@ class StoreController extends Controller
                     {
                         $inventoryData = $inventoryData->paginate(10);
                     }
+                    
+                     //  $inventoryData = $inventoryData->groupBy('mst_store_product_varients.product_varient_id');
+                // $dataArr  = array();
+                // foreach($inventoryData as $d)
+                // {
+                //     $dataArr[] = $d;
+                // }
                 
 
-                // $inventoryData = collect($inventoryData);
-                //         $inventoryDatas = $inventoryData->unique('product_varient_id');
-                //           $dataReViStoreSS =   $inventoryDatas->values()->all();
+                $inventoryData = collect($inventoryData);
+                        $inventoryDatas = $inventoryData->unique('product_varient_id');
+                          $dataReViStoreSS =   $inventoryDatas->values()->all();
                 
                 $data['inventoryData'] = $inventoryData;
                 $data['status'] = 1;

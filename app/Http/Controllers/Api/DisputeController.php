@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Crypt;
 use Mail;
 use PDF;
+use App\Helpers\Helper;
 
 use App\Models\admin\Mst_store;
 use App\Models\admin\Mst_Tax;
@@ -43,6 +44,7 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Mst_Issues;
 use App\Models\admin\Mst_dispute;
 use App\Models\admin\Sys_IssueType;
+use App\Models\admin\Trn_CustomerDeviceToken;
 
 
 
@@ -268,7 +270,7 @@ class DisputeController extends Controller
     {
         $data = array(); 
         try {
-                if(isset($request->dispute_id) && Mst_dispute::find($request->dispute_id))
+                if(isset($request->dispute_id) && $dispData = Mst_dispute::find($request->dispute_id))
                 {
                     $dispute_id = $request->dispute_id;
 
@@ -286,7 +288,8 @@ class DisputeController extends Controller
                             
                             //if(isset($request->discription))
                            // $disputeData['discription'] = $request->discription; // status
-                            
+                           
+                           
                             
                             if(isset($request->store_response))
                             $disputeData['store_response'] = $request->store_response; // store_response
@@ -296,6 +299,48 @@ class DisputeController extends Controller
                                     
                             if(Mst_dispute::where('dispute_id',$request->dispute_id)->update($disputeData))
                             {
+                                
+                               if($request->dispute_status == 1)
+                               {
+                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+                                    $orderData = Trn_store_order::find($dispData->order_id);
+    
+                                        foreach ($customerDevice as $cd) {
+                                            $title = 'Dispute closed';
+                                            //  $body = 'First order points credited successully..';
+                                            $body =  'Your dispute with order number'. $orderData->order_number . ' is closed by store..';
+                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        }
+                               }
+                           
+                               if($request->dispute_status == 3)
+                               {
+                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+                                    $orderData = Trn_store_order::find($dispData->order_id);
+    
+                                        foreach ($customerDevice as $cd) {
+                                            $title = 'Dispute in progress';
+                                            //  $body = 'First order points credited successully..';
+                                            $body =  'Your dispute with order number'. $orderData->order_number . ' is in progress..';
+                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        }
+                               }
+                               
+                               if($request->dispute_status == 4)
+                               {
+                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+                                    $orderData = Trn_store_order::find($dispData->order_id);
+    
+                                        foreach ($customerDevice as $cd) {
+                                            $title = 'Dispute is returned';
+                                            //  $body = 'First order points credited successully..';
+                                            $body =  'Your dispute with order number'. $orderData->order_number . ' is returned..';
+                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        }
+                               }
+                            
+                            
+                            
                                 $data['status'] = 1;
                                 $data['message'] = "Dispute updated successfully.";
                                 return response($data);

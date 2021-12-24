@@ -205,16 +205,40 @@
                                  <td>
 
                                        <form action="{{route('admin.status_store',$store->store_id)}}" method="POST">
+                                           @php
+                                            $adminData = \DB::table('trn__store_admins')->where('store_id',$store->store_id)
+                                            ->where('role_id',0)->first();
+                                           @endphp
 
                                           @csrf
                                           @method('POST')
                                           <button type="submit"  onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
-                                          @if($store->store_account_status == 0) btn-danger @else btn-success @endif"> @if($store->store_account_status == 0)
+                                          @if($adminData->store_account_status == 0) btn-danger @else btn-success @endif"> @if($adminData->store_account_status == 0)
                                           InActive
                                           @else
                                           Active
                                           @endif</button>
                                        </form>
+                                       
+                                        @php
+                                            $storeData = App\Models\admin\Mst_store::find($store->store_id);
+                                            $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
+                                                $today = Carbon\Carbon::now()->addDays(3);
+                                                $now = Carbon\Carbon::now();
+                                                $dateExp = Carbon\Carbon::parse($storeAdmData->expiry_date);
+                                                $diff = $dateExp->diffInDays($now) + 1;
+                                                
+                                                if(@$diff == 1){
+                                                    $dayString = 'day';
+                                                }else{
+                                                    $dayString = 'days';
+                        
+                                                }
+                                        @endphp
+                                    @if(($storeAdmData->store_account_status == 0) && ($today > $storeAdmData->expiry_date) )
+                                       <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}</p>
+                                    @endif
+                                       
 
                                     </td>
                                     <td>

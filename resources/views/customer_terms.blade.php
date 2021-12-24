@@ -10,7 +10,7 @@
          <!-- FAVICON -->
          <link rel="shortcut icon" type="image/x-icon" href="{{URL::to('/assets/uploads/favicon.png')}}" />
          <!-- TITLE -->
-         <title>{{ __('YellowStore | Store') }}</title>
+         <title>{{ __('YellowStore') }}</title>
          <!-- BOOTSTRAP CSS -->
          <link href="{{URL::to('/assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
          <!-- STYLE CSS -->

@@ -1273,7 +1273,7 @@ class SettingController extends Controller
 		 }
      	$store->update();
 		 
-		 Trn_StoreAdmin::where('store_id',$cat_id)->update($storeAdmin);
+		 Trn_StoreAdmin::where('store_id',$store_id)->update($storeAdmin);
 
 	 return redirect('admin/store/list')->with('status','Store status changed successfully');
 	}
@@ -6568,16 +6568,43 @@ public function status_product_image(Request $request,Mst_product_image $product
     
     public function updateTerms(Request $request)
 	{
-		$pageTitle = "Edit Terms & Conditions";
-		$tc = Trn_TermsAndCondition::find(1);
+		$pageTitle = "Edit Store Terms & Conditions";
+		$tc = Trn_TermsAndCondition::where('role',1)->first();
 		return view('admin.masters.tc.list',compact('pageTitle','tc'));
+	}
+	
+	
+	
+	public function updateCusTerms(Request $request)
+	{
+		$pageTitle = "Edit Customer Terms & Conditions";
+		$tc = Trn_TermsAndCondition::where('role',2)->first();
+		return view('admin.masters.tc.list_cus_tc',compact('pageTitle','tc'));
 	}
 
 	public function updateTC(Request $request)
 	{
-		$tc = Trn_TermsAndCondition::find(1);
-		$tc->terms_and_condition = $request->tc;
-		$tc->update();
+		$tcCount = Trn_TermsAndCondition::where('role',1)->count();
+		if($tcCount > 0){
+		    Trn_TermsAndCondition::where('role',1)->update(['terms_and_condition' => $request->tc,'role'=>1]);
+		}
+		else{
+		    Trn_TermsAndCondition::where('role',1)->create(['terms_and_condition' => $request->tc,'role'=>1]);
+		}
+
+		return redirect()->back()->with('status','Terms and conditions updated.');
+	}
+	
+	public function updateCusTC(Request $request)
+	{
+
+	    $tcCount = Trn_TermsAndCondition::where('role',2)->count();
+		if($tcCount > 0){
+		    Trn_TermsAndCondition::where('role',2)->update(['terms_and_condition' => $request->tc,'role'=>2]);
+		}
+		else{
+		    Trn_TermsAndCondition::where('role',2)->create(['terms_and_condition' => $request->tc,'role'=>2]);
+		}
 		return redirect()->back()->with('status','Terms and conditions updated.');
 	}
 	

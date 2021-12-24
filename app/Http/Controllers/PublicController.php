@@ -76,8 +76,18 @@ class PublicController extends Controller
   
     public function showTC(Request $request)
     {
-       $tc = Trn_TermsAndCondition::find(1);
+       $tc = Trn_TermsAndCondition::where('role',1)->first();
+      // dd($tc);
         return view('store.auth.tc',compact('tc'));
 
     }
+    
+    
+    public function showCusTC(Request $request)
+    {
+       $tc = Trn_TermsAndCondition::where('role',2)->first();
+        return view('customer_terms',compact('tc'));
+
+    }
+    
 }

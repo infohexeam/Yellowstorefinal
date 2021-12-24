@@ -465,6 +465,17 @@ class OrderController extends Controller
     public function updateOrder(Request $request)
     {
         $data = array();
+    
+        //$od = Trn_store_order::find($request->order_id);
+
+        //  $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+
+        // foreach ($customerDevice as $cd) {
+        //     $title = 'working';
+        //     //  $body = 'First order points credited successully..';
+        //     $body = "working body";
+        //     $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+        // }
 
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
@@ -623,6 +634,52 @@ class OrderController extends Controller
 
 
                         }
+                        
+                    if ($request->status_id == 6) { //picking complede
+                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+
+                                foreach ($customerDevice as $cd) {
+                                    $title = 'Order picking completed';
+                                    $body = "Your order ".$od->order_number . ' picking completed..';
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                }
+
+                    }
+                    if ($request->status_id == 7) { //ready for delivery
+                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+
+                                foreach ($customerDevice as $cd) {
+                                    $title = 'Order ready for delivery';
+                                    $body = "Your order ".$od->order_number . ' is ready for delivery..';
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                }
+
+                    }
+                    
+                    if ($request->status_id == 8) { //out for delivery
+                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+
+                                foreach ($customerDevice as $cd) {
+                                    $title = 'Order out for delivery';
+                                    $body = "Your order ".$od->order_number . ' is out for delivery..';
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                }
+
+                    }
+                    
+                     if ($request->status_id == 9) { // delivered
+                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+
+                                foreach ($customerDevice as $cd) {
+                                    $title = 'Order deliverd';
+                                    $body = "Your order ".$od->order_number . ' is deliverd..';
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                }
+
+                    }
+
+
+
 
                         $orderdata2['delivery_boy_id'] = $request->delivery_boy_id;
                         if ($request->status_id == 7) {

@@ -377,7 +377,11 @@ Route::get('customer/sub-category-home','Customer_Api\ProductController@homePage
 
 Route::get('customer/view-product','Customer_Api\ProductController@viewProduct');
 Route::get('customer/view-product-attr','Customer_Api\ProductController@viewProductAttr');
+Route::get('customer/view-base-product','Customer_Api\ProductController@viewBaseProduct');
 Route::get('customer/view-product-popup','Customer_Api\ProductController@viewProductPopup');
+
+Route::get('customer/base-product/variants','Customer_Api\ProductController@viewBaseProductVariants');
+
 
 Route::get('customer/search-product','Customer_Api\ProductController@searchProduct');
 Route::get('customer/search-store','Customer_Api\ProductController@searchStore');

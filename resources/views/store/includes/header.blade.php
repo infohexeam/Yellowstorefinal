@@ -81,7 +81,33 @@
         @if (Auth::guard('store')->user()->role_id == 0)
             @php
                 $storeData = App\Models\admin\Mst_store::find(Auth::guard('store')->user()->store_id);
+                $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',Auth::guard('store')->user()->store_id)->where('role_id',0)->first();
+                        $today = Carbon\Carbon::now()->addDays(3);
+                        $now = Carbon\Carbon::now();
+                        
+                        $dateExp = Carbon\Carbon::parse($storeAdmData->expiry_date);
+
+
+                        $diff = $dateExp->diffInDays($now) + 1;
+                        
+                        if(@$diff == 1){
+                            $dayString = 'day';
+                        }else{
+                            $dayString = 'days';
+
+                        }
+
+
             @endphp
+            
+            
+            @if(($storeAdmData->store_account_status == 0) && ($today > $storeAdmData->expiry_date) )
+                <li class="nav-item" >
+                   <a class=" text-center m-2" >
+                    Account expires in {{@$diff}} {{$dayString}} 
+                    </a> 
+                </li>
+            @endif
              
              <li class="nav-item" data-toggle="tooltip" data-placement="top" title=" @if ($storeData->online_status == 1) Go Offline @else Go Online @endif">
                <a class="nav-link text-center m-2" href="{{ route('store.switchStatus') }}" >

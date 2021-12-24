@@ -589,17 +589,23 @@ class StoreOrderController extends Controller
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                         $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
                     }
-
+                    
+                   
+                  
+                    
                     foreach ($customerDevice as $cd) {
                         $title = 'Order Placed';
                         $body = 'Order placed with order id ' . $orderdatas->order_number;
                         $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
                     }
+                    
+                  
 
 
-                    foreach ($customerDevice as $cd) {
+                    if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
 
-                        if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
+                        foreach ($customerDevice as $cd) {
+
                             $title = 'Points Deducted';
                             $body = $request->reward_points_used . ' points deducted from your wallet';
 
@@ -820,6 +826,7 @@ class StoreOrderController extends Controller
             );
 
             if (!$validator->fails()) {
+                $order_id =  $request->order_id;
 
                 $dispute = new Mst_dispute;
                 $dispute->issue_id = $request->issue_id;
@@ -867,7 +874,31 @@ class StoreOrderController extends Controller
                 $dispute->dispute_date = Carbon::now()->toDateString();
                 $dispute->discription = $request->discription;
                 $dispute->dispute_status = 2;
-                $dispute->save();
+                if($dispute->save()){
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
+                    $orderdatas = Trn_store_order::find($order_id);
+                    $storeDatas = Trn_StoreAdmin::where('store_id', $orderdatas->store_id)->where('role_id', 0)->first();
+                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderdatas->store_id)->get();
+                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderdatas->store_id)->get();
+
+                    foreach ($storeDevice as $sd) {
+                        $title = 'Dispute raised';
+                        $body = 'New dispute raised with order id ' . $orderdatas->order_number;
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                    }
+                    
+                    foreach ($storeWeb as $sw) {
+                        $title = 'Dispute raised';
+                        $body = 'New dispute raised with order id ' . $orderdatas->order_number;
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                    }
+                    
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Dispute raised';
+                        $body = 'Your dispute raised with order id ' . $orderdatas->order_number;
+                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                    }
+                }
 
 
                 $data['status'] = 1;
