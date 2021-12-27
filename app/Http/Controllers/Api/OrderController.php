@@ -241,6 +241,12 @@ class OrderController extends Controller
                             // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
                             // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
 
+                             if ($data['orderDetails']->order_type == 'POS') {
+                                $data['orderDetails']->customer_mobile = '';
+                                $data['orderDetails']->customer_address = '';
+                                $data['orderDetails']->customer_pincode = '';
+                            }
+
 
 
                         } else {
