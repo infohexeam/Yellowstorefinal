@@ -84,13 +84,15 @@ class OrderController extends Controller
 
 
                     foreach ($data['orderDetails'] as $order) {
-                        if (isset($order->customer_id)) {
-                            $customerData = Trn_store_customer::find($order->customer_id);
+
+
+                        $customerData = Trn_store_customer::find($order->customer_id);
+                        if ($data['orderDetails']->order_type == 'POS')
+                            $order->customer_name = 'Store Customer';
+                        else
                             $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
-                            $order->customer_mobile = @$customerData->customer_mobile_number;
-                        } else {
-                            $order->customer_name = null;
-                        }
+
+
 
                         if (isset($order->status_id)) {
                             $statusData = Sys_store_order_status::find(@$order->status_id);
@@ -166,15 +168,16 @@ class OrderController extends Controller
                                 $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
                             }
 
-                            if ($data['orderDetails']->order_type != 'POS') {
+                            if ($data['orderDetails']->order_type == 'POS') {
+
+                                $data['orderDetails']->customer_name = 'Store Customer';
+                            } else {
 
                                 if (isset($customerAddressData->name)) {
                                     $data['orderDetails']->customer_name = @$customerAddressData->name;
                                 } else {
                                     $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
                                 }
-                            } else {
-                                $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
                             }
 
 
@@ -465,7 +468,7 @@ class OrderController extends Controller
     public function updateOrder(Request $request)
     {
         $data = array();
-    
+
         //$od = Trn_store_order::find($request->order_id);
 
         //  $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
@@ -634,49 +637,45 @@ class OrderController extends Controller
 
 
                         }
-                        
-                    if ($request->status_id == 6) { //picking complede
+
+                        if ($request->status_id == 6) { //picking complede
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
-                                foreach ($customerDevice as $cd) {
-                                    $title = 'Order picking completed';
-                                    $body = "Your order ".$od->order_number . ' picking completed..';
-                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-                                }
-
-                    }
-                    if ($request->status_id == 7) { //ready for delivery
+                            foreach ($customerDevice as $cd) {
+                                $title = 'Order picking completed';
+                                $body = "Your order " . $od->order_number . ' picking completed..';
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                            }
+                        }
+                        if ($request->status_id == 7) { //ready for delivery
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
-                                foreach ($customerDevice as $cd) {
-                                    $title = 'Order ready for delivery';
-                                    $body = "Your order ".$od->order_number . ' is ready for delivery..';
-                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-                                }
+                            foreach ($customerDevice as $cd) {
+                                $title = 'Order ready for delivery';
+                                $body = "Your order " . $od->order_number . ' is ready for delivery..';
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                            }
+                        }
 
-                    }
-                    
-                    if ($request->status_id == 8) { //out for delivery
+                        if ($request->status_id == 8) { //out for delivery
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
-                                foreach ($customerDevice as $cd) {
-                                    $title = 'Order out for delivery';
-                                    $body = "Your order ".$od->order_number . ' is out for delivery..';
-                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-                                }
+                            foreach ($customerDevice as $cd) {
+                                $title = 'Order out for delivery';
+                                $body = "Your order " . $od->order_number . ' is out for delivery..';
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                            }
+                        }
 
-                    }
-                    
-                     if ($request->status_id == 9) { // delivered
+                        if ($request->status_id == 9) { // delivered
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
-                                foreach ($customerDevice as $cd) {
-                                    $title = 'Order deliverd';
-                                    $body = "Your order ".$od->order_number . ' is deliverd..';
-                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-                                }
-
-                    }
+                            foreach ($customerDevice as $cd) {
+                                $title = 'Order deliverd';
+                                $body = "Your order " . $od->order_number . ' is deliverd..';
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                            }
+                        }
 
 
 
