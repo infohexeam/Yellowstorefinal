@@ -87,10 +87,11 @@ class OrderController extends Controller
 
 
                         $customerData = Trn_store_customer::find($order->customer_id);
-                        if ($data['orderDetails']->order_type == 'POS')
+                        if ($data['orderDetails']->order_type == 'POS') {
                             $order->customer_name = 'Store Customer';
-                        else
+                        } else {
                             $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
+                        }
 
 
 
