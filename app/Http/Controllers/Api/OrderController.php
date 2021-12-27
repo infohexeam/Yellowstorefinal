@@ -56,6 +56,12 @@ use App\Models\admin\Trn_DeliveryBoyLocation;
 
 class OrderController extends Controller
 {
+
+    public function makeStoreCustomer(Request $request)
+    {
+        Trn_store_customer::where('customer_id', 3)->update(['customer_first_name' => 'Store Customer', 'customer_last_name' => null, 'customer_mobile_number' => '000000000']);
+        echo "done";
+    }
     public function listOrders(Request $request)
     {
         $data = array();
