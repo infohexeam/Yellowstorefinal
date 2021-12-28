@@ -96,6 +96,19 @@ iframe {
 .wrap-login100.p-6.wrap-width {
     margin-top: 8em;
 }
+
+.wrap-login100.p-6.wrap-width {
+    width: 800px;
+    text-align: justify;
+}
+
+/************************/
+@media (max-width: 576px) {
+    .wrap-login100.p-6.wrap-width {
+        width: 100%;
+        text-align: justify;
+    }
+}
 .container-login100 {
     width: 100%;
     height: 100%;

@@ -42,7 +42,7 @@
          <div class="page">
                <div class="col col-login mx-auto">
                   <div class="text-center">
-                  <img src="{{URL::to('/assets/Yellow-Store-logo.png')}}" class="header-brand-img" alt="">
+                  <img src="{{URL::to('/assets/Yellow-Store-logo.png')}}" class="header-brand-img terms-logo" alt="">
                   </div>
                </div>
                <div class="container-login100">
