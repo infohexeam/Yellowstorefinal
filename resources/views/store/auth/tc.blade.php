@@ -46,7 +46,7 @@
                   </div>
                </div>
                <div class="container-login100">
-                  <div class="wrap-login100 p-6 wrap-width" style="width:800px;">
+                  <div class="wrap-login100 p-6 wrap-width">
                     <span class="login100-form-title">
                         {{ __('Terms and Conditions') }}
                     </span>

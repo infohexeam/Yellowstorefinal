@@ -8401,7 +8401,7 @@ body.fixed-header .header {
     margin-right: 0.5rem;
     width: auto;
 }
-img.header-brand-img .terms-logo {
+img.header-brand-img.terms-logo {
     margin-top: 2em;
 }
 .header-avatar {
