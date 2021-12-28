@@ -123,7 +123,7 @@
                         
                             <div class="card-body">
                                 <div class="table-responsive">
-                                   <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                                       <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
@@ -201,6 +201,34 @@
 </div>
 
 
+
+
+<script>
+    $(function(e) {
+	 $('#exampletable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Store visit report',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,4,5,6,7]
+                 },
+                 orientation : 'landscape',
+                pageSize : 'LEGAL',
+            },
+            {
+                extend: 'excel',
+                title: 'Store visit report',
+                footer: true,
+              
+            }
+         ]
+    } );
+
+} );
+</script>
 
 <script>
     $(document).ready(function() {

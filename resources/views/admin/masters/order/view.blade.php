@@ -158,16 +158,16 @@
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                    <td><strong>Name :</strong> {{$order->customer['customer_first_name']}}</td>
+                                    <td><strong>Name :</strong> {{@$order->customer['customer_first_name']}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Mobile :</strong> (+91){{ $order->customer['customer_mobile_number']}}</td>
+                                    <td><strong>Mobile :</strong> (+91){{ @$order->customer['customer_mobile_number']}}</td>
                                  </tr>
                                   <tr>
-                                    <td><strong>Location :</strong> {{ $order->customer['customer_location']}}</td>
+                                    <td><strong>Location :</strong> {{ @$order->customer['customer_location']}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Address :</strong> {{ $order->customer['customer_address']}}</td>
+                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
                                  </tr>
                               </tbody>
 
@@ -188,10 +188,10 @@
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                    <td><strong>Payment Mode :</strong> {{$order->payment_type['payment_type']}}</td>
+                                    <td><strong>Payment Mode :</strong> {{@$order->payment_type['payment_type']}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Address :</strong> {{ $order->customer['customer_address']}}</td>
+                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
                                  </tr>
 
                               </tbody>
