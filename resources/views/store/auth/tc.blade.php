@@ -46,7 +46,7 @@
                   </div>
                </div>
                <div class="container-login100">
-                  <div class="wrap-login100 p-6" style="width:800px;">
+                  <div class="wrap-login100 p-6 wrap-width" style="width:800px;">
                     <span class="login100-form-title">
                         {{ __('Terms and Conditions') }}
                     </span>
@@ -58,16 +58,8 @@
                             </div>
                         </div>
 
-                        <div class="container-login100-form-btn">
-                           <a href="{{ url('store-registration') }}" class="login100-form-btn btn-primary">
-                           {{ __('Register Now') }}
-                           </a>
-                        </div>
-                         <div class="container-login100-form-btn">
-                           <a href="{{ url('store-login') }}" id="submit" class="login100-form-btn btn-primary">
-                           {{ __('Login') }}
-                           </a>
-                        </div>
+                       
+                     
                       
                   </div>
                </div>
