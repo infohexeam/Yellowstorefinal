@@ -22,6 +22,8 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
+use File;
+
 
 
 
@@ -363,6 +365,10 @@ class StoreController extends Controller
             if ($storMob) {
 
                 if (Trn_StoreAdmin::where("store_mobile", '=', $storMob)->where('store_otp_verify_status', 0)->count() > 0) {
+                    // $store_qrcodeData = Mst_store::where("store_mobile", '=', $storMob)->first();
+                    // if (isset($store_qrcodeData->store_qrcode)) {
+                    //     File::delete(public_path('upload/test.png')); // delete qrcode
+                    // }
                     Trn_StoreAdmin::where("store_mobile", '=', $storMob)->delete();
                     Mst_store::where("store_mobile", '=', $storMob)->forceDelete();
                 }
@@ -447,7 +453,7 @@ class StoreController extends Controller
                 $store->business_type_id            = $request->business_type_id;
                 $store->store_username            = $request->store_mobile;
                 $timestamp = time();
-                $qrco = Str::of($request->store_name)->slug('-') . "-" . @$request->store_mobile;
+                $qrco = Str::of($request->store_name)->slug('-') . "-" . rand(10, 99) . "-" . @$request->store_mobile;
 
                 \QrCode::format('svg')->size(500)->generate($qrco, 'assets/uploads/store_qrcodes/' . $qrco . '.svg');
                 $store->store_qrcode          = $qrco;
