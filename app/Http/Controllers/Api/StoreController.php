@@ -572,6 +572,12 @@ class StoreController extends Controller
                             } else {
                                 $data['status'] = 2;
                                 $data['message'] = "OTP not verified";
+                                $storeData = Mst_store::find($custCheck->store_id);
+
+                                $data['store_id'] = $custCheck->store_id;
+                                $data['store_admin_id'] = $custCheck->store_admin_id;
+                                $data['store_name'] = $storeData->store_name;
+                                $data['store_mobile'] = $phone;
                             }
                         } else {
 
