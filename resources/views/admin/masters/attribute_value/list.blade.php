@@ -77,6 +77,11 @@
       </div>
    </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <!-- MESSAGE MODAL CLOSED -->
 @endsection

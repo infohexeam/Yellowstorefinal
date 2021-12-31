@@ -6,6 +6,11 @@ use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store;
 @endphp
+<style>
+   .footer.dash{
+       padding-left: 250px;padding-right: 0;
+   }
+</style>
 <!-- ROW-1 -->
 <div class="row" style="min-height: 70vh;">
    <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">

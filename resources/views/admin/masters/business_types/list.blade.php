@@ -131,7 +131,15 @@ $(function(e) {
                 footer: true,
                 exportOptions: {
                      columns: [0,1,3]
-                 }
+                 },
+                  customize: function(doc) {
+                        doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+				            doc.content.forEach(function(item) {
+                     if (item.table) {
+                        item.table.widths = [40, '*','*']
+                     }
+                     })
+				      }
             },
             {
                 extend: 'excel',

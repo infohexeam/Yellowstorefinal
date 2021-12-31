@@ -22,7 +22,7 @@
                                    <i class="fa fa-recycle"></i> Restore Vehicle Type </a> @endif
                                 <br>
                             <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -154,6 +154,35 @@ function clearText()
 
 }
 </script>
+
+<script>
+
+    $(function(e) {
+        $('#exampletable').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'pdf',
+                    title: 'Vehicle_types',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1]
+                     }
+                     
+                },
+                {
+                    extend: 'excel',
+                    title: 'Vehicle_types',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1]
+                     }
+                }
+             ]
+        } );
+    
+    } );
+                </script>
 
 
 @endsection
