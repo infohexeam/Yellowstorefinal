@@ -4,7 +4,7 @@
 $date = Carbon\Carbon::now();
 @endphp
 <div class="container">
-   <div class="row justify-content-center">
+   <div class="row justify-content-center" style="min-height: 70vh;">
       <div class="col-md-12 col-lg-12">
          <div class="card">
             <div class="row">
@@ -179,6 +179,9 @@ $date = Carbon\Carbon::now();
                   </div>
                </div>
             </div>
+         </div>
+      </div>
+   </div>
 
             <!-- MESSAGE MODAL CLOSED -->
 

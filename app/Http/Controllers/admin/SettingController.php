@@ -3736,7 +3736,7 @@ class SettingController extends Controller
 
 	public function list_store_payment_settlment(Request $request)
 	{
-		$pageTitle = "Store Payment Settlment";
+		$pageTitle = "Store Payment Settlement";
 		$store_payment_settlments = Trn_store_payment_settlment::all();
 		$store = Mst_store::all();
 
@@ -3758,7 +3758,7 @@ class SettingController extends Controller
 
 	public function list_subadmin_payment_settlment()
 	{
-		$pageTitle = "Sub Admin Payment Settlments";
+		$pageTitle = "Sub Admin Payment Settlements";
 		$subadmins = User::where('user_role_id', 1)->get();
 		return view('admin.masters.subadmin_payment.list', compact('subadmins', 'pageTitle'));
 	}
@@ -3766,7 +3766,7 @@ class SettingController extends Controller
 	{
 		$subadmin_id  = Crypt::decryptString($subadmin_id);
 
-		$pageTitle = "Sub Admin Payment Settlment";
+		$pageTitle = "Sub Admin Payment Settlement";
 
 
 		if ($_GET) {
@@ -3835,7 +3835,7 @@ class SettingController extends Controller
 
 	public function list_delivery_payment_settlment(Request $request)
 	{
-		$pageTitle = "Delivery Boy Payment Settlment";
+		$pageTitle = "Delivery Boy Payment Settlement";
 		$delivery_boy_payments = Trn_delivery_boy_payment_settlment::all();
 		$delivery_boy = Mst_delivery_boy::all();
 
@@ -3936,7 +3936,7 @@ class SettingController extends Controller
 
 	public function list_stores_payment_settlment(Request $request)
 	{
-		$pageTitle = "Store Payment Settlment";
+		$pageTitle = "Store Payment Settlement";
 		$store_payment_settlments = Trn_store_payment_settlment::all();
 		$store = Mst_store::all();
 		// dd($store);
@@ -3955,7 +3955,7 @@ class SettingController extends Controller
 
 	public function list_stores_payments(Request $request, $store_name, $store_id)
 	{
-		$pageTitle = $store_name . " (store) Payment Settlment";
+		$pageTitle = $store_name . " (store) Payment Settlement";
 		$store_id  = Crypt::decryptString($store_id);
 
 		$store_payments = Trn_store_payment_settlment::where('store_id', $store_id)->get();
@@ -4035,7 +4035,7 @@ class SettingController extends Controller
 
 	public function list_delivery_boys_payment_settlment(Request $request)
 	{
-		$pageTitle = "Delivery Boys Payment Settlment";
+		$pageTitle = "Delivery Boys Payment Settlement";
 		$delivery_boy = Mst_delivery_boy::orderBy('delivery_boy_id', 'DESC')->get();
 		$delivery_boys = Mst_delivery_boy::orderBy('delivery_boy_id', 'DESC')->get();
 
@@ -4061,7 +4061,7 @@ class SettingController extends Controller
 
 	public function DeliveryBoyPaymentSettlment(Request $request, $delivery_boy_name, $delivery_boy_id)
 	{
-		$pageTitle = $delivery_boy_name . " (delivery boy) Payment Settlment";
+		$pageTitle = $delivery_boy_name . " (delivery boy) Payment Settlement";
 		$delivery_boy_id  = Crypt::decryptString($delivery_boy_id);
 
 		$delivery_boy_payments = Trn_delivery_boy_payment_settlment::where('delivery_boy_id', $delivery_boy_id)->get();

@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row justify-content-center">
+   <div class="row justify-content-center" style="min-height: 70vh;">
       <div class="col-md-12 col-lg-12">
          <div class="card">
             <div class="row">
@@ -25,7 +25,7 @@
                      @endif
                      <div class="card-header">
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
-                     </div>
+                     </div><br>
 
                      {{-- <div class="card-body">
        <form action="{{route('admin.list_payment_settlment')}}" method="GET"
@@ -98,6 +98,9 @@
                   </div>
                </div>
             </div>
+         </div>
+      </div>
+   </div>
 
                     <script>
 
