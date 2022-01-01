@@ -188,7 +188,7 @@ class ProductController extends Controller
                     $feedbacks = Mst_FeedbackQuestion::where('category_id', $productData->product_cat_id)->get();
                     $data['feedbackData'] = $feedbacks;
 
-                    $reviewData = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->get();
+                    $reviewData = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('isVisible',1)->get();
                     foreach ($reviewData as $r) {
                         $r->customer_image =  Helper::default_user_image();
                         $customerData =  Trn_store_customer::find($r->customer_id);
@@ -242,7 +242,7 @@ class ProductController extends Controller
                         else
                             $data['feedbackAddedStatus'] = 1;
 
-                        $rwStatus = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('customer_id', $request->customer_id)->first();
+                        $rwStatus = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('isVisible',1)->where('customer_id', $request->customer_id)->first();
                         if (!$rwStatus)
                             $data['reviewAddedStatus'] = 0;
                         else
@@ -318,8 +318,8 @@ class ProductController extends Controller
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -566,8 +566,8 @@ class ProductController extends Controller
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -653,7 +653,7 @@ class ProductController extends Controller
                     $feedbacks = Mst_FeedbackQuestion::where('category_id', $productData->product_cat_id)->get();
                     $data['feedbackData'] = $feedbacks;
 
-                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->get();
+                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->get();
                     foreach ($reviewData as $r) {
                         $r->customer_image =  Helper::default_user_image();
                         $customerData =  Trn_store_customer::find($r->customer_id);
@@ -741,7 +741,7 @@ class ProductController extends Controller
                         else
                             $data['feedbackAddedStatus'] = 1;
 
-                        $rwStatus = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('customer_id', $request->customer_id)->first();
+                        $rwStatus = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->where('customer_id', $request->customer_id)->first();
                         if (!$rwStatus)
                             $data['reviewAddedStatus'] = 0;
                         else
@@ -781,8 +781,8 @@ class ProductController extends Controller
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                         $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -853,7 +853,7 @@ class ProductController extends Controller
                         //     ]
                         // ];  
 
-                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->get();
+                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->get();
 
                         foreach ($reviewData as $r) {
                             $r->customer_image =  Helper::default_user_image();
@@ -1431,8 +1431,8 @@ class ProductController extends Controller
                     //$offerProduct->rating = number_format((float)4.20, 1, '.', '');
                     //$offerProduct->ratingCount = 120;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -1510,8 +1510,8 @@ class ProductController extends Controller
                         // $offerProduct->rating = number_format((float)4.20, 1, '.', '');
                         // $offerProduct->ratingCount = 120;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -1765,8 +1765,8 @@ class ProductController extends Controller
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -1807,7 +1807,7 @@ class ProductController extends Controller
                     $feedbacks = Mst_FeedbackQuestion::where('category_id', $productData->product_cat_id)->get();
                     $data['feedbackData'] = $feedbacks;
 
-                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->get();
+                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->get();
                     foreach ($reviewData as $r) {
                         $r->customer_image =  Helper::default_user_image();
                         $customerData =  Trn_store_customer::find($r->customer_id);
@@ -1923,8 +1923,8 @@ class ProductController extends Controller
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                         $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -1964,7 +1964,7 @@ class ProductController extends Controller
                         //     ]
                         // ];  
 
-                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->get();
+                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->get();
 
                         foreach ($reviewData as $r) {
                             $r->customer_image =  Helper::default_user_image();
@@ -2093,8 +2093,8 @@ class ProductController extends Controller
                                 // $offerProduct->rating = number_format((float)4.20, 1, '.', '');
                                 // $offerProduct->ratingCount = 120;
 
-                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                                 if ($countRating == 0) {
                                     $countRating = 1;
@@ -2153,8 +2153,8 @@ class ProductController extends Controller
                                 //$product->rating = number_format((float)4.20, 1, '.', '');
                                 //$product->ratingCount = 120;
 
-                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->sum('rating');
-                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->count();
+                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->sum('rating');
+                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->count();
 
                                 if ($countRating == 0) {
                                     $countRating = 1;
@@ -2241,8 +2241,8 @@ class ProductController extends Controller
                                     // $offerProduct->rating = number_format((float)4.20, 1, '.', '');
                                     // $offerProduct->ratingCount = 120;
 
-                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                                     if ($countRating == 0) {
                                         $countRating = 1;
@@ -2301,8 +2301,8 @@ class ProductController extends Controller
                                     //$product->rating = number_format((float)4.20, 1, '.', '');
                                     //$product->ratingCount = 120;
 
-                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->sum('rating');
-                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->count();
+                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->sum('rating');
+                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->count();
 
                                     if ($countRating == 0) {
                                         $countRating = 1;
@@ -3009,8 +3009,8 @@ class ProductController extends Controller
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                             $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
 
-                            $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                            $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                            $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                            $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
                             if ($countRating == 0) {
                                 $countRating = 1;
                             }
@@ -3601,8 +3601,8 @@ class ProductController extends Controller
                         //$offerProduct->rating = number_format((float)4.20, 1, '.', '');
                         //$offerProduct->ratingCount = 120;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -4143,9 +4143,9 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
-                if ($data['Reviews'] = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->get()) {
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->count();
+                if ($data['Reviews'] = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->get()) {
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
