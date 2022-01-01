@@ -240,6 +240,13 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
         </a>
       </li> --}}
 
+      <li class="slide">
+        <a class="side-menu__item" href="{{route('admin.list_reviews')}}">
+          <i class="side-menu__icon fe fe-square"></i>
+          <span class="side-menu__label"> {{ __('Reviews') }}</span>
+        </a>
+      </li>
+
 
 
       <!-- <li class="slide">-->
