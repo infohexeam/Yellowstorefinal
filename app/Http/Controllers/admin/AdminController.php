@@ -68,6 +68,7 @@ use App\Models\admin\Trn_TaxSplitUp;
 use App\Models\admin\Mst_SubCategory;
 
 use App\Models\admin\Mst_GlobalProducts;
+use App\Models\admin\Trn_ReviewsAndRating;
 
 
 class AdminController extends Controller
@@ -75,6 +76,66 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function removeReview(Request $request, $reviews_id)
+    {
+        // dd($reviews_id);
+        Trn_ReviewsAndRating::where('reviews_id', $reviews_id)->delete();
+        return redirect()->back()->with('status', 'Review removed successfully');
+    }
+
+    public function reviewStatus(Request $request, $reviews_id)
+    {
+        $reviewSataus = Trn_ReviewsAndRating::where('reviews_id', $reviews_id)->first();
+        if ($reviewSataus->isVisible == 1)
+            Trn_ReviewsAndRating::where('reviews_id', $reviews_id)->update(['isVisible' => 0]);
+        else
+            Trn_ReviewsAndRating::where('reviews_id', $reviews_id)->update(['isVisible' => 1]);
+
+
+        return redirect()->back()->with('status', 'Visibility status updated successfully');
+    }
+
+
+    public function listReview(Request $request)
+    {
+        $pageTitle = 'Reviews List';
+        $reviews = Trn_ReviewsAndRating::orderBy('reviews_id', 'DESC');
+        if ($_GET) {
+            if (isset($request->store_id)) {
+                $reviews = $reviews->where('store_id', $request->store_id);
+            }
+
+            if (isset($request->subadmin_id)) {
+                $reviews = $reviews->where('subadmin_id', $request->subadmin_id);
+            }
+
+            if (isset($request->product_id)) {
+                $reviews = $reviews->where('product_id', $request->product_id);
+            }
+            if (isset($request->customer_id)) {
+                $reviews = $reviews->where('customer_id', $request->customer_id);
+            }
+            if (isset($request->rating)) {
+                $reviews = $reviews->where('rating', $request->rating);
+            }
+
+            if (isset($request->isVisible)) {
+                $reviews = $reviews->where('isVisible', $request->isVisible);
+            }
+        }
+        $reviews = $reviews->get();
+
+
+        //dd($reviews);
+        $stores  = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+            ->where("trn__store_admins.role_id", '=', 0)
+            ->select("mst_stores.store_name", "mst_stores.store_id")->orderBy('store_name')->get();
+        $subadmins = User::where('user_role_id', '!=', 0)->get();
+        $customers = Trn_store_customer::all();
+
+        return view('admin.masters.reviews.list', compact('customers', 'subadmins', 'stores', 'reviews', 'pageTitle'));
     }
     
     public function saveDeviceToken(Request $request)

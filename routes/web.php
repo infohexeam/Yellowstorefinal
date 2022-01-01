@@ -650,6 +650,12 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/customer/update-terms', 'SettingController@updateCusTerms')->name('admin.edit_terms_customer');
         Route::post('admin/update-tc', 'SettingController@updateTC')->name('admin.update_tc');
         Route::post('admin/customer/update-tc', 'SettingController@updateCusTC')->name('admin.update_cus_tc');
+
+        Route::get('admin/ajax/pg-status', 'AdminController@pgStatus');
+
+        Route::get('admin/review/list', 'AdminController@listReview')->name('admin.list_reviews');
+        Route::post('admin/remove-review/{reviews_id}', 'AdminController@removeReview')->name('admin.destroy_review');
+        Route::post('admin/review-status/{reviews_id}', 'AdminController@reviewStatus')->name('admin.review_status');
     });
 
     Route::group(['namespace' => 'store'], function () {

@@ -3,9 +3,12 @@
 namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trn_ReviewsAndRating extends Model
 {
+
+  use SoftDeletes;
     protected $table = "trn__reviews_and_ratings";
     protected $primaryKey = "reviews_id";
 
@@ -16,7 +19,7 @@ class Trn_ReviewsAndRating extends Model
                            'product_varient_id',
                            'rating',
                            'review',
-                           'reviews_date',
+                           'reviews_date','isVisible'
                ];
 
 
