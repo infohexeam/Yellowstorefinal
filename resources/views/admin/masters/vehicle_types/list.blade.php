@@ -18,7 +18,7 @@
                                     <a  data-toggle="modal" data-target="#StockModal01" class="btn btn-block btn-info text-white">
                                     <i class="fa fa-plus"></i> Add Vehicle Type </a>
                                    @if(auth()->user()->user_role_id == 0)
-                                     <a href=" {{ url('admin/vihicle-types/restore-list') }}" class=" text-white btn btn-block btn-danger">
+                                     <a href=" {{ url('admin/vehicle-types/restore-list') }}" class=" text-white btn btn-block btn-danger">
                                    <i class="fa fa-recycle"></i> Restore Vehicle Type </a> @endif
                                 <br>
                             <div class="table-responsive">

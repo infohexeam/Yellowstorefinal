@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
-
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Response;
@@ -17,6 +16,7 @@ use Carbon\Carbon;
 use Crypt;
 use Mail;
 use PDF;
+use App\Helpers\Helper;
 
 use App\Models\admin\Mst_store;
 use App\Models\admin\Mst_Tax;
@@ -41,684 +41,1260 @@ use App\Models\admin\Mst_CustomerAppBanner;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_Cart;
 use App\Models\admin\Mst_Coupon;
+use App\Models\admin\Mst_dispute;
+use App\Models\admin\Mst_Issues;
+use App\Models\admin\Sys_IssueType;
+use App\Models\admin\Trn_StoreDeliveryTimeSlot;
+use App\Models\admin\Sys_payment_type;
 use App\Models\admin\Trn_store_order;
-
+use App\Models\admin\Trn_order_invoice;
+use App\Models\admin\Trn_store_order_item;
+use App\Models\admin\Sys_store_order_status;
+use App\Models\admin\Mst_delivery_boy;
+use App\Models\admin\Trn_CustomerDeviceToken;
+use App\Models\admin\Trn_StoreDeviceToken;
+use App\Models\admin\Trn_StoreAdmin;
+use App\Models\admin\Trn_StoreWebToken;
 use App\Models\admin\Trn_customer_reward;
-use App\Models\admin\Trn_configure_points;
 
+use App\Models\admin\Mst_StockDetail;
+use App\Models\admin\Trn_DeliveryBoyLocation;
 
-
-class PurchaseController extends Controller
+class StoreOrderController extends Controller
 {
-    
-    
-    
-    public function reduceRewardPoint(Request $request)
+
+
+    public function saveOrderService(Request $request)
     {
-        $data = array(); 
+        //dd($request->all());
+
         try {
-            if(isset($request->order_amount))
-            {
-                if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
-                {
-                    $customer_id = $request->customer_id;
-                    
-                     $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status',1)->sum('reward_points_earned');
-                     $totalusedPoints = Trn_store_order::where('customer_id',$request->customer_id)->whereNotIn('status_id',[5])->sum('reward_points_used');
-                    $customerRewardPoint = $totalCustomerRewardsCount - $totalusedPoints;
-                    
-                    //echo $customerRewardPoint;die;
-                    
-                    if($customerRewardPoint > 0)
-                    {
-                    
 
-                            $ConfigPoints = Trn_configure_points::first();
-                            $pointToRupeeRatio =   $ConfigPoints->rupee / $ConfigPoints->rupee_points; // points to rupee ratio
-                            
-                            $avilableRewardAmount = $pointToRupeeRatio * $customerRewardPoint;
-                            $maxRedeemAmountPerOrder = $ConfigPoints->max_redeem_amount;
-                            $totalReducableAmount = ($avilableRewardAmount * $ConfigPoints->redeem_percentage) / 100; // 10% of order amount
-                            
-                            if($totalReducableAmount > $maxRedeemAmountPerOrder){
 
-                                $orderAmount = $request->order_amount;
-                                $reducedOrderAmount = $orderAmount - $maxRedeemAmountPerOrder;
-                                $customerUsedRewardPoint = $maxRedeemAmountPerOrder / $pointToRupeeRatio;
-                                
-                                $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
-                                $data['totalReducableAmount'] = number_format((float)$maxRedeemAmountPerOrder, 2, '.', '');
-                                $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
-                                $data['reducedAmountByWalletPoints'] = number_format((float)$maxRedeemAmountPerOrder, 2, '.', '');
-                                $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
-                                $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
-                                
-                                
-                            }else{
-                                
-                                $orderAmount = $request->order_amount;
-                                $reducedOrderAmount = $orderAmount - $totalReducableAmount;
-                                $customerUsedRewardPoint = $totalReducableAmount / $pointToRupeeRatio;
 
-                                $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
-                                $data['totalReducableAmount'] = number_format((float)$totalReducableAmount, 2, '.', '');
-                                $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
-                                $data['reducedAmountByWalletPoints'] = number_format((float)$totalReducableAmount, 2, '.', '');
-                                $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
-                                $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
+
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'customer_id'   => 'required',
+                        'order_total_amount'  => 'required',
+                        'payment_type_id'   => 'required',
+                        'status_id' => 'required',
+                        'product_variants.*.product_id'    => 'required',
+                        'product_variants.*.product_varient_id'    => 'required',
+                        'product_variants.*.quantity'    => 'required',
+                        'product_variants.*.unit_price'    => 'required',
+                        'product_variants.*.total_amount'    => 'required',
+                        'product_variants.*.tax_amount'    => 'required',
+                        'product_variants.*.discount_amount'    => 'required',
+                        //  'product_variants.*.discount_percentage'    =>'required',
+                    ],
+                    [
+                        'customer_id.required'  => 'Customer required',
+                        'total_amount.required' => 'Total order amount required',
+                        'payment_type_id.required'  => 'Payment type required',
+                        'status_id.required'    => 'Status required',
+                        'product_variants.*.product_id.required'    => 'Product required',
+                        'product_variants.*.product_varient_id.required'    => 'Product variant required',
+                        'product_variants.*.quantity.required'    => 'Product quantity required',
+                        'product_variants.*.unit_price.required'    => 'Product quantity required',
+                        'product_variants.*.total_amount.required'    => 'Total amount required',
+                        'product_variants.*.tax_amount.required'    => 'Tax amount required',
+                        'product_variants.*.discount_amount.required'    => 'Discount amount required',
+                        // 'product_variants.*.discount_percentage.required'    =>'Discount percentage required',
+                    ]
+                );
+
+                if (!$validator->fails()) {
+                    $noStockProducts = array();
+                    foreach ($request->product_variants as $value) {
+                        $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                        $proData = Mst_store_product::find($varProdu->product_id);
+                        if (isset($varProdu)) {
+                            if ($value['quantity'] > $varProdu->stock_count) {
+                                if (@$proData->product_name != $varProdu->variant_name) {
+                                    $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
+                                } else {
+                                    $data['product_name'] = @$proData->product_name;
+                                }
+
+                                $noStockProducts[] = $varProdu->product_varient_id;
+
+                                $data['product_varient_id'] = $varProdu->product_varient_id;
+                                $data['product_id'] = $varProdu->product_id;
+                                $data['message'] = 'Stock unavilable';
+                                $data['status'] = 2;
+                                //  return response($data);
                             }
-                            
-                            
-                            
-                            
-                            
-                        //     $orderAmount = $request->order_amount;
-                        //     $totalReducableAmount = ($orderAmount * $ConfigPoints->redeem_percentage) / 100; // 10% of order amount
-                        //     $amountCanBeReduced = $pointToRupeeRatio * $customerRewardPoint;
-                        //     if($totalReducableAmount >= $amountCanBeReduced){
-                        //         $reducedOrderAmount = $orderAmount - $amountCanBeReduced;
-                        //         $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
-                        //         $data['totalReducableAmount'] = number_format((float)$totalReducableAmount, 2, '.', '');
-                        //         $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
-                        //         $data['reducedAmountByWalletPoints'] = number_format((float)$amountCanBeReduced, 2, '.', '');
-                        //         $data['usedPoint'] = number_format((float)$customerRewardPoint, 2, '.', '');
-                        //         $data['balancePoint'] = 0;
-                        //     }else{
-                        //         $usedPoint = $totalReducableAmount / $pointToRupeeRatio;
-                        //         $reducedOrderAmount = $orderAmount - $totalReducableAmount;
-                        //         $balancePoint = $customerRewardPoint - $usedPoint;
-                        //         $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
-                        //         $data['totalReducableAmount'] = number_format((float)$totalReducableAmount, 2, '.', '');
-                        //         $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
-                        //         $data['reducedAmountByWalletPoints'] = number_format((float)$totalReducableAmount, 2, '.', '');
-                        //         $data['usedPoint'] = number_format((float)$usedPoint, 2, '.', '');
-                        //         $data['balancePoint'] = number_format((float)$balancePoint, 2, '.', '');
-                        //     }
-                        
-                            $data['status'] = 1;
-                            $data['message'] = "success";
-                    }
-                    else
-                    {
-                        $data['status'] = 0;
-                        $data['message'] = "No reward points available";
-                    }
-    
-                }
-                else
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Customer not found";
-                }
-            }
-            else
-            {
-                $data['status'] = 0;
-                $data['message'] = "Order amount required";
-            }
-
-        return response($data);
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-    
-    
-
-    public function addToCart(Request $request)
-    {
-        $data = array(); 
-        try {
-                if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
-                {
-                    if(isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id))
-                    {
-                        $validator = Validator::make($request->all(), [      
-                            'quantity' => 'required|numeric',  
-                        ],
-                        [   
-                            'quantity.required' => "Quantity required",
-                        ]);
-                        if(!$validator->fails())
-                        {
-                            if(Trn_Cart::where('customer_id',$request->customer_id)->where('remove_status',0)->where('product_varient_id',$request->product_varient_id)->first())
-                            {
-                                $cartItem = Trn_Cart::where('customer_id',$request->customer_id)
-                                ->where('remove_status',0)
-                                ->where('product_varient_id',$request->product_varient_id);
-                               // $cartItem->quantity = $request->quantity;
-                                $cartItem->update(['quantity' => $request->quantity]);
-
-                                $data['status'] = 1;
-                                $data['message'] = "Product added to cart";
-                                return response($data);
-                            }
-                            else
-                            {
-
-                                $proVarData = Mst_store_product_varient::find($request->product_varient_id);
-
-                                $cartItem = new Trn_Cart;
-                                $cartItem->store_id = $proVarData->store_id;
-                                $cartItem->customer_id = $request->customer_id;
-                                $cartItem->product_varient_id = $request->product_varient_id;
-                                $cartItem->product_id = $proVarData->product_id;
-                                $cartItem->quantity = $request->quantity;
-                                $cartItem->remove_status = 0;
-                                $cartItem->save();
-
-                                $data['status'] = 1;
-                                $data['message'] = "Product added to cart";
-                                return response($data);
-                            }
-
-                        }
-                        else
-                        {
+                        } else {
+                            $data['message'] = 'Product not found';
                             $data['status'] = 2;
-                            $data['message'] = "Quantity invalid";
                             return response($data);
                         }
                     }
-                    else
-                    {
-                        $data['status'] = 3;
-                        $data['message'] = "Product not found";
+                    if (count($noStockProducts) > 0) {
+                        $data['noStockProducts'] = $noStockProducts;
                         return response($data);
                     }
-                }
-                else
-                {
-                    $data['status'] = 4;
-                    $data['message'] = "Customer not found";
+                    $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+
+                    $orderNumber = @$storeOrderCount + 1;
+
+                    $store_data = Mst_store::find($request->store_id);
+
+                    if (isset($store_data->order_number_prefix)) {
+                        $orderNumberPrefix = $store_data->order_number_prefix;
+                    } else {
+                        $orderNumberPrefix = 'ORDRYSTR';
+                    }
+
+
+                    $store_order = new Trn_store_order;
+
+                    $store_order->service_order =  1;
+                    $store_order->service_booking_order =  $request->service_booking_order;
+                    $store_order->product_varient_id =  $request->product_varient_id;
+
+                    $store_order->order_number = $orderNumberPrefix . @$orderNumber;
+                    // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
+                    $store_order->customer_id = $request->customer_id;
+                    $store_order->store_id =  $request->store_id;
+
+
+                    $store_order->subadmin_id =  $store_data->subadmin_id;
+                    $store_order->product_total_amount =  $request->order_total_amount - $request->amount_reduced_by_rp;
+                    $store_order->payment_status = 1;
+                    $store_order->status_id = 1;
+
+                    // online
+                    $store_order->payment_type_id = $request->payment_type_id;
+                    $store_order->delivery_charge =  $request->delivery_charge;
+                    $store_order->packing_charge =  $request->packing_charge;
+
+                    $store_order->time_slot =  $request->time_slot;
+
+
+
+                    $store_order->delivery_address =  $request->delivery_address;
+
+                    $store_order->coupon_id =  $request->coupon_id;
+                    $store_order->coupon_code =  $request->coupon_code;
+                    $store_order->reward_points_used =  $request->reward_points_used;
+                    $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
+                    $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+                    $store_order->order_type = 'APP';
+
+                    if (isset($request->amount_reduced_by_coupon))
+                        $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
+
+                    $store_order->save();
+                    $order_id = DB::getPdo()->lastInsertId();
+
+                    // if(Trn_store_order::where('customer_id',$request->customer_id)->count() < 1)
+                    // {
+                    //      $configPoint = Trn_configure_points::find(1);
+
+                    //     $cr = new Trn_customer_reward;
+                    //     $cr->transaction_type_id = 0;
+                    //     $cr->reward_points_earned = $configPoint->first_order_points;
+                    //     $cr->customer_id = $request->customer_id;
+                    //     $cr->order_id = $order_id;
+                    //     $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                    //     $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                    //     $cr->reward_point_status = 1;
+                    //     $cr->discription = "First order points";
+                    //     $cr->save();
+                    // }
+
+
+                    $invoice_info['order_id'] = $order_id;
+                    $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+                    $invoice_info['invoice_id'] = "INV0" . $order_id;
+                    $invoice_info['created_at'] = Carbon::now();
+                    $invoice_info['updated_at'] = Carbon::now();
+
+                    Trn_order_invoice::insert($invoice_info);
+
+                    foreach ($request->product_variants as $value) {
+                        $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
+
+                        if (!isset($value['discount_amount'])) {
+                            $value['discount_amount'] = 0;
+                        }
+
+
+
+                        $total_amount = $value['quantity'] * $value['unit_price'];
+
+                        $data2 = [
+                            'order_id' => $order_id,
+                            'product_id' => $value['product_id'],
+                            'product_varient_id' => $value['product_varient_id'],
+                            'customer_id' => $request['customer_id'],
+                            'store_id' => $request['store_id'],
+                            'quantity' => $value['quantity'],
+                            'unit_price' =>  $value['unit_price'],
+                            'tax_amount' => $value['tax_amount'],
+                            'total_amount' => $total_amount,
+                            'discount_amount' => $value['discount_amount'],
+                            //'discount_percentage'=> $value['discount_percentage'],
+                            'created_at'         => Carbon::now(),
+                            'updated_at'         => Carbon::now(),
+                        ];
+                        Trn_store_order_item::insert($data2);
+                    }
+
+
+
+                    $storeDatas = Trn_StoreAdmin::where('store_id', $request->store_id)->where('role_id', 0)->first();
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
+                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
+                    $orderdatas = Trn_store_order::find($order_id);
+
+                    foreach ($storeDevice as $sd) {
+                        $title = 'New service order arrived';
+                        $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                    }
+
+
+                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
+                    foreach ($storeWeb as $sw) {
+                        $title = 'New service order arrived';
+                        $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                    }
+
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Order Placed';
+                        $body = 'Your order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+
+                        //   $title = 'Title';
+                        //  $body = 'Body';
+
+                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                    }
+
+
+
+                    $data['status'] = 1;
+                    $data['order_id'] = $order_id;
+                    if ($request->service_booking_order == 1) {
+                        $data['message'] = "Booking successful.";
+                    } else {
+                        $data['message'] = "Order saved.";
+                    }
+
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    $data['errors'] = $validator->errors();
                     return response($data);
                 }
-                
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
-    public function cartItems(Request $request)
+    public function storeTimeSlots(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
-                { 
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                if ($data['timeSlotDetails']  = Trn_StoreDeliveryTimeSlot::select('store_delivery_time_slot_id', 'store_id', 'time_start', 'time_end')
+                    ->where('store_id', $store_id)->get()
+                ) {
+
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 4;
+                $data['message'] = "Customer not found";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+
+    public function listPaymentType(Request $request)
+    {
+        $data = array();
+        try {
+
+            if ($data['paymentTypes']  = Sys_payment_type::all()) {
+
+                $data['status'] = 1;
+                $data['message'] = "success";
+                return response($data);
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "failed";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+
+    public function saveOrder(Request $request)
+    {
+        //dd($request->all());
+
+        try {
+
+
+
+
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'customer_id'   => 'required',
+                        'order_total_amount'  => 'required',
+                        'payment_type_id'   => 'required',
+                        'status_id' => 'required',
+                        'product_variants.*.product_id'    => 'required',
+                        'product_variants.*.product_varient_id'    => 'required',
+                        'product_variants.*.quantity'    => 'required',
+                        'product_variants.*.unit_price'    => 'required',
+                        'product_variants.*.total_amount'    => 'required',
+                        'product_variants.*.tax_amount'    => 'required',
+                        'product_variants.*.discount_amount'    => 'required',
+                        //  'product_variants.*.discount_percentage'    =>'required',
+                    ],
+                    [
+                        'customer_id.required'  => 'Customer required',
+                        'total_amount.required' => 'Total order amount required',
+                        'payment_type_id.required'  => 'Payment type required',
+                        'status_id.required'    => 'Status required',
+                        'product_variants.*.product_id.required'    => 'Product required',
+                        'product_variants.*.product_varient_id.required'    => 'Product variant required',
+                        'product_variants.*.quantity.required'    => 'Product quantity required',
+                        'product_variants.*.unit_price.required'    => 'Product quantity required',
+                        'product_variants.*.total_amount.required'    => 'Total amount required',
+                        'product_variants.*.tax_amount.required'    => 'Tax amount required',
+                        'product_variants.*.discount_amount.required'    => 'Discount amount required',
+                        // 'product_variants.*.discount_percentage.required'    =>'Discount percentage required',
+                    ]
+                );
+
+                if (!$validator->fails()) {
+                    $noStockProducts = array();
+
+
+                    foreach ($request->product_variants as $value) {
+                        $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                        $proData = Mst_store_product::find($varProdu->product_id);
+
+                        if ($proData->service_type != 2) {
+
+
+                            if (isset($varProdu)) {
+                                if ($value['quantity'] > $varProdu->stock_count) {
+                                    if (@$proData->product_name != $varProdu->variant_name) {
+                                        $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
+                                    } else {
+                                        $data['product_name'] = @$proData->product_name;
+                                    }
+
+                                    $noStockProducts[] = $varProdu->product_varient_id;
+
+                                    $data['product_varient_id'] = $varProdu->product_varient_id;
+                                    $data['product_id'] = $varProdu->product_id;
+                                    $data['message'] = 'Stock unavilable';
+                                    $data['status'] = 2;
+                                    //  return response($data);
+                                }
+                            } else {
+                                $data['message'] = 'Product not found';
+                                $data['status'] = 2;
+                                return response($data);
+                            }
+                        }
+                    }
+                    if (count($noStockProducts) > 0) {
+                        $data['noStockProducts'] = $noStockProducts;
+                        return response($data);
+                    }
+                    $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+
+                    $orderNumber = @$storeOrderCount + 1;
+
+                    $store_data = Mst_store::find($request->store_id);
+
+                    if (isset($store_data->order_number_prefix)) {
+                        $orderNumberPrefix = $store_data->order_number_prefix;
+                    } else {
+                        $orderNumberPrefix = 'ORDRYSTR';
+                    }
+
+
+                    $store_order = new Trn_store_order;
+
+                    if (isset($request->service_order))
+                        $store_order->service_order =  $request->service_order; // service order - booking order
+
+
+                    $store_order->order_number = $orderNumberPrefix . @$orderNumber;
+                    // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
+                    $store_order->customer_id = $request->customer_id;
+                    $store_order->store_id =  $request->store_id;
+
+
+                    $store_order->subadmin_id =  $store_data->subadmin_id;
+                    $store_order->product_total_amount =  $request->order_total_amount - $request->amount_reduced_by_rp;
+                    $store_order->payment_status = 1;
+                    $store_order->status_id = 1;
+
+                    // online
+                    $store_order->payment_type_id = $request->payment_type_id;
+                    $store_order->delivery_charge =  $request->delivery_charge;
+                    $store_order->packing_charge =  $request->packing_charge;
+
+                    $store_order->time_slot =  $request->time_slot;
+
+
+
+                    $store_order->delivery_address =  $request->delivery_address;
+
+                    $store_order->coupon_id =  $request->coupon_id;
+                    $store_order->coupon_code =  $request->coupon_code;
+                    $store_order->reward_points_used =  $request->reward_points_used;
+                    $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
+                    $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+                    $store_order->order_type = 'APP';
+
+
+                    if (isset($request->amount_reduced_by_coupon))
+                        $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
+
+                    $store_order->save();
+                    $order_id = DB::getPdo()->lastInsertId();
+
+                    // if(Trn_store_order::where('customer_id',$request->customer_id)->count() < 1)
+                    // {
+                    //      $configPoint = Trn_configure_points::find(1);
+
+                    //     $cr = new Trn_customer_reward;
+                    //     $cr->transaction_type_id = 0;
+                    //     $cr->reward_points_earned = $configPoint->first_order_points;
+                    //     $cr->customer_id = $request->customer_id;
+                    //     $cr->order_id = $order_id;
+                    //     $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                    //     $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                    //     $cr->reward_point_status = 1;
+                    //     $cr->discription = "First order points";
+                    //     $cr->save();
+                    // }
+
+
+                    $invoice_info['order_id'] = $order_id;
+                    $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+                    $invoice_info['invoice_id'] = "INV0" . $order_id;
+                    $invoice_info['created_at'] = Carbon::now();
+                    $invoice_info['updated_at'] = Carbon::now();
+
+                    Trn_order_invoice::insert($invoice_info);
+
+                    foreach ($request->product_variants as $value) {
+                        $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
+
+                        if ($proData->service_type != 2) {
+                            Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+                        }
+
+                        if (!isset($value['discount_amount'])) {
+                            $value['discount_amount'] = 0;
+                        }
+
+                        if ($proData->service_type != 2) {
+                            $negStock = -1 * abs($value['quantity']);
+
+                            $sd = new Mst_StockDetail;
+                            $sd->store_id = $request->store_id;
+                            $sd->product_id = $value['product_id'];
+                            $sd->stock = $negStock;
+                            $sd->product_varient_id = $value['product_varient_id'];
+                            $sd->prev_stock = $productVarOlddata->stock_count;
+                            $sd->save();
+                        }
+
+
+                        $total_amount = $value['quantity'] * $value['unit_price'];
+
+                        $data2 = [
+                            'order_id' => $order_id,
+                            'product_id' => $value['product_id'],
+                            'product_varient_id' => $value['product_varient_id'],
+                            'customer_id' => $request['customer_id'],
+                            'store_id' => $request['store_id'],
+                            'quantity' => $value['quantity'],
+                            'unit_price' =>  $value['unit_price'],
+                            'tax_amount' => $value['tax_amount'],
+                            'total_amount' => $total_amount,
+                            'discount_amount' => $value['discount_amount'],
+                            //'discount_percentage'=> $value['discount_percentage'],
+                            'created_at'         => Carbon::now(),
+                            'updated_at'         => Carbon::now(),
+                        ];
+                        Trn_store_order_item::insert($data2);
+                    }
+
+
+
+                    $storeDatas = Trn_StoreAdmin::where('store_id', $request->store_id)->where('role_id', 0)->first();
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
+                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
+                    $orderdatas = Trn_store_order::find($order_id);
+
+                    foreach ($storeDevice as $sd) {
+                        $title = 'New order arrived';
+                        $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                    }
+
+
+                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
+                    foreach ($storeWeb as $sw) {
+                        $title = 'New order arrived';
+                        $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                    }
+                    
+                   
+                  
+                    
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Order Placed';
+                        $body = 'Order placed with order id ' . $orderdatas->order_number;
+                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                    }
+                    
+                  
+
+
+                    if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
+
+                        foreach ($customerDevice as $cd) {
+
+                            $title = 'Points Deducted';
+                            $body = $request->reward_points_used . ' points deducted from your wallet';
+
+                            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                        }
+                    }
+
+
+
+                    $data['status'] = 1;
+                    $data['order_id'] = $order_id;
+                    $data['message'] = "Order saved.";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    $data['errors'] = $validator->errors();
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    private function customerNotification($device_id, $title, $body)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
+        $fields = array(
+            'to' => $device_id,
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+        );
+        $headers = array(
+            'Content-Type:application/json',
+            'Authorization:key=' . $api_key
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('FCM Send Error: ' . curl_error($ch));
+        }
+        curl_close($ch);
+        return $result;
+    }
+
+
+    private function storeNotification($device_id, $title, $body)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
+        $fields = array(
+            'to' => $device_id,
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+        );
+        $headers = array(
+            'Content-Type:application/json',
+            'Authorization:key=' . $api_key
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('FCM Send Error: ' . curl_error($ch));
+        }
+        curl_close($ch);
+        return $result;
+    }
+
+
+    public function stockAvailability(Request $request)
+    {
+        $data = array();
+        try {
+
+            $noStockProducts = array();
+            foreach ($request->product_variants as $value) {
+                if ($varProdu = Mst_store_product_varient::find($value['product_varient_id'])) {
+                    $proData = Mst_store_product::find($varProdu->product_id);
+                    if (isset($varProdu)) {
+                        if ($value['quantity'] > $varProdu->stock_count) {
+
+                            $timeslotdata = Helper::findHoliday($proData->store_id);
+
+                            if ($timeslotdata == false) {
+
+                                $noStockProducts[] = $varProdu->product_varient_id;
+
+                                $data['message'] = 'Stock unavilable';
+                                $data['status'] = 2;
+                            }
+                            //  return response($data);
+                        }
+                    } else {
+                        $data['message'] = 'Product not found';
+                        $data['status'] = 0;
+                        return response($data);
+                    }
+                } else {
+                    $data['message'] = 'Product not found';
+                    $data['status'] = 0;
+                    return response($data);
+                }
+            }
+            if (count($noStockProducts) > 0) {
+                $data['noStockProducts'] = $noStockProducts;
+                return response($data);
+            } else {
+                $data['message'] = 'Product avilable';
+                $data['status'] = 1;
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    public function issueTypes(Request $request)
+    {
+        $data = array();
+        try {
+
+            if ($data['issueTypes']  = Sys_IssueType::all()) {
+
+                $data['status'] = 1;
+                $data['message'] = "success";
+                return response($data);
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "failed";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    public function issues(Request $request)
+    {
+        $data = array();
+        try {
+
+            if (isset($request->issue_type_id) && Sys_IssueType::find($request->issue_type_id)) {
+                if ($data['issues']  = Mst_Issues::where('issue_type_id', $request->issue_type_id)->get()) {
+
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Issue type not found";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    public function uploadIssue(Request $request)
+    {
+        try {
+            // dd($request->all());
+            // if(isset($request->customer_id) && Mst_store::find($request->customer_id))
+            // { 
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'order_id'   => 'required',
+                    'issue_id'   => 'required',
+                    'customer_id'   => 'required',
+                    'discription'   => 'required',
+
+                ],
+                [
+                    'order_id.required'  => 'Order required',
+                    'issue_id.required'  => 'Issue required',
+                    'customer_id.required'  => 'Customer required',
+                    'discription.required'  => 'Discription required',
+                ]
+            );
+
+            if (!$validator->fails()) {
+                $order_id =  $request->order_id;
+
+                $dispute = new Mst_dispute;
+                $dispute->issue_id = $request->issue_id;
+                $dispute->order_id = $request->order_id;
+
+                if (isset($request->order_item_id))
+                    $dispute->order_item_id = $request->order_item_id;
+                else
+                    $dispute->order_item_id = 0;
+
+                $orderData = Trn_store_order::find($request->order_id);
+                $dispute->order_number = $orderData->order_number;
+                $dispute->store_id = $orderData->store_id;
+
+                $storeData = Mst_store::find($orderData->store_id);
+
+                if (isset($storeData->subadmin_id))
+                    $dispute->subadmin_id = $storeData->subadmin_id;
+                else
+                    $dispute->subadmin_id = 0;
+
+                if (isset($dispute->order_item_id))
+                    $dispute->item_ids = $request->order_item_id;
+
+                // foreach($request->order_item_id as $item)
+                // {
+                //     $itemData = Trn_store_order_item::find($item);
+                //     $productData = Mst_store_product_varient::where('product_varient_id',$itemData->product_varient_id)->first();
+                //     $dispute->product_id = $itemData->product_varient_id;
+                // }
+
+                $dispute->product_id = 0;
+
+                // if(isset($request->order_item_id) && $request->order_item_id != 0)
+                // {
+
+                // }
+                // else
+                // {
+                //     $dispute->product_id = 0;
+
+                // }
+
+                $dispute->customer_id = $request->customer_id;
+                $dispute->dispute_date = Carbon::now()->toDateString();
+                $dispute->discription = $request->discription;
+                $dispute->dispute_status = 2;
+                if($dispute->save()){
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
+                    $orderdatas = Trn_store_order::find($order_id);
+                    $storeDatas = Trn_StoreAdmin::where('store_id', $orderdatas->store_id)->where('role_id', 0)->first();
+                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderdatas->store_id)->get();
+                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderdatas->store_id)->get();
+
+                    foreach ($storeDevice as $sd) {
+                        $title = 'Dispute raised';
+                        $body = 'New dispute raised with order id ' . $orderdatas->order_number;
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                    }
+                    
+                    foreach ($storeWeb as $sw) {
+                        $title = 'Dispute raised';
+                        $body = 'New dispute raised with order id ' . $orderdatas->order_number;
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                    }
+                    
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Dispute raised';
+                        $body = 'Your dispute raised with order id ' . $orderdatas->order_number;
+                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                    }
+                }
+
+
+                $data['status'] = 1;
+                $data['message'] = "Issue uploaded.";
+                return response($data);
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "failed";
+                $data['errors'] = $validator->errors();
+                return response($data);
+            }
+
+            // }
+            // else
+            // {
+            //     $data['status'] = 0;
+            //     $data['message'] = "Store not found ";
+            //     return response($data);
+            // }
+
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+
+    public function orderHistory(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                $customer_id = $request->customer_id;
+                if ($data['orderHistory'] = Trn_store_order::select('order_id', 'order_number', 'store_id', 'created_at', 'status_id', 'customer_id', 'product_total_amount')->where('customer_id', $request->customer_id)->orderBy('order_id', 'DESC')->get()) {
+                    foreach ($data['orderHistory'] as $order) {
+                        $storeData = Mst_store::find($order->store_id);
+                        $order->store_name = $storeData->store_name;
+                        if (isset($order->customer_id)) {
+                            $customerData = Trn_store_customer::find($order->customer_id);
+                            $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
+                            $order->customer_mobile_number = @$customerData->customer_mobile_number;
+                        } else {
+                            $order->customer_name = null;
+                        }
+
+                        if (isset($order->status_id)) {
+                            $statusData = Sys_store_order_status::find(@$order->status_id);
+                            $order->status_name = @$statusData->status;
+                        } else {
+                            $order->status_name = null;
+                        }
+                        $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
+                        $order->invoice_link =  url('get/invoice/' . Crypt::encryptString($order->order_id));
+                    }
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+
+    public function viewOrder(Request $request)
+    {
+        $data = array();
+
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'order_id'          => 'required',
+                    ],
+                    [
+                        'order_id.required'        => 'Order not found',
+                    ]
+                );
+
+                if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
+                    $order_id = $request->order_id;
+                    $customer_id = $request->customer_id;
+                    // dd(Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
+
+                    if ($data['orderDetails']  = Trn_store_order::select('order_id', 'order_note', 'service_order', 'service_booking_order', 'time_slot', 'delivery_accept', 'product_varient_id', 'service_order', 'service_booking_order', 'delivery_date', 'amount_reduced_by_rp', 'delivery_time', 'store_id', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount')->where('order_id', $order_id)->where('customer_id', $customer_id)->first()) {
+
+                        if (!isset($data['orderDetails']->order_note))
+                            $data['orderDetails']->order_note = '';
+
+
+
+                        if ($data['orderDetails']->delivery_accept == 1) {
+                            $data['orderDetails']->show_dboy_phone = 1;
+                        } else {
+                            $data['orderDetails']->show_dboy_phone = 0;
+                        }
+
+                        if (isset($data['orderDetails']->customer_id)) {
+                            if (!isset($data['orderDetails']->amount_reduced_by_rp)) {
+                                $data['orderDetails']->amount_reduced_by_rp = "0";
+                            }
+                            $customerData = Trn_store_customer::find($data['orderDetails']->customer_id);
+                            $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+
+
+
+                            $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
+                            $data['orderDetails']->customer_address = @$customerData->customer_address;
+                            $data['orderDetails']->customer_pincode = @$customerData->customer_pincode;
+                            $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
+                            $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
+                            $data['orderDetails']->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
+                            $dboyLoc = Trn_DeliveryBoyLocation::where('delivery_boy_id', @$deliveryBoy->delivery_boy_id)
+                                ->orderBy('dbl_id', 'DESC')->first();
+                            $data['orderDetails']->latitude = @$dboyLoc->latitude;
+                            $data['orderDetails']->longitude = @$dboyLoc->longitude;
+                        } else {
+                            $data['orderDetails']->customer_name = '';
+                            $data['orderDetails']->delivery_boy = '';
+                            $data['orderDetails']->customer_mobile = '';
+                            $data['orderDetails']->customer_address = '';
+                            $data['orderDetails']->customer_pincode = '';
+                        }
+
+                        $storeData = Mst_store::find($data['orderDetails']->store_id);
+                        $data['orderDetails']->store_name = @$storeData->store_name;
+                        $data['orderDetails']->store_primary_address = @$storeData->store_primary_address;
+                        $data['orderDetails']->store_mobile = @$storeData->store_mobile;
+
+
+                        if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
+                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
+                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                            $data['orderDetails']->delivery_type = 2; //slot delivery
+
+                        } else // timeslot null or zero
+                        {
+                            $data['orderDetails']->delivery_type = 1; // immediate delivery
+                            $data['orderDetails']->time_slot = '';
+                        }
+
+                        $data['orderDetails']->delivery_date = Carbon::parse($data['orderDetails']->delivery_date)->format('d-m-Y');
+                        $data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->updated_at)->format('h:i');
+                        $data['orderDetails']->processed_by = null;
+
+                        $invoice_data = \DB::table('trn_order_invoices')->where('order_id', $order_id)->first();
+                        $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
+                        $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
+
+
+                        if (isset($data['orderDetails']->status_id)) {
+                            $statusData = Sys_store_order_status::find($data['orderDetails']->status_id);
+                            $data['orderDetails']->status_name = @$statusData->status;
+                        } else {
+                            $data['orderDetails']->status_name = null;
+                        }
+                        $data['orderDetails']->order_date = Carbon::parse($data['orderDetails']->created_at)->format('d-m-Y');
+
+                        if ($data['orderDetails']->payment_type_id == 1)
+                            $data['orderDetails']->payment_type = 'Offline';
+                        else
+                            $data['orderDetails']->payment_type = 'Online';
+
+
+                        // dispute section
+                        if ($disputeData = Mst_dispute::where('order_id', $request->order_id)->first()) {
+                            $data['orderDetails']->dispute_status = 1;
+                            //$data['orderDetails']->issue_id = $disputeData->issue_id; 
+                            $data['orderDetails']->issue_id = @$disputeData->issues->issue_type->issue_type;
+                            $data['orderDetails']->issues = @$disputeData->issues->issue;
+                            if (isset($disputeData->issues->issue_type->issue_type))
+                                $data['orderDetails']->issue_type = @$disputeData->issues->issue_type->issue_type;
+                            else
+                                $data['orderDetails']->issue_type = '';
+
+
+                            if (isset($disputeData->dispute_status)) {
+                                if ($disputeData->dispute_status == 1) {
+                                    $data['orderDetails']->issue_status = 'Closed';
+                                } elseif ($disputeData->dispute_status == 2) {
+                                    $data['orderDetails']->issue_status = 'Open';
+                                } elseif ($disputeData->dispute_status == 3) {
+                                    $data['orderDetails']->issue_status = 'Inprogress';
+                                } elseif ($disputeData->dispute_status == 4) {
+                                    $data['orderDetails']->issue_status = 'Return';
+                                } else {
+                                    $data['orderDetails']->issue_status = '';
+                                }
+                            } else {
+                                $data['orderDetails']->issue_status = '';
+                            }
+
+                            if (isset($disputeData->discription))
+                                $data['orderDetails']->discription = $disputeData->discription;
+                            else
+                                $data['orderDetails']->discription = '';
+
+
+                            if (isset($disputeData->store_response))
+                                $data['orderDetails']->store_response = $disputeData->store_response;
+                            else
+                                $data['orderDetails']->store_response = '';
+                        } else {
+                            $data['orderDetails']->dispute_status = 0;
+                            $data['orderDetails']->issue_id = '';
+                            $data['orderDetails']->issues = '';
+                            $data['orderDetails']->discription = '';
+                            $data['orderDetails']->store_response = '';
+                            $data['orderDetails']->issue_type = '';
+                            $data['orderDetails']->issue_status = '';
+                        }
+
+
+                        $data['orderDetails']->invoice_link =  url('get/invoice/' . Crypt::encryptString($data['orderDetails']->order_id));
+                        $data['orderDetails']->item_list_link = url('item/list/' . Crypt::encryptString($data['orderDetails']->order_id));
+
+                        $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
+                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
+                            ->get();
+
+
+                        $data['orderDetails']->serviceData = new \stdClass();
+                        if ($data['orderDetails']->service_booking_order == 1) {
+                            $serviceData = Mst_store_product_varient::find(@$data['orderDetails']->product_varient_id);
+                            @$serviceData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$serviceData->product_varient_base_image;
+                            $baseProductDetail = Mst_store_product::find(@$serviceData->product_id);
+                            $serviceData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+
+                            if (@$baseProductDetail->product_name != @$serviceData->variant_name)
+                                $serviceData->product_name = @$baseProductDetail->product_name . " " . @$serviceData->productDetail->variant_name;
+                            else
+                                $serviceData->product_name = @$baseProductDetail->product_name;
+                            $data['orderDetails']->serviceData = $serviceData;
+                        }
+
+                        $store_id = $data['orderDetails']->store_id;
+
+                        foreach ($data['orderDetails']->orderItems as $value) {
+
+                            if ($datazz = \DB::table("mst_disputes")->where('store_id', $store_id)->where('order_id', $order_id)->first()) {
+
+                                $colorsArray = explode(",", $datazz->item_ids);
+
+                                $ordItemArr =  Trn_store_order_item::whereIn('order_item_id', $colorsArray)->get();
+                                $colorsArray2 = array();
+                                foreach ($ordItemArr as $i) {
+                                    $colorsArray2[] = $i->product_varient_id;
+                                }
+                                if (in_array($value->product_varient_id, $colorsArray2)) {
+                                    $value->dispute_status = 1;
+                                } else {
+                                    $value->dispute_status = 0;
+                                }
+                            } else {
+                                $value->dispute_status = 0;
+                            }
+
+
+
+                            $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
+                            @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
+
+                            $baseProductDetail = Mst_store_product::find($value->product_id);
+
+                            $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+
+                            if ($baseProductDetail->product_name != isset($value->productDetail->variant_name))
+                                $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
+                            else
+                                $value->product_name = @$baseProductDetail->product_name;
+
+                            $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
+
+                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
+                            $stax = 0;
+
+
+                            foreach ($splitdata as $sd) {
+                                if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
+                                    $taxFullData->tax_value = 1;
+
+                                $stax = ($sd->split_tax_value * $value->tax_amount) / @$taxFullData->tax_value;
+                                $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
+                            }
+
+                            $value['taxSplitups']  = $splitdata;
+                        }
+
+                        $data['status'] = 1;
+                        $data['message'] = "success";
+                        return response($data);
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        return response($data);
+                    }
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    $data['message'] = "Order not found ";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    public function cancelOrder(Request $request)
+    {
+        $data = array();
+
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'order_id'          => 'required',
+                    ],
+                    [
+                        'order_id.required'        => 'Order not found',
+                    ]
+                );
+
+                if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
+                    $order_id = $request->order_id;
                     $customer_id = $request->customer_id;
 
-                    // $cartData = Trn_Cart::select('product_varient_id')
-                    // ->where('customer_id','=',$customer_id)
-                    // ->orderBy('cart_id','DESC')
-                    // ->get()->unique('product_varient_id')->pluck('product_varient_id')->toArray();
+                    $orderData = Trn_store_order::find($order_id);
 
-                    if( $cartDatas = Trn_Cart::where('customer_id',$customer_id)->where('remove_status',0)->get())
-                    {
-                        foreach($cartDatas as $cartData)
-                        {
-                            $cartData->productData =  Mst_store_product_varient::join('mst_store_products','mst_store_products.product_id','=','mst_store_product_varients.product_id')
-                            ->select(
-                                'mst_store_products.product_id',
-                                'mst_store_products.product_name',
-                                'mst_store_products.product_code',
-                                'mst_store_products.product_base_image',
-                                'mst_store_products.show_in_home_screen',
-                                'mst_store_products.product_status',
-                                'mst_store_product_varients.product_varient_id',
-                                'mst_store_product_varients.variant_name',
-                                'mst_store_product_varients.product_varient_price',
-                                'mst_store_product_varients.product_varient_offer_price',
-                                'mst_store_product_varients.product_varient_base_image',
-                                'mst_store_product_varients.stock_count',
-                                'mst_store_product_varients.store_id'
-                                )
-                            ->where('mst_store_product_varients.product_varient_id',$cartData->product_varient_id)
-                            ->where('mst_store_products.product_status',1)->first();
-                            @$cartData->productData->product_base_image = '/assets/uploads/products/base_product/base_image/'.@$cartData->productData->product_base_image;
-                            @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/'.@$cartData->productData->product_varient_base_image;
-                            $storeData = Mst_store::find(@$cartData->productData->store_id);
-                            @$cartData->productData->store_name = @$storeData->store_name;
+                    $orderData->status_id = 5;
+                    if ($orderData->update()) {
+
+                        $orderItemData = Trn_store_order_item::where('order_id', $order_id)->get();
+                        foreach ($orderItemData as $o) {
+
+                            $productVarOlddata = Mst_store_product_varient::find($o->product_varient_id);
+
+                            $sd = new Mst_StockDetail;
+                            $sd->store_id = $orderData->store_id;
+                            $sd->product_id = $o->product_id;
+                            $sd->stock = $o->quantity;
+                            $sd->product_varient_id = $o->product_varient_id;
+                            $sd->prev_stock = $productVarOlddata->stock_count;
+                            $sd->save();
+
+                            DB::table('mst_store_product_varients')->where('product_varient_id', $o->product_varient_id)->increment('stock_count', $o->quantity);
                         }
-                                // $product->quantity = Trn_Cart::where('product_varient_id',@$cartData->product_varient_id)->where('customer_id',$request->customer_id)->sum('quantity');
-                              
-                            $data['cartItems'] = $cartDatas;
-                            $data['status'] = 1;
-                            $data['message'] = "success";
-                            return response($data);
-                    }
-                    else{
-                            $data['status'] = 0;
-                            $data['message'] = "failed";
-                            return response($data);
-                    }
-                }
-                else
-                {
-                    $data['status'] = 2;
-                    $data['message'] = "Customer not found ";
-                    return response($data);
-                }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
-            return response($response);
-        }
-    }
 
 
-    public function removeCartItems(Request $request)
-    {
-        $data = array(); 
-        try {
-                if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
-                { 
-                    
-                    // echo "here";die;  
-                    
-                $cartData = Trn_Cart::where('product_varient_id',$request->product_varient_id)->where('customer_id',$request->customer_id)->first();
-                if(isset($cartData))
-                {
-                    if($request->quantity == 0)
-                    {
-                        Trn_Cart::where('product_varient_id',$request->product_varient_id)
-                        ->where('customer_id',$request->customer_id)
-                        ->update(['remove_status' =>  1]); 
-                    }
-                    else
-                    {
-                        $cart = Trn_Cart::where('product_varient_id',$request->product_varient_id)->where('customer_id',$request->customer_id);
-                                $cart->update(['quantity' =>  $request->quantity]);
-                    }
-                }
-                            
-                            $data['status'] = 1;
-                            $data['message'] = "Item removed";
-                        
-                  
-                }
-                else
-                {
-                    $data['status'] = 3;
-                    $data['message'] = "Customer not found ";
-                }
-
-        return response($data);
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-
-
-    public function updateQty(Request $request)
-    {
-        $data = array(); 
-        try {
-                if(isset($request->cart_id) && Trn_Cart::find($request->cart_id))
-                { 
-                    $validator = Validator::make($request->all(), [      
-                        'quantity' => 'required|numeric',  
-                    ],
-                    [   
-                        'quantity.required' => "Quantity required",
-                    ]);
-                    if(!$validator->fails())
-                    {
-                        if(Trn_Cart::where('cart_id',@$request->cart_id)->where('remove_status',0)->update(['quantity' => $request->quantity]))
-                        {
-                            $data['status'] = 1;
-                            $data['message'] = "Quantity updated";
-                        }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "Failed";
-                        }
-                    }
-                    else
-                    {
-                        $data['status'] = 2;
-                        $data['message'] = "Quantity invalid";
-                    }
-                }
-                else
-                {
-                    $data['status'] = 3;
-                    $data['message'] = "Item not found ";
-                }
-
-        return response($data);
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-
-
-    public function editAddress(Request $request)
-    {
-        $data = array(); 
-        try {
-                if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
-                { 
-                    $validator = Validator::make($request->all(), [      
-                        'address' => 'required',  
-                    ],
-                    [   
-                        'address.required' => "address required",
-                    ]);
-                    if(!$validator->fails())
-                    {
-                        if(Trn_store_customer::where('customer_id',@$request->customer_id)->update(['customer_address' => $request->address]))
-                        {
-                            $data['status'] = 1;
-                            $data['message'] = "Address updated";
-                        }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "Failed";
-                        }
-                    }
-                    else
-                    {
-                        $data['status'] = 2;
-                        $data['message'] = "Address required";
-                    }
-                }
-                else
-                {
-                    $data['status'] = 3;
-                    $data['message'] = "Customer not found ";
-                }
-
-        return response($data);
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-
-    public function addAddress(Request $request)
-    {
-        $data = array(); 
-        try {
-                if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
-                { 
-                    $validator = Validator::make($request->all(), [      
-                        'address' => 'required',  
-                    ],
-                    [   
-                        'address.required' => "address required",
-                    ]);
-                    if(!$validator->fails())
-                    {
-                        if(Trn_store_customer::where('customer_id',@$request->customer_id)->update(['address_2' => $request->address]))
-                        {
-                            $data['status'] = 1;
-                            $data['message'] = "Address updated";
-                        }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "Failed";
-                        }
-                    }
-                    else
-                    {
-                        $data['status'] = 2;
-                        $data['message'] = "Address required";
-                    }
-                }
-                else
-                {
-                    $data['status'] = 3;
-                    $data['message'] = "Customer not found ";
-                }
-
-        return response($data);
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-
-
-    public function upateAmount(Request $request)
-    {
-        $data = array(); 
-        try {
-                    $validator = Validator::make($request->all(), [      
-                        'total_amount' => 'required',  
-                    ],
-                    [   
-                        'total_amount.required' => "Total amount required",
-                    ]);
-                    if(!$validator->fails())
-                    {
-                        if(isset($request->customer_id) && Trn_store_customer::find($request->customer_id))
-                        {
-                            if(isset($request->coupon_code))
-                            {
-                               
-                                    if($coupon = Mst_Coupon::where('coupon_code',$request->coupon_code)
-                                    ->where('coupon_status',0)->first())
-                                    {
-                                        $current_time = Carbon::now()->toDateTimeString();
-                                        
-                                        if($coupon->valid_from >= $current_time)
-                                        {
-                                            $data['status'] = 0;
-                                            $data['message'] = "Coupon not activated";
-                                        } 
-                                        else if($coupon->valid_to <= $current_time)
-                                        {
-                                            $data['status'] = 0;
-                                            $data['message'] = "Coupon expired";
-                                        }
-                                        else if(($coupon->valid_from <= $current_time) && ($coupon->valid_to >= $current_time)) 
-                                        {
-                                            if($request->total_amount >= $coupon->min_purchase_amt)
-                                            {
-                                                if((Trn_store_order::where('customer_id',$request->customer_id)->where('coupon_code',$request->coupon_code)->whereIn('status_id',[6,9,4,7,8,1])->count()) <= 0)
-                                                {
-                                                
-                                                  $ReducedAmount = 0;
-                                                    if($coupon->discount_type == 1)
-                                                    {
-                                                        //fixedAmt
-                                                       $amtToBeReduced = $coupon->discount;
-                                                        $ReducedAmount = $request->total_amount - $coupon->discount;
-                                                    }
-                                                    else
-                                                    {
-                                                        //percentage
-                                                        $amtToBeReduced = ($coupon->discount * 100)/ $request->total_amount;
-                                                        $ReducedAmount = $request->total_amount - $amtToBeReduced;
-                                                    }
-                
-                                                    $data['status'] = 1;
-                                                    $data['discount_amount'] = number_format((float)$amtToBeReduced, 2, '.', '');
-                                                    $data['total_amount'] = number_format((float)$ReducedAmount, 2, '.', '');
-                                                    $data['message'] = "Coupon amount reduced";
-                                                }
-                                                else
-                                                {
-                                                    
-                                                    if($coupon->coupon_type == 2)
-                                                    {
-                                                          $ReducedAmount = 0;
-                                                            if($coupon->discount_type == 1)
-                                                            {
-                                                                //fixedAmt
-                                                                    $amtToBeReduced = $coupon->discount;
-
-                                                                $ReducedAmount = $request->total_amount - $coupon->discount;
-                                                            }
-                                                            else
-                                                            {
-                                                                //percentage
-                                                                $amtToBeReduced = ($coupon->discount * 100)/ $request->total_amount;
-                                                                $ReducedAmount = $request->total_amount - $amtToBeReduced;
-                                                            }
-                        
-                                                            $data['status'] = 1;
-                                                            $data['discount_amount'] = number_format((float)$amtToBeReduced, 2, '.', '');
-                                                            $data['total_amount'] = number_format((float)$ReducedAmount, 2, '.', '');
-                                                            $data['message'] = "Coupon amount reduced";
-                                                    }
-                                                    else
-                                                    {
-                                                        $data['status'] = 0;
-                                                        $data['message'] = "Coupon already used";
-                                                    }
-                                                }
-                                                
-                                            }
-                                            else
-                                            {
-                                                $data['status'] = 0;
-                                                $data['message'] = "Minimum purchase amount should be ".$coupon->min_purchase_amt;
-                                            }
-                                          
-                                        }
-                                        else
-                                        {
-                                            $data['status'] = 0;
-                                            $data['message'] = "Coupon not found";
-                                        }
-        
-                                    }
-                                    else
-                                    {
-                                        $data['status'] = 0;
-                                        $data['message'] = "Coupon not found";
-                                    }
-    
-                            }
-                            else
-                            {
-                                $data['status'] = 0;
-                                $data['message'] = "Coupon code required";
-                            }
-                        }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "Customer not found";
-                        }
-                    }
-                    else
-                    {
+                        $data['status'] = 1;
+                        $data['message'] = "Order cancelled";
+                    } else {
                         $data['status'] = 0;
-                        $data['message'] = "Total Amount required";
+                        $data['message'] = "failed";
                     }
-                
-
-        return response($data);
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "Order not found ";
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found ";
+            }
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
-
-    public function validateCoupon(Request $request)
-    {
-        $data = array(); 
-        try {
-                 
-                        if(isset($request->coupon_code))
-                        {
-                            if($coupon = Mst_Coupon::where('coupon_code',$request->coupon_code)
-                            ->where('coupon_status',0)->first())
-                            { 
-                                $current_time = Carbon::now()->toDateTimeString();
-                                
-                                if($coupon->valid_from >= $current_time)
-                                {
-                                    $data['status'] = 0;
-                                    $data['message'] = "Coupon not activated";
-                                }
-                                else if($coupon->valid_to <= $current_time)
-                                {
-                                    $data['status'] = 0;
-                                    $data['message'] = "Coupon expired";
-                                }
-                                else if(($coupon->valid_from <= $current_time) && ($coupon->valid_to >= $current_time)) 
-                                {
-                                    if($request->total_amount >= $coupon->min_purchase_amt)
-                                    {
-                                        $data['status'] = 1;
-                                        $data['message'] = "Coupon active";
-                                    }
-                                    else
-                                    {
-                                        $data['status'] = 0;
-                                        $data['message'] = "Minimum purchase amount should be ".$coupon->min_purchase_amt;
-                                    }
-                                }
-                                else
-                                {
-                                    $data['status'] = 0;
-                                    $data['message'] = "Coupon not found";
-                                }
-                            }
-                            else
-                            {
-                                $data['status'] = 0;
-                                $data['message'] = "Coupon not found";
-                            }
-                        }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "Coupon code required";
-                        }
-        return response($data);
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-
-    
-
-
-    
 }

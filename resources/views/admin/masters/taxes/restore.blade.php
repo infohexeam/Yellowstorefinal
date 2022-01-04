@@ -7,7 +7,7 @@
 
 
         <div class="card">
-                <div class="row">
+                <div class="row" style="min-height: 70vh;">
                     <div class="col-12" >
                             @if ($message = Session::get('status'))
                             <div class="alert alert-success">
@@ -15,7 +15,7 @@
                             </div>
                             @endif
                         <div class="card-body">
-                                <a href="{{ url('admin/taex/list') }}"  class="btn btn-block btn-success">
+                                <a href="{{ url('admin/tax/list') }}"  class="btn btn-block btn-success">
                                      List Tax </a>
                                 <br>
                             <div class="table-responsive">

@@ -529,13 +529,13 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('admin/town/restore/{town_id}', 'AdminController@restoreTown')->name('admin.restore_town');
 
         //vihicle types master
-        Route::get('admin/vihicle_types/list', 'AdminController@listVehicleTypes')->name('admin.list_vihicle_types');
-        Route::post('admin/vihicle_types/create', 'AdminController@createVehicleTypes')->name('admin.create_vehicle_type');
-        Route::post('admin/vihicle_types/remove/{vehicle_type_id}', 'AdminController@removeVehicleTypes')->name('admin.destroy_vehicle_type');
-        Route::post('admin/vihicle_types/update/{vehicle_type_id}', 'AdminController@updateVehicleTypes')->name('admin.update_vehicle_type');
+        Route::get('admin/vehicle_types/list', 'AdminController@listVehicleTypes')->name('admin.list_vihicle_types');
+        Route::post('admin/vehicle_types/create', 'AdminController@createVehicleTypes')->name('admin.create_vehicle_type');
+        Route::post('admin/vehicle_types/remove/{vehicle_type_id}', 'AdminController@removeVehicleTypes')->name('admin.destroy_vehicle_type');
+        Route::post('admin/vehicle_types/update/{vehicle_type_id}', 'AdminController@updateVehicleTypes')->name('admin.update_vehicle_type');
 
-        Route::get('admin/vihicle-types/restore-list', 'AdminController@listRestoreVehicleTypes')->name('admin.restore_list_vehicle_type');
-        Route::post('admin/vihicle-types/restore/{vehicle_type_id}', 'AdminController@restoreVehicleTypes')->name('admin.restore_vehicle_type');
+        Route::get('admin/vehicle-types/restore-list', 'AdminController@listRestoreVehicleTypes')->name('admin.restore_list_vehicle_type');
+        Route::post('admin/vehicle-types/restore/{vehicle_type_id}', 'AdminController@restoreVehicleTypes')->name('admin.restore_vehicle_type');
 
         //Video 
 
@@ -595,7 +595,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         //tax master
-        Route::get('admin/taex/list', 'AdminController@listTaxes')->name('admin.list_taxes');
+        Route::get('admin/tax/list', 'AdminController@listTaxes')->name('admin.list_taxes');
         Route::post('admin/tax/create', 'AdminController@createTax')->name('admin.create_tax');
         Route::post('admin/tax/remove/{tax_id}', 'AdminController@removeTax')->name('admin.destroy_tax');
         Route::post('admin/tax/update/{tax_id}', 'AdminController@updateTax')->name('admin.update_tax');

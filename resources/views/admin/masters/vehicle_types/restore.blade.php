@@ -15,7 +15,7 @@
                             </div>
                             @endif
                         <div class="card-body">
-                                    <a  href=" {{ url('admin/vihicle_types/list') }}"  class="btn btn-block btn-info text-white">
+                                    <a  href=" {{ url('admin/vehicle_types/list') }}"  class="btn btn-block btn-info text-white">
                                      List Vehicle Type </a>
                                     
                                 <br>
