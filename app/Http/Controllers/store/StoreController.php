@@ -663,8 +663,12 @@ class StoreController extends Controller
       ->select('mst_attribute_values.*')
       ->get();
     $agencies = Mst_store_agencies::where('agency_account_status', 1)->get();
-    $category = Mst_categories::where('category_status', 1)->get();
 
+
+ $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
+      ->where('trn__category_business_types.business_type_id',  Auth::guard('store')->user()->business_type_id)
+      ->where('mst_store_categories.category_status', 1)
+      ->get();
     $store_id =  Auth::guard('store')->user()->store_id;
     $products_global_products_id = Mst_store_product::where('store_id', $store_id)
       ->where('global_product_id', '!=', null)
@@ -1079,8 +1083,10 @@ class StoreController extends Controller
     $attr_groups = Mst_attribute_group::all();
     $product_images = Mst_product_image::where('product_id', '=', $product_id)->get();
     $tax = Mst_Tax::all();
-    $category = Mst_categories::where('category_status', 1)->get();
-
+    $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
+    ->where('trn__category_business_types.business_type_id',  Auth::guard('store')->user()->business_type_id)
+    ->where('mst_store_categories.category_status', 1)
+    ->get();
     $colors = Mst_attribute_value::join('mst_attribute_groups', 'mst_attribute_groups.attr_group_id', '=', 'mst_attribute_values.attribute_group_id')
       ->where('mst_attribute_groups.group_name', 'LIKE', '%color%')
       ->select('mst_attribute_values.*')
