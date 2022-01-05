@@ -26,4 +26,9 @@ class Mst_categories extends Model
 	 {
 	 	 return $this->belongsTo('App\Models\admin\Mst_business_types','business_type_id','business_type_id');
 	 }
+
+	 public function business_types()
+	 {
+		 return $this->hasMany('App\Models\admin\Trn_CategoryBusinessType', 'category_id', 'category_id');
+	 }
 }
