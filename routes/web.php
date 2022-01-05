@@ -656,6 +656,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/review/list', 'AdminController@listReview')->name('admin.list_reviews');
         Route::post('admin/remove-review/{reviews_id}', 'AdminController@removeReview')->name('admin.destroy_review');
         Route::post('admin/review-status/{reviews_id}', 'AdminController@reviewStatus')->name('admin.review_status');
+
+        Route::get('admin/remove-cb/{cbt_id}', 'SettingController@removeCB');
+
     });
 
     Route::group(['namespace' => 'store'], function () {

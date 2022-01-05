@@ -40,6 +40,8 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Sys_payment_type;
 use App\Models\admin\Trn_store_payment_settlment;
 use App\Models\admin\Trn_delivery_boy_payment_settlment;
+use App\Models\admin\Trn_CategoryBusinessType;
+
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
@@ -104,6 +106,10 @@ class SettingController extends Controller
 		return view('admin.masters.categories.create', compact('pageTitle', 'categories', 'business_types'));
 	}
 
+	
+
+
+
 	public function storeCategory(Request $request, Mst_categories $category)
 	{
 		//echo "here";die;
@@ -114,7 +120,7 @@ class SettingController extends Controller
 				'category_name'       => 'required|unique:mst_store_categories',
 				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
 				//	'category_description' => 'required',
-				'business_type_id'		=> 'required',
+				//	'business_type_id'		=> 'required',
 
 
 			],
@@ -137,7 +143,7 @@ class SettingController extends Controller
 			$category->category_name 		= $request->category_name;
 			$category->category_name_slug  	= Str::of($request->category_name)->slug('-');
 			$category->category_description = $request->category_description;
-			$category->business_type_id = $request->business_type_id;
+			$category->business_type_id = 0;
 			$category->parent_id 		= 0;
 
 			if ($request->hasFile('category_icon')) {
@@ -161,13 +167,27 @@ class SettingController extends Controller
 
 			$category->category_status 		= 1;
 
-			$category->save();
+			if ($category->save()) {
+				$lastCatid = DB::getPdo()->lastInsertId();
+				foreach (array_unique($request->business_type_ids) as  $row) {
+					$cb = new Trn_CategoryBusinessType;
+					$cb->category_id = $lastCatid;
+					$cb->business_type_id = $row;
+					$cb->status = 1;
+					$cb->save();
+				}
+			}
+
+
+
 
 			return redirect('admin/categories/list')->with('status', 'Category added successfully.');
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
 	}
+
+	
 	public function editCategory(Request $request, $id)
 	{
 		$pageTitle = "Edit Product Category";
@@ -178,6 +198,19 @@ class SettingController extends Controller
 
 		return view('admin.masters.categories.edit', compact('category', 'pageTitle', 'business_types'));
 	}
+
+
+	
+	public function destroyCategory(Request $request, Mst_categories $category)
+	{
+
+		$delete = $category->delete();
+
+		return redirect('admin/categories/list')->with('status', 'Category deleted successfully');
+	}
+
+
+
 	public function updateCategory(
 		Request $request,
 		Mst_categories $category,
@@ -194,7 +227,7 @@ class SettingController extends Controller
 				'category_name'       => 'required|unique:mst_store_categories,category_name,' . $category_id . ',category_id',
 				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
 				//		'category_description' => 'required',
-				'business_type_id'		=> 'required',
+				//'business_type_id'		=> 'required',
 
 
 			],
@@ -216,7 +249,7 @@ class SettingController extends Controller
 			$category->category_name_slug  	= Str::of($request->category_name)->slug('-');
 
 			$category->category_description = $request->category_description;
-			$category->business_type_id = $request->business_type_id;
+			$category->business_type_id = 0;
 
 
 			if ($request->hasFile('category_icon')) {
@@ -256,19 +289,39 @@ class SettingController extends Controller
 				$category->parent_id = $request->parent_id;
 			}
 
-			$update = $category->update();
+			if ($category->update()) {
+				Trn_CategoryBusinessType::where('category_id', $category_id)->delete();
+				foreach (array_unique($request->business_type_ids) as  $row) {
+					$cb = new Trn_CategoryBusinessType;
+					$cb->category_id = $category_id;
+					$cb->business_type_id = $row;
+					$cb->status = 1;
+					$cb->save();
+				}
+			}
+
+
+
+
+
 			return redirect('admin/categories/list')->with('status', 'Category updated successfully.');
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
 	}
-	public function destroyCategory(Request $request, Mst_categories $category)
+
+
+	public function removeCB(Request $request, Trn_CategoryBusinessType $category, $cbt_id)
 	{
 
-		$delete = $category->delete();
+		Trn_CategoryBusinessType::where('cbt_id', $cbt_id)->delete();
 
-		return redirect('admin/categories/list')->with('status', 'Category deleted successfully');
+		return redirect()->back()->with('status', 'Row deleted successfully');
 	}
+
+
+
+
 
 
 	public function statusCategory(Request $request, Mst_categories $category, $category_id)
