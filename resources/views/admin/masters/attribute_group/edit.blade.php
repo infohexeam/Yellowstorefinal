@@ -2,7 +2,7 @@
    
 @section('content')
  <div class="container">
-    <div class="row">
+    <div class="row" style="min-height: 72vh;">
       <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -31,7 +31,7 @@
                         @csrf
                
               <div class="form-body">
-                <div class="row" style="min-height: 72vh;"></div>
+                <div class="row" ></div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Atribute Group Name</label>
