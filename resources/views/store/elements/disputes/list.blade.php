@@ -259,7 +259,7 @@ $date = Carbon\Carbon::now();
                                  </tr>
                                  
                                  <tr>
-                                    <td><h6>Purchased Quantity  : {{$orderItemData->quantity}}</h6></td>
+                                    <td><h6>Purchased Quantity  : {{@$orderItemData->quantity}}</h6></td>
                                  </tr>
                                  
                               </tbody>
