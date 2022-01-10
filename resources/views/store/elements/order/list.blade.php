@@ -178,7 +178,7 @@
                   </tbody>
                </table>
             </div>
-            <div class="float-right"> {!! $orders->links() !!} </div>
+            <div class="float-right"> {!! @$orders->links() !!} </div>
            
          </div>
       </div>
