@@ -42,7 +42,8 @@
                         <div class="form-group">
                             <label class="form-label">Tax Value</label>
                             <input step="0.01" oninput="valueChanged(this.id)" type="number" id="tax_value" required class="form-control" onchange="if (this.value < 0) this.value = '';" placeholder="Tax Value" name="tax_value" >
-                        </div>
+                            <p id="error_store_mobile"></p>
+                           </div>
                      </div>
 
                     
@@ -85,8 +86,8 @@
                      </div>
                      
                   </div>
-                  <script src="{{ asset('vendor\unisharp\laravel-ckeditor/ckeditor.js')}}"></script>
-                  <script>CKEDITOR.replace('sub_category_description');</script>
+                  {{-- <script src="{{ asset('vendor\unisharp\laravel-ckeditor/ckeditor.js')}}"></script>
+                  <script>CKEDITOR.replace('sub_category_description');</script> --}}
                </form>
 
       </div>
