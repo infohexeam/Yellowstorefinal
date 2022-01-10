@@ -47,8 +47,13 @@
                   <img src="{{URL::to('/assets/Yellow-Store-logo.png')}}" class="header-brand-img" alt="">
                   </div>
                </div>
+               
+
+
                <div class="container-login100">
-                  <div class="wrap-login100 p-6" style="width:800px;">
+                  <div id="firstDiv" class="wrap-login100 p-6" style="width:800px;">
+                                             <div class="alert alert-success" id="sentSuccess" style="display: none;"></div>
+
                      <form method="POST" id="myForm" onsubmit="return validateForm()" action="{{ route('register.store') }} ">
                         @csrf
                         <span class="login100-form-title">
@@ -72,6 +77,8 @@
                             <div class="col-md-6">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_name" type="store_name" name="store_name" placeholder="Store Name *" value="{{ old('store_name') }}" required autocomplete="store_name" >
+                                                               <span id="error_username"></span>
+
                                     {{-- @error('store_name')
                                     <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -244,7 +251,7 @@
                             </div> -->
                             <div class="col-md-12">
                                 <div class="wrap-input100 validate-input">
-                                    <select name="business_type_id" required="" class="input100"  >
+                                    <select name="business_type_id" id="business_type_id" required="" class="input100"  >
                                         <option value="">Business Type *</option>
                                         @foreach(@$business_types as $key)
                                         <option {{old('business_type_id') == $key->business_type_id ? 'selected':''}} value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>
@@ -297,17 +304,20 @@
                         </div>
                         
                     <label class="float-center">
-                        <input required type="checkbox" name="tc" id=""> I Agree to the 
+                        <input required type="checkbox" name="tc" id="tc"> I Agree to the 
                         <a target="_blank" href="{{ url('store/terms-and-condition') }}">Terms and Conditions</a>
                     </label>
+                    
+                                <div id="recaptcha-container"></div>
+
 
                         <div class="container-login100-form-btn">
-                           <button type="submit" id="submit" class="login100-form-btn btn-primary">
+                           <a type="submit" id="submit" onclick="phoneSendAuth();" class="text-white login100-form-btn btn-primary">
                            {{ __('Register Now') }}
-                           </button>
+                           </a>
                         </div>
                          <div class="container-login100-form-btn">
-                           <a href="{{ url('store-login') }}" id="submit" class="login100-form-btn btn-primary">
+                           <a href="{{ url('store-login') }}"  class="login100-form-btn btn-primary">
                            {{ __('Login') }}
                            </a>
                         </div>
@@ -318,12 +328,161 @@
                         </div>
                      </form>
                   </div>
+                  
+                <div id="secDiv" class="wrap-login100 p-6" style="width:800px;">
+    
+                        <p id="sentSuccessMsg"></p> <br>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="wrap-input100 validate-input">
+                                <input class="input100" id="otp" type="text" name="otp" placeholder="OTP" value="{{ old('otp') }}" >
+                
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <a href="#" onclick="phoneSendAuth()" style="btn btn-warning btn-sm" >Resend otp?</a>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                       <a href="#" id="otpVerify" onclick="codeverify();" class="login100-form-btn btn-primary">
+                       {{ __('Verify') }}
+                       </a>
+                    </div>
+                </div>
+
+
                </div>
                <!-- CONTAINER CLOSED -->
             </div>
          </div>
          <!-- End PAGE -->
       </div>
+      
+
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
+
+<script>
+
+
+
+  
+
+
+
+
+  var firebaseConfig = {
+     apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
+    authDomain: "yellowstore-web-application.firebaseapp.com",
+    projectId: "yellowstore-web-application",
+    storageBucket: "yellowstore-web-application.appspot.com",
+    messagingSenderId: "444886856017",
+    appId: "1:444886856017:web:935481722416346323e370",
+    measurementId: "G-VX5SKTNN3F"
+  };
+  
+    firebase.initializeApp(firebaseConfig);
+//sentSuccess
+//store_mobile
+//
+
+    window.onload=function () {
+                $('#secDiv').hide();
+
+      render();
+    };
+  
+    function render() {
+        window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        recaptchaVerifier.render();
+    }
+    
+    
+    function phoneSendAuth() {
+        
+        var sName = $('#store_name').val();
+        var sPhone = $('#store_mobile').val();
+        var sBusinessType = $('#business_type_id').val();
+        var sPass = $('#password').val();
+        var sConfPass = $('#confirm_password').val();
+        var sTC = $('#tc').val();
+        
+         
+            if(sName != '' && sPhone != '' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){
+            }
+            else{
+                  return false;
+            }
+            
+        
+        $('#firstDiv').hide();
+        $('#secDiv').show();
+           
+        var number = '+91'+$("#store_mobile").val();
+        
+        console.log(number);
+        console.log(window.recaptchaVerifier) 
+          
+        firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+              
+            window.confirmationResult=confirmationResult;
+            coderesult=confirmationResult;
+            console.log(coderesult);
+  
+            $("#sentSuccessMsg").text("OTP sent successfully.");
+            $("#sentSuccessMsg").show();
+              
+        }).catch(function (error) {
+            $("#error").text(error.message);
+            $("#error").show();
+        });
+  
+    }
+    
+    
+        function codeverify() {
+
+  
+
+        var code = $("#otp").val();
+
+  
+
+        coderesult.confirm(code).then(function (result) {
+
+            var user=result.user;
+
+            console.log(user);
+
+  
+
+            $("#sentSuccessMsg").text("OTP verified successfully.");
+
+            $("#sentSuccessMsg").show();
+            
+            $('#myForm').submit();
+
+
+  
+
+        }).catch(function (error) {
+
+            $("#sentSuccessMsg").text("OTP invalid");
+
+            $("#sentSuccessMsg").show();
+
+        });
+
+    }
+
+  
+
+</script>
+      
       <!-- BACKGROUND-IMAGE CLOSED -->
       <!-- JQUERY JS -->
       <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
@@ -343,7 +502,7 @@
       <!-- CUSTOM JS-->
       <script src="{{URL::to('/assets/js/custom.js')}}"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <script type = "text/javascript" >  
     function preventBack() { window.history.forward(); }  
@@ -693,6 +852,73 @@ function validateForm() {
       });
 
     });
+
+
+
+$("#store_name").blur(function(){
+    
+      var error_username = '';
+      var store_username = $(this).val();
+      var _token = $('input[name="_token"]').val();
+      
+      $.ajax({
+        url:"{{ route('unique_storename') }}",
+        method:"POST",
+        data:{store_name:store_username, _token:_token},
+        success:function(result)
+        {
+            if(result == 'unique')
+            {
+               // $('#error_username').html('<label class="text-success"></label>');
+                $('#error_username').empty();
+                $('#store_name').removeClass('has-error');
+                $('#submit').attr('disabled', false);
+            }
+            else
+            {
+                $('#error_username').html('<label class="text-danger">Store name already exist </label>');
+
+                $('#store_name').addClass('has-error');
+                $('#submit').attr('disabled', 'disabled');
+            }
+        }
+   })
+  });
+
+
+
+
+  $("#store_mobile").blur(function(){
+    
+      var error_store_mobile = '';
+      var store_username = $(this).val();
+      var _token = $('input[name="_token"]').val();
+      
+      $.ajax({
+        url:"{{ route('unique_store_mobile') }}",
+        method:"POST",
+        data:{store_mobile:store_username, _token:_token},
+        success:function(result)
+        {
+            if(result == 'unique')
+            {
+              //  $('#error_store_mobile').html('<label class="text-success"></label>');
+                
+                                $('#error_store_mobile').empty();
+$('#store_mobile').removeClass('has-error');
+                $('#submit').attr('disabled', false);
+            }
+            else
+            {
+                $('#error_store_mobile').html('<label class="text-danger">Store phone already exist </label>');
+                $('#store_mobile').addClass('has-error');
+                $('#submit').attr('disabled', 'disabled');
+            }
+        }
+   })
+  });
+
+
 
 </script>
 

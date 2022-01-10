@@ -38,6 +38,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/store/terms-and-condition', 'PublicController@showTC');
     Route::get('/customer/terms-and-condition', 'PublicController@showCusTC');
 
+    Route::post('store/ajax/unique_storename', 'PublicController@CheckName')->name('unique_storename');
+    Route::post('store/ajax/unique_phone', 'PublicController@CheckPhone')->name('unique_store_mobile');
+
 
     // Super Admin login
     Route::get('/home', 'HomeController@index')->name('home');
@@ -658,7 +661,6 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('admin/review-status/{reviews_id}', 'AdminController@reviewStatus')->name('admin.review_status');
 
         Route::get('admin/remove-cb/{cbt_id}', 'SettingController@removeCB');
-
     });
 
     Route::group(['namespace' => 'store'], function () {
