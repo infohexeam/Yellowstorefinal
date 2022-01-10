@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label class="form-label">Tax Value</label>
                             <input step="0.01" oninput="valueChanged(this.id)" type="number" id="tax_value" required class="form-control" onchange="if (this.value < 0) this.value = '';" placeholder="Tax Value" name="tax_value" >
-                            <p id="error_store_mobile"></p>
+                            <p id="errorTax"></p>
                            </div>
                      </div>
 
@@ -146,8 +146,9 @@ function valueChanged(id){
 
 
 $("#tax_value").blur(function(){
+   $('#submitAdd').attr('disabled', true);
     
-    var error_store_mobile = '';
+    var errorTax = '';
     var tax_value = $(this).val();
     var _token = $('input[name="_token"]').val();
     
