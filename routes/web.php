@@ -40,6 +40,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
     Route::post('store/ajax/unique_storename', 'PublicController@CheckName')->name('unique_storename');
     Route::post('store/ajax/unique_phone', 'PublicController@CheckPhone')->name('unique_store_mobile');
+    Route::post('store/ajax/unique_tax', 'PublicController@CheckTax')->name('unique_tax');
 
 
     // Super Admin login

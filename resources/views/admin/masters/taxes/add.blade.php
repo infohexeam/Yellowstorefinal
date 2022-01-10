@@ -142,6 +142,38 @@ function valueChanged(id){
 
 }
 
+
+
+$("#tax_value").blur(function(){
+    
+    var error_store_mobile = '';
+    var tax_value = $(this).val();
+    var _token = $('input[name="_token"]').val();
+    
+    $.ajax({
+      url:"{{ route('unique_tax') }}",
+      method:"POST",
+      data:{tax_value:tax_value, _token:_token},
+      success:function(result)
+      {
+          if(result == 'unique')
+          {
+              
+                              $('#errorTax').empty();
+$('#submitAdd').attr('disabled', false);
+          }
+          else
+          {
+              $('#errorTax').html('<label class="text-danger">Tax value already exist </label>');
+              $('#store_mobile').addClass('has-error');
+              $('#submitAdd').attr('disabled', true);
+          }
+      }
+ })
+});
+
+
+
 </script>
 
 @endsection

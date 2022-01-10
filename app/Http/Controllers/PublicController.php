@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_store_order_item;
 use App\Models\admin\Mst_store;
+use App\Models\admin\Mst_Tax;
 use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Trn_TermsAndCondition;
 use SoapClient;
@@ -33,6 +34,20 @@ class PublicController extends Controller
 
       $store_name = $request->store_name;
       $data = Mst_store::where('store_name', $store_name)
+         ->count();
+
+      if ($data > 0) {
+         echo 'not_unique';
+      } else {
+         echo 'unique';
+      }
+   }
+
+   function CheckTax(Request $request)
+   {
+
+      $tax_value = $request->tax_value;
+      $data = Mst_Tax::where('tax_value', $tax_value)
          ->count();
 
       if ($data > 0) {
