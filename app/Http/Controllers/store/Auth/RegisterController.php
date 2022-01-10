@@ -211,16 +211,19 @@ class RegisterController extends Controller
                 $store_doc->save();
             }
 
-            //add to otp verification table
-            $store_otp =  5555;
-            //$store_otp =  rand ( 1000 , 9999 );
-            $store_otp_expirytime = Carbon::now()->addMinute(10);
-            $otp_verify->store_id                 = $store_id;
-            $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
-            $otp_verify->store_otp                 = $store_otp;
-            $otp_verify->save();
+            return redirect('store-login');
 
-            return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($store_id));
+
+            // //add to otp verification table
+            // $store_otp =  5555;
+            // //$store_otp =  rand ( 1000 , 9999 );
+            // $store_otp_expirytime = Carbon::now()->addMinute(10);
+            // $otp_verify->store_id                 = $store_id;
+            // $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
+            // $otp_verify->store_otp                 = $store_otp;
+            // $otp_verify->save();
+
+            //   return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($store_id));
         } else {
             return redirect()->back()->withErrors($validator)->withInput();
         }
