@@ -154,7 +154,7 @@ class OrderController extends Controller
                     $store_id = $request->store_id;
                     // dd(Trn_store_order::select('order_id','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
 
-                    if ($data['orderDetails']  = Trn_store_order::select('order_id', 'delivery_accept', 'product_varient_id', 'service_order', 'service_booking_order', 'time_slot', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'order_type', 'delivery_address')->where('order_id', $order_id)->where('store_id', $store_id)->first()) {
+                    if ($data['orderDetails']  = Trn_store_order::select("*")->where('order_id', $order_id)->where('store_id', $store_id)->first()) {
 
                         if (!isset($data['orderDetails']->order_note))
                             $data['orderDetails']->order_note = '';
@@ -241,14 +241,11 @@ class OrderController extends Controller
                             // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
                             // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
 
-                             if ($data['orderDetails']->order_type == 'POS') {
+                            if ($data['orderDetails']->order_type == 'POS') {
                                 $data['orderDetails']->customer_mobile = '';
                                 $data['orderDetails']->customer_address = '';
                                 $data['orderDetails']->customer_pincode = '';
                             }
-
-
-
                         } else {
                             $data['orderDetails']->customer_name = '';
                             $data['orderDetails']->delivery_boy = '';
