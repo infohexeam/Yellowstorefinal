@@ -171,15 +171,31 @@
                                   
                                     
 
-                                    @if(@$order->payment_type == '1')
+                                    @if(@$order->order_type == 'APP')
+                                    
+                                    @if(($order->reward_points_used != null) || ($order->reward_points_used != 0))
+                                    
+                                        <!--<tr>-->
+                                        <!--   <td colspan="6" class=" text-right">Reward point used</td>-->
+                                        <!--   <td class=" h4">  </td>-->
+                                        <!--</tr>-->
+                                    
+                                        <tr>
+                                           <td colspan="7" class=" text-right">Reward point amount</td>
+                                           <td class=" h4"> {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points) </td>
+                                        </tr>
+                                        
+                                    
+                                    @endif
+                                    
                                     <tr>
-                                       <td colspan="6" class=" text-right">Packing Charge</td>
-                                       <td class=" h4"> 20 </td>
+                                       <td colspan="7" class=" text-right">Packing Charge</td>
+                                       <td class=" h4"> 0 </td>
                                     </tr>
 
 
                                     <tr>
-                                       <td colspan="6" class=" text-right">Delivery Charge</td>
+                                       <td colspan="7" class=" text-right">Delivery Charge</td>
                                        <td class="  h4">{{ @$order->delivery_charge}}</td>
                                     </tr>
                                     @endif
