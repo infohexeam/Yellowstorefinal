@@ -178,7 +178,9 @@
                   </tbody>
                </table>
             </div>
+            @if (count($orders['data']) <= 10 )
             <div class="float-right"> {!! @$orders->links() !!} </div>
+            @endif
            
          </div>
       </div>
