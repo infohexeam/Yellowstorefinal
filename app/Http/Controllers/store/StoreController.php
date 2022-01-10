@@ -665,7 +665,7 @@ class StoreController extends Controller
     $agencies = Mst_store_agencies::where('agency_account_status', 1)->get();
 
 
- $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
+    $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
       ->where('trn__category_business_types.business_type_id',  Auth::guard('store')->user()->business_type_id)
       ->where('mst_store_categories.category_status', 1)
       ->get();
@@ -1084,9 +1084,9 @@ class StoreController extends Controller
     $product_images = Mst_product_image::where('product_id', '=', $product_id)->get();
     $tax = Mst_Tax::all();
     $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
-    ->where('trn__category_business_types.business_type_id',  Auth::guard('store')->user()->business_type_id)
-    ->where('mst_store_categories.category_status', 1)
-    ->get();
+      ->where('trn__category_business_types.business_type_id',  Auth::guard('store')->user()->business_type_id)
+      ->where('mst_store_categories.category_status', 1)
+      ->get();
     $colors = Mst_attribute_value::join('mst_attribute_groups', 'mst_attribute_groups.attr_group_id', '=', 'mst_attribute_values.attribute_group_id')
       ->where('mst_attribute_groups.group_name', 'LIKE', '%color%')
       ->select('mst_attribute_values.*')
@@ -1748,7 +1748,9 @@ class StoreController extends Controller
 
     $status = Sys_store_order_status::all();
     $store = Mst_store::all();
-    $product = Mst_store_product::where('store_id', '=', $store_id)->get();
+
+    $productCount = Mst_store_product::where('store_id', '=', $store_id)->count();
+    $product = Mst_store_product::where('store_id', '=', $store_id)->paginate($productCount);
 
     $delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
       ->select("mst_delivery_boys.*")->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
@@ -1945,8 +1947,8 @@ class StoreController extends Controller
             foreach ($customerDevice as $cd) {
               $title = 'Referal points creadited';
               //$body = 'Referal points credited successully..';
-            $body = $configPoint->referal_points . ' points credited to your wallet..';
-            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+              $body = $configPoint->referal_points . ' points credited to your wallet..';
+              $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
             }
 
 
@@ -3740,32 +3742,30 @@ class StoreController extends Controller
     $data['dispute_status']  = $request->dispute_status;
     $query = \DB::table("mst_disputes")->where('dispute_id', $dispute_id)->update($data);
     $dispData =  \DB::table("mst_disputes")->where('dispute_id', $dispute_id)->first();
-        if($request->dispute_status == 1)
-       {
-            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
-            $orderData = Trn_store_order::find($dispData->order_id);
-    
-                foreach ($customerDevice as $cd) {
-                    $title = 'Dispute closed';
-                    //  $body = 'First order points credited successully..';
-                    $body =  'Your dispute with order number'. $orderData->order_number . ' is closed by store..';
-                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-                }
-       }
-    
-       if($request->dispute_status == 3)
-       {
-            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
-            $orderData = Trn_store_order::find($dispData->order_id);
-    
-                foreach ($customerDevice as $cd) {
-                    $title = 'Dispute in progress';
-                    //  $body = 'First order points credited successully..';
-                    $body =  'Your dispute with order number'. $orderData->order_number . ' is in progress..';
-                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-                }
-       }
-                               
+    if ($request->dispute_status == 1) {
+      $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+      $orderData = Trn_store_order::find($dispData->order_id);
+
+      foreach ($customerDevice as $cd) {
+        $title = 'Dispute closed';
+        //  $body = 'First order points credited successully..';
+        $body =  'Your dispute with order number' . $orderData->order_number . ' is closed by store..';
+        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+      }
+    }
+
+    if ($request->dispute_status == 3) {
+      $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+      $orderData = Trn_store_order::find($dispData->order_id);
+
+      foreach ($customerDevice as $cd) {
+        $title = 'Dispute in progress';
+        //  $body = 'First order points credited successully..';
+        $body =  'Your dispute with order number' . $orderData->order_number . ' is in progress..';
+        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+      }
+    }
+
     return redirect()->back()->with('status', 'Status updated successfully.');
   }
   public function currentIssues(Request $request)

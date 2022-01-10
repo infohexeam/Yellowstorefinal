@@ -178,9 +178,7 @@
                   </tbody>
                </table>
             </div>
-            @if (count($orders) <= 10 )
-            <div class="float-right"> {!! @$orders->links() !!} </div>
-            @endif
+            <div class="float-right"> {!! $orders->links() !!} </div>
            
          </div>
       </div>
