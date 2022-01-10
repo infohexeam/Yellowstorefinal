@@ -31,7 +31,7 @@
                         @csrf
                
               <div class="form-body">
-                <div class="row">
+                <div class="row" style="min-height: 72em;"
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Atribute Group Name</label>
