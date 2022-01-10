@@ -28,6 +28,12 @@
          <link href="{{URL::to('/assets/css/icons.css')}}" rel="stylesheet"/>
          <!-- COLOR SKIN CSS -->
          <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{URL::to('/assets/colors/color1.css')}}" />
+         
+         <script src='https://www.google.com/recaptcha/api.js'></script>    
+         
+         <script src="https://www.google.com/recaptcha/api.js?render=6LdaDPgdAAAAAB82l56R-aueMZstr_Xe3iowacF8"></script>
+
+
    </head>
    </head>
    <body>
@@ -58,7 +64,7 @@
                </div>
                <div class="container-login100">
                   <div class="wrap-login100 p-6" style="width:400px;">
-                     <form method="POST" action="{{ route('login') }}">
+                     <form method="POST" id="userForm" action="{{ route('login') }}">
                         @csrf
                         <span class="login100-form-title">
                         {{ __('Admin Login') }}
@@ -98,7 +104,7 @@
                         <!--   </button>-->
                         <!--</div>-->
                         <div class="container-login100-form-btn">
-                           <button type="submit" class="login100-form-btn btn-primary">
+                           <button type="submit" data-sitekey="6LdaDPgdAAAAAB82l56R-aueMZstr_Xe3iowacF8" data-callback="submitForm" class="g-recaptcha login100-form-btn btn-primary">
                            {{ __('Login') }}
                            </button>
                         </div>
@@ -117,6 +123,13 @@
       </div>
       </div>
       </div>
+      
+      
+        <script>
+            function submitForm() {
+                document.getElementById('userForm').submit();
+            }
+        </script>
      
       <!-- BACKGROUND-IMAGE CLOSED -->
       <!-- JQUERY JS -->
