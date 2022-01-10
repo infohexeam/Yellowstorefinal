@@ -61,7 +61,7 @@ class LoginController extends Controller
 
         if (isset($_POST['g-recaptcha-response'])) {
 
-            $secret_key = '6LdaDPgdAAAAAD-rpnFVpc7lx-77GrEGeU5e_jBU';
+            $secret_key = '6LfkNvcdAAAAAPkX8n_hrhWUiijbEb1_ofvtLtCV';
             $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'];
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
