@@ -441,7 +441,7 @@
                 else
                     $("#showmessage").empty();   
 
-                    $('#tc').is(":checked")
+                    if($('#tc').is(":checked"))
                     {
 
                     }else{
