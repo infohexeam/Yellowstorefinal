@@ -488,6 +488,8 @@
             $("#sentSuccessMsg").show();
               
         }).catch(function (error) {
+            $("#sentSuccessMsg").text("OTP failed !.Please resolved captcha to receive otp.");
+            $("#sentSuccessMsg").show();
             $("#error").text(error.message);
             $("#error").show();
         });
