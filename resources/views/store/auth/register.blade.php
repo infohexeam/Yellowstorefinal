@@ -77,7 +77,7 @@
                             <div class="col-md-6">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_name" type="store_name" name="store_name" placeholder="Store Name *" value="{{ old('store_name') }}" required autocomplete="store_name" >
-                                                               <span id="error_username"></span>
+                                                               <span style="color: red;" id="error_username"></span>
 
                                     {{-- @error('store_name')
                                     <span class="invalid-feedback" role="alert">
@@ -89,7 +89,7 @@
                              <div class="col-md-6">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_mobile" onchange="mobileValidation()" type="text" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  name="store_mobile" placeholder="Store Mobile Number *" value="{{ old('store_mobile') }}" required autocomplete="store_mobile" >
-                                    <p id="error_store_mobile"></p>
+                                    <p style="color: red;" id="error_store_mobile"></p>
                                     {{-- @error('store_mobile')
                                     <strong>{{ $message }}</strong>
                                     </span>
@@ -262,7 +262,7 @@
                                     <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror --}}
-                                    <p id="error_business_type"></p>
+                                    <p style="color: red;" id="error_business_type"></p>
                                 </div>
                             </div>
                         </div>
@@ -281,7 +281,7 @@
 
                         <div id="passlabel" class="wrap-input100 validate-input">
                            <input class="input100" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="password" value="{{old('password')}}" placeholder="Password *" id="password" type="password" required autocomplete="current-password">
-                <p id="showpassmessage"><p>
+                <p id="showpassmessage" style="color: red;" ><p>
 <p id="showpassmessage2"><p>
     
                            {{-- @error('password')
@@ -294,7 +294,7 @@
 
                         <div class="wrap-input100 validate-input">
                            <input class="input100" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password *" value="{{old('password_confirmation')}}" id="confirm_password" type="password" required autocomplete="current-password">
-                                        <p id="showmessage"><p>
+                                        <p style="color: red;" id="showmessage"><p>
            {{-- @error('password_confirmation')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
@@ -441,9 +441,12 @@
                 else
                     $("#showmessage").empty();   
 
-                if(sTC == '')
-                   alert("Please accept the terms and conditions to continue...");
-   
+                    $('#tc').is(":checked")
+                    {
+
+                    }else{
+                        alert("Please accept the terms and conditions to continue...")
+                    }
 
                 return false;
 
