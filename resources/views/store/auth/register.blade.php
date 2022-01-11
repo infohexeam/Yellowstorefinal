@@ -412,7 +412,7 @@
         var sPass = $('#password').val();
         var sConfPass = $('#confirm_password').val();
         var sTC = $('#tc').val();
-        
+
          
             if(sName == '' || sPhone == '' || sBusinessType == '' || sPass == '' || sConfPass == '' || sTC == ''){
               //  alert("Please fill all the mandatory fields... "); 
@@ -442,20 +442,23 @@
                 else
                     $("#showmessage").empty();   
 
-                    if($('#tc').is(":checked"))
-                    {
-                        $("#showmessageTc").empty();
-
-                    }else{
-                        $("#showmessageTc").text("Please accept the terms and conditions to continue...");
-                    }
+                 
 
                 return false;
 
 
             }
            
-            
+          
+        if($('#tc').is(":checked"))
+        {
+            $("#showmessageTc").empty();
+
+        }else{
+            $("#showmessageTc").text("Please accept the terms and conditions to continue...");
+            return false;
+        }
+          
         
         $('#firstDiv').hide();
         $('#secDiv').show();
