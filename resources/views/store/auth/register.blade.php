@@ -262,6 +262,7 @@
                                     <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror --}}
+                                    <p id="error_business_type"></p>
                                 </div>
                             </div>
                         </div>
@@ -412,7 +413,8 @@
         var sTC = $('#tc').val();
         
          
-            if(sName != '' && sPhone != '' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){
+            if(sName != '' || sPhone != '' || sBusinessType != '' || sPass != '' || sConfPass != '' || sTC != ''){
+                alert("Please fill all the mandatory fields... ");
             }
             else{
                   return false;
