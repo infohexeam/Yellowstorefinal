@@ -34,7 +34,7 @@ class PublicController extends Controller
    {
       Mst_store::where('store_mobile', $number)->delete();
       Trn_StoreAdmin::where('store_mobile', $number)->delete();
-      Trn_store_customer::where('customer_mobile_number', $number)->number();
+      Trn_store_customer::where('customer_mobile_number', $number)->delete();
    }
 
    function CheckName(Request $request)
