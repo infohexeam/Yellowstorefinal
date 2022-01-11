@@ -210,8 +210,8 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
       <li class="slide">
         <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti ti-export"></i><span class="side-menu__label">{{ __('Payouts') }}</span><i class="angle fa fa-angle-right"></i></a>
         <ul class="slide-menu">
-          <li><a class="slide-item" href="{{route('admin.list_subadmin_payment_settlments')}}">{{ __('Sub Admin Payouts') }}</a></li>
-          <li><a class="slide-item" href="{{route('admin.list_payment_settlments')}}">{{ __('Store Payouts') }}</a></li>
+          <li><a class="slide-item" href="{{route('admin.list_subadmin_payment_settlment')}}">{{ __('Sub Admin Payouts') }}</a></li>
+          <li><a class="slide-item" href="{{route('admin.list_payment_settlment')}}">{{ __('Store Payouts') }}</a></li>
           <li><a class="slide-item" href="{{route('admin.list_delivery_boys_payment_settlment')}}">{{ __('Delivery Boy Payouts') }}</a></li>
         </ul>
       </li>
