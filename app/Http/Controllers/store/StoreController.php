@@ -663,14 +663,15 @@ class StoreController extends Controller
       ->select('mst_attribute_values.*')
       ->get();
     $agencies = Mst_store_agencies::where('agency_account_status', 1)->get();
+    $store_id =  Auth::guard('store')->user()->store_id;
 
-
+    $storeData = Mst_store::find($store_id);
     $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
-      //  ->where('trn__category_business_types.business_type_id',  Auth::guard('store')->user()->business_type_id)
+      ->where('trn__category_business_types.business_type_id',  $storeData->business_type_id)
       ->where('mst_store_categories.category_status', 1)
       ->get();
-    dd($category, Auth::guard('store')->user()->business_type_id);
-    $store_id =  Auth::guard('store')->user()->store_id;
+
+    //dd($category, Auth::guard('store')->user()->business_type_id);
     $products_global_products_id = Mst_store_product::where('store_id', $store_id)
       ->where('global_product_id', '!=', null)
       ->orderBy('product_id', 'DESC')
