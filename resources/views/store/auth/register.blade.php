@@ -308,6 +308,7 @@
                         <input required type="checkbox" name="tc" id="tc"> I Agree to the 
                         <a target="_blank" href="{{ url('store/terms-and-condition') }}">Terms and Conditions</a>
                     </label>
+                    <p style="color: red;" id="showmessageTc"><p>
                     
                                 <div id="recaptcha-container"></div>
 
@@ -443,9 +444,10 @@
 
                     if($('#tc').is(":checked"))
                     {
+                        $("#showmessageTc").empty();
 
                     }else{
-                        alert("Please accept the terms and conditions to continue...")
+                        $("#showmessageTc").text("Please accept the terms and conditions to continue...");
                     }
 
                 return false;
