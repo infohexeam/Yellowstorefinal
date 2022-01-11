@@ -929,6 +929,8 @@ $("#store_name").blur(function(){
 
   $("#store_mobile").blur(function(){
     validatePass();
+    validatePassLength();
+    checkPasswordComplexity($('#password').val());
     
       var error_store_mobile = '';
       var store_username = $(this).val();
