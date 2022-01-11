@@ -414,8 +414,8 @@
         
          
             if(sName == '' || sPhone == '' || sBusinessType == '' || sPass == '' || sConfPass == '' || sTC == ''){
-                alert("Please fill all the mandatory fields... ");
-                
+              //  alert("Please fill all the mandatory fields... "); 
+                 
                 if(sName == '')
                     $("#error_username").text("Store name required");
                 else
