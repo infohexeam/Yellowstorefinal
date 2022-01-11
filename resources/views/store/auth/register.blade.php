@@ -415,9 +415,10 @@
          
             if(sName != '' || sPhone != '' || sBusinessType != '' || sPass != '' || sConfPass != '' || sTC != ''){
                 alert("Please fill all the mandatory fields... ");
+                return false;
+
             }
             else{
-                  return false;
             }
             
         
