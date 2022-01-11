@@ -334,7 +334,7 @@
                 <div id="secDiv" class="wrap-login100 p-6" style="width:800px;">
     
                         <p id="sentSuccessMsg"></p> <br>
-                        <a class="float-right btn btn-primary" onclick="showFirstDiv()">Back</a>
+                        {{-- <a class="float-right btn btn-primary" >Back</a> --}}
 
                     <div class="row">
                         <div class="col-md-12">
@@ -352,6 +352,12 @@
                     <div class="container-login100-form-btn">
                        <a href="#" id="otpVerify" onclick="codeverify();" class="login100-form-btn btn-primary">
                        {{ __('Verify') }}
+                       </a>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                       <a href="#" onclick="showFirstDiv()" class="login100-form-btn btn-gray">
+                       {{ __('Back') }}
                        </a>
                     </div>
                 </div>
