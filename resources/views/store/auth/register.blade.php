@@ -413,13 +413,43 @@
         var sTC = $('#tc').val();
         
          
-            if(sName != '' || sPhone != '' || sBusinessType != '' || sPass != '' || sConfPass != '' || sTC != ''){
+            if(sName == '' || sPhone == '' || sBusinessType == '' || sPass == '' || sConfPass == '' || sTC == ''){
                 alert("Please fill all the mandatory fields... ");
+                
+                if(sName == '')
+                    $("#error_username").text("Store name required");
+                else
+                    $("#error_username").empty();
+
+                if(sPhone == '')
+                    $("#error_store_mobile").text("Store mobile number required");
+                else
+                    $("#error_store_mobile").empty();   
+
+                if(sBusinessType == '')
+                    $("#error_business_type").text("Business type required");
+                else
+                    $("#error_business_type").empty(); 
+
+                if(sPass == '')
+                    $("#showpassmessage").text("Password required");
+                else
+                    $("#showpassmessage").empty();   
+
+                if(sConfPass == '')
+                    $("#showmessage").text("Confirm password required");
+                else
+                    $("#showmessage").empty();   
+
+                if(sTC == '')
+                   alert("Please accept the terms and conditions to continue...");
+   
+
                 return false;
 
+
             }
-            else{
-            }
+           
             
         
         $('#firstDiv').hide();
