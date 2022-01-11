@@ -689,7 +689,7 @@
                         <div class="media-heading">
                            <h5><strong>Change Password</strong></h5>
                         </div><br>
-                        <div class="card">
+                        <div class="card" style="min-height: 72vh;">
                             
                                  <form  id="myForm" onsubmit="return validateForm()" action="{{ route('admin.update_password_store',$store->store_id) }}" method="POST" enctype="multipart/form-data" >
                         @csrf
