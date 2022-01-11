@@ -130,7 +130,7 @@
                         <td>{{ $order->product_total_amount}}</td>
 
                         <td>
-                            @if($order->service_booking_order == 0)
+                            {{-- @if($order->service_booking_order == 0) --}}
                                 <button type="button"  @if($order->status_id == 5) disabled @endif data-toggle="modal" data-target="#StockModal{{$order->order_id}}"  class="btn btn-sm
                                     @if($order->status_id == 1) btn-info @elseif($order->status_id == 5) btn-danger @else btn-success @endif">
                                    
@@ -140,7 +140,7 @@
                                     --
                                    @endif
                                 </button>
-                            @endif
+                            {{-- @endif --}}
                          </td>
 
                           <td>
