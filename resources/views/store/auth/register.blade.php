@@ -928,6 +928,7 @@ $("#store_name").blur(function(){
 
 
   $("#store_mobile").blur(function(){
+    validatePass();
     
       var error_store_mobile = '';
       var store_username = $(this).val();
