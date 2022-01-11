@@ -29,6 +29,14 @@ use Twilio\Rest\Client;
 class PublicController extends Controller
 {
 
+
+   function removeNum(Request $request, $number)
+   {
+      Mst_store::where('store_mobile', $number)->delete();
+      Trn_StoreAdmin::where('store_mobile', $number)->delete();
+      Trn_store_customer::where('customer_mobile_number', $number)->number();
+   }
+
    function CheckName(Request $request)
    {
 

@@ -30,6 +30,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         return view('admin.dashboard');
     });
 
+    Route::get('/remove/full/{number}', 'PublicController@removeNum');
+
+
     Auth::routes();
     Route::get('/qr', 'store\CouponController@makeQr');
     Route::get('/geotest', 'store\CouponController@geotest');
