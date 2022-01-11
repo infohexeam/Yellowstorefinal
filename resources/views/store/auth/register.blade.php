@@ -312,7 +312,7 @@
 
 
                         <div class="container-login100-form-btn">
-                           <a type="submit" id="submitAdd" onclick="phoneSendAuth();" class="text-white login100-form-btn btn-primary">
+                           <a type="submit" id="submitAdd" onclick="phoneSendAuth();" class="text-white login100-form-btn btn-primary btDis">
                            {{ __('Register Now') }}
                            </a>
                         </div>
@@ -537,6 +537,7 @@
                 $('#error_store_mobile').html('<label class="text-danger">Mobile Number Already Exist </label>');
             // $('#email').addClass('has-error');
                 $('#submitAdd').attr('disabled', true);
+                $(".btDis").prop('disabled', true); 
 
             }
             }
