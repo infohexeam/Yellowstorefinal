@@ -1112,6 +1112,15 @@ class ProductController extends Controller
                         ];
 
                         $storeData =  Mst_store::find($request->store_id);
+                        $cusData =  Trn_store_customer::find($request->customer_id);
+                        $data['customer_name']  = @$cusData->customer_first_name . "" . @$cusData->customer_last_name;
+                        $data['customer_mobile_number']  = @$cusData->customer_mobile_number;
+
+                        if (isset($cusData->customer_email))
+                            $data['customer_email']  = $cusData->customer_email;
+                        else
+                            $data['customer_email']  = '';
+
 
                         $data['upi_id']  = $storeData->upi_id;
                         $data['commision_percentage']  = $storeData->store_commision_percentage;
