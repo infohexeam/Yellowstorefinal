@@ -310,6 +310,7 @@
                     </label>
                     <p style="color: red;" id="showmessageTc"><p>
                     
+                                <div id="recaptcha-container"></div>
 
 
                         <div class="container-login100-form-btn">
@@ -334,11 +335,8 @@
     
                         <p id="sentSuccessMsg"></p> <br>
                         {{-- <a class="float-right btn btn-primary" >Back</a> --}}
-                        {{-- <div id="recaptcha-container"></div> --}}
 
                     <div class="row">
-                                <div id="recaptcha-container"></div>
-
                         <div class="col-md-12">
                             <div class="wrap-input100 validate-input">
                                 <input class="input100" id="otp" type="text" name="otp" placeholder="OTP" value="{{ old('otp') }}" >
@@ -505,6 +503,7 @@
 
         var code = $("#otp").val();
 
+        $("#sentSuccessMsg").text("Please resolve reCaptcha.");
   
 
         coderesult.confirm(code).then(function (result) {
