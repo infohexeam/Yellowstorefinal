@@ -30,7 +30,7 @@
          </div>
       </div>
       <input type="hidden" name="store_id" value="{{$store->store_id}}">
-      <div class="card">
+      <div class="card" style="min-height: 72vh;">
        @if ($message = Session::get('status'))
                   <div class="alert alert-success">
                      <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
@@ -689,7 +689,7 @@
                         <div class="media-heading">
                            <h5><strong>Change Password</strong></h5>
                         </div><br>
-                        <div class="card" style="min-height: 72vh;">
+                        <div class="card" >
                             
                                  <form  id="myForm" onsubmit="return validateForm()" action="{{ route('admin.update_password_store',$store->store_id) }}" method="POST" enctype="multipart/form-data" >
                         @csrf
