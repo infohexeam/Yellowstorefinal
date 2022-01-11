@@ -29,7 +29,7 @@
          </div>
       </div>
       <input type="hidden" name="store_id" value="{{$store->store_id}}">
-      <div class="card">
+      <div class="card" style="min-height: 72vh;">
          <div class="card-body">
             <div class="border-0">
                <div class="tab-content">
