@@ -106,7 +106,7 @@ class SettingController extends Controller
 		return view('admin.masters.categories.create', compact('pageTitle', 'categories', 'business_types'));
 	}
 
-	
+
 
 
 
@@ -187,7 +187,7 @@ class SettingController extends Controller
 		}
 	}
 
-	
+
 	public function editCategory(Request $request, $id)
 	{
 		$pageTitle = "Edit Product Category";
@@ -200,7 +200,7 @@ class SettingController extends Controller
 	}
 
 
-	
+
 	public function destroyCategory(Request $request, Mst_categories $category)
 	{
 
@@ -3811,7 +3811,7 @@ class SettingController extends Controller
 
 	public function list_subadmin_payment_settlment()
 	{
-		$pageTitle = "Sub Admin Payment Settlements";
+		$pageTitle = "Sub Admin Payment Settlement";
 		$subadmins = User::where('user_role_id', 1)->get();
 		return view('admin.masters.subadmin_payment.list', compact('subadmins', 'pageTitle'));
 	}
