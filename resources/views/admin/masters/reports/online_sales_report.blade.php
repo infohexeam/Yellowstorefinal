@@ -167,8 +167,8 @@
                                             <th class="wd-15p">Wallet<br>Points Used</th>
                                            
                                            
-                                            <th class="wd-15p">Deivery Boy</th>
-                                            <th class="wd-15p">Deivery Status</th>
+                                            <th class="wd-15p">Delivery Boy</th>
+                                            <th class="wd-15p">Delivery Status</th>
                                             
                                          </tr>
                                       </thead>
