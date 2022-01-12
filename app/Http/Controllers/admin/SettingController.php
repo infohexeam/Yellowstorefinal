@@ -2845,8 +2845,8 @@ class SettingController extends Controller
 		$boy_Id = $request->delivery_boy_id;
 		$delivery_boy = Mst_delivery_boy::Find($boy_Id);
 
-		$password = $delivery_boy->delivery_boy_password;
-		$newpassword = $request->delivery_boy_password;
+		$password = $delivery_boy->password;
+		$newpassword = $request->password;
 
 
 		$validator = Validator::make(
@@ -2867,7 +2867,7 @@ class SettingController extends Controller
 				'delivery_boy_commision'            => 'required',
 				'delivery_boy_commision_amount'            => 'required',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
-				'delivery_boy_password'  => 'sometimes|same:password_confirmation',
+				'password'  => 'sometimes|same:password_confirmation',
 
 			],
 			[
@@ -2883,7 +2883,7 @@ class SettingController extends Controller
 				'town_id.required'        			   => 'Town required',
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
-				'delivery_boy_password.required'	   => 'Password required',
+				'password.required'	   => 'Password required',
 				'delivery_boy_commision.required'	   => 'Delivery boy commision percentage required',
 				'delivery_boy_commision_amount.required'	=> 'Delivery boy commision percentage required',
 
@@ -2915,10 +2915,8 @@ class SettingController extends Controller
 
 			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
 			$delivery_boy->delivery_boy_status   = 0;
-			if ($newpassword == '') {
-				$delivery_boy->delivery_boy_password = $password;
-			} else {
-				$delivery_boy->delivery_boy_password = Hash::make($request->delivery_boy_password);
+			if (isset($request->password)) {
+				$delivery_boy->password = Hash::make($request->password);
 			}
 
 
