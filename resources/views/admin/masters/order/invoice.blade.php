@@ -51,7 +51,7 @@
                              
                               <div>
                                     {{@$order->customerAddress['address']}} <br>
-                                     Pincode: {{$order->customerAddress['pincode']}}<br>
+                                     Pincode: {{@$order->customerAddress['pincode']}}<br>
                                      Phone: {{@$order->customerAddress['phone']}}<br>
                                    </div>
                              
@@ -60,7 +60,7 @@
                                 <h5> {{@$order->customer['customer_first_name']}} {{@$order->customer['customer_last_name']}}  </h5>
                                    <div>
                                     {{@$order->customer['customer_address']}} <br>
-                                     Pincode: {{$order->customer['customer_pincode']}}<br>
+                                     Pincode: {{@$order->customer['customer_pincode']}}<br>
                                      Phone: {{@$order->customer['customer_mobile_number']}}<br>
                                    </div>
                              
