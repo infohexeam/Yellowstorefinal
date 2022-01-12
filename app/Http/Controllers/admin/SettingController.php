@@ -4801,7 +4801,7 @@ class SettingController extends Controller
 	public function listReferalPoints(Request $request)
 	{
 
-		$pageTitle = "Referal Points Points";
+		$pageTitle = "Referral Points Points";
 		$referal_points = Trn_referal_point::all();
 
 		return view('admin.masters.referal_points.list', compact('pageTitle', 'referal_points'));

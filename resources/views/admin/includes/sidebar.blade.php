@@ -163,7 +163,7 @@
               
                 <li><a class="slide-item" href="{{route('admin.inventory_reports')}}">{{ __('Inventory Reports') }}</a></li>
                   <li><a class="slide-item" href="{{route('admin.out_of_stock_reports')}}">{{ __('Out of Stock Reports') }}</a></li>
-                  <li><a class="slide-item" href="{{route('admin.referal_reports')}}">{{ __('Referal Reports') }}</a></li>
+                  <li><a class="slide-item" href="{{route('admin.referal_reports')}}">{{ __('Referral Reports') }}</a></li>
 
               
             </ul>
