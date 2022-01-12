@@ -288,7 +288,7 @@
                      </div>
 
                         <div class="card-footer text-right">
-                           <center><a  class="btn btn-cyan text-white" action="{{ url('admin/order/list') }}">Cancel</a></center>
+                           <center><a  class="btn btn-cyan text-white" href="{{ url('admin/order/list') }}">Cancel</a></center>
           
 
                               <button type="button" class="btn btn-info mb-1"  onClick="printdiv('div_print');"><i class="si si-printer"></i> Print Invoice</button>

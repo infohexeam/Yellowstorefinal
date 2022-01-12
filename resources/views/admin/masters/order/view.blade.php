@@ -326,7 +326,7 @@
                               <br>
                            </div>
 
-                  <center><a  class="btn btn-cyan text-white" action="{{ url('admin/order/list') }}">Cancel</a></center>
+                  <center><a  class="btn btn-cyan text-white" href="{{ url('admin/order/list') }}">Cancel</a></center>
                         </br>
                @endif
                         {{--   </div>
