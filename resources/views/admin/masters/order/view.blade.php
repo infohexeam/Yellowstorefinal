@@ -163,12 +163,25 @@
                                  <tr>
                                     <td><strong>Mobile :</strong> (+91){{ @$order->customer['customer_mobile_number']}}</td>
                                  </tr>
-                                  <tr>
+                                  {{-- <tr>
                                     <td><strong>Location :</strong> {{ @$order->customer['customer_location']}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
-                                 </tr>
+                                 </tr> --}}
+                                 {{-- <tr>
+                                    <td><strong>Address :</strong>
+                                       
+                                       {{ @$order->customer['customer_address']}}
+                                    
+                                       {{@$order->customerAddress['address']}} <br>
+                                       @if (isset($order->customerAddress['pincode']))
+                                          Pincode: {{@$order->customerAddress['pincode']}}<br>
+                                       @endif
+
+                                       @if (isset($order->customerAddress['phone']))
+                                       Phone: {{@$order->customerAddress['phone']}}<br>
+                                       @endif
+                                    
+                                    </td>
+                                 </tr> --}}
                               </tbody>
 
                            </table>
@@ -191,7 +204,18 @@
                                     <td><strong>Payment Mode :</strong> {{@$order->payment_type['payment_type']}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
+                                    <td><strong>Address :</strong> 
+                                       {{ @$order->customer['customer_address']}}
+                                    
+                                       {{@$order->customerAddress['address']}} <br>
+                                       @if (isset($order->customerAddress['pincode']))
+                                          Pincode: {{@$order->customerAddress['pincode']}}<br>
+                                       @endif
+
+                                       @if (isset($order->customerAddress['phone']))
+                                       Phone: {{@$order->customerAddress['phone']}}<br>
+                                       @endif                                    
+                                    </td>
                                  </tr>
 
                               </tbody>
@@ -202,7 +226,7 @@
                      </div>
                      </div><!-- COL END -->
 
-                      <div class="col-md-6">
+                      {{-- <div class="col-md-6">
                         <div class="card">
                            <div class="card-header">
                               <div class="card-title">Shipping Address</div>
@@ -224,7 +248,8 @@
                            </div>
                         </div>
                      </div><!-- COL END -->
-                  </div>
+                  </div> --}}
+                  
                </div>
             </div>
             <br>
