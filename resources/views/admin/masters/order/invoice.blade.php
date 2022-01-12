@@ -42,7 +42,7 @@
 
                                  <div class="col-md-6 text-right">
                                     <p class="h3">Invoice To:</p>
-                                    <address>
+                                    <address> 
                                  
                                    
                                    @if(isset($order->delivery_address))
