@@ -163,7 +163,7 @@
                                     <td>{{$i}}</td>
                                     <td>{{ @$assigned_store->store['store_name']}}</td>
                                     <td>{{ @$assigned_store->store['store_contact_person_phone_number']}}</td>
-                                    <td>{{ (new \App\Services\Helper)->countOrders($assigned_store->store_id,$delivery_boy->delivery_boy_id) }}</td>
+                                    <td>{{ (new \App\Helpers\Helper)->countOrders($assigned_store->store_id,$delivery_boy->delivery_boy_id) }}</td>
 
                                  </tr>
                                  @endforeach
