@@ -288,8 +288,8 @@
                      </div>
 
                         <div class="card-footer text-right">
-                     <button type="button" class="btn btn-cyan" onclick="history.back()">Cancel</button>
-                                
+                           <center><a  class="btn btn-cyan text-white" action="{{ url('admin/order/list') }}">Cancel</a></center>
+          
 
                               <button type="button" class="btn btn-info mb-1"  onClick="printdiv('div_print');"><i class="si si-printer"></i> Print Invoice</button>
                          
@@ -308,7 +308,7 @@
             var oldstr = document.body.innerHTML;
             document.body.innerHTML = headstr + newstr + footstr;
             window.print();
-            location.reload();
+            //location.reload();
             return false;
         }
     </script>

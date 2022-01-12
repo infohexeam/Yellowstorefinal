@@ -234,7 +234,7 @@
                      @endif
 
             @if($order->service_booking_order != 0)
-            <div class="col-md-6">
+            <div class="col-md-12">
                         <div class="card">
                            <div class="card-header">
                               <div class="card-title">Booked Service</div>
@@ -242,7 +242,7 @@
                            <div class="card-body">
                          <div class="table-responsive">
                            <table class="table row table-borderless">
-                              <tbody class="col-lg-12 col-xl-6 p-0">
+                              <tbody class="col-lg-12 col-xl-12 p-0">
                                  <tr>
                                     <td><strong>Service :</strong> 
                                        {{@$order->product_varient->product['product_name']}}  {{@$order->product_varient['variant_name']}}
@@ -326,7 +326,7 @@
                               <br>
                            </div>
 
-                  <center><button type="button" class="btn btn-cyan" onclick="history.back()">Cancel</button></center>
+                  <center><a  class="btn btn-cyan text-white" action="{{ url('admin/order/list') }}">Cancel</a></center>
                         </br>
                @endif
                         {{--   </div>

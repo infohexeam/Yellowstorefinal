@@ -62,6 +62,10 @@ $date = Carbon\Carbon::now();
                             @endphp
                             @if(request()->input('store_id') == 0)
                                  <option value="0"> All </option>
+                                 @foreach ($store as $data)
+                                 <option value="{{ $data->store_id }}">{{ $data->store_id }} </option>
+                                    
+                                 @endforeach
                              @else
                                  <option value="{{request()->input('store_id')}}"> {{$store_dataz->store_name}}  </option>
                              @endif
@@ -139,6 +143,7 @@ $date = Carbon\Carbon::now();
                          <th class="wd-15p">Order<br>Number</th>
                                 <th class="wd-15p">Order<br>Date</th>
                             <th class="wd-15p">Order<br>Amount</th>
+                            <th class="wd-15p">Order<br>Status</th>
 
                         {{-- <th class="wd-15p">{{__('Product')}}</th> --}}
                         <th class="wd-15p">{{__('Store')}}</th>
@@ -160,11 +165,19 @@ $date = Carbon\Carbon::now();
                         <td>{{ \Carbon\Carbon::parse($order->created_at)->format('M d, Y')}}</td>
 
                         <td>{{ $order->product_total_amount}}</td>
+                        <td>{{  @$order->status->status}}</td>
 
                         {{-- <td>{{$order->product->product_name->product_name}}</td> --}}
                         <td>{{ @$order->store['store_name']}}</td>
                         <td>{{ @$order->store['store_contact_person_phone_number']}}</td>
-                        <td>{{ @$order->store->subadmin->name}}</td>
+                        <td>
+                           @if (isset(@$order->store->subadmin->name))
+                           {{ @$order->store->subadmin->name}}
+                           @else
+                              ---
+                           @endif
+                          
+                        </td>
 
                     <!--    <td>-->
                     <!--{{-- <form action="{{route('admin.status_order',$order->order_id)}}" method="POST"> --}}-->
