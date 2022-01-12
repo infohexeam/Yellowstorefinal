@@ -131,18 +131,18 @@ $(function(e) {
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Store Orders',
+                title: 'Global products',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4]
+                     columns: [0,1,2,3]
                  }
             },
             {
                 extend: 'excel',
-                title: 'Store Orders',
+                title: 'Global products',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4]
+                     columns: [0,1,2,3]
                  }
             }
          ]

@@ -3809,7 +3809,7 @@ class SettingController extends Controller
 
 	public function list_subadmin_payment_settlment()
 	{
-		$pageTitle = "Sub Admin Payment Settlement";
+		$pageTitle = "Sub Admin Payment Settlement ";
 		$subadmins = User::where('user_role_id', 1)->get();
 		return view('admin.masters.subadmin_payment.list', compact('subadmins', 'pageTitle'));
 	}
@@ -3817,7 +3817,8 @@ class SettingController extends Controller
 	{
 		$subadmin_id  = Crypt::decryptString($subadmin_id);
 
-		$pageTitle = "Sub Admin Payment Settlement";
+
+		$pageTitle = "Sub Admin Payment Settlement : " . User::find($subadmin_id)->name;
 
 
 		if ($_GET) {

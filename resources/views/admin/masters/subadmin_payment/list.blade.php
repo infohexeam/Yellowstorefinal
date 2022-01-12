@@ -24,7 +24,7 @@
                      </div>
                      @endif
                      <div class="card-header">
-                        <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
+                        <h3 class="mb-0 card-title">{{$pageTitle}}</h3> <br>
                      </div>
 
 
