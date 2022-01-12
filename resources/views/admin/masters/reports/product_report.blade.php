@@ -41,14 +41,14 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label">From Date</label>
+                                                <label class="form-label" id="date_fromb">From Date</label>
                                                    <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date">
                             
                                              </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label">To Date</label>
+                                                <label class="form-label" id="date_tob" >To Date</label>
                                                  <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date">
                                             </div>
                                          </div>
@@ -269,6 +269,22 @@
     </div>
 </div>
 
+
+<script>
+
+ $('#reset').click(function(){
+     $('#date_fromc').remove();
+     $('#date_toc').remove();
+
+    $('#date_fromb').append('<input type="date" class="form-control"  name="date_from" id="date_fromc" placeholder="From Date">');
+    $('#date_tob').append('<input type="date" class="form-control" name="date_to"   id="date_toc"  placeholder="To Date">');
+
+
+
+   });
+
+
+</script>
 
 
 <script>
