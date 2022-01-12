@@ -194,6 +194,8 @@
                      </div><!-- COL END -->
                   </div>
                </div>
+               
+               @if (isset($order->customerAddress['address']))
                   <div class="row">
                       <div class="col-md-6">
                         <div class="card">
@@ -217,7 +219,7 @@
                                        @endif
 
                                        @if (isset($order->customerAddress['phone']))
-                                       Phone: {{@$order->customerAddress['phone']}}<br>
+                                          Phone: {{@$order->customerAddress['phone']}}<br>
                                        @endif                                    
                                     </td>
                                  </tr>
@@ -229,34 +231,38 @@
                         </div>
                      </div>
                      </div><!-- COL END -->
+                     @endif
 
-                      {{-- <div class="col-md-6">
+            @if($order->service_booking_order != 0)
+            <div class="col-md-6">
                         <div class="card">
                            <div class="card-header">
-                              <div class="card-title">Shipping Address</div>
+                              <div class="card-title">Booked Service</div>
                            </div>
                            <div class="card-body">
                          <div class="table-responsive">
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                    <td><strong>Address :</strong> {{$order->shipping_address}}</td>
+                                    <td><strong>Service :</strong> 
+                                       {{@$order->product_varient->product['product_name']}}  {{@$order->product_varient['variant_name']}}
+                                    </td>
                                  </tr>
-                                 <tr>
-                                    <td><strong>Landmark :</strong>{{ $order->shipping_landmark}}</td>
-                                 </tr>
-
+                                 
                               </tbody>
 
                            </table>
                            </div>
                         </div>
                      </div><!-- COL END -->
-                  </div> --}}
+                  </div>
+                  @endif
 
                </div>
             </div>
             <br>
+            @if($order->service_booking_order == 0)
+            
             <div class="col-md-12">
             <div class="table-responsive push">
                                 
@@ -320,12 +326,10 @@
                               <br>
                            </div>
 
-                  <center>
-                     <button type="button" class="btn btn-cyan" onclick="history.back()">Cancel</button>
-
-                           </center>
+                  <center><button type="button" class="btn btn-cyan" onclick="history.back()">Cancel</button></center>
                         </br>
-             {{--   </div>
+               @endif
+                        {{--   </div>
             </div> --}}
          </div>
       </div>
