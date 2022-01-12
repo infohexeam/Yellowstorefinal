@@ -63,7 +63,7 @@ $date = Carbon\Carbon::now();
                             @if(request()->input('store_id') == 0)
                                  <option value="0"> All </option>
                                  @foreach ($store as $data)
-                                 <option value="{{ $data->store_id }}">{{ $data->store_id }} </option>
+                                 <option value="{{ $data->store_id }}">{{ $data->store_name }} </option>
                                     
                                  @endforeach
                              @else

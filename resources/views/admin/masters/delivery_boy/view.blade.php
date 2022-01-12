@@ -15,7 +15,7 @@
 <img class="avatar-xl rounded-circle mCS_img_loaded" src=" {{URL::to('assets/uploads/delivery_boy/images/'.$delivery_boy->delivery_boy_image)}}" alt="img" style="width: 150px; height: 150px;">
    
 @else
-<img class="avatar-xl rounded-circle mCS_img_loaded" src=" {{URL::to(assets/uploads/admin.png)}}" alt="img" style="width: 150px; height: 150px;">
+<img class="avatar-xl rounded-circle mCS_img_loaded" src=" {{URL::to('assets/uploads/admin.png')}}" alt="img" style="width: 150px; height: 150px;">
    
 @endif
                            
