@@ -62,6 +62,7 @@
                </div>
 
 
+               @if (isset($order->delivery_boy['delivery_boy_name']))
                 <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
@@ -90,6 +91,7 @@
                      </div><!-- COL END -->
                   </div>
                </div>
+               @endif
 
 
                 <div class="row" >
@@ -121,7 +123,7 @@
                   </div>
                </div>
 
-
+               @if (isset($order->subadmin['name']))
                <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
@@ -146,6 +148,8 @@
                      </div><!-- COL END -->
                   </div>
                </div>
+               @endif
+
 
                   <div class="row">
                      <div class="col-md-12">
@@ -249,7 +253,7 @@
                         </div>
                      </div><!-- COL END -->
                   </div> --}}
-                  
+
                </div>
             </div>
             <br>
