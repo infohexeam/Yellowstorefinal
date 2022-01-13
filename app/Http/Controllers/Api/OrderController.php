@@ -159,6 +159,11 @@ class OrderController extends Controller
                         if (!isset($data['orderDetails']->order_note))
                             $data['orderDetails']->order_note = '';
 
+                        if (!isset($data['orderDetails']->reward_points_used))
+                            $data['orderDetails']->reward_points_used = "0";
+
+
+
                         if (!isset($data['orderDetails']->delivery_accept))
                             $data['orderDetails']->delivery_accept = '0';
 
