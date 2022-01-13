@@ -1006,6 +1006,9 @@ class StoreOrderController extends Controller
                             $data['orderDetails']->order_note = '';
 
 
+                        if (!isset($data['orderDetails']->reward_points_used))
+                            $data['orderDetails']->reward_points_used = "0";
+
 
                         if ($data['orderDetails']->delivery_accept == 1) {
                             $data['orderDetails']->show_dboy_phone = 1;
