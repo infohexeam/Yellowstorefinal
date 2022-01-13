@@ -1008,6 +1008,9 @@ class StoreOrderController extends Controller
 
                         if (!isset($data['orderDetails']->reward_points_used))
                             $data['orderDetails']->reward_points_used = "0";
+                        if (!isset($data['orderDetails']->amount_reduced_by_rp))
+                            $data['orderDetails']->amount_reduced_by_rp = "0";
+
 
 
                         if ($data['orderDetails']->delivery_accept == 1) {
