@@ -2845,9 +2845,6 @@ class SettingController extends Controller
 		$boy_Id = $request->delivery_boy_id;
 		$delivery_boy = Mst_delivery_boy::Find($boy_Id);
 
-		$password = $delivery_boy->password;
-		$newpassword = $request->password;
-
 
 		$validator = Validator::make(
 			$request->all(),

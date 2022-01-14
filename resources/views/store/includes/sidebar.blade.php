@@ -113,13 +113,15 @@
             </ul>
         </li>
 
-
-       <li class="slide">
-        <a class="side-menu__item" href="{{route('store.store_admin')}}">
-          <i class="side-menu__icon ti-user"></i>
-          <span class="side-menu__label"> {{ __('Store Admin') }}</span>
-        </a>
-      </li>
+        @if(Auth::user()->role_id == 0)
+          <li class="slide">
+            <a class="side-menu__item" href="{{route('store.store_admin')}}">
+              <i class="side-menu__icon ti-user"></i>
+              <span class="side-menu__label"> {{ __('Store Admin') }}</span>
+            </a>
+          </li>
+        @endif
+      
       <li class="slide">
         <a class="side-menu__item" href="{{route('store.list_disputes')}}">
           <i class="side-menu__icon ti-comments"></i>

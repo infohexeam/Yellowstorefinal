@@ -153,7 +153,7 @@
                      <div class="col-md-10">
                         <div class="form-group">
                            <div id="teamArea">
-                           <label class="form-label">Images * [620*290] [in png,jpeg or jpg] </label>
+                           <label class="form-label">Images * [250*250] [in png,jpeg or jpg] </label>
                            <input type="file"  class="form-control" id="imgs" required accept="image/x-png,image/jpg,image/jpeg" multiple="" name="images[]"  placeholder="Images">
                         </div>
                      </div>

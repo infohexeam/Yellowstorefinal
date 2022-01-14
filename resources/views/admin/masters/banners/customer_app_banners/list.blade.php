@@ -174,7 +174,7 @@
                      <div class="col-md-10">
                         <div class="form-group">
                            <div id="teamArea">
-                           <label class="form-label">Images *  [1000*800 or above] [in png,jpeg or jpg] </label>
+                           <label class="form-label">Images *  [250*250 or above] [in png,jpeg or jpg] </label>
                            <input type="file"  class="form-control" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="images[]"  id="imgs" required  placeholder="Images">
                         </div>
                      </div>

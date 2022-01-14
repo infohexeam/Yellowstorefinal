@@ -708,7 +708,7 @@ class AdminController extends Controller
             $img_validate = Validator::make(
                 $request->all(),
                 [
-                    'images.*' => 'required|dimensions:width=620,height=290',
+                    'images.*' => 'required|dimensions:min_width=250,min_height=250',
                     'town_id' => 'required',
                 ],
                 [
@@ -786,7 +786,7 @@ class AdminController extends Controller
             $img_validate = Validator::make(
                 $request->all(),
                 [
-                    'images.*' => 'required|dimensions:min_width=1000,min_height=800',
+                    'images.*' => 'required|dimensions:min_width=250,min_height=250',
                 ],
                 [
                     'images.*.dimensions' => 'Banner image dimensions invalid',
