@@ -113,7 +113,7 @@
             </ul>
         </li>
 
-        @if(Auth::user()->role_id == 0)
+        @if(Auth::guard('store')->user()->role_id == 0)
           <li class="slide">
             <a class="side-menu__item" href="{{route('store.store_admin')}}">
               <i class="side-menu__icon ti-user"></i>
