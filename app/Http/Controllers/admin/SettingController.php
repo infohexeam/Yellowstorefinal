@@ -2911,7 +2911,7 @@ class SettingController extends Controller
 			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount;
 
 			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
-			$delivery_boy->delivery_boy_status   = 0;
+			//	$delivery_boy->delivery_boy_status   = 0;
 			if (isset($request->password)) {
 				$delivery_boy->password = Hash::make($request->password);
 			}
