@@ -1280,6 +1280,22 @@ class StoreOrderController extends Controller
                             $value['taxSplitups']  = $splitdata;
                         }
 
+
+                        $data['orderPaymentTransaction'] = new \stdClass();
+                        $opt = Trn_OrderPaymentTransaction::where('order_id', $request->order_id)->get();
+                        $optConunt = Trn_OrderPaymentTransaction::where('order_id', $request->order_id)->count();
+                        if ($optConunt > 0) {
+                            foreach ($opt as $row) {
+                                $ospCount = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->count();
+                                if ($ospCount > 0) {
+                                    $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->get();
+                                    $row->orderSplitPayments = $osp;
+                                }
+                            }
+                        }
+                        //Trn_OrderPaymentTransaction
+                        $data['orderPaymentTransaction'] = $opt;
+
                         $data['status'] = 1;
                         $data['message'] = "success";
                         return response($data);
