@@ -788,7 +788,6 @@ class StoreOrderController extends Controller
                                 $data['message'] = 'Stock unavilable';
                                 $data['status'] = 2;
                             }
-                            return response($data);
                         }
                     } else {
                         $data['message'] = 'Product not found';
