@@ -73,8 +73,10 @@ use PDF;
 
 
 use App\Models\admin\Mst_StockDetail;
+use App\Models\admin\Sys_payment_type;
 use App\Models\admin\Trn_ProductVideo;
 
+use App\Models\admin\Trn_OrderPaymentTransaction;
 
 
 class StoreController extends Controller
@@ -83,6 +85,43 @@ class StoreController extends Controller
   {
     $this->middleware('auth:store');
   }
+
+
+
+  public function storeIncomingPayments(Request $request)
+  {
+    $pageTitle = "Incoming Payments";
+    $customer = Trn_store_customer::all();
+    $payment_type = Sys_payment_type::all();
+
+    $store_id  = Auth::guard('store')->user()->store_id;
+
+    $payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+      ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+      ->where('trn__order_split_payments.paymentRole', '=', 1)
+      ->where('trn_store_orders.store_id', '=', $store_id)
+      ->get();
+
+    if ($_GET) {
+
+      $datefrom = $request->date_from;
+      $dateto = $request->date_to;
+
+      $year = $request->year;
+      $month = $request->month;
+      $a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
+      $a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
+
+      $payment_type_id = $request->payment_type_id;
+
+
+
+      return view('store.elements.payments.list', compact('dateto', 'datefrom', 'payments', 'pageTitle', 'customer', 'payment_type'));
+    }
+
+    return view('store.elements.payments.list', compact('payments', 'pageTitle', 'customer', 'payment_type'));
+  }
+
 
   public function transfer()
   {

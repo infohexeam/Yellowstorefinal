@@ -66,6 +66,7 @@ use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Trn_TermsAndCondition;
 use App\Models\admin\Trn_customerAddress;
+use App\Models\admin\Trn_OrderPaymentTransaction;
 
 
 class SettingController extends Controller
@@ -3428,13 +3429,17 @@ class SettingController extends Controller
 	{
 
 		$pageTitle = "Incoming Payments";
-		$payments = Trn_store_payment::all();
 		$order = Trn_store_order::all();
 		$customer = Trn_store_customer::all();
 		$store = Mst_store::all();
 		$payment_type = Sys_payment_type::all();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
+		$payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+			->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+			->where('trn__order_split_payments.paymentRole', '!=', 1)
+			->get();
+		//dd($payments);
 
 		if ($_GET) {
 
@@ -3450,64 +3455,14 @@ class SettingController extends Controller
 			$subadmin_id = $request->subadmin_id;
 			$store_id = $request->store_id;
 
-			$query = Trn_store_payment::select('*');
 
-			if ($store_id == 0 && isset($subadmin_id)) {
-				$store_data = \DB::table('mst_stores')->select("store_id")
-					->where('created_at', '<=', Carbon::parse($year . '-' . $month)->startOfMonth())
-					->where('subadmin_id', $subadmin_id)
-					->get();
-				$store_array[] = 0;
-				foreach ($store_data as $val) {
-					$store_array[] = $val->store_id;
-				}
-				$query = $query->whereIn('store_id', $store_array);
-			} elseif ($store_id == 0 && $subadmin_id == "") {
-
-				$store_data = \DB::table('mst_stores')->select("store_id")->get();
-				$store_array[] = 0;
-				foreach ($store_data as $val) {
-					$store_array[] = $val->store_id;
-				}
-				$query = $query->whereIn('store_id', $store_array);
-			} elseif ($store_id != 0 && $store_id != "" && $subadmin_id == "") {
-				$store_array[] = $store_id;
-				$query = $query->whereIn('store_id', $store_array);
-			} else {
-				$store_array[] = 0;
-				$query = $query->whereIn('store_id', $store_array);
-			}
-
-
-
-
-
-
-			$query = $query->whereBetween('created_at', [$a1, $a2]);
-
-			if ($payment_type_id != "") {
-				$query = $query->where('payment_type_id', $payment_type_id);
-			}
-			$payments = $query->get();
-			//	$payment_type_id = $request->payment_type_id;
-
-
-			// $payments_array1 = Trn_store_payment::
-			// where(function($query) use($store_array){
-			// 	foreach($store_array as $keyword) {
-			//
-			// 	}
-			// });$a1
-
-			// $payments = $payments_array1->where('payment_type_id','like', '%'.$payment_type_id.'%')
-			// 	->whereBetween('created_at',[$a1->format('Y-m-d')." 00:00:00",$a2->format('Y-m-d')." 00:00:00"])
-			// 	->get();
 
 			return view('admin.masters.payments.list', compact('dateto', 'datefrom', 'payments', 'subadmins', 'pageTitle', 'order', 'customer', 'payment_type', 'store'));
 		}
 
 		return view('admin.masters.payments.list', compact('subadmins', 'payments', 'pageTitle', 'order', 'customer', 'payment_type', 'store'));
 	}
+
 
 	public function listSubadminOrder(Request $request, Trn_store_order $query)
 	{

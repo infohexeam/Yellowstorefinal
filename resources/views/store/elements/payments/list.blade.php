@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('store.layouts.app')
 @section('content')
 @php
 $date = Carbon\Carbon::now();
@@ -38,11 +38,10 @@ $date = Carbon\Carbon::now();
                         <th class="wd-15p">SL.No</th>
                         <th class="wd-15p">Order<br>number</th>
                         <th class="wd-15p">{{ __('Customer') }}</th>
-                        <th class="wd-15p">{{ __('Store') }}</th>
-                        <th class="wd-20p">{{__('Subadmin')}}</th>
+                                               <th class="wd-20p">Reference Id</th>
+
                         <th class="wd-20p">Total<br>amount</th>
-                        <th class="wd-20p">Commission<br>Amount</th>
-                        <th class="wd-20p">Reference Id</th>
+                        <th class="wd-20p">Split<br>Amount</th>
                         <th class="wd-20p">Delivery<br>Charge</th>
                         <th class="wd-15p">{{__('Action')}}</th>
                      </tr>
@@ -59,13 +58,10 @@ $date = Carbon\Carbon::now();
                         <td>{{ ++$i }}</td>
                         <td>{{ @$row->order_number }}</td>
                         <td>{{ (new App\Helpers\Helper)->findCustomerName($row->customer_id) }}</td>
-                        <td>{{ (new App\Helpers\Helper)->findStoreName($row->store_id) }}</td>
-                        <td>{{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }}</td>
-                      
-                        <td>{{ @$row->orderAmount }}</td>
-                        <td>{{ @$row->splitAmount }}</td>
                         <td>{{ @$row->referenceId }}</td>
 
+                        <td>{{ @$row->orderAmount }}</td>
+                        <td>{{ @$row->settlementAmount }}</td>
                         <td>{{ @$row->delivery_charge }}</td>
                         <td>
                                 <button data-toggle="modal" data-target="#viewModal{{$row->opt_id}}"  class="btn btn-sm btn-cyan">View</button>
@@ -124,7 +120,7 @@ $date = Carbon\Carbon::now();
                                  </tr>
                                 
                                  <tr>
-                                    <td><h6>Commission Amount :{{ @$row->splitAmount }}</h6></td>
+                                    <td><h6>Split Amount :{{ @$row->settlementAmount }}</h6></td>
                                  </tr>
                                  
                                  <tr>
@@ -141,17 +137,17 @@ $date = Carbon\Carbon::now();
                             
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                   
-                                 <tr>
-                                    <td><h6>Store Name  : {{ (new App\Helpers\Helper)->findStoreName($row->store_id) }}</h6></td>
-                                 </tr>
+                                 <!--<tr>-->
+                                 <!--   <td><h6>Store Name  : {{ (new App\Helpers\Helper)->findStoreName($row->store_id) }}</h6></td>-->
+                                 <!--</tr>-->
                                  
-                                 <tr>
-                                    <td><h6>Store Phone  : {{ (new App\Helpers\Helper)->findStorePhone($row->store_id) }}</h6></td>
-                                 </tr>
+                                 <!--<tr>-->
+                                 <!--   <td><h6>Store Phone  : {{ (new App\Helpers\Helper)->findStorePhone($row->store_id) }}</h6></td>-->
+                                 <!--</tr>-->
                                  
-                                 <tr>
-                                    <td><h6>Subadmin Name  : {{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }}</h6></td>
-                                 </tr>
+                                 <!--<tr>-->
+                                 <!--   <td><h6>Subadmin Name  : {{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }}</h6></td>-->
+                                 <!--</tr>-->
                                  
                                  <tr>
                                     <td><h6>Delivery Charge :{{ @$row->delivery_charge }}</h6></td>
@@ -166,52 +162,6 @@ $date = Carbon\Carbon::now();
                                  </tr>
                                  
                                  
-                                 
-                                 
-                              </tbody>
-                               @php
-                                $storeSplit = \DB::table('trn__order_split_payments')->where('order_id',$row->order_id)->where('opt_id',$row->opt_id)->where('paymentRole',1)->first();
-                                $storeSplitCount = \DB::table('trn__order_split_payments')->where('order_id',$row->order_id)->where('opt_id',$row->opt_id)->where('paymentRole',1)->count();
-                               @endphp
-                               @if($storeSplitCount > 0)
-                               
-                               <tbody class="col-lg-12 col-xl-12 p-0">
-                                   <tr>
-                                      <td> <h4><u>Store's split amount</u></h4> </td>
-                                   </tr>
-                                   
-                                 <tr>
-                                    <td><h6>Settlement ID :{{ @$storeSplit->settlementId }}</h6></td>
-                                 </tr>
-                                 
-                                  <tr>
-                                    <td><h6>Split Amount :{{ @$storeSplit->settlementAmount }}</h6></td>
-                                 </tr>
-                                 
-                                 <tr>
-                                    <td><h6>Payment Gateway Service Charge :{{ @$storeSplit->serviceCharge }}</h6></td>
-                                 </tr>
-                                 
-                                <tr>
-                                    <td><h6>Payment Gateway Service Tax :{{ @$storeSplit->serviceTax }}</h6></td>
-                                 </tr>
-                                 
-                                 <tr>
-                                    <td><h6>Split Service Charge :{{ @$storeSplit->splitServiceCharge }}</h6></td>
-                                 </tr>
-                                 
-                                   <tr>
-                                    <td><h6>Split Service Tax :{{ @$storeSplit->splitServiceTax }}</h6></td>
-                                 </tr>
-                                 
-                                  <!--<tr>-->
-                                  <!--  <td><h6>Settlement Amount :{{ @$storeSplit->settlementAmount }}</h6></td>-->
-                                 <!--</tr>-->
-                                 
-                              </tbody>
-                              
-                              @endif
-                              
                                 
                               
                                  
@@ -236,33 +186,6 @@ $date = Carbon\Carbon::now();
 <script type="text/javascript">
 
 
-   $(document).ready(function() {
- $('#reset').click(function(){
-   //  $('#subadmin').val('');
-    // $('#store').val('');
-    // $('#payment_type_id').val('');
-
-  $('#subadmin').remove();
-  $('#store').remove();
-  $('#payment_type_id').remove();
-
-  $('#date_from').remove();
-    $('#date_to').remove();
-    $('#date_tol').append('<input type="month" required  class="form-control" name="date_to" id="date_to"  placeholder="To Date">');
-    $('#date_froml').append('<input type="month" required class="form-control" name="date_from" id="date_from"  placeholder="From Date">');
-
-     $('#subadminl').append('<select  name="subadmin_id" id="subadmin" class="form-control"  ><option value=""> Select Sub Admin</option>@foreach($subadmins as $key)<option  value="{{$key->id}}"> {{$key->name }} </option>@endforeach</select>');
-     $('#payment_type_idl').append('<select class="form-control" name="payment_type_id" id="payment_type_id"><option value=""> Select Payment Type</option>@foreach ($payment_type as $key)<option value=" {{ $key->payment_type_id}} "> {{ $key->payment_type}}</option>@endforeach</select>');
-     $('#storel').append('<select  class="form-control" id="store" required name="store_id" "><option> Select Status</option></select>');
- $('#year').remove();
-  $('#month').remove();
-    $('#date_fromly').append(' <select required name="year" id="year" class="form-control custom-select"><option value="">Select Year</option>@for ($y=2010; $y<=2040;  $y++)<option value="{{$y}}">{{$y}}</option>@endfor</select>');
-    $('#date_fromlm').append('  <select required name="month" id="month" class="form-control custom-select"><option  value="">Select Month</option><option  value="01">January</option><option  value="02">February</option><option  value="03">March</option><option  value="04">April</option><option  value="05">May</option><option  value="06">June</option><option  value="07">July</option><option  value="08">August</option><option  value="09">September</option><option  value="10">October</option><option  value="11">November</option><option  value="12">December</option></select>');
-
-
-
-   });
-});
 
 
 
@@ -290,60 +213,6 @@ $(function(e) {
     } );
 
 } );
-
-//id="subadmin"
-    $(document).ready(function() {
-
-        var sc = 0;
-
-
-       $('#subadmin').change(function(){
-           if(sc !=0 )
-           {
-        var subadmin_id = $(this).val();
-        var storeID =  $("#store").val();
-
-        //alert(storeID);
-        var _token= $('input[name="_token"]').val();
-
-        $.ajax({
-          type:"GET",
-          url:"{{ url('admin/ajax/get_store') }}?subadmin_id="+subadmin_id ,
-
-          success:function(res){
-
-            if(res){
-            $('#store').prop("diabled",false);
-            $('#store').empty();
-
-          //  $('#store').append('<option value="">Select Store</option>');
-            $('#store').append('<option value="0">All</option>');
-            $.each(res,function(store_name,store_id)
-            {
-              $('#store').append('<option value="'+store_id+'">'+store_name+'</option>');
-            });
-
-          //  $('#store option[value="'+storeID+'"]').prop('selected', true);
-
-
-            }else
-            {
-              $('#store').empty();
-
-            }
-            }
-
-        });
-           }
-           else
-           {
-               sc++;
-           }
-      });
-
-    });
-
-
-
 </script>
+
 @endsection

@@ -60,6 +60,11 @@ use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_DeliveryBoyLocation;
 
+
+use App\Models\admin\Trn_OrderPaymentTransaction;
+use App\Models\admin\Trn_OrderSplitPayments;
+
+
 class StoreOrderController extends Controller
 {
 
@@ -471,7 +476,7 @@ class StoreOrderController extends Controller
 
 
                     $store_order->subadmin_id =  $store_data->subadmin_id;
-                    $store_order->product_total_amount =  $request->order_total_amount - $request->amount_reduced_by_rp;
+                    $store_order->product_total_amount =  $request->order_total_amount;
                     $store_order->payment_status = 1;
                     $store_order->status_id = $request->status_id;
 
@@ -488,9 +493,18 @@ class StoreOrderController extends Controller
 
                     $store_order->coupon_id =  $request->coupon_id;
                     $store_order->coupon_code =  $request->coupon_code;
-                    $store_order->reward_points_used =  $request->reward_points_used;
-                    $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
-                    $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+
+                    if ($request->status_id != 5) {
+                        $store_order->reward_points_used =  $request->reward_points_used;
+                        $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
+                        $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+                    } else {
+                        $store_order->reward_points_used =  0;
+                        $store_order->amount_before_applying_rp =  0;
+                        $store_order->amount_reduced_by_rp =  0;
+                    }
+
+
                     $store_order->order_type = 'APP';
 
 
@@ -500,21 +514,7 @@ class StoreOrderController extends Controller
                     $store_order->save();
                     $order_id = DB::getPdo()->lastInsertId();
 
-                    // if(Trn_store_order::where('customer_id',$request->customer_id)->count() < 1)
-                    // {
-                    //      $configPoint = Trn_configure_points::find(1);
 
-                    //     $cr = new Trn_customer_reward;
-                    //     $cr->transaction_type_id = 0;
-                    //     $cr->reward_points_earned = $configPoint->first_order_points;
-                    //     $cr->customer_id = $request->customer_id;
-                    //     $cr->order_id = $order_id;
-                    //     $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-                    //     $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                    //     $cr->reward_point_status = 1;
-                    //     $cr->discription = "First order points";
-                    //     $cr->save();
-                    // }
 
 
                     $invoice_info['order_id'] = $order_id;
@@ -524,6 +524,75 @@ class StoreOrderController extends Controller
                     $invoice_info['updated_at'] = Carbon::now();
 
                     Trn_order_invoice::insert($invoice_info);
+
+
+                    if ($request->payment_type_id == 2) {
+                        // Trn_OrderSplitPayments
+                        // Trn_OrderPaymentTransaction
+
+                        $opt = new Trn_OrderPaymentTransaction;
+                        $opt->order_id = $order_id;
+                        $opt->paymentMode = $request->paymentMode;
+                        $opt->PGOrderId = $request->PGOrderId;
+                        $opt->txTime = $request->txTime;
+                        $opt->referenceId = $request->referenceId;
+                        $opt->txMsg = $request->txMsg;
+                        $opt->orderAmount = $request->orderAmount;
+                        $opt->txStatus = $request->txStatus;
+                        if ($opt->save()) {
+                            $opt_id = DB::getPdo()->lastInsertId();
+
+                            $client = new \GuzzleHttp\Client();
+                            $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/10033', [
+                                'headers' => [
+                                    'Accept' => 'application/json',
+                                    'x-api-version' => '2021-05-21',
+                                    'x-client-id' => '165253d13ce80549d879dba25b352561',
+                                    'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+                                ],
+                            ]);
+
+                            $responseData = $response->getBody()->getContents();
+
+                            $responseFinal = json_decode($responseData, true);
+
+                            $osp = new Trn_OrderSplitPayments;
+                            $osp->opt_id = $opt_id;
+                            $osp->order_id = $order_id;
+                            $osp->splitAmount = $responseFinal["settlementAmount"];
+                            $osp->serviceCharge = $responseFinal["serviceCharge"];
+                            $osp->serviceTax = $responseFinal["serviceTax"];
+                            $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
+                            $osp->splitServiceTax = $responseFinal["splitServiceTax"];
+                            $osp->settlementAmount = $responseFinal["settlementAmount"];
+                            $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
+
+                            $osp->paymentRole = 1; // 1 == store's split
+                            if ($osp->save()) {
+                                if (count($responseFinal['vendors']) > 0) {
+                                    foreach ($responseFinal['vendors'] as $row) {
+                                        $osp = new Trn_OrderSplitPayments;
+                                        $osp->opt_id = $opt_id;
+                                        $osp->order_id = $order_id;
+                                        $osp->vendorId = $row["id"];
+                                        $osp->settlementId = $row["settlementId"];
+                                        $osp->splitAmount = $row["settlementAmount"];
+
+                                        $osp->serviceCharge = @$row["serviceCharge"];
+                                        $osp->serviceTax = @$row["serviceTax"];
+                                        $osp->splitServiceCharge = @$row["splitServiceCharge"];
+                                        $osp->splitServiceTax = @$row["splitServiceTax"];
+                                        $osp->settlementAmount = @$row["settlementAmount"];
+                                        $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
+
+                                        $osp->paymentRole = 0;
+                                        $osp->save();
+                                    }
+                                }
+                            }
+                        }
+                    }
+
 
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
@@ -562,7 +631,6 @@ class StoreOrderController extends Controller
                             'tax_amount' => $value['tax_amount'],
                             'total_amount' => $total_amount,
                             'discount_amount' => $value['discount_amount'],
-                            //'discount_percentage'=> $value['discount_percentage'],
                             'created_at'         => Carbon::now(),
                             'updated_at'         => Carbon::now(),
                         ];
@@ -600,18 +668,20 @@ class StoreOrderController extends Controller
                     }
 
 
+                    if ($request->status_id != 5) {
+                        if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
 
+                            foreach ($customerDevice as $cd) {
 
-                    if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
+                                $title = 'Points Deducted';
+                                $body = $request->reward_points_used . ' points deducted from your wallet';
 
-                        foreach ($customerDevice as $cd) {
-
-                            $title = 'Points Deducted';
-                            $body = $request->reward_points_used . ' points deducted from your wallet';
-
-                            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                            }
                         }
                     }
+
+
 
 
 

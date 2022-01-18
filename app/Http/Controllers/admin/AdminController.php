@@ -801,7 +801,7 @@ class AdminController extends Controller
 
             if ($request->hasFile('images')) {
 
-
+                $default_status = 0;
 
                 $images = $request->file('images');
                 if (isset($request->town_id)) {
