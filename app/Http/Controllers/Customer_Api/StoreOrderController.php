@@ -416,36 +416,10 @@ class StoreOrderController extends Controller
                     $noStockProducts = array();
 
 
-                    // foreach ($request->product_variants as $value) {
-                    //     $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
-                    //     $proData = Mst_store_product::find($varProdu->product_id);
-
-                    //     if ($proData->service_type != 2) {
-
-
-                    //         if (isset($varProdu)) {
-                    //             if ($value['quantity'] > $varProdu->stock_count) {
-                    //                 if (@$proData->product_name != $varProdu->variant_name) {
-                    //                     $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
-                    //                 } else {
-                    //                     $data['product_name'] = @$proData->product_name;
-                    //                 }
-
-                    //                 $noStockProducts[] = $varProdu->product_varient_id;
-
-                    //                 $data['product_varient_id'] = $varProdu->product_varient_id;
-                    //                 $data['product_id'] = $varProdu->product_id;
-                    //                 $data['message'] = 'Stock unavilable';
-                    //                 $data['status'] = 2;
-                    //                 //  return response($data);
-                    //             }
-                    //         } else {
-                    //             $data['message'] = 'Product not found';
-                    //             $data['status'] = 2;
-                    //             return response($data);
-                    //         }
-                    //     }
-                    // }
+                    foreach ($request->product_variants as $value) {
+                        $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                        $proData = Mst_store_product::find($varProdu->product_id);
+                    }
 
 
                     if (count($noStockProducts) > 0) {
