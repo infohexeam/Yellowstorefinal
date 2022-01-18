@@ -416,36 +416,38 @@ class StoreOrderController extends Controller
                     $noStockProducts = array();
 
 
-                    foreach ($request->product_variants as $value) {
-                        $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
-                        $proData = Mst_store_product::find($varProdu->product_id);
+                    // foreach ($request->product_variants as $value) {
+                    //     $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                    //     $proData = Mst_store_product::find($varProdu->product_id);
 
-                        if ($proData->service_type != 2) {
+                    //     if ($proData->service_type != 2) {
 
 
-                            if (isset($varProdu)) {
-                                if ($value['quantity'] > $varProdu->stock_count) {
-                                    if (@$proData->product_name != $varProdu->variant_name) {
-                                        $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
-                                    } else {
-                                        $data['product_name'] = @$proData->product_name;
-                                    }
+                    //         if (isset($varProdu)) {
+                    //             if ($value['quantity'] > $varProdu->stock_count) {
+                    //                 if (@$proData->product_name != $varProdu->variant_name) {
+                    //                     $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
+                    //                 } else {
+                    //                     $data['product_name'] = @$proData->product_name;
+                    //                 }
 
-                                    $noStockProducts[] = $varProdu->product_varient_id;
+                    //                 $noStockProducts[] = $varProdu->product_varient_id;
 
-                                    $data['product_varient_id'] = $varProdu->product_varient_id;
-                                    $data['product_id'] = $varProdu->product_id;
-                                    $data['message'] = 'Stock unavilable';
-                                    $data['status'] = 2;
-                                    //  return response($data);
-                                }
-                            } else {
-                                $data['message'] = 'Product not found';
-                                $data['status'] = 2;
-                                return response($data);
-                            }
-                        }
-                    }
+                    //                 $data['product_varient_id'] = $varProdu->product_varient_id;
+                    //                 $data['product_id'] = $varProdu->product_id;
+                    //                 $data['message'] = 'Stock unavilable';
+                    //                 $data['status'] = 2;
+                    //                 //  return response($data);
+                    //             }
+                    //         } else {
+                    //             $data['message'] = 'Product not found';
+                    //             $data['status'] = 2;
+                    //             return response($data);
+                    //         }
+                    //     }
+                    // }
+
+
                     if (count($noStockProducts) > 0) {
                         $data['noStockProducts'] = $noStockProducts;
                         return response($data);
@@ -773,40 +775,36 @@ class StoreOrderController extends Controller
         try {
 
             $noStockProducts = array();
+
             foreach ($request->product_variants as $value) {
-                if ($varProdu = Mst_store_product_varient::find($value['product_varient_id'])) {
-                    $proData = Mst_store_product::find($varProdu->product_id);
+                $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                $proData = Mst_store_product::find($varProdu->product_id);
+
+                if ($proData->service_type != 2) {
+
+
                     if (isset($varProdu)) {
                         if ($value['quantity'] > $varProdu->stock_count) {
-
-                            $timeslotdata = Helper::findHoliday($proData->store_id);
-
-                            if ($timeslotdata == false) {
-
-                                $noStockProducts[] = $varProdu->product_varient_id;
-
-                                $data['message'] = 'Stock unavilable';
-                                $data['status'] = 2;
+                            if (@$proData->product_name != $varProdu->variant_name) {
+                                $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
+                            } else {
+                                $data['product_name'] = @$proData->product_name;
                             }
+
+                            $noStockProducts[] = $varProdu->product_varient_id;
+
+                            $data['product_varient_id'] = $varProdu->product_varient_id;
+                            $data['product_id'] = $varProdu->product_id;
+                            $data['message'] = 'Stock unavilable';
+                            $data['status'] = 2;
+                            //  return response($data);
                         }
                     } else {
                         $data['message'] = 'Product not found';
-                        $data['status'] = 0;
+                        $data['status'] = 2;
                         return response($data);
                     }
-                } else {
-                    $data['message'] = 'Product not found';
-                    $data['status'] = 0;
-                    return response($data);
                 }
-            }
-            if (count($noStockProducts) > 0) {
-                $data['noStockProducts'] = $noStockProducts;
-                return response($data);
-            } else {
-                $data['message'] = 'Product avilable';
-                $data['status'] = 1;
-                return response($data);
             }
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
