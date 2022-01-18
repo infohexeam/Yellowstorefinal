@@ -793,11 +793,9 @@ class StoreOrderController extends Controller
 
                             $noStockProducts[] = $varProdu->product_varient_id;
 
-                            $data['product_varient_id'] = $varProdu->product_varient_id;
-                            $data['product_id'] = $varProdu->product_id;
+                            $data['noStockProducts'] = $noStockProducts;
                             $data['message'] = 'Stock unavilable';
                             $data['status'] = 2;
-                            return response($data);
                         }
                     } else {
                         $data['message'] = 'Product not found';
@@ -806,6 +804,12 @@ class StoreOrderController extends Controller
                     }
                 }
             }
+
+            if (count($noStockProducts) <= 0) {
+                $data['message'] = 'Stock avilable';
+                $data['status'] = 1;
+            }
+            return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
