@@ -473,7 +473,7 @@ class StoreOrderController extends Controller
                     $store_order->subadmin_id =  $store_data->subadmin_id;
                     $store_order->product_total_amount =  $request->order_total_amount - $request->amount_reduced_by_rp;
                     $store_order->payment_status = 1;
-                    $store_order->status_id = 1;
+                    $store_order->status_id = $request->status_id;
 
                     // online
                     $store_order->payment_type_id = $request->payment_type_id;
