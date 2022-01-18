@@ -797,7 +797,7 @@ class StoreOrderController extends Controller
                             $data['product_id'] = $varProdu->product_id;
                             $data['message'] = 'Stock unavilable';
                             $data['status'] = 2;
-                            //  return response($data);
+                            return response($data);
                         }
                     } else {
                         $data['message'] = 'Product not found';
