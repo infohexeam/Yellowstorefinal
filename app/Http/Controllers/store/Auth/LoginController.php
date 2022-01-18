@@ -65,10 +65,10 @@ class LoginController extends Controller
             if ($admin) {
                 $cId = $admin->store_id;
 
-                if ($admin->store_otp_verify_status == 0) {
-                    Auth::guard('store')->logout();
-                    return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($cId));
-                }
+                // if ($admin->store_otp_verify_status == 0) {
+                //     Auth::guard('store')->logout();
+                //     return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($cId));
+                // }
             }
             return $this->sendLoginResponse($request);
         }
