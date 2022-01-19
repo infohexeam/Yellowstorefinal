@@ -63,7 +63,7 @@
                                  {{-- <tr>
                                     <td><strong> Type:</strong> {{@$product->business_type['business_type_name']}}</td>
                                  </tr> --}}
-
+ 
                                  {{-- <tr>
                                     <td><strong>Offer From Date :</strong> {{ $product->product_offer_from_date}}</td>
                                  </tr>
