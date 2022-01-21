@@ -343,9 +343,14 @@ class OrderController extends Controller
 
 
                             $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
+
+ 
+
                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
 
                             $baseProductDetail = Mst_store_product::find($value->product_id);
+
+
 
                             $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
 
@@ -355,6 +360,12 @@ class OrderController extends Controller
                                 $value->product_name = @$baseProductDetail->product_name;
 
                             $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
+
+                            $gstAmount = $value['productDetail']->product_varient_offer_price * ($baseProductDetail->tax_value / (100 + $baseProductDetail->tax_value));
+                            $orgCost = ($value['productDetail']->product_varient_offer_price * 100) / (100 + $baseProductDetail->tax_value);
+
+                            $value->gstAmount = $gstAmount;
+                            $value->orgCost = $orgCost;
 
                             $stax = 0;
                             // dd($splitdata);
