@@ -361,8 +361,8 @@ class OrderController extends Controller
 
                             $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
 
-                            $gstAmount = ($value['productDetail']->product_varient_offer_price * $baseProductDetail->tax_value) / (100 + $baseProductDetail->tax_value);
-                            $orgCost = ($value['productDetail']->product_varient_offer_price * 100) / (100 + $baseProductDetail->tax_value);
+                            $gstAmount = $value['productDetail']->product_varient_offer_price * $baseProductDetail->tax_value / (100 + $baseProductDetail->tax_value);
+                            $orgCost = $value['productDetail']->product_varient_offer_price * 100 / (100 + $baseProductDetail->tax_value);
 
                             $value->gstAmount = $gstAmount;
                             $value->orgCost = $orgCost;
