@@ -389,8 +389,8 @@ class OrderController extends Controller
                         $tTax = $taxFullData->tax_value * $value->quantity;
                         $value->tax_amount = $tTax;
                         $value->gstAmount = $tTax;
-                        $value->orgCost = $value['productDetail']->product_varient_offer_price - $taxFullData->tax_value
- 
+                        $value->orgCost = $value['productDetail']->product_varient_offer_price - $taxFullData->tax_value;
+
 
 
 
