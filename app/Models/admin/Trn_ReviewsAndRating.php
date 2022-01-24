@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trn_ReviewsAndRating extends Model
 {
-
-  use SoftDeletes;
-    protected $table = "trn__reviews_and_ratings";
+     use SoftDeletes;
+ protected $table = "trn__reviews_and_ratings";
     protected $primaryKey = "reviews_id";
 
    protected $fillable = [
@@ -19,7 +18,8 @@ class Trn_ReviewsAndRating extends Model
                            'product_varient_id',
                            'rating',
                            'review',
-                           'reviews_date','isVisible'
+                           'reviews_date',
+                           'isVisible',
                ];
 
 

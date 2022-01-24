@@ -54,22 +54,23 @@ class LoginController extends Controller
 
     public function usrlogin(Request $request)
     {
-
+       
 
         $this->validateLogin($request);
 
         if ($this->attemptLogin($request)) {
+            
+            $admin = Trn_StoreAdmin::where('store_mobile',$request->store_username)->first();
+                     
+                      if ($admin) {
+                          $cId = $admin->store_id;
 
-            $admin = Trn_StoreAdmin::where('store_mobile', $request->store_username)->first();
-
-            if ($admin) {
-                $cId = $admin->store_id;
-
-                // if ($admin->store_otp_verify_status == 0) {
-                //     Auth::guard('store')->logout();
-                //     return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($cId));
-                // }
-            }
+                        if ($admin->store_otp_verify_status==0) {
+                            Auth::guard('store')->logout();
+                           return redirect('store/registration/otp_verify/view/'.Crypt::encryptString($cId));
+                          
+                      }
+                }
             return $this->sendLoginResponse($request);
         }
         return $this->sendFailedLoginResponse($request);
@@ -78,13 +79,13 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $this->validate($request, [
-            $this->username() => 'exists:trn__store_admins,',
-            'password' => 'required|string',
+        $this->username() => 'exists:trn__store_admins,',
+                'password' => 'required|string',
         ], [
-            $this->username() . '.exists' => 'The Mobile Number invalid or The Account has been InActive.'
+                $this->username() . '.exists' => 'The Mobile Number invalid or The Account has been InActive.'
         ]);
     }
-
+    
     public function username()
     {
         return 'store_mobile';
@@ -93,7 +94,7 @@ class LoginController extends Controller
 
     // protected function credentials(Request $request)
     // {
-
+        
     //     $store = Trn_StoreAdmin::where('store_mobile',$request->store_username)->first();
     //     if ($store) {
     //             return [
@@ -106,39 +107,52 @@ class LoginController extends Controller
     //     return $request->only($this->username(), 'password');
     // }
 
-
-
+    
+    
     protected function credentials(Request $request)
     {
-
+        
         $today = Carbon::now()->toDateString();
-        $store = Trn_StoreAdmin::where('store_mobile', $request->store_username)->first();
-        if ($store) {
-
-            if ($store->role_id == 0) {
-                if (Hash::check($request->password, $store->password)) {
-                    if (($store->store_account_status == 0) && ($today <= $store->expiry_date)) {
-                        return ['store_mobile' => $request->store_username, 'password' => $request->password];
-                    } else if ($store->store_account_status == 1) {
-                        return ['store_mobile' => $request->store_username, 'password' => $request->password];
-                    } else {
+        $store = Trn_StoreAdmin::where('store_mobile',$request->store_username)->first();
+        if ($store) 
+        {
+        
+            if($store->role_id == 0)
+            {
+                if(Hash::check($request->password, $store->password))
+                {
+                    if(($store->store_account_status == 0) && ($today <= $store->expiry_date))
+                    {
+                        return ['store_mobile'=>$request->store_username,'password'=>$request->password];
+                    }
+                    else if( $store->store_account_status == 1)
+                    {
+                        return ['store_mobile'=>$request->store_username,'password'=>$request->password];
+                    }
+                    else
+                    {
                         throw ValidationException::withMessages([
                             $this->username() => 'Store is Inactive. Please contact Super admin',
                         ]);
                     }
-                } else {
+
+                }
+                else
+                {
                     throw ValidationException::withMessages([
                         $this->username() => 'These credentials do not match our records.',
                     ]);
                 }
-            } else {
-                return ['store_mobile' => $request->store_username, 'password' => $request->password];
+            }
+            else
+            {
+                return ['store_mobile'=>$request->store_username,'password'=>$request->password];
             }
         }
-
+         
         return $request->only($this->username(), 'password');
     }
-
+    
 
     public function __construct()
     {
@@ -151,11 +165,11 @@ class LoginController extends Controller
         return Auth::guard('store');
     }
 
-    public function logout(Request $request)
+     public function logout(Request $request)
     {
-        $store_id  = Auth::guard('store')->user()->store_id;
+                $store_id  = Auth::guard('store')->user()->store_id;
 
-        Trn_StoreWebToken::where('store_id', $store_id)->delete();
+        Trn_StoreWebToken::where('store_id',$store_id)->delete();
 
         Auth::guard('store')->logout();
         $cookie = \Cookie::forget('first_time');
@@ -166,4 +180,6 @@ class LoginController extends Controller
 
         return redirect('store-login');
     }
+
+
 }

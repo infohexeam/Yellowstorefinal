@@ -150,14 +150,22 @@
                                        $store_data = \DB::table('mst_stores')
                                         ->where('subadmin_id',$subadmin->id)
                                         ->get();
+                                        
+                                         $store_dataC = \DB::table('mst_stores')
+                                        ->where('subadmin_id',$subadmin->id)
+                                        ->count();
                                 //  dd($store_data);
                 @endphp
 
 
                                         <td>
-                                            @foreach($store_data as  $store)
-                                            {{ @$store->store_name}} <br>
-                                            @endforeach
+                                            @if($store_dataC > 0 )
+                                                @foreach($store_data as  $store)
+                                                {{ @$store->store_name}} <br>
+                                                @endforeach
+                                            @else
+                                                ---
+                                            @endif
                                         </td>
 
 
@@ -219,10 +227,10 @@
                                     <td><h6>Address:</td><td>{{ @$subadmin->subadmins['subadmin_address']}}</h6></td>
                                  </tr>
                                   <tr>
-                                    <td><h6>Commision Amount:</td><td>{{ @$subadmin->subadmins['subadmin_commision_amount']}}</h6></td>
+                                    <td><h6>Commission Amount:</td><td>{{ @$subadmin->subadmins['subadmin_commision_amount']}}</h6></td>
                                  </tr>
                                   <tr>
-                                    <td><h6>Commision Perentage:</td><td>{{ @$subadmin->subadmins['subadmin_commision_percentage']}}</h6></td>
+                                    <td><h6>Commission Perentage:</td><td>{{ @$subadmin->subadmins['subadmin_commision_percentage']}}</h6></td>
                                  </tr>
 
 

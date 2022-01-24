@@ -168,8 +168,8 @@ class RegisterController extends Controller
 
             $store->store_added_by        = 0;
             $store->password              = Hash::make($request->password);
-            $store->store_account_status       = 0;
-            $store->store_otp_verify_status    = 0;
+            $store->store_account_status       = 1;
+            $store->store_otp_verify_status    = 1;
 
             $store->store_contact_person_name            = $request->store_contact_person_name;
             $store->store_primary_address            = $request->store_contact_address;
@@ -195,10 +195,11 @@ class RegisterController extends Controller
             $insert['store_id'] = $store_id;
             $insert['admin_name'] = $request->store_name;
             //   $insert['email'] = $request->email;
-            $insert['username'] = $request->username;
+            $insert['username'] = $request->store_mobile;
             $insert['store_mobile'] = $request->store_mobile;
             $insert['role_id'] = 0;
-            $insert['store_account_status'] = 0;
+            $insert['store_account_status'] = 1;
+            $insert['store_otp_verify_status'] = 1;
             $insert['expiry_date'] = Carbon::now()->addDays(30)->toDateString();
 
             $insert['password'] = Hash::make($request->password);
@@ -211,9 +212,6 @@ class RegisterController extends Controller
                 $store_doc->save();
             }
 
-            return redirect('store-login');
-
-
             // //add to otp verification table
             // $store_otp =  5555;
             // //$store_otp =  rand ( 1000 , 9999 );
@@ -222,8 +220,9 @@ class RegisterController extends Controller
             // $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
             // $otp_verify->store_otp                 = $store_otp;
             // $otp_verify->save();
+            return redirect('store-login');
 
-            //   return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($store_id));
+          //  return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($store_id));
         } else {
             return redirect()->back()->withErrors($validator)->withInput();
         }

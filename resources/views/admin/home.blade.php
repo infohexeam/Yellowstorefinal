@@ -7,9 +7,9 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store;
 @endphp
 <style>
-   .footer.dash{
-       padding-left: 250px;padding-right: 0;
-   }
+    .footer.dash{
+        padding-left: 250px;padding-right: 0;
+    }
 </style>
 <!-- ROW-1 -->
 <div class="row" style="min-height: 70vh;">
@@ -120,6 +120,7 @@ use App\Models\admin\Mst_store;
     <div class="col-md-12 col-sm-12 ">
                   <div id="container2"></div>
         </div>
+       
         <?php 
           $returnNum = array_map('intval', $return);
         ?>

@@ -29,43 +29,31 @@
                   enctype="multipart/form-data">
                   @csrf
                   <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group">
                            <label class="form-label">Category Type</label>
                            <input type="text" class="form-control" name="category_name" value="{{old('category_name')}}" placeholder="Category Type">
                         </div>
                      </div>
-                     
-                     <div class="col-md-6">
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label class="form-label"> Business Type</label>
+                    <select name="business_type_id" required="" class="form-control" >
+                    <option value=""> Select Business Type</option>
+                       @foreach($business_types as $key)
+                       <option {{old('business_type_id') == $key->business_type_id ? 'selected':''}} value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>
+                                @endforeach
+                              </select>
+
+                        </div>
+                     </div>
+                     <div class="col-md-4">
                         <div class="form-group">
                            <label class="form-label">Category Icon [150*150]</label>
                            <input type="file" class="form-control" accept="image/x-png,image/jpg,image/jpeg" required
                            name="category_icon" value="{{old('category_icon')}}" placeholder="Category Icon">
                         </div>
                      </div>
-
-                     <div class="col-md-6">
-                        <div class="form-group">
-                           <div id="store">
-                              <label class="form-label"> Business Type</label>
-                              <select name="business_type_ids[]" required="" class="form-control" >
-                              <option value=""> Select Business Type</option>
-                                 @foreach($business_types as $key)
-                                 <option  value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>
-                                 @endforeach
-                              </select>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="col-md-2">
-                        <div class="form-group">
-                           <label class="form-label">Add more</label>
-                            <button type="button" id="addStore" class="btn btn-raised btn-success"> Add More</button>
-                        </div>
-                     </div>
-
-
                        {{--  <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Parent Category</label>
@@ -116,37 +104,4 @@
 </div>
    </div>
 </div>
-
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
-</script>
-<script type="text/javascript">
-
-$(document).ready(function() {
-   var wrapper      = $("#store"); //Fields wrapper
-  var add_button      = $("#addStore"); //Add button ID
-
-  var x = 1; //initlal text box count
-
-
-  $(add_button).click(function(e){ //on add input button click
-    e.preventDefault();
-    //max input box allowed
-      x++; //text box increment
-      $(wrapper).append('<div> <br> <label class="form-label"> Business Type</label><select name="business_type_ids[]" required="" class="form-control" ><option value=""> Select Business Type</option>@foreach($business_types as $key)<option  value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>@endforeach</select> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
-
-  });
-
-
-
-  $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-    e.preventDefault(); $(this).parent('div').remove(); x--;
-  })
-});
-
-
-</script>
-
 @endsection

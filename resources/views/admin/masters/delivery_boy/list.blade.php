@@ -32,7 +32,7 @@
                          enctype="multipart/form-data">
                    @csrf
             <div class="row">
-               <div class="col-md-12">
+               <div class="col-md-4">
                   <div class="form-group">
                      <label class="form-label">Store</label>
                       <div id="store_idl"></div>
@@ -44,7 +44,7 @@
                               </select>
                   </div>
                </div>
-                    {{-- <div class="col-md-4">
+                    <div class="col-md-4">
                 <div class="form-group">
                     <label class="form-label">From Date</label>
                       <div id="date_froml"></div>
@@ -59,7 +59,7 @@
                      <input type="date" class="form-control" name="date_to"  id="date_to" value="{{ request()->input('date_to') }}" placeholder="To Date">
 
                   </div>
-               </div> --}}
+               </div>
                      <div class="col-md-12">
                      <div class="form-group">
                            <center>
@@ -81,7 +81,7 @@
                         </a>
                         </br>
                 <div class="table-responsive">
-                  <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                  <table id="example" class="table table-striped table-bordered text-nowrap w-100">
                     <thead>
                       <tr>
                         <th class="wd-15p">SL.No</th>
@@ -104,13 +104,7 @@
                         <td>{{ ++$i }}</td>
                         <td>{{$delivery_boy->delivery_boy_name}}</td>
                         <td>{{$delivery_boy->delivery_boy_mobile}}</td>
-                        <td>
-                        @if (isset($delivery_boy->delivery_boy_email))
-                        {{$delivery_boy->delivery_boy_email}}
-                        @else
-                        ---
-                        @endif
-                        </td>
+                        <td>{{$delivery_boy->delivery_boy_email}}</td>
                      @php
                      $towns =  \DB::table('mst_towns')->where('town_id', @$delivery_boy->town_id)->first();
                     // dd($towns);
@@ -175,34 +169,7 @@
     </div>
   </div>
 
-  <script>
-               
-    $(function(e) {
-       $('#exampletable').DataTable( {
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'pdf',
-                    title: 'Delivery boys',
-                    footer: true,
-                    exportOptions: {
-                         columns: [0,1,2,3,4]
-                     }
-                },
-                {
-                    extend: 'excel',
-                    title: 'Delivery boys',
-                    footer: true,
-                    exportOptions: {
-                         columns: [0,1,2,3,4]
-                     }
-                }
-             ]
-        } );
-    
-    } );
-                </script>
-    
+
 
 <script>
 

@@ -3,7 +3,7 @@
 <div class="container">
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
-         <div class="card">
+         <div class="card" >
             <div class="row">
                <div class="col-12" >
 
@@ -26,7 +26,7 @@
                      <div class="card-header">
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                      </div>
-                 <div class="card-body border">
+                 <div class="card-body border" style="min-height: 70vh;" >
        <form action="" method="GET"
                 enctype="multipart/form-data">
           @csrf

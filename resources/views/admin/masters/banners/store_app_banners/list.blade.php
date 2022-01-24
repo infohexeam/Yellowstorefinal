@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="container">
-    <div class="row justify-content-center" style="min-height: 70vh;">
+    <div class="row justify-content-center">
         <div class="col-md-12 col-lg-12">
 
 
@@ -153,7 +153,7 @@
                      <div class="col-md-10">
                         <div class="form-group">
                            <div id="teamArea">
-                           <label class="form-label">Images * [250*250] [in png,jpeg or jpg] </label>
+                           <label class="form-label">Images * [620*290] [in png,jpeg or jpg] </label>
                            <input type="file"  class="form-control" id="imgs" required accept="image/x-png,image/jpg,image/jpeg" multiple="" name="images[]"  placeholder="Images">
                         </div>
                      </div>

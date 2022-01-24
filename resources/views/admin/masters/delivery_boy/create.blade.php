@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row" style="min-height: 70vh;">
+   <div class="row">
       <div class="col-md-12">
          <div class="card">
             <div class="card-header">
@@ -245,16 +245,11 @@
          </div> --}}
       </div>
    </div>
-   </div>
 </div>
-</div>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
 @endsection
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
 
 
 

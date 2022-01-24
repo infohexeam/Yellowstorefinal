@@ -130,7 +130,7 @@
                         <td>{{ $order->product_total_amount}}</td>
 
                         <td>
-                            {{-- @if($order->service_booking_order == 0) --}}
+                            @if($order->service_booking_order == 0)
                                 <button type="button"  @if($order->status_id == 5) disabled @endif data-toggle="modal" data-target="#StockModal{{$order->order_id}}"  class="btn btn-sm
                                     @if($order->status_id == 1) btn-info @elseif($order->status_id == 5) btn-danger @else btn-success @endif">
                                    
@@ -140,7 +140,7 @@
                                     --
                                    @endif
                                 </button>
-                            {{-- @endif --}}
+                            @endif
                          </td>
 
                           <td>
@@ -178,7 +178,7 @@
                   </tbody>
                </table>
             </div>
-            {{-- <div class="float-right"> {!! $orders->links() !!} </div> --}}
+            <div class="float-right"> {!! $orders->links() !!} </div>
            
          </div>
       </div>
@@ -206,6 +206,7 @@
                             
                               @foreach ($status as $key)
                                      @if($order->status_id != 9)
+                                     @if($key->status_id != 5)
 
                                       @if(($key->status_id >= $order->status_id ) || ($key->status_id == 5 ))
                                           <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} 
@@ -219,13 +220,18 @@
                                               {{ $key->status}}
                                         </option>
                                       @endif
-                                      
+                                      @endif
+
                                       @else
                                           @if($key->status_id == 9)
                                             <option  value="9"> {{ $key->status}} </option>
                                           @endif
                                       @endif
                               @endforeach
+                                @if($order->status_id != 9)
+                                            <option  value="5"> Cancelled </option>
+                                @endif
+
                            </select>
                   </div>
 

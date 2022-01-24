@@ -179,10 +179,9 @@ $date = Carbon\Carbon::now();
                   </div>
                </div>
             </div>
-         </div>
-      </div>
-   </div>
-
+</div>
+               </div>
+            </div>
             <!-- MESSAGE MODAL CLOSED -->
 
 @foreach($disputes as $dispute)

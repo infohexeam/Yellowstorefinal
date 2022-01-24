@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('content')
-<div class="row" id="user-profile">
+<div class="row" id="user-profile" style="min-height: 70vh;">
    <div class="col-lg-12">
       <div class="card">
          <div class="card-body">
@@ -29,7 +29,7 @@
          </div>
       </div>
       <input type="hidden" name="store_id" value="{{$store->store_id}}">
-      <div class="card" style="min-height: 72vh;">
+      <div class="card">
          <div class="card-body">
             <div class="border-0">
                <div class="tab-content">

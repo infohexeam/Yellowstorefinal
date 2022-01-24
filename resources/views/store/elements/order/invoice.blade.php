@@ -189,10 +189,15 @@
                                        <td colspan="8" class=" text-right">Discount Amount</td>
                                        <td class=" h4"> {{ @$dis_amt }}</td>
                                     </tr>
-                                    
-                                    
+                            @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
 
-                                    
+                                    <tr>
+                                       <td colspan="8" class=" text-right">Coupon Discount</td>
+                                       <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
+                                    </tr>
+
+                            @endif
+
                                    
                                   
                                     

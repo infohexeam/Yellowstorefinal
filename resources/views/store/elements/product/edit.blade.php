@@ -336,7 +336,9 @@
                                  @php
                                  $i++;
                                  @endphp
-                                 @if($product_image->product_varient_id != 0)
+                                 
+                                   @if($product_image->product_varient_id != 0)
+                                  @endif
 
                                  <tr>
                                     <td>{{$i}}</td>
@@ -355,7 +357,6 @@
                                         </form>
                                     </td>
                                  </tr>
-                                  @endif
                                  @endforeach
                                  @else
                                  <tr>

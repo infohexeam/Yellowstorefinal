@@ -146,36 +146,38 @@
                </div>
             </div>
 <!-- MESSAGE MODAL CLOSED -->
-<script>
 
-    $(function(e) {
-        $('#exampletable').DataTable( {
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'pdf',
-                    title: 'Districts',
-                    footer: true,
-                    exportOptions: {
-                         columns: [0,1,2]
-                     },
-                      customize: function(doc) {
-                            doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
-                      }
-                },
-                {
-                    extend: 'excel',
-                    title: 'Districts',
-                    footer: true,
-                    exportOptions: {
-                         columns: [0,1,2]
-                     }
-                }
-             ]
-        } );
-    
-    } );
-                </script>
+ <script>
+
+               $(function(e) {
+                   $('#exampletable').DataTable( {
+                       dom: 'Bfrtip',
+                       buttons: [
+                           {
+                               extend: 'pdf',
+                               title: 'Product Categories',
+                               footer: true,
+                               exportOptions: {
+                                    columns: [0,1,2]
+                                },
+                                 customize: function(doc) {
+                                       doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+                                 }
+                           },
+                           {
+                               extend: 'excel',
+                               title: 'Product Categories',
+                               footer: true,
+                               exportOptions: {
+                                    columns: [0,1,2]
+                                }
+                           }
+                        ]
+                   } );
+               
+               } );
+                           </script>
+
 
 
            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

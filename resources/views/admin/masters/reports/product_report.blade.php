@@ -39,25 +39,34 @@
                                 <form action="{{route('admin.show_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
+                                       
+                                       
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="form-label" id="date_fromb">From Date</label>
+                                                <label class="form-label">From Date</label>
+                                                   <div id="date_froml"  ></div>
                                                    <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date">
                             
-                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label" id="date_tob" >To Date</label>
+                                              </div>
+                                           </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">To Date</label>
+                                                    <div  id="date_tol" ></div>
                                                  <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date">
-                                            </div>
-                                         </div>
+                            
+                                             </div>
+                                          </div>
+              
+              
+                                       
                                         @if(auth()->user()->user_role_id  == 0) 
                                             <div class="col-md-4">
                                               <div class="form-group">
                                                  <label class="form-label">Sub Admin</label>
                                                  <div id="subadminl"></div>
-                                                       <select  name="subadmin_id" id="subadminId" class="form-control select2-show-search" data-placeholder="Sub Admin" >
+                                                       <select  name="subadmin_id" id="subadminId" class="form-control select2-show-search hello" data-placeholder="Sub Admin" >
                                                           <option value="">Sub Admin</option>
                                                              @foreach($subadmins as $key)
                                                              <option {{request()->input('subadmin_id') == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
@@ -70,7 +79,8 @@
                                          <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Store </label>
-                                               <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
+                                                    <div id="storel"></div>
+                                                   <select  name="store_id" id="storeId"  class="form-control select2-show-search hello" data-placeholder="Store"  >
                                                      <option value="">Store</option>
                                                     @foreach($stores as $key)
                                                     <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
@@ -83,7 +93,8 @@
                                           <div class="col-md-4">
                                           <div class="form-group">
                                               <label class="form-label">Customer</label>
-                                                  <select name="customer_id" id="customer_id" class="form-control select2-show-search" data-placeholder="Customer" >
+                                                    <div id="customer_id1"></div>
+                                                  <select name="customer_id" id="customer_idId" class="form-control select2-show-search hello" data-placeholder="Customer" >
                                                        <option value="" >Customer</option>
                                                        @foreach ($customers as $key)
                                                             <option value="{{ $key->customer_id }}" {{request()->input('customer_id') == $key->customer_id ? 'selected':''}} >{{ $key->customer_first_name }} {{ $key->customer_last_name }} - {{ $key->customer_mobile_number }} </option>
@@ -95,6 +106,8 @@
                                          <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Product </label>
+                                                    <div id="product_id1"></div>
+
                                                <select  name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Product"  >
                                                     <option value="">Product</option>
                                                   
@@ -105,6 +118,7 @@
                                           <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Vendor </label>
+                                                    <div id="VendorId1"></div>
                                                <select  name="vendor_id" id="VendorId" class="form-control select2-show-search" data-placeholder="Vendor"  >
                                                 <option value="">Vendor</option>
                                                     @foreach($agencies as $key)
@@ -118,6 +132,7 @@
                                          <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Category </label>
+                                                    <div id="categoryId1"></div>
                                                <select  name="category_id" id="categoryId" class="form-control select2-show-search" data-placeholder="Category"  >
                                                 <option value="">Category</option>
                                                     @foreach($categories as $key)
@@ -130,6 +145,7 @@
                                           <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Sub Category </label>
+                                                    <div id="subCategoryId1"></div>
                                                <select  name="sub_category_id" id="subCategoryId" class="form-control select2-show-search" data-placeholder="Sub Category"  >
                                                 <option value="">Sub Category</option>
                                                     @foreach($subCategories as $key)
@@ -144,7 +160,7 @@
                                             <div class="form-group">
                                                 <center>
                                                    <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
-                                                   <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
+                                                   <button type="reset" id="reset"  class="btn btn-raised btn-success">Reset</button>
                                                    <a href="{{route('admin.show_reports')}}"  class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
@@ -185,13 +201,61 @@
                                         @foreach ($data as $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
-                                            <td>{{ $d->store_name }}</td>
-                                            <td>{{ $d->agency_name }}</td>
-                                            <td>{{ $d->category_name }}</td>
-                                            <td>{{ $d->sub_category_name }}</td>
-                                            <td>{{ $d->product_brand }}</td>
-                                            <td>{{ $d->product_code }}</td>
+                                            <td>
+                                                @if(isset($d->created_at))
+                                                {{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}
+                                                 @else
+                                                    ---
+                                                @endif
+                                                </td>
+                                            <td>
+                                                @if(isset($d->created_at))
+                                                {{ $d->store_name }}
+                                                 @else
+                                                    ---
+                                                @endif
+                                                
+                                            </td>
+                                            <td>
+                                                @if(isset($d->agency_name))
+                                                {{ $d->agency_name }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                            </td>
+                                            <td>
+                                                @if(isset($d->category_name))
+                                                {{ $d->category_name }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                            </td>
+                                            <td>
+                                                @if(isset($d->sub_category_name))
+                                                {{ $d->sub_category_name }}
+                                                @else
+                                                    ---
+                                                @endif
+
+                                                </td>
+                                            <td>
+                                                @if(isset($d->product_brand))
+                                                {{ $d->product_brand }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                                </td>
+                                            <td>
+                                                @if(isset($d->product_code))
+                                                {{ $d->product_code }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                                </td>
                                             <td>
                                                 @if($d->variant_name == $d->product_name)
                                                     {{ $d->product_name }}
@@ -270,24 +334,19 @@
 </div>
 
 
+
 <script>
 
+
+$(document).ready(function() {
  $('#reset').click(function(){
-     $('#date_fromc').remove();
-     $('#date_toc').remove();
+    if($('#customer_idId').remove()){
+       // alert("here");
+    }
 
-    $('#date_fromb').append('<input type="date" class="form-control"  name="date_from" id="date_fromc" placeholder="From Date">');
-    $('#date_tob').append('<input type="date" class="form-control" name="date_to"   id="date_toc"  placeholder="To Date">');
+   })
 
-
-
-   });
-
-
-</script>
-
-
-<script>
+ });
     $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',

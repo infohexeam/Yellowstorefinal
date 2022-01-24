@@ -182,6 +182,8 @@
                                     <th class="wd-20p">{{__('Email')}}</th>
                                      @if(auth()->user()->user_role_id  == 0)
                                     <th class="wd-20p">Sub<br>Admin</th>
+                                    <th class="wd-20p">{{__('Is PG Activated')}}</th>
+
                                     @endif
 
                                     <th class="wd-20p">{{__('Status')}}</th>
@@ -201,7 +203,12 @@
                                     <td>{{ $store->email}} </td>
                                     @if(auth()->user()->user_role_id  == 0)
                                     <td>{{ @$store->subadmin->name}} </td>
+                                    <td>
+                                        <input type="checkbox" class="form-control"   name="isPGActivated" value="1" id="isPGActivated" @if($store->is_pgActivated == 1) checked @endif />
+                                        
+                                    </td>
                                     @endif
+
                                  <td>
 
                                        <form action="{{route('admin.status_store',$store->store_id)}}" method="POST">
@@ -276,6 +283,15 @@
                       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script type="text/javascript">
+
+$( "#is_pgActivated" ).click(function() {
+if($("#is_pgActivated").is(":checked")){
+    alert("checked");
+     }else{
+             alert("unchecked");
+
+     }
+});
 
 
 $(function(e) {

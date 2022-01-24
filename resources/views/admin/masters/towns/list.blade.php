@@ -213,6 +213,7 @@ $(function(e) {
                 exportOptions: {
                      columns: [0,1,2]
                  }
+                 
             },
             {
                 extend: 'excel',

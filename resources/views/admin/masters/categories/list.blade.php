@@ -76,7 +76,7 @@
 
                         </br>
                         <div class="table-responsive">
-                           <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
@@ -103,14 +103,10 @@
                                        <img src="{{asset('/assets/uploads/category/icons/'.$category->category_icon)}}"  width="50" >
                                     @endif
                                  </td>
-                                    <td>{{ @$category->business_type['business_type_name'] }}
-                                    
-                                    @foreach (@$category->business_types as $row)
-                                       {{ @$row->business_type->business_type_name }} <br>
-                                    @endforeach
-                                    </td>
+                                    <td>{{ $category->business_type['business_type_name'] }}  </td>
                                      <td>
                                        <form action="{{route('admin.status_category',$category->category_id)}}" method="POST">
+
                                           @csrf
                                           @method('POST')
                                           <button type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
@@ -118,8 +114,7 @@
                                           InActive
                                           @else
                                           Active
-                                          @endif
-                                       </button>
+                                          @endif</button>
                                        </form>
                                     </td>
                                     <td>
@@ -167,17 +162,7 @@
                                     <td><h6>Category Type: </td><td> {{ $category->category_name }}</h6></td>
                                  </tr>
                                 <tr>
-                                    <td><h6>Business Type: </td><td> 
-                                       {{ @$category->business_type['business_type_name'] }}
-                                       <table  class="table table-bordered text-nowrap w-100">
-                                          @foreach (@$category->business_types as $row)
-                                            <tr>
-                                              <td>
-                                                {{ @$row->business_type->business_type_name }} 
-                                              </td>
-                                            </tr>
-                                          @endforeach
-                                      </table>
+                                    <td><h6>Business Type: </td><td> {{ $category->business_type['business_type_name'] }}
                                    </h6></td>
                                  </tr>
                                  <tr>
@@ -196,4 +181,35 @@
             </div>
             @endforeach
             <!-- MESSAGE MODAL CLOSED -->
+            
+                    <script>
+
+$(function(e) {
+	 $('#exampletable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Product Categories',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,3,4]
+                 },
+                  customize: function(doc) {
+                        doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+				      }
+            },
+            {
+                extend: 'excel',
+                title: 'Product Categories',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,3,4]
+                 }
+            }
+         ]
+    } );
+
+} );
+            </script>
             @endsection

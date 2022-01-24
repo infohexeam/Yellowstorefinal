@@ -77,7 +77,7 @@
                             <div class="col-md-6">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_name" type="store_name" name="store_name" placeholder="Store Name *" value="{{ old('store_name') }}" required autocomplete="store_name" >
-                                                               <span style="color: red;" id="error_username"></span>
+                                                               <span id="error_username"></span>
 
                                     {{-- @error('store_name')
                                     <span class="invalid-feedback" role="alert">
@@ -89,7 +89,7 @@
                              <div class="col-md-6">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_mobile" onchange="mobileValidation()" type="text" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  name="store_mobile" placeholder="Store Mobile Number *" value="{{ old('store_mobile') }}" required autocomplete="store_mobile" >
-                                    <p style="color: red;" id="error_store_mobile"></p>
+                                    <p id="error_store_mobile"></p>
                                     {{-- @error('store_mobile')
                                     <strong>{{ $message }}</strong>
                                     </span>
@@ -262,7 +262,6 @@
                                     <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror --}}
-                                    <p style="color: red;" id="error_business_type"></p>
                                 </div>
                             </div>
                         </div>
@@ -281,7 +280,7 @@
 
                         <div id="passlabel" class="wrap-input100 validate-input">
                            <input class="input100" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="password" value="{{old('password')}}" placeholder="Password *" id="password" type="password" required autocomplete="current-password">
-                <p id="showpassmessage" style="color: red;" ><p>
+                <p id="showpassmessage"><p>
 <p id="showpassmessage2"><p>
     
                            {{-- @error('password')
@@ -294,7 +293,7 @@
 
                         <div class="wrap-input100 validate-input">
                            <input class="input100" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password *" value="{{old('password_confirmation')}}" id="confirm_password" type="password" required autocomplete="current-password">
-                                        <p style="color: red;" id="showmessage"><p>
+                                        <p id="showmessage"><p>
            {{-- @error('password_confirmation')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
@@ -308,13 +307,12 @@
                         <input required type="checkbox" name="tc" id="tc"> I Agree to the 
                         <a target="_blank" href="{{ url('store/terms-and-condition') }}">Terms and Conditions</a>
                     </label>
-                    <p style="color: red;" id="showmessageTc"><p>
                     
                                 <div id="recaptcha-container"></div>
 
 
                         <div class="container-login100-form-btn">
-                           <a type="submit" id="submitAdd" onclick="phoneSendAuth();" class="text-white login100-form-btn btn-primary btDis">
+                           <a type="submit" id="submit" onclick="phoneSendAuth();" class="text-white login100-form-btn btn-primary">
                            {{ __('Register Now') }}
                            </a>
                         </div>
@@ -334,7 +332,6 @@
                 <div id="secDiv" class="wrap-login100 p-6" style="width:800px;">
     
                         <p id="sentSuccessMsg"></p> <br>
-                        {{-- <a class="float-right btn btn-primary" >Back</a> --}}
 
                     <div class="row">
                         <div class="col-md-12">
@@ -352,12 +349,6 @@
                     <div class="container-login100-form-btn">
                        <a href="#" id="otpVerify" onclick="codeverify();" class="login100-form-btn btn-primary">
                        {{ __('Verify') }}
-                       </a>
-                    </div>
-
-                    <div class="container-login100-form-btn">
-                       <a href="#" onclick="showFirstDiv()" class="login100-form-btn btn-gray">
-                       {{ __('Back') }}
                        </a>
                     </div>
                 </div>
@@ -379,10 +370,7 @@
 
 
 
-  function showFirstDiv(){
-    $('#firstDiv').show();
-        $('#secDiv').hide();
-  }
+  
 
 
 
@@ -422,53 +410,14 @@
         var sPass = $('#password').val();
         var sConfPass = $('#confirm_password').val();
         var sTC = $('#tc').val();
-
+        
          
-            if(sName == '' || sPhone == '' || sBusinessType == '' || sPass == '' || sConfPass == '' || sTC == ''){
-              //  alert("Please fill all the mandatory fields... "); 
-                 
-                if(sName == '')
-                    $("#error_username").text("Store name required");
-                else
-                    $("#error_username").empty();
-
-                if(sPhone == '')
-                    $("#error_store_mobile").text("Store mobile number required");
-                else
-                    $("#error_store_mobile").empty();   
-
-                if(sBusinessType == '')
-                    $("#error_business_type").text("Business type required");
-                else
-                    $("#error_business_type").empty(); 
-
-                if(sPass == '')
-                    $("#showpassmessage").text("Password required");
-                else
-                    $("#showpassmessage").empty();   
-
-                if(sConfPass == '')
-                    $("#showmessage").text("Confirm password required");
-                else
-                    $("#showmessage").empty();   
-
-                 
-
-                return false;
-
-
+            if(sName != '' && sPhone != '' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){
             }
-           
-          
-        if($('#tc').is(":checked"))
-        {
-            $("#showmessageTc").empty();
-
-        }else{
-            $("#showmessageTc").text("Please accept the terms and conditions to continue...");
-            return false;
-        }
-          
+            else{
+                  return false;
+            }
+            
         
         $('#firstDiv').hide();
         $('#secDiv').show();
@@ -488,8 +437,6 @@
             $("#sentSuccessMsg").show();
               
         }).catch(function (error) {
-            $("#sentSuccessMsg").text("OTP failed !.Please resolved captcha to receive otp.");
-            $("#sentSuccessMsg").show();
             $("#error").text(error.message);
             $("#error").show();
         });
@@ -503,7 +450,6 @@
 
         var code = $("#otp").val();
 
-        $("#sentSuccessMsg").text("Please resolve reCaptcha.");
   
 
         coderesult.confirm(code).then(function (result) {
@@ -583,15 +529,14 @@
                 if(result == 'unique')
                 {
                                 $('#error_store_mobile').empty();
-                                       $('#submitAdd').attr('disabled', false);
+                                       $('#submit').attr('disabled', false);
 
                 }
                 else
                 {
                 $('#error_store_mobile').html('<label class="text-danger">Mobile Number Already Exist </label>');
             // $('#email').addClass('has-error');
-                $('#submitAdd').attr('disabled', true);
-                $(".btDis").prop('disabled', true); 
+                $('#submit').attr('disabled', 'disabled');
 
             }
             }
@@ -944,9 +889,6 @@ $("#store_name").blur(function(){
 
 
   $("#store_mobile").blur(function(){
-    validatePass();
-    validatePassLength();
-    checkPasswordComplexity($('#password').val());
     
       var error_store_mobile = '';
       var store_username = $(this).val();

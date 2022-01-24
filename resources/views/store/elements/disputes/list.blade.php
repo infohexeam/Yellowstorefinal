@@ -4,10 +4,10 @@
 $date = Carbon\Carbon::now();
 @endphp
 <div class="container">
-   <div class="row justify-content-center">
+   <div class="row justify-content-center" >
       <div class="col-md-12 col-lg-12">
-         <div class="card">
-            <div class="row">
+         <div class="card" style="min-height: 70vh;">
+            <div class="row" >
                <div class="col-12" >
 
                   @if ($message = Session::get('status'))
@@ -121,6 +121,8 @@ $date = Carbon\Carbon::now();
 
                                     <td>{{ @$subadmin->name}}</td>
                         <td>
+                            
+
                            <button type="button" class="btn btn-sm @if($dispute->dispute_status == '1') btn-success @elseif($dispute->dispute_status == '2') btn-danger @elseif($dispute->dispute_status == '4') btn-info @else btn-warning @endif"
                            data-toggle="modal" data-target="#StockModal{{$dispute->dispute_id}}" >
 
@@ -137,6 +139,8 @@ $date = Carbon\Carbon::now();
                                           <button data-toggle="modal" data-target="#viewModal{{$dispute->dispute_id}}"  class="btn btn-sm btn-cyan">View</button>
                 <a class="btn btn-sm btn-blue"  href="{{url('store/order/view/'.Crypt::encryptString($dispute->order_id))}}">View Order</a>
 
+                    <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#storeResponseModal{{$dispute->dispute_id}}" >Store Response</button>
+
                                     </td>
                                 
                                  </tr>
@@ -151,6 +155,41 @@ $date = Carbon\Carbon::now();
             </div>
 
             <!-- MESSAGE MODAL CLOSED -->
+
+
+@foreach($disputes as $dispute)
+            <div class="modal fade" id="storeResponseModal{{$dispute->dispute_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title" id="example-Modal3">Update Dispute Status</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+
+                 <form action=" "  enctype="multipart/form-data" >
+                 @csrf
+                  <div class="modal-body">
+
+                    <label class="form-label">Store Response</label>
+
+                   <textarea class="form-control" name="store_response" id="store_response" placeholder="Store response...">{{$dispute->store_response}}</textarea>
+                  </div>
+
+                     <div class="modal-footer">
+                       <button type="submit" class="btn btn-raised btn-primary">
+                    <i class="fa fa-check-square-o"></i> Update</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     </div>
+                      </form>
+                  </div>
+               </div>
+            </div>
+            @endforeach
+
+
+
 
 @foreach($disputes as $dispute)
             <div class="modal fade" id="StockModal{{$dispute->dispute_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -234,7 +273,6 @@ $date = Carbon\Carbon::now();
                               @if($issue->issue_type_id == 2)
                                 @php
                                     $colorsArray = explode(",", $dispute->item_ids);
-
                                     $product_varient = \DB::table('mst_store_product_varients')->where('product_varient_id',@$dispute->product_id)->first();
                                     $productdata = \DB::table('mst_store_products')->where('product_id',@$product_varient->product_id)->first();
                                     $orderItemData = \DB::table('trn_order_items')
@@ -242,25 +280,40 @@ $date = Carbon\Carbon::now();
                                     ->where('product_varient_id',@$dispute->product_id)
                                     ->where('product_id',@$productdata->product_id)
                                     ->first();
+                                    
+                                    
+                                      $orderItemsDataz = \DB::table('trn_order_items')
+                                    ->whereIn('order_item_id',@$colorsArray)
+                                    ->get();
+
                                 @endphp
                             
                               <tbody class="col-lg-12 col-xl-12 p-0">
                                   <tr>
                                     <td><h4>Product Details</h4></td>
                                  </tr>
+                                 @foreach($orderItemsDataz as $key)
+                                 
+                                 @php
+                                   $product_varientD = \DB::table('mst_store_product_varients')->where('product_varient_id',@$key->product_id)->first();
+                                    $productdataD = \DB::table('mst_store_products')->where('product_id',@$key->product_id)->first();
+                                 @endphp
                                  <tr>
                                     <td><h6>Product Name : 
-                                    @if(@$product_varient->variant_name == @$productdata->product_name)
-                                        {{@$productdata->product_name}}
+                                    @if(@$product_varientD->variant_name == @$productdataD->product_name)
+                                        {{@$productdataD->product_name}}
                                     @else
-                                        {{@$product_varient->variant_name}} {{@$productdata->product_name}}
+                                        {{@$product_varientD->variant_name}} {{@$productdataD->product_name}}
                                     @endif
                                     </h6></td>
                                  </tr>
                                  
+                                 
                                  <tr>
-                                    <td><h6>Purchased Quantity  : {{@$orderItemData->quantity}}</h6></td>
+                                    <td><h6>Purchased Quantity  : {{$key->quantity}}</h6></td>
                                  </tr>
+                                 
+                                 @endforeach
                                  
                               </tbody>
                               
@@ -268,7 +321,7 @@ $date = Carbon\Carbon::now();
                               @endif
                               
                               <tr>
-                                <td><h6>Discription : {{@$dispute->discription}}
+                                <td><h6>Description : {{@$dispute->discription}}
                                </h6></td>
                              </tr>
                              

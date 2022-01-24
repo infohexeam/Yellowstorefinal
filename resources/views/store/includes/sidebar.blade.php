@@ -88,22 +88,22 @@
         </a>
       </li>
       
-        {{-- <li class="slide">
-        <a class="side-menu__item" href="{{url('store/payment_settlments/')}}" >
-          <i class="side-menu__icon ti ti ti-import"></i>
-          <span class="side-menu__label"> {{ __('Payments') }}</span>
-        </a>
-      </li> --}}
-
-      <li class="slide">
-        <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti ti ti-import"></i><span class="side-menu__label">{{ __('Payments') }}</span><i class="angle fa fa-angle-right"></i></a>
-               <ul class="slide-menu">
-                     <li><a class="slide-item" href="{{url('store/payment_settlments/')}}">{{ __('Payment Settlment') }}</a></li>
-                     <li><a class="slide-item" href="{{url('store/incoming-payments')}}">{{ __('Incoming Payments') }}</a></li>
-                    
-                   </ul>
-               </li>
-
+      <!--  <li class="slide">-->
+      <!--  <a class="side-menu__item" href="" >-->
+      <!--    <i class="side-menu__icon ti ti ti-import"></i>-->
+      <!--    <span class="side-menu__label"> {{ __('Payments') }}</span>-->
+      <!--  </a>-->
+      <!--</li>-->
+      
+      
+          <li class="slide">
+ <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti ti ti-import"></i><span class="side-menu__label">{{ __('Payments') }}</span><i class="angle fa fa-angle-right"></i></a>
+        <ul class="slide-menu">
+              <li><a class="slide-item" href="{{url('store/payment_settlments/')}}">{{ __('Payment Settlment') }}</a></li>
+              <li><a class="slide-item" href="{{url('store/incoming-payments')}}">{{ __('Incoming Payments') }}</a></li>
+             
+            </ul>
+        </li>
 
       
        <li class="slide">
@@ -124,15 +124,13 @@
             </ul>
         </li>
 
-        @if(Auth::guard('store')->user()->role_id == 0)
-          <li class="slide">
-            <a class="side-menu__item" href="{{route('store.store_admin')}}">
-              <i class="side-menu__icon ti-user"></i>
-              <span class="side-menu__label"> {{ __('Store Admin') }}</span>
-            </a>
-          </li>
-        @endif
-      
+
+       <li class="slide">
+        <a class="side-menu__item" href="{{route('store.store_admin')}}">
+          <i class="side-menu__icon ti-user"></i>
+          <span class="side-menu__label"> {{ __('Store Admin') }}</span>
+        </a>
+      </li>
       <li class="slide">
         <a class="side-menu__item" href="{{route('store.list_disputes')}}">
           <i class="side-menu__icon ti-comments"></i>

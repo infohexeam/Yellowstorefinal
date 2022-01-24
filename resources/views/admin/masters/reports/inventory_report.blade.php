@@ -199,7 +199,7 @@
                                             <td>{{ $d->product_brand }}</td>
                                             <td>{{ $d->min_stock }}</td>
                                             <td> 
-                                                @if($d->product_status == 1)
+                                                @if($d->product_status == 0)
                                                     Active
                                                 @else
                                                     Inactive

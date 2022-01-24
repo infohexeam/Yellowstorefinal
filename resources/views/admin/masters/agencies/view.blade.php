@@ -11,8 +11,12 @@
                      <div class="wideget-user-desc d-sm-flex">
                         <div class="wideget-user-img">
                            <input type="hidden" class="form-control" name="agency_id" value="{{$agency->agency_id}}" >
-
+                    @if(isset($agency->agency_logo))
                            <img class="avatar-xl rounded-circle mCS_img_loaded" src=" {{URL::to('assets/uploads/agency/logos/'.$agency->agency_logo)}}" alt="img" style="width: 150px; height: 150px;">
+                     @else
+                           <img class="avatar-xl rounded-circle mCS_img_loaded" src=" {{URL::to('assets/uploads/admin.png')}}" alt="img" style="width: 150px; height: 150px;">
+
+                     @endif
                         </div>
 
                      </div>

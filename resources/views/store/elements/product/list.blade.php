@@ -159,32 +159,47 @@
                         <td>{{$product->product_price_offer}}</td>
                         <td><img data-toggle="modal" data-target="#viewModal{{$product->product_id}}"  src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" >&nbsp;</td>
                        
-                        <td>
-                   <form action="{{route('store.status_product',$product->product_id)}}" method="POST">
-                                          
-                       @csrf
-                          @method('POST')
-                        <button type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
-                        @if($product->product_status == 0) btn-danger @else btn-success @endif"> @if($product->product_status == 0)
-                        Inactive
-                        @else
-                        Active
-                        @endif</button>
-                     </form>
-                        </td>
-                        <td>
-                          @php
+                        @php
                             $stock_count_sum = \DB::table('mst_store_product_varients')->
                             where('product_id',$product->product_id)->
                             sum('stock_count');
                           @endphp
+                       
+                        <td>
+                            @if($stock_count_sum == 0)
+                               @php
+                                \DB::table('mst_store_products')->where('product_id',$product->product_id)->update(['product_status' => 0]);
+                                $productStatus = 0;
+                                @endphp
+
+                            @else
+                               @php
+
+                                $productStatus = $product->product_status;
+                          @endphp
+
+                            @endif
+                        <form action="{{route('store.status_product',$product->product_id)}}" method="POST">
+                                          
+                           @csrf
+                              @method('POST')
+                            <button type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
+                            @if($productStatus == 0) btn-danger @else btn-success @endif"> @if($productStatus == 0)
+                            Inactive
+                            @else
+                            Active
+                            @endif</button>
+                        </form>
+                        </td>
+                        <td>
+                         
                             <button type="button"  data-toggle="modal" data-target="#___StockModal{{$product->product_id}}"  class="btn btn-sm @if(@$stock_count_sum == 0) btn-danger @else btn-success @endif"> 
                            
                           
                             @if(  @$stock_count_sum == 0)
-                            OutStock
+                            Out of stock
                             @else
-                            InStock
+                            In stock
                             @endif </button>
                           
                           </form>
@@ -192,7 +207,7 @@
                         </td>
                      
                    <td>
-                     <!--<form action="{{route('store.destroy_product',$product->product_id)}}" method="POST">-->
+                     <form action="{{route('store.destroy_product',$product->product_id)}}" method="POST">
                        
                     @csrf
                       @method('POST')
@@ -200,10 +215,10 @@
                        <a class="btn btn-sm btn-cyan" href="{{url('store/product/edit/'.$product->product_id)}}">Edit</a> 
                        <a class="btn btn-sm btn-cyan"
                        href="{{url('store/product/view/'.$product->product_id)}}">View</a> 
-                        <!--<button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>-->
+                        <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
                        <br> <a class="mt-2 btn btn-sm btn-orange" href="{{url('store/product/variant/list/'.$product->product_id)}}">Product Variant</a> 
   
-                      <!--</form> -->
+                      </form> 
 
                         </td> 
                         

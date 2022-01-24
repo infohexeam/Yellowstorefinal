@@ -124,7 +124,7 @@
                                             <div class="form-group">
                                                 <center>
                                                    <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
-                                                   {{-- <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button> --}}
+                                                   <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
                                                    <a href="{{route('store.show_reports')}}"  class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
@@ -174,7 +174,8 @@
                                                 @if($d->variant_name == $d->product_name)
                                                     {{ $d->product_name }}
                                                 @else
-                                                    {{ $d->product_name }} {{$d->variant_name }}
+                                                    {{ $d->product_name }} 
+                                                   
                                                 @endif
                                             </td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>

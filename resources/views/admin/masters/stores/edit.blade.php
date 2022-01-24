@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('content')
-<div class="row" id="user-profile">
+<div class="row" id="user-profile" style="min-height: 70vh;">
    <div class="col-lg-12">
       <div class="card">
          <div class="card-body">
@@ -30,7 +30,7 @@
          </div>
       </div>
       <input type="hidden" name="store_id" value="{{$store->store_id}}">
-      <div class="card" style="min-height: 72vh;">
+      <div class="card">
        @if ($message = Session::get('status'))
                   <div class="alert alert-success">
                      <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
@@ -608,7 +608,7 @@
                            <h5><strong>Products</strong></h5>
                         </div><br>
                         <div class="table-responsive ">
-                           <table  id="example" class="table table-striped table-bordered">
+                           <table  id="exampletable" class="table table-striped table-bordered">
                               <thead>
                                  <tr>
                                    <th class="wd-15p">S.No</th>
@@ -689,7 +689,7 @@
                         <div class="media-heading">
                            <h5><strong>Change Password</strong></h5>
                         </div><br>
-                        <div class="card" >
+                        <div class="card">
                             
                                  <form  id="myForm" onsubmit="return validateForm()" action="{{ route('admin.update_password_store',$store->store_id) }}" method="POST" enctype="multipart/form-data" >
                         @csrf
@@ -940,6 +940,35 @@ $(document).ready(function() {
     e.preventDefault(); $(this).parent('div').remove(); x--;
   })
 });
+
+
+
+
+$(function(e) {
+	 $('#exampletable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Products',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3]
+                 }
+            },
+            {
+                extend: 'excel',
+                title: 'Stores',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3]
+                 }
+            }
+         ]
+    } );
+
+} );
+
 
 
 </script>

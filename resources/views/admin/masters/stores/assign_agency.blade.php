@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row" style="min-height: 72vh;">
+   <div class="row" style="min-height:70vh;">
       <div class="col-md-12">
          <div class="card">
             <div class="card-header">
@@ -16,7 +16,7 @@
             </div>
 
             <div class="table-responsive">
-               <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+               <table id="example" class="table table-striped table-bordered text-nowrap w-80">
                   <tbody>
                      @php
                      $i = 0;
@@ -69,7 +69,7 @@
                   enctype="multipart/form-data">
                   @csrf
                   <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-10">
                         <div class="form-group">
                           
                           <input type="hidden" name="store_id" value="{{$store->store_id}}">

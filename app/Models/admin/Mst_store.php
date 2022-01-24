@@ -32,7 +32,8 @@ class Mst_store extends Authenticatable
                             'remember_token',
                             'subadmin_id','place','town','store_commision_amount','store_mobile',
                             'order_number_prefix',
-                            'online_status','store_qrcode','profile_image','upi_id','longitude','latitude','place_id','service_area'
+                            'online_status','store_qrcode','profile_image','upi_id',
+                            'longitude','latitude','place_id','service_area','is_pgActivated'
 
     						  ];
 

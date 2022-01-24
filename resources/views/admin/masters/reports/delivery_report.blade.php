@@ -79,7 +79,7 @@
                                             <div class="form-group">
                                                 <center>
                                                    <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
-                                                   {{-- <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button> --}}
+                                                   <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
                                                    <a href="{{route('admin.delivery_reports')}}"  class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
@@ -108,8 +108,8 @@
                                             <th class="wd-15p">Total Amount</th>
                                             <th class="wd-15p">Payment type</th>
                                             
-                                            <th class="wd-15p">Delivery Boy</th>
-                                            <th class="wd-15p">Delivery Status</th>
+                                            <th class="wd-15p">Deivery Boy</th>
+                                            <th class="wd-15p">Deivery Status</th>
                                             
                                             <th class="wd-15p">Customer</th>
                                             <th class="wd-15p">Customer Phone</th>

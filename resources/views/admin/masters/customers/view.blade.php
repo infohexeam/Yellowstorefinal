@@ -1,5 +1,10 @@
 @extends('admin.layouts.app')
 @section('content')
+@php
+use App\Models\admin\Trn_customer_reward;
+use App\Models\admin\Trn_store_order;
+
+@endphp
 <div class="row" id="user-profile">
    <div class="col-lg-12">
       <div class="card">
@@ -15,6 +20,7 @@
                   <div class="tabs-menu1">
                      <ul class="nav">
                         <li class=""><a href="#tab-51" class="active show" data-toggle="tab">Customer Information</a></li>
+                        <li class=""><a href="#tab-53" class=" show" data-toggle="tab">Wallet Points</a></li>
                         <li class=""><a href="#tab-52" class=" show" data-toggle="tab">Customer Address</a></li>
                        
                      </ul>
@@ -63,7 +69,37 @@
                                     <td><strong>State :</strong> {{ @$customers->state['state_name']}}</td>
                                  </tr>
                                   @endif
-                                
+                                  
+                                   @if(isset($customers->district['district_name'])) 
+                                <tr>
+                                    <td><strong>District :</strong> {{ @$customers->district['district_name']}}</td>
+                                 </tr>
+                                  @endif
+                                  
+                                   @if(isset($customers->town['town_name'])) 
+                                <tr>
+                                    <td><strong>Town :</strong> {{ @$customers->town['town_name']}}</td>
+                                 </tr>
+                                  @endif
+                                  @if(isset($customers->gender)) 
+                                    <tr>
+                                    <td><strong>Gender :</strong> {{ @$customers->gender}}</td>
+                                 </tr>
+                                  @endif
+                                  
+                                      @if(isset($customers->dob)) 
+                                    <tr>
+                                    <td><strong>DOB :</strong> {{ @$customers->dob}}</td>
+                                 </tr>
+                                  @endif
+                                  
+                                    @if(isset($customers->place)) 
+                                    <tr>
+                                    <td><strong>Place :</strong> {{ @$customers->place}}</td>
+                                 </tr>
+                                  @endif
+
+
                                   @if(isset($customers->customer_address)) 
 
                                    <tr>
@@ -101,6 +137,40 @@
                      </div>
                   </div>
                   
+                  
+                  
+                  
+                  <div class="tab-pane show" id="tab-53">
+                     <div id="profile-log-switch">
+                        <div class="media-heading">
+                           <h5><strong>Wallet Points</strong></h5>
+                        </div>
+                        <div class="table-responsive ">
+                           @php
+                           
+                              $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                            $totalusedPoints = Trn_store_order::where('customer_id', $customers->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+            
+                            $customerRewardsCount = $totalCustomerRewardsCount - $totalusedPoints;
+                            $customerRewardsCount = number_format($customerRewardsCount, 0);
+                            $totalCustomerRewardsCount = number_format($totalCustomerRewardsCount, 0);
+            
+                            if ($totalusedPoints >= 0)
+                                $data['totalusedPoints']  = $totalusedPoints;
+                            else
+                                $data['totalusedPoints']  = '0';
+                    
+                           @endphp
+                         <p>Total Points Earned : </p><h2>{{$totalCustomerRewardsCount}}</h2> <br>
+                         <p>Used Points : </p><h2>{{$totalusedPoints}}</h2> <br>
+                         <p>Balance Points : </p><h2>{{$customerRewardsCount}}</h2> <br>
+                           
+                           <center>
+                           <a class="btn btn-cyan" href="{{ route('admin.list_customer') }}">Cancel</a>
+                           </center>
+                        </div>
+                     </div>
+                  </div>
                   
                   
                    <div class="tab-pane show" id="tab-52">

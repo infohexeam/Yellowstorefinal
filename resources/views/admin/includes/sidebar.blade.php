@@ -79,7 +79,7 @@
         <ul class="slide-menu">
                       <li><a class="slide-item" href="{{route('admin.list_business_type')}}">{{ __('Business Types') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_category')}}">{{ __('Product Category') }}</a></li>
-                      {{-- <li><a class="slide-item" href="{{route('admin.list_districts')}}">{{ __('Districts') }}</a></li> --}}
+                      <li><a class="slide-item" href="{{route('admin.list_districts')}}">{{ __('Districts') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_towns')}}">{{ __('Towns') }}</a></li>
                         <li><a class="slide-item" href="{{route('admin.list_vihicle_types')}}">{{ __('Vehicle Types') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_taxes')}}">{{ __('Tax') }}</a></li>
@@ -163,7 +163,7 @@
               
                 <li><a class="slide-item" href="{{route('admin.inventory_reports')}}">{{ __('Inventory Reports') }}</a></li>
                   <li><a class="slide-item" href="{{route('admin.out_of_stock_reports')}}">{{ __('Out of Stock Reports') }}</a></li>
-                  <li><a class="slide-item" href="{{route('admin.referal_reports')}}">{{ __('Referral Reports') }}</a></li>
+                  <li><a class="slide-item" href="{{route('admin.referal_reports')}}">{{ __('Referal Reports') }}</a></li>
 
               
             </ul>
@@ -239,8 +239,8 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
           <span class="side-menu__label"> {{ __('Disputes') }}</span>
         </a>
       </li> --}}
-
-      <li class="slide">
+      
+          <li class="slide">
         <a class="side-menu__item" href="{{route('admin.list_reviews')}}">
           <i class="side-menu__icon fe fe-square"></i>
           <span class="side-menu__label"> {{ __('Reviews') }}</span>
@@ -316,7 +316,7 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
 
     @else
 
-         <ul class="side-menu">
+         <ul class="side-menu" style="min-height: 90vh;">
          <div class="app-sidebar__user">
       <div class="dropdown user-pro-body text-center">
         <div class="user-pic pt-4">

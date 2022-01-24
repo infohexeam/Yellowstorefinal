@@ -53,8 +53,7 @@
    </div>
 </div>
 
-<script src="https://cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
-
+<script src="{{ asset('vendor\unisharp\laravel-ckeditor/ckeditor.js')}}"></script>
 <script>CKEDITOR.replace('tc');</script>
 
 @endsection

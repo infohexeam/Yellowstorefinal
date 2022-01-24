@@ -143,18 +143,6 @@
 <!-- MESSAGE MODAL CLOSED -->
                                     @endforeach
 
-
-
-<script>
-function clearText()
-{
-
-
-      $('#vehicle_type_name').val('');
-
-}
-</script>
-
 <script>
 
     $(function(e) {
@@ -183,6 +171,17 @@ function clearText()
     
     } );
                 </script>
+
+
+<script>
+function clearText()
+{
+
+
+      $('#vehicle_type_name').val('');
+
+}
+</script>
 
 
 @endsection

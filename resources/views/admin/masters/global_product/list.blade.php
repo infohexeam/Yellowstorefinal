@@ -51,7 +51,7 @@
                         
                         </br>
                         <div class="table-responsive">
-                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                           <table id="example" class="table table-striped table-bordered text-nowrap w-100">
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
@@ -74,7 +74,13 @@
                                     <td>{{@$value->product_cat['category_name']}}</td>
                                     <td>{{@$value->sale_price}}</td>
                                     <td><img data-toggle="modal" data-target="#viewModal{{$value->global_product_id}}" src="{{asset('/assets/uploads/products/base_product/base_image/'.$value->product_base_image)}}"  width="50" >&nbsp;</td>
-                                    <td>{{$value->product_brand}}</td>
+                                    <td>
+                                        @if(isset($value->product_brand))
+                                        {{$value->product_brand}}
+                                        @else
+                                        ---
+                                        @endif
+                                        </td>
 
                                     
                                     <td>
@@ -122,32 +128,4 @@
 @endforeach
 
             <!-- MESSAGE MODAL CLOSED -->
-
-            <script>
-               
-$(function(e) {
-	 $('#exampletable').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'pdf',
-                title: 'Global products',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3]
-                 }
-            },
-            {
-                extend: 'excel',
-                title: 'Global products',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3]
-                 }
-            }
-         ]
-    } );
-
-} );
-            </script>
             @endsection

@@ -35,7 +35,7 @@ class HomeController extends Controller
        
        $pageTitle = "Home Page";
        $user_role_id = Auth()->user()->user_role_id;
-        $ordersData =  Trn_store_order::orderBy('order_id','DESC')->take(7)->get();
+        $ordersData = Trn_store_order::orderBy('order_id','DESC')->take(7)->get();
 
        if($user_role_id == 0)
        {

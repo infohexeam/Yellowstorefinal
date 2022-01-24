@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
    <div class="row" style="min-height: 70vh;">
-      <div class="col-md-12">
+      <div class="col-md-12" >
          <div class="card">
             <div class="card-header">
                <h3 class="mb-0 card-title">{{$pageTitle}}</h3>

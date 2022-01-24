@@ -48,7 +48,7 @@
                <div class="container-login100">
                   <div class="wrap-login100 p-6 wrap-width">
                     <span class="login100-form-title">
-                        {{ __('Terms and Conditions and Privacy Policy') }}
+                        {{ __('Terms and Conditions') }}
                     </span>
                         <div class="row">
                             <div class="col-md-12">

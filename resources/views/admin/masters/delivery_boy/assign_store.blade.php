@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row" style="min-height: 70vh;">
+   <div class="row">
       <div class="col-md-12">
          <div class="card">
             <div class="card-header">
@@ -15,7 +15,7 @@
                @endif
 
             <div class="table-responsive">
-               <table id="example" class="table table-bordered text-nowrap w-100">
+               <table id="example" class="table table-bordered text-nowrap w-80">
                  <thead>
                                  <tr>
                                    <th class="wd-15p">S.No</th>
@@ -42,13 +42,14 @@
                                  $all_assigned_store[] = $data->store_id;
                            @endphp
                            <td>
-                              <a class="btn btn-small btn-danger btn-sm" href="{{ url('admin/link/destroy/delivery_boy_store/'.$data->store_link_delivery_boy_id) }}">Delete</a>
+                              <a class="btn btn-small btn-danger" href="{{ url('admin/link/destroy/delivery_boy_store/'.$data->store_link_delivery_boy_id) }}">Delete</a>
                            </td>
                         </tr>
                       @endforeach
                   </tbody>
                </table>
             </div>
+                        </div>
             <div class="col-lg-12">
                @if ($errors->any())
                <div class="alert alert-danger">
@@ -108,9 +109,6 @@
          </div> --}}
       </div>
    </div>
-</div>
-</div>
-</div>
 </div>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

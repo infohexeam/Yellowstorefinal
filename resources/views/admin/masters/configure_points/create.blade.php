@@ -47,8 +47,8 @@
                      <div class="col-md-6">
 
                          <div class="form-group">
-                           <label class="form-label">Referral Points</label>
-                            <input type="number" required=""  name="referal_points" class="form-control"  value="{{old('referal_points',$configure_points->referal_points)}}" placeholder="Referral Points ">
+                           <label class="form-label">Referal Points</label>
+                            <input type="number" required=""  name="referal_points" class="form-control"  value="{{old('referal_points',$configure_points->referal_points)}}" placeholder="Referal Points ">
                            </div>
                         </div>
                         
@@ -56,7 +56,7 @@
                         <div class="col-md-6">
 
                          <div class="form-group">
-                           <label class="form-label">Referred Joiner Points</label>
+                           <label class="form-label">Refered Joiner Points</label>
                             <input type="number" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',$configure_points->joiner_points)}}" placeholder="Joiner Points ">
                            </div>
                         </div>

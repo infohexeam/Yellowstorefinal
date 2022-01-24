@@ -55,6 +55,8 @@ use App\Models\admin\Trn_CustomerDeviceToken;
 use App\Models\admin\Trn_StoreDeviceToken;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_customer_reward;
+use App\Models\admin\Trn_OrderPaymentTransaction;
+use App\Models\admin\Sys_payment_type;
 
 use App\Helpers\Helper;
 
@@ -73,10 +75,8 @@ use PDF;
 
 
 use App\Models\admin\Mst_StockDetail;
-use App\Models\admin\Sys_payment_type;
 use App\Models\admin\Trn_ProductVideo;
 
-use App\Models\admin\Trn_OrderPaymentTransaction;
 
 
 class StoreController extends Controller
@@ -85,43 +85,6 @@ class StoreController extends Controller
   {
     $this->middleware('auth:store');
   }
-
-
-
-  public function storeIncomingPayments(Request $request)
-  {
-    $pageTitle = "Incoming Payments";
-    $customer = Trn_store_customer::all();
-    $payment_type = Sys_payment_type::all();
-
-    $store_id  = Auth::guard('store')->user()->store_id;
-
-    $payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
-      ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
-      ->where('trn__order_split_payments.paymentRole', '=', 1)
-      ->where('trn_store_orders.store_id', '=', $store_id)
-      ->get();
-
-    if ($_GET) {
-
-      $datefrom = $request->date_from;
-      $dateto = $request->date_to;
-
-      $year = $request->year;
-      $month = $request->month;
-      $a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
-      $a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
-
-      $payment_type_id = $request->payment_type_id;
-
-
-
-      return view('store.elements.payments.list', compact('dateto', 'datefrom', 'payments', 'pageTitle', 'customer', 'payment_type'));
-    }
-
-    return view('store.elements.payments.list', compact('payments', 'pageTitle', 'customer', 'payment_type'));
-  }
-
 
   public function transfer()
   {
@@ -702,15 +665,9 @@ class StoreController extends Controller
       ->select('mst_attribute_values.*')
       ->get();
     $agencies = Mst_store_agencies::where('agency_account_status', 1)->get();
+    $category = Mst_categories::where('category_status', 1)->get();
+
     $store_id =  Auth::guard('store')->user()->store_id;
-
-    $storeData = Mst_store::find($store_id);
-    $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
-      ->where('trn__category_business_types.business_type_id',  $storeData->business_type_id)
-      ->where('mst_store_categories.category_status', 1)
-      ->get();
-
-    //dd($category, Auth::guard('store')->user()->business_type_id);
     $products_global_products_id = Mst_store_product::where('store_id', $store_id)
       ->where('global_product_id', '!=', null)
       ->orderBy('product_id', 'DESC')
@@ -922,7 +879,7 @@ class StoreController extends Controller
 
         if (isset($varName)) {
           $sCount = 0;
-          if ($request->product_type == 2) {
+          if (($request->service_type == 1) || ($request->product_type == 2)) {
             $sCount = 1;
           }
 
@@ -1002,7 +959,7 @@ class StoreController extends Controller
         $date = Carbon::now();
 
         $sCount = 0;
-        if ($request->product_type == 2) {
+        if (($request->service_type == 1) || ($request->product_type == 2) ) {
           $sCount = 1;
         }
 
@@ -1124,10 +1081,8 @@ class StoreController extends Controller
     $attr_groups = Mst_attribute_group::all();
     $product_images = Mst_product_image::where('product_id', '=', $product_id)->get();
     $tax = Mst_Tax::all();
-    $category = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
-      ->where('trn__category_business_types.business_type_id',  Auth::guard('store')->user()->business_type_id)
-      ->where('mst_store_categories.category_status', 1)
-      ->get();
+    $category = Mst_categories::where('category_status', 1)->get();
+
     $colors = Mst_attribute_value::join('mst_attribute_groups', 'mst_attribute_groups.attr_group_id', '=', 'mst_attribute_values.attribute_group_id')
       ->where('mst_attribute_groups.group_name', 'LIKE', '%color%')
       ->select('mst_attribute_values.*')
@@ -1329,7 +1284,7 @@ class StoreController extends Controller
         if (isset($varName)) {
 
           $sCount = 0;
-          if ($request->product_type == 2) {
+          if (($request->product_type == 2) || ($request->service_type == 1))  {
             $sCount = 1;
           }
           $data3 = [
@@ -1783,20 +1738,9 @@ class StoreController extends Controller
     $a1 = Carbon::parse($date_from)->startOfDay();
     $a2  = Carbon::parse($date_to)->endOfDay();
 
-    $ordersCount = Trn_store_order::where('store_id', '=', $store_id)
-      ->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2)
-      ->orderBy('order_id', 'DESC')->count();
-
     $orders = Trn_store_order::where('store_id', '=', $store_id)
       ->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2)
-      ->orderBy('order_id', 'DESC')->paginate($ordersCount);
-
-
-    $assign_delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
-      ->select("mst_delivery_boys.*")
-      ->where('mst_delivery_boys.availability_status', 1)
-      ->where('mst_delivery_boys.delivery_boy_status', 1)
-      ->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
+      ->orderBy('order_id', 'DESC')->get();
 
     $status = Sys_store_order_status::all();
     $store = Mst_store::all();
@@ -1806,7 +1750,7 @@ class StoreController extends Controller
       ->select("mst_delivery_boys.*")->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
 
 
-    return view('store.elements.order.list', compact('assign_delivery_boys', 'date_to', 'date_from', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
+    return view('store.elements.order.list', compact('date_to', 'date_from', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
   }
 
 
@@ -1997,8 +1941,8 @@ class StoreController extends Controller
             foreach ($customerDevice as $cd) {
               $title = 'Referal points creadited';
               //$body = 'Referal points credited successully..';
-              $body = $configPoint->referal_points . ' points credited to your wallet..';
-              $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+            $body = $configPoint->referal_points . ' points credited to your wallet..';
+            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
             }
 
 
@@ -3648,6 +3592,40 @@ class StoreController extends Controller
 
     return view('store.elements.payments.view', compact('payments_datas', 'store_id', 'pageTitle'));
   }
+  
+    public function storeIncomingPayments(Request $request)
+    {
+    	$pageTitle = "Incoming Payments";
+		$customer = Trn_store_customer::all();
+		$payment_type = Sys_payment_type::all();
+    
+        $store_id  = Auth::guard('store')->user()->store_id;
+
+        $payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments','trn__order_split_payments.opt_id','=','trn__order_payment_transactions.opt_id')
+        ->join('trn_store_orders','trn_store_orders.order_id','=','trn__order_payment_transactions.order_id')
+        ->where('trn__order_split_payments.paymentRole','=',1)
+        ->where('trn_store_orders.store_id','=',$store_id)
+        ->get();
+
+		if ($_GET) {
+
+			$datefrom = $request->date_from;
+			$dateto = $request->date_to;
+
+			$year = $request->year;
+			$month = $request->month;
+			$a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
+			$a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
+
+			$payment_type_id = $request->payment_type_id;
+	
+		
+
+			return view('store.elements.payments.list', compact('dateto', 'datefrom', 'payments', 'pageTitle', 'customer', 'payment_type'));
+		}
+
+		return view('store.elements.payments.list', compact( 'payments', 'pageTitle', 'customer', 'payment_type'));
+    }
 
   public function destroyProductVariant(Request $request, $product_varient_id)
   {
@@ -3792,30 +3770,32 @@ class StoreController extends Controller
     $data['dispute_status']  = $request->dispute_status;
     $query = \DB::table("mst_disputes")->where('dispute_id', $dispute_id)->update($data);
     $dispData =  \DB::table("mst_disputes")->where('dispute_id', $dispute_id)->first();
-    if ($request->dispute_status == 1) {
-      $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
-      $orderData = Trn_store_order::find($dispData->order_id);
-
-      foreach ($customerDevice as $cd) {
-        $title = 'Dispute closed';
-        //  $body = 'First order points credited successully..';
-        $body =  'Your dispute with order number' . $orderData->order_number . ' is closed by store..';
-        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-      }
-    }
-
-    if ($request->dispute_status == 3) {
-      $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
-      $orderData = Trn_store_order::find($dispData->order_id);
-
-      foreach ($customerDevice as $cd) {
-        $title = 'Dispute in progress';
-        //  $body = 'First order points credited successully..';
-        $body =  'Your dispute with order number' . $orderData->order_number . ' is in progress..';
-        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-      }
-    }
-
+        if($request->dispute_status == 1)
+       {
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+            $orderData = Trn_store_order::find($dispData->order_id);
+    
+                foreach ($customerDevice as $cd) {
+                    $title = 'Dispute closed';
+                    //  $body = 'First order points credited successully..';
+                    $body =  'Your dispute with order number'. $orderData->order_number . ' is closed by store..';
+                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                }
+       }
+    
+       if($request->dispute_status == 3)
+       {
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $dispData->customer_id)->get();
+            $orderData = Trn_store_order::find($dispData->order_id);
+    
+                foreach ($customerDevice as $cd) {
+                    $title = 'Dispute in progress';
+                    //  $body = 'First order points credited successully..';
+                    $body =  'Your dispute with order number'. $orderData->order_number . ' is in progress..';
+                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                }
+       }
+                               
     return redirect()->back()->with('status', 'Status updated successfully.');
   }
   public function currentIssues(Request $request)

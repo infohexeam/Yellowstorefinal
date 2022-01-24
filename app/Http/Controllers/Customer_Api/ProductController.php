@@ -65,30 +65,32 @@ use App\Models\admin\Trn_store_setting;
 
 class ProductController extends Controller
 {
-
-
+    
+    
     public function viewBaseProductVariants(Request $request)
     {
         $data = array();
         try {
 
             if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
-
-
+                
+          
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
-                    ->where('stock_count', '>', 0)
-                    ->get();
-                foreach ($productVartiantdata as $row) {
+                                       ->where('stock_count', '>', 0)
+                                       ->get();
+                    foreach($productVartiantdata as $row){
 
-                    $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
-                    $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
-                    foreach ($attributesData as $j) {
-                        $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
-                        $j->attr_group = @$datas->group_name;
-                        $datasvalue = Mst_attribute_value::where('attr_value_id', $j->attr_value_id)->first();
-                        $j->attr_value = @$datasvalue->group_value;
-                    }
+                        $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
+                        $attributesData = Trn_ProductVariantAttribute::select('attr_group_id','attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
+                        foreach ($attributesData as $j) {
+                            $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
+                            $j->attr_group = @$datas->group_name;
+                                $datasvalue = Mst_attribute_value::where('attr_value_id', $j->attr_value_id)->first();
+                            $j->attr_value = @$datasvalue->group_value;
+                            
+                          
+                        }
                     $row->attributesData = $attributesData;
                     $row->store_name = Mst_store::find($productData->store_id)->store_name;
                     $row->product_name = $productData->product_name;
@@ -96,12 +98,16 @@ class ProductController extends Controller
                     $row->service_type = $productData->service_type;
                 }
                 $data['productVartiantdata'] = $productVartiantdata;
-
+                
                 $data['productData'] = $productData;
-
-
+                
+                
                 $data['message'] = 'Success';
                 $data['status'] = 1;
+
+
+
+
             } else {
                 $data['message'] = 'Product not found';
                 $data['status'] = 0;
@@ -117,29 +123,29 @@ class ProductController extends Controller
     }
 
 
-
+    
     public function viewBaseProduct(Request $request)
     {
         $data = array();
         try {
 
             if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
-
+                
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                    $rvs = new Trn_RecentlyVisitedProducts;
-                    $rvs->customer_id = $request->customer_id;
-                    $prData = Mst_store_product::find($request->product_id);
-                    $rvs->store_id = $prData->store_id;
-                    $rvs->product_id = $request->product_id;
-                    $rvs->product_varient_id = 0;
-                    $rvs->vendor_id = $prData->vendor_id;
-                    $rvs->category_id = $prData->product_cat_id;
-                    $rvs->sub_category_id = $prData->sub_category_id;
-                    $rvs->visit_count = 1;
-                    $rvs->save();
+                        $rvs = new Trn_RecentlyVisitedProducts;
+                        $rvs->customer_id = $request->customer_id;
+                        $prData = Mst_store_product::find($request->product_id);
+                        $rvs->store_id = $prData->store_id;
+                        $rvs->product_id = $request->product_id;
+                        $rvs->product_varient_id = 0;
+                        $rvs->vendor_id = $prData->vendor_id;
+                        $rvs->category_id = $prData->product_cat_id;
+                        $rvs->sub_category_id = $prData->sub_category_id;
+                        $rvs->visit_count = 1;
+                        $rvs->save();
                 }
 
-
+                
                 $productData->product_description =   strip_tags(@$productData->product_description);
                 $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                 $productData->rating = Helper::productRating($productData->product_id);
@@ -147,11 +153,11 @@ class ProductController extends Controller
                 $data['productdata'] = $productData;
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
-                    ->where('stock_count', '>', 0)
-                    ->get();
+                                       ->where('stock_count', '>', 0)
+                                       ->get();
                 $productVarientIds = array();
-                foreach ($productVartiantdata as $row) {
-                    $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
+                foreach($productVartiantdata as $row){
+                                    $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
                     $row->store_name = Mst_store::find($productData->store_id)->store_name;
                     $row->product_name = $productData->product_name;
                     $row->product_type = $productData->product_type;
@@ -159,94 +165,98 @@ class ProductController extends Controller
                     $productVarientIds[] = $row->product_varient_id;
                 }
                 $data['productVartiantdata'] = $productVartiantdata;
-
-
+                
+                
                 $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->toArray();
                 $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
-                foreach ($attributesData as $j) {
-                    $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
-                    $j->attr_group = @$datas->group_name;
-                    $aarVat = Trn_ProductVariantAttribute::select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
-                        ->whereIn('product_varient_id', $varIds)
-                        ->where('attr_group_id', $j->attr_group_id)
-                        ->groupBy('attr_value_id')->get();
+                    foreach ($attributesData as $j) {
+                        $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
+                        $j->attr_group = @$datas->group_name;
+                        $aarVat = Trn_ProductVariantAttribute::select('product_varient_id','variant_attribute_id', 'attr_group_id', 'attr_value_id')
+                            ->whereIn('product_varient_id', $varIds)
+                            ->where('attr_group_id', $j->attr_group_id)
+                            ->groupBy('attr_value_id')->get();
 
-                    foreach ($aarVat as $l) {
-                        $datasvalue = Mst_attribute_value::where('attr_value_id', $l->attr_value_id)->first();
-                        $l->attr_value = @$datasvalue->group_value;
+                        foreach ($aarVat as $l) {
+                            $datasvalue = Mst_attribute_value::where('attr_value_id', $l->attr_value_id)->first();
+                            $l->attr_value = @$datasvalue->group_value;
+                        }
+                        $j->attr_value = $aarVat;
                     }
-                    $j->attr_value = $aarVat;
-                }
-                $data['attributesData'] = $attributesData;
+                    $data['attributesData'] = $attributesData;
+                    
+                    $feedbacks = Mst_FeedbackQuestion::where('category_id', $productData->product_cat_id)->get();
+                    $data['feedbackData'] = $feedbacks;
 
-                $feedbacks = Mst_FeedbackQuestion::where('category_id', $productData->product_cat_id)->get();
-                $data['feedbackData'] = $feedbacks;
-
-                $reviewData = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('isVisible', 1)->get();
-                foreach ($reviewData as $r) {
-                    $r->customer_image =  Helper::default_user_image();
-                    $customerData =  Trn_store_customer::find($r->customer_id);
-                    $r->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
-                }
-                $data['reviewData'] = $reviewData;
+                    $reviewData = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('isVisible',1)->get();
+                    foreach ($reviewData as $r) {
+                        $r->customer_image =  Helper::default_user_image();
+                        $customerData =  Trn_store_customer::find($r->customer_id);
+                        $r->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                    }
+                    $data['reviewData'] = $reviewData;
 
 
 
-                $productImages = Mst_product_image::where('product_id', $productData->product_id)->where('product_varient_id', 0)->get();
-                foreach ($productImages as $pi) {
-                    $pi->product_image = '/assets/uploads/products/base_product/base_image/' . $pi->product_image;
-                }
-                $productVideos = Trn_ProductVideo::where('product_id', $productData->product_id)->get();
-                foreach ($productVideos as $v) {
-                    if ($v->platform == 'Youtube') {
-                        $revLink = strrev($v->link);
-                        $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
-                        $linkCode = strrev($revLinkCode);
-                        if ($linkCode == "") {
+                    $productImages = Mst_product_image::where('product_id', $productData->product_id)->where('product_varient_id',0)->get();
+                    foreach ($productImages as $pi) {
+                        $pi->product_image = '/assets/uploads/products/base_product/base_image/' . $pi->product_image;
+                    }
+                    $productVideos = Trn_ProductVideo::where('product_id', $productData->product_id)->get();
+                    foreach ($productVideos as $v) {
+                        if ($v->platform == 'Youtube') {
+                            $revLink = strrev($v->link);
+                            $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                            $linkCode = strrev($revLinkCode);
+                            if ($linkCode == "") {
+                                $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                                $linkCode = strrev($revLinkCode);
+                            }
+                        }
+                        if ($v->platform == 'Vimeo') {
+                            $revLink = strrev($v->link);
                             $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
                             $linkCode = strrev($revLinkCode);
                         }
+                        $v->link_code = @$linkCode;
                     }
-                    if ($v->platform == 'Vimeo') {
-                        $revLink = strrev($v->link);
-                        $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
-                        $linkCode = strrev($revLinkCode);
-                    }
-                    $v->link_code = @$linkCode;
-                }
-                $data['productImages'] = $productImages;
-                $data['productVideos'] = $productVideos;
+                    $data['productImages'] = $productImages;
+                    $data['productVideos'] = $productVideos;
+                    
+                    
+                    $orderData = Trn_store_order::join('trn_order_items', 'trn_order_items.order_id', '=', 'trn_store_orders.order_id')
+                            ->where('trn_order_items.product_id', $productData->product_id)
+                            ->where('trn_store_orders.customer_id', $request->customer_id)
+                            ->whereIn('trn_store_orders.status_id', [6, 9])
+                            ->first();
+                            
+                            
+                        if (!$orderData)
+                            $data['itemPurchasedStatus'] = 0;
+                        else
+                            $data['itemPurchasedStatus'] = 1;
 
+                        $fbStatus = Trn_CustomerFeedback::whereIn('product_varient_id', $productVarientIds)->where('customer_id', $request->customer_id)->first();
+                        if (!$fbStatus)
+                            $data['feedbackAddedStatus'] = 0;
+                        else
+                            $data['feedbackAddedStatus'] = 1;
 
-                $orderData = Trn_store_order::join('trn_order_items', 'trn_order_items.order_id', '=', 'trn_store_orders.order_id')
-                    ->where('trn_order_items.product_id', $productData->product_id)
-                    ->where('trn_store_orders.customer_id', $request->customer_id)
-                    ->whereIn('trn_store_orders.status_id', [6, 9])
-                    ->first();
-
-
-                if (!$orderData)
-                    $data['itemPurchasedStatus'] = 0;
-                else
-                    $data['itemPurchasedStatus'] = 1;
-
-                $fbStatus = Trn_CustomerFeedback::whereIn('product_varient_id', $productVarientIds)->where('customer_id', $request->customer_id)->first();
-                if (!$fbStatus)
-                    $data['feedbackAddedStatus'] = 0;
-                else
-                    $data['feedbackAddedStatus'] = 1;
-
-                $rwStatus = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('isVisible', 1)->where('customer_id', $request->customer_id)->first();
-                if (!$rwStatus)
-                    $data['reviewAddedStatus'] = 0;
-                else
-                    $data['reviewAddedStatus'] = 1;
-
-
-
-
+                        $rwStatus = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('isVisible',1)->where('customer_id', $request->customer_id)->first();
+                        if (!$rwStatus)
+                            $data['reviewAddedStatus'] = 0;
+                        else
+                            $data['reviewAddedStatus'] = 1;
+                            
+                            
+                    
+                
                 $data['message'] = 'Success';
                 $data['status'] = 1;
+
+
+
+
             } else {
                 $data['message'] = 'Product not found';
                 $data['status'] = 0;
@@ -262,7 +272,7 @@ class ProductController extends Controller
     }
 
 
-    public function viewProductPopup(Request $request)
+   public function viewProductPopup(Request $request)
     {
         $data = array();
         try {
@@ -308,8 +318,8 @@ class ProductController extends Controller
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -331,7 +341,7 @@ class ProductController extends Controller
                         $j->attr_group = @$datas->group_name;
 
 
-                        $aarVat = Trn_ProductVariantAttribute::select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
+                        $aarVat = Trn_ProductVariantAttribute::select('product_varient_id','variant_attribute_id', 'attr_group_id', 'attr_value_id')
                             ->whereIn('product_varient_id', $varIds)
                             ->where('attr_group_id', $j->attr_group_id)
                             ->groupBy('attr_value_id')->get();
@@ -456,7 +466,7 @@ class ProductController extends Controller
                             $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
                             $j->attr_group = @$datas->group_name;
 
-                            $aarVat = Trn_ProductVariantAttribute::select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
+                            $aarVat = Trn_ProductVariantAttribute::select('product_varient_id','variant_attribute_id', 'attr_group_id', 'attr_value_id')
                                 ->whereIn('product_varient_id', $varIds)
                                 ->where('attr_group_id', $j->attr_group_id)
                                 ->groupBy('attr_value_id')->get();
@@ -556,8 +566,8 @@ class ProductController extends Controller
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -579,7 +589,7 @@ class ProductController extends Controller
                         $j->attr_group = @$datas->group_name;
 
 
-                        $aarVat = Trn_ProductVariantAttribute::select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
+                        $aarVat = Trn_ProductVariantAttribute::select('product_varient_id','variant_attribute_id', 'attr_group_id', 'attr_value_id')
                             ->whereIn('product_varient_id', $varIds)
                             ->where('attr_group_id', $j->attr_group_id)
                             ->groupBy('attr_value_id')->get();
@@ -643,7 +653,7 @@ class ProductController extends Controller
                     $feedbacks = Mst_FeedbackQuestion::where('category_id', $productData->product_cat_id)->get();
                     $data['feedbackData'] = $feedbacks;
 
-                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->get();
+                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->get();
                     foreach ($reviewData as $r) {
                         $r->customer_image =  Helper::default_user_image();
                         $customerData =  Trn_store_customer::find($r->customer_id);
@@ -731,7 +741,7 @@ class ProductController extends Controller
                         else
                             $data['feedbackAddedStatus'] = 1;
 
-                        $rwStatus = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->where('customer_id', $request->customer_id)->first();
+                        $rwStatus = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->where('customer_id', $request->customer_id)->first();
                         if (!$rwStatus)
                             $data['reviewAddedStatus'] = 0;
                         else
@@ -771,8 +781,8 @@ class ProductController extends Controller
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                         $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -792,7 +802,7 @@ class ProductController extends Controller
                             $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
                             $j->attr_group = @$datas->group_name;
 
-                            $aarVat = Trn_ProductVariantAttribute::select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
+                            $aarVat = Trn_ProductVariantAttribute::select('product_varient_id','variant_attribute_id', 'attr_group_id', 'attr_value_id')
                                 ->whereIn('product_varient_id', $varIds)
                                 ->where('attr_group_id', $j->attr_group_id)
                                 ->groupBy('attr_value_id')->get();
@@ -843,7 +853,7 @@ class ProductController extends Controller
                         //     ]
                         // ];  
 
-                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->get();
+                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible',1)->get();
 
                         foreach ($reviewData as $r) {
                             $r->customer_image =  Helper::default_user_image();
@@ -1111,23 +1121,7 @@ class ProductController extends Controller
 
                         ];
 
-                        $storeData =  Mst_store::find($request->store_id);
-                        $cusData =  Trn_store_customer::find($request->customer_id);
-                        $data['customer_name']  = @$cusData->customer_first_name . "" . @$cusData->customer_last_name;
-                        $data['customer_mobile_number']  = @$cusData->customer_mobile_number;
-
-                        if (isset($cusData->customer_email))
-                            $data['customer_email']  = $cusData->customer_email;
-                        else
-                            $data['customer_email']  = '';
-
-
-                        $data['upi_id']  = $storeData->upi_id;
-                        if (isset($storeData->store_commision_percentage))
-                            $data['commision_percentage']  = $storeData->store_commision_percentage;
-                        else
-                            $data['commision_percentage']  = '';
-
+                        $data['upi_id']  = Mst_store::find($request->store_id)->upi_id;
                         $data['timeSlotDetails']  = Trn_StoreDeliveryTimeSlot::select('store_delivery_time_slot_id', 'store_id', 'time_start', 'time_end')->where('store_id', $request->store_id)->get();
 
                         //   $data['paymentTypes']  = Sys_payment_type::all();
@@ -1322,7 +1316,7 @@ class ProductController extends Controller
                 $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
 
                 $customerRewardsCount = $totalCustomerRewardsCount - $totalusedPoints;
-                $data['customerRewardsCount'] = number_format($customerRewardsCount, 0);
+                $data['customerRewardsCount'] = number_format($customerRewardsCount, 2);
 
                 if ($totalusedPoints >= 0)
                     $data['totalusedPoints']  = $totalusedPoints;
@@ -1437,8 +1431,8 @@ class ProductController extends Controller
                     //$offerProduct->rating = number_format((float)4.20, 1, '.', '');
                     //$offerProduct->ratingCount = 120;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -1516,8 +1510,8 @@ class ProductController extends Controller
                         // $offerProduct->rating = number_format((float)4.20, 1, '.', '');
                         // $offerProduct->ratingCount = 120;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -1771,8 +1765,8 @@ class ProductController extends Controller
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->count();
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;
@@ -1813,7 +1807,7 @@ class ProductController extends Controller
                     $feedbacks = Mst_FeedbackQuestion::where('category_id', $productData->product_cat_id)->get();
                     $data['feedbackData'] = $feedbacks;
 
-                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->get();
+                    $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->get();
                     foreach ($reviewData as $r) {
                         $r->customer_image =  Helper::default_user_image();
                         $customerData =  Trn_store_customer::find($r->customer_id);
@@ -1929,8 +1923,8 @@ class ProductController extends Controller
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                         $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -1970,7 +1964,7 @@ class ProductController extends Controller
                         //     ]
                         // ];  
 
-                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->get();
+                        $reviewData = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->get();
 
                         foreach ($reviewData as $r) {
                             $r->customer_image =  Helper::default_user_image();
@@ -2099,8 +2093,8 @@ class ProductController extends Controller
                                 // $offerProduct->rating = number_format((float)4.20, 1, '.', '');
                                 // $offerProduct->ratingCount = 120;
 
-                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
-                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
+                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                                 if ($countRating == 0) {
                                     $countRating = 1;
@@ -2159,8 +2153,8 @@ class ProductController extends Controller
                                 //$product->rating = number_format((float)4.20, 1, '.', '');
                                 //$product->ratingCount = 120;
 
-                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible', 1)->sum('rating');
-                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible', 1)->count();
+                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->sum('rating');
+                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->count();
 
                                 if ($countRating == 0) {
                                     $countRating = 1;
@@ -2247,8 +2241,8 @@ class ProductController extends Controller
                                     // $offerProduct->rating = number_format((float)4.20, 1, '.', '');
                                     // $offerProduct->ratingCount = 120;
 
-                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
-                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
+                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                                     if ($countRating == 0) {
                                         $countRating = 1;
@@ -2307,8 +2301,8 @@ class ProductController extends Controller
                                     //$product->rating = number_format((float)4.20, 1, '.', '');
                                     //$product->ratingCount = 120;
 
-                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible', 1)->sum('rating');
-                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible', 1)->count();
+                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->sum('rating');
+                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $product->product_varient_id)->where('isVisible',1)->count();
 
                                     if ($countRating == 0) {
                                         $countRating = 1;
@@ -2366,7 +2360,7 @@ class ProductController extends Controller
                         $data['categoryInfo'] = Mst_categories::find($category_id);
                         $data['storeInfo'] = Mst_store::find($store_id);
 
-
+                    
 
                         $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id', '=', $store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
                         $data['categoriesList'] = Mst_categories::whereIn('category_id', $storeProductData)->where('category_status', 1)->get();
@@ -2394,77 +2388,81 @@ class ProductController extends Controller
                                 }
                             }
                         }
-
-
-
-                        $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
-
-                        if (isset($latitude) && ($longitude)) {
-                            $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                        
+                        
+                        
+                          $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                                  
+                                    
+                                    if (isset($latitude) && ($longitude)) {
+                                        $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                                         * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                                         + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                            $productData = $productData->orderBy('distance');
-                        }
+                                        $productData = $productData->orderBy('distance');
+                                    }
+                                    
+                                    if(isset($request->sub_category_id) && ($request->sub_category_id != 0))
+                                    {
+                                        $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                                    }
+                                
+                                    $productData = $productData->where('mst_store_products.product_status', 1)
+                                            ->where('mst_store_products.store_id', $store_id)
+                                            ->where('mst_store_products.product_cat_id', $category_id)
+                                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                                    $productDataFinal = array();
+                                    $stockCount = 0;
+                                    foreach ($productData as $offerProduct) {
+                    
+                                        if(Helper::productStock($offerProduct->product_id) > 0)
+                                        {
+                                            $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                                            $storeData = Mst_store::find($offerProduct->store_id);
+                                            $offerProduct->store_name = $storeData->store_name;
+                                            $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                                            $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
 
-                        if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                            $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
-                        }
+                                            $productDataFinal[] =   $offerProduct;
+                                        }
+                                    }
+                                    $data['offerProducts']  =    $productDataFinal;
+                            
+                            
+                               $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                   
+                                if(isset($request->sub_category_id) && ($request->sub_category_id != 0))
+                                {
+                                    $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                                }
+                                
+                                $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                                        ->where('mst_store_products.product_cat_id', $category_id)
+                                        ->where('mst_store_products.store_id', $store_id)
+                                        ->get();
+                                        
+                                $allProductDataFinal = array();
+            
+                                foreach ($allProducts as $allProduct) {
+                                    if(Helper::productStock($allProduct->product_id) > 0)
+                                    {
+                                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                                        $storeData = Mst_store::find($allProduct->store_id);
+                                        $allProduct->store_name = $storeData->store_name;
+                                        $allProduct->rating = Helper::productRating($allProduct->product_id);
+                                        $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
+                                        $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+                                        
+                                            $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                                        
 
-                        $productData = $productData->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->where('mst_store_products.product_cat_id', $category_id)
-                            ->where('mst_store_products.show_in_home_screen', 1)->get();
-                        $productDataFinal = array();
-                        $stockCount = 0;
-                        foreach ($productData as $offerProduct) {
+                                        $allProductDataFinal[] =   $allProduct;
+                                    }
+                                }
+                                
+                                $data['listProducts']  = $allProductDataFinal;
+                                    
 
-                            if (Helper::productStock($offerProduct->product_id) > 0) {
-                                $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                                $storeData = Mst_store::find($offerProduct->store_id);
-                                $offerProduct->store_name = $storeData->store_name;
-                                $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                                $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-
-                                $productDataFinal[] =   $offerProduct;
-                            }
-                        }
-                        $data['offerProducts']  =    $productDataFinal;
-
-
-                        $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
-                        if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                            $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
-                        }
-
-                        $allProducts = $allProducts->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.product_cat_id', $category_id)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->get();
-
-                        $allProductDataFinal = array();
-
-                        foreach ($allProducts as $allProduct) {
-                            if (Helper::productStock($allProduct->product_id) > 0) {
-                                $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
-                                $storeData = Mst_store::find($allProduct->store_id);
-                                $allProduct->store_name = $storeData->store_name;
-                                $allProduct->rating = Helper::productRating($allProduct->product_id);
-                                $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
-                                $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-
-                                $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
-
-
-                                $allProductDataFinal[] =   $allProduct;
-                            }
-                        }
-
-                        $data['listProducts']  = $allProductDataFinal;
-
-
-
+                    
 
                         $data['message'] = 'success';
                         $data['status'] = 1;
@@ -2513,70 +2511,74 @@ class ProductController extends Controller
                             }
 
 
-
-                            $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
-                            if (isset($latitude) && ($longitude)) {
-                                $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                           
+                             $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                                    
+                                    if (isset($latitude) && ($longitude)) {
+                                        $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                                         * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                                         + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                                $productData = $productData->orderBy('distance');
-                            }
-
-                            if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                                $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
-                            }
-
-                            $productData = $productData->where('mst_store_products.product_status', 1)
-                                ->where('mst_store_products.store_id', $store_id)
-                                ->where('mst_store_products.product_cat_id', $category_id)
-                                ->where('mst_store_products.show_in_home_screen', 1)->get();
-                            $productDataFinal = array();
-                            $stockCount = 0;
-                            foreach ($productData as $offerProduct) {
-
-                                if (Helper::productStock($offerProduct->product_id) > 0) {
-                                    $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                                    $storeData = Mst_store::find($offerProduct->store_id);
-                                    $offerProduct->store_name = $storeData->store_name;
-                                    $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                                    $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                                    $productDataFinal[] =   $offerProduct;
-                                }
-                            }
-                            $data['offerProducts']  =    $productDataFinal;
-
-
-
+                                        $productData = $productData->orderBy('distance');
+                                    }
+                                    
+                                    if(isset($request->sub_category_id) && ($request->sub_category_id != 0))
+                                    {
+                                        $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                                    }
+                                
+                                    $productData = $productData->where('mst_store_products.product_status', 1)
+                                            ->where('mst_store_products.store_id', $store_id)
+                                            ->where('mst_store_products.product_cat_id', $category_id)
+                                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                                    $productDataFinal = array();
+                                    $stockCount = 0;
+                                    foreach ($productData as $offerProduct) {
+                    
+                                        if(Helper::productStock($offerProduct->product_id) > 0)
+                                        {
+                                            $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                                            $storeData = Mst_store::find($offerProduct->store_id);
+                                            $offerProduct->store_name = $storeData->store_name;
+                                            $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                                            $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                                            $productDataFinal[] =   $offerProduct;
+                                        }
+                                    }
+                                    $data['offerProducts']  =    $productDataFinal;
+                           
+                           
+                           
                             $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
-                            if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                                $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
-                            }
-
-                            $allProducts = $allProducts->where('mst_store_products.product_status', 1)
-                                ->where('mst_store_products.product_cat_id', $category_id)
-                                ->where('mst_store_products.store_id', $store_id)
-                                ->get();
-
-                            $allProductDataFinal = array();
-
-                            foreach ($allProducts as $allProduct) {
-                                if (Helper::productStock($allProduct->product_id) > 0) {
-                                    $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
-                                    $storeData = Mst_store::find($allProduct->store_id);
-                                    $allProduct->store_name = $storeData->store_name;
-                                    $allProduct->rating = Helper::productRating($allProduct->product_id);
-                                    $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
-                                    $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-                                    $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
-
-                                    $allProductDataFinal[] =   $allProduct;
+                   
+                                if(isset($request->sub_category_id) && ($request->sub_category_id != 0))
+                                {
+                                    $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
                                 }
-                            }
+                                
+                                $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                                        ->where('mst_store_products.product_cat_id', $category_id)
+                                        ->where('mst_store_products.store_id', $store_id)
+                                        ->get();
+                                        
+                                $allProductDataFinal = array();
+            
+                                foreach ($allProducts as $allProduct) {
+                                    if(Helper::productStock($allProduct->product_id) > 0)
+                                    {
+                                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                                        $storeData = Mst_store::find($allProduct->store_id);
+                                        $allProduct->store_name = $storeData->store_name;
+                                        $allProduct->rating = Helper::productRating($allProduct->product_id);
+                                        $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
+                            $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+                                            $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
 
-                            $data['listProducts']  = $allProductDataFinal;
-
+                                        $allProductDataFinal[] =   $allProduct;
+                                    }
+                                }
+                                
+                                $data['listProducts']  = $allProductDataFinal;
+                                
 
 
                             $data['message'] = 'success';
@@ -2608,7 +2610,7 @@ class ProductController extends Controller
 
     public function homePageStore(Request $request)
     {
-
+        
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
@@ -2699,21 +2701,21 @@ class ProductController extends Controller
                     //     $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                     //     $offerProduct->ratingCount = $countRating;
                     // }
-
-
+                    
+                    
                     $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                        ->select(
-                            'mst_store_products.product_id',
-                            'mst_store_products.product_type',
-                            'mst_store_products.service_type',
-                            'mst_store_products.product_name',
-                            'mst_store_products.product_code',
-                            'mst_store_products.product_base_image',
-                            'mst_store_products.show_in_home_screen',
-                            'mst_store_products.product_status',
-                            'mst_store_products.store_id'
-                        );
-
+                    ->select(
+                        'mst_store_products.product_id',
+                        'mst_store_products.product_type',
+                        'mst_store_products.service_type',
+                        'mst_store_products.product_name',
+                        'mst_store_products.product_code',
+                        'mst_store_products.product_base_image',
+                        'mst_store_products.show_in_home_screen',
+                        'mst_store_products.product_status',
+                        'mst_store_products.store_id'
+                    );
+                    
                     if (isset($latitude) && ($longitude)) {
                         $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                         * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
@@ -2721,13 +2723,14 @@ class ProductController extends Controller
                         $productData = $productData->orderBy('distance');
                     }
                     $productData = $productData->where('mst_store_products.product_status', 1)
-                        ->where('mst_store_products.store_id', $store_id)
-                        ->where('mst_store_products.show_in_home_screen', 1)->get();
+                            ->where('mst_store_products.store_id', $store_id)
+                            ->where('mst_store_products.show_in_home_screen', 1)->get();
                     $productDataFinal = array();
                     $stockCount = 0;
                     foreach ($productData as $offerProduct) {
-
-                        if (Helper::productStock($offerProduct->product_id) > 0) {
+    
+                        if(Helper::productStock($offerProduct->product_id) > 0)
+                        {
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                             $storeData = Mst_store::find($offerProduct->store_id);
                             $offerProduct->store_name = $storeData->store_name;
@@ -2737,39 +2740,41 @@ class ProductController extends Controller
                         }
                     }
                     $data['offerProducts']  =    $productDataFinal;
-
+                
 
                     $data['recentlyVisitedProducts'] = [];
                     $data['purchasedProducts']  = [];
-
-
-
-
+                    
+                    
+              
+                        
                     $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
+                   
                     $allProducts = $allProducts->where('mst_store_products.product_status', 1)
-                        ->where('mst_store_products.store_id', $store_id)
-                        ->get();
-
+                            ->where('mst_store_products.store_id', $store_id)
+                            ->get();
+                            
                     $allProductDataFinal = array();
 
                     foreach ($allProducts as $allProduct) {
-                        if (Helper::productStock($allProduct->product_id) > 0) {
+                        if(Helper::productStock($allProduct->product_id) > 0)
+                        {
                             $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                             $storeData = Mst_store::find($allProduct->store_id);
                             $allProduct->store_name = $storeData->store_name;
                             $allProduct->rating = Helper::productRating($allProduct->product_id);
                             $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
                             $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-                            $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                                            $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
 
                             $allProductDataFinal[] =   $allProduct;
+                             
                         }
                     }
-
+                    
                     $data['allProducts']  = $allProductDataFinal;
-
-
+                    
+                    
 
                     $data['message'] = 'success';
                     $data['status'] = 1;
@@ -2867,18 +2872,18 @@ class ProductController extends Controller
 
 
                         $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                            ->select(
-                                'mst_store_products.product_id',
-                                'mst_store_products.product_type',
-                                'mst_store_products.service_type',
-                                'mst_store_products.product_name',
-                                'mst_store_products.product_code',
-                                'mst_store_products.product_base_image',
-                                'mst_store_products.show_in_home_screen',
-                                'mst_store_products.product_status',
-                                'mst_store_products.store_id'
-                            );
-
+                        ->select(
+                            'mst_store_products.product_id',
+                            'mst_store_products.product_type',
+                            'mst_store_products.service_type',
+                            'mst_store_products.product_name',
+                            'mst_store_products.product_code',
+                            'mst_store_products.product_base_image',
+                            'mst_store_products.show_in_home_screen',
+                            'mst_store_products.product_status',
+                            'mst_store_products.store_id'
+                        );
+                        
                         if (isset($latitude) && ($longitude)) {
                             $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                             * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
@@ -2886,13 +2891,14 @@ class ProductController extends Controller
                             $productData = $productData->orderBy('distance');
                         }
                         $productData = $productData->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                                ->where('mst_store_products.store_id', $store_id)
+                                ->where('mst_store_products.show_in_home_screen', 1)->get();
                         $productDataFinal = array();
                         $stockCount = 0;
                         foreach ($productData as $offerProduct) {
-
-                            if (Helper::productStock($offerProduct->product_id) > 0) {
+        
+                            if(Helper::productStock($offerProduct->product_id) > 0)
+                            {
                                 $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                                 $storeData = Mst_store::find($offerProduct->store_id);
                                 $offerProduct->store_name = $storeData->store_name;
@@ -2905,7 +2911,7 @@ class ProductController extends Controller
 
                         $recentlyVisitedProducts  = Trn_RecentlyVisitedProducts::join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
-
+                          
                             ->where('trn__recently_visited_products.customer_id', $request->customer_id)
                             ->where('mst_store_products.store_id', $store_id)
 
@@ -2915,14 +2921,15 @@ class ProductController extends Controller
                             ->orderBy('trn__recently_visited_products.created_at', 'DESC')
 
                             ->get();
-                        $recentlyVisited = collect($recentlyVisitedProducts);
-                        $recentlyVisitedS = $recentlyVisited->unique('product_id');
-                        $dataReViStorePros =   $recentlyVisitedS->values()->all();
-
-                        $recentlyVisitedProductsArr = array();
+                             $recentlyVisited = collect($recentlyVisitedProducts);
+                            $recentlyVisitedS = $recentlyVisited->unique('product_id');
+                            $dataReViStorePros =   $recentlyVisitedS->values()->all();
+                    
+                            $recentlyVisitedProductsArr = array();
 
                         foreach ($dataReViStorePros as $rvProduct) {
-                            if (Helper::productStock($rvProduct->product_id) > 0) {
+                            if(Helper::productStock($rvProduct->product_id) > 0)
+                            {
                                 $rvProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $rvProduct->product_base_image;
                                 $rvpstoreData = Mst_store::find($rvProduct->store_id);
                                 $rvProduct->store_name = $rvpstoreData->store_name;
@@ -2931,32 +2938,33 @@ class ProductController extends Controller
                                 $recentlyVisitedProductsArr[] = $rvProduct;
                             }
                         }
+                        
+                         $data['recentlyVisitedProducts'] = $recentlyVisitedProductsArr;
 
-                        $data['recentlyVisitedProducts'] = $recentlyVisitedProductsArr;
 
-
-                        $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
+                         $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                       
                         $allProducts = $allProducts->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->get();
-
+                                ->where('mst_store_products.store_id', $store_id)
+                                ->get();
+                                
                         $allProductDataFinal = array();
-
+    
                         foreach ($allProducts as $allProduct) {
-                            if (Helper::productStock($allProduct->product_id) > 0) {
+                            if(Helper::productStock($allProduct->product_id) > 0)
+                            {
                                 $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                                 $storeData = Mst_store::find($allProduct->store_id);
                                 $allProduct->store_name = $storeData->store_name;
                                 $allProduct->rating = Helper::productRating($allProduct->product_id);
                                 $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
-                                $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-                                $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                            $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+                                            $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
 
                                 $allProductDataFinal[] =   $allProduct;
                             }
                         }
-
+                        
                         $data['allProducts']  = $allProductDataFinal;
 
 
@@ -3001,8 +3009,8 @@ class ProductController extends Controller
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                             $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
 
-                            $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
-                            $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
+                            $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                            $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
                             if ($countRating == 0) {
                                 $countRating = 1;
                             }
@@ -3051,7 +3059,7 @@ class ProductController extends Controller
 
                 $latitude = $request->latitude;
                 $longitude = $request->longitude;
-
+                
                 // $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                 //     ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                 //     ->select(
@@ -3097,7 +3105,7 @@ class ProductController extends Controller
                 //     $productDataFinal[] =   $offerProduct;
                 // }
                 // $data['offerProducts']  =    $productDataFinal;
-
+                
                 $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                     ->select(
                         'mst_store_products.product_id',
@@ -3122,7 +3130,8 @@ class ProductController extends Controller
                 $stockCount = 0;
                 foreach ($productData as $offerProduct) {
 
-                    if (Helper::productStock($offerProduct->product_id) > 0) {
+                    if(Helper::productStock($offerProduct->product_id) > 0)
+                    {
                         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                         $storeData = Mst_store::find($offerProduct->store_id);
                         $offerProduct->store_name = $storeData->store_name;
@@ -3133,7 +3142,7 @@ class ProductController extends Controller
                 }
                 $data['offerProducts']  =    $productDataFinal;
 
-
+                
                 $data['recentlyVisitedStores'] = [];
                 $nearStoreArray[] = 0;
 
@@ -3330,23 +3339,23 @@ class ProductController extends Controller
                     //     }
                     // }
                     // $data['offerProducts']  = $productDataFinal;
-
-
-
+                    
+                    
+                    
                     $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                        ->select(
-                            'mst_store_products.product_id',
-                            'mst_store_products.product_type',
-                            'mst_store_products.service_type',
-                            'mst_store_products.product_name',
-                            'mst_store_products.product_code',
-                            'mst_store_products.product_base_image',
-                            'mst_store_products.show_in_home_screen',
-                            'mst_store_products.product_status',
-                            'mst_store_products.store_id'
-                        );
-
-
+                    ->select(
+                        'mst_store_products.product_id',
+                        'mst_store_products.product_type',
+                        'mst_store_products.service_type',
+                        'mst_store_products.product_name',
+                        'mst_store_products.product_code',
+                        'mst_store_products.product_base_image',
+                        'mst_store_products.show_in_home_screen',
+                        'mst_store_products.product_status',
+                        'mst_store_products.store_id'
+                    );
+                    
+                    
                     if ((isset($request->customer_id)) && ($request->customer_id != 0)) {
                         // near by store
                         if (isset($request->latitude) && ($request->longitude)) {
@@ -3370,23 +3379,24 @@ class ProductController extends Controller
                                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $productData = $productData->orderBy('distance');
                     }
-
-                    $productData = $productData->where('mst_store_products.product_status', 1)
-                        ->where('mst_store_products.show_in_home_screen', 1)->get();
-                    $productDataFinal = array();
-                    $stockCount = 0;
-                    foreach ($productData as $offerProduct) {
-                        if (Helper::productStock($offerProduct->product_id) > 0) {
-                            $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                            $storeData = Mst_store::find($offerProduct->store_id);
-                            $offerProduct->store_name = $storeData->store_name;
-                            $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                            $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                            $productDataFinal[] =   $offerProduct;
-                        }
+                
+                $productData = $productData->where('mst_store_products.product_status', 1)
+                    ->where('mst_store_products.show_in_home_screen', 1)->get();
+                $productDataFinal = array();
+                $stockCount = 0;
+                foreach ($productData as $offerProduct) {
+                    if(Helper::productStock($offerProduct->product_id) > 0)
+                    {
+                        $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        $storeData = Mst_store::find($offerProduct->store_id);
+                        $offerProduct->store_name = $storeData->store_name;
+                        $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                        $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                        $productDataFinal[] =   $offerProduct;
                     }
-                    $data['offerProducts']  =    $productDataFinal;
-
+                }
+                $data['offerProducts']  =    $productDataFinal;
+                
 
 
                     //  Trn_RecentlyVisitedStore::where('customer_id',$request->customer_id)->where('store_id',$request->store_id)->delete();
@@ -3591,8 +3601,8 @@ class ProductController extends Controller
                         //$offerProduct->rating = number_format((float)4.20, 1, '.', '');
                         //$offerProduct->ratingCount = 120;
 
-                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
-                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible',1)->count();
 
                         if ($countRating == 0) {
                             $countRating = 1;
@@ -4133,9 +4143,9 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
-                if ($data['Reviews'] = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->get()) {
-                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->sum('rating');
-                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->count();
+                if ($data['Reviews'] = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->get()) {
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible',1)->count();
 
                     if ($countRating == 0) {
                         $countRating = 1;

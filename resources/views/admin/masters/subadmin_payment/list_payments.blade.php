@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row justify-content-center">
+   <div class="row justify-content-center" style="min-height: 70vh;">
       <div class="col-md-12 col-lg-12">
          <div class="card">
             <div class="row">
@@ -231,6 +231,10 @@
 @endif        
                   </div>
                </div>
+            </div>
+             </div>
+               </div>
+            </div>
             </div>
             <div class="modal fade" id="StockModal{{$subadmin_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
                <div class="modal-dialog" role="document">

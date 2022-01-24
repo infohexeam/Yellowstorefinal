@@ -37,7 +37,7 @@
                  
 
                   @endif
-         <div class="card-body">
+         <div class="card-body" style="min-height: 70vh;">
             <div class="border-0">
                <div class="tab-content">
                   <div class="tab-pane active show" id="tab-51">

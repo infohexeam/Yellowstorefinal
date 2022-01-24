@@ -168,6 +168,7 @@
                                  $i++;
                                  @endphp
                                  @if($product_image->product_varient_id != 0)
+                                  @endif
 
                                  <tr>
                                     <td>{{$i}}</td>
@@ -178,7 +179,6 @@
                                     @endif
                                  </tr>
                                  
-                                  @endif
 
                                  @endforeach
                                  

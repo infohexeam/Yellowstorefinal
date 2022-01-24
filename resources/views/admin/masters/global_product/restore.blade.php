@@ -7,7 +7,7 @@
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
          <div class="card">
-            <div class="row" style="min-height: 72vh;">
+            <div class="row">
                <div class="col-12" >
 
                   @if ($message = Session::get('status'))

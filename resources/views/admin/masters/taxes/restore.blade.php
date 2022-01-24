@@ -4,8 +4,6 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 col-lg-12">
-
-
         <div class="card">
                 <div class="row" style="min-height: 70vh;">
                     <div class="col-12" >
@@ -37,12 +35,11 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $tax->tax_name}}</td>
                                         <td>{{ $tax->tax_value}}</td>
-
                                         <td>
                                             <form action="{{route('admin.restore_tax',$tax->tax_id)}}" method="POST">
                                                 @csrf
-                                                    <a class="btn btn-sm btn-cyan text-white"  data-toggle="modal" data-target="#StockModal{{$tax->tax_id}}" >View</a>
-                                                        @method('POST')
+                                                <a class="btn btn-sm btn-cyan text-white"  data-toggle="modal" data-target="#StockModal{{$tax->tax_id}}" >View</a>
+                                                @method('POST')
                                                 <button type="submit" onclick="return confirm('Do you want to restore this item?');"  class="btn btn-sm btn-warning">Restore</button>
                                             </form>
                                         </td>

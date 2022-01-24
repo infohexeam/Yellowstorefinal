@@ -31,7 +31,7 @@
 
                 </div> --}}
 
-                    <div class="card-body">
+                    <div class="card-body" style="min-height: 70vh;">
                         <a href="  {{route('store.create_store_admin')}} " class="btn btn-block btn-info">
                            <i class="fa fa-plus"></i>
                            Add Store Admin

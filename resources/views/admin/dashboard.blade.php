@@ -69,6 +69,7 @@ use App\Models\admin\template\Template;
          </div>
       </div>
    </div>
+   </div>
    
    <!-- COL END -->
 </div>

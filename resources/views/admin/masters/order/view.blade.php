@@ -62,7 +62,6 @@
                </div>
 
 
-               @if (isset($order->delivery_boy['delivery_boy_name']))
                 <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
@@ -91,7 +90,6 @@
                      </div><!-- COL END -->
                   </div>
                </div>
-               @endif
 
 
                 <div class="row" >
@@ -123,7 +121,7 @@
                   </div>
                </div>
 
-               @if (isset($order->subadmin['name']))
+
                <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
@@ -148,8 +146,6 @@
                      </div><!-- COL END -->
                   </div>
                </div>
-               @endif
-
 
                   <div class="row">
                      <div class="col-md-12">
@@ -167,25 +163,12 @@
                                  <tr>
                                     <td><strong>Mobile :</strong> (+91){{ @$order->customer['customer_mobile_number']}}</td>
                                  </tr>
-                                  {{-- <tr>
+                                  <tr>
                                     <td><strong>Location :</strong> {{ @$order->customer['customer_location']}}</td>
-                                 </tr> --}}
-                                 {{-- <tr>
-                                    <td><strong>Address :</strong>
-                                       
-                                       {{ @$order->customer['customer_address']}}
-                                    
-                                       {{@$order->customerAddress['address']}} <br>
-                                       @if (isset($order->customerAddress['pincode']))
-                                          Pincode: {{@$order->customerAddress['pincode']}}<br>
-                                       @endif
-
-                                       @if (isset($order->customerAddress['phone']))
-                                       Phone: {{@$order->customerAddress['phone']}}<br>
-                                       @endif
-                                    
-                                    </td>
-                                 </tr> --}}
+                                 </tr>
+                                 <tr>
+                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
+                                 </tr>
                               </tbody>
 
                            </table>
@@ -194,8 +177,6 @@
                      </div><!-- COL END -->
                   </div>
                </div>
-               
-               @if (isset($order->customerAddress['address']))
                   <div class="row">
                       <div class="col-md-6">
                         <div class="card">
@@ -210,18 +191,7 @@
                                     <td><strong>Payment Mode :</strong> {{@$order->payment_type['payment_type']}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Address :</strong> 
-                                       {{ @$order->customer['customer_address']}}
-                                    
-                                       {{@$order->customerAddress['address']}} <br>
-                                       @if (isset($order->customerAddress['pincode']))
-                                          Pincode: {{@$order->customerAddress['pincode']}}<br>
-                                       @endif
-
-                                       @if (isset($order->customerAddress['phone']))
-                                          Phone: {{@$order->customerAddress['phone']}}<br>
-                                       @endif                                    
-                                    </td>
+                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
                                  </tr>
 
                               </tbody>
@@ -231,24 +201,23 @@
                         </div>
                      </div>
                      </div><!-- COL END -->
-                     @endif
 
-            @if($order->service_booking_order != 0)
-            <div class="col-md-12">
+                      <div class="col-md-6">
                         <div class="card">
                            <div class="card-header">
-                              <div class="card-title">Booked Service</div>
+                              <div class="card-title">Shipping Address</div>
                            </div>
                            <div class="card-body">
                          <div class="table-responsive">
                            <table class="table row table-borderless">
-                              <tbody class="col-lg-12 col-xl-12 p-0">
+                              <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                    <td><strong>Service :</strong> 
-                                       {{@$order->product_varient->product['product_name']}}  {{@$order->product_varient['variant_name']}}
-                                    </td>
+                                    <td><strong>Address :</strong> {{$order->shipping_address}}</td>
                                  </tr>
-                                 
+                                 <tr>
+                                    <td><strong>Landmark :</strong>{{ $order->shipping_landmark}}</td>
+                                 </tr>
+
                               </tbody>
 
                            </table>
@@ -256,13 +225,9 @@
                         </div>
                      </div><!-- COL END -->
                   </div>
-                  @endif
-
                </div>
             </div>
             <br>
-            @if($order->service_booking_order == 0)
-            
             <div class="col-md-12">
             <div class="table-responsive push">
                                 
@@ -326,12 +291,12 @@
                               <br>
                            </div>
 
+                  <center>
+                     <button type="button" class="btn btn-cyan" onclick="history.back()">Cancel</button>
+
+                           </center>
                         </br>
-               @endif
-
-               <center><a  class="btn btn-cyan text-white" href="{{ url('admin/order/list') }}">Cancel</a></center>
-
-                        {{--   </div>
+             {{--   </div>
             </div> --}}
          </div>
       </div>

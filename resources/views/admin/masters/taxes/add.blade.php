@@ -42,8 +42,7 @@
                         <div class="form-group">
                             <label class="form-label">Tax Value</label>
                             <input step="0.01" oninput="valueChanged(this.id)" type="number" id="tax_value" required class="form-control" onchange="if (this.value < 0) this.value = '';" placeholder="Tax Value" name="tax_value" >
-                            <p id="errorTax"></p>
-                           </div>
+                        </div>
                      </div>
 
                     
@@ -86,14 +85,14 @@
                      </div>
                      
                   </div>
-                  {{-- <script src="{{ asset('vendor\unisharp\laravel-ckeditor/ckeditor.js')}}"></script>
-                  <script>CKEDITOR.replace('sub_category_description');</script> --}}
+                  <script src="{{ asset('vendor\unisharp\laravel-ckeditor/ckeditor.js')}}"></script>
+                  <script>CKEDITOR.replace('sub_category_description');</script>
                </form>
 
       </div>
    </div>
 </div>
-</div>
+  </div>
 </div>
 
 
@@ -142,39 +141,6 @@ function valueChanged(id){
    }
 
 }
-
-
-
-$("#tax_value").blur(function(){
-   $('#submitAdd').attr('disabled', true);
-    
-    var errorTax = '';
-    var tax_value = $(this).val();
-    var _token = $('input[name="_token"]').val();
-    
-    $.ajax({
-      url:"{{ route('unique_tax') }}",
-      method:"POST",
-      data:{tax_value:tax_value, _token:_token},
-      success:function(result)
-      {
-          if(result == 'unique')
-          {
-              
-                              $('#errorTax').empty();
-$('#submitAdd').attr('disabled', false);
-          }
-          else
-          {
-              $('#errorTax').html('<label class="text-danger">Tax value already exist </label>');
-              $('#store_mobile').addClass('has-error');
-              $('#submitAdd').attr('disabled', true);
-          }
-      }
- })
-});
-
-
 
 </script>
 

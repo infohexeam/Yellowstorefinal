@@ -40,8 +40,6 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Sys_payment_type;
 use App\Models\admin\Trn_store_payment_settlment;
 use App\Models\admin\Trn_delivery_boy_payment_settlment;
-use App\Models\admin\Trn_CategoryBusinessType;
-
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
@@ -66,7 +64,9 @@ use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Trn_TermsAndCondition;
 use App\Models\admin\Trn_customerAddress;
+
 use App\Models\admin\Trn_OrderPaymentTransaction;
+use App\Models\admin\Trn_OrderSplitPayments;
 
 
 class SettingController extends Controller
@@ -107,10 +107,6 @@ class SettingController extends Controller
 		return view('admin.masters.categories.create', compact('pageTitle', 'categories', 'business_types'));
 	}
 
-
-
-
-
 	public function storeCategory(Request $request, Mst_categories $category)
 	{
 		//echo "here";die;
@@ -121,7 +117,7 @@ class SettingController extends Controller
 				'category_name'       => 'required|unique:mst_store_categories',
 				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
 				//	'category_description' => 'required',
-				//	'business_type_id'		=> 'required',
+				'business_type_id'		=> 'required',
 
 
 			],
@@ -144,7 +140,7 @@ class SettingController extends Controller
 			$category->category_name 		= $request->category_name;
 			$category->category_name_slug  	= Str::of($request->category_name)->slug('-');
 			$category->category_description = $request->category_description;
-			$category->business_type_id = 0;
+			$category->business_type_id = $request->business_type_id;
 			$category->parent_id 		= 0;
 
 			if ($request->hasFile('category_icon')) {
@@ -168,27 +164,13 @@ class SettingController extends Controller
 
 			$category->category_status 		= 1;
 
-			if ($category->save()) {
-				$lastCatid = DB::getPdo()->lastInsertId();
-				foreach (array_unique($request->business_type_ids) as  $row) {
-					$cb = new Trn_CategoryBusinessType;
-					$cb->category_id = $lastCatid;
-					$cb->business_type_id = $row;
-					$cb->status = 1;
-					$cb->save();
-				}
-			}
-
-
-
+			$category->save();
 
 			return redirect('admin/categories/list')->with('status', 'Category added successfully.');
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
 	}
-
-
 	public function editCategory(Request $request, $id)
 	{
 		$pageTitle = "Edit Product Category";
@@ -199,19 +181,6 @@ class SettingController extends Controller
 
 		return view('admin.masters.categories.edit', compact('category', 'pageTitle', 'business_types'));
 	}
-
-
-
-	public function destroyCategory(Request $request, Mst_categories $category)
-	{
-
-		$delete = $category->delete();
-
-		return redirect('admin/categories/list')->with('status', 'Category deleted successfully');
-	}
-
-
-
 	public function updateCategory(
 		Request $request,
 		Mst_categories $category,
@@ -228,7 +197,7 @@ class SettingController extends Controller
 				'category_name'       => 'required|unique:mst_store_categories,category_name,' . $category_id . ',category_id',
 				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
 				//		'category_description' => 'required',
-				//'business_type_id'		=> 'required',
+				'business_type_id'		=> 'required',
 
 
 			],
@@ -250,7 +219,7 @@ class SettingController extends Controller
 			$category->category_name_slug  	= Str::of($request->category_name)->slug('-');
 
 			$category->category_description = $request->category_description;
-			$category->business_type_id = 0;
+			$category->business_type_id = $request->business_type_id;
 
 
 			if ($request->hasFile('category_icon')) {
@@ -290,39 +259,19 @@ class SettingController extends Controller
 				$category->parent_id = $request->parent_id;
 			}
 
-			if ($category->update()) {
-				Trn_CategoryBusinessType::where('category_id', $category_id)->delete();
-				foreach (array_unique($request->business_type_ids) as  $row) {
-					$cb = new Trn_CategoryBusinessType;
-					$cb->category_id = $category_id;
-					$cb->business_type_id = $row;
-					$cb->status = 1;
-					$cb->save();
-				}
-			}
-
-
-
-
-
+			$update = $category->update();
 			return redirect('admin/categories/list')->with('status', 'Category updated successfully.');
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
 	}
-
-
-	public function removeCB(Request $request, Trn_CategoryBusinessType $category, $cbt_id)
+	public function destroyCategory(Request $request, Mst_categories $category)
 	{
 
-		Trn_CategoryBusinessType::where('cbt_id', $cbt_id)->delete();
+		$delete = $category->delete();
 
-		return redirect()->back()->with('status', 'Row deleted successfully');
+		return redirect('admin/categories/list')->with('status', 'Category deleted successfully');
 	}
-
-
-
-
 
 
 	public function statusCategory(Request $request, Mst_categories $category, $category_id)
@@ -2846,6 +2795,9 @@ class SettingController extends Controller
 		$boy_Id = $request->delivery_boy_id;
 		$delivery_boy = Mst_delivery_boy::Find($boy_Id);
 
+		$password = $delivery_boy->delivery_boy_password;
+		$newpassword = $request->delivery_boy_password;
+
 
 		$validator = Validator::make(
 			$request->all(),
@@ -2865,7 +2817,7 @@ class SettingController extends Controller
 				'delivery_boy_commision'            => 'required',
 				'delivery_boy_commision_amount'            => 'required',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
-				'password'  => 'sometimes|same:password_confirmation',
+				'delivery_boy_password'  => 'sometimes|same:password_confirmation',
 
 			],
 			[
@@ -2881,7 +2833,7 @@ class SettingController extends Controller
 				'town_id.required'        			   => 'Town required',
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
-				'password.required'	   => 'Password required',
+				'delivery_boy_password.required'	   => 'Password required',
 				'delivery_boy_commision.required'	   => 'Delivery boy commision percentage required',
 				'delivery_boy_commision_amount.required'	=> 'Delivery boy commision percentage required',
 
@@ -2912,9 +2864,11 @@ class SettingController extends Controller
 			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount;
 
 			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
-			//	$delivery_boy->delivery_boy_status   = 0;
-			if (isset($request->password)) {
-				$delivery_boy->password = Hash::make($request->password);
+			$delivery_boy->delivery_boy_status   = 0;
+			if ($newpassword == '') {
+				$delivery_boy->delivery_boy_password = $password;
+			} else {
+				$delivery_boy->delivery_boy_password = Hash::make($request->delivery_boy_password);
 			}
 
 
@@ -3435,11 +3389,11 @@ class SettingController extends Controller
 		$payment_type = Sys_payment_type::all();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
-		$payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
-			->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
-			->where('trn__order_split_payments.paymentRole', '!=', 1)
-			->get();
-		//dd($payments);
+        $payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments','trn__order_split_payments.opt_id','=','trn__order_payment_transactions.opt_id')
+        ->join('trn_store_orders','trn_store_orders.order_id','=','trn__order_payment_transactions.order_id')
+        ->where('trn__order_split_payments.paymentRole','!=',1)
+        ->get();
+        //dd($payments);
 
 		if ($_GET) {
 
@@ -3455,14 +3409,13 @@ class SettingController extends Controller
 			$subadmin_id = $request->subadmin_id;
 			$store_id = $request->store_id;
 
-
+		
 
 			return view('admin.masters.payments.list', compact('dateto', 'datefrom', 'payments', 'subadmins', 'pageTitle', 'order', 'customer', 'payment_type', 'store'));
 		}
 
 		return view('admin.masters.payments.list', compact('subadmins', 'payments', 'pageTitle', 'order', 'customer', 'payment_type', 'store'));
 	}
-
 
 	public function listSubadminOrder(Request $request, Trn_store_order $query)
 	{
@@ -3739,7 +3692,7 @@ class SettingController extends Controller
 
 	public function list_store_payment_settlment(Request $request)
 	{
-		$pageTitle = "Store Payment Settlement";
+		$pageTitle = "Store Payment Settlment";
 		$store_payment_settlments = Trn_store_payment_settlment::all();
 		$store = Mst_store::all();
 
@@ -3761,7 +3714,7 @@ class SettingController extends Controller
 
 	public function list_subadmin_payment_settlment()
 	{
-		$pageTitle = "Sub Admin Payment Settlement ";
+		$pageTitle = "Sub Admin Payment Settlments";
 		$subadmins = User::where('user_role_id', 1)->get();
 		return view('admin.masters.subadmin_payment.list', compact('subadmins', 'pageTitle'));
 	}
@@ -3769,8 +3722,7 @@ class SettingController extends Controller
 	{
 		$subadmin_id  = Crypt::decryptString($subadmin_id);
 
-
-		$pageTitle = "Sub Admin Payment Settlement : " . User::find($subadmin_id)->name;
+		$pageTitle = "Sub Admin Payment Settlment";
 
 
 		if ($_GET) {
@@ -3839,7 +3791,7 @@ class SettingController extends Controller
 
 	public function list_delivery_payment_settlment(Request $request)
 	{
-		$pageTitle = "Delivery Boy Payment Settlement";
+		$pageTitle = "Delivery Boy Payment Settlment";
 		$delivery_boy_payments = Trn_delivery_boy_payment_settlment::all();
 		$delivery_boy = Mst_delivery_boy::all();
 
@@ -3940,7 +3892,7 @@ class SettingController extends Controller
 
 	public function list_stores_payment_settlment(Request $request)
 	{
-		$pageTitle = "Store Payment Settlement";
+		$pageTitle = "Store Payment Settlment";
 		$store_payment_settlments = Trn_store_payment_settlment::all();
 		$store = Mst_store::all();
 		// dd($store);
@@ -3959,7 +3911,7 @@ class SettingController extends Controller
 
 	public function list_stores_payments(Request $request, $store_name, $store_id)
 	{
-		$pageTitle = $store_name . " (store) Payment Settlement";
+		$pageTitle = $store_name . " (store) Payment Settlment";
 		$store_id  = Crypt::decryptString($store_id);
 
 		$store_payments = Trn_store_payment_settlment::where('store_id', $store_id)->get();
@@ -4039,7 +3991,7 @@ class SettingController extends Controller
 
 	public function list_delivery_boys_payment_settlment(Request $request)
 	{
-		$pageTitle = "Delivery Boys Payment Settlement";
+		$pageTitle = "Delivery Boys Payment Settlment";
 		$delivery_boy = Mst_delivery_boy::orderBy('delivery_boy_id', 'DESC')->get();
 		$delivery_boys = Mst_delivery_boy::orderBy('delivery_boy_id', 'DESC')->get();
 
@@ -4065,7 +4017,7 @@ class SettingController extends Controller
 
 	public function DeliveryBoyPaymentSettlment(Request $request, $delivery_boy_name, $delivery_boy_id)
 	{
-		$pageTitle = $delivery_boy_name . " (delivery boy) Payment Settlement";
+		$pageTitle = $delivery_boy_name . " (delivery boy) Payment Settlment";
 		$delivery_boy_id  = Crypt::decryptString($delivery_boy_id);
 
 		$delivery_boy_payments = Trn_delivery_boy_payment_settlment::where('delivery_boy_id', $delivery_boy_id)->get();
@@ -4754,7 +4706,7 @@ class SettingController extends Controller
 	public function listReferalPoints(Request $request)
 	{
 
-		$pageTitle = "Referral Points Points";
+		$pageTitle = "Referal Points Points";
 		$referal_points = Trn_referal_point::all();
 
 		return view('admin.masters.referal_points.list', compact('pageTitle', 'referal_points'));
