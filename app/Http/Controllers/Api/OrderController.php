@@ -364,8 +364,7 @@ class OrderController extends Controller
                             $gstAmount = $value['productDetail']->product_varient_offer_price * $baseProductDetail->tax_value / (100 + $baseProductDetail->tax_value);
                             $orgCost = $value['productDetail']->product_varient_offer_price * 100 / (100 + $baseProductDetail->tax_value);
 
-                            $value->gstAmount = $gstAmount;
-                            $value->orgCost = $orgCost;
+
 
                             $stax = 0;
                             // dd($splitdata);
@@ -386,6 +385,10 @@ class OrderController extends Controller
 
                             $value['taxSplitups']  = @$splitdata;
                         }
+
+                        $tTax = $taxFullData->tax_value * $value->quantity;
+                        $value->gstAmount = $tTax;
+                        $value->orgCost = ($value['productDetail']->product_varient_offer_price * $value->quantity) - $tTax;
 
 
 
