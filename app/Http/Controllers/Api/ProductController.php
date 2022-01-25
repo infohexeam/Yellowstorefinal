@@ -749,42 +749,6 @@ class ProductController extends Controller
             return response($response);
         }
     }
-    
-    
-    
-    public function viewGlobalProduct(Request $request)
-    {
-        $data = array();
-        try {
-            if (isset($request->global_product_id) && Mst_GlobalProducts::find($request->global_product_id)) {
-
-
-                    if ($globalProductDetails = Mst_GlobalProducts::find($request->global_product_id)) {
-                        
-                        $data['globalProductDetails']= $globalProductDetails;
-                        $data['status'] = 1;
-                        $data['message'] = "success";
-                        return response($data);
-                    } else {
-                        $data['status'] = 0;
-                        $data['message'] = "failed";
-                        return response($data);
-                    }
-               
-            } else {
-                $data['status'] = 0;
-                $data['message'] = "Product not found ";
-                return response($data);
-            }
-        } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-
 
 
     public function listProductVariants(Request $request)

@@ -60,6 +60,7 @@ use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_DeliveryBoyLocation;
 
+
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 
@@ -418,33 +419,9 @@ class StoreOrderController extends Controller
                     foreach ($request->product_variants as $value) {
                         $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                         $proData = Mst_store_product::find($varProdu->product_id);
-
-                        if ($proData->service_type != 2) {
-
-
-                            if (isset($varProdu)) {
-                                if ($value['quantity'] > $varProdu->stock_count) {
-                                    if (@$proData->product_name != $varProdu->variant_name) {
-                                        $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
-                                    } else {
-                                        $data['product_name'] = @$proData->product_name;
-                                    }
-
-                                    $noStockProducts[] = $varProdu->product_varient_id;
-
-                                    $data['product_varient_id'] = $varProdu->product_varient_id;
-                                    $data['product_id'] = $varProdu->product_id;
-                                    $data['message'] = 'Stock unavilable';
-                                    $data['status'] = 2;
-                                  return response($data);
-                                }
-                            } else {
-                                $data['message'] = 'Product not found';
-                                $data['status'] = 2;
-                                return response($data);
-                            }
-                        }
                     }
+
+
                     if (count($noStockProducts) > 0) {
                         $data['noStockProducts'] = $noStockProducts;
                         return response($data);
@@ -475,9 +452,9 @@ class StoreOrderController extends Controller
 
 
                     $store_order->subadmin_id =  $store_data->subadmin_id;
-                    $store_order->product_total_amount =  $request->order_total_amount - $request->amount_reduced_by_rp;
+                    $store_order->product_total_amount =  $request->order_total_amount;
                     $store_order->payment_status = 1;
-                    $store_order->status_id = 1;
+                    $store_order->status_id = $request->status_id;
 
                     // online
                     $store_order->payment_type_id = $request->payment_type_id;
@@ -492,9 +469,18 @@ class StoreOrderController extends Controller
 
                     $store_order->coupon_id =  $request->coupon_id;
                     $store_order->coupon_code =  $request->coupon_code;
-                    $store_order->reward_points_used =  $request->reward_points_used;
-                    $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
-                    $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+
+                    if ($request->status_id != 5) {
+                        $store_order->reward_points_used =  $request->reward_points_used;
+                        $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
+                        $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+                    } else {
+                        $store_order->reward_points_used =  0;
+                        $store_order->amount_before_applying_rp =  0;
+                        $store_order->amount_reduced_by_rp =  0;
+                    }
+
+
                     $store_order->order_type = 'APP';
 
 
@@ -504,21 +490,7 @@ class StoreOrderController extends Controller
                     $store_order->save();
                     $order_id = DB::getPdo()->lastInsertId();
 
-                    // if(Trn_store_order::where('customer_id',$request->customer_id)->count() < 1)
-                    // {
-                    //      $configPoint = Trn_configure_points::find(1);
 
-                    //     $cr = new Trn_customer_reward;
-                    //     $cr->transaction_type_id = 0;
-                    //     $cr->reward_points_earned = $configPoint->first_order_points;
-                    //     $cr->customer_id = $request->customer_id;
-                    //     $cr->order_id = $order_id;
-                    //     $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-                    //     $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                    //     $cr->reward_point_status = 1;
-                    //     $cr->discription = "First order points";
-                    //     $cr->save();
-                    // }
 
 
                     $invoice_info['order_id'] = $order_id;
@@ -526,12 +498,14 @@ class StoreOrderController extends Controller
                     $invoice_info['invoice_id'] = "INV0" . $order_id;
                     $invoice_info['created_at'] = Carbon::now();
                     $invoice_info['updated_at'] = Carbon::now();
-                    
-                    
-                    if($request->payment_type_id == 2){
+
+                    Trn_order_invoice::insert($invoice_info);
+
+
+                    if ($request->payment_type_id == 2) {
                         // Trn_OrderSplitPayments
                         // Trn_OrderPaymentTransaction
-                        
+
                         $opt = new Trn_OrderPaymentTransaction;
                         $opt->order_id = $order_id;
                         $opt->paymentMode = $request->paymentMode;
@@ -541,24 +515,23 @@ class StoreOrderController extends Controller
                         $opt->txMsg = $request->txMsg;
                         $opt->orderAmount = $request->orderAmount;
                         $opt->txStatus = $request->txStatus;
-                        if($opt->save())
-                        {
+                        if ($opt->save()) {
                             $opt_id = DB::getPdo()->lastInsertId();
-                            
+
                             $client = new \GuzzleHttp\Client();
                             $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/10033', [
-                                  'headers' => [
+                                'headers' => [
                                     'Accept' => 'application/json',
                                     'x-api-version' => '2021-05-21',
                                     'x-client-id' => '165253d13ce80549d879dba25b352561',
-                                'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-                                  ],
+                                    'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+                                ],
                             ]);
-            
+
                             $responseData = $response->getBody()->getContents();
-           
-                            $responseFinal = json_decode($responseData, true);    
-                            
+
+                            $responseFinal = json_decode($responseData, true);
+
                             $osp = new Trn_OrderSplitPayments;
                             $osp->opt_id = $opt_id;
                             $osp->order_id = $order_id;
@@ -569,37 +542,33 @@ class StoreOrderController extends Controller
                             $osp->splitServiceTax = $responseFinal["splitServiceTax"];
                             $osp->settlementAmount = $responseFinal["settlementAmount"];
                             $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
-                           
+
                             $osp->paymentRole = 1; // 1 == store's split
-                            if($osp->save()){
-                                if(count($responseFinal['vendors']) > 0){
-                                    foreach($responseFinal['vendors'] as $row){
+                            if ($osp->save()) {
+                                if (count($responseFinal['vendors']) > 0) {
+                                    foreach ($responseFinal['vendors'] as $row) {
                                         $osp = new Trn_OrderSplitPayments;
                                         $osp->opt_id = $opt_id;
                                         $osp->order_id = $order_id;
                                         $osp->vendorId = $row["id"];
                                         $osp->settlementId = $row["settlementId"];
                                         $osp->splitAmount = $row["settlementAmount"];
-                                        
+
                                         $osp->serviceCharge = @$row["serviceCharge"];
                                         $osp->serviceTax = @$row["serviceTax"];
                                         $osp->splitServiceCharge = @$row["splitServiceCharge"];
                                         $osp->splitServiceTax = @$row["splitServiceTax"];
                                         $osp->settlementAmount = @$row["settlementAmount"];
                                         $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
-                                        
+
                                         $osp->paymentRole = 0;
                                         $osp->save();
                                     }
                                 }
                             }
-                            
                         }
-                        
-
                     }
 
-                    Trn_order_invoice::insert($invoice_info);
 
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
@@ -638,7 +607,6 @@ class StoreOrderController extends Controller
                             'tax_amount' => $value['tax_amount'],
                             'total_amount' => $total_amount,
                             'discount_amount' => $value['discount_amount'],
-                            //'discount_percentage'=> $value['discount_percentage'],
                             'created_at'         => Carbon::now(),
                             'updated_at'         => Carbon::now(),
                         ];
@@ -665,29 +633,31 @@ class StoreOrderController extends Controller
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                         $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
                     }
-                    
-                   
-                  
-                    
+
+
+
+
                     foreach ($customerDevice as $cd) {
                         $title = 'Order Placed';
                         $body = 'Order placed with order id ' . $orderdatas->order_number;
                         $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
                     }
-                    
-                  
 
 
-                    if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
+                    if ($request->status_id != 5) {
+                        if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
 
-                        foreach ($customerDevice as $cd) {
+                            foreach ($customerDevice as $cd) {
 
-                            $title = 'Points Deducted';
-                            $body = $request->reward_points_used . ' points deducted from your wallet';
+                                $title = 'Points Deducted';
+                                $body = $request->reward_points_used . ' points deducted from your wallet';
 
-                            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                            }
                         }
                     }
+
+
 
 
 
@@ -779,42 +749,41 @@ class StoreOrderController extends Controller
         try {
 
             $noStockProducts = array();
+
             foreach ($request->product_variants as $value) {
-                if ($varProdu = Mst_store_product_varient::find($value['product_varient_id'])) {
-                    $proData = Mst_store_product::find($varProdu->product_id);
+                $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                $proData = Mst_store_product::find($varProdu->product_id);
+
+                if ($proData->service_type != 2) {
+
+
                     if (isset($varProdu)) {
                         if ($value['quantity'] > $varProdu->stock_count) {
+                            if (@$proData->product_name != $varProdu->variant_name) {
+                                $data['product_name'] = @$proData->product_name . " " . $varProdu->variant_name;
+                            } else {
+                                $data['product_name'] = @$proData->product_name;
+                            }
 
-                            $timeslotdata = Helper::findHoliday($proData->store_id);
+                            $noStockProducts[] = $varProdu->product_varient_id;
 
-                          //  if ($timeslotdata == false) {
-
-                                $noStockProducts[] = $varProdu->product_varient_id;
-
-                                $data['message'] = 'Stock unavilable';
-                                $data['status'] = 2;
-                          //  }
-                            //  return response($data);
+                            $data['noStockProducts'] = $noStockProducts;
+                            $data['message'] = 'Stock unavilable';
+                            $data['status'] = 2;
                         }
                     } else {
                         $data['message'] = 'Product not found';
-                        $data['status'] = 0;
+                        $data['status'] = 2;
                         return response($data);
                     }
-                } else {
-                    $data['message'] = 'Product not found';
-                    $data['status'] = 0;
-                    return response($data);
                 }
             }
-            if (count($noStockProducts) > 0) {
-                $data['noStockProducts'] = $noStockProducts;
-                return response($data);
-            } else {
-                $data['message'] = 'Product avilable';
+
+            if (count($noStockProducts) <= 0) {
+                $data['message'] = 'Stock avilable';
                 $data['status'] = 1;
-                return response($data);
             }
+            return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
@@ -950,7 +919,7 @@ class StoreOrderController extends Controller
                 $dispute->dispute_date = Carbon::now()->toDateString();
                 $dispute->discription = $request->discription;
                 $dispute->dispute_status = 2;
-                if($dispute->save()){
+                if ($dispute->save()) {
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
                     $orderdatas = Trn_store_order::find($order_id);
                     $storeDatas = Trn_StoreAdmin::where('store_id', $orderdatas->store_id)->where('role_id', 0)->first();
@@ -962,13 +931,13 @@ class StoreOrderController extends Controller
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
                     }
-                    
+
                     foreach ($storeWeb as $sw) {
                         $title = 'Dispute raised';
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
                         $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
                     }
-                    
+
                     foreach ($customerDevice as $cd) {
                         $title = 'Dispute raised';
                         $body = 'Your dispute raised with order id ' . $orderdatas->order_number;
@@ -1078,18 +1047,14 @@ class StoreOrderController extends Controller
 
                     if ($data['orderDetails']  = Trn_store_order::select('*')->where('order_id', $order_id)->where('customer_id', $customer_id)->first()) {
 
-
-
-
-                         if (!isset($data['orderDetails']->reward_points_used))
-                            $data['orderDetails']->reward_points_used = "0";
-
-                        if (!isset($data['orderDetails']->amount_reduced_by_rp))
-                            $data['orderDetails']->amount_reduced_by_rp = "0";
-
-
                         if (!isset($data['orderDetails']->order_note))
                             $data['orderDetails']->order_note = '';
+
+
+                        if (!isset($data['orderDetails']->reward_points_used))
+                            $data['orderDetails']->reward_points_used = "0";
+                        if (!isset($data['orderDetails']->amount_reduced_by_rp))
+                            $data['orderDetails']->amount_reduced_by_rp = "0";
 
 
 
@@ -1289,16 +1254,16 @@ class StoreOrderController extends Controller
 
                             $value['taxSplitups']  = $splitdata;
                         }
-                        
-                        
-                         $data['orderPaymentTransaction'] = new \stdClass();
-                        $opt = Trn_OrderPaymentTransaction::where('order_id',$request->order_id)->get();
-                        $optConunt = Trn_OrderPaymentTransaction::where('order_id',$request->order_id)->count();
-                        if($optConunt > 0){
-                            foreach($opt as $row){
-                                $ospCount = Trn_OrderSplitPayments::where('order_id',$row->opt_id)->count();
-                                if($ospCount > 0){
-                                    $osp = Trn_OrderSplitPayments::where('order_id',$row->opt_id)->get();
+
+
+                        $data['orderPaymentTransaction'] = new \stdClass();
+                        $opt = Trn_OrderPaymentTransaction::where('order_id', $request->order_id)->get();
+                        $optConunt = Trn_OrderPaymentTransaction::where('order_id', $request->order_id)->count();
+                        if ($optConunt > 0) {
+                            foreach ($opt as $row) {
+                                $ospCount = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->count();
+                                if ($ospCount > 0) {
+                                    $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->get();
                                     $row->orderSplitPayments = $osp;
                                 }
                             }
