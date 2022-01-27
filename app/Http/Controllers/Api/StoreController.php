@@ -1896,6 +1896,8 @@ class StoreController extends Controller
                     'mst_stores.store_name',
                     'mst_stores.store_mobile',
 
+                    'trn__order_payment_transactions.referenceId',
+
                     'mst_delivery_boys.delivery_boy_name',
                     'mst_delivery_boys.delivery_boy_mobile'
 
@@ -1906,6 +1908,7 @@ class StoreController extends Controller
                     ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
                     ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 
+                    ->leftjoin('trn__order_payment_transactions', 'trn__order_payment_transactions.order_id', '=', 'trn_store_orders.order_id');
 
 
 
@@ -1953,6 +1956,8 @@ class StoreController extends Controller
                 foreach ($paymentReport as $sd) {
                     $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
                     $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
+
+                    $sd->trn_id = $sd->referenceId;
 
                     if ($sd->delivery_status_id == 1)
                         $sd->delivery_status =  'Assigned';
