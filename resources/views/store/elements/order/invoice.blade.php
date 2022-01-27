@@ -133,7 +133,7 @@
                                                 $tval  = $order_item->unit_price * @$order_item->quantity;
                                                 $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
                                                 $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
-
+                                                $Tot = $tTax + $orgCost;
                                              @endphp
 
                                               {{@$tax_info->tax_value}} 
@@ -178,24 +178,31 @@
                                          
                                           <td> 
                                              @if (isset($tTax))
-                                             {{ @$tTax }}
+                                            {{ number_format((float)$tTax, 2, '.', '') }}  
                                              @endif
                                           </td>
 
-                                          <td>{{@$orgCost}} </td>
+                                          <td>
+                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
+                                            
+                                           </td>
+                                           <td>
+                                             {{ number_format((float)$Tot, 2, '.', '') }}  
+
+                                           </td>
                                           
                                        </tr>
                                        @php
-                                          $dis_amt =  $dis_amt + @$order_item->discount_amount;
+                                          $dis_amt =  $dis_amt + $discountAmt;
                                           $single_subtotal = @$order_item->unit_price * @$order_item->quantity;
-                                          $subtotal = $subtotal + $single_subtotal; 
-                                          $tax_amount = $tax_amount + $t_val ; 
+                                          $subtotal = $subtotal + $orgCost; 
+                                          $tax_amount = $tax_amount + $tTax ; 
                                        @endphp
                                     @endforeach
                                     
                                     <tr>
-                                       <td colspan="8" class=" text-right">Tax Amount</td>
-                                       <td class=" h4"> {{ @$tax_amount }}</td>
+                                       <td colspan="8" class=" text-right">Sub Total</td>
+                                       <td class=" h4"> {{ @$subtotal }}</td>
                                     </tr>
                                     
                                     
