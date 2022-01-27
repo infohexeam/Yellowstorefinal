@@ -137,7 +137,7 @@ $date = Carbon\Carbon::now();
 
                                     <td>
                                           <button data-toggle="modal" data-target="#viewModal{{$dispute->dispute_id}}"  class="btn btn-sm btn-cyan">View</button>
-                <a class="btn btn-sm btn-blue"  href="{{url('store/order/view/'.Crypt::encryptString($dispute->order_id))}}">View Order</a>
+                <a class="btn btn-sm btn-blue"  href="{{url('store/dispute-order/view/'.Crypt::encryptString($dispute->order_id))}}">View Order</a>
 
                     <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#storeResponseModal{{$dispute->dispute_id}}" >Store Response</button>
 
@@ -168,7 +168,7 @@ $date = Carbon\Carbon::now();
                         </button>
                      </div>
 
-                 <form action=" "  enctype="multipart/form-data" >
+                 <form action="{{ route('store.dispute_store_response',$dispute->dispute_id ) }} " method="POST" enctype="multipart/form-data" >
                  @csrf
                   <div class="modal-body">
 

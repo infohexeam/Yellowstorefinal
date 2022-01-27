@@ -1669,7 +1669,7 @@ class StoreController extends Controller
   public function listOrder(Request $request)
   {
 
-    $pageTitle = "List Order";
+    $pageTitle = "List Orders";
     $store_id =   Auth::guard('store')->user()->store_id;
     $customer = Trn_store_customer::all();
 
@@ -1729,7 +1729,7 @@ class StoreController extends Controller
   public function listTodaysOrder(Request $request)
   {
 
-    $pageTitle = "List Order";
+    $pageTitle = "List Orders";
     $store_id =   Auth::guard('store')->user()->store_id;
     $customer = Trn_store_customer::all();
 
@@ -1781,6 +1781,34 @@ class StoreController extends Controller
       $status = Sys_store_order_status::all();
 
       return view('store.elements.order.view', compact('delivery_boys', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
+    } catch (\Exception $e) {
+
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+  }
+  
+  
+    public function viewDisputeOrder(Request $request, $id)
+  {
+    try {
+      $pageTitle = "View Order";
+      $decrId  = Crypt::decryptString($id);
+      $order = Trn_store_order::Find($decrId);
+      $order_items = Trn_store_order_item::where('order_id', $decrId)->get();
+
+      $product = $order->product_id;
+
+      $subadmin_id = Auth()->guard('store')->user()->subadmin_id;
+      $store_id = Auth()->guard('store')->user()->store_id;
+
+
+      $delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
+        ->select("mst_delivery_boys.*")->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
+
+      $customer = Trn_store_customer::all();
+      $status = Sys_store_order_status::all();
+
+      return view('store.elements.disputes.order_view', compact('delivery_boys', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
     } catch (\Exception $e) {
 
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -3802,6 +3830,19 @@ class StoreController extends Controller
                                
     return redirect()->back()->with('status', 'Status updated successfully.');
   }
+  
+  
+   public function storeResponseUpdate(Request $request, $dispute_id)
+  {
+    $data['store_response']  = $request->store_response;
+    $query = \DB::table("mst_disputes")->where('dispute_id', $dispute_id)->update($data);
+    
+                               
+    return redirect()->back()->with('status', 'Store rensponse updated successfully.');
+  }
+  
+  
+  
   public function currentIssues(Request $request)
   {
     $pageTitle = "Current Disputes";

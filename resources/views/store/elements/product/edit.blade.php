@@ -15,7 +15,7 @@
                   <div class="tabs-menu1">
                      <ul class="nav">
                         <li class=""><a href="#tab-51" class="active show"
-                           data-toggle="tab">Basic Information</a></li>
+                           data-toggle="tab">Product Information</a></li>
                         <li><a href="#tab-61" data-toggle="tab" class="">Images</a></li>
                         <li><a href="#tab-71" data-toggle="tab" class="">Product Variants</a></li>
 
@@ -35,7 +35,7 @@
                   <div class="tab-pane active show" id="tab-51">
                      <div id="profile-log-switch">
                         <div class="media-heading">
-                           <h5><strong>product Information</strong></h5>
+                           <h5><strong>Product Information</strong></h5>
                         </div>
               @if ($message = Session::get('status'))
             <div class="alert alert-success">
@@ -134,7 +134,7 @@
 
                   <div id="service_type_id" class="col-md-12">
                      <div class="form-group">
-                       <label class="form-label">Service Type {{$product->service_type }}*</label>
+                       <label class="form-label">Service Type *</label>
                         <select id="service_type_input" name="service_type"   onchange="servTypeChanged(this.value)"  class="form-control"  >
                          <option value="" > Service Type </option>
                          <option value="1" {{old('service_type',$product->service_type) == '1' ? 'selected':''}} > Booking Only</option>
@@ -204,7 +204,7 @@
 
 
             <div id="attSec" class="container"> 
-               <p class="h4 ml-2">Add Product Variants </p>
+               <p class="h5 ml-2">Add Product Variants </p>
                <div  id="attRow" class="section">
 
 

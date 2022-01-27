@@ -84,7 +84,7 @@
       <li class="slide">
         <a class="side-menu__item" href="{{route('store.list_order')}}">
           <i class="side-menu__icon ti-layers"></i>
-          <span class="side-menu__label"> {{ __('Order') }}</span>
+          <span class="side-menu__label"> {{ __('Orders') }}</span>
         </a>
       </li>
       

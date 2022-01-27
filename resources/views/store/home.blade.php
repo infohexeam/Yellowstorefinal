@@ -208,20 +208,6 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->get();
         </div>
 
 
-  <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
-            <div class="card">
-               <a href="{{ url('store/delivery-boys/list') }}">
-                  <div class="card-body text-center statistics-info">
-                     <div class="counter-icon bg-info mb-0 box-info-shadow">
-													<i class="ti ti-truck text-white"></i>
-							</div>
-                        <h6 class="mt-4 mb-1">{{ __('Delivery Boys') }}</h6>
-                        <h2 class="mb-2 number-font"> {{ @$deliveryBoys }}</h2>
-                        <p class="text-muted">{{ __('Delivery Boys Count ') }}</p>
-                    </div>
-               </a>
-            </div>
-        </div>
 
 
 
@@ -314,20 +300,21 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->get();
          </div>
       </div>
 
-        {{-- <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
             <div class="card">
-               <a href="{{ route('store.list_agency') }}">
+               <a href="{{ url('store/delivery-boys/list') }}">
                   <div class="card-body text-center statistics-info">
-                  <div class="counter-icon bg-success mb-0 box-success-shadow">
-                     <i class="fe fe-aperture text-white"></i>
-                  </div>
-                  <h6 class="mt-4 mb-1">{{ __('Agency') }}</h6>
-                  <h2 class="mb-2  number-font">{{$agency}}</h2>
-                  <p class="text-muted">{{ __('Total Agency') }}</p>
-               </div>
+                     <div class="counter-icon bg-info mb-0 box-info-shadow">
+													<i class="ti ti-truck text-white"></i>
+							</div>
+                        <h6 class="mt-4 mb-1">{{ __('Delivery Boys') }}</h6>
+                        <h2 class="mb-2 number-font"> {{ @$deliveryBoys }}</h2>
+                        <p class="text-muted">{{ __('Delivery Boys Count ') }}</p>
+                    </div>
                </a>
             </div>
-         </div> --}}
+        </div>
+
 
 
     </div>

@@ -36,28 +36,40 @@
                              
                              
                             <div class="card-body border">
-                                <form action="{{route('store.show_reports')}}" method="GET" enctype="multipart/form-data">
+                                <form action="{{route('admin.show_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
+                                       
+                                       
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">From Date</label>
+                                                   <div id="date_froml"  ></div>
                                                    <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date">
                             
-                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="form-label">To Date</label>
+                                              </div>
+                                           </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">To Date</label>
+                                                    <div  id="date_tol" ></div>
                                                  <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date">
-                                            </div>
-                                         </div>
+                            
+                                             </div>
+                                          </div>
+              
+              
+                                       
+                                      
+
                                          
                                          
-                                        <div class="col-md-4">
+                                          <div class="col-md-4">
                                           <div class="form-group">
                                               <label class="form-label">Customer</label>
-                                                  <select name="customer_id" id="customer_id" class="form-control select2-show-search" data-placeholder="Customer" >
+                                                    <div id="customer_id1"></div>
+                                                  <select name="customer_id" id="customer_idId" class="form-control select2-show-search hello" data-placeholder="Customer" >
                                                        <option value="" >Customer</option>
                                                        @foreach ($customers as $key)
                                                             <option value="{{ $key->customer_id }}" {{request()->input('customer_id') == $key->customer_id ? 'selected':''}} >{{ $key->customer_first_name }} {{ $key->customer_last_name }} - {{ $key->customer_mobile_number }} </option>
@@ -65,22 +77,23 @@
                                                   </select>
                                            </div>
                                           </div>
-                                          
-                                           <div class="col-md-4">
-                                              <div class="form-group">
-                                                  <label class="form-label">Products</label>
-                                                      <select name="product_id" id="product_id" class="form-control select2-show-search" data-placeholder="Products" >
-                                                           <option value="" >Products</option>
-                                                           @foreach ($products as $key)
-                                                                <option value="{{ $key->product_id }}" {{request()->input('product_id') == $key->product_id ? 'selected':''}} > {{ $key->product_name }} </option>
-                                                           @endforeach
-                                                      </select>
-                                               </div>
-                                          </div>
-                                          
+                                         
+                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                              <label class="form-label">Product </label>
+                                                    <div id="product_id1"></div>
+
+                                               <select  name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Product"  >
+                                                    <option value="">Product</option>
+                                                  
+                                                  </select>
+                                            </div>
+                                         </div>
+                                         
                                           <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Vendor </label>
+                                                    <div id="VendorId1"></div>
                                                <select  name="vendor_id" id="VendorId" class="form-control select2-show-search" data-placeholder="Vendor"  >
                                                 <option value="">Vendor</option>
                                                     @foreach($agencies as $key)
@@ -91,9 +104,10 @@
                                          </div>
                                          
                                          
-                                         <div class="col-md-6">
+                                         <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Category </label>
+                                                    <div id="categoryId1"></div>
                                                <select  name="category_id" id="categoryId" class="form-control select2-show-search" data-placeholder="Category"  >
                                                 <option value="">Category</option>
                                                     @foreach($categories as $key)
@@ -103,9 +117,10 @@
                                             </div>
                                          </div>
                                          
-                                         <div class="col-md-6">
+                                          <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Sub Category </label>
+                                                    <div id="subCategoryId1"></div>
                                                <select  name="sub_category_id" id="subCategoryId" class="form-control select2-show-search" data-placeholder="Sub Category"  >
                                                 <option value="">Sub Category</option>
                                                     @foreach($subCategories as $key)
@@ -116,16 +131,12 @@
                                          </div>
                                          
                                          
-                                         
-                                     
-                                         
-                                         
                                          <div class="col-md-12">
                                             <div class="form-group">
                                                 <center>
                                                    <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
-                                                   <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
-                                                   <a href="{{route('store.show_reports')}}"  class="btn btn-info">Cancel</a>
+                                                   <button type="reset" id="reset"  class="btn btn-raised btn-success">Reset</button>
+                                                   <a href="{{route('admin.show_reports')}}"  class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
                                           </div>
@@ -164,18 +175,59 @@
                                         @foreach ($data as $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
-                                            <td>{{ $d->agency_name }}</td>
-                                            <td>{{ $d->category_name }}</td>
-                                            <td>{{ $d->sub_category_name }}</td>
-                                            <td>{{ $d->product_brand }}</td>
-                                            <td>{{ $d->product_code }}</td>
+                                            <td>
+                                                @if(isset($d->created_at))
+                                                {{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}
+                                                 @else
+                                                    ---
+                                                @endif
+                                                </td>
+                                           
+                                            <td>
+                                                @if(isset($d->agency_name))
+                                                {{ $d->agency_name }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                            </td>
+                                            <td>
+                                                @if(isset($d->category_name))
+                                                {{ $d->category_name }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                            </td>
+                                            <td>
+                                                @if(isset($d->sub_category_name))
+                                                {{ $d->sub_category_name }}
+                                                @else
+                                                    ---
+                                                @endif
+
+                                                </td>
+                                            <td>
+                                                @if(isset($d->product_brand))
+                                                {{ $d->product_brand }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                                </td>
+                                            <td>
+                                                @if(isset($d->product_code))
+                                                {{ $d->product_code }}
+                                                 @else
+                                                    ---
+                                                @endif
+
+                                                </td>
                                             <td>
                                                 @if($d->variant_name == $d->product_name)
                                                     {{ $d->product_name }}
                                                 @else
-                                                    {{ $d->product_name }} 
-                                                   
+                                                    {{ $d->product_name }} {{$d->variant_name }}
                                                 @endif
                                             </td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
@@ -248,24 +300,39 @@
     </div>
 </div>
 
+
+
 <script>
+
+
+$(document).ready(function() {
+ $('#reset').click(function(){
+    if($('#customer_idId').remove()){
+       // alert("here");
+    }
+
+   })
+
+ });
     $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Product Report',
+                title: 'Product report',
                 footer: true,
-               
+                exportOptions: {
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+                 },
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
             },
             {
                 extend: 'excel',
-                title: 'Product Report',
+                title: 'Product report',
                 footer: true,
-
+              
             }
          ]
     } );
@@ -274,7 +341,83 @@
 </script>
 
 <script>
-      $(document).ready(function() {
+    $(document).ready(function() {
+        
+        $("#subadminId").on('change', function(){    
+            
+         let subadminId = $('#subadminId').val();
+         
+         var _token= $('input[name="_token"]').val();
+            $.ajax({
+              type:"GET",
+              url:"{{ url('admin/store-name-list') }}?subadmin_id="+subadminId,
+    
+              success:function(res){
+                    if(res){
+                       // console.log(res);
+                        $('#storeId').prop("diabled",false);
+                        $('#storeId').empty();
+                        $('#storeId').append('<option value="">Store</option>');
+                        $.each(res,function(store_id,store_name)
+                        {
+                          $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
+                        });
+                    }else
+                    {
+                      $('#storeId').empty();
+                    }
+                }
+    
+            });
+        });
+    });
+    
+    
+    $(document).ready(function() {
+ 
+     let subadminId = $('#subadminId').val();
+      if ( typeof subadminId === "undefined") {
+          subadminId = '';
+      }
+     let storeId = $('#storeId').val();
+     
+     var _token= $('input[name="_token"]').val();
+        $.ajax({
+          type:"GET",
+          url:"{{ url('admin/product-name-list') }}?subadmin_id="+subadminId+'&store_id'+storeId,
+
+          success:function(res){
+                if(res){
+                   // console.log(res);
+                    $('#productId').prop("diabled",false);
+                    $('#productId').empty();
+                    $('#productId').append('<option value="">Product</option>');
+                    $.each(res,function(product_id,product_name)
+                    {
+                      $('#productId').append('<option value="'+product_id+'">'+product_name+'</option>');
+                    });
+                    
+                    let productId = getUrlParameter('product_id');
+                    if ( typeof productId !== "undefined" && productId) {
+                        $("#productId option").each(function(){
+                            if($(this).val()==productId){ 
+                                $(this).attr("selected","selected");    
+                            }
+                        });
+                    } 
+    
+                }else
+                {
+                  $('#storeId').empty();
+                }
+            }
+
+        });
+
+    });
+    
+    
+    $(document).ready(function() {
         
         $("#categoryId").on('change', function(){    
             
@@ -286,7 +429,7 @@
         
             $.ajax({
               type:"GET",
-              url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+categoryId,
+              url:"{{ url('admin/sub-category-list') }}?category_id="+categoryId,
     
               success:function(res){
                     if(res){
@@ -335,6 +478,7 @@
         }
         return false;
     };
+
 </script>
 
 @endsection

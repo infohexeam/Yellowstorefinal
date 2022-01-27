@@ -34,17 +34,17 @@
                    @csrf
                         <div class="row">
 
-                            <!--<div class="col-md-12">-->
-                            <!--    <div class="form-group">-->
-                            <!--        <label class="form-label">Select Customer</label>-->
-                            <!--            <select name="customer_id2" id="customer_id2" class="form-control select2-show-search" data-placeholder="Select Customer" >-->
-                            <!--                 <option value="" >Select Customer</option>-->
-                            <!--                 @foreach ($customer as $data)-->
-                            <!--                      <option value="{{ $data->customer_id }}" >{{ $data->customer_first_name }} {{ $data->customer_last_name }} - {{ $data->customer_mobile_number }} </option>-->
-                            <!--                 @endforeach-->
-                            <!--            </select>-->
-                            <!--     </div>-->
-                            <!--</div>-->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Customer</label>
+                                        <select name="customer_id2" id="customer_id2" class="form-control" >
+                                             <option value="" >Store Customer</option>
+                                             <!--@foreach ($customer as $data)-->
+                                             <!--     <option value="{{ $data->customer_id }}" >{{ $data->customer_first_name }} {{ $data->customer_last_name }} - {{ $data->customer_mobile_number }} </option>-->
+                                             <!--@endforeach-->
+                                        </select>
+                                 </div>
+                            </div>
                             <input type="hidden" name="customer_id" name="customer_id" value="3"/>
 
                              <div class="col-md-12">
@@ -67,6 +67,13 @@
                                         </select>
                                  </div>
                             </div>
+                            
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">MRP</label>
+                                   <input type="text" readonly class="form-control" id="mrp" name="mrp" value="{{request()->input('mrp')}}" placeholder="MRP">
+                                 </div>
+                            </div>
  
                               <div class="col-md-6">
                                 <div class="form-group">
@@ -78,8 +85,8 @@
 
                              <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Rate</label>
-                                   <input type="text" readonly class="form-control" id="rate" name="rate" value="{{request()->input('rate')}}" placeholder="Rate">
+                                    <label class="form-label">Sale Price</label>
+                                   <input type="text" readonly class="form-control" id="rate" name="rate" value="{{request()->input('rate')}}" placeholder="Sale Price">
                                  </div>
                             </div>
 
@@ -146,7 +153,7 @@
                         <th class="wd-15p">Qty & Rate</th>
                         <th class="wd-15p">Discount</th>
                         <th class="wd-15p">Tax %</th>
-                        <th class="wd-15p">Total</th>
+                        <th class="wd-15p">Sub Total</th>
 
                       </tr>
                     </thead>
@@ -241,6 +248,8 @@ var countPro = 0;
                     product_sale_price = result['product_varient_offer_price'];
                     s_tax = result['tax'];
                     $('#rate').val(quantity * product_sale_price);
+                    $('#mrp').val(quantity * product_varient_price);
+
                     $('#tax_value').val(s_tax);
                     total_amount = quantity * product_sale_price
                          tax = (parseFloat(s_tax) / 100) * total_amount;
@@ -249,8 +258,8 @@ var countPro = 0;
                     $('#total_amount').val(total_amount_plus_tax.toFixed(2)); // remove it
                   //  changeDiscount();
                   // console.log(parseFloat(product_varient_price) + " - " +parseFloat(product_sale_price));
-                   
-                     $('#total_discount').val(parseFloat(product_varient_price) - parseFloat(product_sale_price));
+                    let Tdis = parseFloat(product_varient_price) - parseFloat(product_sale_price);
+                     $('#total_discount').val(Tdis.toFixed(2));
 
                }
           })

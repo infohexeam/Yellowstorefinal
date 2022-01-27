@@ -866,6 +866,9 @@ Route::get('store/product_invoice/whatsup/send/{id}', 'StoreController@SendInvoi
 
 Route::get('store/disputes/list', 'StoreController@listDisputes')->name('store.list_disputes');
 Route::post('store/disputes/status/{dispute_id}', 'StoreController@statusDisputes')->name('store.dispute_status');
+Route::post('store/disputes/store-response/{dispute_id}', 'StoreController@storeResponseUpdate')->name('store.dispute_store_response');
+
+Route::get('store/dispute-order/view/{id}', 'StoreController@viewDisputeOrder')->name('store.view_dispute_order');
 
 Route::get('store/current-issues', 'StoreController@currentIssues')->name('store.current_issues');
 Route::get('store/new-issues', 'StoreController@newIssues')->name('store.new_issues');
