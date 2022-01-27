@@ -3389,11 +3389,11 @@ class SettingController extends Controller
 		$payment_type = Sys_payment_type::all();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
-        $payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments','trn__order_split_payments.opt_id','=','trn__order_payment_transactions.opt_id')
-        ->join('trn_store_orders','trn_store_orders.order_id','=','trn__order_payment_transactions.order_id')
-        ->where('trn__order_split_payments.paymentRole','!=',1)
-        ->get();
-        //dd($payments);
+		$payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+			->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+			->where('trn__order_split_payments.paymentRole', '!=', 1)
+			->get();
+		//dd($payments);
 
 		if ($_GET) {
 
@@ -3409,7 +3409,7 @@ class SettingController extends Controller
 			$subadmin_id = $request->subadmin_id;
 			$store_id = $request->store_id;
 
-		
+
 
 			return view('admin.masters.payments.list', compact('dateto', 'datefrom', 'payments', 'subadmins', 'pageTitle', 'order', 'customer', 'payment_type', 'store'));
 		}
@@ -3714,7 +3714,7 @@ class SettingController extends Controller
 
 	public function list_subadmin_payment_settlment()
 	{
-		$pageTitle = "Sub Admin Payment Settlments";
+		$pageTitle = "Sub Admin Payment Settlements";
 		$subadmins = User::where('user_role_id', 1)->get();
 		return view('admin.masters.subadmin_payment.list', compact('subadmins', 'pageTitle'));
 	}
@@ -3722,7 +3722,7 @@ class SettingController extends Controller
 	{
 		$subadmin_id  = Crypt::decryptString($subadmin_id);
 
-		$pageTitle = "Sub Admin Payment Settlment";
+		$pageTitle = "Sub Admin Payment Settlement";
 
 
 		if ($_GET) {
