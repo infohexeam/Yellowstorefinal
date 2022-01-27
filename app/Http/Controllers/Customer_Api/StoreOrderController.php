@@ -1227,6 +1227,7 @@ class StoreOrderController extends Controller
 
 
                             $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
+                            $vaproductDetail = Mst_store_product_varient::find($value->product_varient_id);
                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
 
                             $baseProductDetail = Mst_store_product::find($value->product_id);
@@ -1240,6 +1241,16 @@ class StoreOrderController extends Controller
 
                             $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
 
+
+                            $discount_amount = ($vaproductDetail->product_varient_price - $vaproductDetail->product_varient_offer_price) * $value->quantity;
+                            $value->discount_amount =  number_format((float)$discount_amount, 2, '.', '');
+                            $value->taxPercentage = @$taxFullData->tax_value;
+                            $tTax = $value->quantity * ($vaproductDetail->product_varient_offer_price * @$taxFullData->tax_value / (100 + @$taxFullData->tax_value));
+                            $value->gstAmount = number_format((float)$tTax, 2, '.', '');
+                            $orgCost =  $value->quantity * ($vaproductDetail->product_varient_offer_price * 100 / (100 + @$taxFullData->tax_value));
+                            $value->orgCost = number_format((float)$orgCost, 2, '.', '');
+
+
                             $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
                             $stax = 0;
 
@@ -1248,7 +1259,7 @@ class StoreOrderController extends Controller
                                 if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
                                     $taxFullData->tax_value = 1;
 
-                                $stax = ($sd->split_tax_value * $value->tax_amount) / @$taxFullData->tax_value;
+                                $stax = ($sd->split_tax_value * $tTax) / @$taxFullData->tax_value;
                                 $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
                             }
 
