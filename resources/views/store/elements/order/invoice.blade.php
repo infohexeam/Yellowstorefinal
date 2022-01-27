@@ -82,13 +82,12 @@
                                        <td>Item<br>Name</td>
                                        <td>Qty</td>
                                        <td>MRP</td>
-                                       <td>Rate</td>
-                                       <td>Subtotal</td>
+                                       <td>Sale Price</td>
                                        <td>Discount<br>Amount</td>
+                                       <td class="text-center">Tax %</td>
                                        <td class="text-center">Tax Details</td>
-                                       {{-- <td>Tax<br>Name</td> --}}
-                                       {{-- <td>Tax<br>Percentage</td> --}}
                                        <td>Tax<br>Amount</td>
+                                       <td>Subtotal</td>
                                        <td>Total</td>
                                     </tr>
                            </thead>
@@ -115,20 +114,34 @@
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
                                            <td> {{ @$order_item->product_varient->product_varient_price }}</td>
-                                         <td>{{@$order_item->unit_price}} </td>
-                                          <td>
-                                             @php
-                                                 $tval  = $order_item->unit_price * @$order_item->quantity;
+                                           <td> {{ @$order_item->product_varient->product_varient_offer_price }}</td>
+                                 
+                                           <td>
+                                              @php
+                                                 $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
+                                              @endphp
+                                              {{@$discountAmt}} 
+                                             </td>
+                                 
+                                           <td>
+                                              @php
+                                                $tax_info = \DB::table('mst_store_products')
+                                                ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
+                                                ->where('mst_store_products.product_id', $order_item->product_id)
+                                                ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
+                                                ->first();  
+                                                $tval  = $order_item->unit_price * @$order_item->quantity;
+                                                $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                                $orgCost =  $value->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+
                                              @endphp
-                                             {{@$order_item->unit_price * @$order_item->quantity}} 
-                                          </td>
-                                          <td>{{@$order_item->discount_amount}} </td>
+
+                                              {{@$tax_info->tax_value}} 
+                                             
+                                             </td>
+                                        
                                           @php
-                                             $tax_info = \DB::table('mst_store_products')
-                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
-                                             ->where('mst_store_products.product_id', $order_item->product_id)
-                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
-                                             ->first();
+                                            
                                              @$t_val = ($tax_info->tax_value * $tval) * 0.01 ;
                                              $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',$tax_info->tax_id)->get();
                                                // dd($splitdata);
@@ -151,7 +164,7 @@
                                                 <tr>
                                                    <td>
                                                 @php
-                                                    $stax = ($item->split_tax_value * $t_val) / $tax_info->tax_value; 
+                                                    $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                                                 @endphp
                                              {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
                                              
@@ -164,11 +177,12 @@
                                           </td>
                                          
                                           <td> 
-                                             @if (isset($tax_info->tax_value))
-                                             {{ @$t_val }}
+                                             @if (isset($tTax))
+                                             {{ @$tTax }}
                                              @endif
                                           </td>
-                                          <td>{{@$order_item->total_amount}} </td>
+
+                                          <td>{{@$orgCost}} </td>
                                           
                                        </tr>
                                        @php
