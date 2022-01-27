@@ -81,7 +81,7 @@
               MRP
             </td>
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;"  align="center">
-              Rate
+              Sale Price
             </td>
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;"  align="center">
               Subtotal
@@ -90,7 +90,7 @@
               Discount<br>Amount		
             </td>
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;"  align="center">
-              Tax Details			
+              Tax %			
             </td>
             {{-- <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;"  align="center">
               Tax Name
@@ -99,7 +99,13 @@
               Tax Percentage
             </td> --}}
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center">
+              Tax <br> Details
+            </td>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center">
               Tax <br> Amount
+            </td>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;"  align="center">
+              Sub Total
             </td>
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;"  align="center">
               Total
@@ -136,36 +142,40 @@
                   {{ @$order_item->product_varient->product_varient_price }}
                 </td>
                 <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
-                  {{@$order_item->unit_price}} 
+                  {{ @$order_item->product_varient->product_varient_offer_price }}
                 </td>
                 <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center">
                   @php
-                  $tval  = $order_item->unit_price * @$order_item->quantity;
-                  @endphp
-                  {{@$order_item->unit_price * @$order_item->quantity}} 
+                  $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
+                @endphp
+                  {{ $discountAmt }} 
                 </td>
+
                 <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
-                 @if (isset($order_item->discount_amount))
-                  {{@$order_item->discount_amount}}
-                     @else
-                     0
-                 @endif
-                </td>
                   @php
                     $tax_info = \DB::table('mst_store_products')
                     ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
-                    ->where('mst_store_products.product_id', @$order_item->product_id)
+                    ->where('mst_store_products.product_id', $order_item->product_id)
                     ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
-                    ->first();
-                    $t_val = (@$tax_info->tax_value * $tval) * 0.01 ;
-                    $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',@$tax_info->tax_id)->get();
-                  @endphp
-                {{-- <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
-                  {{ @$tax_info->tax_name }} 
-                </td>
-                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
-                  {{@$tax_info->tax_value }} 
-                </td> --}}
+                    ->first();  
+                    $tval  = $order_item->unit_price * @$order_item->quantity;
+                    $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                    $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                    $Tot = $tTax + $orgCost;
+                 @endphp
+
+                  {{@$tax_info->tax_value}} 
+                 
+                 </td>
+
+                 @php
+                                            
+                  @$t_val = ($tax_info->tax_value * $tval) * 0.01 ;
+                    $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',$tax_info->tax_id)->get();
+                      // dd($splitdata);
+                @endphp 
+
+                
                 <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
                   <table style="line-height: 1rem; font-size: 10px;width:180px;">
                     @foreach ($splitdata as $item)
@@ -179,7 +189,7 @@
                     <tr>
                        <td>
                     @php
-                        $stax = ($item->split_tax_value * $t_val) / $tax_info->tax_value; 
+                        $stax = ($item->split_tax_value * $Tot) / $tax_info->tax_value; 
                     @endphp
                  {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
                  
@@ -190,20 +200,29 @@
                     @endforeach
                  </table>
                 </td>
+                
                 <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
-                  {{ @$t_val }} 
+                  @if (isset($tTax))
+                 {{ number_format((float)$tTax, 2, '.', '') }}  
+                  @endif
+               </td>
+
+               <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
+                {{ number_format((float)$orgCost, 2, '.', '') }}  
+                 
                 </td>
                 <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
-                  {{@$order_item->total_amount}} 
-                </td>  
+                  {{ number_format((float)$Tot, 2, '.', '') }}  
+
+                </td>
                 
               </tr>
               @php
-                $dis_amt =  $dis_amt + @$order_item->discount_amount;
-                $single_subtotal = @$order_item->unit_price * @$order_item->quantity;
-                $subtotal = $subtotal + $single_subtotal; 
-                $tax_amount = $tax_amount + $t_val ; 
-              @endphp
+              $dis_amt =  $dis_amt + $discountAmt;
+              $single_subtotal = @$order_item->unit_price * @$order_item->quantity;
+              $subtotal = $subtotal + $orgCost; 
+              $tax_amount = $tax_amount + $tTax ; 
+           @endphp
             @endforeach
 
         </table>
@@ -218,16 +237,34 @@
   <table style="margin:10px;">
     <tr  >
       <td style="font-size: smaller;" >Sub Total &nbsp;</td>
-      <td style="font-size: smaller;" > {{ @$subtotal }} </td>
+      <td style="font-size: smaller;" > {{ number_format((float)$subtotal, 2, '.', '') }} </td>
     </tr>
     <tr>
-      <td style="font-size: smaller;">Discount Amount &nbsp;</td>
-      <td style="font-size: smaller;"> {{ @$dis_amt }}</td>
+      <td style="font-size: smaller;">Total Tax &nbsp;</td>
+      <td style="font-size: smaller;">  {{ number_format((float)$tax_amount, 2, '.', '') }}</td>
     </tr>
+
+     @if(@$order->order_type == 'APP')
+
+      <tr>
+        <td style="font-size: smaller;">Delivery Charge &nbsp;</td>
+        <td style="font-size: smaller;">  {{ number_format((float)$dCharge, 2, '.', '') }}</td>
+      </tr>
+
+      @endif
+
     <tr>
-      <td style="font-size: smaller;">Tax Amount &nbsp;</td>
-      <td style="font-size: smaller;">  {{ @$tax_amount }}</td>
+      <td style="font-size: smaller;font-weight: 500;">Grand Total &nbsp;</td>
+      <td style="font-size: smaller;font-weight: 500;"> {{ @$order->product_total_amount }}</td>
     </tr>
+
+    <tr>
+      <td style="font-size: smaller;">Applied Discount &nbsp;</td>
+      <td style="font-size: smaller;">  {{ number_format((float)$dis_amt, 2, '.', '') }}</td>
+    </tr>
+
+
+   
     @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
     <tr>
       <td style="font-size: smaller;">Coupon Discount &nbsp;</td>
@@ -252,10 +289,7 @@
       <td style="font-size: smaller;font-weight: 500;">&nbsp;</td>
       <td style="font-size: smaller;font-weight: 500;">&nbsp;</td>
     </tr>
-    <tr>
-      <td style="font-size: smaller;font-weight: 500;">Grand Total &nbsp;</td>
-      <td style="font-size: smaller;font-weight: 500;"> {{ @$order->product_total_amount }}</td>
-    </tr>
+ 
    
   </table>
 </div>

@@ -228,10 +228,10 @@
                                        <td class="  h4">{{ $dCharge }}</td>
                                     </tr>
 
-                                    <tr>
+                                    {{-- <tr>
                                        <td colspan="9" class=" text-right">Packing Charge</td>
                                        <td class=" h4"> 0 </td>
-                                    </tr>
+                                    </tr> --}}
 
                                     @endif
 
