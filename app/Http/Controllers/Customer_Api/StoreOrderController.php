@@ -593,8 +593,14 @@ class StoreOrderController extends Controller
                             $sd->save();
                         }
 
+                        $proDataZ = Mst_store_product::find($productVarOlddata->product_id);
+
+                        $taxData = Mst_Tax::find($proDataZ->tax_id);
 
                         $total_amount = $value['quantity'] * $value['unit_price'];
+
+                        $iTax = @$productVarOlddata->product_varient_offer_price * 100 / (100 + @$taxData->tax_value);
+                        $iDis = @$productVarOlddata->product_varient_price - @$productVarOlddata->product_varient_offer_price;
 
                         $data2 = [
                             'order_id' => $order_id,
@@ -604,9 +610,9 @@ class StoreOrderController extends Controller
                             'store_id' => $request['store_id'],
                             'quantity' => $value['quantity'],
                             'unit_price' =>  $value['unit_price'],
-                            'tax_amount' => $value['tax_amount'],
+                            'tax_amount' => $iTax,
                             'total_amount' => $total_amount,
-                            'discount_amount' => $value['discount_amount'],
+                            'discount_amount' => $iDis,
                             'created_at'         => Carbon::now(),
                             'updated_at'         => Carbon::now(),
                         ];
