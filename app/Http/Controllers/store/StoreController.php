@@ -1740,7 +1740,7 @@ class StoreController extends Controller
 
     $orderC = Trn_store_order::where('store_id', '=', $store_id)
       ->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2)
-      ->orderBy('order_id', 'DESC')->get();
+      ->orderBy('order_id', 'DESC')->count();
 
       $orders = Trn_store_order::where('store_id', '=', $store_id)
       ->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2)
