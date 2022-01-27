@@ -132,7 +132,7 @@
                                                 ->first();  
                                                 $tval  = $order_item->unit_price * @$order_item->quantity;
                                                 $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
-                                                $orgCost =  $value->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                                                $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
 
                                              @endphp
 
