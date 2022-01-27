@@ -224,21 +224,32 @@
                                     @if(@$order->order_type == 'APP')
 
                                     <tr>
-                                       <td colspan="8" class=" text-right">Delivery Charge</td>
+                                       <td colspan="9" class=" text-right">Delivery Charge</td>
                                        <td class="  h4">{{ $dCharge }}</td>
                                     </tr>
 
                                     <tr>
-                                       <td colspan="8" class=" text-right">Packing Charge</td>
+                                       <td colspan="9" class=" text-right">Packing Charge</td>
                                        <td class=" h4"> 0 </td>
                                     </tr>
 
+                                    @endif
+
+
                                     <tr>
-                                       <td colspan="8" class=" text-right">Grand Total</td>
-                                       <td class="  h4">{{ $dCharge + number_format((float)$tax_amount, 2, '.', '') + number_format((float)$subtotal, 2, '.', '') }}</td>
+                                       <td colspan="9" class="font-weight-bold text-uppercase text-right">Grand Total</td>
+                                       <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$order->product_total_amount }}</td>
+                                    </tr>
+
+                                    <tr>
+                                       <td colspan="9" class=" text-right">Applied Discount</td>
+                                       <td class=" h4"> {{ @$dis_amt }} </td>
                                     </tr>
 
                                    
+
+                                   
+                                    @if(@$order->order_type == 'APP')
 
                                     
                                     @if(($order->reward_points_used != null) || ($order->reward_points_used != 0))
@@ -257,15 +268,12 @@
 
                                    
 
-                                    <tr>
-                                       <td colspan="9" class=" text-right">Discount Amount</td>
-                                       <td class=" h4"> {{ @$dis_amt }}</td>
-                                    </tr>
+                                 
 
                                     @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
 
                                     <tr>
-                                       <td colspan="8" class=" text-right">Coupon Discount</td>
+                                       <td colspan="9" class=" text-right">Coupon Discount</td>
                                        <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
                                     </tr>
 
@@ -287,11 +295,7 @@
                                         @$gand_total = @$subtotal;
                                     @endphp
 
-                                    <tr>
-                                       <td colspan="8" class="font-weight-bold text-uppercase text-right">Grand Total</td>
-                                       <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$order->product_total_amount }}</td>
-                                       {{-- <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$gand_total }}</td> --}}
-                                    </tr>
+                                  
 
 
                                  </tbody>
