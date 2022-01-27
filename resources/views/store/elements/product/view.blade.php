@@ -96,7 +96,7 @@
                                     <td><strong>Offer To Date :</strong> {{ $product->product_offer_to_date}}</td>
                                  </tr> --}}
                                 <tr>
-                                    <td><strong>Regular Price:</strong> {{ $product->product_price}}</td>
+                                    <td><strong>MRP:</strong> {{ $product->product_price}}</td>
                                  </tr>
                                <tr>
                                     <td><strong>Sale Price:</strong> {{ $product->product_price_offer}}</td>

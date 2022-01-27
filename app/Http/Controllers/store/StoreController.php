@@ -1738,9 +1738,13 @@ class StoreController extends Controller
     $a1 = Carbon::parse($date_from)->startOfDay();
     $a2  = Carbon::parse($date_to)->endOfDay();
 
-    $orders = Trn_store_order::where('store_id', '=', $store_id)
+    $orderC = Trn_store_order::where('store_id', '=', $store_id)
       ->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2)
       ->orderBy('order_id', 'DESC')->get();
+
+      $orders = Trn_store_order::where('store_id', '=', $store_id)
+      ->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2)
+      ->orderBy('order_id', 'DESC')->paginate($orderC);
 
     $status = Sys_store_order_status::all();
     $store = Mst_store::all();
