@@ -1246,6 +1246,7 @@ class StoreOrderController extends Controller
                             $value->discount_amount =  number_format((float)$discount_amount, 2, '.', '');
                             $value->taxPercentage = @$taxFullData->tax_value;
                             $tTax = $value->quantity * ($vaproductDetail->product_varient_offer_price * @$taxFullData->tax_value / (100 + @$taxFullData->tax_value));
+                            $value->tax_amount = number_format((float)$tTax, 2, '.', '');
                             $value->gstAmount = number_format((float)$tTax, 2, '.', '');
                             $orgCost =  $value->quantity * ($vaproductDetail->product_varient_offer_price * 100 / (100 + @$taxFullData->tax_value));
                             $value->orgCost = number_format((float)$orgCost, 2, '.', '');
