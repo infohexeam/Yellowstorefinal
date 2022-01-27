@@ -201,29 +201,45 @@
                                     @endforeach
                                     
                                     <tr>
-                                       <td colspan="8" class=" text-right">Sub Total</td>
-                                       <td class=" h4"> {{ @$subtotal }}</td>
+                                       <td colspan="9" class=" text-right">Sub Total</td>
+                                       <td class=" h4">   {{ number_format((float)$subtotal, 2, '.', '') }}   </td>
                                     </tr>
                                     
+
+                                    <tr>
+                                       <td colspan="9" class=" text-right">Total Tax</td>
+                                       <td class=" h4">   {{ number_format((float)$tax_amount, 2, '.', '') }}   </td>
+                                    </tr>
                                     
-                                    <tr>
-                                       <td colspan="8" class=" text-right">Discount Amount</td>
-                                       <td class=" h4"> {{ @$dis_amt }}</td>
-                                    </tr>
-                            @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
-
-                                    <tr>
-                                       <td colspan="8" class=" text-right">Coupon Discount</td>
-                                       <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
-                                    </tr>
-
-                            @endif
+                                  
+                          
 
                                    
                                   
-                                    
+                                    @php
+                                    $dCharge = 0;
+                                      $dCharge =   @$order->delivery_charge;
+                                    @endphp
 
                                     @if(@$order->order_type == 'APP')
+
+                                    <tr>
+                                       <td colspan="8" class=" text-right">Delivery Charge</td>
+                                       <td class="  h4">{{ $dCharge }}</td>
+                                    </tr>
+
+                                    <tr>
+                                       <td colspan="8" class=" text-right">Packing Charge</td>
+                                       <td class=" h4"> 0 </td>
+                                    </tr>
+
+                                    <tr>
+                                       <td colspan="8" class=" text-right">Grand Total</td>
+                                       <td class="  h4">{{ $dCharge + number_format((float)$tax_amount, 2, '.', '') + number_format((float)$subtotal, 2, '.', '') }}</td>
+                                    </tr>
+
+                                   
+
                                     
                                     @if(($order->reward_points_used != null) || ($order->reward_points_used != 0))
                                     
@@ -238,17 +254,28 @@
                                         
                                     
                                     @endif
+
+                                   
+
+                                    <tr>
+                                       <td colspan="9" class=" text-right">Discount Amount</td>
+                                       <td class=" h4"> {{ @$dis_amt }}</td>
+                                    </tr>
+
+                                    @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
+
+                                    <tr>
+                                       <td colspan="8" class=" text-right">Coupon Discount</td>
+                                       <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
+                                    </tr>
+
+                                    @endif
+
                                     
-                                    <tr>
-                                       <td colspan="8" class=" text-right">Packing Charge</td>
-                                       <td class=" h4"> {{ @$order->packing_charge}} </td>
-                                    </tr>
+                                    
 
 
-                                    <tr>
-                                       <td colspan="8" class=" text-right">Delivery Charge</td>
-                                       <td class="  h4">{{ @$order->delivery_charge}}</td>
-                                    </tr>
+                                   
                                     @endif
                                     
                                     <!-- <tr>-->
