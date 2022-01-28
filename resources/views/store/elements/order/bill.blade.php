@@ -22,6 +22,10 @@
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;"> {{ @$store_data->store_name }} </td>
           </tr>
           <tr>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">Order Number: {{@$order->order_number}} </td>
+          </tr>
+
+          <tr>
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">Invoice Number: {{@$invoice_data->invoice_id}} <br> Invoice Date: {{$changeDate = date("d-m-Y", strtotime( @$order->created_at))  }}</td>
           </tr>
 
