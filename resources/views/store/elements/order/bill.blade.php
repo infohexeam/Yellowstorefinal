@@ -244,6 +244,11 @@
       <td style="font-size: smaller;">  {{ number_format((float)$tax_amount, 2, '.', '') }}</td>
     </tr>
 
+               @php
+                $dCharge = 0;
+                  $dCharge =   @$order->delivery_charge;
+                @endphp
+
      @if(@$order->order_type == 'APP')
 
       <tr>
