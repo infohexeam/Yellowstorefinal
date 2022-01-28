@@ -1231,6 +1231,33 @@ class SettingController extends Controller
 
 		return redirect('admin/store/list')->with('status', 'Store status changed successfully');
 	}
+	
+	
+	
+	public function statusStorePG(Request $request, Mst_store $store, $store_id)
+	{
+
+		$cat_id = $request->store_id;
+
+		$store = Mst_store::Find($cat_id);
+
+		$status = $store->is_pgActivated;
+
+		if ($status == 0) {
+		//	$store->is_pgActivated  = 1;
+			$storeD['is_pgActivated'] = 1;
+		} else {
+			$storeD['is_pgActivated'] = 0;
+
+		//	$store->is_pgActivated  = 0;
+		}
+		//store->update();
+
+		Mst_store::where('store_id', $store_id)->update($storeD);
+
+		return redirect('admin/store/list')->with('status', 'Pament gateway status changed successfully');
+	}
+	
 
 
 	public function destroyStore(Request $request, Mst_store $store)

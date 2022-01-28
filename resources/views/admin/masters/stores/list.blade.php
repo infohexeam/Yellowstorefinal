@@ -180,6 +180,7 @@
                                     <th class="wd-15p">{{ __('Name') }}</th>
                                     <th class="wd-15p">{{ __('Mobile')}}</th>
                                     <th class="wd-20p">{{__('Email')}}</th>
+                                    <th class="wd-20p">Register Date</th>
                                      @if(auth()->user()->user_role_id  == 0)
                                     <th class="wd-20p">Sub<br>Admin</th>
                                     <th class="wd-20p">{{__('Is PG Activated')}}</th>
@@ -201,10 +202,24 @@
                                    
                                     <td>{{$store->store_mobile}} </td>
                                     <td>{{ $store->email}} </td>
+                        <td>{{ \Carbon\Carbon::parse($store->created_at)->format('d-m-Y')}}</td>
+
                                     @if(auth()->user()->user_role_id  == 0)
                                     <td>{{ @$store->subadmin->name}} </td>
                                     <td>
-                                        <input type="checkbox" class="form-control"   name="isPGActivated" value="1" id="isPGActivated" @if($store->is_pgActivated == 1) checked @endif />
+                                        
+                                        
+                                        <a href="{{ url('admin/change-pg-status/'.$store->store_id) }}"  onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
+                                          @if($store->is_pgActivated != 1) btn-danger @else btn-success @endif"> @if($store->is_pgActivated != 1)
+                                          InActive
+                                          @else
+                                          Active
+                                          @endif</a>
+                                          
+                                        
+                                        
+
+                                        <!--<input type="checkbox" class="form-control"   name="isPGActivated" value="1" id="isPGActivated" @if($store->is_pgActivated == 1) checked @endif />-->
                                         
                                     </td>
                                     @endif

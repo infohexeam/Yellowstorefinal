@@ -344,9 +344,27 @@
                                     <td>{{$i}}</td>
                                     <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$product_image->product_image)}}"  width="50" ></td>
                                     <td>{{@$product_image->variant->variant_name}}</td>
-                                    <td><input type="checkbox" class="csatatus{{$product_image->product_varient_id}}" @if (@$product_image->image_flag == 1) checked @endif value="1" 
-                                    onchange="changeBaseImage({{$product_image->product_image_id}},{{$product_image->product_varient_id}})"  name="image_flag" 
-                                    id="image_flag{{$product_image->product_image_id}}"></td>
+                                    <td>
+                                        @if($product_image->image_flag != 1)
+                                          <a href="{{ url('admin/change-img-status/'.$product_image->product_image_id) }}"  onclick="return confirm('Do you want to change status?');" class="btn btn-sm
+                                          @if($product_image->image_flag != 1) btn-danger @else btn-success @endif "   > @if($product_image->image_flag != 1)
+                                          Not Default
+                                          @else
+                                          Base Image
+                                          @endif</a>
+                                          
+                                           @else
+                                           
+                                             <a href="#"  class="btn btn-sm btn-success "   > Base Image   </a>
+                                          
+                                          
+                                          @endif
+                                        
+                                    <!--    <input type="checkbox" class="csatatus{{$product_image->product_varient_id}}" @if (@$product_image->image_flag == 1) checked @endif value="1" -->
+                                    <!--onchange="changeBaseImage({{$product_image->product_image_id}},{{$product_image->product_varient_id}})"  name="image_flag" -->
+                                    <!--id="image_flag{{$product_image->product_image_id}}">-->
+                                    
+                                    </td>
 
                                     <td>
                                         <form action="{{route('store.destroy_product_image',$product_image->product_image_id)}}" method="POST">

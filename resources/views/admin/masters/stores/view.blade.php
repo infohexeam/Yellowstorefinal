@@ -87,6 +87,9 @@
                                      <td><strong>Email:</strong> {{ $store->email}}</td>
                                  </tr>
                                  <tr>
+                                     <td><strong>Registered Date:</strong> {{ \Carbon\Carbon::parse($store->created_at)->format('d-m-Y')}}</td>
+                                 </tr>
+                                 <tr>
                                     <td><strong>Country:</strong>{{ @$store->country['country_name']}}</td>
                                  </tr>
                                  <tr>

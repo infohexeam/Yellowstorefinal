@@ -9,6 +9,11 @@
       </a><!-- LOGO -->
       <a aria-label="Hide Sidebar" class="app-sidebar__toggle ml-auto" data-toggle="sidebar" href="#"></a><!-- sidebar-toggle-->
     </div>
+    
+    @php
+    use App\Models\admin\Mst_store;
+
+    @endphp
 
     @if(Auth::check())
 
@@ -23,7 +28,17 @@
         <div class="user-info">
 
           <h6 class=" mb-0 text-dark">{{ (new \App\Helpers\Helper)->adminName(Auth::guard('store')->user()->store_admin_id) }}</h6>
-          <!---<span class="text-muted app-sidebar__user-name text-sm">{{Auth::user()->email}}</span>-->
+                
+                @if(Auth::guard('store')->user()->role_id != 0)
+                
+                    @php
+                      $dataName =   Mst_store::find(Auth::guard('store')->user()->store_id)->store_name;
+                    @endphp
+    
+                  <span class="text-muted app-sidebar__user-name text-sm"> {{ @$dataName }}</span>
+              
+              @endif
+              
         </div>
       </div>
     </div>
@@ -123,6 +138,7 @@
 
             </ul>
         </li>
+      @if(Auth::guard('store')->user()->role_id == 0)
 
 
        <li class="slide">
@@ -131,6 +147,8 @@
           <span class="side-menu__label"> {{ __('Store Admin') }}</span>
         </a>
       </li>
+      @endif
+
       <li class="slide">
         <a class="side-menu__item" href="{{route('store.list_disputes')}}">
           <i class="side-menu__icon ti-comments"></i>

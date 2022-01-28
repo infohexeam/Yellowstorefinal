@@ -48,6 +48,38 @@ class CouponController extends Controller
     }
     
     
+    
+     public function statusStoreIMG(Request $request,$imgId)
+    {
+        try {
+        
+           $dataImage = Mst_product_image::find($imgId);
+           
+               $coImg = Mst_product_image::where('product_id',$dataImage->product_id)->where('product_varient_id',$dataImage->product_varient_id)
+               ->update(['image_flag' => 0 ]);
+
+        $coImg = Mst_product_image::where('product_image_id',$imgId)->update(['image_flag' => 1 ]);
+        
+        
+        
+         if ($dataImage->product_varient_id == 0) {
+
+      Mst_product_image::where('product_image_id', $dataImage->product_image_id)->where('product_varient_id', $dataImage->product_varient_id)->update(['image_flag' => 1]);
+      Mst_store_product::where('product_id', $dataImage->product_id)->update(['product_base_image' => $dataImage->product_image]);
+    } else {
+      Mst_product_image::where('product_image_id', $dataImage->product_image_id)->where('product_varient_id', $dataImage->product_varient_id)->update(['image_flag' => 1]);
+      Mst_store_product_varient::where('product_varient_id', $dataImage->product_varient_id)->update(['product_varient_base_image' => $dataImage->product_image]);
+    }
+        
+        
+               		return redirect()->back()->with('status', 'Base image successfully updated.');
+
+        } catch (\Exception $e) {return redirect()->back()->withErrors(['Something went wrong!'])->withInput();}
+    }
+
+
+    
+    
     public function isPCodeAvailable(Request $request){
       
       $proEx = Mst_store_product::where('product_code',$request->product_code);

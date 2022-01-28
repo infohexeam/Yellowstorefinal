@@ -145,6 +145,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('admin/store/destroy/document/{document}', 'SettingController@destroyStore_Doc')->name('admin.destroy_store_doc');
         Route::post('admin/store/destroy/link_delivery_boy/{link_delivery_boy}', 'SettingController@destroyAssignedDelivery_boy')->name('admin.store_link_delivery_boy');
 
+        Route::get('/admin/change-pg-status/{store_id}', 'SettingController@statusStorePG')->name('admin.status_storePG');
 
         Route::get('admin/store/restore-list', 'AdminController@listRestoreStore')->name('admin.restore_list_store');
         Route::post('admin/store/restore/{store_id}', 'AdminController@restoreStore')->name('admin.restore_store');
@@ -731,6 +732,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/product/edit/{id}', 'StoreController@editProduct')->name('store.edit_product');
         Route::get('store/ajax/product/set_default_image', 'StoreController@setDefaultImage');
         Route::get('product/ajax/is-code-available', 'CouponController@isPCodeAvailable');
+
+
+        Route::get('admin/change-img-status/{store_id}', 'CouponController@statusStoreIMG')->name('admin.status_storeIMG');
+
 
         Route::post('store/product/update/{product_id}', 'StoreController@updateProduct')->name('store.update_product');
 
