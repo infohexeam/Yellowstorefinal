@@ -36,7 +36,7 @@
                              
                              
                             <div class="card-body border">
-                                <form action="{{route('admin.show_reports')}}" method="GET" enctype="multipart/form-data">
+                                <form action="{{route('store.show_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
                                        
@@ -136,7 +136,7 @@
                                                 <center>
                                                    <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
                                                    <button type="reset" id="reset"  class="btn btn-raised btn-success">Reset</button>
-                                                   <a href="{{route('admin.show_reports')}}"  class="btn btn-info">Cancel</a>
+                                                   <a href="{{route('store.show_reports')}}"  class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
                                           </div>
