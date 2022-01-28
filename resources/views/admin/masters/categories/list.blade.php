@@ -103,7 +103,7 @@
                                        <img src="{{asset('/assets/uploads/category/icons/'.$category->category_icon)}}"  width="50" >
                                     @endif
                                  </td>
-                                    <td>{{ $category->business_type['business_type_name'] }}  </td>
+                                    <td>{{ @$category->business_type['business_type_name'] }}  </td>
                                      <td>
                                        <form action="{{route('admin.status_category',$category->category_id)}}" method="POST">
 
@@ -162,7 +162,7 @@
                                     <td><h6>Category Type: </td><td> {{ $category->category_name }}</h6></td>
                                  </tr>
                                 <tr>
-                                    <td><h6>Business Type: </td><td> {{ $category->business_type['business_type_name'] }}
+                                    <td><h6>Business Type: </td><td> {{ @$category->business_type['business_type_name'] }}
                                    </h6></td>
                                  </tr>
                                  <tr>
