@@ -79,7 +79,7 @@
         <ul class="slide-menu">
                       <li><a class="slide-item" href="{{route('admin.list_business_type')}}">{{ __('Business Types') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_category')}}">{{ __('Product Category') }}</a></li>
-                      <li><a class="slide-item" href="{{route('admin.list_districts')}}">{{ __('Districts') }}</a></li>
+                      {{-- <li><a class="slide-item" href="{{route('admin.list_districts')}}">{{ __('Districts') }}</a></li> --}}
                       <li><a class="slide-item" href="{{route('admin.list_towns')}}">{{ __('Towns') }}</a></li>
                         <li><a class="slide-item" href="{{route('admin.list_vihicle_types')}}">{{ __('Vehicle Types') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_taxes')}}">{{ __('Tax') }}</a></li>
