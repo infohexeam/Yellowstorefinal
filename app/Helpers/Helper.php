@@ -219,7 +219,7 @@ class Helper
             }
             return $totalTax;
         } else {
-            return  0;
+            return  '0.0';
         }
     }
 
