@@ -61,6 +61,7 @@ use App\Models\admin\Trn_referal_point;
 use App\Models\admin\Trn_points_to_rupee;
 use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Mst_SubCategory;
+use App\Models\admin\Trn_CategoryBusinessType;
 use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Trn_TermsAndCondition;
 use App\Models\admin\Trn_customerAddress;
@@ -90,7 +91,12 @@ class SettingController extends Controller
 
 			$business_type_id = $request->business_type_id;
 
-			$categories = Mst_categories::where('business_type_id', $business_type_id)->orderBy('category_id', 'DESC')->get();
+
+			$categories = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
+				->where('trn__category_business_types.business_type_id',  $request->business_type_id)
+				->get();
+
+
 
 			return view('admin.masters.categories.list', compact('categories', 'pageTitle', 'business_types'));
 		}
@@ -117,7 +123,7 @@ class SettingController extends Controller
 				'category_name'       => 'required|unique:mst_store_categories',
 				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
 				//	'category_description' => 'required',
-				'business_type_id'		=> 'required',
+				//	'business_type_id'		=> 'required',
 
 
 			],
@@ -140,7 +146,7 @@ class SettingController extends Controller
 			$category->category_name 		= $request->category_name;
 			$category->category_name_slug  	= Str::of($request->category_name)->slug('-');
 			$category->category_description = $request->category_description;
-			$category->business_type_id = $request->business_type_id;
+			$category->business_type_id = 0;
 			$category->parent_id 		= 0;
 
 			if ($request->hasFile('category_icon')) {
@@ -164,7 +170,19 @@ class SettingController extends Controller
 
 			$category->category_status 		= 1;
 
-			$category->save();
+			if ($category->save()) {
+				$lastCatid = DB::getPdo()->lastInsertId();
+				foreach (array_unique($request->business_type_ids) as  $row) {
+					$cb = new Trn_CategoryBusinessType;
+					$cb->category_id = $lastCatid;
+					$cb->business_type_id = $row;
+					$cb->status = 1;
+					$cb->save();
+				}
+			}
+
+
+
 
 			return redirect('admin/categories/list')->with('status', 'Category added successfully.');
 		} else {
@@ -197,7 +215,7 @@ class SettingController extends Controller
 				'category_name'       => 'required|unique:mst_store_categories,category_name,' . $category_id . ',category_id',
 				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
 				//		'category_description' => 'required',
-				'business_type_id'		=> 'required',
+				//'business_type_id'		=> 'required',
 
 
 			],
@@ -219,7 +237,7 @@ class SettingController extends Controller
 			$category->category_name_slug  	= Str::of($request->category_name)->slug('-');
 
 			$category->category_description = $request->category_description;
-			$category->business_type_id = $request->business_type_id;
+			$category->business_type_id = 0;
 
 
 			if ($request->hasFile('category_icon')) {
@@ -259,12 +277,36 @@ class SettingController extends Controller
 				$category->parent_id = $request->parent_id;
 			}
 
-			$update = $category->update();
+			if ($category->update()) {
+				Trn_CategoryBusinessType::where('category_id', $category_id)->delete();
+				foreach (array_unique($request->business_type_ids) as  $row) {
+					$cb = new Trn_CategoryBusinessType;
+					$cb->category_id = $category_id;
+					$cb->business_type_id = $row;
+					$cb->status = 1;
+					$cb->save();
+				}
+			}
+
+
+
+
+
 			return redirect('admin/categories/list')->with('status', 'Category updated successfully.');
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
 	}
+
+	public function removeCB(Request $request, Trn_CategoryBusinessType $category, $cbt_id)
+	{
+
+		Trn_CategoryBusinessType::where('cbt_id', $cbt_id)->delete();
+
+		return redirect()->back()->with('status', 'Row deleted successfully');
+	}
+
+
 	public function destroyCategory(Request $request, Mst_categories $category)
 	{
 
