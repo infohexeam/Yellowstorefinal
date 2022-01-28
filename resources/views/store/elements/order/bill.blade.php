@@ -58,8 +58,8 @@
         <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right"> 
             <div>
                 <br>
-                @if (isset(@$order->delivery_address))
-                  @php
+                @if (isset($order->delivery_address))
+                  @php 
                    $cAddr =  \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                   @endphp
                   {{$cAddr->name }}  , {{$cAddr->phone }}
