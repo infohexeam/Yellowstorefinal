@@ -189,11 +189,9 @@
                     <tr>
                        <td>
                     @php
-                        $stax = ($item->split_tax_value * $Tot) / $tax_info->tax_value; 
+                        $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                     @endphp
-                 {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
-                 
-               -  {{ number_format((float)$stax, 2, '.', '') }}  
+                 {{ $item->split_tax_name }} : {{ number_format((float)$stax, 2, '.', '') }}  
 
                        </td>
                     </tr>
