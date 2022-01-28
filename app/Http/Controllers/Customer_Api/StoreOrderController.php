@@ -599,7 +599,7 @@ class StoreOrderController extends Controller
 
                         $total_amount = $value['quantity'] * $value['unit_price'];
 
-                        $iTax = (@$productVarOlddata->product_varient_offer_price * 100 / (100 + @$taxData->tax_value));
+                        $iTax = (@$productVarOlddata->product_varient_offer_price * 100) / (100 + @$taxData->tax_value);
                         $iDis = @$productVarOlddata->product_varient_price - @$productVarOlddata->product_varient_offer_price;
 
                         $data2 = [
