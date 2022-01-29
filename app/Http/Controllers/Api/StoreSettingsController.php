@@ -364,6 +364,7 @@ class StoreSettingsController extends Controller
                         'store_state_id',
                         'town_id',
                         'store_username',
+                        'store_commision_percentage',
                         'store_mobile',
                         'email',
                         'place',
