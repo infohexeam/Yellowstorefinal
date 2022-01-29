@@ -2051,12 +2051,66 @@ class StoreController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
 
-                $paymentReport = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+                $payments = Trn_OrderPaymentTransaction::
+                ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
                     ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
-                    // ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
-                    // ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
                     ->where('trn__order_split_payments.paymentRole', '=', 1)
-                    ->where('trn_store_orders.store_id', '=', $store_id);
+                    ->where('trn_store_orders.store_id', '=', $store_id)
+                    ->get();
+
+
+                $paymentReport =  Trn_store_order::select(
+
+                    'trn_store_orders.order_id',
+                    'trn_store_orders.order_number',
+                    'trn_store_orders.customer_id',
+                    'trn_store_orders.store_id',
+                    'trn_store_orders.subadmin_id',
+                    'trn_store_orders.product_total_amount',
+                    'trn_store_orders.delivery_charge',
+                    'trn_store_orders.packing_charge',
+                    'trn_store_orders.payment_type_id',
+                    'trn_store_orders.payment_status',
+                    'trn_store_orders.trn_id',
+
+                    'trn_store_orders.status_id',
+                    'trn_store_orders.payment_status',
+                    'trn_store_orders.delivery_status_id',
+                    'trn_store_orders.delivery_boy_id',
+                    'trn_store_orders.coupon_id',
+                    'trn_store_orders.coupon_code',
+                    'trn_store_orders.reward_points_used',
+                    'trn_store_orders.amount_before_applying_rp',
+                    'trn_store_orders.trn_id',
+                    'trn_store_orders.created_at',
+                    'trn_store_orders.amount_reduced_by_coupon',
+                    'trn_store_orders.order_type',
+
+                    'trn_store_customers.customer_id',
+                    'trn_store_customers.customer_first_name',
+                    'trn_store_customers.customer_last_name',
+                    'trn_store_customers.customer_mobile_number',
+                    'trn_store_customers.place',
+
+                    'mst_stores.store_id',
+                    'mst_stores.store_name',
+                    'mst_stores.store_mobile',
+
+                    'trn__order_payment_transactions.*',
+                    'trn__order_split_payments.*',
+
+                    'mst_delivery_boys.delivery_boy_name',
+                    'mst_delivery_boys.delivery_boy_mobile'
+
+
+
+                )
+                    ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+                    ->join('trn__order_payment_transactions', 'trn__order_payment_transactions.order_id', '=', 'trn_store_orders.order_id')
+                    ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+                    ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+                    ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+
 
 
 
@@ -2089,19 +2143,15 @@ class StoreController extends Controller
                 }
 
 
-                $paymentReport = $paymentReport->where('trn_store_orders.store_id', $store_id)
-                    ->where('trn_store_orders.order_type', 'APP')
+                $paymentReport = $paymentReport->where('trn_store_orders.store_id', $store_id)->where('trn_store_orders.order_type', 'APP')
                     ->orderBy('trn_store_orders.order_id', 'DESC');
 
 
                 if (isset($request->page)) {
-                    $paymentReport = $paymentReport->paginate(10, 'page', $request->page);
+                    $paymentReport = $paymentReport->paginate(10, ['data'], 'page', $request->page);
                 } else {
                     $paymentReport = $paymentReport->paginate(10);
                 }
-
-                dd($paymentReport);
-
 
 
 
