@@ -2051,7 +2051,8 @@ class StoreController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
 
-                $paymentReport = new Trn_OrderPaymentTransaction;
+                $paymentReport = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id');
+
 
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
                 $a2  = Carbon::parse($request->date_to)->endOfDay();
