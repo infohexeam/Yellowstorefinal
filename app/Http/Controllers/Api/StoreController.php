@@ -2223,7 +2223,7 @@ class StoreController extends Controller
                         foreach ($opt as $row) {
                             $ospCount = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->count();
                             if ($ospCount > 0) {
-                                $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->get();
+                                $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->where('paymentRole', 1)->get();
                                 $row->orderSplitPayments = $osp;
                             }
                         }
