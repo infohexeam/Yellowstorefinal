@@ -54,6 +54,10 @@ class Helper
     {
         $userId =  Mst_store::find($store_id)->subadmin_id;
         return $uData =  User::find($userId);
+        if (isset($uData->admin_name))
+            return @$uData->admin_name;
+        else
+            return  '---';
 
         // if (isset($userId)) {
         //     if (User::find($userId)->admin_name) {
