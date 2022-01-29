@@ -2698,6 +2698,7 @@ class StoreController extends Controller
     $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
       ->where('mst_store_products.store_id', $store_id)
       ->where('mst_store_products.product_status', 1)
+      ->where('mst_store_products.product_type', 1)
       ->where('mst_store_product_varients.stock_count', '>', 0)
       ->orderBy('mst_store_products.product_id', 'DESC')
       ->get();
