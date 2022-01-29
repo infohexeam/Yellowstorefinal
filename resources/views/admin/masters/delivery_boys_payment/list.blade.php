@@ -94,7 +94,7 @@
                                              $store_name = \DB::table('mst_stores')->select('store_name')
                                              ->where('store_id',$s->store_id)->first();
                                           @endphp
-                                          {{$store_name->store_name}} <br>
+                                          {{@$store_name->store_name}} <br>
                                        @endforeach
 
                                     </td>
