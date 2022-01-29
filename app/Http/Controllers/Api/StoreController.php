@@ -22,6 +22,7 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
+use App\Models\admin\Trn_OrderPaymentTransaction;
 use File;
 
 
@@ -1942,6 +1943,155 @@ class StoreController extends Controller
 
 
                 $paymentReport = $paymentReport->where('trn_store_orders.store_id', $store_id)->where('trn_store_orders.order_type', 'APP')
+                    ->orderBy('trn_store_orders.order_id', 'DESC');
+
+
+                if (isset($request->page)) {
+                    $paymentReport = $paymentReport->paginate(10, ['data'], 'page', $request->page);
+                } else {
+                    $paymentReport = $paymentReport->paginate(10);
+                }
+
+
+
+                foreach ($paymentReport as $sd) {
+                    $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
+                    $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
+
+                    $sd->trn_id = $sd->referenceId;
+
+                    if ($sd->delivery_status_id == 1)
+                        $sd->delivery_status =  'Assigned';
+                    elseif ($sd->delivery_status_id == 2)
+                        $sd->delivery_status =  'Inprogress';
+                    elseif ($sd->delivery_status_id == 3)
+                        $sd->delivery_status =  'Completed';
+                    else
+                        $sd->delivery_status =  '';
+
+                    @$sd->status->status;
+
+                    if ($sd->payment_type_id == 1)
+                        $sd->payment_type = 'COD';
+                    else
+                        $sd->payment_type = 'Online';
+
+
+                    if (($sd->payment_type_id == 2) && ($sd->status_id == 4 || $sd->status_id > 5))
+                        $sd->payment_status = 'Success';
+                    else
+                        $sd->payment_status = '--';
+
+
+
+                    $sd->date = \Carbon\Carbon::parse($sd->created_at)->format('d-m-Y');
+
+                    if (!isset($sd->customer_last_name))
+                        $sd->customer_last_name = '';
+
+                    if (!isset($sd->delivery_charge))
+                        $sd->delivery_charge = '';
+
+                    if (!isset($sd->coupon_code))
+                        $sd->coupon_code = '';
+
+                    if (!isset($sd->packing_charge))
+                        $sd->packing_charge = '';
+
+                    if (!isset($sd->payment_type_id))
+                        $sd->payment_type_id = '';
+
+                    if (!isset($sd->reward_points_used))
+                        $sd->reward_points_used = '';
+
+                    if (!isset($sd->amount_before_applying_rp))
+                        $sd->amount_before_applying_rp = '';
+
+                    if (!isset($sd->trn_id))
+                        $sd->trn_id = '';
+
+                    if (!isset($sd->amount_reduced_by_coupon))
+                        $sd->amount_reduced_by_coupon = '';
+
+                    if (!isset($sd->order_type))
+                        $sd->order_type = '';
+
+                    if (!isset($sd->customer_mobile_number))
+                        $sd->customer_mobile_number = '';
+
+                    if (!isset($sd->place))
+                        $sd->place = '';
+                }
+
+                $data['paymentReport'] = $paymentReport;
+                $data['status'] = 1;
+                $data['message'] = "Success";
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store does not exist";
+            }
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+
+
+
+
+    public function incomingPaymentReport(Request $request)
+    {
+        try {
+
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+
+                $paymentReport = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+                    ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+                    ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+                    ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+                     ->where('trn__order_split_payments.paymentRole', '=', 1)
+                    ->where('trn_store_orders.store_id', '=', $store_id);
+
+
+
+
+                $a1 = Carbon::parse($request->date_from)->startOfDay();
+                $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+                if (isset($request->date_from)) {
+                    $paymentReport = $paymentReport->whereDate('trn_store_orders.created_at', '>=', $a1);
+                }
+
+                if (isset($request->date_to)) {
+                    $paymentReport = $paymentReport->whereDate('trn_store_orders.created_at', '<=', $a2);
+                }
+
+
+                if (isset($request->customer_id)) {
+                    $paymentReport = $paymentReport->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                }
+
+                if (isset($request->delivery_boy_id)) {
+                    $paymentReport = $paymentReport->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
+                }
+
+                if (isset($request->status_id)) {
+                    $paymentReport = $paymentReport->where('trn_store_orders.status_id', '=', $request->status_id);
+                }
+
+                if (isset($request->order_type)) {
+                    $paymentReport = $paymentReport->where('trn_store_orders.order_type', '=', $request->order_type);
+                }
+
+
+                $paymentReport = $paymentReport->where('trn_store_orders.store_id', $store_id)
+                    ->where('trn_store_orders.order_type', 'APP')
                     ->orderBy('trn_store_orders.order_id', 'DESC');
 
 

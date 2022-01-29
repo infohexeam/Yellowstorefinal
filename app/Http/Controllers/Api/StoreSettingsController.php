@@ -51,76 +51,68 @@ use App\Models\admin\Trn_RecentlyVisitedStore;
 
 class StoreSettingsController extends Controller
 {
-   
+
 
     public function listDefaultSettings(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {
-                    $store_id = $request->store_id;
-                    if($data['defaultStoreSettingsDetails']['service_amount']  = Trn_store_setting::where('store_id',$store_id)->get())
-                    {
-                        $store_data = Mst_store::find($store_id);
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                if ($data['defaultStoreSettingsDetails']['service_amount']  = Trn_store_setting::where('store_id', $store_id)->get()) {
+                    $store_data = Mst_store::find($store_id);
 
-                        $data['defaultStoreSettingsDetails']['order_number_prefix'] = $store_data->order_number_prefix;
-                        $data['defaultStoreSettingsDetails']['service_area'] = $store_data->service_area;
-                        
-                        if(isset($store_data->store_state_id))
-                            $data['defaultStoreSettingsDetails']['store_state_id'] = $store_data->store_state_id;
-                        else
-                            $data['defaultStoreSettingsDetails']['store_state_id'] = 0;
-                            
-                        if(isset($store_data->store_district_id))
+                    $data['defaultStoreSettingsDetails']['order_number_prefix'] = $store_data->order_number_prefix;
+                    $data['defaultStoreSettingsDetails']['service_area'] = $store_data->service_area;
+
+                    if (isset($store_data->store_state_id))
+                        $data['defaultStoreSettingsDetails']['store_state_id'] = $store_data->store_state_id;
+                    else
+                        $data['defaultStoreSettingsDetails']['store_state_id'] = 0;
+
+                    if (isset($store_data->store_district_id))
                         $data['defaultStoreSettingsDetails']['store_district_id'] = $store_data->store_district_id;
-                        else
+                    else
                         $data['defaultStoreSettingsDetails']['store_district_id'] = 0;
-     
-                        
-                        if(isset($store_data->store_district_id))
+
+
+                    if (isset($store_data->store_district_id))
                         $data['defaultStoreSettingsDetails']['town_id'] = $store_data->town_id;
-                        else
+                    else
                         $data['defaultStoreSettingsDetails']['town_id'] = 0;
 
 
 
-                        $data['defaultStoreSettingsDetails']['business_type_id'] = $store_data->business_type_id;
-                        
-                        $data['defaultStoreSettingsDetails']['store_mobile'] = $store_data->store_mobile;
-                        $data['defaultStoreSettingsDetails']['email'] = $store_data->email;
-                        $data['defaultStoreSettingsDetails']['place'] = $store_data->place;
-                        $data['defaultStoreSettingsDetails']['store_pincode'] = $store_data->store_pincode;
-                        $data['defaultStoreSettingsDetails']['store_website_link'] = $store_data->store_website_link;
-                        $data['defaultStoreSettingsDetails']['store_primary_address'] = $store_data->store_primary_address;
-                        $data['defaultStoreSettingsDetails']['store_qrcode'] = $store_data->store_qrcode;
-                        $data['defaultStoreSettingsDetails']['subadmin_phone'] = Helper::storeSubadminPhone($request->store_id); 
-                        $data['defaultStoreSettingsDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
+                    $data['defaultStoreSettingsDetails']['business_type_id'] = $store_data->business_type_id;
 
-                        $data['status'] = 1;
-                        $data['message'] = "success"; 
-                        return response($data);
-                    }
-                    else{
-                        $data['status'] = 0;
-                        $data['message'] = "failed";
-                        return response($data);
-                    }
+                    $data['defaultStoreSettingsDetails']['store_mobile'] = $store_data->store_mobile;
+                    $data['defaultStoreSettingsDetails']['email'] = $store_data->email;
+                    $data['defaultStoreSettingsDetails']['place'] = $store_data->place;
+                    $data['defaultStoreSettingsDetails']['store_pincode'] = $store_data->store_pincode;
+                    $data['defaultStoreSettingsDetails']['store_website_link'] = $store_data->store_website_link;
+                    $data['defaultStoreSettingsDetails']['store_primary_address'] = $store_data->store_primary_address;
+                    $data['defaultStoreSettingsDetails']['store_qrcode'] = $store_data->store_qrcode;
+                    $data['defaultStoreSettingsDetails']['subadmin_phone'] = Helper::storeSubadminPhone($request->store_id);
+                    $data['defaultStoreSettingsDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
 
-                    
-                }
-                else
-                {
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
@@ -128,14 +120,14 @@ class StoreSettingsController extends Controller
 
     public function updateSettings(Request $request)
     {
-        $data = array(); 
+        $data = array();
         //print_r($request->all());
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {
-                    $store_id = $request->store_id;
-                    $data2 = array();
-                    $validator = Validator::make($request->all(),
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                $data2 = array();
+                $validator = Validator::make(
+                    $request->all(),
                     [
                         'service_area' => 'required',
                         'store_district_id' => 'required|numeric',
@@ -145,7 +137,7 @@ class StoreSettingsController extends Controller
                         'service_amount.*.service_end'          => 'required',
                         'service_amount.*.delivery_charge'          => 'required',
                         'service_amount.*.packing_charge'          => 'required',
-                        
+
                     ],
                     [
                         'service_amount.*.service_start.required'        => 'Service starting km  required',
@@ -156,85 +148,78 @@ class StoreSettingsController extends Controller
                         'store_district_id.required'        => 'District required',
                         'town_id.required'        => 'Town required',
                         'business_type_id.required'        => 'Business type required',
-                    ]);
-                     
-                        if(!$validator->fails() )
-                        {
-                          //  echo $request->service_area;die;
-                           if(isset($request->service_area))
-                            $data2['service_area'] = $request->service_area;
-                            if(isset($request->store_district_id))
-                            $data2['store_district_id'] = $request->store_district_id;
-                            if(isset($request->town_id))
-                            $data2['town_id'] = $request->town_id;
-                            if(isset($request->business_type_id))
-                            $data2['business_type_id'] = $request->business_type_id;
+                    ]
+                );
 
-                            if(isset($request->order_number_prefix))
-                            $data2['order_number_prefix'] = $request->order_number_prefix;
+                if (!$validator->fails()) {
+                    //  echo $request->service_area;die;
+                    if (isset($request->service_area))
+                        $data2['service_area'] = $request->service_area;
+                    if (isset($request->store_district_id))
+                        $data2['store_district_id'] = $request->store_district_id;
+                    if (isset($request->town_id))
+                        $data2['town_id'] = $request->town_id;
+                    if (isset($request->business_type_id))
+                        $data2['business_type_id'] = $request->business_type_id;
 
-                            Mst_store::where('store_id',$store_id)->update($data2);
-                           // echo "here";die;
-                            Trn_store_setting::where('store_id',$store_id)->delete();
-                           
-                                foreach($request->service_amount as $val){
-                                    
-                                    $ss = new Trn_store_setting;
-                                    $ss->store_id = $store_id;
-                                    $ss->service_start = $val['service_start'];
-                                    $ss->service_end = $val['service_end'];
-                                    $ss->delivery_charge = $val['delivery_charge'];
-                                    $ss->packing_charge = $val['packing_charge'];
-                                    $ss->save();
+                    if (isset($request->order_number_prefix))
+                        $data2['order_number_prefix'] = $request->order_number_prefix;
 
-                                //     $data5 = [
-                                //         'store_id' => $store_id,
-                                //         'service_start' => $val['service_start'],
-                                //         'service_end' => $val['service_end'],
-                                //         'delivery_charge' => $val['delivery_charge'],
-                                //         'packing_charge' => $val['packing_charge'],
-                                //     ];
-                                //   // dd($data5);
+                    Mst_store::where('store_id', $store_id)->update($data2);
+                    // echo "here";die;
+                    Trn_store_setting::where('store_id', $store_id)->delete();
 
-                                //   if(Trn_store_setting::create($data5))
-                                //   {
-                                //       echo "here";die;
-                                //   }
-                                //   else
-                                //   {
-                                //       echo "sds";die;
+                    foreach ($request->service_amount as $val) {
 
-                                //   }
+                        $ss = new Trn_store_setting;
+                        $ss->store_id = $store_id;
+                        $ss->service_start = $val['service_start'];
+                        $ss->service_end = $val['service_end'];
+                        $ss->delivery_charge = $val['delivery_charge'];
+                        $ss->packing_charge = $val['packing_charge'];
+                        $ss->save();
 
-                                
-                            }
-                           
-                            $data['status'] = 1;
-                            $data['message'] = " Store settings updated";
-                            return response($data);
+                        //     $data5 = [
+                        //         'store_id' => $store_id,
+                        //         'service_start' => $val['service_start'],
+                        //         'service_end' => $val['service_end'],
+                        //         'delivery_charge' => $val['delivery_charge'],
+                        //         'packing_charge' => $val['packing_charge'],
+                        //     ];
+                        //   // dd($data5);
 
-                        }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "failed";
-                            $data['errors'] = $validator->errors();
-                            return response($data);
-                        }
-                    
-                }
-                else
-                {
+                        //   if(Trn_store_setting::create($data5))
+                        //   {
+                        //       echo "here";die;
+                        //   }
+                        //   else
+                        //   {
+                        //       echo "sds";die;
+
+                        //   }
+
+
+                    }
+
+                    $data['status'] = 1;
+                    $data['message'] = " Store settings updated";
+                    return response($data);
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
+                    $data['errors'] = $validator->errors();
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
@@ -242,135 +227,119 @@ class StoreSettingsController extends Controller
 
     public function listWorkingDays(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                { 
-                    $store_id = $request->store_id;
-                    $workDayCount = Trn_StoreTimeSlot::where('store_id',$store_id)->count();
-                    if($workDayCount > 0)
-                    {
-                        if($data['workingDayDetails']  = Trn_StoreTimeSlot::
-                            select('store_time_slot_id','store_id','day','time_start','time_end')
-                            ->where('store_id',$store_id)->get())
-                        {
-                        
-                            $data['status'] = 1;
-                            $data['message'] = "success";
-                            return response($data);
-                        }
-                        else{
-                            $data['status'] = 0;
-                            $data['message'] = "failed";
-                            return response($data);
-                        }
-                    }
-                    else
-                    {
-                        $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-                        foreach($days as $day)
-                        {
-                            $info = [
-                                'store_id'=> $store_id,
-                                'day'=>  $day,
-                                'time_start'=>  null,
-                                'time_end'=> null,
-                                ];
-                                Trn_StoreTimeSlot::insert($info);
-                        }
-                        
-                        if($data['workingDayDetails']  = Trn_StoreTimeSlot::
-                            select('store_time_slot_id','store_id','day','time_start','time_end')
-                            ->where('store_id',$store_id)->get())
-                        {
-                        
-                            $data['status'] = 1;
-                            $data['message'] = "success";
-                            return response($data);
-                        }
-                        else{
-                            $data['status'] = 0;
-                            $data['message'] = "failed";
-                            return response($data);
-                        }
-                    }
-                }
-                else
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Store not found ";
-                    return response($data);
-                }
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                $workDayCount = Trn_StoreTimeSlot::where('store_id', $store_id)->count();
+                if ($workDayCount > 0) {
+                    if ($data['workingDayDetails']  = Trn_StoreTimeSlot::select('store_time_slot_id', 'store_id', 'day', 'time_start', 'time_end')
+                        ->where('store_id', $store_id)->get()
+                    ) {
 
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+                        $data['status'] = 1;
+                        $data['message'] = "success";
+                        return response($data);
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        return response($data);
+                    }
+                } else {
+                    $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                    foreach ($days as $day) {
+                        $info = [
+                            'store_id' => $store_id,
+                            'day' =>  $day,
+                            'time_start' =>  null,
+                            'time_end' => null,
+                        ];
+                        Trn_StoreTimeSlot::insert($info);
+                    }
+
+                    if ($data['workingDayDetails']  = Trn_StoreTimeSlot::select('store_time_slot_id', 'store_id', 'day', 'time_start', 'time_end')
+                        ->where('store_id', $store_id)->get()
+                    ) {
+
+                        $data['status'] = 1;
+                        $data['message'] = "success";
+                        return response($data);
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        return response($data);
+                    }
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function updateWorkingDays(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                { 
-                    $store_id = $request->store_id;
-                    // $validator = Validator::make($request->all(),
-                    // [
-                    //    // 'workingDays.*.day'          => 'required',
-                    //    // 'workingDays.*.time_start'          => 'required',
-                    //    // 'workingDays.*.time_end'          => 'required',
-                    // ],
-                    // [
-                    //    // 'workingDays.*.day.required'        => 'Day name required',
-                    //    // 'workingDays.*.time_start.required'        => 'Start time required',
-                    //    // 'workingDays.*.time_end.required'        => 'End time required',
-                    //]);
-                     
-                        // if(!$validator->fails() )
-                        // {
-                            Trn_StoreTimeSlot::where('store_id',$store_id)->delete();
-                            foreach($request->workingDays as $time){
-                                $info = [
-                                    'store_id'=> $store_id,
-                                    'day'=>  $time['day'],
-                                    'time_start'=>  $time['time_start'],
-                                    'time_end'=> $time['time_end'],
-                                    ];
-                                    Trn_StoreTimeSlot::insert($info);
-                            }
-                            $data['status'] = 1;
-                            $data['message'] = "Working days updated successfully.";
-                            return response($data);
-                        // }
-                        // else
-                        // {
-                        //     $data['status'] = 0;
-                        //     $data['message'] = "All fields required";
-                            // $errors = $validator->errors();
-                            // $e = array();
-                            // foreach ($validator->errors() as $error){
-                            //     dd($error)
-                            // }
-                            //$data['errors'] = $errors;
-                            return response($data);
-                       // }
-                }
-                else
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Store not found ";
-                    return response($data);
-                }
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                // $validator = Validator::make($request->all(),
+                // [
+                //    // 'workingDays.*.day'          => 'required',
+                //    // 'workingDays.*.time_start'          => 'required',
+                //    // 'workingDays.*.time_end'          => 'required',
+                // ],
+                // [
+                //    // 'workingDays.*.day.required'        => 'Day name required',
+                //    // 'workingDays.*.time_start.required'        => 'Start time required',
+                //    // 'workingDays.*.time_end.required'        => 'End time required',
+                //]);
 
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+                // if(!$validator->fails() )
+                // {
+                Trn_StoreTimeSlot::where('store_id', $store_id)->delete();
+                foreach ($request->workingDays as $time) {
+                    $info = [
+                        'store_id' => $store_id,
+                        'day' =>  $time['day'],
+                        'time_start' =>  $time['time_start'],
+                        'time_end' => $time['time_end'],
+                    ];
+                    Trn_StoreTimeSlot::insert($info);
+                }
+                $data['status'] = 1;
+                $data['message'] = "Working days updated successfully.";
+                return response($data);
+                // }
+                // else
+                // {
+                //     $data['status'] = 0;
+                //     $data['message'] = "All fields required";
+                // $errors = $validator->errors();
+                // $e = array();
+                // foreach ($validator->errors() as $error){
+                //     dd($error)
+                // }
+                //$data['errors'] = $errors;
+                return response($data);
+                // }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
@@ -378,76 +347,90 @@ class StoreSettingsController extends Controller
 
     public function listStoreInfo(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {
-                    $store_id = $request->store_id;
-                    if($data['storeDetails']  = Mst_store::where('store_id',$store_id)
-                    ->select('store_id','store_name','store_contact_person_name','store_name_slug',
-                    'store_contact_person_phone_number','business_type_id',
-                    'store_country_id','store_district_id','store_state_id','town_id'
-                    ,'store_username','store_mobile','email','place','store_pincode'
-                    ,'store_website_link','store_primary_address','town_id','town_id','subadmin_id','upi_id','profile_image','place','longitude','latitude')
-                    ->first())
-                    {
-                        $subadminData = Mst_Subadmin_Detail::where('subadmin_id',$data['storeDetails']->subadmin_id)->first();
-                        $data['storeDetails']['subadmin_phone'] = Helper::storeSubadminPhone($request->store_id);
-                        $data['storeDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
-                        $data['storeDetails']['store_qrcode'] = @$data['storeDetails']->store_name_slug."-".@$data['storeDetails']->store_mobile;
-                    
-                    if(isset($data['storeDetails']->profile_image))
-                    $data['storeDetails']['profile_image'] = '/assets/uploads/store_images/images/'.$data['storeDetails']->profile_image;
-                    
-                        $data['storeDetails']['store_images'] = Mst_store_images::where('store_id', $store_id)
-                        ->select('store_image_id','store_image','store_id','default_image')
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                if ($data['storeDetails']  = Mst_store::where('store_id', $store_id)
+                    ->select(
+                        'store_id',
+                        'store_name',
+                        'store_contact_person_name',
+                        'store_name_slug',
+                        'store_contact_person_phone_number',
+                        'business_type_id',
+                        'store_country_id',
+                        'store_district_id',
+                        'store_state_id',
+                        'town_id',
+                        'store_username',
+                        'store_mobile',
+                        'email',
+                        'place',
+                        'store_pincode',
+                        'store_website_link',
+                        'store_primary_address',
+                        'town_id',
+                        'town_id',
+                        'subadmin_id',
+                        'upi_id',
+                        'profile_image',
+                        'place',
+                        'longitude',
+                        'latitude'
+                    )
+                    ->first()
+                ) {
+                    $subadminData = Mst_Subadmin_Detail::where('subadmin_id', $data['storeDetails']->subadmin_id)->first();
+                    $data['storeDetails']['subadmin_phone'] = Helper::storeSubadminPhone($request->store_id);
+                    $data['storeDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
+                    $data['storeDetails']['store_qrcode'] = @$data['storeDetails']->store_name_slug . "-" . @$data['storeDetails']->store_mobile;
+
+                    if (isset($data['storeDetails']->profile_image))
+                        $data['storeDetails']['profile_image'] = '/assets/uploads/store_images/images/' . $data['storeDetails']->profile_image;
+
+                    $data['storeDetails']['store_images'] = Mst_store_images::where('store_id', $store_id)
+                        ->select('store_image_id', 'store_image', 'store_id', 'default_image')
                         ->get();
-                        foreach($data['storeDetails']['store_images'] as $img)
-                        {
-                            $img->store_image = '/assets/uploads/store_images/images/'.$img->store_image;
-                        }
-                       
-
-
-                       
-                        $data['status'] = 1;
-                        $data['message'] = "success";
-                        return response($data);
-                    }
-                    else{
-                        $data['status'] = 0;
-                        $data['message'] = "failed";
-                        return response($data);
+                    foreach ($data['storeDetails']['store_images'] as $img) {
+                        $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
                     }
 
-                    
-                }
-                else
-                {
+
+
+
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function updateStoreInfo(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                { 
-                    $store_id = $request->store_id;
-                    $validator = Validator::make($request->all(),
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                $validator = Validator::make(
+                    $request->all(),
                     [
-                        'store_name' => 'required|unique:mst_stores,store_name,' . $store_id.',store_id',
+                        'store_name' => 'required|unique:mst_stores,store_name,' . $store_id . ',store_id',
                         'store_contact_person_name'          => 'required',
                         'store_contact_person_phone_number'          => 'required',
                         'business_type_id'          => 'required',
@@ -463,7 +446,7 @@ class StoreSettingsController extends Controller
                         'store_primary_address'          => 'required',
                         'store_images.*.store_image'          => 'required',
                         'store_images.*.default_image'          => 'required',
-                       
+
                     ],
                     [
                         'store_name.required'        => 'Store name required',
@@ -482,124 +465,117 @@ class StoreSettingsController extends Controller
                         'store_primary_address.required'        => 'Primary address required',
                         'store_images.*.store_image.required'        => 'Image required',
                         'store_images.*.default_image.required'        => 'Default status required',
-                    ]);
-                     
-                        if(!$validator->fails() )
-                        {
+                    ]
+                );
 
-                            $data2['store_name'] = $request->store_name;
-                            $data2['store_contact_person_name'] = $request->store_contact_person_name;
-                            $data2['store_contact_person_phone_number'] = $request->store_contact_person_phone_number;
-                            $data2['business_type_id'] = $request->business_type_id;
-                            $data2['store_country_id'] = $request->store_country_id;
-                            $data2['store_state_id'] = $request->store_state_id;
-                            $data2['store_district_id'] = $request->store_district_id;
-                            $data2['town_id'] = $request->town_id;
-                            $data2['store_username'] = $request->store_username;
+                if (!$validator->fails()) {
 
-                            $data2['store_mobile'] = $request->store_mobile;
-                            $data2['place'] = $request->place;
-                            $data2['email'] = $request->email;
-                            $data2['store_website_link'] = $request->store_website_link;
-                            $data2['store_pincode'] = $request->store_pincode;
-                            $data2['store_primary_address'] = $request->store_primary_address;
-                            $data2['upi_id'] = $request->upi_id;
-                            
-                            $data2['latitude'] = $request->latitude;
-                            $data2['longitude'] = $request->longitude;
-                            $data2['place'] = $request->place;
+                    $data2['store_name'] = $request->store_name;
+                    $data2['store_contact_person_name'] = $request->store_contact_person_name;
+                    $data2['store_contact_person_phone_number'] = $request->store_contact_person_phone_number;
+                    $data2['business_type_id'] = $request->business_type_id;
+                    $data2['store_country_id'] = $request->store_country_id;
+                    $data2['store_state_id'] = $request->store_state_id;
+                    $data2['store_district_id'] = $request->store_district_id;
+                    $data2['town_id'] = $request->town_id;
+                    $data2['store_username'] = $request->store_username;
 
-                             
-                            
-                            $store = Mst_store::find($store_id);
-                                 	$filenamePro = $store->profile_image;
+                    $data2['store_mobile'] = $request->store_mobile;
+                    $data2['place'] = $request->place;
+                    $data2['email'] = $request->email;
+                    $data2['store_website_link'] = $request->store_website_link;
+                    $data2['store_pincode'] = $request->store_pincode;
+                    $data2['store_primary_address'] = $request->store_primary_address;
+                    $data2['upi_id'] = $request->upi_id;
+                    $data2['store_commision_percentage'] = $request->commision_percentage;
 
-                            if ($request->hasFile('profile_image')) {
-        
-                                    $filePro = $request->file('profile_image');
-                                    $filenamePro = $filePro->getClientOriginalName();
-                                    $filePro->move('assets/uploads/store_images/images', $filenamePro);
-                        
-                                }
-                            $data2['profile_image'] = @$filenamePro;
+                    $data2['latitude'] = $request->latitude;
+                    $data2['longitude'] = $request->longitude;
+                    $data2['place'] = $request->place;
 
-                            if(Mst_store::where('store_id',$store_id)->update($data2))
-                            {
-                                if ($files = $request->file('store_images')) {
-                                    $filename ="";
-                                    Mst_store_images::where('store_id',$store_id)->delete();
 
-                                    foreach($files as $file) {
-                                        $filename = $file->getClientOriginalName();
-                                        $file->move('assets/uploads/store_images/images/', $filename);
-                                        $info = [
-                                            'store_id'=> $store_id,
-                                            'store_image'=>  $filename,
-                                            'default_image'=>  0,
-                                            ];
-                                            Mst_store_images::insert($info);
-                                    }
-                                }
+
+                    $store = Mst_store::find($store_id);
+                    $filenamePro = $store->profile_image;
+
+                    if ($request->hasFile('profile_image')) {
+
+                        $filePro = $request->file('profile_image');
+                        $filenamePro = $filePro->getClientOriginalName();
+                        $filePro->move('assets/uploads/store_images/images', $filenamePro);
+                    }
+                    $data2['profile_image'] = @$filenamePro;
+
+                    if (Mst_store::where('store_id', $store_id)->update($data2)) {
+                        if ($files = $request->file('store_images')) {
+                            $filename = "";
+                            Mst_store_images::where('store_id', $store_id)->delete();
+
+                            foreach ($files as $file) {
+                                $filename = $file->getClientOriginalName();
+                                $file->move('assets/uploads/store_images/images/', $filename);
+                                $info = [
+                                    'store_id' => $store_id,
+                                    'store_image' =>  $filename,
+                                    'default_image' =>  0,
+                                ];
+                                Mst_store_images::insert($info);
                             }
-                            $data['status'] = 1;
-                            $data['message'] = "Store Info updated successfully.";
-                            return response($data);
                         }
-                        else
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "failed";
-                            $data['errors'] = $validator->errors();
-                            return response($data);
-                        }
-                }
-                else
-                {
+                    }
+                    $data['status'] = 1;
+                    $data['message'] = "Store Info updated successfully.";
+                    return response($data);
+                } else {
                     $data['status'] = 0;
-                    $data['message'] = "Store not found ";
+                    $data['message'] = "failed";
+                    $data['errors'] = $validator->errors();
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function updatePassword(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {
-                                    if(isset($request->store_admin_id) && Trn_StoreAdmin::find($request->store_admin_id))
-                                    {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                if (isset($request->store_admin_id) && Trn_StoreAdmin::find($request->store_admin_id)) {
 
                     $store_id = $request->store_id;
-                    $validator = Validator::make($request->all(),
-                    [
-                        'old_password'          => 'required',
-                        'store_admin_id'          => 'required',
+                    $validator = Validator::make(
+                        $request->all(),
+                        [
+                            'old_password'          => 'required',
+                            'store_admin_id'          => 'required',
 
-                        'password' => 'required|confirmed',
-                       
-                    ],
-                    [
-                        'store_admin_id.required'        => 'store admin id required',
-                        'old_password.required'        => 'Old password required',
-                        'password.required'        => 'Password required',
-                        'password.confirmed'        => 'Passwords not matching',
-                    ]);
-                     
-                        if(!$validator->fails() )
-                        {
+                            'password' => 'required|confirmed',
+
+                        ],
+                        [
+                            'store_admin_id.required'        => 'store admin id required',
+                            'old_password.required'        => 'Old password required',
+                            'password.required'        => 'Password required',
+                            'password.confirmed'        => 'Passwords not matching',
+                        ]
+                    );
+
+                    if (!$validator->fails()) {
 
 
-                            $storeData = Trn_StoreAdmin::where('store_id',$request->store_id)->where('store_admin_id',$request->store_admin_id)->first();
-                          
+                        $storeData = Trn_StoreAdmin::where('store_id', $request->store_id)->where('store_admin_id', $request->store_admin_id)->first();
+
                         //   echo $request->old_password;die;
                         //     if(Hash::check($request->old_password, $storeData->password))
                         //     {
@@ -609,177 +585,152 @@ class StoreSettingsController extends Controller
                         //     {
                         //     echo "here";die;
                         //     }
-                          
-                          
-                          
-                            if (Hash::check($request->old_password, $storeData->password)) 
-                           
-                          
- { 
-                                
-                                $data20= [
-                                    'password'      => Hash::make($request->password),
-                                      ];
-                                      Trn_StoreAdmin::where('store_id',$request->store_id)->update($data20);
-                                      Mst_store::where('store_id',$request->store_id)->update($data20);
 
-                                $data['status'] = 1;
-                                $data['message'] = "Password updated successfully.";
-                                return response($data);
-                            }
-                            else{
-                                $data['status'] = 0;
-                                $data['message'] = "Old password incorrect.";
-                                return response($data);
-                            }
-                        }
-                        else
-                        {
+
+
+                        if (Hash::check($request->old_password, $storeData->password)) {
+
+                            $data20 = [
+                                'password'      => Hash::make($request->password),
+                            ];
+                            Trn_StoreAdmin::where('store_id', $request->store_id)->update($data20);
+                            Mst_store::where('store_id', $request->store_id)->update($data20);
+
+                            $data['status'] = 1;
+                            $data['message'] = "Password updated successfully.";
+                            return response($data);
+                        } else {
                             $data['status'] = 0;
-                            $data['message'] = "failed";
-                            $data['errors'] = $validator->errors();
+                            $data['message'] = "Old password incorrect.";
                             return response($data);
                         }
-                    }
-                    else
-                
-                    {
+                    } else {
                         $data['status'] = 0;
-                        $data['message'] = "Store not found ";
+                        $data['message'] = "failed";
+                        $data['errors'] = $validator->errors();
                         return response($data);
                     }
-                    
-                                    
-                }
-                else
-                {
+                } else {
                     $data['status'] = 0;
                     $data['message'] = "Store not found ";
                     return response($data);
                 }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
 
     public function dashboard(Request $request)
     {
-        $data = array(); 
+        $data = array();
         try {
-                if(isset($request->store_id) && Mst_store::find($request->store_id))
-                {
-                    $store_id = $request->store_id;
-                    $store  =    Mst_store::find($request->store_id);
-                    
-                        $storeAdmData = Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
-                            $todayDate = Carbon::now()->addDays(3);
-                            $now = Carbon::now();
-                            $dateExp = Carbon::parse($storeAdmData->expiry_date);
-                            $diff = $dateExp->diffInDays($now) + 1;
-                            
-                            if(@$diff == 1){
-                                $dayString = 'day';
-                            }else{
-                                $dayString = 'days';
-    
-                            }
-                            
-                     if(($storeAdmData->store_account_status == 0) && ($todayDate > $storeAdmData->expiry_date) ){
-                         $expireMsgString = 'This account expires in '.@$diff." ".@$dayString;
-                         $expiredDays = @$diff;
-                     }
-                     else{
-                         $expireMsgString = '';
-                         $expiredDays = 1;
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                $store  =    Mst_store::find($request->store_id);
 
-                     }
-                    $data['expireMsgString'] = $expireMsgString; 
-                    
-                    if($expiredDays == 0)
-                    {
-                        $data['isExpired'] = 1; 
-                    }
-                    else{
-                        $data['isExpired'] = 0; 
-                    }
-                    
+                $storeAdmData = Trn_StoreAdmin::where('store_id', $store->store_id)->where('role_id', 0)->first();
+                $todayDate = Carbon::now()->addDays(3);
+                $now = Carbon::now();
+                $dateExp = Carbon::parse($storeAdmData->expiry_date);
+                $diff = $dateExp->diffInDays($now) + 1;
 
-                                       
-                    
-                    
-                    
-                    
-                    $recentvisitCountToday = Trn_RecentlyVisitedStore::whereDate('created_at', Carbon::today())
-                    ->where('store_id',$request->store_id)->count();
-                    
-                    $recentvisitCountWeek = Trn_RecentlyVisitedStore::where( 'created_at', '>', Carbon::now()->subDays(2))
-                    ->where('store_id',$request->store_id)->count();
-                    
-                     $recentvisitCountMonth = Trn_RecentlyVisitedStore::where( 'created_at', '>', Carbon::now()->subDays(30))
-                    ->where('store_id',$request->store_id)->count();
-                    
-                   // echo $recentvisitCountToday." -- ".$recentvisitCountWeek." -- ".$recentvisitCountMonth;
+                if (@$diff == 1) {
+                    $dayString = 'day';
+                } else {
+                    $dayString = 'days';
+                }
+
+                if (($storeAdmData->store_account_status == 0) && ($todayDate > $storeAdmData->expiry_date)) {
+                    $expireMsgString = 'This account expires in ' . @$diff . " " . @$dayString;
+                    $expiredDays = @$diff;
+                } else {
+                    $expireMsgString = '';
+                    $expiredDays = 1;
+                }
+                $data['expireMsgString'] = $expireMsgString;
+
+                if ($expiredDays == 0) {
+                    $data['isExpired'] = 1;
+                } else {
+                    $data['isExpired'] = 0;
+                }
 
 
-                    $data['storeVisitToday'] = $recentvisitCountToday; 
-                    $data['storeVisitWeek'] = $recentvisitCountWeek; 
-                    $data['storeVisitMonth'] = $recentvisitCountMonth; 
 
-                      $storeProductData = Mst_store_product::select('product_cat_id')
-                    ->where('store_id','=',$store_id)
-                    ->orderBy('product_id','DESC')
+
+
+
+
+                $recentvisitCountToday = Trn_RecentlyVisitedStore::whereDate('created_at', Carbon::today())
+                    ->where('store_id', $request->store_id)->count();
+
+                $recentvisitCountWeek = Trn_RecentlyVisitedStore::where('created_at', '>', Carbon::now()->subDays(2))
+                    ->where('store_id', $request->store_id)->count();
+
+                $recentvisitCountMonth = Trn_RecentlyVisitedStore::where('created_at', '>', Carbon::now()->subDays(30))
+                    ->where('store_id', $request->store_id)->count();
+
+                // echo $recentvisitCountToday." -- ".$recentvisitCountWeek." -- ".$recentvisitCountMonth;
+
+
+                $data['storeVisitToday'] = $recentvisitCountToday;
+                $data['storeVisitWeek'] = $recentvisitCountWeek;
+                $data['storeVisitMonth'] = $recentvisitCountMonth;
+
+                $storeProductData = Mst_store_product::select('product_cat_id')
+                    ->where('store_id', '=', $store_id)
+                    ->orderBy('product_id', 'DESC')
                     ->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
 
-                    $catCount = Mst_categories::whereIn('category_id',$storeProductData)->count();
-                    
-                    $data['categoriesCount'] = $catCount; 
+                $catCount = Mst_categories::whereIn('category_id', $storeProductData)->count();
+
+                $data['categoriesCount'] = $catCount;
 
 
-                   // $data['categoriesCount'] = Mst_categories::count();
-                    $data['totalNumberOfProducts'] = Mst_store_product::join('mst_store_categories','mst_store_categories.category_id','=','mst_store_products.product_cat_id')
-      ->where('mst_store_products.store_id',$store_id)->orderBy('mst_store_products.product_id', 'DESC')->count();
-                    
-                    
-                    $data['totalNumberOfOrders'] = Trn_store_order::where('store_id','=',$store_id)->get()->count();
-                    $data['totalSales'] = Trn_store_order::where('store_id','=',$store_id)->sum('product_total_amount');
-                    $data['todaysSale'] = Trn_store_order::where('store_id','=',$store_id)->whereDate('created_at', Carbon::today())->sum('product_total_amount');
-                    $data['dailySalesCount'] = Trn_store_order::where('store_id','=',$store_id)->whereDate('created_at', Carbon::today())->count();
-                    $data['deliveryBoys'] =  Mst_store_link_delivery_boy::join('mst_delivery_boys','mst_delivery_boys.delivery_boy_id','=','mst_store_link_delivery_boys.delivery_boy_id')->where('mst_store_link_delivery_boys.store_id',$request->store_id)->count();
-                    $data['totalIssues'] =  \DB::table("mst_disputes")->where('store_id','=',$store_id)->count();
-                    $data['currentIssues'] = \DB::table("mst_disputes")->where('dispute_status','=',2)->where('store_id','=',$store_id)->count();
-                    $data['newIssues'] = \DB::table("mst_disputes")->where('dispute_status','=',2)->where('store_id','=',$store_id)->whereDate('created_at', Carbon::today())->count();
+                // $data['categoriesCount'] = Mst_categories::count();
+                $data['totalNumberOfProducts'] = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                    ->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->count();
 
-                    $banners =  Mst_StoreAppBanner::where('town_id',@$store->town_id)
-                        ->select('banner_id','town_id','image')
-                        ->get();
-                    foreach($banners as $b)
-                    {
-                        $b->image = 'assets/uploads/store_banner/'.$b->image;
-                    }
-                    $data['dashboardDetails'] = $banners;
-                    $data['status'] = 1;
-                    $data['message'] = "success.";
-                    return response($data);
+
+                $data['totalNumberOfOrders'] = Trn_store_order::where('store_id', '=', $store_id)->get()->count();
+                $data['totalSales'] = Trn_store_order::where('store_id', '=', $store_id)->sum('product_total_amount');
+                $data['todaysSale'] = Trn_store_order::where('store_id', '=', $store_id)->whereDate('created_at', Carbon::today())->sum('product_total_amount');
+                $data['dailySalesCount'] = Trn_store_order::where('store_id', '=', $store_id)->whereDate('created_at', Carbon::today())->count();
+                $data['deliveryBoys'] =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')->where('mst_store_link_delivery_boys.store_id', $request->store_id)->count();
+                $data['totalIssues'] =  \DB::table("mst_disputes")->where('store_id', '=', $store_id)->count();
+                $data['currentIssues'] = \DB::table("mst_disputes")->where('dispute_status', '=', 2)->where('store_id', '=', $store_id)->count();
+                $data['newIssues'] = \DB::table("mst_disputes")->where('dispute_status', '=', 2)->where('store_id', '=', $store_id)->whereDate('created_at', Carbon::today())->count();
+
+                $banners =  Mst_StoreAppBanner::where('town_id', @$store->town_id)
+                    ->select('banner_id', 'town_id', 'image')
+                    ->get();
+                foreach ($banners as $b) {
+                    $b->image = 'assets/uploads/store_banner/' . $b->image;
                 }
-                else
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Store not found ";
-                    return response($data);
-                }
-
-        }catch (\Exception $e) {
-           $response = ['status' => '0', 'message' => $e->getMessage()];
-           return response($response);
-        }catch (\Throwable $e) {
-            $response = ['status' => '0','message' => $e->getMessage()];
+                $data['dashboardDetails'] = $banners;
+                $data['status'] = 1;
+                $data['message'] = "success.";
+                return response($data);
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
     }
-
 }

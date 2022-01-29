@@ -115,7 +115,7 @@
  <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti ti ti-import"></i><span class="side-menu__label">{{ __('Payments') }}</span><i class="angle fa fa-angle-right"></i></a>
         <ul class="slide-menu">
               <li><a class="slide-item" href="{{url('store/payment_settlments/')}}">{{ __('Payment Settlment') }}</a></li>
-              <li><a class="slide-item" href="{{url('store/incoming-payments')}}">{{ __('Incoming Payments') }}</a></li>
+              {{-- <li><a class="slide-item" href="{{url('store/incoming-payments')}}">{{ __('Incoming Payments') }}</a></li> --}}
              
             </ul>
         </li>

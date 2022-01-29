@@ -214,13 +214,21 @@
 
                       </div>
                       
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">UPI ID</label>
 
                            <input type="text" class="form-control" name="upi_id" value="{{old('upi_id',$store->upi_id)}}"  placeholder="UPI ID">
                         </div>
                       </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                           <label class="form-label">Commision Percentage</label>
+                           <input type="text" class="form-control" name="store_commision_percentage" value="{{old('store_commision_percentage',$store->store_commision_percentage)}}"  placeholder="Commission Percentage">
+                        </div>
+                      </div>
+
 
                      <div class="col-md-12">
                         <div class="form-group">
