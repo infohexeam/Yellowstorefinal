@@ -73,6 +73,7 @@ $date = Carbon\Carbon::now();
                       <tr>
                         <th class="wd-15p">SL.No</th>
                         <th class="wd-15p">Order<br>number</th>
+                        <th class="wd-15p">Date</th>
                         <th class="wd-15p">{{ __('Customer') }}</th>
                         <th class="wd-15p">Customer Mobile</th>
                                                <th class="wd-20p">Reference Id</th>
@@ -94,6 +95,7 @@ $date = Carbon\Carbon::now();
                      <tr>
                         <td>{{ ++$i }}</td>
                         <td>{{ @$row->order_number }}</td>
+                        <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}</td>
                         <td>{{ (new App\Helpers\Helper)->findCustomerName($row->customer_id) }}</td>
                         <td>{{ (new App\Helpers\Helper)->findCustomerPhone($row->customer_id) }}</td>
                         <td>{{ @$row->referenceId }}</td>

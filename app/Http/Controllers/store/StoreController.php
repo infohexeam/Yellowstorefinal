@@ -3647,6 +3647,9 @@ class StoreController extends Controller
 
     if ($_GET) {
 
+      $datefrom = $request->date_from;
+      $dateto = $request->date_to;
+
       $a1 = Carbon::parse($request->date_from)->startOfDay();
       $a2  = Carbon::parse($request->date_to)->endOfDay();
 
