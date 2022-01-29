@@ -22,7 +22,6 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
-use App\Models\admin\Trn_OrderPaymentTransaction;
 use File;
 
 
@@ -2051,7 +2050,59 @@ class StoreController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
 
-                $paymentReport = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id');
+
+
+                $paymentReport =  Trn_store_order::select(
+
+                    'trn_store_orders.order_id',
+                    'trn_store_orders.order_number',
+                    'trn_store_orders.customer_id',
+                    'trn_store_orders.store_id',
+                    'trn_store_orders.subadmin_id',
+                    'trn_store_orders.product_total_amount',
+                    'trn_store_orders.delivery_charge',
+                    'trn_store_orders.packing_charge',
+                    'trn_store_orders.payment_type_id',
+                    'trn_store_orders.payment_status',
+                    'trn_store_orders.trn_id',
+
+                    'trn_store_orders.status_id',
+                    'trn_store_orders.payment_status',
+                    'trn_store_orders.delivery_status_id',
+                    'trn_store_orders.delivery_boy_id',
+                    'trn_store_orders.coupon_id',
+                    'trn_store_orders.coupon_code',
+                    'trn_store_orders.reward_points_used',
+                    'trn_store_orders.amount_before_applying_rp',
+                    'trn_store_orders.trn_id',
+                    'trn_store_orders.created_at',
+                    'trn_store_orders.amount_reduced_by_coupon',
+                    'trn_store_orders.order_type',
+
+                    'trn_store_customers.customer_id',
+                    'trn_store_customers.customer_first_name',
+                    'trn_store_customers.customer_last_name',
+                    'trn_store_customers.customer_mobile_number',
+                    'trn_store_customers.place',
+
+                    'mst_stores.store_id',
+                    'mst_stores.store_name',
+                    'mst_stores.store_mobile',
+
+                    'trn__order_payment_transactions.referenceId',
+
+                    'mst_delivery_boys.delivery_boy_name',
+                    'mst_delivery_boys.delivery_boy_mobile'
+
+
+
+                )
+                    ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+                    ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+                    ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')
+
+                    ->leftjoin('trn__order_payment_transactions', 'trn__order_payment_transactions.order_id', '=', 'trn_store_orders.order_id');
+
 
 
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
