@@ -236,7 +236,7 @@ class ProductController extends Controller
                 else
                     $data['feedbackAddedStatus'] = 1;
 
-                $rwStatus = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('isVisible', 1)->where('customer_id', $request->customer_id)->first();
+                $rwStatus = Trn_ReviewsAndRating::where('product_id', $productData->product_id)->where('customer_id', $request->customer_id)->first();
                 if (!$rwStatus)
                     $data['reviewAddedStatus'] = 0;
                 else
