@@ -1126,7 +1126,7 @@ class ProductController extends Controller
                         if (isset($storeData->store_commision_percentage))
                             $data['commision_percentage']  = $storeData->store_commision_percentage;
                         else
-                            $data['commision_percentage']  = '';
+                            $data['commision_percentage']  = '0';
 
                         $data['timeSlotDetails']  = Trn_StoreDeliveryTimeSlot::select('store_delivery_time_slot_id', 'store_id', 'time_start', 'time_end')->where('store_id', $request->store_id)->get();
 
