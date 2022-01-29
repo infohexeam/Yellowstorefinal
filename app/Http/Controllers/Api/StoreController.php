@@ -2057,7 +2057,6 @@ class StoreController extends Controller
                     ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
                     ->where('trn__order_split_payments.paymentRole', '=', 1)
                     ->where('trn_store_orders.store_id', '=', $store_id)->get();
-                dd($paymentReport);
 
 
 
@@ -2100,6 +2099,9 @@ class StoreController extends Controller
                 } else {
                     $paymentReport = $paymentReport->paginate(10);
                 }
+
+                dd($paymentReport);
+
 
 
 
