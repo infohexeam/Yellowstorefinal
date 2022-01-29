@@ -2216,7 +2216,7 @@ class StoreController extends Controller
                     if (!isset($sd->place))
                         $sd->place = '';
 
-                    $data['orderPaymentTransaction'] = new \stdClass();
+                    $sd->orderPaymentTransaction = new \stdClass();
                     $opt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->get();
                     $optConunt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->count();
                     if ($optConunt > 0) {
@@ -2229,7 +2229,7 @@ class StoreController extends Controller
                         }
                     }
                     //Trn_OrderPaymentTransaction
-                    $data['orderPaymentTransaction'] = $opt;
+                    $sd->orderPaymentTransaction = $opt;
                 }
 
                 $data['paymentReport'] = $paymentReport;
