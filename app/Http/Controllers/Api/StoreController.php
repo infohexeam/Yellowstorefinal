@@ -2055,9 +2055,9 @@ class StoreController extends Controller
                     ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
                     ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
                     ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
-                     ->where('trn__order_split_payments.paymentRole', '=', 1)
-                    ->where('trn_store_orders.store_id', '=', $store_id);
-
+                    ->where('trn__order_split_payments.paymentRole', '=', 1)
+                    ->where('trn_store_orders.store_id', '=', $store_id)->get();
+                dd($paymentReport);
 
 
 
