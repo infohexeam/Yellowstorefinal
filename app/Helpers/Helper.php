@@ -53,6 +53,7 @@ class Helper
     public static function findSubAdminName($store_id)
     {
         return $userId =  Mst_store::find($store_id)->subadmin_id;
+
         // if (isset($userId)) {
         //     if (User::find($userId)->admin_name) {
         //         return User::find($userId)->admin_name;
@@ -61,6 +62,7 @@ class Helper
         //     }
         // }
         // return '---'; 
+
     }
 
 
