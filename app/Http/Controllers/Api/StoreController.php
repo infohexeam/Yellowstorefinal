@@ -2103,7 +2103,7 @@ class StoreController extends Controller
                     ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
                     ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')
 
-                    ->leftjoin('trn__order_payment_transactions', 'trn__order_payment_transactions.order_id', '=', 'trn_store_orders.order_id');
+                    ->join('trn__order_payment_transactions', 'trn__order_payment_transactions.order_id', '=', 'trn_store_orders.order_id');
 
 
 
