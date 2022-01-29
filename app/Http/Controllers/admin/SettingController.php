@@ -1231,9 +1231,9 @@ class SettingController extends Controller
 
 		return redirect('admin/store/list')->with('status', 'Store status changed successfully');
 	}
-	
-	
-	
+
+
+
 	public function statusStorePG(Request $request, Mst_store $store, $store_id)
 	{
 
@@ -1244,12 +1244,12 @@ class SettingController extends Controller
 		$status = $store->is_pgActivated;
 
 		if ($status == 0) {
-		//	$store->is_pgActivated  = 1;
+			//	$store->is_pgActivated  = 1;
 			$storeD['is_pgActivated'] = 1;
 		} else {
 			$storeD['is_pgActivated'] = 0;
 
-		//	$store->is_pgActivated  = 0;
+			//	$store->is_pgActivated  = 0;
 		}
 		//store->update();
 
@@ -1257,7 +1257,7 @@ class SettingController extends Controller
 
 		return redirect('admin/store/list')->with('status', 'Pament gateway status changed successfully');
 	}
-	
+
 
 
 	public function destroyStore(Request $request, Mst_store $store)
@@ -2864,9 +2864,6 @@ class SettingController extends Controller
 		$boy_Id = $request->delivery_boy_id;
 		$delivery_boy = Mst_delivery_boy::Find($boy_Id);
 
-		$password = $delivery_boy->delivery_boy_password;
-		$newpassword = $request->delivery_boy_password;
-
 
 		$validator = Validator::make(
 			$request->all(),
@@ -2886,7 +2883,7 @@ class SettingController extends Controller
 				'delivery_boy_commision'            => 'required',
 				'delivery_boy_commision_amount'            => 'required',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
-				'delivery_boy_password'  => 'sometimes|same:password_confirmation',
+				'password'  => 'sometimes|same:password_confirmation',
 
 			],
 			[
@@ -2902,7 +2899,7 @@ class SettingController extends Controller
 				'town_id.required'        			   => 'Town required',
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
-				'delivery_boy_password.required'	   => 'Password required',
+				'password.required'	   => 'Password required',
 				'delivery_boy_commision.required'	   => 'Delivery boy commision percentage required',
 				'delivery_boy_commision_amount.required'	=> 'Delivery boy commision percentage required',
 
@@ -2933,11 +2930,9 @@ class SettingController extends Controller
 			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount;
 
 			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
-			$delivery_boy->delivery_boy_status   = 0;
-			if ($newpassword == '') {
-				$delivery_boy->delivery_boy_password = $password;
-			} else {
-				$delivery_boy->delivery_boy_password = Hash::make($request->delivery_boy_password);
+			//	$delivery_boy->delivery_boy_status   = 0;
+			if (isset($request->password)) {
+				$delivery_boy->password = Hash::make($request->password);
 			}
 
 
@@ -2972,6 +2967,7 @@ class SettingController extends Controller
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
 	}
+
 
 
 	public function storeDelivery_boy(Request $request, Mst_delivery_boy $delivery_boy)

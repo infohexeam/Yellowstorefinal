@@ -52,7 +52,8 @@ class Helper
 
     public static function findSubAdminName($store_id)
     {
-        return $userId =  Mst_store::find($store_id)->subadmin_id;
+        $userId =  Mst_store::find($store_id)->subadmin_id;
+        return $uData =  User::find($userId);
 
         // if (isset($userId)) {
         //     if (User::find($userId)->admin_name) {
