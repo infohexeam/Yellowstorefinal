@@ -22,6 +22,8 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
+use App\Models\admin\Trn_OrderPaymentTransaction;
+use App\Models\admin\Trn_OrderSplitPayments;
 use File;
 
 
@@ -2213,6 +2215,21 @@ class StoreController extends Controller
 
                     if (!isset($sd->place))
                         $sd->place = '';
+
+                    $data['orderPaymentTransaction'] = new \stdClass();
+                    $opt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->get();
+                    $optConunt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->count();
+                    if ($optConunt > 0) {
+                        foreach ($opt as $row) {
+                            $ospCount = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->count();
+                            if ($ospCount > 0) {
+                                $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->get();
+                                $row->orderSplitPayments = $osp;
+                            }
+                        }
+                    }
+                    //Trn_OrderPaymentTransaction
+                    $data['orderPaymentTransaction'] = $opt;
                 }
 
                 $data['paymentReport'] = $paymentReport;
