@@ -135,6 +135,7 @@
 
               <li><a class="slide-item" href="{{route('store.payment_reports')}}">{{ __('Payment Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.delivery_reports')}}">{{ __('Delivery Reports') }}</a></li>
+              <li><a class="slide-item" href="{{url('store/incoming-payments')}}">{{ __('Incoming Payments Reports') }}</a></li>
 
             </ul>
         </li>
