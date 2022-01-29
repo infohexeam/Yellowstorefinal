@@ -29,6 +29,42 @@ $date = Carbon\Carbon::now();
          <div class="card-header">
             <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
          </div>
+
+
+         <div class="card-body border">
+            <form action="{{ url('store/incoming-payments')}}" method="GET" enctype="multipart/form-data">
+               @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">From Date</label>
+                               <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date">
+        
+                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">To Date</label>
+                             <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date">
+                        </div>
+                     </div>
+                  
+                     
+                     <div class="col-md-12">
+                        <div class="form-group">
+                            <center>
+                               <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
+                               <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
+                               <a href="{{ url('store/incoming-payments')}}"  class="btn btn-info">Cancel</a>
+                            </center>
+                        </div>
+                      </div>
+ 
+ 
+                </div>
+            </form>
+        </div>
+
         
         <div class="card-body">
             <div class="table-responsive">
@@ -38,12 +74,13 @@ $date = Carbon\Carbon::now();
                         <th class="wd-15p">SL.No</th>
                         <th class="wd-15p">Order<br>number</th>
                         <th class="wd-15p">{{ __('Customer') }}</th>
+                        <th class="wd-15p">Customer Mobile</th>
                                                <th class="wd-20p">Reference Id</th>
 
                         <th class="wd-20p">Total<br>amount</th>
                         <th class="wd-20p">Split<br>Amount</th>
                         <th class="wd-20p">Delivery<br>Charge</th>
-                        <th class="wd-15p">{{__('Action')}}</th>
+                        <th class="wd-20p">Transaction<br>Status</th>
                      </tr>
                      
                   </thead>
@@ -58,14 +95,14 @@ $date = Carbon\Carbon::now();
                         <td>{{ ++$i }}</td>
                         <td>{{ @$row->order_number }}</td>
                         <td>{{ (new App\Helpers\Helper)->findCustomerName($row->customer_id) }}</td>
+                        <td>{{ (new App\Helpers\Helper)->findCustomerPhone($row->customer_id) }}</td>
                         <td>{{ @$row->referenceId }}</td>
 
                         <td>{{ @$row->orderAmount }}</td>
                         <td>{{ @$row->settlementAmount }}</td>
                         <td>{{ @$row->delivery_charge }}</td>
-                        <td>
-                                <button data-toggle="modal" data-target="#viewModal{{$row->opt_id}}"  class="btn btn-sm btn-cyan">View</button>
-                        </td>
+                        <td>{{ @$row->txStatus }}</td>
+                       
 
                      </tr>
                      @endforeach
