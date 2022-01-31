@@ -149,7 +149,7 @@
                       </tbody>
                   </table>
 
-                  <h5>Tax Split Ups</h5>
+                  <h6>Tax Split Ups</h6>
 
                  
                   <div class="table-responsive">
