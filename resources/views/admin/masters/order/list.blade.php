@@ -145,7 +145,7 @@ $date = Carbon\Carbon::now();
                         <th class="wd-15p">{{__('Store')}}</th>
                         <th class="wd-15p">Store<br>Phone</th>
                         <th class="wd-15p">{{__('Subadmin')}}</th>
-                        <!--<th class="wd-15p">Order<br>Status</th>-->
+                        <th class="wd-15p">Order<br>Status</th>
                         <!-- <th class="wd-15p">Payment<br>Status</th>-->
                         <th class="wd-15p">{{__('Action')}}</th>
                      </tr>
@@ -172,6 +172,13 @@ $date = Carbon\Carbon::now();
                               ---
                            @endif
                         </td>
+                        <td>
+                           @if(isset($order->status_id))-->
+                                     {{ @$order->status->status }}
+                                     @else
+                                     ---
+                                 @endif
+                        </td>
 
                     <!--    <td>-->
                     <!--{{-- <form action="{{route('admin.status_order',$order->order_id)}}" method="POST"> --}}-->
@@ -181,11 +188,7 @@ $date = Carbon\Carbon::now();
                     <!--           <button class="btn btn-sm-->
                     <!--            @if($order->status_id == 1) btn-info @elseif($order->status_id == 5) btn-danger @else btn-success @endif">-->
                                
-                    <!--            @if(isset($order->status_id))-->
-                    <!--            {{ @$order->status->status }}-->
-                    <!--            @else-->
-                    <!--            ---->
-                    <!--           @endif-->
+                    <!--          
                     <!--    </button>-->
                     <!--{{--  </form>  --}}-->
                     <!--     </td>-->
@@ -327,7 +330,7 @@ $(function(e) {
                 title: 'Store Orders',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
+                     columns: [0,1,2,3,4,5,6,7]
                  }
             },
             {
@@ -335,7 +338,7 @@ $(function(e) {
                 title: 'Store Orders',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
+                     columns: [0,1,2,3,4,5,6,7]
                  }
             }
          ]
