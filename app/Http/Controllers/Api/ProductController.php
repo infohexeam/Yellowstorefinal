@@ -429,12 +429,12 @@ class ProductController extends Controller
         try {
             if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
                 if ($data['productSubCategoryDetails']  = Mst_SubCategory::select(
-                        'sub_category_id',
-                        'category_id',
-                        'sub_category_name',
-                        'sub_category_icon',
-                        'sub_category_description'
-                    )
+                    'sub_category_id',
+                    'category_id',
+                    'sub_category_name',
+                    'sub_category_icon',
+                    'sub_category_description'
+                )
                     ->where('sub_category_status', 1)
                     ->where('category_id', $request->category_id)
                     ->orderBy('sub_category_id', 'DESC')->get()
@@ -781,6 +781,13 @@ class ProductController extends Controller
                                 $varImg->product_image = '/assets/uploads/products/base_product/base_image/' . $varImg->product_image;
                             }
                             $var->varianAttributes = Trn_ProductVariantAttribute::where('product_varient_id', $var->product_varient_id)->get();
+
+                            $pCo =   Mst_store_product_varient::where('product_id', '=', $request->product_id)->count();
+                            if ($pCo <= 1) {
+                                $var->isPrimary = 1;
+                            } else {
+                                $var->isPrimary = 0;
+                            }
                         }
                         $data['status'] = 1;
                         $data['message'] = "success";
@@ -1282,12 +1289,22 @@ class ProductController extends Controller
             if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
 
                 if ($productVar = Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->first()) {
-                    Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->delete();
                     $productVarCount = Mst_store_product_varient::where('product_id', $productVar->product_id)->count();
 
-                    if ($productVarCount < 1) {
-                        Mst_store_product::where('product_id', $productVar->product_id)->update(['product_status' => 0]);
+                    if ($productVarCount <= 1) {
+                        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->delete();
+                        Mst_store_product::where('product_id', $productVar->product_id)->delete();
+                        // update(['product_status' => 0]);
+
+                    } else {
+                        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->delete();
                     }
+
+
+                    // $productVarCount = Mst_store_product_varient::where('product_id', $productVar->product_id)->count();
+                    // if ($productVarCount < 1) {
+                    //     Mst_store_product::where('product_id', $productVar->product_id)->update(['product_status' => 0]);
+                    // }
 
                     $data['status'] = 1;
                     $data['message'] = "Product variant deleted ";
