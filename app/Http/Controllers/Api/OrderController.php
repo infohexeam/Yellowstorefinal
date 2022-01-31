@@ -609,6 +609,7 @@ class OrderController extends Controller
                                 $configPoint = Trn_configure_points::find(1);
 
                                 // first - order - point
+                                $refCusData = Trn_store_customer::find($orderDataz->customer_id);
 
                                 $cr = new Trn_customer_reward;
                                 $cr->transaction_type_id = 0;
