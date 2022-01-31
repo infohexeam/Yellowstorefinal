@@ -142,7 +142,7 @@
                                title: 'Global Product',
                                footer: true,
                                exportOptions: {
-                                    columns: [0,1,2,4]
+                                    columns: [0,1,2,3,5]
                                 }
                            },
                            {
@@ -150,7 +150,7 @@
                                title: 'Delivery Boys',
                                footer: true,
                                exportOptions: {
-                                    columns: [0,1,2,4]
+                                    columns: [0,1,2,3,5]
                                 }
                            }
                         ]
