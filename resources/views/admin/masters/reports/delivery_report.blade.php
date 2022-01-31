@@ -108,8 +108,8 @@
                                             <th class="wd-15p">Total Amount</th>
                                             <th class="wd-15p">Payment type</th>
                                             
-                                            <th class="wd-15p">Deivery Boy</th>
-                                            <th class="wd-15p">Deivery Status</th>
+                                            <th class="wd-15p">Delivery Boy</th>
+                                            <th class="wd-15p">Delivery Status</th>
                                             
                                             <th class="wd-15p">Customer</th>
                                             <th class="wd-15p">Customer Phone</th>

@@ -122,7 +122,7 @@
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Referal report',
+                title: 'Referral report',
                 footer: true,
                
                  orientation : 'landscape',
@@ -130,7 +130,7 @@
             },
             {
                 extend: 'excel',
-                title: 'Referal report',
+                title: 'Referral report',
                 footer: true,
               
             }

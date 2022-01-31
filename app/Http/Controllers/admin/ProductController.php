@@ -2295,7 +2295,7 @@ class ProductController extends Controller
   public function showReferalReport(Request $request)
   {
     //echo "working..";die;
-    $pageTitle = "Referal Reports";
+    $pageTitle = "Referral Reports";
 
     $data = Trn_store_customer::select(
       'customer_first_name',
