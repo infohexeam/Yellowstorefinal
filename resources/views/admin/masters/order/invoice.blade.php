@@ -47,7 +47,7 @@
                                        $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                                        @endphp
 
-
+ 
                                     <address>
                                     <h5> {{@$order->customer['name']}} </h5>
                                    <div>
