@@ -163,12 +163,12 @@
                                  <tr>
                                     <td><strong>Mobile :</strong> (+91){{ @$order->customer['customer_mobile_number']}}</td>
                                  </tr>
-                                  <tr>
+                                  {{-- <tr>
                                     <td><strong>Location :</strong> {{ @$order->customer['customer_location']}}</td>
-                                 </tr>
-                                 <tr>
+                                 </tr> --}}
+                                 {{-- <tr>
                                     <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
-                                 </tr>
+                                 </tr> --}}
                               </tbody>
 
                            </table>
@@ -194,7 +194,9 @@
                                    $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                                  @endphp
                                  <tr>
-                                    <td><strong>Address {{ $order->delivery_address }} :</strong> {{ @$oredrAddr->address}}</td>
+                                    <td><strong>Address :</strong> {{ @$oredrAddr->name}}{{ @$oredrAddr->address}}
+                                       {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
+                                    </td>
                                  </tr>
 
                               </tbody>
