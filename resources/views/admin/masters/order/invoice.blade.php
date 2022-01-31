@@ -42,12 +42,17 @@
 
                                  <div class="col-md-6 text-right">
                                     <p class="h3">Invoice To:</p>
+
+                                      @php
+                                       $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
+                                       @endphp
+
+
                                     <address>
-                                    <h5> {{@$order->customer['customer_first_name']}} {{@$order->customer['customer_last_name']}}  </h5>
+                                    <h5> {{@$order->customer['name']}} </h5>
                                    <div>
-                                    {{@$order->customer['customer_address']}} <br>
-                                     Pincode: {{$order->customer['customer_pincode']}}<br>
-                                     Phone: {{@$order->customer['customer_mobile_number']}}<br>
+                                    {{ @$oredrAddr->name}}{{ @$oredrAddr->address}}
+                                    {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
                                    </div>
                                    
                                     </address>
