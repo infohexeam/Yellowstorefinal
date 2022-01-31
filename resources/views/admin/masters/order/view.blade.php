@@ -191,10 +191,10 @@
                                     <td><strong>Payment Mode :</strong> {{@$order->payment_type['payment_type']}}</td>
                                  </tr> --}}
                                  @php
-                                  //  $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
+                                   $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                                  @endphp
                                  <tr>
-                                    <td><strong>Address :</strong> {{ @$order->customer['address']}}</td>
+                                    <td><strong>Address {{ $order->delivery_address }} :</strong> {{ @$oredrAddr->address}}</td>
                                  </tr>
 
                               </tbody>
