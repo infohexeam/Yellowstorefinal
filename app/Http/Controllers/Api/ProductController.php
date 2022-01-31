@@ -1532,7 +1532,7 @@ class ProductController extends Controller
                                 $v->att_group = @$aG->group_name;
                                 $v->att_val = @$aV->group_value;
 
-                                $pCo =   Mst_store_product_varient::where('product_id', '=', $request->product_id)->count();
+                                $pCo = Mst_store_product_varient::where('product_id', '=', $request->product_id)->count();
                                 if ($pCo <= 1) {
                                     $key->isPrimary = 1;
                                 } else {
