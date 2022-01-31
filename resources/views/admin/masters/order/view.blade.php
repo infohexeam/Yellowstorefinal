@@ -61,7 +61,8 @@
                   </div>
                </div>
 
-
+               @if (isset($order->delivery_boy['delivery_boy_name']))
+                  
                 <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
@@ -90,6 +91,7 @@
                      </div><!-- COL END -->
                   </div>
                </div>
+               @endif
 
 
                 <div class="row" >
@@ -178,7 +180,7 @@
                   </div>
                </div>
                   <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-12">
                         <div class="card">
                            <div class="card-header">
                               <div class="card-title">Delivery Address </div>
