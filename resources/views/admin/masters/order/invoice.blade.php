@@ -89,13 +89,20 @@
                                     @endphp
                                     @foreach ($order_items as $order_item)
                                        <tr>
-                                          <td>{{@$order_item->product->product_name}}   
-                                             @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
-                                             -
-                                           {{ @$order_item->product_varient->variant_name }}
-                                           
-                                           @endif
-                                           </td>
+                                          <td>
+                                             @if (strlen($order_item->product->product_name. " ".$order_item->product_varient->variant_name) <)
+                                                {{@$order_item->product->product_name}}   
+                                                   @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
+                                                      @if($order_item->product->product_name != $order_item->product_varient->variant_name)
+                                                            - {{ @$order_item->product_varient->variant_name }}
+                                                      @endif
+                                                   @endif
+                                             @else
+                                             {{@$order_item->product->product_name}} - <br> 
+                                             {{ @$order_item->product_varient->variant_name }}
+
+                                             @endif
+                                          </td>
                                           <td>{{@$order_item->quantity}} </td>
                                           <td>{{@$order_item->unit_price}} </td>
                                           <td>

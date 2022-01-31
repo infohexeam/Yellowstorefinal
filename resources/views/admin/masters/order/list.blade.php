@@ -173,7 +173,7 @@ $date = Carbon\Carbon::now();
                            @endif
                         </td>
                         <td>
-                           @if(isset($order->status_id))-->
+                           @if(isset($order->status_id))
                                      {{ @$order->status->status }}
                                      @else
                                      ---
