@@ -50,7 +50,7 @@
  
                                     <address>
                                     <h5> {{@$order->customer['name']}} </h5>
-                                   <div>
+                                   <div> <br>
                                     {{ @$oredrAddr->name}}{{ @$oredrAddr->address}}
                                     {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
                                    </div>
