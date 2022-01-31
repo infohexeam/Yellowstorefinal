@@ -1531,14 +1531,15 @@ class ProductController extends Controller
                                 $aV = Mst_attribute_value::find(@$v->attr_value_id);
                                 $v->att_group = @$aG->group_name;
                                 $v->att_val = @$aV->group_value;
-
-                                $pCo = Mst_store_product_varient::where('product_id', '=', $request->product_id)->count();
-                                if ($pCo <= 1) {
-                                    $key->isPrimary = 1;
-                                } else {
-                                    $key->isPrimary = 0;
-                                }
                             }
+
+                            $pCo = Mst_store_product_varient::where('product_id', '=', $request->product_id)->count();
+                            if ($pCo <= 1) {
+                                $key->isPrimary = 1;
+                            } else {
+                                $key->isPrimary = 0;
+                            }
+
                             $key->variantImages = Mst_product_image::where('product_id', $request->product_id)
                                 ->where('product_varient_id', $key->product_varient_id)
                                 ->get();
