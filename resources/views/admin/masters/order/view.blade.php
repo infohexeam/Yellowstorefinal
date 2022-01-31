@@ -187,11 +187,14 @@
                          <div class="table-responsive">
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
-                                 <tr>
+                                 {{-- <tr>
                                     <td><strong>Payment Mode :</strong> {{@$order->payment_type['payment_type']}}</td>
-                                 </tr>
+                                 </tr> --}}
+                                 @php
+                                  //  $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
+                                 @endphp
                                  <tr>
-                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
+                                    <td><strong>Address :</strong> {{ @$order->customer['address']}}</td>
                                  </tr>
 
                               </tbody>
@@ -202,29 +205,7 @@
                      </div>
                      </div><!-- COL END -->
 
-                      <div class="col-md-6">
-                        <div class="card">
-                           <div class="card-header">
-                              <div class="card-title">Shipping Address</div>
-                           </div>
-                           <div class="card-body">
-                         <div class="table-responsive">
-                           <table class="table row table-borderless">
-                              <tbody class="col-lg-12 col-xl-6 p-0">
-                                 <tr>
-                                    <td><strong>Address :</strong> {{$order->shipping_address}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td><strong>Landmark :</strong>{{ $order->shipping_landmark}}</td>
-                                 </tr>
-
-                              </tbody>
-
-                           </table>
-                           </div>
-                        </div>
-                     </div><!-- COL END -->
-                  </div>
+                    
                </div>
             </div>
             <br>
