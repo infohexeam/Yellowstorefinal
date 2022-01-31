@@ -66,7 +66,15 @@ $date = Carbon\Carbon::now();
                                  <option value="{{request()->input('store_id')}}"> {{$store_dataz->store_name}}  </option>
                              @endif
                         @else
+                        @php
+                            $storesData = \DB::table('mst_stores')->get();
+                           
+                        @endphp
                                  <option value=""> Select Store </option>
+                                 @foreach ($storesData as $r)
+                                    <option value="{{ $r->store_id }}"> {{ $r->store_name }} </option>
+                                 @endforeach
+                                 
 
                          @endif
                            </select>
@@ -164,7 +172,13 @@ $date = Carbon\Carbon::now();
                         {{-- <td>{{$order->product->product_name->product_name}}</td> --}}
                         <td>{{ @$order->store['store_name']}}</td>
                         <td>{{ @$order->store['store_contact_person_phone_number']}}</td>
-                        <td>{{ @$order->store->subadmin->name}}</td>
+                        <td>
+                           @if(isset($order->store->subadmin->name))
+                           {{ @$order->store->subadmin->name}}
+                           @else
+                              ---
+                           @endif
+                        </td>
 
                     <!--    <td>-->
                     <!--{{-- <form action="{{route('admin.status_order',$order->order_id)}}" method="POST"> --}}-->

@@ -276,10 +276,10 @@
                               <br>
                            </div>
 
-                  <center>
-                     <button type="button" class="btn btn-cyan" onclick="history.back()">Cancel</button>
-
-                           </center>
+                        <center>
+                           <a  href="{{ url('admin/order/list') }}" class="btn btn-cyan text-white " >Cancel</a>
+                        </center>
+                        
                         </br>
              {{--   </div>
             </div> --}}
