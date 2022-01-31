@@ -90,7 +90,7 @@
                                     @foreach ($order_items as $order_item)
                                        <tr>
                                           <td>
-                                             @if (strlen($order_item->product->product_name. " ".$order_item->product_varient->variant_name) <)
+                                             @if (strlen($order_item->product->product_name. " ".$order_item->product_varient->variant_name) < 22)
                                                 {{@$order_item->product->product_name}}   
                                                    @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
                                                       @if($order_item->product->product_name != $order_item->product_varient->variant_name)
