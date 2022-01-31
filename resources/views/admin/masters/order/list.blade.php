@@ -66,14 +66,7 @@ $date = Carbon\Carbon::now();
                                  <option value="{{request()->input('store_id')}}"> {{$store_dataz->store_name}}  </option>
                              @endif
                         @else
-                        @php
-                            $storesData = \DB::table('mst_stores')->get();
-                           
-                        @endphp
                                  <option value=""> Select Store </option>
-                                 @foreach ($storesData as $r)
-                                    <option value="{{ $r->store_id }}"> {{ $r->store_name }} </option>
-                                 @endforeach
                                  
 
                          @endif
