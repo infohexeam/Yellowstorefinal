@@ -565,8 +565,6 @@ class ProductController extends Controller
                         $ratingData = $sumRating / $countRating;
                     }
 
-                    $ratingData = $sumRating / $countRating;
-
                     $productData->ratingData = number_format((float)$ratingData, 2, '.', '');
                     $productData->ratingCount = $countRating;
 
@@ -781,8 +779,6 @@ class ProductController extends Controller
                         } else {
                             $ratingData = $sumRating / $countRating;
                         }
-
-                        $ratingData = $sumRating / $countRating;
 
                         $productData->ratingData = number_format((float)$ratingData, 2, '.', '');
                         $productData->ratingCount = $countRating;
