@@ -3355,23 +3355,16 @@ class ProductController extends Controller
                         } else {
                             $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
                             $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
-                            // if (isset($cusAddData)) {
-                            //     $cusAddDataLat =  $cusAddData->latitude;
-                            //     $cusAddDataLog =  $cusAddData->longitude;
-                            // } else {
-                            $cusAddDataLat =  $cusData->latitude;
-                            $cusAddDataLog =  $cusData->longitude;
-                            // }
+                            if (isset($cusAddData)) {
+                                $cusAddDataLat =  $cusAddData->latitude;
+                                $cusAddDataLog =  $cusAddData->longitude;
+                            } else {
+                                $cusAddDataLat =  $cusData->latitude;
+                                $cusAddDataLog =  $cusData->longitude;
+                            }
                             $latitude = $cusAddDataLat;
                             $longitude = $cusAddDataLog;
                         }
-
-                        $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
-                        $cusAddDataLat =  $cusData->latitude;
-                        $cusAddDataLog =  $cusData->longitude;
-                        $latitude = $cusAddDataLat;
-                        $longitude = $cusAddDataLog;
-
                         $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                     * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
