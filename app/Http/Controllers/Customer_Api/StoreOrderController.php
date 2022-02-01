@@ -601,7 +601,7 @@ class StoreOrderController extends Controller
                         $total_amount = $value['quantity'] * $value['unit_price'];
 
                         // $iTax = @$productVarOlddata->product_varient_offer_price * 100 / (100 + @$taxData->tax_value);
-                        $iTax = $productVarOlddata->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value);
+                        $iTax = @$productVarOlddata->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value);
                         $iDis = @$productVarOlddata->product_varient_price - @$productVarOlddata->product_varient_offer_price;
 
                         $data2 = [
@@ -1253,10 +1253,10 @@ class StoreOrderController extends Controller
                             $discount_amount = (@$vaproductDetail->product_varient_price - @$vaproductDetail->product_varient_offer_price) * $value->quantity;
                             $value->discount_amount =  number_format((float)$discount_amount, 2, '.', '');
                             $value->taxPercentage = @$taxFullData->tax_value;
-                            $tTax = $value->quantity * ($vaproductDetail->product_varient_offer_price * @$taxFullData->tax_value / (100 + @$taxFullData->tax_value));
+                            $tTax = $value->quantity * (@$vaproductDetail->product_varient_offer_price * @$taxFullData->tax_value / (100 + @$taxFullData->tax_value));
                             $value->tax_amount = number_format((float)$tTax, 2, '.', '');
                             $value->gstAmount = number_format((float)$tTax, 2, '.', '');
-                            $orgCost =  $value->quantity * ($vaproductDetail->product_varient_offer_price * 100 / (100 + @$taxFullData->tax_value));
+                            $orgCost =  $value->quantity * (@$vaproductDetail->product_varient_offer_price * 100 / (100 + @$taxFullData->tax_value));
                             $value->orgCost = number_format((float)$orgCost, 2, '.', '');
 
 
