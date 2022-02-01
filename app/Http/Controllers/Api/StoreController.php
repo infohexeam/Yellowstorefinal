@@ -669,7 +669,7 @@ class StoreController extends Controller
 
                                 $dataName = '';
                                 if ($custCheck->role_id != 0)
-                                    $dataName =   Mst_store::find($custCheck->store_id)->store_name;
+                                    $dataName =   Trn_StoreAdmin::find($custCheck->store_admin_id)->admin_name;
 
 
 
