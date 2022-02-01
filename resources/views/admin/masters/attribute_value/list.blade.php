@@ -52,8 +52,8 @@
                      @foreach ($attributevalues as $attributevalue)
                      <tr>
                         <td>{{ ++$i }}</td>
-                         <td>{{ $attributevalue->attr_group['group_name'] }}</td>
-                        <td>{{ $attributevalue->group_value }}</td>
+                         <td>{{ @$attributevalue->attr_group['group_name'] }}</td>
+                        <td>{{ @$attributevalue->group_value }}</td>
                         
                         
                         <td>
