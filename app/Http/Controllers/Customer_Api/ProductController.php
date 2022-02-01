@@ -186,7 +186,7 @@ class ProductController extends Controller
                 foreach ($reviewData as $r) {
                     $r->customer_image =  Helper::default_user_image();
                     $customerData =  Trn_store_customer::find($r->customer_id);
-                    $r->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                    $r->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
                 }
                 $data['reviewData'] = $reviewData;
 
@@ -647,7 +647,7 @@ class ProductController extends Controller
                     foreach ($reviewData as $r) {
                         $r->customer_image =  Helper::default_user_image();
                         $customerData =  Trn_store_customer::find($r->customer_id);
-                        $r->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                        $r->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
                     }
 
                     $data['reviewData'] = $reviewData;
@@ -848,7 +848,7 @@ class ProductController extends Controller
                         foreach ($reviewData as $r) {
                             $r->customer_image =  Helper::default_user_image();
                             $customerData =  Trn_store_customer::find($r->customer_id);
-                            $r->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                            $r->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
                         }
 
                         $data['reviewData'] = $reviewData;
@@ -1817,7 +1817,7 @@ class ProductController extends Controller
                     foreach ($reviewData as $r) {
                         $r->customer_image =  Helper::default_user_image();
                         $customerData =  Trn_store_customer::find($r->customer_id);
-                        $r->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                        $r->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
                     }
 
                     $data['reviewData'] = $reviewData;
@@ -1975,7 +1975,7 @@ class ProductController extends Controller
                         foreach ($reviewData as $r) {
                             $r->customer_image =  Helper::default_user_image();
                             $customerData =  Trn_store_customer::find($r->customer_id);
-                            $r->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                            $r->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
                         }
 
                         $data['reviewData'] = $reviewData;
