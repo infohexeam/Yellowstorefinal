@@ -85,9 +85,16 @@ class ProductController extends Controller
                     $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
                     foreach ($attributesData as $j) {
                         $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
-                        $j->attr_group = @$datas->group_name;
+                        if (isset($datas->group_name))
+                            $j->attr_group = @$datas->group_name;
+                        else
+                            $j->attr_group = '';
+
                         $datasvalue = Mst_attribute_value::where('attr_value_id', $j->attr_value_id)->first();
-                        $j->attr_value = @$datasvalue->group_value;
+                        if (isset($datasvalue->group_value))
+                            $j->attr_value = @$datasvalue->group_value;
+                        else
+                            $j->attr_value = '';
                     }
                     $row->attributesData = $attributesData;
                     $row->store_name = Mst_store::find($productData->store_id)->store_name;
