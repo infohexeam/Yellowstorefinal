@@ -3359,12 +3359,19 @@ class ProductController extends Controller
                             //     $cusAddDataLat =  $cusAddData->latitude;
                             //     $cusAddDataLog =  $cusAddData->longitude;
                             // } else {
-                                $cusAddDataLat =  $cusData->latitude;
-                                $cusAddDataLog =  $cusData->longitude;
-                           // }
+                            $cusAddDataLat =  $cusData->latitude;
+                            $cusAddDataLog =  $cusData->longitude;
+                            // }
                             $latitude = $cusAddDataLat;
                             $longitude = $cusAddDataLog;
                         }
+
+                        $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
+                        $cusAddDataLat =  $cusData->latitude;
+                        $cusAddDataLog =  $cusData->longitude;
+                        $latitude = $cusAddDataLat;
+                        $longitude = $cusAddDataLog;
+
                         $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                     * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
