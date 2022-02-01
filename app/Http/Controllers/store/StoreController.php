@@ -2007,18 +2007,28 @@ class StoreController extends Controller
           }
         }
 
+        if (Trn_customer_reward::where('order_id', $order_id)->count() < 1) {
 
-        if ((Trn_customer_reward::where('order_id', $order_id)->count() < 1) || (Trn_store_order::where('customer_id', $customer_id)->count() == 1)) {
-          $cr = new Trn_customer_reward;
-          $cr->transaction_type_id = 0;
-          $cr->reward_points_earned = $orderPointAmount;
-          $cr->customer_id = $customer_id;
-          $cr->order_id = $order_id;
-          $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-          $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-          $cr->reward_point_status = 1;
-          $cr->discription = null;
-          $cr->save();
+          if ((Trn_customer_reward::where('order_id', $order_id)->count() < 1) || (Trn_store_order::where('customer_id', $customer_id)->count() == 1)) {
+            $cr = new Trn_customer_reward;
+            $cr->transaction_type_id = 0;
+            $cr->reward_points_earned = $orderPointAmount;
+            $cr->customer_id = $customer_id;
+            $cr->order_id = $order_id;
+            $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $cr->reward_point_status = 1;
+            $cr->discription = null;
+            $cr->save();
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+
+            foreach ($customerDevice as $cd) {
+              $title = 'Order points credited';
+              $body = $orderPointAmount . ' points credited to your wallet..';
+              $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+            }
+          }
         }
       }
 
