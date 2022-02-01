@@ -567,6 +567,7 @@ class StoreOrderController extends Controller
                                 }
                             }
                         }
+                    } elseif ($request->payment_type_id == 2) {
                     }
 
 

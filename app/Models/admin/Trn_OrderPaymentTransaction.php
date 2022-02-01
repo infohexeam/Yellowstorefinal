@@ -10,7 +10,7 @@ class Trn_OrderPaymentTransaction extends Model
     protected $table = "trn__order_payment_transactions";
 
     protected $fillable = [
-        'order_id', 'paymentMode', 'PGOrderId', 'txTime', 'referenceId', 'txMsg', 'orderAmount', 'txStatus'
+        'order_id', 'paymentMode', 'PGOrderId', 'txTime', 'referenceId', 'txMsg', 'orderAmount', 'txStatus', 'payment_mode_flag'
     ];
 
     public function order()

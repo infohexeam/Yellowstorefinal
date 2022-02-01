@@ -11,8 +11,13 @@
                      <div class="wideget-user-desc d-sm-flex">
                         <div class="wideget-user-img">
                            <input type="hidden" class="form-control" name="delivery_boy_id" value="{{$delivery_boy->delivery_boy_id}}" >
-
-                           <img class="avatar-xl rounded-circle mCS_img_loaded" src=" {{URL::to('assets/uploads/delivery_boy/images/'.$delivery_boy->delivery_boy_image)}}" alt="img" style="width: 150px; height: 150px;">
+                           @if (isset($delivery_boy->delivery_boy_image))
+                           <img class="avatar-xl rounded-circle mCS_img_loaded"
+                            src=" {{URL::to('assets/uploads/delivery_boy/images/'.$delivery_boy->delivery_boy_image)}}" alt="img" style="width: 150px; height: 150px;">
+                           @else
+                            src=" {{URL::to('assets/uploads/admin.png')}}" alt="img" style="width: 150px; height: 150px;">
+                              
+                           @endif
                         </div>
 
                      </div>
