@@ -30,6 +30,8 @@ Route::get('test', 'Customer_Api\BusinessTypeController@test');
 
 
 Route::get('video/list', 'Api\StoreController@VideoList');
+Route::get('dboy/list', 'Delivery_Api\DeliveryBoyController@dboy');
+
 Route::get('store-video/list', 'Api\StoreController@storeVideoList');
 Route::get('customer-video/list', 'Api\StoreController@customerVideoList');
 Route::get('delivery-boy-video/list', 'Api\StoreController@deliveryBoyVideoList');
