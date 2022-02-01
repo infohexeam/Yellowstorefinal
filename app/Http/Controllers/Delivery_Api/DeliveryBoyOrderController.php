@@ -63,9 +63,9 @@ class DeliveryBoyOrderController extends Controller
                             $customerInfo = Trn_store_customer::find($order->customer_id);
 
                             if (isset($customerInfo->customer_last_name))
-                                $order->customer_name = $customerInfo->customer_first_name . " " . $customerInfo->customer_last_name;
+                                $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
                             else
-                                $order->customer_name = $customerInfo->customer_first_name;
+                                $order->customer_name = @$customerInfo->customer_first_name;
 
                             $storeInfo = Mst_store::find($order->store_id);
                             $order->store_name = $storeInfo->store_name;
@@ -109,9 +109,9 @@ class DeliveryBoyOrderController extends Controller
                         $customerInfo = Trn_store_customer::find($order->customer_id);
 
                         if (isset($customerInfo->customer_last_name))
-                            $order->customer_name = $customerInfo->customer_first_name . " " . $customerInfo->customer_last_name;
+                            $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
                         else
-                            $order->customer_name = $customerInfo->customer_first_name;
+                            $order->customer_name = @$customerInfo->customer_first_name;
 
                         $storeInfo = Mst_store::find($order->store_id);
                         $order->store_name = $storeInfo->store_name;
@@ -289,7 +289,7 @@ class DeliveryBoyOrderController extends Controller
 
                         if (isset($data['orderDetails']->customer_id)) {
                             $customerData = Trn_store_customer::find($data['orderDetails']->customer_id);
-                            $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                            $data['orderDetails']->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
 
                             $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
                             $data['orderDetails']->customer_address = @$customerData->customer_address;
