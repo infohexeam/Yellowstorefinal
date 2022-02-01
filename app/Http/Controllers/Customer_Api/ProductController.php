@@ -3368,7 +3368,7 @@ class ProductController extends Controller
                         $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                     * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                        $productData = $productData->orderBy('distance');
+                        $productData = $productData->where('distance', '<=', 10);
                     }
 
                     $productData = $productData->where('mst_store_products.product_status', 1)
