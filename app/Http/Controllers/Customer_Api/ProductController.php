@@ -3355,13 +3355,13 @@ class ProductController extends Controller
                         } else {
                             $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
                             $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
-                            if (isset($cusAddData)) {
-                                $cusAddDataLat =  $cusAddData->latitude;
-                                $cusAddDataLog =  $cusAddData->longitude;
-                            } else {
+                            // if (isset($cusAddData)) {
+                            //     $cusAddDataLat =  $cusAddData->latitude;
+                            //     $cusAddDataLog =  $cusAddData->longitude;
+                            // } else {
                                 $cusAddDataLat =  $cusData->latitude;
                                 $cusAddDataLog =  $cusData->longitude;
-                            }
+                           // }
                             $latitude = $cusAddDataLat;
                             $longitude = $cusAddDataLog;
                         }
