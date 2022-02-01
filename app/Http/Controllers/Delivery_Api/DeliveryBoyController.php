@@ -375,7 +375,7 @@ class DeliveryBoyController extends Controller
         try {
             $delivery_boy_id = $request->delivery_boy_id;
             $mobNumber = $request->delivery_boy_mobile;
-            $mobCheck = Mst_delivery_boy::where("delivery_boy_mobile", '=', $mobNumber)->first();
+            $mobCheck = Mst_delivery_boy::where('delivery_boy_id', '=', $delivery_boy_id)->first();
             if ($mobCheck) {
                 $validator = Validator::make($request->all(), [
                     'password' => 'required|string|min:8|confirmed'
