@@ -1441,10 +1441,10 @@ class ProductController extends Controller
                     $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
 
                     if ($countRating == 0) {
-                        $countRating = 1;
+                        $ratingData = $sumRating / 1;
+                    } else {
+                        $ratingData = $sumRating / $countRating;
                     }
-
-                    $ratingData = $sumRating / $countRating;
 
                     $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                     $offerProduct->ratingCount = $countRating;
@@ -1520,10 +1520,10 @@ class ProductController extends Controller
                         $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
 
                         if ($countRating == 0) {
-                            $countRating = 1;
+                            $ratingData = $sumRating / 1;
+                        } else {
+                            $ratingData = $sumRating / $countRating;
                         }
-
-                        $ratingData = $sumRating / $countRating;
 
                         $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                         $offerProduct->ratingCount = $countRating;
