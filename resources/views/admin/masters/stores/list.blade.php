@@ -235,7 +235,7 @@
                                           @csrf
                                           @method('POST')
                                           <button type="submit"  onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
-                                          @if($adminData->store_account_status == 0) btn-danger @else btn-success @endif"> @if($adminData->store_account_status == 0)
+                                          @if(@$adminData->store_account_status == 0) btn-danger @else btn-success @endif"> @if(@$adminData->store_account_status == 0)
                                           InActive
                                           @else
                                           Active
@@ -247,7 +247,7 @@
                                             $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
                                                 $today = Carbon\Carbon::now()->addDays(3);
                                                 $now = Carbon\Carbon::now();
-                                                $dateExp = Carbon\Carbon::parse($storeAdmData->expiry_date);
+                                                $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
                                                 $diff = $dateExp->diffInDays($now) + 1;
                                                 
                                                 if(@$diff == 1){
