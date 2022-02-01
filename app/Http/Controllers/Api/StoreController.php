@@ -666,7 +666,15 @@ class StoreController extends Controller
                                 $data['online_status'] = $storeData->online_status;
                                 $data['store_id'] = $custCheck->store_id;
                                 $data['store_admin_id'] = $custCheck->store_admin_id;
+
+                                $dataName = '';
+                                if ($custCheck->role_id != 0)
+                                    $dataName =   Mst_store::find($custCheck->store_id)->store_name;
+
+
+
                                 $data['store_name'] = $storeData->store_name;
+                                $data['store_admin_name'] = $dataName;
                                 $data['store_username'] = $storeData->store_username;
                                 $data['access_token'] = $custCheck->createToken('authToken')->accessToken;
 
