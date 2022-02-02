@@ -3453,7 +3453,8 @@ class SettingController extends Controller
 		$store = Mst_store::all();
 		$payment_type = Sys_payment_type::all();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
-
+		$datefrom = '';
+		$dateto = '';
 		$payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
 			->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
 			->where('trn__order_split_payments.paymentRole', '!=', 1)
@@ -3465,10 +3466,31 @@ class SettingController extends Controller
 			$datefrom = $request->date_from;
 			$dateto = $request->date_to;
 
-			$year = $request->year;
-			$month = $request->month;
-			$a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
-			$a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
+			$payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+				->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+				->where('trn__order_split_payments.paymentRole', '!=', 1);
+
+			$a1 = Carbon::parse($request->date_from)->startOfDay();
+			$a2  = Carbon::parse($request->date_to)->endOfDay();
+
+			if (isset($request->date_from)) {
+				$payments = $payments->whereDate('trn_store_orders.created_at', '>=', $a1);
+			}
+
+			if (isset($request->date_to)) {
+				$payments = $payments->whereDate('trn_store_orders.created_at', '<=', $a2);
+			}
+
+			if (isset($request->subadmin_id)) {
+				$payments = $payments->where('trn_store_orders.subadmin_id', '=', $request->subadmin_id);
+			}
+
+			if (isset($request->store_id)) {
+				$payments = $payments->where('trn_store_orders.store_id', '=', $request->store_id);
+			}
+
+			$payments = $payments->get();
+
 
 			$payment_type_id = $request->payment_type_id;
 			$subadmin_id = $request->subadmin_id;
