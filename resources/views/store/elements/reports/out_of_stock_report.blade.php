@@ -108,7 +108,7 @@
                                             <div class="form-group">
                                                 <center>
                                                    <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
-                                                   <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
+                                                   {{-- <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button> --}}
                                                    <a href="{{route('store.out_of_stock_reports')}}"  class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
