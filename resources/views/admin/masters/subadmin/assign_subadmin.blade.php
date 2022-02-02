@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row">
+   <div class="row" style="min-height: 70vh;">
       <div class="col-md-12">
          <div class="card">
             <div class="card-header">
@@ -15,31 +15,7 @@
                @endif
             </div>
 
-            <div class="table-responsive">
-               <table id="example" class="table table-striped table-bordered text-nowrap w-100">
-                  <tbody>
-                     @php
-                     $i = 0;
-                     @endphp
-                      @foreach ($store as $data)
-                        <tr>
-                           <td>{{ ++$i }}</td>
-                             @php
-                               // $store_data = \DB::table('mst_stores')->where('store_id',$data->store_id)->first();
-                              @$linked_store_ids[] = $data->store_id;
-                           @endphp
-                           <td>{{$data->store_name}}</td>
-                           @php
-                           $store_data = "";
-                           @endphp
-                           <td>
-                              <a class="btn btn-small btn-danger" href="{{ url('admin/link/destroy/subadmin_store/'.$data->store_id) }}">Remove</a>
-                           </td>
-                        </tr>
-                      @endforeach
-                  </tbody>
-               </table>
-            </div>
+            
 
             <div class="col-lg-12">
                @if ($errors->any())
@@ -99,6 +75,34 @@
                         </div>
                   </form>
                 </div>
+
+
+                <div class="table-responsive">
+                  <table id="example" class="table table-striped table-bordered text-nowrap w-60">
+                     <tbody>
+                        @php
+                        $i = 0;
+                        @endphp
+                         @foreach ($store as $data)
+                           <tr>
+                              <td>{{ ++$i }}</td>
+                                @php
+                                  // $store_data = \DB::table('mst_stores')->where('store_id',$data->store_id)->first();
+                                 @$linked_store_ids[] = $data->store_id;
+                              @endphp
+                              <td>{{$data->store_name}}</td>
+                              @php
+                              $store_data = "";
+                              @endphp
+                              <td>
+                                 <a class="btn btn-small btn-danger" href="{{ url('admin/link/destroy/subadmin_store/'.$data->store_id) }}">Remove</a>
+                              </td>
+                           </tr>
+                         @endforeach
+                     </tbody>
+                  </table>
+               </div>
+
 
 
        {{--      </div>
