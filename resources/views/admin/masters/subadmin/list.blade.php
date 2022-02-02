@@ -123,7 +123,7 @@
                                     <th class="wd-15p">{{ __('Mobile') }}</th>
                                     <th class="wd-15p">{{ __('Town') }}</th>
                                     <th class="wd-15p">{{ __('Commision') }}<br> Amount</th>
-                                    <th class="wd-15p">{{ __('Commision') }}<br> Perentage</th>
+                                    <th class="wd-15p">{{ __('Commision') }}<br> Percentage</th>
                                     <th class="wd-15p">{{ __('Assigned') }}<br>Stores</th>
                                     <th class="wd-15p">{{__('Action')}}</th>
                                  </tr>
@@ -230,7 +230,7 @@
                                     <td><h6>Commission Amount:</td><td>{{ @$subadmin->subadmins['subadmin_commision_amount']}}</h6></td>
                                  </tr>
                                   <tr>
-                                    <td><h6>Commission Perentage:</td><td>{{ @$subadmin->subadmins['subadmin_commision_percentage']}}</h6></td>
+                                    <td><h6>Commission Percentage:</td><td>{{ @$subadmin->subadmins['subadmin_commision_percentage']}}</h6></td>
                                  </tr>
 
 

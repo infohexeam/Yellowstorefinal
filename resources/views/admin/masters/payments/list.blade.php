@@ -30,11 +30,6 @@ $date = Carbon\Carbon::now();
             <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
          </div>
 
-
-         <div class="card-header">
-                                <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
-                             </div>
-                             
                               <div class="card-body border">
                                 <form action="{{ url('/admin/payment/list')}}" method="GET" enctype="multipart/form-data">
                                    @csrf

@@ -110,7 +110,7 @@
                                @$district_data = \DB::table('mst_districts')->where('state_id',@$subadmin->subadmins['state_id'])->get();
                            @endphp
                            <select name="district_id" required="" class="form-control" id="city">
-                                <option value="{{$subadmin->subadmins['district_id']}}">  {{$subadmin->subadmins->district['district_name']}}</option>
+                                <option value="{{@$subadmin->subadmins['district_id']}}">  {{@$subadmin->subadmins->district['district_name']}}</option>
 
                            {{-- @foreach (@$district_data as $value)
                                 <option @if ($subadmin->subadmins['district_id'] == $value->district_id)  selected  @endif  value="{{@$value->district_id}}">  {{@$value->district_name}}</option>
