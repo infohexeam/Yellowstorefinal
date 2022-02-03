@@ -29,8 +29,7 @@
                                 <div class="card">
                                    <div class="card-body">
                                     <div id="floating-panel">
-                                       <b>Mode of Travel: </b>
-                                       <select id="mode">
+                                       <select id="mode" style="display:none;">
                                          <option value="DRIVING">Driving</option>
                                          <option value="WALKING">Walking</option>
                                          <option value="BICYCLING">Bicycling</option>
@@ -38,6 +37,8 @@
                                        </select>
                                      </div>
                                      <div id="map"></div>
+                                     <input type="hidden" value="{{$lastLoc->latitude}}" id="latTo" style="display:none;">
+                                     <input type="hidden" value="{{$lastLoc->longitude}}" id="lngTo" style="display:none;">
 {{-- <iframe src="https://maps.google.com/?q={{$lastLoc->latitude}},{{$lastLoc->longitude}}&output=embed" width="100%" height="350" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>	 --}}
                                 <!--<div id="map"></div>-->
 
@@ -47,6 +48,7 @@
                   async
                 ></script>         
            <script>
+
            
            function initMap() {
   const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -66,9 +68,12 @@
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
   const selectedMode = document.getElementById("mode").value;
 
+  const latTo = document.getElementById("latTo").value;
+  const lngTo = document.getElementById("lngTo").value;
+
   directionsService
     .route({
-      origin: { lat: 11.25380152502914, lng: 75.80086787925326 },
+      origin: { lat: latTo, lng: lngTo },
       destination: { lat: 11.292650586051085, lng: 75.77336701588105 },
       // Note that Javascript allows us to access the constant
       // using square brackets and a string value as its
