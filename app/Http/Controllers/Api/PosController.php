@@ -128,7 +128,7 @@ class PosController extends Controller
                     $store_order = new Trn_store_order;
                     $store_order->order_number = $orderNumberPrefix . @$orderNumber;
                     // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
-                    $store_order->customer_id = $request->customer_id;
+                    $store_order->customer_id = 3;
                     $store_order->store_id =  $request->store_id;
 
 
