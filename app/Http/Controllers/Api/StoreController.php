@@ -1207,7 +1207,7 @@ class StoreController extends Controller
                 if (isset($request->customer_id)) {
                     $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
                 }
- 
+
                 if (isset($request->delivery_boy_id)) {
                     $salesData = $salesData->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
                 }
@@ -1232,7 +1232,7 @@ class StoreController extends Controller
 
 
                 foreach ($salesData as $sd) {
-                    $sd->orderTotalDiscount = Helper:   :orderTotalDiscount($sd->order_id);
+                    $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
                     $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
 
                     if ($sd->delivery_status_id == 1)
