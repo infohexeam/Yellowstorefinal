@@ -2073,6 +2073,7 @@ class ProductController extends Controller
       ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
 
       // ->where('mst_store_products.store_id',$store_id)
+      ->where('mst__stock_details.stock', '>', 0)
       ->where('mst_store_products.product_type', 1)
       // ->orderBy('mst_store_products.product_name','ASC')
       ->orderBy('mst_store_product_varients.stock_count', 'ASC')
