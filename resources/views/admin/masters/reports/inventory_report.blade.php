@@ -162,6 +162,7 @@
                                             <th class="wd-15p">Subadmin</th>
                                             <th class="wd-15p">Stock</th>
                                             <th class="wd-15p">Date</th>
+                                            <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Variant Price</th>
                                             <th class="wd-15p">Vendor</th>
                                             <th class="wd-15p">Category</th>
@@ -192,6 +193,7 @@
 
                                             <td>{{ $d->stock_count }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('H:i')}}</td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
                                             <td>{{ $d->agency_name }}</td>
                                             <td>{{ $d->category_name }}</td>
