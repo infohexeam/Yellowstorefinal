@@ -68,6 +68,7 @@
                                   <td>{{@$towns->town_name}}</td>
                                    <td>
                                     <a class="btn btn-sm btn-success text-white" href="tel:{{ $delivery_boy->delivery_boy_mobile }}"><i class="fa fa-phone text-white"></i> Call</a>
+                                    <a class="btn btn-sm btn-primary text-white" href="{{ url('store/delivery-boys/location/'.$delivery_boy->delivery_boy_id)}}">Got to Map</a>
 
                                   </td>
           
@@ -122,6 +123,7 @@
                                   <td>
                                     <a class="btn btn-sm btn-success text-white" href="tel:{{ $delivery_boy->delivery_boy_mobile }}"><i class="fa fa-phone text-white"></i> Call</a>
                 <a class="btn btn-sm btn-blue"  href="{{url('store/delivery-order/view/'.Crypt::encryptString($delivery_boy->order_id))}}">View Order</a>
+                <a class="btn btn-sm btn-primary text-white" href="{{ url('store/delivery-boys/location/'.$delivery_boy->delivery_boy_id)}}">Got to Map</a>
 
                                   </td>
           
