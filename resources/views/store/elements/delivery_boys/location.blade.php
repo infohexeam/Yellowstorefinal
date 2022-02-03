@@ -68,12 +68,12 @@
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
   const selectedMode = document.getElementById("mode").value;
 
-  const latTo = document.getElementById("latTo").value;
-  const lngTo = document.getElementById("lngTo").value;
+//   const latTo = document.getElementById("latTo").value;
+//   const lngTo = document.getElementById("lngTo").value;
 
   directionsService
     .route({
-      origin: { lat: latTo, lng: lngTo },
+      origin: { lat: document.getElementById("latTo").value, lng:document.getElementById("lngTo").value  },
       destination: { lat: 11.292650586051085, lng: 75.77336701588105 },
       // Note that Javascript allows us to access the constant
       // using square brackets and a string value as its
