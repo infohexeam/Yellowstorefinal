@@ -1,7 +1,6 @@
 @extends('store.layouts.app')
 @section('content')
 
-<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <style type="text/css">
 
     	#map {
@@ -29,13 +28,21 @@
                              <div class="col-md-12">
                                 <div class="card">
                                    <div class="card-body">
-                                    <div id="map"></div>
-
+                                    <div id="floating-panel">
+                                       <b>Mode of Travel: </b>
+                                       <select id="mode">
+                                         <option value="DRIVING">Driving</option>
+                                         <option value="WALKING">Walking</option>
+                                         <option value="BICYCLING">Bicycling</option>
+                                         <option value="TRANSIT">Transit</option>
+                                       </select>
+                                     </div>
+                                     <div id="map"></div>
 {{-- <iframe src="https://maps.google.com/?q={{$lastLoc->latitude}},{{$lastLoc->longitude}}&output=embed" width="100%" height="350" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>	 --}}
                                 <!--<div id="map"></div>-->
 
                 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-                <script
+<script
                   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ&callback=initMap&libraries=&v=weekly&channel=2"
                   async
                 ></script>         
