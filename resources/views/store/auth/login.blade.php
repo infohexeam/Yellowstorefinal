@@ -95,6 +95,10 @@
                         </div>
                         <div class="wrap-input100 validate-input">
                            <input class="input100" type="password" name="password" placeholder="Password" id="password" type="password" required autocomplete="current-password">
+                           <div class="input-group-addon">
+                              <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                            </div>
+                          
                            @error('password')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
@@ -132,6 +136,23 @@
  
     
    </body>
+
+   <script>
+      $(document).ready(function() {
+    $("#password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#password input').attr("type") == "text"){
+            $('#password input').attr('type', 'password');
+            $('#password i').addClass( "fa-eye-slash" );
+            $('#password i').removeClass( "fa-eye" );
+        }else if($('#password input').attr("type") == "password"){
+            $('#password input').attr('type', 'text');
+            $('#password i').removeClass( "fa-eye-slash" );
+            $('#password i').addClass( "fa-eye" );
+        }
+    });
+});
+   </script>
    
    
         <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
