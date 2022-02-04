@@ -96,7 +96,7 @@
                         <div class="form-group">
                            <input class="form-control" type="password" name="password" placeholder="Password" id="password" type="password" required autocomplete="current-password">
                            <div class="input-group-addon">
-                              <a onclick="passview()"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                              <button onclick="passview()"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                             </div>
                           
                            @error('password')
