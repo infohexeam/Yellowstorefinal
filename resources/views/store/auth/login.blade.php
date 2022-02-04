@@ -96,7 +96,7 @@
                         <div class="form-group">
                            <input class="form-control" type="password" name="password" placeholder="Password" id="password" type="password" required autocomplete="current-password">
                            <div class="input-group-addon">
-                              <a><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                              <a onclick="passview()"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                             </div>
                           
                            @error('password')
@@ -138,9 +138,7 @@
    </body>
 
    <script>
-      $(document).ready(function() {
-    $("#password a").on('click', function(event) {
-        event.preventDefault();
+    function passview(){
         if($('#password input').attr("type") == "text"){
             $('#password input').attr('type', 'password');
             $('#password i').addClass( "fa-eye-slash" );
@@ -150,8 +148,7 @@
             $('#password i').removeClass( "fa-eye-slash" );
             $('#password i').addClass( "fa-eye" );
         }
-    });
-});
+    }
    </script>
    
    
