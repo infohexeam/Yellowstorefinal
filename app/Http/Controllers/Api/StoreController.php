@@ -1652,6 +1652,7 @@ class StoreController extends Controller
 
                     ->where('mst_store_products.store_id', $store_id)
                     ->where('mst_store_products.product_type', 1)
+                    ->where('mst__stock_details.stock', '>', 0)
                     // ->orderBy('mst_store_products.product_name','ASC')
                     ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 

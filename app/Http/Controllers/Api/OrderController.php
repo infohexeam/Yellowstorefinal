@@ -228,6 +228,11 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->customer_pincode = ' ';
 
+                            if (isset($customerAddressData->place))
+                                $data['orderDetails']->customer_place = @$customerAddressData->place;
+                            else
+                                $data['orderDetails']->customer_place = ' ';
+
 
                             $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
                             if (isset($deliveryBoy->delivery_boy_name))
@@ -260,6 +265,7 @@ class OrderController extends Controller
                                 $data['orderDetails']->customer_mobile = '';
                                 $data['orderDetails']->customer_address = '';
                                 $data['orderDetails']->customer_pincode = '';
+                                $data['orderDetails']->customer_place = ' ';
                             }
                         } else {
                             $data['orderDetails']->customer_name = '';
@@ -269,12 +275,44 @@ class OrderController extends Controller
                             $data['orderDetails']->customer_pincode = '';
                             $data['orderDetails']->db_latitude = '';
                             $data['orderDetails']->db_longitude = '';
+                            $data['orderDetails']->customer_place = ' ';
                         }
 
                         $storeData = Mst_store::find($request->store_id);
                         $data['orderDetails']->store_name = $storeData->store_name;
                         $data['orderDetails']->store_primary_address = $storeData->store_primary_address;
                         $data['orderDetails']->store_mobile = $storeData->store_mobile;
+
+                        if (isset($storeData->place))
+                            $data['orderDetails']->place = $storeData->place;
+                        else
+                            $data['orderDetails']->place = '';
+
+                        if (isset($storeData->place))
+                            $data['orderDetails']->place = $storeData->place;
+                        else
+                            $data['orderDetails']->place = '';
+
+                        if (isset($storeData->country->country_name))
+                            $data['orderDetails']->country_name = $storeData->country->country_name;
+                        else
+                            $data['orderDetails']->country_name = '';
+
+                        if (isset($storeData->state->state_name))
+                            $data['orderDetails']->state_name = $storeData->state->state_name;
+                        else
+                            $data['orderDetails']->state_name = '';
+
+                        if (isset($storeData->district->district_name))
+                            $data['orderDetails']->district_name = $storeData->district->district_name;
+                        else
+                            $data['orderDetails']->district_name = '';
+
+                        if (isset($storeData->town->town_name))
+                            $data['orderDetails']->town_name = $storeData->town->town_name;
+                        else
+                            $data['orderDetails']->town_name = '';
+
 
 
                         if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
