@@ -157,16 +157,16 @@
                           </form>
                         </td>
                          <td>
-                     <form action="{{route('admin.destroy_customer',$customer->customer_id)}}" method="POST">
+                     {{-- <form action="{{route('admin.destroy_customer',$customer->customer_id)}}" method="POST"> --}}
 
                     @csrf
                       @method('POST')
 
-                       <!--<a class="btn btn-sm btn-cyan" href="{{url('admin/customer/edit/'.Crypt::encryptString($customer->customer_id))}}">Edit</a>-->
+                       {{-- <!--<a class="btn btn-sm btn-cyan" href="{{url('admin/customer/edit/'.Crypt::encryptString($customer->customer_id))}}">Edit</a>--> --}}
                       <a class="btn btn-sm btn-cyan"
                        href="{{url('admin/customer/view/'.Crypt::encryptString($customer->customer_id))}}">View</a>
-                        <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
-                         </form>
+                        {{-- <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button> --}}
+                         {{-- </form> --}}
 
                         </td>
 
