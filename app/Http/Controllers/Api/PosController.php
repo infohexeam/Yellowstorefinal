@@ -173,7 +173,7 @@ class PosController extends Controller
                             'order_id' => $order_id,
                             'product_id' => $value['product_id'],
                             'product_varient_id' => $value['product_varient_id'],
-                            'customer_id' => $request['customer_id'],
+                            'customer_id' => 3,
                             'store_id' => $request['store_id'],
                             'quantity' => $value['quantity'],
                             'unit_price' =>  $value['unit_price'],
