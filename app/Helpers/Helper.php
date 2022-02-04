@@ -81,6 +81,14 @@ class Helper
             return '0';
     }
 
+    public static function findStoreDataFilled($store_id)
+    {
+        $returnData = 1;
+        $sData = Mst_store::find($store_id);
+        return $returnData;
+    }
+
+
     public static function findHoliday($store_id)
     {
         $timeslotdata = Trn_StoreTimeSlot::where('store_id', $store_id)

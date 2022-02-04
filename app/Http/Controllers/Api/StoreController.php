@@ -671,7 +671,14 @@ class StoreController extends Controller
                                 if ($custCheck->role_id != 0)
                                     $dataName =   Trn_StoreAdmin::find($custCheck->store_admin_id)->admin_name;
 
+                                if (($storeData->service_area != null) && ($storeData->service_area != 0)) {
+                                    $data['serviceAreaData'] = 1;
+                                } else {
+                                    $data['serviceAreaData'] = 0;
+                                }
 
+                                $profileData = Helper::findStoreDataFilled($custCheck->store_id);
+                                $data['profileData'] = $profileData;
 
                                 $data['store_name'] = $storeData->store_name;
                                 $data['store_admin_name'] = $dataName;
@@ -1491,7 +1498,7 @@ class StoreController extends Controller
                     'trn_store_orders.amount_reduced_by_coupon',
                     'trn_store_orders.order_type',
 
-                    'trn_store_customers.customer_id',
+                    //'trn_store_customers.customer_id',
                     'trn_store_customers.customer_first_name',
                     'trn_store_customers.customer_last_name',
                     'trn_store_customers.customer_mobile_number',
