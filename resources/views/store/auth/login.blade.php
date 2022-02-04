@@ -93,10 +93,10 @@
                            @enderror
 
                         </div>
-                        <div class="wrap-input100 validate-input">
-                           <input class="input100" type="password" name="password" placeholder="Password" id="password" type="password" required autocomplete="current-password">
+                        <div class="form-group">
+                           <input class="form-control" type="password" name="password" placeholder="Password" id="password" type="password" required autocomplete="current-password">
                            <div class="input-group-addon">
-                              <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                              <a><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                             </div>
                           
                            @error('password')
