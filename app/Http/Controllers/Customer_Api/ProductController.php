@@ -17,7 +17,7 @@ use Crypt;
 use Mail;
 use PDF;
 use App\Helpers\Helper;
-
+use App\Models\admin\District;
 use App\Models\admin\Mst_store;
 use App\Models\admin\Mst_Tax;
 
@@ -1279,6 +1279,12 @@ class ProductController extends Controller
                         } else {
                             $s->store_image =  Helper::default_store_image();
                         }
+
+                        if (isset($s->store_district_id))
+                            $s->district_name = District::find($s->store_district_id)->district_name;
+                        else
+                            $s->district_name = '';
+
 
 
                         $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id', '=', $s->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
@@ -2632,6 +2638,10 @@ class ProductController extends Controller
                     $data['storeInfo'] = Mst_store::find($store_id);
                     $sCount = 0;
 
+                    if (isset($data['storeInfo']->district->district_name))
+                        $data['storeInfo']->district_name = $data['storeInfo']->district->district_name;
+                    else
+                        $data['storeInfo']->district_name = '';
 
                     if (isset($latitude) && isset($longitude)) {
                         $sa  = $data['storeInfo']->service_area;
@@ -3172,6 +3182,11 @@ class ProductController extends Controller
                             $nearByStore->store_image =  Helper::default_store_image();
                         }
 
+                        if (isset($nearByStore->store_district_id))
+                            $nearByStore->district_name = District::find($nearByStore->store_district_id)->district_name;
+                        else
+                            $nearByStore->district_name = '';
+
                         $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id', '=', $nearByStore->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
                         $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
                         $catString2 = implode(', ', @$catData2);
@@ -3216,6 +3231,11 @@ class ProductController extends Controller
                     } else {
                         $otherStores->store_image =  Helper::default_store_image();
                     }
+
+                    if (isset($otherStores->store_district_id))
+                        $otherStores->district_name = District::find($otherStores->store_district_id)->district_name;
+                    else
+                        $otherStores->district_name = '';
 
                     $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id', '=', $otherStores->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
                     $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
@@ -3433,6 +3453,11 @@ class ProductController extends Controller
                                 $recentlyVisitedStore->store_image =  Helper::default_store_image();
                             }
 
+                            if (isset($recentlyVisitedStore->store_district_id))
+                                $recentlyVisitedStore->district_name = District::find($recentlyVisitedStore->store_district_id)->district_name;
+                            else
+                                $recentlyVisitedStore->district_name = '';
+
 
                             $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id', '=', $recentlyVisitedStore->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
                             $catData = Mst_categories::whereIn('category_id', $storeProductData)->where('category_status', 1)->get()->pluck('category_name')->toArray();
@@ -3504,6 +3529,11 @@ class ProductController extends Controller
                     foreach ($nearByStoresdata as $nearByStore) {
 
                         $timeslotdata = Helper::findHoliday($nearByStore->store_id);
+
+                        if (isset($nearByStore->store_district_id))
+                            $nearByStore->district_name = District::find($nearByStore->store_district_id)->district_name;
+                        else
+                            $nearByStore->district_name = '';
 
                         if ($timeslotdata == true) {
 
