@@ -2638,8 +2638,8 @@ class ProductController extends Controller
                     $data['storeInfo'] = Mst_store::find($store_id);
                     $sCount = 0;
 
-                    if (isset($data['storeInfo']->district->district_name))
-                        $data['storeInfo']->district_name = $data['storeInfo']->district->district_name;
+                    if (isset($data['storeInfo']->store_district_id))
+                        $data['storeInfo']->district_name = District::find($data['storeInfo']->store_district_id)->district_name;
                     else
                         $data['storeInfo']->district_name = '';
 
