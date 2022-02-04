@@ -1577,6 +1577,7 @@ class StoreController extends Controller
                     $sd->date = \Carbon\Carbon::parse($sd->created_at)->format('d-m-Y');
 
                     $cusData = Trn_store_customer::find($sd->customer_id);
+                    $sd->cusData = $cusData;
                     if (!isset($cusData->customer_first_name))
                         $sd->customer_first_name = '';
 
