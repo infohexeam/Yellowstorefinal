@@ -302,7 +302,7 @@ input[type="file"] {
                       <div class="col-md-12">
                      <div class="form-group">
                      <center>
-                            <button type="submit" id="submit" class="btn btn-raised btn-info">
+                            <button type="submit" onclick="submitForm()" id="submit" class="btn btn-raised btn-info">
                            Submit</button>
                            <button type="reset" class="btn btn-raised btn-success">
                            Reset</button>
@@ -340,26 +340,10 @@ input[type="file"] {
 
 <script>
 
-$("#fileInput").change(function(e) {
-  alert("product image selected");
-    // var file, img;
-
-
-    // if ((file = this.files[0])) {
-    //     img = new Image();
-    //     img.onload = function() {
-    //         alert(this.width + " " + this.height);
-    //     };
-    //     img.onerror = function() {
-    //         alert( "not a valid file: " + file.type);
-    //     };
-
-
-    // }
-
-    
-
-});
+function submitForm(){
+  alert("form subm");
+  return false;
+}
 
 
 function isCodeAvailable(value)
