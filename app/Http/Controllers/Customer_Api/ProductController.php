@@ -2817,6 +2817,11 @@ class ProductController extends Controller
 
                         $data['storeInfo'] = Mst_store::find($store_id);
 
+                        if (isset($data['storeInfo']->store_district_id))
+                            $data['storeInfo']->district_name = District::find($data['storeInfo']->store_district_id)->district_name;
+                        else
+                            $data['storeInfo']->district_name = '';
+
 
 
 
