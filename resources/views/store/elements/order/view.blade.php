@@ -256,6 +256,9 @@
                 </div>
 
                 @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
+               
+                <div class="card">
+                  <div class="card-body">
                 <h5>Payment Split Information</h5>
                 <table class="table table-bordered text-nowrap w-100">
                    <tr>
@@ -336,6 +339,8 @@
 
 
                 </table>
+                  </div>
+                </div>
                 @endif
 
 
