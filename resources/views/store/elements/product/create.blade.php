@@ -345,29 +345,29 @@ function submitForm(){
   console.log($('#fileInput').val());
   return false;
 
-  var _token = $('input[name="_token"]').val();
-    $.ajax({
-        url:"{{ route('store.stock_reset') }}",
-        method:"POST",
-        data:{product_varient_id:product_varient_id, _token:_token},
-        success:function(result)
-        {
-          //alert(result);
-          if(result == 0)
-          { 
-            $('#td'+product_varient_id).html('Empty');
-          $("#stock_id"+product_varient_id).val('');
-               var $el = $("#td"+product_varient_id),
-                    x = 400,
-                    originalColor = $el.css("background-color");
+  // var _token = $('input[name="_token"]').val();
+  //   $.ajax({
+  //       url:"{{ route('store.stock_reset') }}",
+  //       method:"POST",
+  //       data:{product_varient_id:product_varient_id, _token:_token},
+  //       success:function(result)
+  //       {
+  //         //alert(result);
+  //         if(result == 0)
+  //         { 
+  //           $('#td'+product_varient_id).html('Empty');
+  //         $("#stock_id"+product_varient_id).val('');
+  //              var $el = $("#td"+product_varient_id),
+  //                   x = 400,
+  //                   originalColor = $el.css("background-color");
 
-                $el.css("background", "#4871cc9c");
-                setTimeout(function(){
-                  $el.css("background-color", originalColor);
-                }, x);
-          }
-        }
-    });
+  //               $el.css("background", "#4871cc9c");
+  //               setTimeout(function(){
+  //                 $el.css("background-color", originalColor);
+  //               }, x);
+  //         }
+  //       }
+  //   });
     
 }
 
