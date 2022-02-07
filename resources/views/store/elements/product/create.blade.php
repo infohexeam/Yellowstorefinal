@@ -342,7 +342,11 @@ input[type="file"] {
 
 function submitForm(){
   // alert("form subm");
-  console.log($('#fileInput').val());
+  var fd = new FormData();
+  var files = $('#fileInput')[0].files;
+
+  console.log(fd);
+  console.log(files);
   return false;
 
   // var _token = $('input[name="_token"]').val();
