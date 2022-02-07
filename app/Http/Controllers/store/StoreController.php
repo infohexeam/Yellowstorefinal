@@ -577,7 +577,8 @@ class StoreController extends Controller
 
 
         if (isset($request->product_name)) {
-          $query = $query->where('mst_store_products.product_name', 'LIKE', '%' . $product_name . '%');
+          // $query = $query->where('mst_store_products.product_name', 'LIKE', '%' . $product_name . '%');
+          $query = $query->where('mst_store_products.product_name', 'LIKE', $product_name);
         }
 
         if (isset($request->From_date) && isset($request->To_date)) {
