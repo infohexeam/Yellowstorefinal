@@ -341,7 +341,7 @@ input[type="file"] {
 <script>
 
 $("#fileInput").change(function(e) {
-  echo "product image selected";die;
+  alert("product image selected");
     // var file, img;
 
 
