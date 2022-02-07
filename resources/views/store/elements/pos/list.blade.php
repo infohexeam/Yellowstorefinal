@@ -442,11 +442,7 @@ var countPro = 0;
                          html = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input type="hidden" class=".classFullAmount" name="full_amount" value="'+total_sum.toFixed(2)+'">'+total_sum.toFixed(2)+'</td></tr>';
                          $('#myTable tr:last').after(html);
 
-                         if(total_sum <= 0){
-                              $('#order_btn').hide();
-                         }else{
-                              $('#order_btn').show();
-                         }
+                        
 
 
                     }
@@ -519,8 +515,13 @@ let ts = 0;
     });
      ht = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input type="hidden" class=".classFullAmount" name="full_amount" value="'+ts.toFixed(2)+'">'+ts.toFixed(2)+'</td></tr>';
    $('#myTable tr:last').after(ht);
-
-
+   let total_sumr =   $("#total_sum").text();
+   alert(total_sumr);
+   if(total_sumr <= 0){
+     $('#order_btn').hide();
+     }else{
+          $('#order_btn').show();
+     }
 
 }
 </script>
