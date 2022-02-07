@@ -346,7 +346,7 @@ function submitForm(){
   var files = $('#fileInput')[0].files;
 
   console.log(fd);
-  console.log(files);
+  console.log(files.width);
   return false;
 
   // var _token = $('input[name="_token"]').val();
