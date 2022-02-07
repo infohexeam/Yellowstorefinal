@@ -115,57 +115,130 @@
                                <table class="table table-striped table-bordered text-nowrap w-100">
                                  <thead>
                                     <tr>
-                                       <td>Item Name</td>
+                                       <td>Item<br>Name</td>
                                        <td>Qty</td>
+                                       <td>MRP</td>
                                        <td>Sale Price</td>
-                                       <td>Discount Amount</td>
-                                       <td>Tax </td>
+                                       <td>Discount<br>Amount</td>
+                                       <td class="text-center">Tax %</td>
+                                       <td class="text-center">Tax Details</td>
+                                       <td>Tax<br>Amount</td>
+                                       <td>Subtotal</td>
                                        <td>Total</td>
-                                       <!--<td></td>-->
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    @foreach ($order_items as $order_item)
                                     @php
-                                       // dd($order_item);
+                                       $dis_amt = 0;
+                                       $subtotal = 0;
+                                       $tax_amount  = 0;
+                                       $gand_total = 0;
+                                       $tval = 0;
+                                       $t_val = 0;
                                     @endphp
+                                    @foreach ($order_items as $order_item)
                                        <tr>
-                                          <td>
-                                              <table>
-                                                <tr>
-                                                   <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" ></td>
-                                                   <td>{{@$order_item->product->product_name}}
-                                                      @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
-                                                      @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
-                                                        -
-                                                      {{ @$order_item->product_varient->variant_name }}
-                                                      @endif
-                                                      @endif
-                                                      <td>
-                                                </tr>
-                                              </table>
-                                          </td>
-                                          <td>{{@$order_item->quantity}} </td>
-                                          <td>{{@$order_item->unit_price}} </td>
-                                          <td>
-                                             @if (isset($order_item->discount_amount))
-                                             {{@$order_item->discount_amount}} 
-                                                @else
-                                                0
-                                             @endif
+                                          <>
+                                             <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
+                                             <br>
+                                             
+                                             {{@$order_item->product->product_name}}   
+                                             @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
+                                             @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
+                                                -
+                                              {{ @$order_item->product_varient->variant_name }}
+                                              @endif
+                                           
+                                           
+                                           @endif
                                            </td>
-                                          <td>{{@$order_item->tax_amount}} </td>
-                                          <td>{{@$order_item->total_amount}} </td>
-                                          <!--<td>-->
-                                          <!--   <input type="hidden" name="order_item_id[{{@$order_item->order_item_id}}]" value="{{ @$order_item->order_item_id }}">-->
-                                          <!--   <input type="hidden" name="product[{{@$order_item->order_item_id}}]" value=0>-->
-                                          <!--   <input type="checkbox" @if ($order_item->tick_status)-->
-                                          <!--   checked-->
-                                          <!--   @endif name="product[{{@$order_item->order_item_id}}]" value=1>-->
-                                          <!--</td>-->
-                                       </tr>
-                                    @endforeach
+                                          <td>{{@$order_item->quantity}} </td>
+                                           <td> {{ @$order_item->product_varient->product_varient_price }}</td>
+                                           <td> {{ @$order_item->product_varient->product_varient_offer_price }}</td>
+                                 
+                                           <td>
+                                              @php
+                                                 $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
+                                              @endphp
+                                              {{@$discountAmt}} 
+                                             </td>
+                                 
+                                           <td>
+                                              @php
+                                                $tax_info = \DB::table('mst_store_products')
+                                                ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
+                                                ->where('mst_store_products.product_id', $order_item->product_id)
+                                                ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
+                                                ->first();  
+                                                $tval  = $order_item->unit_price * @$order_item->quantity;
+                                                $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                                $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                                                $Tot = $tTax + $orgCost;
+                                             @endphp
 
+                                              {{@$tax_info->tax_value}} 
+                                             
+                                             </td>
+                                        
+                                          @php
+                                            
+                                             @$t_val = ($tax_info->tax_value * $tval) * 0.01 ;
+                                             $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',$tax_info->tax_id)->get();
+                                               // dd($splitdata);
+                                          @endphp
+                                          {{-- <td>
+                                             {{ @$tax_info->tax_name }}
+                                          </td>
+                                          <td>
+                                             {{@$tax_info->tax_value }}
+                                          </td> --}}
+                                          <td> 
+                                             <table style="line-height: 1px; font-size: 12px;">
+                                                @foreach ($splitdata as $item)
+                                                @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))
+                                                @php
+                                              $tax_info->tax_value = 1;
+                                                  
+                                                @endphp   
+                                                @endif         
+                                                <tr>
+                                                   <td>
+                                                @php
+                                                    $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
+                                                @endphp
+                                             {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
+                                             
+                                           -  {{ number_format((float)$stax, 2, '.', '') }}  
+
+                                                   </td>
+                                                </tr>
+                                                @endforeach
+                                             </table>
+                                          </td>
+                                         
+                                          <td> 
+                                             @if (isset($tTax))
+                                            {{ number_format((float)$tTax, 2, '.', '') }}  
+                                             @endif
+                                          </td>
+
+                                          <td>
+                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
+                                            
+                                           </td>
+                                           <td>
+                                             {{ number_format((float)$Tot, 2, '.', '') }}  
+
+                                           </td>
+                                          
+                                       </tr>
+                                       @php
+                                          $dis_amt =  $dis_amt + $discountAmt;
+                                          $single_subtotal = @$order_item->unit_price * @$order_item->quantity;
+                                          $subtotal = $subtotal + $orgCost; 
+                                          $tax_amount = $tax_amount + $tTax ; 
+                                       @endphp
+                                    @endforeach
                                  </tbody>
                                </table>
                               <div>
