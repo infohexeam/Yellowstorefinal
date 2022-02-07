@@ -193,7 +193,6 @@
                                              {{@$tax_info->tax_value }}
                                           </td> --}}
                                           <td> 
-                                             <table style="line-height: 1px; font-size: 12px;">
                                                 @foreach ($splitdata as $item)
                                                 @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))
                                                 @php
@@ -201,19 +200,17 @@
                                                   
                                                 @endphp   
                                                 @endif         
-                                                <tr>
-                                                   <td>
+                                               
                                                 @php
                                                     $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                                                 @endphp
                                              {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
                                              
                                            -  {{ number_format((float)$stax, 2, '.', '') }}  
+                                           <br>
 
-                                                   </td>
-                                                </tr>
+                                                   
                                                 @endforeach
-                                             </table>
                                           </td>
                                          
                                           <td> 
@@ -243,46 +240,7 @@
                                </table>
                               <div>
                            <div>   
-                              <h5>Payment Split Information</h5>
-                              <table class="table table-bordered text-nowrap w-100">
-                                 <tr>
-                                    <td>
-                                       Split Amount:
-                                    </td>
-                                    <td>
-                                       {{ @$payments->splitAmount }}
-                                    </td>
-                                 </tr>
-
-                                 <tr>
-                                    <td>
-                                       Split Charge:
-                                    </td>
-                                    <td>
-                                       {{ @$payments->serviceCharge }}
-                                    </td>
-                                 </tr>
-
-                                 <tr>
-                                    <td>
-                                       Service Tax:
-                                    </td>
-                                    <td>
-                                       {{ @$payments->serviceTax }}
-                                    </td>
-                                 </tr>
-
-                                 <tr>
-                                    <td>
-                                       Settlement Amount:
-                                    </td>
-                                    <td>
-                                       {{ @$payments->settlementAmount }}
-                                    </td>
-                                 </tr>
-
-
-                              </table>
+                             
                         </div>
                      </div>
                   </div>
@@ -296,6 +254,91 @@
                    <!--  </div>-->
                    <!--</div>-->
                 </div>
+
+                @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
+                <h5>Payment Split Information</h5>
+                <table class="table table-bordered text-nowrap w-100">
+                   <tr>
+                      <td>
+                         Split Amount:
+                      </td>
+                      <td>
+                         {{ @$payments->splitAmount }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Split Charge:
+                      </td>
+                      <td>
+                         {{ @$payments->serviceCharge }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Service Tax:
+                      </td>
+                      <td>
+                         {{ @$payments->serviceTax }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Settlement Amount:
+                      </td>
+                      <td>
+                         {{ @$payments->settlementAmount }}
+                      </td>
+                   </tr>
+
+
+                </table>
+
+                <h5>Payment Information</h5>
+                <table class="table table-bordered text-nowrap w-100">
+                   <tr>
+                      <td>
+                        Payment Mode:
+                      </td>
+                      <td>
+                         {{ @$payments->paymentMode }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Reference Id:
+                      </td>
+                      <td>
+                         {{ @$payments->referenceId }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Status:
+                      </td>
+                      <td>
+                         {{ @$payments->txStatus }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Txn Time:
+                      </td>
+                      <td>{{ \Carbon\Carbon::parse(@$payments->created_at)->format('d-m-Y H:i')}}</td>
+
+                   </tr>
+
+
+                </table>
+                @endif
+
+
 
                 @else
 
