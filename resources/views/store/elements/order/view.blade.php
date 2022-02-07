@@ -138,7 +138,7 @@
                                     @endphp
                                     @foreach ($order_items as $order_item)
                                        <tr>
-                                          <>
+                                          <td>
                                              <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
                                              <br>
                                              
@@ -243,6 +243,46 @@
                                </table>
                               <div>
                            <div>   
+                              <h5>Payment Split Information</h5>
+                              <table class="table table-bordered text-nowrap w-100">
+                                 <tr>
+                                    <td>
+                                       Split Amount:
+                                    </td>
+                                    <td>
+                                       {{ @$payments->splitAmount }}
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                       Split Charge:
+                                    </td>
+                                    <td>
+                                       {{ @$payments->serviceCharge }}
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                       Service Tax:
+                                    </td>
+                                    <td>
+                                       {{ @$payments->serviceTax }}
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                       Settlement Amount:
+                                    </td>
+                                    <td>
+                                       {{ @$payments->settlementAmount }}
+                                    </td>
+                                 </tr>
+
+
+                              </table>
                         </div>
                      </div>
                   </div>

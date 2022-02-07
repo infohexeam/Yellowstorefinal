@@ -1780,6 +1780,13 @@ class StoreController extends Controller
       $subadmin_id = Auth()->guard('store')->user()->subadmin_id;
       $store_id = Auth()->guard('store')->user()->store_id;
 
+      $payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+        ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+        ->where('trn__order_split_payments.paymentRole', '=', 1)
+        ->where('trn_store_orders.store_id', '=', $store_id)
+        ->where('trn_store_orders.order_id', '=', $decrId)
+        ->first();
+
 
       $delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
         ->select("mst_delivery_boys.*")->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
@@ -1787,7 +1794,7 @@ class StoreController extends Controller
       $customer = Trn_store_customer::all();
       $status = Sys_store_order_status::all();
 
-      return view('store.elements.order.view', compact('delivery_boys', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
+      return view('store.elements.order.view', compact('delivery_boys', 'payments','order_items', 'order', 'pageTitle', 'status', 'customer'));
     } catch (\Exception $e) {
 
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
