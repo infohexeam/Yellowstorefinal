@@ -194,8 +194,8 @@
                       <div class="col-md-12">
                    <div class="form-group">
                     <div class="BaseFeatureArea">
-                        <label class="form-label">Upload Images </label>
-                        <input type="file" accept="image/*" class="form-control" name="product_image[]" multiple=""  >
+                     <label class="form-label">Upload Images(1000*800 or more) *</label>
+                     <input type="file" accept="image/*" class="form-control" name="product_image[]" multiple=""  >
                         <br>
                      </div>
                      </div>

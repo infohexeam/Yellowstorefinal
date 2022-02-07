@@ -64,7 +64,7 @@
                                 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Product Variant Base Image</label>
+                                    <label class="form-label">Product Variant Base Image(1000*800 or more) </label>
                                     <input type="file" class="form-control" name="base_image" >
                                 </div>
                             </div>

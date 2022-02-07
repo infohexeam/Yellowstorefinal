@@ -743,7 +743,7 @@ class StoreController extends Controller
         'product_cat_id'   => 'required',
         'vendor_id'   => 'required',
         // 'color_id'   => 'required',
-        // 'product_image.*' => 'required|dimensions:min_width=1000,min_height=800',
+        'product_image.*' => 'dimensions:min_width=1000,min_height=800',
         'product_image.*' => 'required',
 
 
