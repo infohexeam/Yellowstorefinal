@@ -341,20 +341,21 @@ input[type="file"] {
 <script>
 
 $("#fileInput").change(function(e) {
-    var file, img;
+  echo "product image selected";die;
+    // var file, img;
 
 
-    if ((file = this.files[0])) {
-        img = new Image();
-        img.onload = function() {
-            alert(this.width + " " + this.height);
-        };
-        img.onerror = function() {
-            alert( "not a valid file: " + file.type);
-        };
+    // if ((file = this.files[0])) {
+    //     img = new Image();
+    //     img.onload = function() {
+    //         alert(this.width + " " + this.height);
+    //     };
+    //     img.onerror = function() {
+    //         alert( "not a valid file: " + file.type);
+    //     };
 
 
-    }
+    // }
 
     
 
