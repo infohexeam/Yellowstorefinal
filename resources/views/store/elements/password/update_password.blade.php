@@ -76,8 +76,8 @@
  					<center>
               	<button type="submit" class="btn btn-raised btn-primary">
 				          <i class="fa fa-check-square-o"></i> Update</button>
-				          <button type="reset" class="btn btn-raised btn-success">
-				         Reset</button>
+				          {{-- <button type="reset" class="btn btn-raised btn-success">
+				         Reset</button> --}}
 				         <a class="btn btn-danger" href="{{ url('store/home') }}">Cancel</a>
 					</center>
                </div>

@@ -79,7 +79,7 @@
                       <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">Contact Person Name *</label>
-                            <input type="text" required maxlength="10" name="store_contact_person_name" class="form-control"  value="{{old('store_contact_person_name',$store->store_contact_person_name)}}" placeholder="Contact Person Name">
+                            <input type="text" required  name="store_contact_person_name" class="form-control"  value="{{old('store_contact_person_name',$store->store_contact_person_name)}}" placeholder="Contact Person Name">
                            </div>
                         </div>
 
@@ -338,8 +338,8 @@
                            <center>
                            <button type="submit" id="submit" class="btn btn-raised btn-primary">
                            <i class="fa fa-check-square-o"></i> Update</button>
-                           <button type="reset" class="btn btn-raised btn-success">
-                           Reset</button>
+                           {{-- <button type="reset" class="btn btn-raised btn-success">
+                           Reset</button> --}}
                            <a class="btn btn-danger" href="{{ url('store/home') }}">Cancel</a>
                            </center>
                         </div>

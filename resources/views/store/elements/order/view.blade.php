@@ -117,7 +117,7 @@
                                     <tr>
                                        <td>Item Name</td>
                                        <td>Qty</td>
-                                       <td>Rate</td>
+                                       <td>Sale Price</td>
                                        <td>Discount Amount</td>
                                        <td>Tax </td>
                                        <td>Total</td>

@@ -304,8 +304,8 @@ input[type="file"] {
                      <center>
                             <button type="submit" onclick="submitForm()" id="submit" class="btn btn-raised btn-info">
                            Submit</button>
-                           <button type="reset" class="btn btn-raised btn-success">
-                           Reset</button>
+                           {{-- <button type="reset" class="btn btn-raised btn-success">
+                           Reset</button> --}}
                            <a class="btn btn-danger" href="{{ route('store.list_product') }}">Cancel</a>
                        </center>
                      </div>

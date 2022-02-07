@@ -58,7 +58,7 @@
                      </div>
 
 
-                      <div class="col-md-6">
+                      {{-- <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Service District *</label>
                            <select name="service_district" required id="city" class="form-control"  >
@@ -100,7 +100,7 @@
                                 @endforeach
                               </select>
                         </div>
-                     </div>
+                     </div> --}}
 
                      <div class="col-md-6">
                       <div class="form-group">
@@ -109,7 +109,7 @@
                       </div>
                    </div>
                    
-                     <div class="col-md-6">
+                     <div class="col-md-12">
                       <div class="form-group">
                          <label class="form-label">Qrcode</label>
                          <input type="text" readonly class="form-control"  name="store_qrcode"  value="{{old('store_qrcode',$store->store_qrcode)}}" placeholder="">

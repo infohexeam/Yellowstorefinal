@@ -3425,7 +3425,7 @@ class ProductController extends Controller
 
                     //  Trn_RecentlyVisitedStore::where('customer_id',$request->customer_id)->where('store_id',$request->store_id)->delete();
 
-                    $recentlyVisited = Trn_RecentlyVisitedStore::select('mst_stores.store_id', 'mst_stores.place', 'mst_stores.store_name', 'mst_stores.profile_image')
+                    $recentlyVisited = Trn_RecentlyVisitedStore::select('*')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id')
                         ->join('trn__store_admins', 'trn__store_admins.store_id', '=', 'trn__recently_visited_stores.store_id')
                         ->where('trn__store_admins.role_id', 0)->where('mst_stores.online_status', 1)
