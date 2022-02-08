@@ -65,7 +65,7 @@
                   <table  class="table table-striped table-bordered text-nowrap w-100">
                     <thead>
                       <tr>
-                        <th class="wd-15p">S.No {{ count($products) }}</th>
+                        <th class="wd-15p">S.No</th>
                         <th class="wd-15p">Product<br>Name</th>
                         <th class="wd-15p">Product<br>Category</th>
                         <th class="wd-15p">Current<br>Stock</th>

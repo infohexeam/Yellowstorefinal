@@ -179,7 +179,9 @@
                </table>
             </div>
             <div class="float-right"> {!! $orders->links() !!} </div>
-           
+           @if (count($orders) == 0)
+              <p style="text-align:center" > No data found.. </p>
+           @endif
          </div>
       </div>
    </div>
