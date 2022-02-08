@@ -139,7 +139,7 @@
                                        $tval = 0;
                                        $t_val = 0;
                                     @endphp
-                                    @if(count($order_items))
+                                    @if(count($order_items) > 0)
                                     @foreach ($order_items as $order_item)
                                        <tr>
                                           <td>
