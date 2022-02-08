@@ -509,7 +509,7 @@ class StoreOrderController extends Controller
                         $opt = new Trn_OrderPaymentTransaction;
                         $opt->order_id = $order_id;
                         $opt->paymentMode = $request->paymentMode;
-                        $opt->PGOrderId = $request->PGOrderId;
+                        $opt->PGOrderId = $request->orderId;
                         $opt->txTime = $request->txTime;
                         $opt->referenceId = $request->referenceId;
                         $opt->txMsg = $request->txMsg;
@@ -519,7 +519,7 @@ class StoreOrderController extends Controller
                             $opt_id = DB::getPdo()->lastInsertId();
 
                             $client = new \GuzzleHttp\Client();
-                            $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->PGOrderId, [
+                            $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->orderId, [
                                 'headers' => [
                                     'Accept' => 'application/json',
                                     'x-api-version' => '2021-05-21',
