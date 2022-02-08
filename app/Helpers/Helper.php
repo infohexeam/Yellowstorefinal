@@ -227,9 +227,12 @@ class Helper
             $totalTax = 0;
             foreach ($orderItems as $item) {
                 $productData = Mst_store_product::find($item->product_id);
-                $taxData = Mst_Tax::find($productData->tax_id);
-                $tax = (@$taxData->tax_value / 100) * ($productData->quantity * $productData->unit_price);
-                return $taxData->tax_value . " " . $productData->quantity . " " . $productData->unit_price;
+                if (isset($productData->tax_id) && ($productData->tax_id != 0)) {
+                    $taxData = Mst_Tax::find($productData->tax_id);
+
+                    $tax = (@$taxData->tax_value / 100) * ($item->quantity * $item->unit_price);
+                    $totalTax = $totalTax + $tax;
+                }
             }
             return $totalTax;
         } elseif ($orderTotalTax == 0) {
