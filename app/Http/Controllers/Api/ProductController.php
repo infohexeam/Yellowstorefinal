@@ -103,6 +103,13 @@ class ProductController extends Controller
                 if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->select('mst_store_products.product_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id')->get()) {
                     foreach ($data['productDetails'] as $product) {
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
+
+                        $stock_count_sum = \DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->sum('stock_count');
+                        $productStatus = 0;
+                        if ($stock_count_sum > 0) {
+                            $productStatus = $product->product_status;
+                        }
+                        $product->product_status = $productStatus;
                     }
                     $data['status'] = 1;
                     $data['message'] = "success";
