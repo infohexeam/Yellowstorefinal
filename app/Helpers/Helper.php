@@ -223,7 +223,7 @@ class Helper
 
         $orderTotalTax = Trn_store_order_item::where('order_id', $order_id)->sum('tax_amount');
         if (isset($orderTotalTax) && ($orderTotalTax != 0)) {
-            $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price')->where('order_id', $order_id)->get();
+            return  $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price')->where('order_id', $order_id)->get();
             $totalTax = 0;
             foreach ($orderItems as $item) {
                 $productData = Mst_store_product::find($item->product_id);
