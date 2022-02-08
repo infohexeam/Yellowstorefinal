@@ -227,6 +227,8 @@ class Helper
             $totalTax = 0;
             foreach ($orderItems as $item) {
                 $productData = Mst_store_product::find($item->product_id);
+                return  $taxData = Mst_Tax::find($productData->tax_id);
+
                 if (isset($productData->tax_id) && ($productData->tax_id != 0)) {
                     $taxData = Mst_Tax::find($productData->tax_id);
 
