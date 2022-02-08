@@ -404,6 +404,7 @@ var countPro = 0;
            total_discount = $('#total_discount').val();
            tax_value = $('#tax_value').val();
            total_amount = $('#total_amount').val();
+           $('#order_btn').show();
 
           var total_rate = rate;
           var tax = (parseFloat(tax_value) / 100) * total_rate;
