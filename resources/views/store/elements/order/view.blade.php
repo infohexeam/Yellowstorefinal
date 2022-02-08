@@ -139,6 +139,7 @@
                                        $tval = 0;
                                        $t_val = 0;
                                     @endphp
+                                    @if(count($order_items))
                                     @foreach ($order_items as $order_item)
                                        <tr>
                                           <td>
@@ -239,6 +240,11 @@
                                           $tax_amount = $tax_amount + $tTax ; 
                                        @endphp
                                     @endforeach
+                                    @else
+                                    <tr>
+                                       No data found.
+                                    </tr>
+                                    @endif
                                  </tbody>
                                </table>
                               <div>
