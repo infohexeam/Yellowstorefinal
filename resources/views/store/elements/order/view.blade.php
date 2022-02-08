@@ -1,5 +1,9 @@
 @extends('store.layouts.app')
 @section('content')
+@php
+use App\Models\admin\Trn_StoreDeliveryTimeSlot;
+   
+@endphp
 <div class="container">
    <div class="row">
       <div class="col-md-12">
@@ -48,7 +52,7 @@
                                           <td><strong>Order Number: </strong> </td> <td> {{$order->order_number}}</td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Order Date: </strong> </td> <td>{{ \Carbon\Carbon::parse(@$order->created_at)->format('d/m/Y')}}</td>
+                                          <td><strong>Order Date: </strong> </td> <td>{{ \Carbon\Carbon::parse(@$order->created_at)->format('d M Y')}}</td>
                                        </tr>
                                        <tr>
                                           <td><strong>Customer Name: </strong> </td> <td>{{ @$order->customer->customer_first_name}} {{ @$order->customer->customer_last_name}} </td>
@@ -57,15 +61,32 @@
                                        <tr>
                                           <td> <h3> <strong>Total Amount: </strong> </h3>  </td> <td> <h3> <i class="fa fa-inr"></i> {{ @$order->product_total_amount }} </h3></td>
                                        </tr>
-                                         <tr>
-                                          <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
-                                       </tr>
                                        <tr>
                                           <td><strong>Payment Mode: </strong> </td> <td>{{ @$order->payment_type->payment_type}}</td>
                                        </tr>
                                        <tr>
+                                          <td><strong>Delivery Type: </strong> </td> 
+                                          <td>
+                                             @if (isset($order->time_slot) && ($order->time_slot != 0)) 
+                                             @php
+                                                 $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($order->time_slot);
+                                             @endphp
+                                                Time Slot Delivery ({{ @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end }})
+                                             @else
+                                                Immediate Delivery
+                                             @endif
+                                          </td>
+                                       </tr>
+
+                                       <tr>
                                           <td><strong>Processed By: </strong> </td> <td> -- </td>
                                        </tr>
+
+                                         <tr>
+                                          <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
+                                       </tr>
+                                    
+                                      
                                     </tbody>
                                  </table>
                               </div>
@@ -120,11 +141,10 @@
                                     <tr>
                                        <td>Item</td>
                                        <td>Qty</td>
-                                       <td>MRP</td>
                                        <td>Sale Price</td>
                                        <td>Discount<br>Amount</td>
                                        <td class="text-center">Tax %</td>
-                                       <td class="text-center">Tax Details</td>
+                                       {{-- <td class="text-center">Tax Details</td> --}}
                                        <td>Tax<br>Amount</td>
                                        <td>Subtotal</td>
                                        <td>Total</td>
@@ -156,7 +176,6 @@
                                            @endif
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
-                                           <td> {{ @$order_item->product_varient->product_varient_price }}</td>
                                            <td> {{ @$order_item->product_varient->product_varient_offer_price }}</td>
                                  
                                            <td>
@@ -189,32 +208,7 @@
                                              $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',$tax_info->tax_id)->get();
                                                // dd($splitdata);
                                           @endphp
-                                          {{-- <td>
-                                             {{ @$tax_info->tax_name }}
-                                          </td>
-                                          <td>
-                                             {{@$tax_info->tax_value }}
-                                          </td> --}}
-                                          <td> 
-                                                @foreach ($splitdata as $item)
-                                                @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))
-                                                @php
-                                              $tax_info->tax_value = 1;
-                                                  
-                                                @endphp   
-                                                @endif         
-                                               
-                                                @php
-                                                    $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
-                                                @endphp
-                                             {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
-                                             
-                                           -  {{ number_format((float)$stax, 2, '.', '') }}  
-                                           <br>
-
-                                                   
-                                                @endforeach
-                                          </td>
+                                    
                                          
                                           <td> 
                                              @if (isset($tTax))
