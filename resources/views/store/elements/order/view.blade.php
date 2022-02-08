@@ -115,7 +115,7 @@
                                <table class="table table-striped table-bordered text-nowrap w-100">
                                  <thead>
                                     <tr>
-                                       <td>Item<br>Name</td>
+                                       <td>Item</td>
                                        <td>Qty</td>
                                        <td>MRP</td>
                                        <td>Sale Price</td>
