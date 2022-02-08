@@ -227,10 +227,7 @@ class Helper
             $totalTax = 0;
             foreach ($orderItems as $item) {
                 $productData = Mst_store_product::find($item->product_id);
-                $taxData = Mst_Tax::find($productData->tax_id);
-
-                $taxData = Mst_Tax::find($productData->tax_id);
-
+                return  $taxData = Mst_Tax::find($productData->tax_id);
                 $tax = (@$taxData->tax_value / 100) * ($productData->quantity * $productData->unit_price);
                 $totalTax = $totalTax + $tax;
             }
