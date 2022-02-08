@@ -190,7 +190,17 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                               {{@$discountAmt}} 
                                              </td>
                                  
-                                          
+                                             @php
+                                             $tax_info = \DB::table('mst_store_products')
+                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
+                                             ->where('mst_store_products.product_id', $order_item->product_id)
+                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
+                                             ->first();  
+                                             $tval  = $order_item->unit_price * @$order_item->quantity;
+                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                             $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                                             $Tot = $tTax + $orgCost;
+                                          @endphp
                                         
                                           @php
                                             
