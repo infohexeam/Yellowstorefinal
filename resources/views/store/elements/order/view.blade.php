@@ -82,6 +82,8 @@
                    @if($order->status_id == '7')
                    <div class="col-md-4">
                         <div class="form-group">
+                           <label>Delivery Boy</label>
+
                             <select disabled name="delivery_boy_id"  class="attr_value form-control" >
                               <!--<option value="">Select Delivery Boy</option>-->
                               @foreach ($delivery_boys as $data)
@@ -95,6 +97,7 @@
                    @endif
                    <div class=" @if($order->status_id  == '7') col-md-4 @else col-md-8  @endif">
                         <div class="form-group">
+                           <label>Order Status</label>
                             <select disabled name="status_id" class="attr_value form-control" >
                                  <option value="">Status</option>
                               @foreach ($status as $key)
