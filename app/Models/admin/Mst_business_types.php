@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
+
 class Mst_business_types extends Model
 {
     use SoftDeletes;
@@ -14,7 +15,7 @@ class Mst_business_types extends Model
 	protected $primaryKey = "business_type_id";
 
      protected $fillable = [
-    					'business_type_id','business_type_name','business_type_name_slug','business_type_icon','business_type_status',	  					  ];
+    					'business_type_id','business_type_name','business_type_name_slug','business_type_icon','business_type_status',	 ]; 					  ];
 
 	
 	 
