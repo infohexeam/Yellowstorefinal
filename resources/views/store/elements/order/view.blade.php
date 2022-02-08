@@ -139,7 +139,6 @@
                                        $tval = 0;
                                        $t_val = 0;
                                     @endphp
-                                    @if(count($order_items) > 0)
                                     @foreach ($order_items as $order_item)
                                        <tr>
                                           <td>
@@ -240,13 +239,11 @@
                                           $tax_amount = $tax_amount + $tTax ; 
                                        @endphp
                                     @endforeach
-                                    @else
-                                    <tr>
-                                       No data found.
-                                    </tr>
-                                    @endif
                                  </tbody>
                                </table>
+                               @if(count($order_items) == 0)
+                                 <p style="text-align: center;" >No data found...</p>
+                               @endif
                               <div>
                            <div>   
                              

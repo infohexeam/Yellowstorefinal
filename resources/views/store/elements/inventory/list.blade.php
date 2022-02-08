@@ -128,7 +128,10 @@
                   </table>
                   
                       <div class="float-right"> {!! $products->links() !!} </div>
-
+                    
+                      @if(count($products) == 0)
+                      <p style="text-align: center;" >No data found...</p>
+                    @endif
               </div>
             </div>
 
