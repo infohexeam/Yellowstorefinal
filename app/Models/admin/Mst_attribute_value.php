@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\softDeletes;
 
 class Mst_attribute_value extends Model
 {
-   use softDeletes;
+   // use softDeletes;
    protected $primaryKey = "attr_value_id";
 
    protected $fillable = [
