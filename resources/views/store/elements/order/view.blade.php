@@ -141,9 +141,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                     <tr>
                                        <td>Item</td>
                                        <td>Qty</td>
-                                       <td>Sale Price</td>
                                        <td>Discount<br>Amount</td>
-                                       {{-- <td class="text-center">Tax Details</td> --}}
                                        <td>Tax<br>Amount</td>
                                        <td>Subtotal</td>
                                        <td>Total</td>
@@ -167,15 +165,23 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              {{@$order_item->product->product_name}}   
                                              @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
                                              @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
+                                                @if(strlen($order_item->product->product_name.$order_item->product_varient->variant_name) < 15)
                                                 -
-                                              {{ @$order_item->product_varient->variant_name }}
+                                                {{ @$order_item->product_varient->variant_name }}
+                                                @else
+
+                                                <br>
+
+                                                {{ @$order_item->product_varient->variant_name }}
+
+                                                @endif
+
                                               @endif
                                            
                                            
                                            @endif
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
-                                           <td> {{ @$order_item->product_varient->product_varient_offer_price }}</td>
                                  
                                            <td>
                                               @php
@@ -317,7 +323,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                       <td>
                          Txn Time:
                       </td>
-                      <td>{{ \Carbon\Carbon::parse(@$payments->created_at)->format('d-m-Y H:i')}}</td>
+                      <td>{{ \Carbon\Carbon::parse(@$payments->created_at)->format('Y-m-d H:i:s')}}</td>
 
                    </tr>
 
