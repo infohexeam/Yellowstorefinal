@@ -278,10 +278,17 @@
  -->
 
 
-                        <div id="passlabel" class="wrap-input100 validate-input">
-                           <input class="input100" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="password" value="{{old('password')}}" placeholder="Password *" id="password" type="password" required autocomplete="current-password">
-                <p id="showpassmessage"><p>
-<p id="showpassmessage2"><p>
+                        <div id="passlabel" class="wrap-input100 validate-input form-group">
+                            <div class="password-show">
+
+                           <input class="input100 form-control" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="password" value="{{old('password')}}" placeholder="Password *" id="password" type="password" required autocomplete="current-password">
+                           <div class="password-show__toggle">
+                            <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                            <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                          </div>
+                          
+                          <p id="showpassmessage"><p>
+                            <p id="showpassmessage2"><p>
     
                            {{-- @error('password')
                            <span class="invalid-feedback" role="alert">
@@ -291,9 +298,17 @@
                            <span  class="focus-input100"></span>
                         </div>
 
-                        <div class="wrap-input100 validate-input">
-                           <input class="input100" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password *" value="{{old('password_confirmation')}}" id="confirm_password" type="password" required autocomplete="current-password">
-                                        <p id="showmessage"><p>
+                        </div>
+
+                        <div class="wrap-input100 validate-input form-group">
+                            <div class="password-show">
+
+                           <input class="input100 form-control" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password *" value="{{old('password_confirmation')}}" id="confirm_password" type="password" required autocomplete="current-password">
+                           <div class="password-show__toggle">
+                            <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                            <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                          </div>        
+                           <p id="showmessage"><p>
            {{-- @error('password_confirmation')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
@@ -301,6 +316,8 @@
                            @enderror --}}
 
                            <span  class="focus-input100"></span>
+                        </div>
+
                         </div>
                         
                     <label class="float-center">
@@ -365,6 +382,35 @@
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+      $(".password-show__toggle").on("click", function(e) {
+        console.log("click");
+        if (
+          !$(this)
+            .parent()
+            .hasClass("show")
+        ) {
+          $(this)
+            .parent()
+            .addClass("show");
+          $(this)
+            .prev()
+            .attr("type", "text");
+        } else {
+          $(this)
+            .parent()
+            .removeClass("show");
+          $(this)
+            .prev()
+            .attr("type", "password");
+        }
+      });
+    });
+       </script>
+       
 
 <script>
 

@@ -112,6 +112,44 @@ body {
 .number-font {
     font-weight: 600 !important;
 }
+
+/*  password eye */
+
+.password-show {
+    position: relative;
+  }
+  .password-show input {
+    padding-right: 2.5rem;
+  }
+  .password-show__toggle {
+    position: absolute;
+    top: 15px;
+    right: 0;
+    bottom: 0;
+    width: 2.5rem;
+  }
+  .password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #555;
+  }
+  .password-show_toggle_show-icon {
+    display: block;
+  }
+  .password-show.show .password-show_toggle_show-icon {
+    display: none;
+  }
+  .password-show_toggle_hide-icon {
+    display: none;
+  }
+  .password-show.show .password-show_toggle_hide-icon {
+    display: block;
+  }
+/*  password eye */
+
+
 [tabindex="-1"]:focus {
     outline: 0 !important;
 }
