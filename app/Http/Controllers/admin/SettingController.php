@@ -3435,7 +3435,7 @@ class SettingController extends Controller
 	}
 	public function viewInvoice(Request $request, $id)
 	{
-		//try {
+		try {
 
 		$pageTitle = "View Invoice";
 		$decrId  = Crypt::decryptString($id);
@@ -3443,13 +3443,13 @@ class SettingController extends Controller
 		$customer = Trn_store_customer::all();
 		$status = Sys_store_order_status::all();
 		$order_items = Trn_store_order_item::where('order_id', $decrId)->get();
-		$store_data = Mst_store::where('store_id', $store_id)->first();
+		$store_data = Mst_store::where('store_id', $order->store_id)->first();
 
 		return view('admin.masters.order.invoice', compact('store_data', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
-		// } catch (\Exception $e) {
-		// 	//echo $e->getMessage();die;
-		// 	return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
-		// }
+		} catch (\Exception $e) {
+			//echo $e->getMessage();die;
+			return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+		}
 	}
 
 	public function listPayment(Request $request, Trn_store_payment $payments_array)
