@@ -30,8 +30,32 @@
                                     <address>
                                     <h6>Invoice Number : {{@$invoice_data->invoice_id}}</h6>
                                     <h6>Invoice Date : {{$changeDate = date("d-m-Y", strtotime( @$invoice_data->invoice_date))  }}</h6>
+                                   
                                     <div>
                                        {{ @$store_data->store_primary_address }} <br>
+                                 
+                                       @if (isset($store_data->place))
+                                    {{ @$store_data->place }} ,
+                                    @endif
+
+                                     @if (isset($store_data->town->town_name))
+                                     {{ @$store_data->town->town_name }} ,
+                                     @endif
+
+                                    @if (isset($store_data->district->district_name))
+                                    {{  @$store_data->district->district_name }} ,
+                                    @endif
+
+                                    @if (isset($store_data->state->state_name))
+                                    {{  @$store_data->state->state_name }} ,
+                                    @endif
+
+                                     @if (isset($store_data->country->country_name))
+                                     {{  @$store_data->country->country_name }}
+                                     @endif
+                                     <br>
+                                  
+
                                        Phone: {{ @$store_data->store_mobile }} <br>
 
                                     </div>
