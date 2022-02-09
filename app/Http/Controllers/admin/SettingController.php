@@ -3277,7 +3277,7 @@ class SettingController extends Controller
 
 
 		$pageTitle = "Store Orders";
-		$orders = Trn_store_order::all();
+		//$orders = Trn_store_order::all();
 		$count = $orders->count();
 
 		$status = Sys_store_order_status::all();
@@ -3285,6 +3285,14 @@ class SettingController extends Controller
 		$product = Mst_store_product::all();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
+		$datefrom = Carbon::now()->format('Y-m-d');
+		$dateto = Carbon::now()->format('Y-m-d');
+		$a1 = Carbon::parse($datefrom)->startOfDay();
+		$a2 = Carbon::parse($dateto)->endOfDay();
+		$query = Trn_store_order::select("*");
+		$query = $query->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
+		$query = $query->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
+		$orders = $query->orderBy('order_id', 'DESC')->get();
 
 		if ($_GET) {
 
@@ -3437,15 +3445,15 @@ class SettingController extends Controller
 	{
 		try {
 
-		$pageTitle = "View Invoice";
-		$decrId  = Crypt::decryptString($id);
-		$order = Trn_store_order::Find($decrId);
-		$customer = Trn_store_customer::all();
-		$status = Sys_store_order_status::all();
-		$order_items = Trn_store_order_item::where('order_id', $decrId)->get();
-		$store_data = Mst_store::where('store_id', $order->store_id)->first();
+			$pageTitle = "View Invoice";
+			$decrId  = Crypt::decryptString($id);
+			$order = Trn_store_order::Find($decrId);
+			$customer = Trn_store_customer::all();
+			$status = Sys_store_order_status::all();
+			$order_items = Trn_store_order_item::where('order_id', $decrId)->get();
+			$store_data = Mst_store::where('store_id', $order->store_id)->first();
 
-		return view('admin.masters.order.invoice', compact('store_data', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
+			return view('admin.masters.order.invoice', compact('store_data', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
 		} catch (\Exception $e) {
 			//echo $e->getMessage();die;
 			return redirect()->back()->withErrors(['Something went wrong!'])->withInput();

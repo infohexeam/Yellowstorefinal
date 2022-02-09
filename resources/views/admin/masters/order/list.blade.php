@@ -130,7 +130,7 @@ $date = Carbon\Carbon::now();
        </form>
     </div>
  <div class="card-body">
-      @if($_GET)
+      {{-- @if($_GET) --}}
 
             <div class="table-responsive">
                <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
@@ -216,7 +216,7 @@ $date = Carbon\Carbon::now();
                   </tbody>
                </table>
             </div>
-          @endif
+          {{-- @endif --}}
 
          </div>
       </div>
