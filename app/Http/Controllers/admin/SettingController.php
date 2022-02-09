@@ -3364,7 +3364,7 @@ class SettingController extends Controller
 			return view('admin.masters.order.list', compact('datefrom', 'dateto', 'subadmins', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'count'));
 		}
 
-		return view('admin.masters.order.list', compact('orders', 'subadmins', 'pageTitle',  'store', 'status', 'product', 'count'));
+		return view('admin.masters.order.list', compact('datefrom', 'dateto', 'orders', 'subadmins', 'pageTitle',  'store', 'status', 'product', 'count'));
 	}
 	public function statusDisputes(Request $request, $dispute_id)
 	{
