@@ -25,7 +25,6 @@
                                     <p class="h3">Invoice From:</p>
                                       @php
                                         $invoice_data = \DB::table('trn_order_invoices')->where('order_id',$order->order_id)->first();
-                                       $store_data = \DB::table('mst_stores')->where('store_id',$order->store_id)->first();
                                        @endphp
                                     <p class="h5">{{ @$store_data->store_name }}</p>
                                     <address>
@@ -42,18 +41,32 @@
 
                                  <div class="col-md-6 text-right">
                                     <p class="h3">Invoice To:</p>
-
-                                      @php
-                                       $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
-                                       @endphp
-
- 
                                     <address>
-                                    <h5> {{@$order->customer['name']}} </h5>
-                                   <div> <br>
-                                    {{ @$oredrAddr->name}}{{ @$oredrAddr->address}}
-                                    {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
+                                 
+                                   
+                                   @if(isset($order->delivery_address))
+                                
+                             <h5> {{@$order->customerAddress['name']}} </h5>
+                             
+                              <div>
+                                    {{@$order->customerAddress['address']}} <br>
+                                     Pincode: {{$order->customerAddress['pincode']}}<br>
+                                     Phone: {{@$order->customerAddress['phone']}}<br>
                                    </div>
+                             
+                             @else
+                             
+                                <h5> {{@$order->customer['customer_first_name']}} {{@$order->customer['customer_last_name']}}  </h5>
+                                   <div>
+                                    {{@$order->customer['customer_address']}} <br>
+                                     Pincode: {{$order->customer['customer_pincode']}}<br>
+                                     Phone: {{@$order->customer['customer_mobile_number']}}<br>
+                                   </div>
+                             
+                             @endif
+
+                                   
+                                   
                                    
                                     </address>
                                  </div>
@@ -68,13 +81,13 @@
                                     <tr>
                                        <td>Item<br>Name</td>
                                        <td>Qty</td>
-                                       <td>Rate</td>
-                                       <td>Subtotal</td>
+                                       <td>MRP</td>
+                                       <td>Sale Price</td>
                                        <td>Discount<br>Amount</td>
+                                       <td class="text-center">Tax %</td>
                                        <td class="text-center">Tax Details</td>
-                                       {{-- <td>Tax<br>Name</td> --}}
-                                       {{-- <td>Tax<br>Percentage</td> --}}
                                        <td>Tax<br>Amount</td>
+                                       <td>Subtotal</td>
                                        <td>Total</td>
                                     </tr>
                            </thead>
@@ -89,35 +102,46 @@
                                     @endphp
                                     @foreach ($order_items as $order_item)
                                        <tr>
-                                          <td>
-                                             @if (strlen($order_item->product->product_name. " ".$order_item->product_varient->variant_name) < 22)
-                                                {{@$order_item->product->product_name}}   
-                                                   @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
-                                                      @if($order_item->product->product_name != $order_item->product_varient->variant_name)
-                                                            - {{ @$order_item->product_varient->variant_name }}
-                                                      @endif
-                                                   @endif
-                                             @else
-                                             {{@$order_item->product->product_name}} - <br> 
-                                             {{ @$order_item->product_varient->variant_name }}
-
-                                             @endif
-                                          </td>
+                                          <td>{{@$order_item->product->product_name}}   
+                                             @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
+                                             @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
+                                                -
+                                              {{ @$order_item->product_varient->variant_name }}
+                                              @endif
+                                           
+                                           
+                                           @endif
+                                           </td>
                                           <td>{{@$order_item->quantity}} </td>
-                                          <td>{{@$order_item->unit_price}} </td>
-                                          <td>
-                                             @php
-                                                 $tval  = $order_item->unit_price * @$order_item->quantity;
+                                           <td> {{ @$order_item->product_varient->product_varient_price }}</td>
+                                           <td> {{ @$order_item->product_varient->product_varient_offer_price }}</td>
+                                 
+                                           <td>
+                                              @php
+                                                 $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
+                                              @endphp
+                                              {{@$discountAmt}} 
+                                             </td>
+                                 
+                                           <td>
+                                              @php
+                                                $tax_info = \DB::table('mst_store_products')
+                                                ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
+                                                ->where('mst_store_products.product_id', $order_item->product_id)
+                                                ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
+                                                ->first();  
+                                                $tval  = $order_item->unit_price * @$order_item->quantity;
+                                                $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                                $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                                                $Tot = $tTax + $orgCost;
                                              @endphp
-                                             {{@$order_item->unit_price * @$order_item->quantity}} 
-                                          </td>
-                                          <td>{{@$order_item->discount_amount}} </td>
+
+                                              {{@$tax_info->tax_value}} 
+                                             
+                                             </td>
+                                        
                                           @php
-                                             $tax_info = \DB::table('mst_store_products')
-                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
-                                             ->where('mst_store_products.product_id', $order_item->product_id)
-                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
-                                             ->first();
+                                            
                                              @$t_val = ($tax_info->tax_value * $tval) * 0.01 ;
                                              $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',$tax_info->tax_id)->get();
                                                // dd($splitdata);
@@ -140,7 +164,7 @@
                                                 <tr>
                                                    <td>
                                                 @php
-                                                    $stax = ($item->split_tax_value * $t_val) / $tax_info->tax_value; 
+                                                    $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                                                 @endphp
                                              {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
                                              
@@ -153,73 +177,125 @@
                                           </td>
                                          
                                           <td> 
-                                             @if (isset($tax_info->tax_value))
-                                             {{ @$t_val }}
+                                             @if (isset($tTax))
+                                            {{ number_format((float)$tTax, 2, '.', '') }}  
                                              @endif
                                           </td>
-                                          <td>{{@$order_item->total_amount}} </td>
+
+                                          <td>
+                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
+                                            
+                                           </td>
+                                           <td>
+                                             {{ number_format((float)$Tot, 2, '.', '') }}  
+
+                                           </td>
                                           
                                        </tr>
                                        @php
-                                          $dis_amt =  $dis_amt + @$order_item->discount_amount;
+                                          $dis_amt =  $dis_amt + $discountAmt;
                                           $single_subtotal = @$order_item->unit_price * @$order_item->quantity;
-                                          $subtotal = $subtotal + $single_subtotal; 
-                                          $tax_amount = $tax_amount + $t_val ; 
+                                          $subtotal = $subtotal + $orgCost; 
+                                          $tax_amount = $tax_amount + $tTax ; 
                                        @endphp
                                     @endforeach
                                     
                                     <tr>
-                                       <td colspan="7" class=" text-right">Sub Total</td>
-                                       <td class=" h4"> {{ @$subtotal }} </td>
+                                       <td colspan="9" class=" text-right">Sub Total</td>
+                                       <td class=" h4">   {{ number_format((float)$subtotal, 2, '.', '') }}   </td>
                                     </tr>
-                                    <tr>
-                                       <td colspan="7" class=" text-right">Discount Amount</td>
-                                       <td class=" h4"> {{ @$dis_amt }}</td>
-                                    </tr>
-                                    <tr>
-                                       <td colspan="7" class=" text-right">Tax Amount</td>
-                                       <td class=" h4"> {{ @$tax_amount }}</td>
-                                    </tr>
-                                  
                                     
 
+                                    <tr>
+                                       <td colspan="9" class=" text-right">Total Tax</td>
+                                       <td class=" h4">   {{ number_format((float)$tax_amount, 2, '.', '') }}   </td>
+                                    </tr>
+                                    
+                                  
+                          
+
+                                   
+                                  
+                                    @php
+                                    $dCharge = 0;
+                                      $dCharge =   @$order->delivery_charge;
+                                    @endphp
+
                                     @if(@$order->order_type == 'APP')
+
+                                    <tr>
+                                       <td colspan="9" class=" text-right">Delivery Charge</td>
+                                       <td class="  h4">{{ $dCharge }}</td>
+                                    </tr>
+
+                                    {{-- <tr>
+                                       <td colspan="9" class=" text-right">Packing Charge</td>
+                                       <td class=" h4"> 0 </td>
+                                    </tr> --}}
+
+                                    @endif
+
+
+                                    <tr>
+                                       <td colspan="9" class="font-weight-bold text-uppercase text-right">Grand Total</td>
+                                       <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$order->product_total_amount }}</td>
+                                    </tr>
+
+                                    <tr>
+                                       <td colspan="9" class=" text-right">Applied Discount</td>
+                                       <td class=" h4"> {{ @$dis_amt }} </td>
+                                    </tr>
+
+                                   
+
+                                   
+                                    @if(@$order->order_type == 'APP')
+
                                     
                                     @if(($order->reward_points_used != null) || ($order->reward_points_used != 0))
                                     
                                         <!--<tr>-->
-                                        <!--   <td colspan="6" class=" text-right">Reward point used</td>-->
-                                        <!--   <td class=" h4">  </td>-->
+                                        <!--   <td colspan="8" class=" text-right">Reward point used</td>-->
+                                        <!--   <td class=" h4"> </td>-->
                                         <!--</tr>-->
-                                    
                                         <tr>
-                                           <td colspan="7" class=" text-right">Reward point amount</td>
-                                           <td class=" h4"> {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points) </td>
+                                           <td colspan="8" class=" text-right">Reward point amount</td>
+                                           <td class=" h4"> {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )</td>
                                         </tr>
                                         
                                     
                                     @endif
-                                    
+
+                                   
+
+                                 
+
+                                    @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
+
                                     <tr>
-                                       <td colspan="7" class=" text-right">Packing Charge</td>
-                                       <td class=" h4"> 0 </td>
+                                       <td colspan="9" class=" text-right">Coupon Discount</td>
+                                       <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
                                     </tr>
 
-
-                                    <tr>
-                                       <td colspan="7" class=" text-right">Delivery Charge</td>
-                                       <td class="  h4">{{ @$order->delivery_charge}}</td>
-                                    </tr>
                                     @endif
+
+                                    
+                                    
+
+
+                                   
+                                    @endif
+                                    
+                                    <!-- <tr>-->
+                                    <!--   <td colspan="8" class=" text-right">Sub Total</td>-->
+                                    <!--   <td class=" h4"> {{ @$subtotal }} </td>-->
+                                    <!--</tr>-->
+                                    
                                     @php
-                                        @$gand_total = @$subtotal + @$tax_amount - @$dis_amt;
+                                        @$gand_total = @$subtotal;
                                     @endphp
 
-                                    <tr>
-                                       <td colspan="7" class="font-weight-bold text-uppercase text-right">Grand Total</td>
-                                       <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$order->product_total_amount }}</td>
-                                       {{-- <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$gand_total }}</td> --}}
-                                    </tr>
+                                  
 
 
                                  </tbody>
@@ -281,7 +357,7 @@
                      </div>
 
                         <div class="card-footer text-right">
-                           <a  href="{{ url('admin/order/list') }}" class="btn btn-cyan text-white " >Cancel</a>
+                                <a href="{{route('store.list_order')}}" class="btn btn-cyan mb-1"  >Cancel</a>
                                 
 
                               <button type="button" class="btn btn-info mb-1"  onClick="printdiv('div_print');"><i class="si si-printer"></i> Print Invoice</button>
