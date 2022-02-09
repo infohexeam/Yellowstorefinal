@@ -1,5 +1,5 @@
 
-@extends('store.layouts.app')
+@extends('admin.layouts.app')
 @section('content')
 @php
 use App\Models\admin\Trn_StoreDeliveryTimeSlot;
