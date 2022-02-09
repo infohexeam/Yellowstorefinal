@@ -3278,7 +3278,6 @@ class SettingController extends Controller
 
 		$pageTitle = "Store Orders";
 		//$orders = Trn_store_order::all();
-		$count = $orders->count();
 
 		$status = Sys_store_order_status::all();
 		$store = Mst_store::all();
@@ -3293,6 +3292,7 @@ class SettingController extends Controller
 		$orders = $orders->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
 		$orders = $orders->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
 		$orders = $orders->orderBy('order_id', 'DESC')->get();
+		$count = $orders->count();
 
 		if ($_GET) {
 
@@ -3364,7 +3364,7 @@ class SettingController extends Controller
 			return view('admin.masters.order.list', compact('datefrom', 'dateto', 'subadmins', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'count'));
 		}
 
-		return view('admin.masters.order.list', compact('orders', 'subadmins', 'pageTitle', 'status', 'store', 'status', 'product', 'count'));
+		return view('admin.masters.order.list', compact('orders', 'subadmins', 'pageTitle',  'store', 'status', 'product', 'count'));
 	}
 	public function statusDisputes(Request $request, $dispute_id)
 	{
