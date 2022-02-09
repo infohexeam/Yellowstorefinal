@@ -182,7 +182,6 @@
  
     
    </body>
-   <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
    <script>
@@ -213,8 +212,110 @@ $(document).ready(function() {
 });
    </script>
    
+   
+        <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
+
+<!--<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>-->
+<script>
+//   var firebaseConfig = {
+//      apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
+//     authDomain: "yellowstore-web-application.firebaseapp.com",
+//     projectId: "yellowstore-web-application",
+//     storageBucket: "yellowstore-web-application.appspot.com",
+//     messagingSenderId: "444886856017",
+//     appId: "1:444886856017:web:935481722416346323e370",
+//     measurementId: "G-VX5SKTNN3F"
+//   };
+      
+//     firebase.initializeApp(firebaseConfig);
+//     const messaging = firebase.messaging();
+  
+//     function initFirebaseMessagingRegistration() {
+//             messaging
+//             .requestPermission()
+//             .then(function () {
+//               //  console.log("working");
+//                 return messaging.getToken({ vapidKey: 'BA6V328NpU3KBKusQbV067G1jKrBpypf1KmnNd21d5wt8gYmHDJIOFUvs0UeYGE1KvTrntnSTkBy3Otg0VQUFmc' });
+//             })
+//             .then(function(token) {
+//                 console.log(token);
+   
+               
+  
+//             }).catch(function (err) {
+//                 console.log('User Chat Token Error'+ err);
+//             });
+//      }  
+      
+//     messaging.onMessage(function(payload) {
+//         const noteTitle = payload.notification.title;
+//         const noteOptions = {
+//             body: payload.notification.body,
+//             icon: payload.notification.icon,
+//         };
+//         new Notification(noteTitle, noteOptions);
+//     });
+   
+</script>
+   
+   <script type="module">
+  // Import the functions you need from the SDKs you need
+//   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+//   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-analytics.js";
+//  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-messaging.js";
+
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+//   const firebaseConfig = {
+//     apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
+//     authDomain: "yellowstore-web-application.firebaseapp.com",
+//     projectId: "yellowstore-web-application",
+//     storageBucket: "yellowstore-web-application.appspot.com",
+//     messagingSenderId: "444886856017",
+//     appId: "1:444886856017:web:935481722416346323e370",
+//     measurementId: "G-VX5SKTNN3F"
+//   };
+
+//   const app = initializeApp(firebaseConfig);
+//   const analytics = getAnalytics(app);
+
+// const messaging = getMessaging(); 
+//   console.log(app , analytics, messaging);
+ 
+
+
+
+</script>
+   
+      <!-- firebase integration started -->
+
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>-->
+    <!--    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-messaging.js"></script>-->
+
+    <!-- Firebase App is always required and must be first -->
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-app.js"></script>-->
+    
+    <!-- Add additional services that you want to use -->
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-auth.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-firestore.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-functions.js"></script>-->
+    
+    <!-- firebase integration end -->
+    
+    <!-- Comment out (or don't include) services that you don't want to use -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-storage.js"></script> -->
+    
+    <!--<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-analytics.js"></script>-->
+    
+
+   
      <!-- BACKGROUND-IMAGE CLOSED -->
       <!-- JQUERY JS -->
+      <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
       <!-- BOOTSTRAP JS -->
       <script src="{{URL::to('/assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
       <script src="{{URL::to('/assets/plugins/bootstrap/js/popper.min.js')}}"></script>
