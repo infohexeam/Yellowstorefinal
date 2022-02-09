@@ -3289,10 +3289,10 @@ class SettingController extends Controller
 		$dateto = Carbon::now()->format('Y-m-d');
 		$a1 = Carbon::parse($datefrom)->startOfDay();
 		$a2 = Carbon::parse($dateto)->endOfDay();
-		$query = Trn_store_order::select("*");
-		$query = $query->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
-		$query = $query->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
-		$orders = $query->orderBy('order_id', 'DESC')->get();
+		$orders = Trn_store_order::select("*");
+		$orders = $orders->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
+		$orders = $orders->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
+		$orders = $orders->orderBy('order_id', 'DESC')->get();
 
 		if ($_GET) {
 
