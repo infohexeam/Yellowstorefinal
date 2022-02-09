@@ -104,7 +104,13 @@
                         <td>{{ ++$i }}</td>
                         <td>{{$delivery_boy->delivery_boy_name}}</td>
                         <td>{{$delivery_boy->delivery_boy_mobile}}</td>
-                        <td>{{$delivery_boy->delivery_boy_email}}</td>
+                        <td>
+                          @if (isset($delivery_boy->delivery_boy_email))
+                            {{$delivery_boy->delivery_boy_email}}
+                          @else
+                            ---
+                          @endif
+                        </td>
                      @php
                      $towns =  \DB::table('mst_towns')->where('town_id', @$delivery_boy->town_id)->first();
                     // dd($towns);
