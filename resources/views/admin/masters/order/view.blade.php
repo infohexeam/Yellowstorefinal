@@ -97,7 +97,6 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
                       @if (isset($order->delivery_boy['delivery_boy_name']))
                   
-                <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
                            <div class="card-header">
@@ -124,11 +123,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                         </div>{{-- card body end --}}
                      </div><!-- COL END -->
                   </div>
-               </div>
                @endif
 
 
-                  <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
                            <div class="card-header">
@@ -151,7 +148,6 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                         </div>{{-- card body end --}}
                      </div><!-- COL END -->
                   </div>
-               </div>
 
                   @if($order->service_booking_order != 1)
                   
