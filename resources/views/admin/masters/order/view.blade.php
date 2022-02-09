@@ -1,5 +1,10 @@
-@extends('admin.layouts.app')
+
+@extends('store.layouts.app')
 @section('content')
+@php
+use App\Models\admin\Trn_StoreDeliveryTimeSlot;
+   
+@endphp
 <div class="container">
    <div class="row">
       <div class="col-md-12">
@@ -15,53 +20,82 @@
                @endif
             </div>
             <div class="col-lg-12">
-               @if ($errors->any())
-               <div class="alert alert-danger">
-                  <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                  <ul>
-                     @foreach ($errors->all() as $error)
-                     <li>{{ $error }}</li>
-                     @endforeach
-                  </ul>
-               </div>
-               @endif
-
+                  @if ($errors->any())
+                  <div class="alert alert-danger">
+                     <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                     <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                     </ul>
+                  </div>
+                  @endif
+                   <form action="{{route('store.update_order',$order->order_id)}}" method="POST">
+                       @csrf
+               
                  <input type="hidden" class="form-control" name="order_id" value="{{$order->order_id}}">
 
-                   <div class="row" >
+                  <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
-                           <div class="card-header">
+                           <div style="    justify-content: space-between;" class="card-header">
                               <div class="card-title">Order Details</div>
+                                                           <!--<a  href="{{route('store.list_order')}}" class="btn btn-cyan float-right "  >Back</a>-->
+                                                           <!--<a  href="{{ url('store/order/list') }}" class="btn btn-cyan float-right "  >Back</a>-->
+                                                           <a  onclick="GoBackWithRefresh();return false;" class="btn btn-cyan float-right text-white "  >Back</a>
+
                            </div>
                            <div class="card-body">
-                         <div class="table-responsive">
-                           <table class="table row table-borderless">
-                              <tbody class="col-lg-12 col-xl-6 p-0">
-                                  <tr>
-                                    <td><strong>Order Date :</strong> {{ \Carbon\Carbon::parse(@$order->created_at)->format('M d, Y')}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td><strong>Order Number :</strong> {{@$order->order_number}}</td>
-                                 </tr>
-                                   <tr>
-                                    <td><strong>Order Status :</strong> {{ @$order->status['status']}}</td>
-                                 </tr>
+                              <div class="table-responsive">
+                                 <table class="table row table-borderless">
+                                    <tbody class="col-lg-12 col-xl-6 p-0">
+                                       <tr>
+                                          <td><strong>Order Number: </strong> </td> <td> {{$order->order_number}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Order Date: </strong> </td> <td>{{ \Carbon\Carbon::parse(@$order->created_at)->format('d M Y')}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Customer Name: </strong> </td> <td>{{ @$order->customer->customer_first_name}} {{ @$order->customer->customer_last_name}} </td>
+                                       </tr>
+                                 
+                                       <tr>
+                                          <td> <h3> <strong>Total Amount: </strong> </h3>  </td> <td> <h3> <i class="fa fa-inr"></i> {{ @$order->product_total_amount }} </h3></td>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Payment Mode: </strong> </td> <td>{{ @$order->payment_type->payment_type}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td><strong>Delivery Type: </strong> </td> 
+                                          <td>
+                                             @if (isset($order->time_slot) && ($order->time_slot != 0)) 
+                                             @php
+                                                 $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($order->time_slot);
+                                             @endphp
+                                                Time Slot Delivery ({{ @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end }})
+                                             @else
+                                                Immediate Delivery
+                                             @endif
+                                          </td>
+                                       </tr>
 
-                                 {{-- <tr>
-                                    <td><strong>Quantity:</strong> {{$order->quantity}}</td>
-                                 </tr> --}}
+                                       <tr>
+                                          <td><strong>Processed By: </strong> </td> <td> -- </td>
+                                       </tr>
 
-                              </tbody>
-
-                           </table>
-                           </div>
-                        </div>{{-- card body end --}}
+                                         <tr>
+                                          <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
+                                       </tr>
+                                    
+                                      
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>{{-- card body end --}}
                      </div><!-- COL END -->
                   </div>
-               </div>
 
-               @if (isset($order->delivery_boy['delivery_boy_name']))
+                      @if (isset($order->delivery_boy['delivery_boy_name']))
                   
                 <div class="row" >
                      <div class="col-md-12">
@@ -94,37 +128,7 @@
                @endif
 
 
-                <div class="row" >
-                     <div class="col-md-12">
-                        <div class="card">
-                           <div class="card-header">
-                              <div class="card-title">Store Details</div>
-                           </div>
-                           <div class="card-body">
-                         <div class="table-responsive">
-                           <table class="table row table-borderless">
-                              <tbody class="col-lg-12 col-xl-6 p-0">
-                                 <tr>
-                                    <td><strong>Store Name :</strong> {{@$order->store['store_name']}}</td>
-                                 </tr>
-
-                                 <tr>
-                                    <td><strong>Store Contact Person :</strong> {{@$order->store['store_contact_person_name']}}</td>
-                                 </tr>
-                                     <tr>
-                                    <td><strong>Store Phone :</strong> {{@$order->store['store_contact_person_phone_number']}}</td>
-                                 </tr>
-
-                              </tbody>
-                           </table>
-                           </div>
-                        </div>{{-- card body end --}}
-                     </div><!-- COL END -->
-                  </div>
-               </div>
-
-
-               <div class="row" >
+                  <div class="row" >
                      <div class="col-md-12">
                         <div class="card">
                            <div class="card-header">
@@ -149,149 +153,329 @@
                   </div>
                </div>
 
-                  <div class="row">
+                  @if($order->service_booking_order != 1)
+                  
+                  
+                   <div class="col-md-2">
+                   </div>
+                   
+                   
+                   @if($order->status_id == '7')
+                   <div class="col-md-4">
+                        <div class="form-group">
+                           <label>Delivery Boy</label>
+
+                            <select disabled name="delivery_boy_id"  class="attr_value form-control" >
+                              <!--<option value="">Select Delivery Boy</option>-->
+                              @foreach ($delivery_boys as $data)
+                                @if($order->delivery_boy_id == $data->delivery_boy_id)
+                                 <option {{request()->input('delivery_boy_id',$order->delivery_boy_id) == $data->delivery_boy_id ? 'selected':''}} value="{{$data->delivery_boy_id}}">{{ $data->delivery_boy_name}}</option>
+                                @endif
+                              @endforeach
+                            </select>
+                        </div>
+                   </div>
+                   @endif
+                   <div class=" @if($order->status_id  == '7') col-md-4 @else col-md-8  @endif">
+                        <div class="form-group">
+                           <label>Order Status</label>
+                            <select disabled name="status_id" class="attr_value form-control" >
+                                 <option value="">Status</option>
+                              @foreach ($status as $key)
+                              <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} value=" {{ $key->status_id}} "> {{ $key->status}}</option>
+                              @endforeach                            
+                              </select>
+                        </div>
+                   </div>
+                   <div class="col-md-2">
+                   </div>
+               </div>
+
+                  <div  class="row">
                      <div class="col-md-12">
                         <div class="card">
-                           <div class="card-header">
-                              <div class="card-title">Customer Details</div>
-                           </div>
                            <div class="card-body">
-                         <div class="table-responsive">
-                           <table class="table row table-borderless">
-                              <tbody class="col-lg-12 col-xl-6 p-0">
-                                 <tr>
-                                    <td><strong>Name :</strong> {{@$order->customer['customer_first_name']}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td><strong>Mobile :</strong> (+91){{ @$order->customer['customer_mobile_number']}}</td>
-                                 </tr>
-                                  {{-- <tr>
-                                    <td><strong>Location :</strong> {{ @$order->customer['customer_location']}}</td>
-                                 </tr> --}}
-                                 {{-- <tr>
-                                    <td><strong>Address :</strong> {{ @$order->customer['customer_address']}}</td>
-                                 </tr> --}}
-                              </tbody>
-
-                           </table>
-                           </div>
-                        </div>
-                     </div><!-- COL END -->
-                  </div>
-               </div>
-                  <div class="row">
-                      <div class="col-md-12">
-                        <div class="card">
-                           <div class="card-header">
-                              <div class="card-title">Delivery Address </div>
-                           </div>
-                           <div class="card-body">
-                         <div class="table-responsive">
-                           <table class="table row table-borderless">
-                              <tbody class="col-lg-12 col-xl-6 p-0">
-                                 {{-- <tr>
-                                    <td><strong>Payment Mode :</strong> {{@$order->payment_type['payment_type']}}</td>
-                                 </tr> --}}
-                                 @php
-                                   $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
-                                 @endphp
-                                 <tr>
-                                    <td><strong>Address :</strong> {{ @$oredrAddr->name}}{{ @$oredrAddr->address}}
-                                       {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
-                                    </td>
-                                 </tr>
-
-                              </tbody>
-
-                           </table>
-                           </div>
-                        </div>
-                     </div>
-                     </div><!-- COL END -->
-
-                    
-               </div>
-            </div>
-            <br>
-            <div class="col-md-12">
-            <div class="table-responsive push">
-                                
-                                 <table class="table table-bordered table-hover mb-0 text-nowrap">
+                              <div style="background-color:#f1f1f9;" class="table-responsive">
+                               <table class="table table-striped table-bordered text-nowrap w-100">
                                  <thead>
                                     <tr>
-                                       <td>Item Name</td>
+                                       <td>Item</td>
                                        <td>Qty</td>
-                                       <td>Rate</td>
-                                       <td>Discount Amount</td>
-                                       <td>Tax</td>
+                                       <td>Discount<br>Amount</td>
+                                       <td>Tax<br>Amount</td>
+                                       <td>Subtotal</td>
                                        <td>Total</td>
-                                       <!--<td></td>-->
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    @foreach ($order_items as $order_item)
                                     @php
-                                       // dd($order_item);
+                                       $dis_amt = 0;
+                                       $subtotal = 0;
+                                       $tax_amount  = 0;
+                                       $gand_total = 0;
+                                       $tval = 0;
+                                       $t_val = 0;
                                     @endphp
+                                    @foreach ($order_items as $order_item)
                                        <tr>
                                           <td>
-                                              <table>
-                                                <tr>
-                                                   <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" ></td>
-                                                   <td>{{@$order_item->product->product_name}}
-                                                      @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
-                                                      -
-                                                      {{ @$order_item->product_varient->variant_name }}
-                                                      @endif
-                                                      <td>
-                                                </tr>
-                                              </table>
-                                          </td>
-                                          <td>{{@$order_item->quantity}} </td>
-                                          <td>{{@$order_item->unit_price}} </td>
-                                          <td>
-                                             @if (isset($order_item->discount_amount))
-                                             {{@$order_item->discount_amount}} 
+                                             <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
+                                             <br>
+                                             
+                                             {{@$order_item->product->product_name}}   
+                                             @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
+                                             @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
+                                                @if(strlen($order_item->product->product_name.$order_item->product_varient->variant_name) < 15)
+                                                -
+                                                {{ @$order_item->product_varient->variant_name }}
                                                 @else
-                                                0
-                                             @endif
-                                           </td>
-                                          <td>{{@$order_item->tax_amount}} </td>
-                                          <td>{{@$order_item->total_amount}} </td>
-                                          <!--<td>-->
-                                          <!--   <input type="hidden" name="order_item_id[{{@$order_item->order_item_id}}]" value="{{ @$order_item->order_item_id }}">-->
-                                          <!--   <input type="hidden" name="product[{{@$order_item->order_item_id}}]" value=0>-->
-                                          <!--   <input type="checkbox" @if ($order_item->tick_status)-->
-                                          <!--   checked-->
-                                          <!--   @endif name="product[{{@$order_item->order_item_id}}]" value=1>-->
-                                          <!--</td>-->
-                                       </tr>
-                                    @endforeach
 
+                                                <br>
+
+                                                {{ @$order_item->product_varient->variant_name }}
+
+                                                @endif
+
+                                              @endif
+                                           
+                                           
+                                           @endif
+                                           </td>
+                                          <td>{{@$order_item->quantity}} </td>
+                                 
+                                           <td>
+                                              @php
+                                                 $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
+                                              @endphp
+                                              {{@$discountAmt}} 
+                                             </td>
+                                 
+                                             @php
+                                             $tax_info = \DB::table('mst_store_products')
+                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
+                                             ->where('mst_store_products.product_id', $order_item->product_id)
+                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
+                                             ->first();  
+                                             $tval  = $order_item->unit_price * @$order_item->quantity;
+                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                             $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                                             $Tot = $tTax + $orgCost;
+                                          @endphp
+                                        
+                                          @php
+                                            
+                                             @$t_val = ($tax_info->tax_value * $tval) * 0.01 ;
+                                             $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',$tax_info->tax_id)->get();
+                                               // dd($splitdata);
+                                          @endphp
+                                    
+                                         
+                                          <td> 
+                                             @if (isset($tTax))
+                                            {{ number_format((float)$tTax, 2, '.', '') }}  
+                                             @endif
+                                          </td>
+
+                                          <td>
+                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
+                                            
+                                           </td>
+                                           <td>
+                                             {{ number_format((float)$Tot, 2, '.', '') }}  
+
+                                           </td>
+                                          
+                                       </tr>
+                                       @php
+                                          $dis_amt =  $dis_amt + $discountAmt;
+                                          $single_subtotal = @$order_item->unit_price * @$order_item->quantity;
+                                          $subtotal = $subtotal + $orgCost; 
+                                          $tax_amount = $tax_amount + $tTax ; 
+                                       @endphp
+                                    @endforeach
                                  </tbody>
                                </table>
-                                
-                                
-                              </div>
-                              <br>
-                           </div>
+                               @if(count($order_items) == 0)
+                                 <p style="text-align: center;" >No data found...</p>
+                               @endif
+                              <div>
+                           <div>   
+                             
+                        </div>
+                     </div>
+                  </div>
+                  <br>
+                  
+                
+                </div>
 
-                        <center>
-                           <a  href="{{ url('admin/order/list') }}" class="btn btn-cyan text-white " >Cancel</a>
-                        </center>
-                        
-                        </br>
-             {{--   </div>
-            </div> --}}
+                @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
+               @foreach ($payments as $payment)
+                  
+                <div class="card">
+                  <div class="card-body">
+                <h5>Payment Split Information</h5>
+                <table class="table table-bordered text-nowrap w-100">
+                   <tr>
+                      <td>
+                         Split Amount:
+                      </td>
+                      <td>
+                         {{ @$payment->splitAmount }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Split Charge:
+                      </td>
+                      <td>
+                         {{ @$payment->serviceCharge }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Service Tax:
+                      </td>
+                      <td>
+                         {{ @$payment->serviceTax }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Settlement Amount:
+                      </td>
+                      <td>
+                         {{ @$payment->settlementAmount }}
+                      </td>
+                   </tr>
+
+
+                </table>
+
+                <h5>Payment Information</h5>
+                <table class="table table-bordered text-nowrap w-100">
+                   <tr>
+                      <td>
+                        Payment Mode:
+                      </td>
+                      <td>
+                         {{ @$payment->paymentMode }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Reference Id:
+                      </td>
+                      <td>
+                         {{ @$payment->referenceId }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Status:
+                      </td>
+                      <td>
+                         {{ @$payment->txStatus }}
+                      </td>
+                   </tr>
+
+                   <tr>
+                      <td>
+                         Txn Time:
+                      </td>
+                      <td>{{ \Carbon\Carbon::parse(@$payment->created_at)->format('Y-m-d H:i:s')}}</td>
+
+                   </tr>
+
+
+                </table>
+                  </div>
+                </div>
+               @endforeach
+
+                @endif
+
+
+
+                @else
+
+                 <div class="col-md-12">
+                    <div class="card">
+                       <div class="card-body">
+                            <table class="table row table-borderless">
+                                <tbody class="col-lg-12 col-xl-6 p-0">
+                                    @php
+                                        $serviceVarDetail = \DB::table('mst_store_product_varients')->where('product_varient_id',$order->product_varient_id)->first();
+                                        $serviceDetail = \DB::table('mst_store_products')->where('product_id',$serviceVarDetail->product_id)->first();
+                                        $addCus = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
+
+                                    @endphp
+                                   <tr>
+                                      <td><strong>Service: </strong> </td> 
+                                      <td> 
+                                          @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
+                                          @else
+                                            {{$serviceDetail->product_name}}
+                                          @endif
+                                      </td>
+                                   </tr>
+                                   <tr>
+                                      <td><strong>Customer Phone: </strong> </td> 
+                                      <td>{{ @$order->customer->customer_mobile_number}} <br> 
+                                      {{ @$addCus->phone }} </td>
+                                   </tr>
+                                   @if($addCus)
+                                   <tr>
+                                       @php
+                                       @endphp
+                                      <td><strong>Address: </strong> </td> 
+                                      <td>
+                                          {{ @$addCus->name }}, {{ @$addCus->phone }} <br>
+                                          {{ @$addCus->place }}, {{ @$addCus->address }} <br>
+                                          
+                                      </td>
+                                   </tr>
+                                   @endif
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @endif
+               
+                  <br>
+                
+               </form>
+              
+          
          </div>
       </div>
-   </div>
+      </div>
+      </div>
    @endsection
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script type="text/javascript">
-$('#print').click(function(){
-$('#print'). hide();
+   $('#print').click(function(){
+   $('#print'). hide();
 });
 
-</script>
 
+function GoBackWithRefresh(event) {
+    if ('referrer' in document) {
+        window.location = document.referrer;
+        /* OR */
+        //location.replace(document.referrer);
+    } else {
+        window.history.back();
+    }
+}
+</script>
