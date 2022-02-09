@@ -28,8 +28,41 @@
          <link href="{{URL::to('/assets/css/icons.css')}}" rel="stylesheet"/>
          <!-- COLOR SKIN CSS -->
          <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{URL::to('/assets/colors/color1.css')}}" />
-   </head>
-   </head>
+         <style>
+
+            .password-show {
+              position: relative;
+            }
+            .password-show input {
+              padding-right: 2.5rem;
+            }
+            .password-show__toggle {
+              position: absolute;
+              top: 15px;
+              right: 0;
+              bottom: 0;
+              width: 2.5rem;
+            }
+            .password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: #555;
+            }
+            .password-show_toggle_show-icon {
+              display: block;
+            }
+            .password-show.show .password-show_toggle_show-icon {
+              display: none;
+            }
+            .password-show_toggle_hide-icon {
+              display: none;
+            }
+            .password-show.show .password-show_toggle_hide-icon {
+              display: block;
+            }
+            </style>   </head>
    <body>
       <!-- BACKGROUND-IMAGE -->
       <div class="login-img">
@@ -382,6 +415,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
 <script>
 

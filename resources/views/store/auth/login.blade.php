@@ -180,7 +180,34 @@
    </body>
    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
- 
+   <script>
+
+$(document).ready(function() {
+  $(".password-show__toggle").on("click", function(e) {
+    console.log("click");
+    if (
+      !$(this)
+        .parent()
+        .hasClass("show")
+    ) {
+      $(this)
+        .parent()
+        .addClass("show");
+      $(this)
+        .prev()
+        .attr("type", "text");
+    } else {
+      $(this)
+        .parent()
+        .removeClass("show");
+      $(this)
+        .prev()
+        .attr("type", "password");
+    }
+  });
+});
+   </script>
+   
    
         <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
 
