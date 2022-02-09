@@ -3419,15 +3419,15 @@ class SettingController extends Controller
 			$order_items = Trn_store_order_item::where('order_id', $decrId)->get();
 
 			$payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
-        ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
-        ->where('trn__order_split_payments.paymentRole', '=', 1)
-        ->where('trn_store_orders.order_id', '=', $decrId)
-        ->get();
+				->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+				->where('trn__order_split_payments.paymentRole', '=', 1)
+				->where('trn_store_orders.order_id', '=', $decrId)
+				->get();
 
 
 			// $delivery_Boy = Mst_delivery_boy::Find($decrId);
 			//delivery_boy_id
-			return view('admin.masters.order.view', compact('order_items', 'order', 'pageTitle', 'status', 'customer'));
+			return view('admin.masters.order.view', compact('payments', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
 		} catch (\Exception $e) {
 			//echo $e->getMessage();die;
 			return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
