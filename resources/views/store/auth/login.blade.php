@@ -182,6 +182,8 @@
  
     
    </body>
+   <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
+   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
    <script>
 
@@ -213,7 +215,6 @@ $(document).ready(function() {
    
      <!-- BACKGROUND-IMAGE CLOSED -->
       <!-- JQUERY JS -->
-      <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
       <!-- BOOTSTRAP JS -->
       <script src="{{URL::to('/assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
       <script src="{{URL::to('/assets/plugins/bootstrap/js/popper.min.js')}}"></script>
