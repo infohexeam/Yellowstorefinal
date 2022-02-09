@@ -86,6 +86,20 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                          <tr>
                                           <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
                                        </tr>
+
+                                          <tr>
+                                          <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}}</td>
+                                       </tr>
+                                       @php
+                                       $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
+                                     @endphp
+                                     <tr>
+                                        <strong>Address :</strong> {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
+                                           {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
+                                        
+                                     </tr>
+
+                                     
                                     
                                       
                                     </tbody>
@@ -152,39 +166,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                   @if($order->service_booking_order != 1)
                   
                   
-                   <div class="col-md-2">
-                   </div>
-                   
-                   
-                   @if($order->status_id == '7')
-                   <div class="col-md-4">
-                        <div class="form-group">
-                           <label>Delivery Boy</label>
-
-                            <select disabled name="delivery_boy_id"  class="attr_value form-control" >
-                              <!--<option value="">Select Delivery Boy</option>-->
-                              @foreach ($delivery_boys as $data)
-                                @if($order->delivery_boy_id == $data->delivery_boy_id)
-                                 <option {{request()->input('delivery_boy_id',$order->delivery_boy_id) == $data->delivery_boy_id ? 'selected':''}} value="{{$data->delivery_boy_id}}">{{ $data->delivery_boy_name}}</option>
-                                @endif
-                              @endforeach
-                            </select>
-                        </div>
-                   </div>
-                   @endif
-                   <div class=" @if($order->status_id  == '7') col-md-4 @else col-md-8  @endif">
-                        <div class="form-group">
-                           <label>Order Status</label>
-                            <select disabled name="status_id" class="attr_value form-control" >
-                                 <option value="">Status</option>
-                              @foreach ($status as $key)
-                              <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} value=" {{ $key->status_id}} "> {{ $key->status}}</option>
-                              @endforeach                            
-                              </select>
-                        </div>
-                   </div>
-                   <div class="col-md-2">
-                   </div>
+                
                </div>
 
                   <div  class="row">
