@@ -229,7 +229,7 @@ class CustomerController extends Controller
                 $validator = Validator::make(
                     $request->all(),
                     [
-                        'customer_email'          => 'email',
+                        //    'customer_email'          => 'email',
                     ]
                 );
 
@@ -898,7 +898,7 @@ class CustomerController extends Controller
                     $request->all(),
                     [
                         'customer_name'          => 'required',
-                        'customer_email'          => 'required|email',
+                        // 'customer_email'          => 'required|email',
                         'customer_mobile_number'          => 'required|unique:trn_store_customers,customer_mobile_number,' . $request->customer_id . ',customer_id',
                         //'address'          => 'required',
                     ]
