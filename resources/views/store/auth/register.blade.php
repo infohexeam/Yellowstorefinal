@@ -304,10 +304,10 @@
                             <div class="password-show">
 
                            <input class="input100 form-control" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password *" value="{{old('password_confirmation')}}" id="confirm_password" type="password" required autocomplete="current-password">
-                           <div class="password-show__toggle">
+                           {{-- <div class="password-show__toggle">
                             <i class="fa fa-eye password-show_toggle_show-icon"></i>
                             <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-                          </div>        
+                          </div>         --}}
                            <p id="showmessage"><p>
            {{-- @error('password_confirmation')
                            <span class="invalid-feedback" role="alert">
