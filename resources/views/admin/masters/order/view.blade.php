@@ -94,7 +94,8 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                                      @endphp
                                      <tr>
-                                       <td>   <strong>Delivery Address :</strong> {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
+                                       <td>   <strong>Delivery Address :</strong> </td> 
+                                       <td> {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
 
                                           @if (isset($order->place))
                                           {{ @$order->place }} ,
