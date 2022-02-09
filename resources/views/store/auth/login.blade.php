@@ -39,7 +39,7 @@
 }
 .password-show__toggle {
   position: absolute;
-  top: 0;
+  top: 14px;
   right: 0;
   bottom: 0;
   width: 2.5rem;
@@ -128,8 +128,14 @@
                            @enderror
 
                         </div>
-                        <div class="wrap-input100 validate-input">
-                           <input class="input100" type="password" name="password" placeholder="Password" id="password" type="password" required autocomplete="current-password">
+                        <div class="wrap-input100 validate-input form-group">
+                                                      <div class="password-show">
+
+                           <input class="input100 form-control" type="password" name="password" placeholder="Password" id="exampleInputPassword1" type="password" required autocomplete="current-password">
+                           <div class="password-show__toggle">
+                              <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                            </div>
                            @error('password')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
@@ -139,17 +145,7 @@
                         </div>
 
 
-                        <div class="form-group">
-                           <label for="exampleInputPassword1">Password</label>
-                           <div class="password-show">
-                             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                             <div class="password-show__toggle">
-                               <i class="fa fa-eye password-show_toggle_show-icon"></i>
-                               <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-                             </div>
-                           </div>
-                           
-                         </div>
+                      
 
 
                          <div class="container-login100-form-btn">
