@@ -94,9 +94,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                                      @endphp
                                      <tr>
-                                        <strong>Address :</strong> {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
+                                       <td>   <strong>Delivery Address :</strong> {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
                                            {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
-                                        
+                                       </td>
                                      </tr>
 
                                      
@@ -150,10 +150,21 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                    <td><strong>Sub Admin Name :</strong> {{@$order->subadmin['name']}}</td>
+                                    <td><strong>Sub Admin Name :</strong>
+                                       @if(isset($order->store->subadmin->name))
+                                       {{ @$order->store->subadmin->name}}
+                                       @else
+                                          ---
+                                       @endif
+                                    </td>
                                  </tr>
                                    <tr>
-                                    <td><strong>Sub Admin Phone :</strong> {{@$order->subadmin->subadmins['phone']}}</td>
+                                    <td><strong>Sub Admin Phone :</strong> 
+                                       @if(isset($order->store->subadmin->phone))
+                                       {{ @$order->store->subadmin->phone}}
+                                       @else
+                                          ---
+                                       @endif
                                  </tr>
 
                               </tbody>
