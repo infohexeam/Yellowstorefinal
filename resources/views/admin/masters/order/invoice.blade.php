@@ -381,7 +381,7 @@
                      </div>
 
                         <div class="card-footer text-right">
-                                <a href="{{route('store.list_order')}}" class="btn btn-cyan mb-1"  >Cancel</a>
+                                <a href="{{route('admin.list_order')}}" class="btn btn-cyan mb-1"  >Cancel</a>
                                 
 
                               <button type="button" class="btn btn-info mb-1"  onClick="printdiv('div_print');"><i class="si si-printer"></i> Print Invoice</button>
