@@ -29,6 +29,41 @@
          <!-- COLOR SKIN CSS -->
          <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{URL::to('/assets/colors/color1.css')}}" />
         
+<style>
+
+.password-show {
+  position: relative;
+}
+.password-show input {
+  padding-right: 2.5rem;
+}
+.password-show__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2.5rem;
+}
+.password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #555;
+}
+.password-show_toggle_show-icon {
+  display: block;
+}
+.password-show.show .password-show_toggle_show-icon {
+  display: none;
+}
+.password-show_toggle_hide-icon {
+  display: none;
+}
+.password-show.show .password-show_toggle_hide-icon {
+  display: block;
+}
+</style>
 
 
 
@@ -102,6 +137,21 @@
                            @enderror
                            <span class="focus-input100"></span>
                         </div>
+
+
+                        <div class="form-group">
+                           <label for="exampleInputPassword1">Password</label>
+                           <div class="password-show">
+                             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                             <div class="password-show__toggle">
+                               <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                               <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                             </div>
+                           </div>
+                           
+                         </div>
+
+
                          <div class="container-login100-form-btn">
                           <a href="{{route('store_password.request')}}">Forgot Password?</a>
                            </button>
@@ -132,6 +182,34 @@
  
     
    </body>
+
+   <script>
+
+$(document).ready(function() {
+  $(".password-show__toggle").on("click", function(e) {
+    console.log("click");
+    if (
+      !$(this)
+        .parent()
+        .hasClass("show")
+    ) {
+      $(this)
+        .parent()
+        .addClass("show");
+      $(this)
+        .prev()
+        .attr("type", "text");
+    } else {
+      $(this)
+        .parent()
+        .removeClass("show");
+      $(this)
+        .prev()
+        .attr("type", "password");
+    }
+  });
+});
+   </script>
    
    
         <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
