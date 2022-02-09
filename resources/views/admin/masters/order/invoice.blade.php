@@ -259,7 +259,7 @@
                                         <!--   <td class=" h4"> </td>-->
                                         <!--</tr>-->
                                         <tr>
-                                           <td colspan="8" class=" text-right">Reward point amount</td>
+                                           <td colspan="9" class=" text-right">Reward point amount</td>
                                            <td class=" h4"> {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )</td>
                                         </tr>
                                         
