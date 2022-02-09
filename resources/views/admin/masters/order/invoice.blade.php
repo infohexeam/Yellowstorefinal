@@ -74,6 +74,24 @@
                              
                               <div>
                                     {{@$order->customerAddress['address']}} <br>
+
+                                    @if (isset($order->place))
+                                    {{ @$order->place }} ,
+                                    @endif
+
+                                    @if (isset($order->customerAddress->districtFunction->district_name))
+                                    {{  @$order->customerAddress->districtFunction->district_name }} ,
+                                    @endif
+
+                                    @if (isset($order->customerAddress->stateFunction->state_name))
+                                    {{  @$order->customerAddress->stateFunction->state_name }} ,
+                                    @endif
+
+                                     @if (isset($order->customerAddress->stateFunction->country->country_name))
+                                     {{  @$order->customerAddress->stateFunction->country->country_name }}
+                                     @endif
+                                     <br>
+
                                      Pincode: {{$order->customerAddress['pincode']}}<br>
                                      Phone: {{@$order->customerAddress['phone']}}<br>
                                    </div>

@@ -95,6 +95,23 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                      @endphp
                                      <tr>
                                        <td>   <strong>Delivery Address :</strong> {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
+
+                                          @if (isset($order->place))
+                                          {{ @$order->place }} ,
+                                          @endif
+      
+                                          @if (isset($order->customerAddress->districtFunction->district_name))
+                                          {{  @$order->customerAddress->districtFunction->district_name }} ,
+                                          @endif
+      
+                                          @if (isset($order->customerAddress->stateFunction->state_name))
+                                          {{  @$order->customerAddress->stateFunction->state_name }} ,
+                                          @endif
+      
+                                           @if (isset($order->customerAddress->stateFunction->country->country_name))
+                                           {{  @$order->customerAddress->stateFunction->country->country_name }}
+                                           @endif
+                                           <br>
                                            {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
                                        </td>
                                      </tr>
