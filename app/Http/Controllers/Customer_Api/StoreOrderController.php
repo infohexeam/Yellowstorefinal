@@ -1085,7 +1085,7 @@ class StoreOrderController extends Controller
                             $deliveryArrdData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
                             if (!isset($deliveryArrdData)) {
                                 $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
-                                $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
+                                $data['orderDetails']->customer_mobile = '000000000';
                                 $data['orderDetails']->customer_address = @$customerData->customer_address;
                                 $data['orderDetails']->customer_pincode = @$customerData->customer_pincode;
                             } else {
