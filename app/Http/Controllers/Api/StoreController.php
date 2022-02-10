@@ -1739,7 +1739,7 @@ class StoreController extends Controller
                 $inventoryDatas = $inventoryData->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
-                $data['inventoryData'] = $inventoryData->data;
+                $data['inventoryData'] = $inventoryData['data'];
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
