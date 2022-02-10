@@ -378,6 +378,7 @@ class StoreOrderController extends Controller
         try {
 
             if ($request->payment_type_id == 2) {
+                $client = new \GuzzleHttp\Client();
 
                 $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/10023', [
                     'headers' => [
