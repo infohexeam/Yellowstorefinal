@@ -377,6 +377,23 @@ class StoreOrderController extends Controller
 
         try {
 
+            if ($request->payment_type_id == 2) {
+
+                $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/10023', [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'x-api-version' => '2021-05-21',
+                        'x-client-id' => '165253d13ce80549d879dba25b352561',
+                        'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+                    ],
+                ]);
+
+                // 'x-client-id' => '1159124beeb38480c16b093237219511',
+                // 'x-client-secret' => 'f4201506d616394eebf87fa82e0b12385cd6c730'
+
+                $responseData = $response->getBody()->getContents();
+            }
+
 
 
 
