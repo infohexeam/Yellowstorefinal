@@ -58,6 +58,7 @@ use App\Models\admin\Trn_StoreWebToken;
 use App\Models\admin\Trn_customer_reward;
 
 use App\Models\admin\Mst_StockDetail;
+use App\Models\admin\Trn_customerAddress;
 use App\Models\admin\Trn_DeliveryBoyLocation;
 
 
@@ -1080,13 +1081,43 @@ class StoreOrderController extends Controller
                                 $data['orderDetails']->amount_reduced_by_rp = "0";
                             }
                             $customerData = Trn_store_customer::find($data['orderDetails']->customer_id);
-                            $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+
+                            $deliveryArrdData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
+                            if (!isset($deliveryArrdData)) {
+                                $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
+                                $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
+                                $data['orderDetails']->customer_address = @$customerData->customer_address;
+                                $data['orderDetails']->customer_pincode = @$customerData->customer_pincode;
+                            } else {
+                                $data['orderDetails']->customer_name = @$deliveryArrdData->name;
+                                $data['orderDetails']->customer_mobile = @$deliveryArrdData->phone;
+
+                                if (isset($deliveryArrdData->place))
+                                    $data['orderDetails']->place = @$deliveryArrdData->place;
+                                else
+                                    $data['orderDetails']->place =    '';
+
+                                if (isset($deliveryArrdData->districtFunction->district_name))
+                                    $data['orderDetails']->district_name =   @$deliveryArrdData->districtFunction->district_name;
+                                else
+                                    $data['orderDetails']->district_name =    '';
+
+                                if (isset($deliveryArrdData->stateFunction->state_name))
+                                    $data['orderDetails']->state_name =     @$deliveryArrdData->stateFunction->state_name;
+                                else
+                                    $data['orderDetails']->state_name =    '';
+
+                                if (isset($deliveryArrdData->stateFunction->country->country_name))
+                                    $data['orderDetails']->country_name =     @$deliveryArrdData->stateFunction->country->country_name;
+                                else
+                                    $data['orderDetails']->country_name =    '';
 
 
+                                $data['orderDetails']->customer_address = @$deliveryArrdData->address;
+                                $data['orderDetails']->customer_pincode = @$deliveryArrdData->pincode;
+                            }
 
-                            $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
-                            $data['orderDetails']->customer_address = @$customerData->customer_address;
-                            $data['orderDetails']->customer_pincode = @$customerData->customer_pincode;
+
                             $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
                             $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
                             $data['orderDetails']->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
