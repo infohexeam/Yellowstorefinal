@@ -3350,9 +3350,12 @@ class ProductController extends Controller
                         $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
                         $catString2 = implode(', ', @$catData2);
                         if (isset($catString2))
-                            $string2 = substr(@$catString2, 0, 27);
+                            $string2 = @$catString2;
                         else
                             $string2 = null;
+
+
+                        // $string2 = substr(@$catString2, 0, 27);
 
                         $nearByStore->categories =  @$string2;
 
@@ -3400,7 +3403,7 @@ class ProductController extends Controller
                     $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
                     $catString2 = implode(', ', @$catData2);
                     if (isset($catString2))
-                        $string2 = substr(@$catString2, 0, 27);
+                        $string2 = @$catString2;
                     else
                         $string2 = null;
 
@@ -3622,7 +3625,7 @@ class ProductController extends Controller
                             $catData = Mst_categories::whereIn('category_id', $storeProductData)->where('category_status', 1)->get()->pluck('category_name')->toArray();
                             $catString = implode(', ', @$catData);
                             if (isset($catString))
-                                $string = substr(@$catString, 0, 27);
+                                $string = @$catString;
                             else
                                 $string = null;
 
@@ -3706,7 +3709,7 @@ class ProductController extends Controller
                             $catData1 = Mst_categories::whereIn('category_id', $storeProductData1)->where('category_status', 1)->get()->pluck('category_name')->toArray();
                             $catString1 = implode(', ', @$catData1);
                             if (isset($catString1))
-                                $string1 = substr(@$catString1, 0, 27);
+                                $string1 = @$catString1;
                             else
                                 $string1 = null;
 
