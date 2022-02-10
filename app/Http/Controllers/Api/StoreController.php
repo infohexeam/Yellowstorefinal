@@ -1651,8 +1651,9 @@ class StoreController extends Controller
                     ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
 
                     ->where('mst_store_products.store_id', $store_id)
-                    ->where('mst_store_products.product_type', 1)
                     ->where('mst__stock_details.stock', '>', 0)
+
+                    ->where('mst_store_products.product_type', 1)
                     // ->orderBy('mst_store_products.product_name','ASC')
                     ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 
@@ -1737,7 +1738,7 @@ class StoreController extends Controller
                 $inventoryDatas = $inventoryData->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
-                $data['inventoryData'] = $inventoryData;
+                $data['inventoryData'] = $dataReViStoreSS;
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
