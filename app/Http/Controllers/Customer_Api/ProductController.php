@@ -1432,20 +1432,19 @@ class ProductController extends Controller
 
                 $data['productsData']  = $productData;
                 $proFinalArr = array();
-                
+
 
                 foreach ($data['productsData'] as $offerProduct) {
                     if (Helper::productStock($offerProduct->product_id) > 0) {
 
-                    $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                    $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
-                    $storeData = Mst_store::find($offerProduct->store_id);
-                    $offerProduct->store_name = $storeData->store_name;
+                        $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($offerProduct->store_id);
+                        $offerProduct->store_name = $storeData->store_name;
 
-                    $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                    $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                    $proFinalArr[] = $offerProduct;
-
+                        $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                        $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                        $proFinalArr[] = $offerProduct;
                     }
                 }
                 $data['status'] = 1;
@@ -1472,7 +1471,7 @@ class ProductController extends Controller
 
                         ->where('mst_store_products.store_id', $request->store_id)
 
-                        ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
+                        ->where('mst_store_products.product_name', 'LIKE', "%{$product}%");
 
                     if (isset($request->customer_id)) {
                         // near by store
@@ -1502,12 +1501,12 @@ class ProductController extends Controller
                     foreach ($data['productsData'] as $offerProduct) {
                         if (Helper::productStock($offerProduct->product_id) > 0) {
 
-                        $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                        $storeData = Mst_store::find($offerProduct->store_id);
-                        $offerProduct->store_name = $storeData->store_name;
-                        $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                        $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                        $proFinalArr[] = $offerProduct;
+                            $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                            $storeData = Mst_store::find($offerProduct->store_id);
+                            $offerProduct->store_name = $storeData->store_name;
+                            $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                            $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                            $proFinalArr[] = $offerProduct;
                         }
                     }
                     $data['status'] = 1;
