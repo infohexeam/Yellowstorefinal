@@ -756,8 +756,6 @@ class CouponController extends Controller
         'mst__sub_categories.sub_category_name',
 
       );
-    $inventoryData = $inventoryData->get();
-    dd($inventoryData);
 
 
     if ($_GET) {
