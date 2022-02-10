@@ -318,7 +318,7 @@
                            <div class="password-show__toggle">
                             <i class="fa fa-eye password-show_toggle_show-icon"></i>
                             <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-                          </div>
+                          </div> 
                           
                           <p id="showpassmessage"><p>
                             <p id="showpassmessage2"><p>
