@@ -1469,6 +1469,7 @@ class ProductController extends Controller
                             'mst_store_products.product_base_image',
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
+                            'mst_store_products.store_id',
                             // 'mst_store_product_varients.product_varient_id',
                             // 'mst_store_product_varients.variant_name',
                             // 'mst_store_product_varients.product_varient_price',
