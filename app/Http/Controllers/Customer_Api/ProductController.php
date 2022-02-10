@@ -3142,7 +3142,7 @@ class ProductController extends Controller
                             'mst_store_products.product_base_image',
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
-                            'mst_store_product_varients.product_varient_id',
+                            'trn_order_items.product_varient_id',
                             'mst_store_product_varients.variant_name',
                             'mst_store_product_varients.product_varient_price',
                             'mst_store_product_varients.product_varient_offer_price',
@@ -3155,8 +3155,7 @@ class ProductController extends Controller
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'trn_order_items.store_id')
                             ->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn_order_items.order_id');
 
-                        $PurproductData = $PurproductData->where('mst_store_products.product_status', 1)
-                            ->where('trn_store_orders.customer_id', $request->customer_id)
+                        $PurproductData = $PurproductData->where('trn_store_orders.customer_id', $request->customer_id)
                             ->where('mst_store_products.store_id', $request->store_id)
                             ->where('trn_store_orders.store_id', $request->store_id)
                             ->orderBy('trn_order_items.order_item_id', 'DESC');
@@ -3168,9 +3167,11 @@ class ProductController extends Controller
                         $PurproductDatas = $PurproductData->unique('product_varient_id');
                         $PurproductDataz =   $PurproductDatas->values()->all();
 
-                        $data['purchasedProducts']  = $PurproductDataz;
-
+                        $data['purchasedProducts'] = $PurproductDataz;
+                        // $dataPurchase = array();
                         foreach ($data['purchasedProducts'] as $offerProduct) {
+
+                            // if($offerProduct->product_varient_id )
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                             $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
 
@@ -3183,8 +3184,9 @@ class ProductController extends Controller
                             }
                             $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                             $offerProduct->ratingCount = $countRating;
+                            //  $dataPurchase[] = $offerProduct;
                         }
-
+                        //   $data['purchasedProducts'] = $dataPurchase;
 
                         $data['message'] = 'success';
                         $data['status'] = 1;
