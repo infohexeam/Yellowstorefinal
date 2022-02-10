@@ -133,7 +133,7 @@
                                             <th class="wd-15p">Product</th>
                                             <th class="wd-15p">Variant</th>
                                             <th class="wd-15p">Stock</th>
-                                            <th class="wd-15p">Date</th>
+                                            <th class="wd-15p">Updated Date <br> and Time</th>
                                             <th class="wd-15p">Variant Price</th>
                                             <th class="wd-15p">Vendor</th>
                                             <th class="wd-15p">Category</th>
@@ -142,9 +142,7 @@
                                             <th class="wd-15p">Minimum Stock</th>
                                             <th class="wd-15p">Product Status</th>
                                             <th class="wd-15p">Old Stock</th>
-                                            <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Newly<br>Updated Stock</th>
-                                            <th class="wd-15p">Date</th>
                                        
                                          </tr>
                                       </thead>
@@ -159,7 +157,11 @@
                                             <td>{{ $d->product_name }}</td>
                                             <td>{{ $d->variant_name }}</td>
                                             <td>{{ $d->stock_count }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}}
+                                            <br>
+                                                {{ \Carbon\Carbon::parse($d->updated_time)->format('H:i:s')}}
+                                            </td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
                                             <td>{{ $d->agency_name }}</td>
                                             <td>{{ $d->category_name }}</td>
@@ -174,9 +176,7 @@
                                                 @endif
                                             </td>
                                             <td>{{ $d->prev_stock }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}}</td>
                                             <td>{{ $d->stock }}</td>
-                                            <td>{{ \Carbon\Carbon::now()->toDateString() }}</td>
 
                                         </tr>
                                         @endforeach
