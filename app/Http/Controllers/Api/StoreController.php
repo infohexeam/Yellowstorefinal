@@ -12,6 +12,7 @@ use App\Models\admin\Trn_store_otp_verify;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\Helper;
+use App\Models\admin\Mst_categories;
 use DB;
 use Carbon\Carbon;
 use Crypt;
@@ -22,6 +23,7 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
+use App\Models\admin\Mst_store_agencies;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use File;
@@ -1645,12 +1647,10 @@ class StoreController extends Controller
                 $store_id = $request->store_id;
 
                 $inventoryData =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-                    ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                     ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
-                    ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-                    ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
 
-                    ->where('mst_store_products.store_id', $store_id)
+
+                    ->where('mst_store_product_varients.store_id', $store_id)
                     ->where('mst__stock_details.stock', '>', 0)
 
                     ->where('mst_store_products.product_type', 1)
@@ -1666,6 +1666,7 @@ class StoreController extends Controller
                         'mst_store_products.product_status',
                         'mst_store_products.product_brand',
                         'mst_store_products.min_stock',
+                        'mst_store_products.vendor_id',
 
                         'mst_store_products.tax_id',
                         'mst__stock_details.product_varient_id',
@@ -1675,13 +1676,13 @@ class StoreController extends Controller
                         'mst_store_product_varients.product_varient_base_image',
                         'mst_store_product_varients.stock_count',
                         'mst_store_product_varients.created_at',
-                        'mst_store_categories.category_id',
-                        'mst_store_categories.category_name',
+                        // 'mst_store_categories.category_id',
+                        // 'mst_store_categories.category_name',
                         'mst__stock_details.stock',
                         'mst__stock_details.prev_stock',
                         'mst__stock_details.created_at AS updated_time',
-                        'mst_store_agencies.agency_name',
-                        'mst__sub_categories.sub_category_name',
+                        // 'mst_store_agencies.agency_name',
+                        // 'mst__sub_categories.sub_category_name',
 
                     );
 
@@ -1690,30 +1691,22 @@ class StoreController extends Controller
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
                 $a2  = Carbon::parse($request->date_to)->endOfDay();
 
-                // if(isset($request->date_from))
-                // {
-                //   $inventoryData = $inventoryData->whereDate('trn_store_orders.created_at','>=',$a1);
-                // }
 
-                // if(isset($request->date_to))
-                // {
-                //   $inventoryData = $inventoryData->whereDate('trn_store_orders.created_at','<=',$a2);
-                // }
 
                 if (isset($request->product_id)) {
                     $inventoryData = $inventoryData->where('mst_store_products.product_id', $request->product_id);
                 }
 
                 if (isset($request->agency_id)) {
-                    $inventoryData = $inventoryData->where('mst_store_agencies.agency_id', $request->agency_id);
+                    $inventoryData = $inventoryData->where('mst_store_products.vendor_id', $request->agency_id);
                 }
 
                 if (isset($request->category_id)) {
-                    $inventoryData = $inventoryData->where('mst_store_categories.category_id', $request->category_id);
+                    $inventoryData = $inventoryData->where('mst_store_products.product_cat_id', $request->category_id);
                 }
 
                 if (isset($request->sub_category_id)) {
-                    $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+                    $inventoryData = $inventoryData->where('mst_store_products.sub_category_id', $request->sub_category_id);
                 }
 
 
@@ -1738,6 +1731,17 @@ class StoreController extends Controller
                 $inventoryData = collect($inventoryData);
                 $inventoryDatas = $inventoryData->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
+
+
+                foreach ($inventoryData['data'] as $row) {
+                    $rowCatDAta = Mst_categories::find($row->product_cat_id);
+                    $row->category_id = $rowCatDAta->category_id;
+                    $row->category_name = $rowCatDAta->category_name;
+                    $rowAgnData = Mst_store_agencies::find($row->vendor_id);
+                    $row->agency_id = $rowAgnData->agency_id;
+                    $row->agency_name = $rowAgnData->agency_name;
+
+                }
 
                 $data['inventoryData'] = $inventoryData['data'];
                 $data['status'] = 1;
