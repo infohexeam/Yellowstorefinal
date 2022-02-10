@@ -194,7 +194,10 @@ class DisputeController extends Controller
                     $issue = Mst_Issues::find($data['disputeDetails']->issue_id);
                     $data['disputeDetails']->issue = $issue->issue;
                     $issueType = Sys_IssueType::find($data['disputeDetails']->issue_id);
-                    $data['disputeDetails']->created_at = @$issue->order->created_at;
+
+                    if (isset($issue->order->created_at))
+                        $data['disputeDetails']->created_at = @$issue->order->created_at;
+
 
                     if (isset($issueType->issue_type))
                         $data['disputeDetails']->issue_type = @$issueType->issue_type;
