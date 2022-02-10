@@ -1668,7 +1668,7 @@ class StoreController extends Controller
                         'mst_store_products.min_stock',
 
                         'mst_store_products.tax_id',
-                        'mst_store_product_varients.product_varient_id',
+                        'mst__stock_details.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
                         'mst_store_product_varients.product_varient_offer_price',
@@ -1738,7 +1738,7 @@ class StoreController extends Controller
                 $inventoryDatas = $inventoryData->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
-                $data['inventoryData'] = $dataReViStoreSS;
+                $data['inventoryData'] = $inventoryData;
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
