@@ -128,6 +128,12 @@ class DisputeController extends Controller
                             $disputesData = $disputesData->select("*")->orderBy('dispute_id', 'DESC')->get();
                             $data['disputeDetails'] = $disputesData;
                             foreach ($data['disputeDetails'] as $dispute) {
+
+                                $ordDate = Trn_store_order::find($dispute->order_id)->created_at;
+                                if (isset($ordDate))
+                                    $dispute->created_at = @$ordDate;
+
+
                                 $issue = Mst_Issues::find($dispute->issue_id);
                                 $dispute->issue = $issue->issue;
                                 $customer = Trn_store_customer::find($dispute->customer_id);
