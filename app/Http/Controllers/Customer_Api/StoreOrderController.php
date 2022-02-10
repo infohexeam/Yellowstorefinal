@@ -1090,7 +1090,7 @@ class StoreOrderController extends Controller
                                 $data['orderDetails']->customer_pincode = @$customerData->customer_pincode;
                             } else {
                                 $data['orderDetails']->customer_name = @$deliveryArrdData->name;
-                                $data['orderDetails']->customer_mobile = @$deliveryArrdData->phone;
+                                $data['orderDetails']->customer_mobile = '000000';
 
                                 if (isset($deliveryArrdData->place))
                                     $data['orderDetails']->place = @$deliveryArrdData->place;
