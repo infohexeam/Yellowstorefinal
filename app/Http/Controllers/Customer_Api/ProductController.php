@@ -1385,8 +1385,7 @@ class ProductController extends Controller
             $product = $request->product;
 
             if ($request->store_id == 0) {
-                $productData =  Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
-                    ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                $productData =  Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                     ->select(
                         'mst_store_products.product_id',
                         'mst_store_products.product_type',
@@ -1395,14 +1394,8 @@ class ProductController extends Controller
                         'mst_store_products.product_code',
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
-                        'mst_store_products.product_status',
-                        // 'mst_store_product_varients.product_varient_id',
-                        // 'mst_store_product_varients.variant_name',
-                        // 'mst_store_product_varients.product_varient_price',
-                        // 'mst_store_product_varients.product_varient_offer_price',
-                        // 'mst_store_product_varients.product_varient_base_image',
-                        // 'mst_store_product_varients.stock_count',
-                        // 'mst_store_product_varients.store_id'
+                        'mst_store_products.store_id',
+
                     );
 
                 if (($request->customer_id == 0) && (isset($request->latitude)) && (isset($request->longitude))) {
@@ -1437,7 +1430,6 @@ class ProductController extends Controller
                     ->whereOr('mst_store_product_varients.variant_name', 'LIKE', "%{$product}%")
                     ->where('mst_store_product_varients.stock_count', '>', 0)
                     // ->orWhere('mst_store_products.product_type',2)
-                    ->groupBy('mst_store_products.product_id')
 
                     ->get();
 
@@ -1458,8 +1450,7 @@ class ProductController extends Controller
                 if (isset($request->store_id) && Mst_store::find($request->store_id)) {
 
 
-                    $productData =  Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
-                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                    $productData =  Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                         ->select(
                             'mst_store_products.product_id',
                             'mst_store_products.product_type',
@@ -1470,13 +1461,7 @@ class ProductController extends Controller
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
                             'mst_store_products.store_id',
-                            // 'mst_store_product_varients.product_varient_id',
-                            // 'mst_store_product_varients.variant_name',
-                            // 'mst_store_product_varients.product_varient_price',
-                            // 'mst_store_product_varients.product_varient_offer_price',
-                            // 'mst_store_product_varients.product_varient_base_image',
-                            // 'mst_store_product_varients.stock_count',
-                            // 'mst_store_product_varients.store_id'
+
                         );
 
                     $productData = $productData->where('mst_store_products.product_status', 1)
@@ -1508,7 +1493,7 @@ class ProductController extends Controller
                     }
 
 
-                    $productData = $productData->orderBy('mst_store_products.product_id')->get();
+                    $productData = $productData->get();
 
                     $data['productsData']  = $productData;
 
