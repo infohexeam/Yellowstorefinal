@@ -202,6 +202,31 @@ class OrderController extends Controller
                                 }
                             }
 
+                            if (isset($customerAddressData->phone))
+                                $data['orderDetails']->customer_mobile = @$customerAddressData->phone;
+
+                            if (isset($customerAddressData->place))
+                                $data['orderDetails']->place = @$customerAddressData->place;
+                            else
+                                $data['orderDetails']->place =    '';
+
+                            if (isset($customerAddressData->districtFunction->district_name))
+                                $data['orderDetails']->district_name =   @$customerAddressData->districtFunction->district_name;
+                            else
+                                $data['orderDetails']->district_name =    '';
+
+                            if (isset($customerAddressData->stateFunction->state_name))
+                                $data['orderDetails']->state_name =     @$customerAddressData->stateFunction->state_name;
+                            else
+                                $data['orderDetails']->state_name =    '';
+
+                            if (isset($customerAddressData->stateFunction->country->country_name))
+                                $data['orderDetails']->country_name =     @$customerAddressData->stateFunction->country->country_name;
+                            else
+                                $data['orderDetails']->country_name =    '';
+
+
+
 
                             if (isset($customerAddressData->address))
                                 $data['orderDetails']->customer_address = @$customerAddressData->address;
