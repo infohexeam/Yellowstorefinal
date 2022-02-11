@@ -234,6 +234,7 @@
                                             <td>{{ $d->customer_mobile_number }}</td>
                                             @php
                                             
+                                            if(($d->product_varient_id != 0) && isset($d->product_varient_id)){
                                                 $visitCount = Trn_RecentlyVisitedProducts::join('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn__recently_visited_products.product_varient_id');
                                                 
                                                 if(auth()->user()->user_role_id  != 0)
@@ -244,7 +245,20 @@
                                                 $visitCount =   $visitCount->where('trn__recently_visited_products.product_varient_id', $d->product_varient_id);
                                                 $visitCount =   $visitCount->where('trn__recently_visited_products.customer_id', $d->customer_id);
                                                 $visitCount =   $visitCount->count();
+                                            }else{
+
+                                                $visitCount = Trn_RecentlyVisitedProducts::join('mst_store_products','mst_store_products.product_id','=','trn__recently_visited_products.product_id');
                                                 
+                                                if(auth()->user()->user_role_id  != 0)
+                                                {    
+                                                    $visitCount = $visitCount->join('mst_stores','mst_stores.store_id','=','mst_store_products.store_id');
+                                                    $visitCount = $visitCount->where('mst_stores.subadmin_id', auth()->user()->id);
+                                                }
+                                                $visitCount =   $visitCount->where('trn__recently_visited_products.product_id', $d->product_id);
+                                                $visitCount =   $visitCount->where('trn__recently_visited_products.customer_id', $d->customer_id);
+                                                $visitCount =   $visitCount->count();
+
+                                            }
                                             @endphp
                                             <td>{{ @$visitCount }}</td>
                                             
