@@ -44,6 +44,7 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Mst_Issues;
 use App\Models\admin\Mst_dispute;
 use App\Models\admin\Sys_IssueType;
+use App\Models\admin\Trn_customerAddress;
 use App\Models\admin\Trn_CustomerDeviceToken;
 
 
@@ -82,8 +83,16 @@ class DisputeController extends Controller
                             foreach ($data['disputeDetails'] as $dispute) {
                                 $issue = Mst_Issues::find($dispute->issue_id);
                                 $dispute->issue = $issue->issue;
-                                $customer = Trn_store_customer::find($dispute->customer_id);
-                                $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
+                                $ordData = Trn_store_order::find($dispute->order_id);
+
+                                if (!isset($ordData->delivery_address)) {
+                                    $customer = Trn_store_customer::find($dispute->customer_id);
+                                    $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
+                                } else {
+                                    $customerAddr = Trn_customerAddress::find($dispute->customer_id);
+                                    $dispute->customer_name = @$customerAddr->name;
+                                }
+
 
                                 $issueType = Sys_IssueType::find($dispute->issue_id);
 
@@ -136,8 +145,19 @@ class DisputeController extends Controller
 
                                 $issue = Mst_Issues::find($dispute->issue_id);
                                 $dispute->issue = $issue->issue;
-                                $customer = Trn_store_customer::find($dispute->customer_id);
-                                $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
+
+
+                                $ordData = Trn_store_order::find($dispute->order_id);
+
+                                if (!isset($ordData->delivery_address)) {
+                                    $customer = Trn_store_customer::find($dispute->customer_id);
+                                    $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
+                                } else {
+                                    $customerAddr = Trn_customerAddress::find($dispute->customer_id);
+                                    $dispute->customer_name = @$customerAddr->name;
+                                }
+
+
 
                                 $issueType = Sys_IssueType::find($dispute->issue_id);
 
@@ -210,8 +230,18 @@ class DisputeController extends Controller
                     else
                         $data['disputeDetails']->issue_type = '';
 
-                    $customer = Trn_store_customer::find($data['disputeDetails']->customer_id);
-                    $data['disputeDetails']->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
+
+                    $ordData = Trn_store_order::find($data['disputeDetails']->order_id);
+
+
+                    if (!isset($ordData->delivery_address)) {
+                        $customer = Trn_store_customer::find($data['disputeDetails']->customer_id);
+                        $data['disputeDetails']->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
+                    } else {
+                        $customerAddr = Trn_customerAddress::find($data['disputeDetails']->customer_id);
+                        $data['disputeDetails']->customer_name = @$customerAddr->name;
+                    }
+
 
 
                     if (isset($data['disputeDetails']->discription))
