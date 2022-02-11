@@ -130,9 +130,9 @@ class StoreSettingsController extends Controller
                     $request->all(),
                     [
                         'service_area' => 'required',
-                        'store_district_id' => 'required|numeric',
-                        'town_id' => 'required|numeric',
-                        'business_type_id' => 'required|numeric',
+                        // 'store_district_id' => 'required|numeric',
+                        // 'town_id' => 'required|numeric',
+                        /// 'business_type_id' => 'required|numeric',
                         'service_amount.*.service_start'          => 'required',
                         'service_amount.*.service_end'          => 'required',
                         'service_amount.*.delivery_charge'          => 'required',
@@ -155,12 +155,7 @@ class StoreSettingsController extends Controller
                     //  echo $request->service_area;die;
                     if (isset($request->service_area))
                         $data2['service_area'] = $request->service_area;
-                    if (isset($request->store_district_id))
-                        $data2['store_district_id'] = $request->store_district_id;
-                    if (isset($request->town_id))
-                        $data2['town_id'] = $request->town_id;
-                    if (isset($request->business_type_id))
-                        $data2['business_type_id'] = $request->business_type_id;
+
 
                     if (isset($request->order_number_prefix))
                         $data2['order_number_prefix'] = $request->order_number_prefix;
