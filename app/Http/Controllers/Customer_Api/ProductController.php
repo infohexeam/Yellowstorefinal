@@ -1293,7 +1293,7 @@ class ProductController extends Controller
                         $catData = Mst_categories::whereIn('category_id', $storeProductData)->where('category_status', 1)->get()->pluck('category_name')->toArray();
                         $catString = implode(', ', @$catData);
                         if (isset($catString))
-                            $string = substr(@$catString, 0, 27);
+                            $string = @$catString;
                         else
                             $string = null;
 
