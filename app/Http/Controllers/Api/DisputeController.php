@@ -89,7 +89,7 @@ class DisputeController extends Controller
                                     $customer = Trn_store_customer::find($dispute->customer_id);
                                     $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
                                 } else {
-                                    $customerAddr = Trn_customerAddress::find($dispute->customer_id);
+                                    $customerAddr = Trn_customerAddress::find($ordData->delivery_address);
                                     $dispute->customer_name = @$customerAddr->name;
                                 }
 
@@ -153,7 +153,7 @@ class DisputeController extends Controller
                                     $customer = Trn_store_customer::find($dispute->customer_id);
                                     $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
                                 } else {
-                                    $customerAddr = Trn_customerAddress::find($dispute->customer_id);
+                                    $customerAddr = Trn_customerAddress::find($ordData->delivery_address);
                                     $dispute->customer_name = @$customerAddr->name;
                                 }
 
