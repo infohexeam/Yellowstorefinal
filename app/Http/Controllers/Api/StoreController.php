@@ -1721,7 +1721,7 @@ class StoreController extends Controller
 
 
                 $inventoryData = $inventoryData->orderBy('mst__stock_details.stock_detail_id', 'DESC');
-                $inventoryData = $inventoryData->skip(($request->page - 1) * 10)->get();
+                $inventoryData = $inventoryData->skip(($request->page - 1) * 10)->take(10)->get();
 
                 // if (isset($request->page)) {
                 //     $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
