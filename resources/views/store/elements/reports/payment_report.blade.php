@@ -121,7 +121,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if(($sd->payment_type_id == 2) && ($sd->status_id == 4 || $sd->status_id > 5))
+                                                @if(($d->payment_type_id == 2) && ($d->status_id == 4 || $d->status_id > 5))
                                                 Success
                                                 @else
                                                 --
