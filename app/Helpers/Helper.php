@@ -215,8 +215,8 @@ class Helper
         $totalDis = 0;
         if ($orderItemsCount > 0) {
             foreach ($orderItems as $item) {
-                $product_varient = Mst_store_product_varient::find($item->product_varient_id);
-                $totalDis = $totalDis + (@$product_varient->product_varient_price - @$product_varient->product_varient_offer_price);
+                return $product_varient = Mst_store_product_varient::find($item->product_varient_id);
+                $totalDis = $totalDis + ((@$product_varient->product_varient_price - @$product_varient->product_varient_offer_price) * $item->quantity);
             }
             return $totalDis;
         } else {
