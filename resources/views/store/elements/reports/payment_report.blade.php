@@ -121,10 +121,10 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($d->payment_status == 1)
-                                                    Pending
+                                                @if(($sd->payment_type_id == 2) && ($sd->status_id == 4 || $sd->status_id > 5))
+                                                Success
                                                 @else
-                                                    --
+                                                --
                                                 @endif
                                             </td>
                                             <td>{{ $d->trn_id }}</td>
