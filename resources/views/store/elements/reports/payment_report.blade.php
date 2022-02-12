@@ -124,7 +124,7 @@
                                                 @if(($d->payment_type_id == 2) && ($d->status_id == 4 || $d->status_id > 5))
                                                 Success
                                                 @else
-                                                --
+                                                Pending
                                                 @endif
                                             </td>
                                             <td>{{ $d->trn_id }}</td>
