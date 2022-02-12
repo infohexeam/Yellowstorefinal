@@ -43,15 +43,15 @@
                             
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Sale Price</label>
-                                    <input type="text" class="form-control" name="product_varient_price" value="{{old('product_varient_price',$product_variant->product_varient_price)}}" placeholder="Sale Price">
+                                    <label class="form-label">MRP</label>
+                                    <input type="text" class="form-control" name="product_varient_price" value="{{old('product_varient_price',$product_variant->product_varient_price)}}" placeholder="MRP">
                                 </div>
                             </div>
                                 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">Offer Price</label>
-                                    <input type="text" class="form-control" name="product_varient_offer_price" value="{{old('product_varient_offer_price',$product_variant->product_varient_offer_price)}}" placeholder="Offer Price">
+                                    <label class="form-label">Sale Price</label>
+                                    <input type="text" class="form-control" name="product_varient_offer_price" value="{{old('product_varient_offer_price',$product_variant->product_varient_offer_price)}}" placeholder="Sale Price">
                                 </div>
                             </div>
                                 

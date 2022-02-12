@@ -101,6 +101,7 @@
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
                                             <th class="wd-15p">Date</th>
+                                            <th class="wd-15p">Time</th>
                                             <th class="wd-15p">Customer</th>
                                             <th class="wd-15p">Town</th>
                                             <th class="wd-15p">Customer<br>Phone</th>
@@ -117,6 +118,7 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('H:i:s')}}</td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->town_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>

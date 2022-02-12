@@ -94,6 +94,8 @@ class CustomerController extends Controller
                                         $cdt->save();
                                     }
 
+
+
                                     $data['token'] =  $user->createToken('authToken', ['customer'])->accessToken;
                                     $data['status'] = 1;
                                     $data['message'] = "Login Success";
@@ -102,6 +104,8 @@ class CustomerController extends Controller
                                     $data['customer_first_name'] = $user->customer_first_name;
                                     $data['customer_mobile_number'] = $user->customer_mobile_number;
                                     $data['referral_id'] = $user->referral_id;
+
+
 
                                     // customer reward 
                                     $rewardCount = Trn_customer_reward::where('customer_id', $user->customer_id)->count();
@@ -274,7 +278,7 @@ class CustomerController extends Controller
                 $customer->customer_email   = $request->customer_email;
                 $customer->customer_mobile_number   = $request->customer_mobile_number;
                 $customer->password              = Hash::make($request->password);
-                $customer->customer_profile_status       = 0;
+                $customer->customer_profile_status       = 1;
                 $customer->customer_otp_verify_status       = 0;
 
                 $customer->latitude   = $request->latitude;
@@ -347,7 +351,6 @@ class CustomerController extends Controller
 
                     $customer_id = $request->customer_id;
                     $customer = Trn_store_customer::Find($customer_id);
-                    $customer->customer_profile_status = 1;
                     $customer->customer_otp_verify_status = 1;
 
                     if ($customer->update()) {

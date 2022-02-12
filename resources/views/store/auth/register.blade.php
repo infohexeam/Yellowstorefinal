@@ -111,6 +111,7 @@
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_name" type="store_name" name="store_name" placeholder="Store Name *" value="{{ old('store_name') }}" required autocomplete="store_name" >
                                                                <span id="error_username"></span>
+                                                               <span id="error_sname" style="color:red;" ></span>
 
                                     {{-- @error('store_name')
                                     <span class="invalid-feedback" role="alert">
@@ -122,7 +123,10 @@
                              <div class="col-md-6">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_mobile" onchange="mobileValidation()" type="text" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  name="store_mobile" placeholder="Store Mobile Number *" value="{{ old('store_mobile') }}" required autocomplete="store_mobile" >
-                                    <p id="error_store_mobile"></p>
+                        <span id="error_smob" style="color:red;" ></span>
+
+                                    <span id="error_store_mobile"></span>
+
                                     {{-- @error('store_mobile')
                                     <strong>{{ $message }}</strong>
                                     </span>
@@ -290,6 +294,8 @@
                                         <option {{old('business_type_id') == $key->business_type_id ? 'selected':''}} value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>
                                         @endforeach
                                     </select>
+                                    <span id="error_bti" style="color:red;" ></span>
+
                                     {{-- @error('business_type_id')
                                     <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -319,6 +325,8 @@
                             <i class="fa fa-eye password-show_toggle_show-icon"></i>
                             <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
                           </div> 
+                                                              <span id="error_pass" style="color:red;" ></span>
+
                           
                           <p id="showpassmessage"><p>
                             <p id="showpassmessage2"><p>
@@ -354,8 +362,11 @@
                         </div>
                         
                     <label class="float-center">
-                        <input required type="checkbox" name="tc" id="tc"> I Agree to the 
+                        <input required type="checkbox" value="1" name="tc" id="tc"> I Agree to the 
                         <a target="_blank" href="{{ url('store/terms-and-condition') }}">Terms and Conditions</a>
+                            <br>                                
+                        <span id="error_tc" style="color:red" ></span>
+
                     </label>
                     
                                 <div id="recaptcha-container"></div>
@@ -490,6 +501,40 @@
         var sPass = $('#password').val();
         var sConfPass = $('#confirm_password').val();
         var sTC = $('#tc').val();
+        
+        if(sName == ''){
+            $('#error_sname').text('Store name reqired');
+        }else{
+            $('#error_sname').text('');
+        }
+        
+         if(sPhone == ''){
+            $('#error_smob').text('Store mobile reqired');
+        }else{
+            $('#error_smob').text('');
+        }
+        
+        if(sBusinessType == ''){
+            $('#error_bti').text('Business type reqired');
+        }else{
+            $('#error_bti').text('');
+        }
+        
+        if(sPass == ''){
+            $('#error_pass').text('Password reqired');
+        }else{
+            $('#error_pass').text('');
+        }
+        
+       
+        if ($('#tc').is(':checked')) {
+            $('#error_tc').text('');
+        }else{
+           $('#error_tc').text('Please confirm terms and condition.');
+        }
+
+        
+        
         
          
             if(sName != '' && sPhone != '' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){

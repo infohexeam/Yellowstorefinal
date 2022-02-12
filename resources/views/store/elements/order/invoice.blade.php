@@ -28,11 +28,34 @@
                                        @endphp
                                     <p class="h5">{{ @$store_data->store_name }}</p>
                                     <address>
+                                    <h6>Order Number : {{@$order->order_number}}</h6>
                                     <h6>Invoice Number : {{@$invoice_data->invoice_id}}</h6>
                                     <h6>Invoice Date : {{$changeDate = date("d-m-Y", strtotime( @$invoice_data->invoice_date))  }}</h6>
                                     <div>
-                                       {{ @$store_data->store_primary_address }} <br>
-                                       Phone: {{ @$store_data->store_mobile }} <br>
+                                     
+                                      {{ @$store_data->store_primary_address }} <br>
+                                              @if (isset($store_data->place))
+                                            {{ @$store_data->place }} ,
+                                            @endif
+                            
+                                             @if (isset($store_data->town->town_name))
+                                             {{ @$store_data->town->town_name }} ,
+                                             @endif
+                            
+                                            @if (isset($store_data->district->district_name))
+                                            {{  @$store_data->district->district_name }} ,
+                                            @endif
+                            
+                                            @if (isset($store_data->state->state_name))
+                                            {{  @$store_data->state->state_name }} ,
+                                            @endif
+                            
+                                             @if (isset($store_data->country->country_name))
+                                             {{  @$store_data->country->country_name }}
+                                             @endif
+                                             <br>
+                                        Phone: {{ @$store_data->store_mobile }} <br>
+
 
                                     </div>
                                     
@@ -49,9 +72,28 @@
                              <h5> {{@$order->customerAddress['name']}} </h5>
                              
                               <div>
-                                    {{@$order->customerAddress['address']}} <br>
+                                      {{@$order->customerAddress['address']}} <br>
+
+                                    @if (isset($order->place))
+                                    {{ @$order->place }} ,
+                                    @endif
+
+                                    @if (isset($order->customerAddress->districtFunction->district_name))
+                                    {{  @$order->customerAddress->districtFunction->district_name }} ,
+                                    @endif
+
+                                    @if (isset($order->customerAddress->stateFunction->state_name))
+                                    {{  @$order->customerAddress->stateFunction->state_name }} ,
+                                    @endif
+
+                                     @if (isset($order->customerAddress->stateFunction->country->country_name))
+                                     {{  @$order->customerAddress->stateFunction->country->country_name }}
+                                     @endif
+                                     <br>
+
                                      Pincode: {{$order->customerAddress['pincode']}}<br>
                                      Phone: {{@$order->customerAddress['phone']}}<br>
+                                     
                                    </div>
                              
                              @else
@@ -259,7 +301,7 @@
                                         <!--   <td class=" h4"> </td>-->
                                         <!--</tr>-->
                                         <tr>
-                                           <td colspan="8" class=" text-right">Reward point amount</td>
+                                           <td colspan="9" class=" text-right">Redeemed Amount</td>
                                            <td class=" h4"> {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )</td>
                                         </tr>
                                         

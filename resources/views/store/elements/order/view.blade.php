@@ -55,15 +55,39 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           <td><strong>Order Date: </strong> </td> <td>{{ \Carbon\Carbon::parse(@$order->created_at)->format('d M Y')}}</td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Customer Name: </strong> </td> <td>{{ @$order->customer->customer_first_name}} {{ @$order->customer->customer_last_name}} </td>
+                                          <td><strong>Customer Name: </strong> </td> <td>
+                                             @if(!isset($order->customerAddress['name']))
+                                             {{ @$order->customer->customer_first_name}}
+                                             {{ @$order->customer->customer_last_name}}
+                                             @else
+                                             {{ @$order->customerAddress['name']}}
+                                             @endif                                          </td>
                                        </tr>
                                  
                                        <tr>
                                           <td> <h3> <strong>Total Amount: </strong> </h3>  </td> <td> <h3> <i class="fa fa-inr"></i> {{ @$order->product_total_amount }} </h3></td>
                                        </tr>
+                                       @if(isset($order->amount_reduced_by_coupon) && ($order->amount_reduced_by_coupon != 0))
+                                       
+                                        <tr>
+                                          <td><strong>Coupon Discount: </strong> </td> <td><i class="fa fa-inr"></i> {{ @$order->amount_reduced_by_coupon}}</td>
+                                       </tr>
+                                       
+                                       @endif
+                                       
+                                       @if(isset($order->amount_reduced_by_rp) && ($order->amount_reduced_by_rp != 0))
+                                        <tr>
+                                          <td><strong>Redeemed Amount: </strong> </td> <td><i class="fa fa-inr"></i> {{ @$order->amount_reduced_by_rp}} ({{@$order->reward_points_used}})</td>
+                                       </tr>
+                                       
+                                       @endif
+
+                                       
                                        <tr>
                                           <td><strong>Payment Mode: </strong> </td> <td>{{ @$order->payment_type->payment_type}}</td>
                                        </tr>
+
+                                    @if (isset($order->time_slot) && ($order->time_slot != 0)) 
                                        <tr>
                                           <td><strong>Delivery Type: </strong> </td> 
                                           <td>
@@ -77,6 +101,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @endif
                                           </td>
                                        </tr>
+                                    @endif
 
                                        <tr>
                                           <td><strong>Processed By: </strong> </td> <td> -- </td>
@@ -141,9 +166,11 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                     <tr>
                                        <td>Item</td>
                                        <td>Qty</td>
+                                       <td>Sale price</td>
+
                                        <td>Discount<br>Amount</td>
                                        <td>Tax<br>Amount</td>
-                                       <td>Subtotal</td>
+                                       <!--<td>Subtotal</td>-->
                                        <td>Total</td>
                                     </tr>
                                  </thead>
@@ -157,6 +184,20 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        $t_val = 0;
                                     @endphp
                                     @foreach ($order_items as $order_item)
+                                    
+                                    
+                                      @php
+                                             $tax_info = \DB::table('mst_store_products')
+                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
+                                             ->where('mst_store_products.product_id', $order_item->product_id)
+                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
+                                             ->first();  
+                                             $tval  = $order_item->unit_price * @$order_item->quantity;
+                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                             $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                                             $Tot = $tTax + $orgCost;
+                                          @endphp
+                                          
                                        <tr>
                                           <td>
                                              <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
@@ -182,6 +223,11 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                            @endif
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
+                                          
+                                          <td>
+                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
+                                            
+                                           </td>
                                  
                                            <td>
                                               @php
@@ -190,17 +236,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                               {{@$discountAmt}} 
                                              </td>
                                  
-                                             @php
-                                             $tax_info = \DB::table('mst_store_products')
-                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
-                                             ->where('mst_store_products.product_id', $order_item->product_id)
-                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
-                                             ->first();  
-                                             $tval  = $order_item->unit_price * @$order_item->quantity;
-                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
-                                             $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
-                                             $Tot = $tTax + $orgCost;
-                                          @endphp
+                                           
                                         
                                           @php
                                             
@@ -216,10 +252,6 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @endif
                                           </td>
 
-                                          <td>
-                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
-                                            
-                                           </td>
                                            <td>
                                              {{ number_format((float)$Tot, 2, '.', '') }}  
 

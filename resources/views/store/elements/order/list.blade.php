@@ -122,8 +122,12 @@
                         <td>{{ ++$i }}</td>
                         <td>{{ $order->order_number}}</td>
                         <td>
+                           @if(!isset($order->customerAddress['name']))
                            {{ @$order->customer->customer_first_name}}
                            {{ @$order->customer->customer_last_name}}
+                           @else
+                           {{ @$order->customerAddress['name']}}
+                           @endif
                         </td>
 
                         <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y')}}</td>

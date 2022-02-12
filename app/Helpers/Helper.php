@@ -210,11 +210,18 @@ class Helper
 
     public static function orderTotalDiscount($order_id)
     {
-        $orderItemsDiscountSum = Trn_store_order_item::where('order_id', $order_id)->sum('discount_amount');
-        if (isset($orderItemsDiscountSum))
-            return  $orderItemsDiscountSum;
-        else
+        $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price', 'product_varient_id')->where('order_id', $order_id)->get();
+        $orderItemsCount = Trn_store_order_item::where('order_id', $order_id)->count();
+        $totalDis = 0;
+        if ($orderItemsCount > 0) {
+            foreach ($orderItems as $item) {
+                $product_varient = Mst_store_product_varient::find($item->product_varient_id);
+                $totalDis = $totalDis + (@$product_varient->product_varient_price - @$product_varient->product_varient_offer_price);
+            }
+            return $totalDis;
+        } else {
             return 0;
+        }
     }
 
     public static function orderTotalTax($order_id)
@@ -223,18 +230,23 @@ class Helper
 
         $orderTotalTax = Trn_store_order_item::where('order_id', $order_id)->sum('tax_amount');
         if (isset($orderTotalTax) && ($orderTotalTax != 0)) {
-            $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price')->where('order_id', $order_id)->get();
+            $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price', 'product_varient_id')->where('order_id', $order_id)->get();
             $totalTax = 0;
             foreach ($orderItems as $item) {
                 $productData = Mst_store_product::find($item->product_id);
                 if (isset($productData->tax_id) && ($productData->tax_id != 0)) {
+
                     $taxData = Mst_Tax::find($productData->tax_id);
 
-                    $tax = (@$taxData->tax_value / 100) * ($item->quantity * $item->unit_price);
+                    $product_varient = Mst_store_product_varient::find($item->product_varient_id);
+                    //return $product_varient;
+                    $tax = $item->quantity * (@$product_varient->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value));
+
+                    //  return   $tax = (@$taxData->tax_value / 100) * ($item->quantity * $item->unit_price);
                     $totalTax = $totalTax + $tax;
                 }
             }
-            return $totalTax;
+            return number_format((float)$totalTax, 2, '.', '');
         } elseif ($orderTotalTax == 0) {
             $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price')->where('order_id', $order_id)->get();
             $totalTax = 0;
@@ -247,11 +259,57 @@ class Helper
                     $totalTax = $totalTax + $tax;
                 }
             }
-            return $totalTax;
+            return  number_format((float)$totalTax, 2, '.', '');;
         } else {
             return  '0.0';
         }
     }
+
+
+    // public static function orderTotalDiscount($order_id)
+    // {
+    //     $orderItemsDiscountSum = Trn_store_order_item::where('order_id', $order_id)->sum('discount_amount');
+    //     if (isset($orderItemsDiscountSum))
+    //         return  $orderItemsDiscountSum;
+    //     else
+    //         return 0;
+    // }
+
+    // public static function orderTotalTax($order_id)
+    // {
+    //     //  $orderTotalAmount = Trn_store_order_item::where('order_id', $order_id)->sum('total_amount');
+
+    //     $orderTotalTax = Trn_store_order_item::where('order_id', $order_id)->sum('tax_amount');
+    //     if (isset($orderTotalTax) && ($orderTotalTax != 0)) {
+    //         $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price')->where('order_id', $order_id)->get();
+    //         $totalTax = 0;
+    //         foreach ($orderItems as $item) {
+    //             $productData = Mst_store_product::find($item->product_id);
+    //             if (isset($productData->tax_id) && ($productData->tax_id != 0)) {
+    //                 $taxData = Mst_Tax::find($productData->tax_id);
+
+    //                 $tax = (@$taxData->tax_value / 100) * ($item->quantity * $item->unit_price);
+    //                 $totalTax = $totalTax + $tax;
+    //             }
+    //         }
+    //         return $totalTax;
+    //     } elseif ($orderTotalTax == 0) {
+    //         $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price')->where('order_id', $order_id)->get();
+    //         $totalTax = 0;
+    //         foreach ($orderItems as $item) {
+    //             $productData = Mst_store_product::find($item->product_id);
+    //             if (isset($productData->tax_id) && ($productData->tax_id != 0)) {
+    //                 $taxData = Mst_Tax::find($productData->tax_id);
+
+    //                 $tax = (@$taxData->tax_value / 100) * ($productData->quantity * $productData->unit_price);
+    //                 $totalTax = $totalTax + $tax;
+    //             }
+    //         }
+    //         return $totalTax;
+    //     } else {
+    //         return  '0.0';
+    //     }
+    // }
 
 
 

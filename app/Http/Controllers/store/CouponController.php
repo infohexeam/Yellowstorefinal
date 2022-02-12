@@ -496,7 +496,7 @@ class CouponController extends Controller
         ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id')
         ->join('mst_towns', 'mst_towns.town_id', '=', 'mst_stores.town_id')
         ->where('mst_stores.store_id', Auth::guard('store')->user()->store_id)
-        ->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
+        //  ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
         ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
         ->get();
 
@@ -546,8 +546,8 @@ class CouponController extends Controller
           $data = $data->where('mst_stores.town_id', '=', $request->town_id);
         }
 
-        $data = $data->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-          ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+        $data = $data->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+          //  ->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
           ->get();
 
 
