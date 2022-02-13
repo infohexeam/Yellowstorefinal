@@ -148,48 +148,46 @@ class BusinessTypeController extends Controller
                     }
 
                     $nearByStores   = $nearByStores->limit(10)->get();
-                    $data['nearByStores']  = $nearByStores;
                     $nearStoreArray[] = 0;
-                    foreach ($data['nearByStores'] as $nearByStore) {
+
+                    $nearByStoresdataf = array();
+                    foreach ($nearByStores as $nearByStore) {
                         $nearStoreArray[] = $nearByStore->store_id;
-                        // $nearByStoreImage =  Mst_store_images::where('store_id',$nearByStore->store_id)->where('default_image',1)->first();
-                        // if(isset($nearByStoreImage->store_image))
-                        // {
-                        //   $nearByStore->store_image =  '/assets/uploads/store_images/images/'.$nearByStoreImage->store_image;
-                        // }
-                        // else
-                        // {
-                        //   $nearByStore->store_image =  null;
-                        // }
 
-                        if (isset($nearByStore->profile_image)) {
-                            $nearByStore->store_image =  '/assets/uploads/store_images/images/' . $nearByStore->profile_image;
-                        } else {
-                            $nearByStore->store_image =  Helper::default_store_image();
+                        $timeslotdata = Helper::findHoliday($nearByStore->store_id);
+                        if ($timeslotdata == true) {
+
+
+                            if (isset($nearByStore->profile_image)) {
+                                $nearByStore->store_image =  '/assets/uploads/store_images/images/' . $nearByStore->profile_image;
+                            } else {
+                                $nearByStore->store_image =  Helper::default_store_image();
+                            }
+
+                            if (isset($nearByStore->store_district_id))
+                                $nearByStore->district_name = District::find($nearByStore->store_district_id)->district_name;
+                            else
+                                $nearByStore->district_name = '';
+
+                            $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id', '=', $nearByStore->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
+                            $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
+                            $catString2 = implode(', ', @$catData2);
+                            if (isset($catString2))
+                                $string2 = substr(@$catString2, 0, 27);
+                            else
+                                $string2 = null;
+
+                            $nearByStore->categories =  @$string2;
+                            // $nearByStore->rating = number_format((float)4.20, 1, '.', '');
+                            // $nearByStore->ratingCount = 120;
+
+                            $nearByStore->rating = Helper::storeRating($nearByStore->store_id);
+                            $nearByStore->ratingCount = Helper::storeRatingCount($nearByStore->store_id);
+                            $nearByStoresdataf[] = $nearByStore;
                         }
-
-                        if (isset($nearByStore->store_district_id))
-                            $nearByStore->district_name = District::find($nearByStore->store_district_id)->district_name;
-                        else
-                            $nearByStore->district_name = '';
-
-                        $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id', '=', $nearByStore->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
-                        $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
-                        $catString2 = implode(', ', @$catData2);
-                        if (isset($catString2))
-                            $string2 = substr(@$catString2, 0, 27);
-                        else
-                            $string2 = null;
-
-                        $nearByStore->categories =  @$string2;
-                        // $nearByStore->rating = number_format((float)4.20, 1, '.', '');
-                        // $nearByStore->ratingCount = 120;
-
-                        $nearByStore->rating = Helper::storeRating($nearByStore->store_id);
-                        $nearByStore->ratingCount = Helper::storeRatingCount($nearByStore->store_id);
                     }
 
-
+                    $data['nearByStores'] = $nearByStoresdataf;
 
                     // other stores
 
@@ -207,38 +205,45 @@ class BusinessTypeController extends Controller
                         $otherStores =   $otherStores->orderBy('distance');
                     }
 
-                    $otherStores = $otherStores->get();
+                    $otherStoress = $otherStores->get();
+                    $otherStoresTwo = array();
 
-                    $data['otherStores']  = $otherStores;
 
-                    foreach ($data['otherStores'] as $otherStores) {
+                    foreach ($otherStoress as $otherStores) {
 
-                        if (isset($otherStores->profile_image)) {
-                            $otherStores->store_image =  '/assets/uploads/store_images/images/' . $otherStores->profile_image;
-                        } else {
-                            $otherStores->store_image =  Helper::default_store_image();
+
+                        $timeslotdata = Helper::findHoliday($nearByStore->store_id);
+                        if ($timeslotdata == true) {
+
+                            if (isset($otherStores->profile_image)) {
+                                $otherStores->store_image =  '/assets/uploads/store_images/images/' . $otherStores->profile_image;
+                            } else {
+                                $otherStores->store_image =  Helper::default_store_image();
+                            }
+
+                            if (isset($otherStores->store_district_id))
+                                $otherStores->district_name = District::find($otherStores->store_district_id)->district_name;
+                            else
+                                $otherStores->district_name = '';
+
+                            $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id', '=', $otherStores->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
+                            $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
+                            $catString2 = implode(', ', @$catData2);
+                            if (isset($catString2))
+                                $string2 = substr(@$catString2, 0, 27);
+                            else
+                                $string2 = null;
+
+                            $otherStores->categories =  @$string2;
+                            // $otherStores->rating = number_format((float)4.20, 1, '.', '');
+                            // $otherStores->ratingCount = 120;
+
+                            $otherStores->rating = Helper::storeRating($otherStores->store_id);
+                            $otherStores->ratingCount = Helper::storeRatingCount($otherStores->store_id);
+                            $otherStoresTwo[] = $otherStores;
                         }
-
-                        if (isset($otherStores->store_district_id))
-                            $otherStores->district_name = District::find($otherStores->store_district_id)->district_name;
-                        else
-                            $otherStores->district_name = '';
-
-                        $storeProductData2 = Mst_store_product::select('product_cat_id')->where('store_id', '=', $otherStores->store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
-                        $catData2 = Mst_categories::whereIn('category_id', $storeProductData2)->where('category_status', 1)->get()->pluck('category_name')->toArray();
-                        $catString2 = implode(', ', @$catData2);
-                        if (isset($catString2))
-                            $string2 = substr(@$catString2, 0, 27);
-                        else
-                            $string2 = null;
-
-                        $otherStores->categories =  @$string2;
-                        // $otherStores->rating = number_format((float)4.20, 1, '.', '');
-                        // $otherStores->ratingCount = 120;
-
-                        $otherStores->rating = Helper::storeRating($otherStores->store_id);
-                        $otherStores->ratingCount = Helper::storeRatingCount($otherStores->store_id);
                     }
+                    $data['otherStores']  = $otherStoresTwo;
 
                     $data['message'] = 'success';
                     $data['status'] = 1;
