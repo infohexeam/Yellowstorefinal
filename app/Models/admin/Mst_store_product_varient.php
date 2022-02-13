@@ -14,7 +14,7 @@ class Mst_store_product_varient extends Model
 
     'variant_name', 'product_id', 'product_varient_price', 'product_varient_offer_price',
     'product_varient_offer_from_date', 'product_varient_offer_to_date',
-    'product_varient_base_image', 'product_id', 'store_id', 'stock_count', 'attr_group_id', 'attr_value_id',
+    'product_varient_base_image', 'product_id', 'store_id', 'stock_count', 'attr_group_id', 'attr_value_id', 'is_removed'
 
   ];
 

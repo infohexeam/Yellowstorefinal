@@ -533,7 +533,9 @@ class StoreController extends Controller
       $pageTitle = "Products";
       $store_id =  Auth::guard('store')->user()->store_id;
       $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-        ->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->get();
+        ->where('mst_store_products.store_id', $store_id)
+        ->where('is_removed', 0)
+        ->orderBy('mst_store_products.product_id', 'DESC')->get();
       //dd($products);
       $store = Mst_store::all();
 
@@ -573,7 +575,9 @@ class StoreController extends Controller
 
 
         $query =  Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-          ->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC');
+          ->where('mst_store_products.store_id', $store_id)
+          ->where('is_removed', 0)
+          ->orderBy('mst_store_products.product_id', 'DESC');
 
 
         if (isset($request->product_name)) {
@@ -623,14 +627,14 @@ class StoreController extends Controller
           if ($stock_status == 0) {
 
             foreach ($productsz as $key => $product) {
-              $stock_count_sum = \DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->sum('stock_count');
+              $stock_count_sum = \DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->where('is_removed', 0)->sum('stock_count');
               if ($stock_count_sum == 0) {
                 $products[] = $product;
               }
             }
           } else {
             foreach ($productsz as $key => $product) {
-              $stock_count_sum = \DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->sum('stock_count');
+              $stock_count_sum = \DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->where('is_removed', 0)->sum('stock_count');
               if ($stock_count_sum > 0) {
                 $products[] = $product;
               }
@@ -1370,9 +1374,19 @@ class StoreController extends Controller
   public function destroyProduct(Request $request, $product)
   {
 
-    Mst_store_product::where('product_id', $product)->delete();
+    $removeProduct = array();
+    $removeProduct['is_removed'] = 1;
+    $removeProduct['product_status'] = 0;
 
-    Mst_store_product_varient::where('product_id', $product)->delete();
+    $removeProductVar = array();
+    $removeProductVar['is_removed'] = 1;
+    $removeProductVar['stock_count'] = 0;
+
+    Mst_store_product::where('product_id', $product)->update($removeProduct);
+
+    Mst_store_product_varient::where('product_id', $product)->update($removeProductVar);
+
+
 
     return redirect('store/product/list')->with('status', 'Product deleted Successfully');
   }
@@ -1794,7 +1808,7 @@ class StoreController extends Controller
       $customer = Trn_store_customer::all();
       $status = Sys_store_order_status::all();
 
-      return view('store.elements.order.view', compact('delivery_boys', 'payments','order_items', 'order', 'pageTitle', 'status', 'customer'));
+      return view('store.elements.order.view', compact('delivery_boys', 'payments', 'order_items', 'order', 'pageTitle', 'status', 'customer'));
     } catch (\Exception $e) {
 
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -1926,8 +1940,8 @@ class StoreController extends Controller
           }
         }
       }
+      if (($request->status_id == 9) && ($order->status_id != 9)) {
 
-      if ($request->status_id == 9) {
         $order->delivery_date = Carbon::now()->format('Y-m-d');
         $order->delivery_time = Carbon::now()->format('H:i');
         if ($order->order_type == 'APP') {
@@ -2128,15 +2142,18 @@ class StoreController extends Controller
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
         }
       } else {
-        $order_status = "Deliverd";
+        if ($order->status_id != 9) {
 
-        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
-        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
-        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
-        foreach ($customerDevice as $cd) {
-          $title = 'Order deliverd';
-          $body = 'Your order with order id ' . $order_number . ' is deliverd..';
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $order_status = "Deliverd";
+
+          $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+          $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+          $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+          foreach ($customerDevice as $cd) {
+            $title = 'Order deliverd';
+            $body = 'Your order with order id ' . $order_number . ' is deliverd..';
+            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          }
         }
       }
 
@@ -2605,7 +2622,9 @@ class StoreController extends Controller
 
       ->where('mst_store_products.store_id', $store_id)
       ->where('mst_store_products.product_type', 1)
-
+      ->where('mst_store_products.is_removed', 0)
+      ->where('mst_store_categories.category_status', 1)
+      ->where('mst_store_product_varients.is_removed', 0)
       ->orderBy('mst_store_product_varients.stock_count', 'ASC')
       ->select(
         'mst_store_products.product_id',
@@ -2718,6 +2737,9 @@ class StoreController extends Controller
       ->where('mst_store_products.store_id', $store_id)
       ->where('mst_store_products.product_status', 1)
       ->where('mst_store_products.product_type', 1)
+      ->where('mst_store_products.is_removed', 0)
+      ->where('mst_store_product_varients.is_removed', 0)
+
       ->where('mst_store_product_varients.stock_count', '>', 0)
       ->orderBy('mst_store_products.product_id', 'DESC')
       ->get();
@@ -3698,12 +3720,19 @@ class StoreController extends Controller
   {
     $pro_variant = Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->first();
 
-    $pro_variant->delete();
+    $removeProduct = array();
+    $removeProduct['is_removed'] = 1;
+    $removeProduct['product_status'] = 0;
 
-    $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)->count();
+    $removeProductVar = array();
+    $removeProductVar['is_removed'] = 1;
+    $removeProductVar['stock_count'] = 0;
+    Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->update($removeProductVar);
+
+    $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)->where('is_removed', '!=', 1)->count();
 
     if ($productVarCount < 1) {
-      Mst_store_product::where('product_id', $pro_variant->product_id)->update(['product_status' => 0]);
+      Mst_store_product::where('product_id', $pro_variant->product_id)->update($removeProduct);
     }
 
     return redirect()->back()->with('status', 'Product variant deleted successfully.');
@@ -3749,7 +3778,7 @@ class StoreController extends Controller
     $store_id  = Auth::guard('store')->user()->store_id;
     $attr_groups = Mst_attribute_group::all();
 
-    $product_variants = Mst_store_product_varient::where('product_id', '=', $product_id)->get();
+    $product_variants = Mst_store_product_varient::where('product_id', '=', $product_id)->where('is_removed', 0)->get();
     return view('store.elements.product.view_variants', compact('attr_groups', 'product_variants', 'pageTitle', 'store_id'));
   }
 

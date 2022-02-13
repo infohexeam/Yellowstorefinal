@@ -102,7 +102,7 @@ class Helper
     public static function findServiceVariant($product_id)
     {
         $proData = Mst_store_product::find($product_id);
-        $productVar =  Mst_store_product_varient::where('product_id', $product_id)->first();
+        $productVar =  Mst_store_product_varient::where('product_id', $product_id)->where('is_removed', 0)->first();
         if ($proData->service_type == 1)
             return $productVar->product_varient_id;
         else
@@ -124,7 +124,7 @@ class Helper
 
     public static function productStock($product_id)
     {
-        $stockSum = Mst_store_product_varient::where('product_id', $product_id)->sum('stock_count');
+        $stockSum = Mst_store_product_varient::where('product_id', $product_id)->where('is_removed', 0)->sum('stock_count');
         if ($stockSum)
             return $stockSum;
         else

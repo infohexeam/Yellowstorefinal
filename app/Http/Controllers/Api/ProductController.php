@@ -100,7 +100,7 @@ class ProductController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
-                if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->select('mst_store_products.product_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id')->get()) {
+                if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->select('mst_store_products.product_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id')->where('is_removed', 0)->get()) {
                     foreach ($data['productDetails'] as $product) {
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
 
@@ -158,6 +158,9 @@ class ProductController extends Controller
                                 $productDetails  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                                     ->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")->where('mst_store_products.store_id', $store_id)
                                     ->orderBy('mst_store_products.product_id', 'DESC')
+                                    ->where('mst_store_products.is_removed', 0)
+                                    ->where('mst_store_categories.category_status', 1)
+
                                     ->select('mst_store_products.product_id', 'mst_store_products.product_cat_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id', 'mst_store_products.product_status');
 
 
@@ -193,6 +196,8 @@ class ProductController extends Controller
 
                                 $productDetails =    Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                                     ->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")
+                                    ->where('mst_store_products.is_removed', 0)
+                                    ->where('mst_store_categories.category_status', 1)
                                     ->where('mst_store_products.product_cat_id', $category_id)->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')
                                     ->select('mst_store_products.product_id', 'mst_store_products.product_cat_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id', 'mst_store_products.product_status');
 
@@ -787,6 +792,7 @@ class ProductController extends Controller
                             'stock_count',
                             'created_at'
                         )
+                        ->where('is_removed', 0)
                         ->get()
                     ) {
                         foreach ($data['productVariantsDetails'] as $var) {
@@ -1159,9 +1165,16 @@ class ProductController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 if (isset($request->product_id) && Mst_store_product::find($request->product_id)) {
+                    $removeProduct = array();
+                    $removeProduct['is_removed'] = 1;
+                    $removeProduct['product_status'] = 0;
 
-                    if (Mst_store_product::where('product_id', $request->product_id)->delete()) {
-                        Mst_store_product_varient::where('product_id', $request->product_id)->delete();
+                    $removeProductVar = array();
+                    $removeProductVar['is_removed'] = 1;
+                    $removeProductVar['stock_count'] = 0;
+
+                    if (Mst_store_product::where('product_id', $request->product_id)->update($removeProduct)) {
+                        Mst_store_product_varient::where('product_id', $request->product_id)->update($removeProductVar);
                         $data['status'] = 1;
                         $data['message'] = "Product deleted ";
                         return response($data);
@@ -1305,16 +1318,26 @@ class ProductController extends Controller
         try {
             if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
 
+                $removeProduct = array();
+                $removeProduct['is_removed'] = 1;
+                $removeProduct['product_status'] = 0;
+
+                $removeProductVar = array();
+                $removeProductVar['is_removed'] = 1;
+                $removeProductVar['stock_count'] = 0;
+
+
+
                 if ($productVar = Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->first()) {
-                    $productVarCount = Mst_store_product_varient::where('product_id', $productVar->product_id)->count();
+                    $productVarCount = Mst_store_product_varient::where('product_id', $productVar->product_id)->where('is_removed', '!=', 1)->count();
 
                     if ($productVarCount <= 1) {
-                        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->delete();
-                        Mst_store_product::where('product_id', $productVar->product_id)->delete();
+                        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
+                        Mst_store_product::where('product_id', $productVar->product_id)->update($removeProduct);
                         // update(['product_status' => 0]);
 
                     } else {
-                        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->delete();
+                        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
                     }
 
 
@@ -2642,7 +2665,7 @@ class ProductController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
-                if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->select('mst_store_products.product_id', 'mst_store_products.product_name')->get()) {
+                if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->select('mst_store_products.product_id', 'mst_store_products.product_name')->where('is_removed', 0)->get()) {
                     foreach ($data['productDetails'] as $product) {
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                     }

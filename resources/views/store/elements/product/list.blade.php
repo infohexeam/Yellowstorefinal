@@ -160,7 +160,7 @@
                         <td><img data-toggle="modal" data-target="#viewModal{{$product->product_id}}"  src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" >&nbsp;</td>
                        
                         @php
-                            $stock_count_sum = \DB::table('mst_store_product_varients')->
+                            $stock_count_sum = \DB::table('mst_store_product_varients')->where('is_removed', 0)->
                             where('product_id',$product->product_id)->
                             sum('stock_count');
                           @endphp

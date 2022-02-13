@@ -642,7 +642,7 @@ class OrderController extends Controller
                             $orderdata2['delivery_status_id'] = null;
                         }
 
-                        if ($request->status_id == 9) {
+                        if (($request->status_id == 9) && ($od->status_id != 9)) {
                             // $order->delivery_date = Carbon::now()->format('Y-m-d');
                             // $order->delivery_time = Carbon::now()->format('H:i');
 
@@ -800,7 +800,7 @@ class OrderController extends Controller
                             }
                         }
 
-                        if ($request->status_id == 9) { // delivered
+                        if (($request->status_id == 9) && ($od->status_id != 9)) { // delivered
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
