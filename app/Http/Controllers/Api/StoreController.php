@@ -697,11 +697,10 @@ class StoreController extends Controller
                                     $data['login_status '] = 0;
                                 }
 
+                                Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
+                                    //   ->where('store_admin_id', $custCheck->store_admin_id)
+                                    ->delete();
                                 if (isset($request->device_token) && isset($request->device_type)) {
-                                    Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
-                                        ->where('store_admin_id', $custCheck->store_admin_id)
-                                        // ->where('store_device_token',$request->device_token)
-                                        ->delete();
 
                                     $cdt = new Trn_StoreDeviceToken;
                                     $cdt->store_id = $custCheck->store_id;
@@ -1741,7 +1740,9 @@ class StoreController extends Controller
                 $inventoryDatas = $inventoryData->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
+
                 $data['inventoryData'] = $dataReViStoreSS;
+                $data['pageCount'] = count($dataReViStoreSS) / 10;
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
