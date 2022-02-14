@@ -101,7 +101,7 @@ class CustomerController extends Controller
                                     $data['message'] = "Login Success";
 
                                     $data['customer_id'] = $user->customer_id;
-                                    $data['customer_first_name'] = $user->customer_first_name;
+                                    $data['customer_first_name'] = $user->customer_first_name . " " . $user->customer_last_name;
                                     $data['customer_mobile_number'] = $user->customer_mobile_number;
                                     $data['referral_id'] = $user->referral_id;
 
