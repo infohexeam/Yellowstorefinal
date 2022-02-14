@@ -1720,7 +1720,12 @@ class StoreController extends Controller
 
 
                 $inventoryData = $inventoryData->orderBy('mst__stock_details.stock_detail_id', 'DESC');
-                $inventoryData = $inventoryData->skip(($request->page - 1) * 10)->take(10)->get();
+
+
+                $inventoryDataa = $inventoryData->skip(($request->page - 1) * 10)->take(10)->get();
+
+                $roWc = $inventoryData->count();
+
 
                 // if (isset($request->page)) {
                 //     $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
@@ -1736,15 +1741,14 @@ class StoreController extends Controller
                 // }
 
 
-                $inventoryData = collect($inventoryData);
-                $inventoryDatas = $inventoryData->unique('product_varient_id');
+                $inventoryDatasss = collect($inventoryDataa);
+                $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
-                $dataReViStoreSSCount = $inventoryDatas->count();
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                $data['pageCount'] = floor($dataReViStoreSSCount);
+                $data['pageCount'] = count($roWc) / 10;
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
