@@ -1751,7 +1751,8 @@ class StoreController extends Controller
                     if (isset($request->sub_category_id)) {
                         $inventoryData22 = $inventoryData22->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                     }
-                    $roWc = $inventoryData22->count();
+                    $roWz = $inventoryData22->get();
+                    $roWc = count($roWz);
                 }
 
 
@@ -1764,7 +1765,7 @@ class StoreController extends Controller
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                $data['pageCount'] = count($roWc) / 10;
+                $data['pageCount'] = count(@$roWc) / 10;
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
