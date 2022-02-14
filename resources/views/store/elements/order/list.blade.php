@@ -1,5 +1,9 @@
 @extends('store.layouts.app')
 @section('content')
+@php
+use App\Models\admin\Mst_store_product;
+   
+@endphp
 <div class="container">
 <div class="row justify-content-center">
 <div class="col-md-12 col-lg-12">
@@ -134,8 +138,18 @@
                         <td>{{ $order->product_total_amount}}</td>
 
                         <td>
-                            @if($order->service_booking_order == 0)
-                                <button type="button"  @if($order->status_id == 5) disabled @endif data-toggle="modal" data-target="#StockModal{{$order->order_id}}"  class="btn btn-sm
+                           @php
+                              $itemsArr = \DB::table('trn_order_items')->where('order_id',$order->order_id)->get();
+                              $isServiceOrder = 0;
+                              foreach($itemsArr as $item){
+                                 $itemsArrPro =  Mst_store_product::find(@$item->product_id);
+                                 if (($baseProductDetail->product_type == 2) && ($baseProductDetail->service_type == 1)) {
+                                    $isServiceOrder = 1;
+                                 }
+                              }
+                           @endphp
+                           @if(($order->service_booking_order == 0) || ($isServiceOrder ! 1))
+                           <button type="button"  @if($order->status_id == 5) disabled @endif data-toggle="modal" data-target="#StockModal{{$order->order_id}}"  class="btn btn-sm
                                     @if($order->status_id == 1) btn-info @elseif($order->status_id == 5) btn-danger @else btn-success @endif">
                                    
                                     @if(isset($order->status_id))
@@ -149,7 +163,9 @@
 
                           <td>
                        <a class="btn btn-sm btn-blue"  href="{{url('store/order/view/'.Crypt::encryptString($order->order_id))}}">View</a>
-                        {{-- <a class="btn btn-sm btn-info"  href="{{url('store/assign_order/delivery_boy/'.Crypt::encryptString($order->order_id))}}">Assign Order</a> --}}
+                       @if(($order->service_booking_order == 0) || ($isServiceOrder ! 1))
+ 
+                       {{-- <a class="btn btn-sm btn-info"  href="{{url('store/assign_order/delivery_boy/'.Crypt::encryptString($order->order_id))}}">Assign Order</a> --}}
                         @if($order->status_id == 6 || $order->status_id == 9 || $order->status_id == 4 || $order->status_id == 7 || $order->status_id == 8)
                           {{--  <a href="{{url('store/product_invoice/pdf/'.$order->order_id)}}" class="btn btn-info btn-sm">Generate Invoice</a> --}}
                        <a class="btn btn-sm btn-indigo"
@@ -175,6 +191,9 @@
 @if($order->status_id == 7 )
 <a class=" btn btn-sm btn-cyan text-white mt-1" data-toggle="modal" onclick="findAvailableDBoys({{$order->order_id}})" data-target="#AssignDesliveryBoy{{$order->order_id}}" >Assign Delivery Boy</a>
 @endif
+
+@endif
+
 
                         </td>
                      </tr>

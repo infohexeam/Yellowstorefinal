@@ -166,11 +166,10 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                     <tr>
                                        <td>Item</td>
                                        <td>Qty</td>
-                                       <td>Sale price</td>
 
                                        <td>Discount<br>Amount</td>
                                        <td>Tax<br>Amount</td>
-                                       <!--<td>Subtotal</td>-->
+                                       <td>SubTotal</td>
                                        <td>Total</td>
                                     </tr>
                                  </thead>
@@ -224,11 +223,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
                                           
-                                          <td>
-                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
-                                            
-                                           </td>
-                                 
+                                        
                                            <td>
                                               @php
                                                  $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
@@ -251,6 +246,12 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                             {{ number_format((float)$tTax, 2, '.', '') }}  
                                              @endif
                                           </td>
+
+                                          <td>
+                                             {{ number_format((float)$orgCost, 2, '.', '') }}  
+                                             
+                                            </td>
+                                  
 
                                            <td>
                                              {{ number_format((float)$Tot, 2, '.', '') }}  
