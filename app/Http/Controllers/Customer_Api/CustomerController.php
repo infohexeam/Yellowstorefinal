@@ -161,7 +161,7 @@ class CustomerController extends Controller
                             $data['customer_id'] = $custCheck->customer_id;
 
                             $data['status'] = 4;
-                            $data['message'] = "Profile not Activated";
+                            $data['message'] = "Profile blocked";
                         }
                     } else {
                         $data['status'] = 3;

@@ -721,7 +721,7 @@ class StoreController extends Controller
 
                             if ($custCheck->store_account_status == 0) {
                                 $data['status'] = 4;
-                                $data['message'] = "Store is Inactive. Please contact Super admin";
+                                $data['message'] = "Store is inactive. Please contact Super admin";
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated";
