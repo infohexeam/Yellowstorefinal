@@ -1740,9 +1740,11 @@ class StoreController extends Controller
                 $inventoryDatas = $inventoryData->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
+                $dataReViStoreSSCount = $inventoryDatas->count();
+
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                $data['pageCount'] = count($dataReViStoreSS) / 10;
+                $data['pageCount'] = floor($dataReViStoreSSCount / 10);
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
