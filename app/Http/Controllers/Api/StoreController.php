@@ -1721,10 +1721,10 @@ class StoreController extends Controller
 
                 $inventoryData = $inventoryData->orderBy('mst__stock_details.stock_detail_id', 'DESC');
 
+                $roWc = $inventoryData->count();
 
                 $inventoryDataa = $inventoryData->skip(($request->page - 1) * 10)->take(10)->get();
 
-                $roWc = $inventoryData->count();
 
 
                 // if (isset($request->page)) {
