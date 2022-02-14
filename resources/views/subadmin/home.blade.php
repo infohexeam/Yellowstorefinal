@@ -141,12 +141,16 @@ $boys_count = $delivery_boys = \DB::table('mst_delivery_boys')
                                                                     @endphp
                                                     @foreach ($stores as $store)
 														 <tr>
-                                    <td>{{ ++$i }}</td>
+                                             <td>{{ ++$i }}</td>
                                                             <td>{{ @$store->store_name}}</td>
                                                             <td>{{ @$store->store_mobile}}</td>
                                                             <td>
-                                                            <span class="dot-label @if($store->store_account_status == 0) btn-danger @else btn-success @endif"></span><span class="mr-3">
-                                                            @if($store->store_account_status == 0) InActive  @else Active @endif
+                                                                 @php
+                                                                  $adminData = \DB::table('trn__store_admins')->where('store_id',$store->store_id)
+                                                                  ->where('role_id',0)->first();
+                                                                  @endphp
+                                                            <span class="dot-label @if($adminData->store_account_status == 0) btn-danger @else btn-success @endif"></span><span class="mr-3">
+                                                            @if($adminData->store_account_status == 0) InActive  @else Active @endif
                                                             </span>
                                                             </td>
                                                         </tr>
