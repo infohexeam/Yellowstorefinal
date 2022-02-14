@@ -771,6 +771,16 @@ class OrderController extends Controller
 
                         }
 
+                        if ($request->status_id == 4) { //confirm
+                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+
+                            foreach ($customerDevice as $cd) {
+                                $title = 'Order confirmed';
+                                $body = "Your order " . $od->order_number . ' is confirmed..';
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                            }
+                        }
+
                         if ($request->status_id == 6) { //picking complede
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 

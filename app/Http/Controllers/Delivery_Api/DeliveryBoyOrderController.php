@@ -62,10 +62,19 @@ class DeliveryBoyOrderController extends Controller
                             $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
                             $customerInfo = Trn_store_customer::find($order->customer_id);
 
-                            if (isset($customerInfo->customer_last_name))
-                                $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
-                            else
-                                $order->customer_name = @$customerInfo->customer_first_name;
+
+                            $customerAddressData = Trn_customerAddress::find($order->delivery_address);
+                            if (isset($customerAddressData->name)) {
+                                $order->customer_name = @$customerAddressData->name;
+                            } else {
+                                if (isset($customerInfo->customer_last_name))
+                                    $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
+                                else
+                                    $order->customer_name = @$customerInfo->customer_first_name;
+                            }
+
+
+
 
                             $storeInfo = Mst_store::find($order->store_id);
                             $order->store_name = $storeInfo->store_name;
@@ -108,10 +117,15 @@ class DeliveryBoyOrderController extends Controller
                         $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
                         $customerInfo = Trn_store_customer::find($order->customer_id);
 
-                        if (isset($customerInfo->customer_last_name))
-                            $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
-                        else
-                            $order->customer_name = @$customerInfo->customer_first_name;
+                        $customerAddressData = Trn_customerAddress::find($order->delivery_address);
+                        if (isset($customerAddressData->name)) {
+                            $order->customer_name = @$customerAddressData->name;
+                        } else {
+                            if (isset($customerInfo->customer_last_name))
+                                $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
+                            else
+                                $order->customer_name = @$customerInfo->customer_first_name;
+                        }
 
                         $storeInfo = Mst_store::find($order->store_id);
                         $order->store_name = $storeInfo->store_name;
@@ -291,20 +305,100 @@ class DeliveryBoyOrderController extends Controller
                             $customerData = Trn_store_customer::find($data['orderDetails']->customer_id);
                             $data['orderDetails']->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
 
-                            $data['orderDetails']->customer_mobile = @$customerData->customer_mobile_number;
-                            $data['orderDetails']->customer_address = @$customerData->customer_address;
-                            $data['orderDetails']->customer_pincode = @$customerData->customer_pincode;
+                            $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
+                            if (isset($customerAddressData->name)) {
+                                $data['orderDetails']->customer_name = @$customerAddressData->name;
+                            } else {
+                                if (isset($customerData->customer_last_name))
+                                    $data['orderDetails']->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
+                                else
+                                    $data['orderDetails']->customer_name = @$customerData->customer_first_name;
+                            }
 
-                            $data['orderDetails']->customer_latitude = @$customerData->latitude;
-                            $data['orderDetails']->customer_longitude = @$customerData->longitude;
+                            if (isset($customerAddressData->phone)) {
+                                $data['orderDetails']->customer_mobile = @$customerAddressData->phone;
+                            } else {
+                                $data['orderDetails']->custome_mobile = @$customerData->customer_mobile_number;
+                            }
+
+
+                            if ($data['orderDetails']->order_type == 'POS') {
+                                $customerAddressData = Trn_customerAddress::where('customer_id', $data['orderDetails']->customer_id)->where('default_status', 1)->first();
+                            } else {
+                                $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
+                            }
+
+
+
+                            if (isset($customerAddressData->phone))
+                                $data['orderDetails']->customer_mobile = @$customerAddressData->phone;
+
+                            if (isset($customerAddressData->place))
+                                $data['orderDetails']->place = @$customerAddressData->place;
+                            else
+                                $data['orderDetails']->place =    '';
+
+                            if (isset($customerAddressData->districtFunction->district_name))
+                                $data['orderDetails']->district_name =   @$customerAddressData->districtFunction->district_name;
+                            else
+                                $data['orderDetails']->district_name =    '';
+
+                            if (isset($customerAddressData->stateFunction->state_name))
+                                $data['orderDetails']->state_name =     @$customerAddressData->stateFunction->state_name;
+                            else
+                                $data['orderDetails']->state_name =    '';
+
+                            if (isset($customerAddressData->stateFunction->country->country_name))
+                                $data['orderDetails']->country_name =     @$customerAddressData->stateFunction->country->country_name;
+                            else
+                                $data['orderDetails']->country_name =    '';
+
+
+
+
+                            if (isset($customerAddressData->address))
+                                $data['orderDetails']->customer_address = @$customerAddressData->address;
+                            else
+                                $data['orderDetails']->customer_address = ' ';
+
+                            if (isset($customerAddressData->longitude))
+                                $data['orderDetails']->c_longitude = @$customerAddressData->longitude;
+                            else
+                                $data['orderDetails']->c_longitude = ' ';
+
+                            if (isset($customerAddressData->latitude))
+                                $data['orderDetails']->c_latitude = @$customerAddressData->latitude;
+                            else
+                                $data['orderDetails']->c_latitude = ' ';
+
+                            if (isset($customerAddressData->place))
+                                $data['orderDetails']->c_place = @$customerAddressData->place;
+                            else
+                                $data['orderDetails']->c_place = ' ';
+
+                            if (isset($customerAddressData->pincode))
+                                $data['orderDetails']->customer_pincode = @$customerAddressData->pincode;
+                            else
+                                $data['orderDetails']->customer_pincode = ' ';
+
+                            if (isset($customerAddressData->place))
+                                $data['orderDetails']->customer_place = @$customerAddressData->place;
+                            else
+                                $data['orderDetails']->customer_place = ' ';
+
+
+
+
+                            $data['orderDetails']->customer_latitude = @$customerAddressData->latitude;
+                            $data['orderDetails']->customer_longitude = @$customerAddressData->longitude;
 
 
                             $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
                             $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
                             $data['orderDetails']->delivery_boy_mobile = @$deliveryBoy->delivery_boy_mobile;
 
-                            $data['orderDetails']->customer_latitude = @$customerData->latitude;
-                            $data['orderDetails']->customer_longitude = @$customerData->longitude;
+                            $data['orderDetails']->customer_latitude = @$customerAddressData->latitude;
+                            $data['orderDetails']->customer_longitude = @$customerAddressData->longitude;
                         } else {
                             $data['orderDetails']->customer_name = null;
                             $data['orderDetails']->delivery_boy = null;

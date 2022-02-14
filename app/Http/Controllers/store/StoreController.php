@@ -2108,6 +2108,17 @@ class StoreController extends Controller
           $body = 'Your order with order id ' . $order_number . ' is cancelled..';
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
         }
+      } elseif ($status_id == 4) {
+        $order_status = "Confirmed";
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order Confirmed';
+          $body = 'Your order with order id ' . $order_number . ' is Confirmed..';
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+        }
       } elseif ($status_id == 6) {
         $order_status = "Completed";
 
