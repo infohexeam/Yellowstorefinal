@@ -1263,6 +1263,7 @@ class StoreOrderController extends Controller
                         }
 
                         $store_id = $data['orderDetails']->store_id;
+                        $isServiceOrder = 0;
 
                         foreach ($data['orderDetails']->orderItems as $value) {
 
@@ -1291,7 +1292,9 @@ class StoreOrderController extends Controller
                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
 
                             $baseProductDetail = Mst_store_product::find($value->product_id);
-
+                            if (($baseProductDetail->product_type == 2) && ($baseProductDetail->service_type == 1)) {
+                                $isServiceOrder = 1;
+                            }
                             $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
 
                             if ($baseProductDetail->product_name != isset($value->productDetail->variant_name))
@@ -1325,6 +1328,10 @@ class StoreOrderController extends Controller
                             }
 
                             $value['taxSplitups']  = $splitdata;
+                        }
+
+                        if ($isServiceOrder == 1) {
+                            $data['orderDetails']->service_order = 1;
                         }
 
 

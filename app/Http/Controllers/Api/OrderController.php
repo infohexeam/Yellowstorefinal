@@ -375,13 +375,12 @@ class OrderController extends Controller
 
 
 
-
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
                             ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
                             ->get();
 
 
-
+                        $isServiceOrder = 0;
                         foreach ($data['orderDetails']->orderItems as $value) {
 
 
@@ -413,6 +412,10 @@ class OrderController extends Controller
                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
 
                             $baseProductDetail = Mst_store_product::find($value->product_id);
+
+                            if(($baseProductDetail->product_type == 2) && ($baseProductDetail->service_type == 1)){
+                                $isServiceOrder = 1;
+                            }
 
 
 
@@ -454,6 +457,10 @@ class OrderController extends Controller
                             }
 
                             $value['taxSplitups']  = @$splitdata;
+                        }
+
+                        if($isServiceOrder == 1){
+                            $data['orderDetails']->service_order = 1;
                         }
 
                         //  $tTax = $taxFullData->tax_value * $value->quantity;
