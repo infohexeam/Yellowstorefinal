@@ -1765,7 +1765,7 @@ class StoreController extends Controller
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                $data['pageCount'] = @$roWc / 10;
+                $data['pageCount'] = floor(@$roWc / 10);
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
