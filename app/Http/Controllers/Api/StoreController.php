@@ -22,7 +22,6 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
-use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use File;
@@ -1763,11 +1762,6 @@ class StoreController extends Controller
                 $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
-                // foreach ($dataReViStoreSS as $dva) {
-                //     $sDetail = Mst_StockDetail::where('product_varient_id', $dva->product_varient_id)->orderBy('stock_detail_id', 'DESC')->first();
-                //     $dva->created_at = $sDetail->created_at;
-                //     $dva->updated_time = $sDetail->created_at;
-                // }
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
