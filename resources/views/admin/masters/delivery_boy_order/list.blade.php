@@ -2,6 +2,10 @@
 @section('content')
 @php
 $date = Carbon\Carbon::now();
+use App\Models\admin\Trn_store_order;
+use App\Models\admin\Mst_delivery_boy;
+use App\User;
+
 @endphp
 <div class="container">
    <div class="row justify-content-center">
@@ -124,7 +128,7 @@ $date = Carbon\Carbon::now();
                         <th class="wd-20p">{{__('Subadmin')}}</th>
 
                          <th class="wd-20p">{{__('Status')}}</th>
-                        <th class="wd-15p">{{__('Action')}}</th>
+                        {{-- <th class="wd-15p">{{__('Action')}}</th> --}}
                      </tr>
                   </thead>
                   <tbody>
@@ -133,23 +137,28 @@ $date = Carbon\Carbon::now();
                      @endphp
                      @foreach ($delivery_boy_orders as $delivery_boy_order)
                      <tr>
+                        @php
+                           $orderDAta = Trn_store_order::find($delivery_boy_order->order_id);
+                           $dBoyDAta = Mst_delivery_boy::find($delivery_boy_order->delivery_boy_id);
+                           $dBoyDAta = User::find($delivery_boy_order->subadmin_id);
+                        @endphp
                         <td>{{ ++$i }}</td>
-                        <td>{{ @$delivery_boy_order->order['order_number']}}</td>
+                        <td>{{ @$orderDAta->order_number}}</td>
                         <td>{{ \Carbon\Carbon::parse($delivery_boy_order->created_at)->format('M d, Y')}}</td>
-                        <td>{{ @$delivery_boy_order->deliveryboy['delivery_boy_name'] }}</td>
-                        <td>{{ @$delivery_boy_order->deliveryboy['delivery_boy_mobile'] }}</td>
+                        <td>{{ @$dBoyDAta->delivery_boy_name }}</td>
+                        <td>{{ @$dBoyDAta->delivery_boy_mobile }}</td>
                         <td>{{@$delivery_boy_order->store['store_name']}}</td>
-                        <td>{{@$delivery_boy_order->store->subadmin['name']}}</td>
+                        <td>{{@$dBoyDAta->name}}</td>
 
 
 
                        <td>
                         --
                        </td>
-                        <td>
+                        {{-- <td>
                         <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$delivery_boy_order->delivery_boy_order_id}}" > View</button>
 
-                        </td>
+                        </td> --}}
                      </tr>
                      @endforeach
                   </tbody>
