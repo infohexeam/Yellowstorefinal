@@ -1716,10 +1716,14 @@ class StoreController extends Controller
                 //  $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
                 $inventoryDataq =   $inventoryDatasss->values()->all();
 
-                foreach ($inventoryDataq as $r) {
-                    $r->created_at =  $r->updated_time;
-                }
+                // foreach ($inventoryDataq as $r) {
+                //     $r->created_at =  $r->updated_time;
+                // }
                 $data['inventoryDataCount'] = count($inventoryDataq);
+
+                for ($i = 0; $i < $data['inventoryDataCount']; $i++) {
+                    $inventoryDataq[$i]->created_at = $inventoryDataq[$i]->updated_time;
+                }
 
 
                 // foreach ($dataReViStoreSS as $r) {
