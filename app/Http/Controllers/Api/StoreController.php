@@ -1763,11 +1763,11 @@ class StoreController extends Controller
                 $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
-                foreach ($dataReViStoreSS as $r) {
-                    $sD = Mst_StockDetail::where('product_varient_id', $r->product_varient_id)->latest('created_at')->first();
-                    $r->updated_time = $sD->created_at;
-                    $r->created_at =  $sD->created_at;
-                }
+                // foreach ($dataReViStoreSS as $r) {
+                //     $sD = Mst_StockDetail::where('product_varient_id', $r->product_varient_id)->latest('created_at')->first();
+                //     $r->updated_time = $sD->created_at;
+                //     $r->created_at =  $sD->created_at;
+                // }
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
