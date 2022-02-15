@@ -2,6 +2,7 @@
 @section('content')
 @php
 use App\Models\admin\Trn_StoreDeliveryTimeSlot;
+use App\Models\admin\Mst_store_product;
    
 @endphp
 <div class="container">
@@ -118,8 +119,19 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                            </div>{{-- card body end --}}
                      </div><!-- COL END -->
                   </div>
-                  @if($order->service_booking_order != 1)
-                  
+                  @php
+                            $itemsArr = \DB::table('trn_order_items')->where('order_id',$order->order_id)->get();
+                              $isServiceOrder = 0;
+                              foreach($itemsArr as $item){
+                                 $itemsArrPro =  Mst_store_product::find(@$item->product_id);
+                                 if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 2)) {
+                                    $isServiceOrder = 1;
+                                 //   echo $isServiceOrder."<br>";
+                                 }
+                              }
+                  @endphp
+                  @if(($order->service_booking_order == 0) && ($isServiceOrder == 0))
+
                   
                    <div class="col-md-2">
                    </div>
