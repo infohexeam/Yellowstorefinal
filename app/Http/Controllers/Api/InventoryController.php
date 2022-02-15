@@ -280,9 +280,9 @@ class InventoryController extends Controller
                         $productData2['product_status'] = 0;
                         Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
 
-                        $dataPro = Mst_store_product::where('product_id', $usData->product_id);
+                        // $dataPro = Mst_store_product::where('product_id', $usData->product_id);
                         $sd = new Mst_StockDetail;
-                        $sd->store_id = $dataPro->store_id;
+                        $sd->store_id = $request->store_id;
                         $sd->product_id = $usData->product_id;
                         $sd->stock = ($usData->stock_count * -1);
                         $sd->product_varient_id = $request->product_varient_id;
