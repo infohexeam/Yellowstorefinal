@@ -1703,6 +1703,7 @@ class StoreController extends Controller
                 }
 
                 $data = $data->get();
+                dd($data);
 
                 $roWc = 0;
 
