@@ -1719,6 +1719,7 @@ class StoreController extends Controller
                 foreach ($inventoryDataq as $r) {
                     $r->created_at =  $r->updated_time;
                 }
+                $data['inventoryDataCount'] = count($inventoryDataq);
 
 
                 // foreach ($dataReViStoreSS as $r) {
