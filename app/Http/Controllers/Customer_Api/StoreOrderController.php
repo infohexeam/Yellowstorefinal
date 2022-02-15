@@ -1133,6 +1133,8 @@ class StoreOrderController extends Controller
 
                                 $data['orderDetails']->customer_address = @$deliveryArrdData->address;
                                 $data['orderDetails']->customer_pincode = @$deliveryArrdData->pincode;
+                                $data['orderDetails']->c_latitude = @$deliveryArrdData->latitude;
+                                $data['orderDetails']->c_longitude = @$deliveryArrdData->longitude;
                             }
 
 
