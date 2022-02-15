@@ -460,6 +460,8 @@ use App\Models\admin\Mst_store_product;
       </div>
       </div>
       </div>
+   </div>
+      </div>
    @endsection
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script type="text/javascript">
