@@ -1656,6 +1656,7 @@ class StoreController extends Controller
                     ->where('mst_store_products.product_type', 1)
                     // ->orderBy('mst_store_products.product_name','ASC')
                     ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+                    ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 
                     ->select(
                         'mst_store_products.product_id',
@@ -1714,6 +1715,11 @@ class StoreController extends Controller
                 $inventoryDatasss = collect($data);
                 //   $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
                 $inventoryDataq =   $inventoryDatasss->values()->all();
+
+                foreach ($inventoryDataq as $r) {
+                    $r->created_at =  $r->updated_time;
+                }
+
 
                 // foreach ($dataReViStoreSS as $r) {
                 //     $sD = Mst_StockDetail::where('product_varient_id', $r->product_varient_id)->latest('created_at')->first();
