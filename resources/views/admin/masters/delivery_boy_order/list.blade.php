@@ -140,7 +140,7 @@ use App\User;
                         @php
                            $orderDAta = Trn_store_order::find($delivery_boy_order->order_id);
                            $dBoyDAta = Mst_delivery_boy::find($delivery_boy_order->delivery_boy_id);
-                           $dBoyDAta = User::find($delivery_boy_order->subadmin_id);
+                           $subadmin = User::find($delivery_boy_order->subadmin_id);
                         @endphp
                         <td>{{ ++$i }}</td>
                         <td>{{ @$orderDAta->order_number}}</td>
@@ -148,7 +148,7 @@ use App\User;
                         <td>{{ @$dBoyDAta->delivery_boy_name }}</td>
                         <td>{{ @$dBoyDAta->delivery_boy_mobile }}</td>
                         <td>{{@$delivery_boy_order->store['store_name']}}</td>
-                        <td>{{@$dBoyDAta->name}}</td>
+                        <td>{{@$subadmin->name}}</td>
 
 
 
