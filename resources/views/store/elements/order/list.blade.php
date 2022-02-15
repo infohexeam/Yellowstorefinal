@@ -143,9 +143,9 @@ use App\Models\admin\Mst_store_product;
                               $isServiceOrder = 0;
                               foreach($itemsArr as $item){
                                  $itemsArrPro =  Mst_store_product::find(@$item->product_id);
-                                 if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 1)) {
+                                 if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 2)) {
                                     $isServiceOrder = 1;
-                                    echo $isServiceOrder."<br>";
+                                 //   echo $isServiceOrder."<br>";
                                  }
                               }
                            @endphp
@@ -164,7 +164,7 @@ use App\Models\admin\Mst_store_product;
 
                           <td>
                        <a class="btn btn-sm btn-blue"  href="{{url('store/order/view/'.Crypt::encryptString($order->order_id))}}">View</a>
-                       @if(($order->service_booking_order == 0) || ($isServiceOrder != 1))
+                       @if(($order->service_booking_order == 0) || ($isServiceOrder == 0))
  
                        {{-- <a class="btn btn-sm btn-info"  href="{{url('store/assign_order/delivery_boy/'.Crypt::encryptString($order->order_id))}}">Assign Order</a> --}}
                         @if($order->status_id == 6 || $order->status_id == 9 || $order->status_id == 4 || $order->status_id == 7 || $order->status_id == 8)
