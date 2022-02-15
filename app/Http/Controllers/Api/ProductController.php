@@ -100,7 +100,11 @@ class ProductController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
-                if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->select('mst_store_products.product_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id')->where('is_removed', 0)->get()) {
+                if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                    ->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')
+                    ->select('*')
+                    ->where('is_removed', 0)->get()
+                ) {
                     foreach ($data['productDetails'] as $product) {
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
 
