@@ -1656,7 +1656,6 @@ class StoreController extends Controller
                     ->where('mst_store_products.product_type', 1)
                     // ->orderBy('mst_store_products.product_name','ASC')
                     ->orderBy('mst_store_product_varients.stock_count', 'ASC')
-                    ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 
                     ->select(
                         'mst_store_products.product_id',
@@ -1705,20 +1704,39 @@ class StoreController extends Controller
                     $data = $data->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                 }
 
-                $data = $data->get();
+                $data = $data->skip((10 * $request->page) - 1)->take(10)->get();
 
-                foreach ($data as $r) {
-                    $r->created_at =  $r->updated_time;
-                }
 
                 $roWc = 0;
+                if ($roWc == 0) {
+                    $data =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                        ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                        ->join('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
+                        ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+                        ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+                        ->where('mst_store_products.store_id', $store_id)->where('mst__stock_details.stock', '>', 0)->where('mst_store_products.product_type', 1);
+                    if (isset($request->product_id)) {
+                        $data = $data->where('mst_store_products.product_id', $request->product_id);
+                    }
+                    if (isset($request->vendor_id)) {
+                        $data = $data->where('mst_store_agencies.agency_id', $request->vendor_id);
+                    }
+                    if (isset($request->category_id)) {
+                        $data = $data->where('mst_store_categories.category_id', $request->category_id);
+                    }
+                    if (isset($request->sub_category_id)) {
+                        $data = $data->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+                    }
+                    $data = $data->get();
+                    $dataCount = count($data);
+                }
 
 
 
 
                 $inventoryDatasss = collect($data);
-                //  $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
-                $inventoryDataq =   $inventoryDatasss->values()->all();
+                $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
+                $inventoryDataq =   $inventoryDatas->values()->all();
 
 
                 $data['inventoryDataCount'] = count($inventoryDataq);
@@ -1739,7 +1757,7 @@ class StoreController extends Controller
                 if ($roWc > 9) {
                     $data['pageCount'] = 1;
                 } else {
-                    $data['pageCount'] = 1;
+                    $data['pageCount'] = floor($dataCount / 10);
                 }
                 $data['status'] = 1;
                 $data['message'] = "Success";
