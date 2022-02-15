@@ -145,6 +145,7 @@ use App\Models\admin\Mst_store_product;
                                  $itemsArrPro =  Mst_store_product::find(@$item->product_id);
                                  if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 1)) {
                                     $isServiceOrder = 1;
+                                    echo $isServiceOrder."<br>";
                                  }
                               }
                            @endphp
