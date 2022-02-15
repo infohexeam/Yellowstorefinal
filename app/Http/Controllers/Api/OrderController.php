@@ -413,7 +413,7 @@ class OrderController extends Controller
 
                             $baseProductDetail = Mst_store_product::find($value->product_id);
 
-                            if(($baseProductDetail->product_type == 2) && ($baseProductDetail->service_type == 1)){
+                            if (($baseProductDetail->product_type == 2) && ($baseProductDetail->service_type == 2)) {
                                 $isServiceOrder = 1;
                             }
 
@@ -459,7 +459,7 @@ class OrderController extends Controller
                             $value['taxSplitups']  = @$splitdata;
                         }
 
-                        if($isServiceOrder == 1){
+                        if ($isServiceOrder == 1) {
                             $data['orderDetails']->service_order = 1;
                         }
 
