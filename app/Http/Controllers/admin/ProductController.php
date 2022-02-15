@@ -1535,6 +1535,7 @@ class ProductController extends Controller
       $subadmins = User::where('user_role_id', '!=', 0)->get();
 
       $deliveryBoys =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+        ->groupBy('mst_delivery_boys.delivery_boy_id')
         ->get();
 
       $orderStatus = Sys_store_order_status::all();
