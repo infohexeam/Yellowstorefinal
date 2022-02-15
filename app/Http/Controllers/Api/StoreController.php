@@ -1682,7 +1682,7 @@ class StoreController extends Controller
                         'mst__stock_details.prev_stock',
                         'mst__stock_details.created_at AS updated_time',
                         'mst_store_agencies.agency_name',
-                        'mst__stock_details.created_at',
+                        'mst__stock_details.created_at AS created_at',
 
                         'mst__sub_categories.sub_category_name',
 
