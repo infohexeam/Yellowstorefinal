@@ -1674,9 +1674,10 @@ class StoreController extends Controller
                         'mst_store_product_varients.product_varient_offer_price',
                         'mst_store_product_varients.product_varient_base_image',
                         'mst_store_product_varients.stock_count',
-                        'mst_store_product_varients.created_at',
+                        'mst__stock_details.created_at',
                         'mst_store_categories.category_id',
                         'mst_store_categories.category_name',
+                        'mst__stock_details.stock_detail_id',
                         'mst__stock_details.stock',
                         'mst__stock_details.prev_stock',
                         'mst__stock_details.created_at AS updated_time',
@@ -1711,8 +1712,8 @@ class StoreController extends Controller
 
 
                 $inventoryDatasss = collect($data);
-                //    $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
-                $inventoryDatas =   $inventoryDatasss->values()->all();
+                //   $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
+                $inventoryDataq =   $inventoryDatas->values()->all();
 
                 // foreach ($dataReViStoreSS as $r) {
                 //     $sD = Mst_StockDetail::where('product_varient_id', $r->product_varient_id)->latest('created_at')->first();
@@ -1721,7 +1722,7 @@ class StoreController extends Controller
                 // }
 
 
-                $data['inventoryData'] = $inventoryDatas;
+                $data['inventoryData'] = $inventoryDataq;
                 if ($roWc > 9) {
                     $data['pageCount'] = 1;
                 } else {
