@@ -2576,8 +2576,8 @@ class ProductController extends Controller
                 }
 
 
-                $dataRVS = $dataRVS->orderBy('trn__recently_visited_stores.rvs_id', 'DESC');
-                //->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
+                $dataRVS = $dataRVS->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+                    ->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"));
 
 
 

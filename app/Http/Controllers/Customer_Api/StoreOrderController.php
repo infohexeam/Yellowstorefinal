@@ -380,7 +380,7 @@ class StoreOrderController extends Controller
             if ($request->payment_type_id == 2) {
                 $client = new \GuzzleHttp\Client();
 
-                $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/10023', [
+                $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->orderId, [
                     'headers' => [
                         'Accept' => 'application/json',
                         'x-api-version' => '2021-05-21',
@@ -538,7 +538,7 @@ class StoreOrderController extends Controller
                             $opt_id = DB::getPdo()->lastInsertId();
 
                             $client = new \GuzzleHttp\Client();
-                            $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/10023', [
+                            $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->orderId, [
                                 'headers' => [
                                     'Accept' => 'application/json',
                                     'x-api-version' => '2021-05-21',
