@@ -1722,7 +1722,7 @@ class StoreController extends Controller
                 $inventoryData = $inventoryData->orderBy('mst__stock_details.stock_detail_id', 'DESC');
 
 
-                $inventoryDataa = $inventoryData->skip(($request->page - 1) * 10)->take(10)->get();
+                $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
 
                 $roWc = 0;
                 if ($roWc == 0) {
@@ -1765,8 +1765,8 @@ class StoreController extends Controller
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                if ($roWc > 9) {
-                    $data['pageCount'] = floor(@$roWc / 10);
+                if ($roWc > 19) {
+                    $data['pageCount'] = floor(@$roWc / 20);
                 } else {
                     $data['pageCount'] = 1;
                 }
