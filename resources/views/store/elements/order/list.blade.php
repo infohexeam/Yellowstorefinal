@@ -148,7 +148,7 @@ use App\Models\admin\Mst_store_product;
                                  }
                               }
                            @endphp
-                           @if(($order->service_booking_order == 0) || ($isServiceOrder ! 1))
+                           @if(($order->service_booking_order == 0) || ($isServiceOrder != 1))
                            <button type="button"  @if($order->status_id == 5) disabled @endif data-toggle="modal" data-target="#StockModal{{$order->order_id}}"  class="btn btn-sm
                                     @if($order->status_id == 1) btn-info @elseif($order->status_id == 5) btn-danger @else btn-success @endif">
                                    
@@ -163,7 +163,7 @@ use App\Models\admin\Mst_store_product;
 
                           <td>
                        <a class="btn btn-sm btn-blue"  href="{{url('store/order/view/'.Crypt::encryptString($order->order_id))}}">View</a>
-                       @if(($order->service_booking_order == 0) || ($isServiceOrder ! 1))
+                       @if(($order->service_booking_order == 0) || ($isServiceOrder != 1))
  
                        {{-- <a class="btn btn-sm btn-info"  href="{{url('store/assign_order/delivery_boy/'.Crypt::encryptString($order->order_id))}}">Assign Order</a> --}}
                         @if($order->status_id == 6 || $order->status_id == 9 || $order->status_id == 4 || $order->status_id == 7 || $order->status_id == 8)
