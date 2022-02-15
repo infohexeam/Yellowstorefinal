@@ -143,7 +143,7 @@ use App\Models\admin\Mst_store_product;
                               $isServiceOrder = 0;
                               foreach($itemsArr as $item){
                                  $itemsArrPro =  Mst_store_product::find(@$item->product_id);
-                                 if (($baseProductDetail->product_type == 2) && ($baseProductDetail->service_type == 1)) {
+                                 if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 1)) {
                                     $isServiceOrder = 1;
                                  }
                               }
