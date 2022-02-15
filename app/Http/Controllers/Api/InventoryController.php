@@ -218,6 +218,9 @@ class InventoryController extends Controller
                             $usData = DB::table('mst_store_product_varients')->where('product_varient_id', $request->product_varient_id)->first();
                             $usProData =  DB::table('mst_store_products')->where('product_id', $usData->product_id)->first();
 
+                            $productData2['product_status'] = 1;
+                            Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
+
                             $sd = new Mst_StockDetail;
                             $sd->store_id = $usProData->store_id;
                             $sd->product_id = $usData->product_id;
@@ -272,6 +275,11 @@ class InventoryController extends Controller
 
                     if (Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($productData)) {
                         //$data['productstock'] = $productData->stock_count;
+
+                        $usData = DB::table('mst_store_product_varients')->where('product_varient_id', $request->product_varient_id)->first();
+                        $productData2['product_status'] = 0;
+                        Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
+
                         $data['status'] = 1;
                         $data['message'] = "Stock reset successfully.";
                         return response($data);
