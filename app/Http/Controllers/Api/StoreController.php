@@ -1646,7 +1646,7 @@ class StoreController extends Controller
 
                 $data =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                     ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-                    ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
+                    ->join('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
                     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
                     ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
 
@@ -1675,7 +1675,6 @@ class StoreController extends Controller
                         'mst_store_product_varients.product_varient_offer_price',
                         'mst_store_product_varients.product_varient_base_image',
                         'mst_store_product_varients.stock_count',
-                        'mst__stock_details.created_at',
                         'mst_store_categories.category_id',
                         'mst_store_categories.category_name',
                         'mst__stock_details.stock_detail_id',
@@ -1683,6 +1682,8 @@ class StoreController extends Controller
                         'mst__stock_details.prev_stock',
                         'mst__stock_details.created_at AS updated_time',
                         'mst_store_agencies.agency_name',
+                        'mst__stock_details.created_at',
+
                         'mst__sub_categories.sub_category_name',
 
                     );
@@ -1721,9 +1722,9 @@ class StoreController extends Controller
                 // }
                 $data['inventoryDataCount'] = count($inventoryDataq);
 
-                for ($i = 0; $i < $data['inventoryDataCount']; $i++) {
-                    $inventoryDataq[$i]->created_at = $inventoryDataq[$i]->updated_time;
-                }
+                // for ($i = 0; $i < $data['inventoryDataCount']; $i++) {
+                //     $inventoryDataq[$i]->created_at = $inventoryDataq[$i]->updated_time;
+                // }
 
 
                 // foreach ($dataReViStoreSS as $r) {
