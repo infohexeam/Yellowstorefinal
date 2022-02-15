@@ -133,9 +133,9 @@ use App\Models\admin\Mst_store_product;
                                  }
                               }
                   @endphp
-                  @if(($order->service_booking_order == 0) && ($isServiceOrder == 0))
+                  @if($order->service_booking_order == 0) 
 
-                  
+                  @if($isServiceOrder == 0))
                    <div class="col-md-2">
                    </div>
                    
@@ -169,6 +169,7 @@ use App\Models\admin\Mst_store_product;
                    </div>
                    <div class="col-md-2">
                    </div>
+                   @endif
                </div>
 
                   <div  class="row">
