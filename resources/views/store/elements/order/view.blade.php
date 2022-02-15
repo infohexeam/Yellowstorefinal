@@ -121,12 +121,15 @@ use App\Models\admin\Mst_store_product;
                   </div>
                   @php
                             $itemsArr = \DB::table('trn_order_items')->where('order_id',$order->order_id)->get();
+                            $itemsArrC = \DB::table('trn_order_items')->where('order_id',$order->order_id)->count();
                               $isServiceOrder = 0;
-                              foreach($itemsArr as $item){
-                                 $itemsArrPro =  Mst_store_product::find(@$item->product_id);
-                                 if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 2)) {
-                                    $isServiceOrder = 1;
-                                 //   echo $isServiceOrder."<br>";
+                             if($itemsArrC > 0){
+                                 foreach($itemsArr as $item){
+                                    $itemsArrPro =  Mst_store_product::find(@$item->product_id);
+                                    if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 2)) {
+                                       $isServiceOrder = 1;
+                                    //   echo $isServiceOrder."<br>";
+                                    }
                                  }
                               }
                   @endphp
