@@ -94,7 +94,7 @@ $date = Carbon\Carbon::now();
                            <center>
                            <button type="submit" class="btn btn-raised btn-primary">
                            <i class="fa fa-check-square-o"></i> Filter</button>
-                           <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
+                           {{-- <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button> --}}
                           <a href="{{route('admin.list_delivery_boy_order')}}"  class="btn btn-info">Cancel</a>
                            </center>
                         </div>
@@ -144,18 +144,7 @@ $date = Carbon\Carbon::now();
 
 
                        <td>
-                          <button type="button"  class="btn btn-sm
-                                @if($delivery_boy_order->delivery_status_id == 1) btn-info @elseif($delivery_boy_order->delivery_status_id == 5) btn-danger @else btn-success @endif">
-                                @if($delivery_boy_order->delivery_status_id == 1)Pending
-                                @elseif($delivery_boy_order->delivery_status_id == 2)Payment Successful
-                                @elseif($delivery_boy_order->delivery_status_id == 3)Payment Cancelled
-                                @elseif($delivery_boy_order->delivery_status_id == 4)Confirmed
-                                @elseif($delivery_boy_order->delivery_status_id == 5)Cancelled
-                                @elseif($delivery_boy_order->delivery_status_id == 6)Completed
-                                @elseif($delivery_boy_order->delivery_status_id == 7)Shipped
-                                @elseif($delivery_boy_order->delivery_status_id == 8)Out for Delivery
-                                @else Delivered
-                          @endif</button>
+                        --
                        </td>
                         <td>
                         <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$delivery_boy_order->delivery_boy_order_id}}" > View</button>
@@ -213,19 +202,19 @@ $date = Carbon\Carbon::now();
                                  </tr>
                                  <tr>
                                     <td><h6>
-                                    @if($delivery_boy_order->delivery_status_id == 1 && $delivery_boy_order->payment_type['payment_type_id'] == 1)
+                                    @if(@$delivery_boy_order->delivery_status_id == 1 && @$delivery_boy_order->payment_type['payment_type_id'] == 1)
                                      Amount to be Collected
-                                    @elseif($delivery_boy_order->delivery_status_id == 9 && $delivery_boy_order->payment_type['payment_type_id'] == 1)
+                                    @elseif(@$delivery_boy_order->delivery_status_id == 9 && @$delivery_boy_order->payment_type['payment_type_id'] == 1)
                                      Amount Collected
-                                    @elseif($delivery_boy_order->payment_type['payment_type_id'] == 2)
+                                    @elseif(@$delivery_boy_order->payment_type['payment_type_id'] == 2)
                                      Amount Collected
                                     @else
                                      Return Amount
                                     @endif
                                      :
-@if($delivery_boy_order->payment_type['payment_type_id'] != 2)
+@if(@$delivery_boy_order->payment_type['payment_type_id'] != 2)
 
-                                     {{ $delivery_boy_order->order['product_total_amount'] }}
+                                     {{ @$delivery_boy_order->order['product_total_amount'] }}
 @else
                                      0
 @endif
@@ -278,23 +267,7 @@ $(function(e) {
 
 
 
-        $(document).ready(function() {
- $('#reset').click(function(){
-     $('#payment_type_id').remove();
-     $('#delivery_boy_id').remove();
-
-  $('#date_from').remove();
-    $('#date_to').remove();
-          $('#delivery_boy_idl').append('<select class="form-control"  name="delivery_boy_id"  id="delivery_boy_id" ><option value=""> Select Delivery Boy</option>@foreach ($delivery_boy as $key)<option value=" {{ $key->delivery_boy_id}} "> {{ $key->delivery_boy_name}}</option>@endforeach</select>');
-
-    $('#date_froml').append('<input type="date" class="form-control" name="date_from" id="date_from"  placeholder="From Date">');
-    $('#date_tol').append('<input type="date" class="form-control" name="date_to"   id="date_to" placeholder="To Date">');
-  $('#payment_type_idl').append(' <select class="form-control" name="payment_type_id" id="payment_type_id" ><option value=""> Select Payment Type</option>@foreach ($payment_types as $key)<option value=" {{ $key->payment_type_id}} "> {{ $key->payment_type}}</option>@endforeach');
-
-
-
-   });
-});
+     
 
            </script>
 

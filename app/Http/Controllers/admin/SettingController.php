@@ -3578,59 +3578,50 @@ class SettingController extends Controller
 	public function listDeliveryboyOrder(Request $request)
 	{
 
-		$pageTitle = "Delivery Boy Order";
-		$delivery_boy_orders = Trn_delivery_boy_order::all();
+		$pageTitle = "Delivery Boy Orders";
+		$delivery_boy_orders = Trn_store_order::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+			->join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+
+		if (isset($request->delivery_boy_id)) {
+			$delivery_boy_orders = $delivery_boy_orders->where('trn_store_orders.delivery_boy_id', $request->delivery_boy_id);
+		}
+
+		if (isset($request->payment_type_id)) {
+			$delivery_boy_orders = $delivery_boy_orders->where('trn_store_orders.payment_type_id', $request->payment_type_id);
+		}
+
+
+		$datefrom = $request->date_from;
+		$dateto = $request->date_to;
+
+		if (isset($request->date_from)) {
+			$datefrom = $request->date_from;
+
+			$a1 = Carbon::parse($request->date_from)->startOfDay();
+			$delivery_boy_orders = $delivery_boy_orders->whereDate('trn_store_orders.created_at', '>=', $a1);
+		}
+
+		if (isset($request->date_to)) {
+			$dateto = $request->date_to;
+			$a2  = Carbon::parse($request->date_to)->endOfDay();
+
+			$delivery_boy_orders = $delivery_boy_orders->whereDate('trn_store_orders.created_at', '<=', $a2);
+		}
+
+		$delivery_boy_orders = $delivery_boy_orders->orderBy('trn_store_orders.order_id', 'DESC')->get();
+
+
+
 		$order_item = Trn_store_order_item::all();
 		$store = Mst_Store::all();
 
 		$delivery_boy  = Mst_delivery_boy::all();
 		$payment_types = Sys_payment_type::all();
 
-		if ($_GET) {
-
-			$datefrom = $request->date_from;
-			$dateto = $request->date_to;
-
-			$payment_type_id = $request->payment_type_id;
-			$delivery_boy_id = $request->delivery_boy_id;
-			$a1 = Carbon::parse($request->date_from)->startOfDay();
-			$a2  = Carbon::parse($request->date_to)->endOfDay();
-			//dd($a);
-			$district_id = $request->store_district_id;
-
-			$query = Trn_delivery_boy_order::select('*');
-
-			if (isset($payment_type_id)) {
-				$query = $query->where('payment_type_id', 'like', '%' . $payment_type_id . '%');
-			}
-			if (isset($delivery_boy_id)) {
-				$query = $query->where('delivery_boy_id', $delivery_boy_id);
-			}
-			if (isset($request->date_from)) {
-				$query = $query->whereDate('created_at', '>=', [$a1->format('Y-m-d') . " 00:00:00"]);
-			}
-
-			if (isset($request->date_to)) {
-				$query = $query->whereDate('created_at', '<=', [$a2->format('Y-m-d') . " 00:00:00"]);
-			}
-
-			$delivery_boy_orders = $query->get();
 
 
 
-			//$delivery_boy_orders = Trn_delivery_boy_order::
-
-			//	whereBetween('created_at',[$a1->format('Y-m-d')." 00:00:00",$a2->format('Y-m-d')." 00:00:00"])
-
-			//->whereBetween('created_at',[$a,$a])
-			//	->get();
-
-			return view('admin.masters.delivery_boy_order.list', compact('dateto', 'datefrom', 'store', 'pageTitle', 'delivery_boy', 'order_item', 'delivery_boy_orders', 'payment_types'));
-		}
-
-
-
-		return view('admin.masters.delivery_boy_order.list', compact('store', 'pageTitle', 'delivery_boy', 'order_item', 'delivery_boy_orders', 'payment_types'));
+		return view('admin.masters.delivery_boy_order.list', compact('dateto', 'datefrom', 'store', 'pageTitle', 'delivery_boy', 'order_item', 'delivery_boy_orders', 'payment_types'));
 	}
 	public function AddtoCart(Request $request, Trn_store_order_item $order_item)
 
