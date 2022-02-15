@@ -1713,7 +1713,7 @@ class StoreController extends Controller
 
 
                 $inventoryDatasss = collect($data);
-                //   $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
+                //  $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
                 $inventoryDataq =   $inventoryDatasss->values()->all();
 
                 foreach ($inventoryDataq as $r) {
