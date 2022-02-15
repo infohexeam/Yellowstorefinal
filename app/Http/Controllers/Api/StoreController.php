@@ -1764,7 +1764,7 @@ class StoreController extends Controller
                 $dataReViStoreSS =   $inventoryDatas->values()->all();
 
                 foreach ($dataReViStoreSS as $dva) {
-                    $sDetail = Mst_StockDetail::where('product_id', $dva->product_id)->where('product_varient_id', $dva->product_varient_id)->orderBy('stock_detail_id', 'DESC')->first();
+                    $sDetail = Mst_StockDetail::where('product_id', $dva->product_id)->where('product_varient_id', $dva->product_varient_id)->orderBy('created_at', 'DESC')->first();
                     $dva->created_at = $sDetail->created_at;
                     $dva->updated_time = $sDetail->created_at;
                 }
