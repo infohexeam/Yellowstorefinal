@@ -22,7 +22,6 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
-use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use File;
@@ -1795,14 +1794,19 @@ class StoreController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
 
-                $inventoryData = Mst_StockDetail::join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'mst__stock_details.product_varient_id')
-                    ->join('mst_store_products', 'mst_store_products.product_id', '=', 'mst__stock_details.product_id')
+
+
+                $inventoryData =  Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                     ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                    ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
                     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
                     ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-                    ->where('mst__stock_details.store_id', $store_id)
+
+                    ->where('mst_store_products.store_id', $store_id)
                     ->where('mst_store_product_varients.stock_count', '<=', 0)
                     ->where('mst_store_products.product_type', 1)
+                    // ->orderBy('mst_store_products.product_name','ASC')
+                    ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 
                     ->select(
                         'mst_store_products.product_id',
@@ -1831,7 +1835,6 @@ class StoreController extends Controller
                         'mst__sub_categories.sub_category_name',
 
                     );
-
 
 
                 $datefrom = $request->date_from;
