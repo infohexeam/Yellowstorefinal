@@ -3947,8 +3947,11 @@ class StoreController extends Controller
   {
     // echo "working";die;
     $pageTitle = 'Delivery Boy Location';
+    $store_id  = Auth::guard('store')->user()->store_id;
+
     $lastLoc = Trn_DeliveryBoyLocation::where('delivery_boy_id', $delivery_boy_id)->orderBy('dbl_id')->first();
-    return view('store.elements.delivery_boys.location', compact('pageTitle', 'lastLoc'));
+    $storeLoc = Mst_store::find($store_id);
+    return view('store.elements.delivery_boys.location', compact('pageTitle', 'storeLoc', 'lastLoc'));
   }
 
   public function listDeliveryBoys(Request $request)

@@ -49,6 +49,9 @@
 
                 <div class="col-md-12">
                   <table  class="table table-striped table-bordered text-nowrap w-100">
+                    @php
+                      $ids = array();
+                    @endphp
                     @foreach (@$category->business_types as $row)
                       <tr>
                         <td>
@@ -62,6 +65,9 @@
                       </tr>
                       
                       <input type="hidden" name="business_type_ids[]" value="{{ $row->business_type_id }}">
+                      @php
+                        $ids[] = $row->business_type_id;
+                      @endphp
 
                     @endforeach
                 </table>
@@ -74,7 +80,9 @@
                         <select name="business_type_ids[]" required="" class="form-control" >
                         <option value=""> Select Business Type</option>
                            @foreach($business_types as $key)
+                           @if ( !in_array( $key->business_type_id ,$ids ))
                            <option  value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>
+                           @endif
                            @endforeach
                         </select>
                      </div>

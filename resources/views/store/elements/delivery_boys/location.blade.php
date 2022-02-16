@@ -9,14 +9,14 @@
 
       		width: 100%;
 
-      		height: 300px;
+      		height: 450px;
 
     	}
 
   	</style>	
   	
 <div class="container">
-   <div class="row">
+   <div class="row" style="min-height:72vh;">
       <div class="col-md-12">
          <div class="card">
             <div class="card-header">
@@ -35,7 +35,32 @@
                                          <option value="BICYCLING">Bicycling</option>
                                          <option value="TRANSIT">Transit</option>
                                        </select>
+                                       
+                                       @php
+                                       $orgLoc = $lastLoc->latitude.','.$lastLoc->longitude;
+                                       $destLoc = $storeLoc->latitude.','.$storeLoc->longitude;
+   $orgJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$orgLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
+   $destJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$destLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
+
+        $jsonOne = json_decode($orgJson);
+        $jsonTwo = json_decode($destJson);
+        
+
+                $doyLoc = $jsonOne->results[1]->formatted_address;
+                $storeLoc = $jsonTwo->results[1]->formatted_address;
+                
+              //  dd($doyLoc);
+
+
+                                       @endphp
+                                       
+                                       <input type="hidden" value="{{$doyLoc}}" id="start" >
+                                       <input type="hidden" value="{{$storeLoc}}" id="end" >
+                                       
+                                   
+          
                                      </div>
+                                     
                                      <div id="map"></div>
 {{-- <iframe src="https://maps.google.com/?q={{$lastLoc->latitude}},{{$lastLoc->longitude}}&output=embed" width="100%" height="350" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>	 --}}
                                 <!--<div id="map"></div>-->
@@ -45,6 +70,8 @@
                   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ&callback=initMap&libraries=&v=weekly&channel=2"
                   async
                 ></script>         
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
            <script>
               
            
@@ -65,11 +92,25 @@
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
   const selectedMode = document.getElementById("mode").value;
+    alert('hi');
+    
+    
+    let latO1 = 11.25380152502914;
+    let lngO1 = 75.80086787925326;
+    
+    let latD1 = 11.292650586051085;
+    let lngD1 =  75.77336701588105;
 
+    
+    
+    
   directionsService
     .route({
-      origin: { lat: 11.25380152502914, lng: 75.80086787925326 },
-      destination: { lat: 11.292650586051085, lng: 75.77336701588105 },
+          origin: document.getElementById("start").value,
+      destination: document.getElementById("end").value,
+      
+    //   origin: { lat: latO1, lng: latO1 },
+    //   destination: { lat: latD1, lng: lngD1  },
       // Note that Javascript allows us to access the constant
       // using square brackets and a string value as its
       // "property."
