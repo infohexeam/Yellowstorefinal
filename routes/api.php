@@ -27,6 +27,7 @@ Route::middleware('auth:customer')->get('/customer', function (Request $request)
 });
 
 Route::get('test', 'Customer_Api\BusinessTypeController@test');
+Route::post('test-pg', 'Customer_Api\StoreOrderController@pgTest');
 
 
 Route::get('video/list', 'Api\StoreController@VideoList');

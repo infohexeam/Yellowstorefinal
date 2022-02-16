@@ -369,7 +369,22 @@ class StoreOrderController extends Controller
             return response($response);
         }
     }
+    public function pgTest(Request $request)
+    {
+        $client = new \GuzzleHttp\Client();
 
+        $order_ID = intval($request->orderId);
+
+        $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->orderId, [
+            'headers' => [
+                'Accept' => 'application/json',
+                'x-api-version' => '2021-05-21',
+                'x-client-id' => '165253d13ce80549d879dba25b352561',
+                'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+            ],
+        ]);
+        return  $responseData = $response->getBody()->getContents();
+    }
 
     public function saveOrder(Request $request)
     {
