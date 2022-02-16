@@ -565,7 +565,7 @@ class StoreOrderController extends Controller
                             $opt_id = DB::getPdo()->lastInsertId();
 
                             $client = new \GuzzleHttp\Client();
-                            $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->orderId, [
+                            $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/47007658', [
                                 'headers' => [
                                     'Accept' => 'application/json',
                                     'x-api-version' => '2021-05-21',
