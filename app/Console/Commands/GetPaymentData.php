@@ -7,6 +7,7 @@ use App\Models\admin\Trn_OrderSplitPayments;
 use App\Models\admin\Trn_store_order;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use DB;
 
 class GetPaymentData extends Command
 {
