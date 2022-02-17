@@ -776,19 +776,19 @@ class CouponController extends Controller
       // }
 
       if (isset($request->product_id)) {
-        $data = $data->where('mst_store_products.product_id', $request->product_id);
+        $inventoryData = $inventoryData->where('mst_store_products.product_id', $request->product_id);
       }
 
       if (isset($request->vendor_id)) {
-        $data = $data->where('mst_store_agencies.agency_id', $request->vendor_id);
+        $inventoryData = $inventoryData->where('mst_store_agencies.agency_id', $request->vendor_id);
       }
 
       if (isset($request->category_id)) {
-        $data = $data->where('mst_store_categories.category_id', $request->category_id);
+        $inventoryData = $inventoryData->where('mst_store_categories.category_id', $request->category_id);
       }
 
       if (isset($request->sub_category_id)) {
-        $data = $data->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+        $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
       }
     }
 
