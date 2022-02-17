@@ -63,7 +63,6 @@ class GetPaymentData extends Command
 
             $responseFinal = json_decode($responseData, true);
 
-            Trn_store_order::where('order_id', $row->order_id)->update(['is_split_data_saved' => 2]);
 
 
 
@@ -127,9 +126,11 @@ class GetPaymentData extends Command
                             $osp->save();
                         }
                     }
+                    Trn_store_order::where('order_id', $row->order_id)->update(['is_split_data_saved' => 1]);
                 }
             }
         }
+
         return 1;
     }
 }
