@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_store_order_item;
 use App\Models\admin\Mst_store;
+use App\Models\admin\Trn_OrderPaymentTransaction;
+use App\Models\admin\Trn_OrderSplitPayments;
 use App\Models\admin\Trn_TermsAndCondition;
 use App\Models\admin\Trn_StoreAdmin;
 
@@ -33,49 +35,141 @@ class PublicController extends Controller
   public function pgtest()
   {
 
+    $orderDatas = Trn_store_order::where('payment_type_id', 2)
+      ->where('is_split_data_saved', 0)
+      ->where('trn_id', '!=', null)
+      ->whereDate('created_at', '<', Carbon::now()->subMinutes(5)->toDateTimeString())
+      ->get();
 
-    $client = new \GuzzleHttp\Client();
-    $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/16817139', [
-      'headers' => [
-        'Accept' => 'application/json',
-        'x-api-version' => '2021-05-21',
-        'x-client-id' => '165253d13ce80549d879dba25b352561',
-        'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-      ],
-    ]);
+    foreach ($orderDatas as $row) {
 
-    $responseData = $response->getBody()->getContents();
+      $client = new \GuzzleHttp\Client();
+      $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $row->trn_id, [
+        'headers' => [
+          'Accept' => 'application/json',
+          'x-api-version' => '2021-05-21',
+          'x-client-id' => '165253d13ce80549d879dba25b352561',
+          'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+        ],
+      ]);
 
-    return    $responseFinal = json_decode($responseData, true);
+      $responseData = $response->getBody()->getContents();
 
-
-
-
-    $data = array();
-    $query['order_id'] = "order_1626945143520";
-    $query['order_amount'] = "10.12";
-    $query['order_currency'] = "INR";
-    $query1['customer_id'] = "12345";
-    $query1['customer_email'] = "techsupport@cashfree.com";
-    $query1['customer_phone'] = "9816512345";
+      $responseFinal = json_decode($responseData, true);
 
 
-    $client = new \GuzzleHttp\Client();
-    $api = $client->get('https://api.cashfree.com/api/v2/easy-split/orders/95018443', [
-      'headers' => [
-        // 'Accept' => 'application/json',
-        // 'Content-type' => 'application/json',
-        // 'x-api-version' => '2021-05-21',
-        'x-client-id' => '165253d13ce80549d879dba25b352561',
-        'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-      ],
-      'json' => $query
-    ]);
 
-    dd($api);
-    $data = $api->getBody()->getContents();
 
-    $response = json_decode($data, true);
+
+
+      $opt = new Trn_OrderPaymentTransaction;
+      $opt->order_id = $row->order_id;
+      $opt->paymentMode = null;
+      $opt->PGOrderId = $row->trn_id;
+      $opt->txTime = $row->txTime;
+      $opt->referenceId = $row->referenceId;
+      $opt->txMsg = $row->txMsg;
+      $opt->orderAmount = $row->orderAmount;
+      $opt->txStatus = $row->txStatus;
+
+      if ($opt->save()) {
+
+        $opt_id = DB::getPdo()->lastInsertId();
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $row->trn_id, [
+          'headers' => [
+            'Accept' => 'application/json',
+            'x-api-version' => '2021-05-21',
+            'x-client-id' => '165253d13ce80549d879dba25b352561',
+            'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+          ],
+        ]);
+
+        $responseData = $response->getBody()->getContents();
+
+        $responseFinal = json_decode($responseData, true);
+
+        $osp = new Trn_OrderSplitPayments;
+        $osp->opt_id = $opt_id;
+        $osp->order_id = $row->order_id;
+        $osp->splitAmount = $responseFinal["settlementAmount"];
+        $osp->serviceCharge = $responseFinal["serviceCharge"];
+        $osp->serviceTax = $responseFinal["serviceTax"];
+        $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
+        $osp->splitServiceTax = $responseFinal["splitServiceTax"];
+        $osp->settlementAmount = $responseFinal["settlementAmount"];
+        $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
+
+        $osp->paymentRole = 1; // 1 == store's split
+        if ($osp->save()) {
+          if (count($responseFinal['vendors']) > 0) {
+            foreach ($responseFinal['vendors'] as $row) {
+              $osp = new Trn_OrderSplitPayments;
+              $osp->opt_id = $opt_id;
+              $osp->order_id = $row->order_id;
+              $osp->vendorId = $row["id"];
+              $osp->settlementId = $row["settlementId"];
+              $osp->splitAmount = $row["settlementAmount"];
+              $osp->serviceCharge = @$row["serviceCharge"];
+              $osp->serviceTax = @$row["serviceTax"];
+              $osp->splitServiceCharge = @$row["splitServiceCharge"];
+              $osp->splitServiceTax = @$row["splitServiceTax"];
+              $osp->settlementAmount = @$row["settlementAmount"];
+              $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
+              $osp->paymentRole = 0;
+              $osp->save();
+            }
+          }
+          Trn_store_order::where('order_id', $row->order_id)->update(['is_split_data_saved' => 1]);
+        }
+      }
+    }
+
+
+
+
+    // $client = new \GuzzleHttp\Client();
+    // $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/16817139', [
+    //   'headers' => [
+    //     'Accept' => 'application/json',
+    //     'x-api-version' => '2021-05-21',
+    //     'x-client-id' => '165253d13ce80549d879dba25b352561',
+    //     'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+    //   ],
+    // ]);
+
+    // $responseData = $response->getBody()->getContents();
+
+    // return    $responseFinal = json_decode($responseData, true);
+
+
+
+
+    // $data = array();
+    // $query['order_id'] = "order_1626945143520";
+    // $query['order_amount'] = "10.12";
+    // $query['order_currency'] = "INR";
+    // $query1['customer_id'] = "12345";
+    // $query1['customer_email'] = "techsupport@cashfree.com";
+    // $query1['customer_phone'] = "9816512345";
+
+
+    // $client = new \GuzzleHttp\Client();
+    // $api = $client->get('https://api.cashfree.com/api/v2/easy-split/orders/95018443', [
+    //   'headers' => [
+    //     // 'Accept' => 'application/json',
+    //     // 'Content-type' => 'application/json',
+    //     // 'x-api-version' => '2021-05-21',
+    //     'x-client-id' => '165253d13ce80549d879dba25b352561',
+    //     'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+    //   ],
+    //   'json' => $query
+    // ]);
+
+    // dd($api);
+    // $data = $api->getBody()->getContents();
+
+    // $response = json_decode($data, true);
   }
 
 
