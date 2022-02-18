@@ -2135,7 +2135,7 @@ class SettingController extends Controller
 
 			if ($customer_first_name != "") {
 
-				$query = $query->Where('customer_first_name', 'LIKE', "%{$customer_first_name}%");
+				$query = $query->where('customer_first_name', 'LIKE', "%{$customer_first_name}%");
 				$query = $query->orWhere('customer_last_name', 'LIKE', "%{$customer_first_name}%");
 			}
 
