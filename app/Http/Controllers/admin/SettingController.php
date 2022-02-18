@@ -2123,22 +2123,20 @@ class SettingController extends Controller
 			$a2  = Carbon::parse($request->date_to)->endOfDay();
 
 
-
 			// $customers = Trn_store_customer::where('customer_first_name','like', '%'.$customer_first_name.'%')
 			// 	->where('customer_email','like', '%'.$customer_email.'%')
 			// 	->where('customer_mobile_number','like', '%'.$customer_mobile_number.'%')
 			// 	->where('customer_profile_status','like', '%'.$customer_profile_status.'%')
 			// 	->whereBetween('created_at',[$a,$a])
-			// 	->get();
+			// 	->get(); 
 			\DB::enableQueryLog();
 			//   echo $customer_profile_status;die;
 			$query = Trn_store_customer::select("*");
 
 			if ($customer_first_name != "") {
 
-				$query = $query->where('customer_first_name', 'LIKE', "%{$customer_first_name}%");
+				$query = $query->Where('customer_first_name', 'LIKE', "%{$customer_first_name}%");
 				$query = $query->orWhere('customer_last_name', 'LIKE', "%{$customer_first_name}%");
-
 			}
 
 			if (isset($customer_email)) {
