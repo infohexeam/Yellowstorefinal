@@ -104,7 +104,7 @@
                                          <div class="col-md-6">
                                             <div class="form-group">
                                               <label class="form-label">Category </label>
-                                               <select  name="category_id" id="categoryId" class="form-control select2-show-search" data-placeholder="Category"  >
+                                               <select  name="category_id" id="category" class="form-control select2-show-search" data-placeholder="Category"  >
                                                 <option value="">Category</option>
                                                     @foreach($categories as $key)
                                                     <option {{request()->input('category_id') == $key->category_id ? 'selected':''}} value="{{$key->category_id }}"> {{$key->category_name }} </option>
@@ -116,7 +116,7 @@
                                          <div class="col-md-6">
                                             <div class="form-group">
                                               <label class="form-label">Sub Category </label>
-                                               <select  name="sub_category_id" id="subCategoryId" class="form-control select2-show-search" data-placeholder="Sub Category"  >
+                                               <select  name="sub_category_id" id="sub_category_id" class="form-control select2-show-search" data-placeholder="Sub Category"  >
                                                 <option value="">Sub Category</option>
                                                     @foreach($subCategories as $key)
                                                     <option {{request()->input('sub_category_id') == $key->sub_category_id ? 'selected':''}} value="{{$key->sub_category_id }}"> {{$key->sub_category_name }} </option>
@@ -211,7 +211,52 @@
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <script>
+
+
+$(document).ready(function() {
+    var pcc = 0;
+      //  alert("dd");
+       $('#category').change(function(){
+         if(pcc != 0)
+         { 
+        var category_id = $(this).val();
+       //alert(business_type_id);
+        var _token= $('input[name="_token"]').val();
+        //alert(_token);
+        $.ajax({
+          type:"GET",
+          url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+category_id,
+
+
+          success:function(res){
+           // alert(data);
+            if(res){
+            $('#sub_category_id').prop("diabled",false);
+            $('#sub_category_id').empty();
+            $('#sub_category_id').append('<option value="">Product Sub Category</option>');
+            $.each(res,function(sub_category_id,sub_category_name)
+            {
+              $('#sub_category_id').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
+            });
+
+            }else
+            {
+              $('#sub_category_id').empty();
+
+            }
+            }
+
+        });
+         }else{
+           pcc++;
+         }
+      });
+
+    });
+
     $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
