@@ -315,6 +315,42 @@
                         <div class="media-heading">
                            <h5><strong>Product Images</strong></h5>
                         </div><br>
+
+                         <form action="{{route('store.update_product_images',$product->product_id)}}" method="POST" enctype="multipart/form-data">
+                                 @csrf
+                           <div class="row">
+
+                                 <div class="col-md-12">
+                                       <div class="form-group">
+                                          <label class="form-label">Product Name</label>
+                                             <select name="product_varient_id"   class=" form-control  " >
+                                                <option value="">Base Product</option>
+                                                @foreach($product_varients as $key)
+                                                <option value="{{$key->product_varient_id}}"> {{$key->variant_name}} </option>
+                                                      @endforeach
+                                             </select>
+                                           </div>
+                                    </div>
+
+                              <div class="col-md-12">
+                                    <div class="form-group">
+                                       <label class="form-label">Images(1000*800 or more) *</label>
+                                       <input type="file" multiple class="form-control proVariant" name="var_image[]" >
+                                    </div>
+                              </div>
+
+                              <div class="col-md-12">
+                                 <div class="form-group">
+                                    <center>
+                                          <button  type="submit" id="submit" class="btn btn-raised btn-info">Update</button>
+                                    </center>
+                                 </div>
+                              </div>
+
+                                 
+                           </div>
+                         </form>
+
                         <div class="table-responsive ">
                            <table  id="example1" class="table table-striped table-bordered">
                               <thead>

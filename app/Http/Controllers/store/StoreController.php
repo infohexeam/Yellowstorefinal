@@ -1132,6 +1132,44 @@ class StoreController extends Controller
     return redirect()->back()->with('status', 'Product Image Deleted Successfully.');
   }
 
+  public function updateProductImages(Request $request, $product_id)
+  {
+    try {
+
+      if (isset($request->product_varient_id)) {
+        $product_var_id = $request->product_varient_id;
+      } else {
+        $product_var_id = 0;
+      }
+
+      if ($request->hasFile('var_image')) {
+        $allowedfileExtension = ['jpg', 'png', 'jpeg',];
+        $files = $request->file('var_image');
+        foreach ($files as $file) {
+          $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+          $extension = $file->getClientOriginalExtension();
+          $file->move('assets/uploads/products/base_product/base_image', $filename);
+          $date = Carbon::now();
+          $data1 = [
+            [
+              'product_image'      => $filename,
+              'product_id' => $product_id,
+              'product_varient_id' => $product_var_id,
+              'image_flag'         => 1,
+              'created_at'         => $date,
+              'updated_at'         => $date,
+            ],
+          ];
+          Mst_product_image::insert($data1);
+        }
+      }
+    return redirect()->back()->with('status', 'Image upadted successfully.');
+
+    } catch (\Exception $e) {
+
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+  }
 
 
 

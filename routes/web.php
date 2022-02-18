@@ -738,6 +738,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         Route::post('store/product/update/{product_id}', 'StoreController@updateProduct')->name('store.update_product');
+        Route::post('store/product/update/images/{product_id}', 'StoreController@updateProductImages')->name('store.update_product_images');
 
         Route::get('store/product/view/{id}', 'StoreController@viewProduct')->name('store.view_product');
 
