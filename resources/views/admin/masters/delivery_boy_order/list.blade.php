@@ -156,8 +156,10 @@ use App\User;
                        <td>
                         --
                        </td>
-                       <a class="btn btn-sm btn-blue"
-                       href="{{url('admin/order/view/'.Crypt::encryptString($delivery_boy_order->order_id))}}">View</a>
+                       <td>
+                        <a class="btn btn-sm btn-blue"href="{{url('admin/order/view/'.Crypt::encryptString($delivery_boy_order->order_id))}}">View</a>
+
+                       </td>
 
                         {{-- <td>
                         <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$delivery_boy_order->delivery_boy_order_id}}" > View</button>
