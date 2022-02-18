@@ -113,7 +113,7 @@ use App\User;
                            Create delivery_boy_order
                         </a> --}}
                         </br>
-            @if($_GET)
+            {{-- @if($_GET) --}}
 
                         <div class="table-responsive">
                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
@@ -164,7 +164,7 @@ use App\User;
                   </tbody>
                 </table>
                         </div>
-       @endif
+       {{-- @endif --}}
                      </div>
                   </div>
                </div>
