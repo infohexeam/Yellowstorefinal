@@ -129,7 +129,7 @@ use App\User;
                         <th class="wd-20p">{{__('Subadmin')}}</th>
 
                          <th class="wd-20p">{{__('Status')}}</th>
-                        {{-- <th class="wd-15p">{{__('Action')}}</th> --}}
+                        <th class="wd-15p">{{__('Action')}}</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -262,7 +262,7 @@ $(function(e) {
                 title: 'Delivery Boy Orders',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7]
+                     columns: [0,1,2,3,4,5,6]
                  }
             },
             {
@@ -270,7 +270,7 @@ $(function(e) {
                 title: 'Delivery Boy Orders',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7]
+                     columns: [0,1,2,3,4,5,6]
                  }
             }
          ]
