@@ -228,7 +228,7 @@ $(document).ready(function() {
         //alert(_token);
         $.ajax({
           type:"GET",
-          url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+category_id,
+          url:"{{ url('admin/product/ajax/get_subcategory') }}?category_id="+category_id,
 
 
           success:function(res){
