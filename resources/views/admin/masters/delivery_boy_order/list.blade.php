@@ -120,8 +120,9 @@ use App\User;
                               <thead>
                      <tr>
                         <th class="wd-15p">SL.No</th>
+                        <th class="wd-15p">{{ __('Order Date') }}</th>
+
                          <th class="wd-15p">{{ __('Order Number') }}</th>
-                         <th class="wd-15p">{{ __('Order Date') }}</th>
                         <th class="wd-15p">{{ __('Delivery Boy') }}</th>
                         <th class="wd-15p">{{ __('Delivery Mobile') }}</th>
                         <th class="wd-20p">{{__('Store')}}</th>
@@ -143,8 +144,8 @@ use App\User;
                            $subadmin = User::find($delivery_boy_order->subadmin_id);
                         @endphp
                         <td>{{ ++$i }}</td>
-                        <td>{{ @$orderDAta->order_number}}</td>
                         <td>{{ \Carbon\Carbon::parse($delivery_boy_order->created_at)->format('M d, Y')}}</td>
+                        <td>{{ @$orderDAta->order_number}}</td>
                         <td>{{ @$dBoyDAta->delivery_boy_name }}</td>
                         <td>{{ @$dBoyDAta->delivery_boy_mobile }}</td>
                         <td>{{@$delivery_boy_order->store['store_name']}}</td>
@@ -155,6 +156,9 @@ use App\User;
                        <td>
                         --
                        </td>
+                       <a class="btn btn-sm btn-blue"
+                       href="{{url('admin/order/view/'.Crypt::encryptString($order->order_id))}}">View</a>
+
                         {{-- <td>
                         <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$delivery_boy_order->delivery_boy_order_id}}" > View</button>
 
