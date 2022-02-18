@@ -352,7 +352,7 @@
                          </form>
 
                         <div class="table-responsive ">
-                           <table  id="example1" class="table table-striped table-bordered">
+                           <table   class="table table-striped table-bordered">
                               <thead>
                                  <tr>
                                    <th class="wd-15p">SL.No</th>
