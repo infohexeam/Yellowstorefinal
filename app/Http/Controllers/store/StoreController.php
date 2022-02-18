@@ -1155,7 +1155,7 @@ class StoreController extends Controller
               'product_image'      => $filename,
               'product_id' => $product_id,
               'product_varient_id' => $product_var_id,
-              'image_flag'         => 1,
+              'image_flag'         => 0,
               'created_at'         => $date,
               'updated_at'         => $date,
             ],
@@ -1163,8 +1163,7 @@ class StoreController extends Controller
           Mst_product_image::insert($data1);
         }
       }
-    return redirect()->back()->with('status', 'Image upadted successfully.');
-
+      return redirect()->back()->with('status', 'Image upadted successfully.');
     } catch (\Exception $e) {
 
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
