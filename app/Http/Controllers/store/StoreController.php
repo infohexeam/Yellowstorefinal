@@ -1085,7 +1085,7 @@ class StoreController extends Controller
     // $product_varient_id = $varient_product->product_varient_id;
     $business_types = Mst_business_types::all();
     $attr_groups = Mst_attribute_group::all();
-    $product_images = Mst_product_image::where('product_id', '=', $product_id)->get();
+    $product_images = Mst_product_image::where('product_id', '=', $product_id)->orderBy('product_varient_id')->get();
     $tax = Mst_Tax::all();
     $category = Mst_categories::where('category_status', 1)->get();
 
