@@ -20,8 +20,7 @@ use App\Models\admin\Trn_ProductVariantAttribute;
 use App\Models\admin\Mst_store_product_varient;
 
 use App\Models\admin\Trn_store_customer;
-
-
+use App\Models\admin\Trn_store_setting;
 
 class Helper
 {
@@ -72,6 +71,33 @@ class Helper
         } else {
             return 1;
         }
+    }
+
+
+    public static function isServiceAreaSet($store_id)
+    {
+        $store =  Mst_store::find($store_id);
+
+        if (!isset($store->service_area) || ($store->service_area <= 0)) {
+            return 0;
+        } else {
+            $serviceData =  Trn_store_setting::where('store_id', $store_id)->count();
+            if ($serviceData <= 0) {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    public static function isWorkingDaysSet($store_id)
+    {
+        $storeData = Trn_StoreTimeSlot::where('store_id', $store_id)->where('time_start', null)->where('time_end', null)->count();
+
+        if ($storeData  == 7) {
+            return 0;
+        }
+
+        return 1;
     }
 
     public static function findSubAdminName($store_id)
