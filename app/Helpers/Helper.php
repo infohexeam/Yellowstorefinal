@@ -79,11 +79,8 @@ class Helper
             !isset($store->town) ||
             !isset($store->place) ||
             !isset($store->store_pincode) ||
-            !isset($store->store_website_link) ||
-            !isset($store->store_primary_address) ||
-            !isset($store->store_website_link) ||
-            !isset($store->store_website_link)
-
+            !isset($store->store_primary_address)
+            
         ) {
             return 0;
         } else {

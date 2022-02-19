@@ -195,6 +195,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('store-info/list', 'Api\StoreSettingsController@listStoreInfo');
     Route::post('store-info/update', 'Api\StoreSettingsController@updateStoreInfo');
     Route::post('password/update', 'Api\StoreSettingsController@updatePassword');
+    Route::post('add-bank-details', 'Api\StoreSettingsController@updateBankDetails');
 
     //DELIVERY BOYS
     Route::get('delivery-boys/list-by-status', 'Api\OrderController@listDeliveryBoysByStatus');

@@ -279,6 +279,22 @@ class StoreSettingsController extends Controller
         }
     }
 
+    public function updateBankDetails(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
     public function updateWorkingDays(Request $request)
     {
         $data = array();
