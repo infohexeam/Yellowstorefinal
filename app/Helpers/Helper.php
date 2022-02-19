@@ -49,6 +49,22 @@ class Helper
         return $cusData->customer_mobile_number;
     }
 
+    public static function onBoardingStatus($store_id)
+    {
+        $isProfileFilled = Helper::isProfileFilled($store_id);
+        $isServiceAreaSet = Helper::isServiceAreaSet($store_id);
+        $isWorkingDaysSet = Helper::isWorkingDaysSet($store_id);
+        $s = 1;
+        if ($isProfileFilled == 1) {
+            $s = 2;
+        } elseif ($isServiceAreaSet == 1) {
+            $s = 3;
+        } elseif ($isWorkingDaysSet == 1) {
+            $s = 4;
+        }
+        return $s;
+    }
+
     public static function isProfileFilled($store_id)
     {
         $store =  Mst_store::find($store_id);
