@@ -57,10 +57,12 @@ class Helper
         $s = 1;
         if ($isProfileFilled == 1) {
             $s = 2;
-        } elseif ($isServiceAreaSet == 1) {
-            $s = 3;
-        } elseif ($isWorkingDaysSet == 1) {
-            $s = 4;
+            if ($isServiceAreaSet == 1) {
+                $s = 3;
+                if ($isWorkingDaysSet == 1) {
+                    $s = 4;
+                }
+            }
         }
         return $s;
     }
