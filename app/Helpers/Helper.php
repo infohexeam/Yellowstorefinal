@@ -50,6 +50,30 @@ class Helper
         return $cusData->customer_mobile_number;
     }
 
+    public static function isProfileFilled($store_id)
+    {
+        $store =  Mst_store::find($store_id);
+        if (
+            !isset($store->store_contact_person_name) ||
+            !isset($store->store_contact_person_phone_number) ||
+            !isset($store->store_country_id) ||
+            !isset($store->store_state_id) ||
+            !isset($store->store_district_id) ||
+            !isset($store->town) ||
+            !isset($store->place) ||
+            !isset($store->store_pincode) ||
+            !isset($store->store_website_link) ||
+            !isset($store->store_primary_address) ||
+            !isset($store->store_website_link) ||
+            !isset($store->store_website_link)
+
+        ) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     public static function findSubAdminName($store_id)
     {
         $userId =  Mst_store::find($store_id)->subadmin_id;

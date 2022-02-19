@@ -697,6 +697,8 @@ class StoreController extends Controller
                                     $data['login_status '] = 0;
                                 }
 
+                                $data['isProfileFilled'] = Helper::isProfileFilled($custCheck->store_id);
+
                                 Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
                                     //   ->where('store_admin_id', $custCheck->store_admin_id)
                                     ->delete();
