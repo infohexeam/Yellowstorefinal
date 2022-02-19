@@ -1083,6 +1083,9 @@ class StoreController extends Controller
                         ->where('id', $token->id)
                         ->first();
 
+                    $data['onBoardingStatus'] = Helper::onBoardingStatus($request->store_id);
+
+
                     if ($divTok->revoked == 1) {
                         $data['login_status'] = 0;
                         $data['message'] = "Token expired";
