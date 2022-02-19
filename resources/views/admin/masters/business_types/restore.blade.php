@@ -4,7 +4,7 @@
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
          <div class="card">
-            <div class="row">
+            <div class="row" style="min-height:70vh;">
                <div class="col-12" >
 
                   @if ($message = Session::get('status'))
@@ -113,25 +113,25 @@
 
 $(function(e) {
 	 $('#exampletable').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'pdf',
-                title: 'Business Types',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1,3]
-                 }
-            },
-            {
-                extend: 'excel',
-                title: 'Business Types',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1,3]
-                 }
-            }
-         ]
+        dom: 'Bfrtip'
+      //   buttons: [
+      //       {
+      //           extend: 'pdf',
+      //           title: 'Restored Business Types',
+      //           footer: true,
+      //           exportOptions: {
+      //                columns: [0,1]
+      //            }
+      //       },
+      //       {
+      //           extend: 'excel',
+      //           title: 'Restored Business Types',
+      //           footer: true,
+      //           exportOptions: {
+      //                columns: [0,1]
+      //            }
+      //       }
+      //    ]
     } );
 
 } );

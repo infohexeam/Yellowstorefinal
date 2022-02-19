@@ -1,5 +1,9 @@
 @extends('admin.layouts.app')
 @section('content')
+@php
+use App\Models\admin\Trn_CategoryBusinessType;
+   
+@endphp
 <link href="{{URL::to('/assets/plugins/datatable/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
 
 <div class="container">
@@ -53,7 +57,7 @@
                            <center>
                            <button type="submit" class="btn btn-raised btn-primary" style="border: none;">
                            <i class="fa fa-check-square-o"></i> Filter</button>
-                           <button type="reset" class="btn btn-raised btn-success">Reset</button>
+                           {{-- <button type="reset" class="btn btn-raised btn-success">Reset</button> --}}
                           <a href="{{route('admin.list_category')}}"  class="btn btn-info">Cancel</a>
                            </center>
                         </div>
@@ -104,9 +108,17 @@
                                     @endif
                                  </td>
                                     <td>{{ @$category->business_type['business_type_name'] }}
+
+                                       @php
+                                        $business_typez =  Trn_CategoryBusinessType::join('mst_store_business_types','mst_store_business_types.business_type_id','=','trn__category_business_types.business_type_id')
+                                        ->join('mst_store_categories','mst_store_categories.category_id','=','trn__category_business_types.category_id')
+                                        ->groupBy('trn__category_business_types.business_type_id')->get();
+                                        
+  
+                                       @endphp
                                     
-                                    @foreach (@$category->business_types as $row)
-                                       {{ @$row->business_type->business_type_name }} <br>
+                                    @foreach (@$business_typez as $row)
+                                       {{ @$row->business_type_name }} <br>
                                     @endforeach
                                     </td>
                                      <td>
