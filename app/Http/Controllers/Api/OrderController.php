@@ -75,7 +75,7 @@ class OrderController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
-                if ($query = Trn_store_order::select('order_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'order_type')->where('store_id', $request->store_id)) {
+                if ($query = Trn_store_order::select('order_id', 'order_number','delivery_address', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'order_type')->where('store_id', $request->store_id)) {
                     if (isset($request->order_number)) {
                         $query->where('order_number', 'LIKE', "%{$request->order_number}%");
                     }
