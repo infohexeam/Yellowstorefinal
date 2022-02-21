@@ -312,7 +312,7 @@ class AdminController extends Controller
     public function restoreTax(Request $request,$tax_id)
 	{
         $vehicle_type = Mst_Tax::onlyTrashed()->find($tax_id)->restore();
-        return redirect('admin/taex/list')->with('status','Tax restored successfully.');
+        return redirect('admin/tax/list')->with('status','Tax restored successfully.');
     }
     
     
