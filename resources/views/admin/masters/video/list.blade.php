@@ -13,6 +13,11 @@ iframe{
   height: 40% ! important;
 }
 </style>
+<style>
+    .buttons-html5 {
+   display : none !important; /* overrides the red color */
+}     
+</style>
 <div class="container">
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
@@ -135,11 +140,11 @@ iframe{
                                  </tr>
                                  
                                  <tr>
-                                    <td><h6>Video Discription: </td><td>  {{ $value->video_discription }} </h6></td>
+                                    <td><h6>Video Description: </td><td>  {{ $value->video_discription }} </h6></td>
                                  </tr>
                                  
                                  <tr>
-                                    <td><h6>status: </td><td> 
+                                    <td><h6>Status: </td><td> 
                                         @if($value->status == 1)
                                             Active
                                         @else

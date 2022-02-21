@@ -97,7 +97,7 @@
                         
                         <div class="col-md-12">
                              <div class="form-group">
-                                <label class="form-label">Video Discription *</label>
+                                <label class="form-label">Video Description *</label>
                               <textarea class="form-control"  name="video_discription" required rows="4" placeholder="Video Discription">{{old('video_discription')}}</textarea>                            
                            </div>
                         </div>

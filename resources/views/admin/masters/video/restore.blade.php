@@ -6,18 +6,23 @@
   width:100%;
 }
 
+ .buttons-html5 {
+   display : none !important; /* overrides the red color */
+}    
 
 
 iframe{
   width: 40% ! important;
-  height: 40% ! important;
+  hei
+  ght: 40% ! important;
 }
 </style>
+
 <div class="container">
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
          <div class="card">
-            <div class="row">
+            <div class="row"  style="min-height: 70vh;" >
                <div class="col-12" >
 
                   @if ($message = Session::get('status'))
