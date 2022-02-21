@@ -35,42 +35,84 @@ class PublicController extends Controller
   public function pgtest()
   {
 
+    $curl = curl_init();
 
-    $client = new \GuzzleHttp\Client();
-    $response = $client->request('POST', 'https://api.cashfree.com/api/v2/easy-split/vendors', [
-      'headers' => [
-        'Accept' => 'application/json',
-        'x-api-version' => '2021-05-21',
-        'x-client-id' => '165253d13ce80549d879dba25b352561',
-        'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
-        'data-raw' => '{
-            "email": "name@cashfree.com",
-            "status": "ACTIVE/BLOCKED",
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => '{
+            "email": "binupb39@outlook.com",
+            "status": "ACTIVE",
             "bank": 
               {
-                "accountNumber": "12345678890",
-                "accountHolder": "John Doe",
-                "ifsc": "HDFC019345"
+                "accountNumber": "91901001378660",
+                "accountHolder": "Binu P Benny",
+                "ifsc": "UTIB0003377"
               },
-             "upi": 
-              {
-                "vpa": "upi@vpa",
-                "accountHolder": "Account Holder Name"
-              },
-            "phone": "1234567890",
-            "name": "VendorName1",
+             
+            "phone": "7510569328",
+            "name": "VendorName",
             "id": "merchantVendorId1",
-            "settlementCycleId": 123
-          }'
-      ],
-    ]);
+            "settlementCycleId": 2
+          }',
+      CURLOPT_HTTPHEADER => array(
+        'x-client-id: 165253d13ce80549d879dba25b352561',
+        'x-client-secret: bab0967cdc3e5559bded656346423baf0b1d38c4',
+        'x-api-version: 2021-05-21',
+        'Content-Type: application/json'
+      ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+    echo $response;
+    die;
 
 
-    $responseData = $response->getBody()->getContents();
 
-    $responseFinal = json_decode($responseData, true);
+    // $client = new \GuzzleHttp\Client();
+    // $response = $client->request('POST', 'https://api.cashfree.com/api/v2/easy-split/vendors', [
+    //   'headers' => [
+    //     'Accept' => 'application/json',
+    //     'x-api-version' => '2021-05-21',
+    //     'x-client-id' => '165253d13ce80549d879dba25b352561',
+    //     'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
+    //     "data-row" => {
+    //         "email": "name@cashfree.com",
+    //         "status": "ACTIVE/BLOCKED",
+    //         "bank": 
+    //           {
+    //             "accountNumber": "12345678890",
+    //             "accountHolder": "John Doe",
+    //             "ifsc": "HDFC019345"
+    //           },
+    //          "upi": 
+    //           {
+    //             "vpa": "upi@vpa",
+    //             "accountHolder": "Account Holder Name"
+    //           },
+    //         "phone": "1234567890",
+    //         "name": "VendorName1",
+    //         "id": "merchantVendorId1",
+    //         "settlementCycleId": 123
+    //       }
+    //   ],
+    // ]);
 
-    dd($responseFinal);
+
+    // $responseData = $response->getBody()->getContents();
+
+    // $responseFinal = json_decode($responseData, true);
+
+    // dd($responseFinal);
 
 
 
