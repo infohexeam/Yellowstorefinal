@@ -35,23 +35,82 @@ class PublicController extends Controller
   public function pgtest()
   {
 
+
+    $client = new \GuzzleHttp\Client();
+      $response = $client->request('POST', 'https://api.cashfree.com/api/v2/easy-split/vendors', [
+        'headers' => [
+          'Accept' => 'application/json',
+          'x-api-version' => '2021-05-21',
+          'x-client-id' => '165253d13ce80549d879dba25b352561',
+          'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
+          'data-raw' => '{
+            "email": "name@cashfree.com",
+            "status": "ACTIVE/BLOCKED",
+            "bank": 
+              {
+                "accountNumber": "12345678890",
+                "accountHolder": "John Doe",
+                "ifsc": "HDFC019345"
+              },
+             "upi": 
+              {
+                "vpa": "upi@vpa",
+                "accountHolder": "Account Holder Name"
+              },
+            "phone": "1234567890",
+            "name": "VendorName1",
+            "id": "merchantVendorId1",
+            "settlementCycleId": 123
+          }'
+        ],
+      ]);
+
+      
+      $responseData = $response->getBody()->getContents();
+
+      $responseFinal = json_decode($responseData, true);
+
+      dd($responseFinal);
+
+
+
     $orderDatas = Trn_store_order::where('payment_type_id', 2)
       ->where('is_split_data_saved', 0)
       ->where('trn_id', '!=', null)
       ->whereDate('created_at', '<', Carbon::now()->subMinutes(5)->toDateTimeString())
       ->get();
 
-    foreach ($orderDatas as $row) {
 
-      $client = new \GuzzleHttp\Client();
-      $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $row->trn_id, [
-        'headers' => [
-          'Accept' => 'application/json',
-          'x-api-version' => '2021-05-21',
-          'x-client-id' => '165253d13ce80549d879dba25b352561',
-          'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-        ],
-      ]);
+
+    // foreach ($orderDatas as $row) {
+
+    //   $client = new \GuzzleHttp\Client();
+    //   $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $row->trn_id, [
+    //     'headers' => [
+    //       'Accept' => 'application/json',
+    //       'x-client-id' => '165253d13ce80549d879dba25b352561',
+    //       'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
+    //       'data-raw' => {
+    //         "email": "name@cashfree.com",
+    //         "status": "ACTIVE/BLOCKED",
+    //         "bank": 
+    //           {
+    //             "accountNumber": "12345678890",
+    //             "accountHolder": "John Doe",
+    //             "ifsc": "HDFC019345"
+    //           },
+    //          "upi": 
+    //           {
+    //             "vpa": "upi@vpa",
+    //             "accountHolder": "Account Holder Name"
+    //           },
+    //         "phone": "1234567890",
+    //         "name": "VendorName1",
+    //         "id": "merchantVendorId1",
+    //         "settlementCycleId": 123
+    //       }
+    //     ],
+    //   ]);
 
       $responseData = $response->getBody()->getContents();
 
