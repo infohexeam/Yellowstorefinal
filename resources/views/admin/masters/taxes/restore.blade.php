@@ -1,6 +1,10 @@
 @extends('admin.layouts.app')
 @section('content')
-
+<style>
+    .buttons-html5 {
+   display : none !important; /* overrides the red color */
+}     
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 col-lg-12">
