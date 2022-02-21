@@ -200,8 +200,13 @@ function clearTax()
       $('#tax_name').val('');
 
 }
-$('.dt-button').attr("style", "display: none !important");
+$(function(e) {
+	 $('#example').DataTable( {
+        dom: 'Bfrtip',
+       
+    } );
 
+} );
 </script>
 
   <script>
