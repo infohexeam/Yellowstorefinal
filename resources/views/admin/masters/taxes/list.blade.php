@@ -205,7 +205,7 @@
                                // orientation:'landscape',
                                footer: true,
                                exportOptions: {
-                                    columns: [0,1,2,3],
+                                    columns: [0,1,2],
                                     alignment: 'right',
                                 },
                                  customize: function(doc) {
@@ -222,7 +222,7 @@
                                title: 'excel',
                                footer: true,
                                exportOptions: {
-                                    columns: [0,1,2,3]
+                                    columns: [0,1,2]
                                 }
                            }
                         ]
