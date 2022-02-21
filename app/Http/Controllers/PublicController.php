@@ -37,13 +37,13 @@ class PublicController extends Controller
 
 
     $client = new \GuzzleHttp\Client();
-      $response = $client->request('POST', 'https://api.cashfree.com/api/v2/easy-split/vendors', [
-        'headers' => [
-          'Accept' => 'application/json',
-          'x-api-version' => '2021-05-21',
-          'x-client-id' => '165253d13ce80549d879dba25b352561',
-          'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
-          'data-raw' => '{
+    $response = $client->request('POST', 'https://api.cashfree.com/api/v2/easy-split/vendors', [
+      'headers' => [
+        'Accept' => 'application/json',
+        'x-api-version' => '2021-05-21',
+        'x-client-id' => '165253d13ce80549d879dba25b352561',
+        'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
+        'data-raw' => '{
             "email": "name@cashfree.com",
             "status": "ACTIVE/BLOCKED",
             "bank": 
@@ -62,15 +62,15 @@ class PublicController extends Controller
             "id": "merchantVendorId1",
             "settlementCycleId": 123
           }'
-        ],
-      ]);
+      ],
+    ]);
 
-      
-      $responseData = $response->getBody()->getContents();
 
-      $responseFinal = json_decode($responseData, true);
+    $responseData = $response->getBody()->getContents();
 
-      dd($responseFinal);
+    $responseFinal = json_decode($responseData, true);
+
+    dd($responseFinal);
 
 
 
@@ -112,77 +112,77 @@ class PublicController extends Controller
     //     ],
     //   ]);
 
+    $responseData = $response->getBody()->getContents();
+
+    $responseFinal = json_decode($responseData, true);
+
+
+
+
+
+
+    $opt = new Trn_OrderPaymentTransaction;
+    $opt->order_id = $row->order_id;
+    $opt->paymentMode = null;
+    $opt->PGOrderId = $row->trn_id;
+    $opt->txTime = $row->txTime;
+    $opt->referenceId = $row->referenceId;
+    $opt->txMsg = $row->txMsg;
+    $opt->orderAmount = $row->orderAmount;
+    $opt->txStatus = $row->txStatus;
+
+    if ($opt->save()) {
+
+      $opt_id = DB::getPdo()->lastInsertId();
+      $client = new \GuzzleHttp\Client();
+      $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $row->trn_id, [
+        'headers' => [
+          'Accept' => 'application/json',
+          'x-api-version' => '2021-05-21',
+          'x-client-id' => '165253d13ce80549d879dba25b352561',
+          'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+        ],
+      ]);
+
       $responseData = $response->getBody()->getContents();
 
       $responseFinal = json_decode($responseData, true);
 
+      $osp = new Trn_OrderSplitPayments;
+      $osp->opt_id = $opt_id;
+      $osp->order_id = $row->order_id;
+      $osp->splitAmount = $responseFinal["settlementAmount"];
+      $osp->serviceCharge = $responseFinal["serviceCharge"];
+      $osp->serviceTax = $responseFinal["serviceTax"];
+      $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
+      $osp->splitServiceTax = $responseFinal["splitServiceTax"];
+      $osp->settlementAmount = $responseFinal["settlementAmount"];
+      $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
 
-
-
-
-
-      $opt = new Trn_OrderPaymentTransaction;
-      $opt->order_id = $row->order_id;
-      $opt->paymentMode = null;
-      $opt->PGOrderId = $row->trn_id;
-      $opt->txTime = $row->txTime;
-      $opt->referenceId = $row->referenceId;
-      $opt->txMsg = $row->txMsg;
-      $opt->orderAmount = $row->orderAmount;
-      $opt->txStatus = $row->txStatus;
-
-      if ($opt->save()) {
-
-        $opt_id = DB::getPdo()->lastInsertId();
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $row->trn_id, [
-          'headers' => [
-            'Accept' => 'application/json',
-            'x-api-version' => '2021-05-21',
-            'x-client-id' => '165253d13ce80549d879dba25b352561',
-            'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-          ],
-        ]);
-
-        $responseData = $response->getBody()->getContents();
-
-        $responseFinal = json_decode($responseData, true);
-
-        $osp = new Trn_OrderSplitPayments;
-        $osp->opt_id = $opt_id;
-        $osp->order_id = $row->order_id;
-        $osp->splitAmount = $responseFinal["settlementAmount"];
-        $osp->serviceCharge = $responseFinal["serviceCharge"];
-        $osp->serviceTax = $responseFinal["serviceTax"];
-        $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
-        $osp->splitServiceTax = $responseFinal["splitServiceTax"];
-        $osp->settlementAmount = $responseFinal["settlementAmount"];
-        $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
-
-        $osp->paymentRole = 1; // 1 == store's split
-        if ($osp->save()) {
-          if (count($responseFinal['vendors']) > 0) {
-            foreach ($responseFinal['vendors'] as $row) {
-              $osp = new Trn_OrderSplitPayments;
-              $osp->opt_id = $opt_id;
-              $osp->order_id = $row->order_id;
-              $osp->vendorId = $row["id"];
-              $osp->settlementId = $row["settlementId"];
-              $osp->splitAmount = $row["settlementAmount"];
-              $osp->serviceCharge = @$row["serviceCharge"];
-              $osp->serviceTax = @$row["serviceTax"];
-              $osp->splitServiceCharge = @$row["splitServiceCharge"];
-              $osp->splitServiceTax = @$row["splitServiceTax"];
-              $osp->settlementAmount = @$row["settlementAmount"];
-              $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
-              $osp->paymentRole = 0;
-              $osp->save();
-            }
+      $osp->paymentRole = 1; // 1 == store's split
+      if ($osp->save()) {
+        if (count($responseFinal['vendors']) > 0) {
+          foreach ($responseFinal['vendors'] as $row) {
+            $osp = new Trn_OrderSplitPayments;
+            $osp->opt_id = $opt_id;
+            $osp->order_id = $row->order_id;
+            $osp->vendorId = $row["id"];
+            $osp->settlementId = $row["settlementId"];
+            $osp->splitAmount = $row["settlementAmount"];
+            $osp->serviceCharge = @$row["serviceCharge"];
+            $osp->serviceTax = @$row["serviceTax"];
+            $osp->splitServiceCharge = @$row["splitServiceCharge"];
+            $osp->splitServiceTax = @$row["splitServiceTax"];
+            $osp->settlementAmount = @$row["settlementAmount"];
+            $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
+            $osp->paymentRole = 0;
+            $osp->save();
           }
-          Trn_store_order::where('order_id', $row->order_id)->update(['is_split_data_saved' => 1]);
         }
+        Trn_store_order::where('order_id', $row->order_id)->update(['is_split_data_saved' => 1]);
       }
     }
+
 
 
 
@@ -290,6 +290,7 @@ class PublicController extends Controller
 
     $response = json_decode($data, true);
   }
+
 
 
   public function generatePdf(Request $request, $id)
