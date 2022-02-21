@@ -1,6 +1,11 @@
 @extends('admin.layouts.app')
 @section('content')
-
+<style>
+.dt-button{
+    display: none;
+}
+    
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12 col-lg-12">
@@ -24,7 +29,7 @@
                            @endif
                                 <br>
                             <div class="table-responsive">
-                            <table id="example2" class="table table-striped table-bordered  text-nowrap w-100">
+                            <table id="example" class="table table-striped table-bordered  text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
