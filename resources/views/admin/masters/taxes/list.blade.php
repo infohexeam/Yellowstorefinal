@@ -24,7 +24,7 @@
                            @endif
                                 <br>
                             <div class="table-responsive">
-                            <table id="example3" class="table table-striped table-bordered  text-nowrap w-100">
+                            <table id="example2" class="table table-striped table-bordered  text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
