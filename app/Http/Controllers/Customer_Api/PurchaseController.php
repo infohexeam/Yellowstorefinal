@@ -174,12 +174,23 @@ class PurchaseController extends Controller
                     );
                     if (!$validator->fails()) {
 
-
                         if (isset($request->attributes)) {
                             foreach ($request->attributes as $row) {
                                 $attr_group_id =  $row->attr_group_id;
+                                $attr_value_id =  $row->attr_value_id;
+
+                                $varAttrCount = Trn_ProductVariantAttribute::where('product_varient_id', $request->product_varient_id)
+                                    ->where('attr_group_id', $attr_group_id)
+                                    ->where('attr_value_id', $attr_value_id)->count();
+                                if ($varAttrCount <= 0) {
+                                    $data['status'] = 0;
+                                    $data['message'] = "Product unavilable";
+                                    return $data;
+                                }
                             }
                         }
+
+
 
                         if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
                             $cartItem = Trn_Cart::where('customer_id', $request->customer_id)
