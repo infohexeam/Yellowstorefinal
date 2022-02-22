@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
                 [
                     'type' => 'error',
                     'status' => Response::HTTP_UNAUTHORIZED,
-                    'message' => 'Access Token expires',
+                    'message' => 'Access Token expired',
                 ],
                 Response::HTTP_UNAUTHORIZED
             );
