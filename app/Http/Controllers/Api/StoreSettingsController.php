@@ -338,7 +338,7 @@ class StoreSettingsController extends Controller
 
                 curl_close($curl);
                 $jData = json_decode($response);
-                if ($jData->subCode == 200) {
+                if (!isset($jData->subCode)) {
                     $store_id = $request->store_id;
                     $data = new Trn_StoreBankData;
                     $data->store_id = $store_id;
