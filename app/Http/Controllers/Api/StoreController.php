@@ -2279,28 +2279,25 @@ class StoreController extends Controller
                     if (!isset($sd->place))
                         $sd->place = '';
 
-                    $optCount = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->count();
-                    if ($optCount > 0) {
 
 
-                        $sd->orderPaymentTransaction = new \stdClass();
-                        $opt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->get();
-                        $optConunt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->count();
-                        if ($optConunt > 0) {
-                            foreach ($opt as $row) {
-                                $ospCount = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->count();
-                                if ($ospCount > 0) {
-                                    $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->where('paymentRole', 1)->get();
-                                    $row->orderSplitPayments = $osp;
-                                }
+                    $sd->orderPaymentTransaction = new \stdClass();
+                    $opt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->get();
+                    $optConunt = Trn_OrderPaymentTransaction::where('order_id', $sd->order_id)->count();
+                    if ($optConunt > 0) {
+                        foreach ($opt as $row) {
+                            $ospCount = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->count();
+
+                            if ($ospCount > 0) {
+                                $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->where('paymentRole', 1)->get();
+                                $row->orderSplitPayments = $osp;
+                            } else {
+                                $row->orderSplitPayments = new \stdClass();
                             }
                         }
-                        //Trn_OrderPaymentTransaction
-                        $sd->orderPaymentTransaction = $opt;
-                    } else {
-                        $sd->orderPaymentTransaction = new \stdClass();
-                        $sd->orderPaymentTransaction->orderSplitPayments = new \stdClass();
                     }
+                    //Trn_OrderPaymentTransaction
+                    $sd->orderPaymentTransaction = $opt;
                 }
 
                 $data['paymentReport'] = $paymentReport;
