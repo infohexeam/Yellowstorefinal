@@ -2292,7 +2292,7 @@ class StoreController extends Controller
                                 $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->where('paymentRole', 1)->get();
                                 $row->orderSplitPayments = $osp;
                             } else {
-                                $row->orderSplitPayments = new \stdClass();
+                                $row->orderSplitPayments = [];
                             }
                         }
                     }
