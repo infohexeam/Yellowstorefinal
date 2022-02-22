@@ -312,18 +312,18 @@ class StoreSettingsController extends Controller
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST => 'POST',
                     CURLOPT_POSTFIELDS => '{
-                        "email": ' . $email . ',
+                        "email": "' . $email . '",
                         "status": "ACTIVE",
                         "bank": 
                           {
-                            "accountNumber": ' . $request->acc_no . ',
-                            "accountHolder": ' . $request->account_holder . ',
-                            "ifsc": ' . $request->ifsc . '
+                            "accountNumber": "' . $request->acc_no . '",
+                            "accountHolder": "' . $request->account_holder . '",
+                            "ifsc": "' . $request->ifsc . '"
                           },
                          
-                        "phone": ' . $store_mobile . ',
-                        "name": ' . $sDAta->store_name . ',
-                        "id": ' . $sDAta->store_name . $sDAta->store_id . ',
+                        "phone": "' . $store_mobile . '",
+                        "name": "' . $sDAta->store_name . '",
+                        "id": "' . $sDAta->store_name . $sDAta->store_id . '",
                         "settlementCycleId": 2
                       }',
                     CURLOPT_HTTPHEADER => array(
