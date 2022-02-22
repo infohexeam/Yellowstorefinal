@@ -73,7 +73,8 @@ class PublicController extends Controller
     $response = curl_exec($curl);
 
     curl_close($curl);
-    echo $response;
+    $jData = json_decode($response);
+    echo $jData->subCode;
     die;
 
 

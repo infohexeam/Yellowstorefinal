@@ -292,6 +292,8 @@ class StoreSettingsController extends Controller
                 $data->ifsc = $request->ifsc;
                 $data->account_holder = $request->account_holder;
                 $data->save();
+            } else {
+                $response = ['status' => '0', 'message' => 'Store not found'];
             }
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
