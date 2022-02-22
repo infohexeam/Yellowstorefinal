@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Http\Response;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -50,10 +52,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-       return parent::render($request, $exception);
-       if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
-           // return redirect()->route('web.index');
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            // return redirect()->route('web.index');
             return redirect()->back();
         }
+
+        if ($exception instanceof AuthenticationException) {
+            return response()->json(
+                [
+                    'type' => 'error',
+                    'status' => Response::HTTP_UNAUTHORIZED,
+                    'message' => 'Access Token expires',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        return parent::render($request, $exception);
     }
 }
