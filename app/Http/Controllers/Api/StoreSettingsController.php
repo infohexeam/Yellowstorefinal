@@ -295,6 +295,7 @@ class StoreSettingsController extends Controller
                 } else {
                     $store_mobile = '0000000000';
                 }
+
                 if (isset($sDAta->email)) {
                     $email = $sDAta->email;
                 } else {
@@ -320,9 +321,9 @@ class StoreSettingsController extends Controller
                             "ifsc": ' . $request->ifsc . '
                           },
                          
-                        "phone": '.$store_mobile.',
-                        "name": "VendorName",
-                        "id": "merchantVendorId1",
+                        "phone": ' . $store_mobile . ',
+                        "name": ' . $sDAta->store_name . ',
+                        "id": ' . $sDAta->store_name . $sDAta->store_id . ',
                         "settlementCycleId": 2
                       }',
                     CURLOPT_HTTPHEADER => array(
@@ -337,20 +338,20 @@ class StoreSettingsController extends Controller
 
                 curl_close($curl);
                 $jData = json_decode($response);
-                if ($jData->subCode == 400) {
-                    $data['message'] = $jData->subCode;
+                if ($jData->subCode == 200) {
+                    $store_id = $request->store_id;
+                    $data = new Trn_StoreBankData;
+                    $data->store_id = $store_id;
+                    $data->account_number = $request->acc_no;
+                    $data->ifsc = $request->ifsc;
+                    $data->account_holder = $request->account_holder;
+                    $data->save();
+                    return  $response = ['status' => 1, 'message' => 'Bank details updated'];
+                } else {
+                    return  $response = ['status' => $jData->subCode, 'message' => $jData->message];
                 }
-
-
-                $store_id = $request->store_id;
-                $data = new Trn_StoreBankData;
-                $data->store_id = $store_id;
-                $data->account_number = $request->acc_no;
-                $data->ifsc = $request->ifsc;
-                $data->account_holder = $request->account_holder;
-                $data->save();
             } else {
-                $response = ['status' => '0', 'message' => 'Store not found'];
+                return $response = ['status' => 0, 'message' => 'Store not found'];
             }
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
