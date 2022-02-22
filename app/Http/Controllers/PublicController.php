@@ -74,6 +74,9 @@ class PublicController extends Controller
 
     curl_close($curl);
     $jData = json_decode($response);
+    if($jData->subCode == 400){
+      $data['message'] = $jData->subCode;
+    }
     echo $jData->subCode;
     die;
 

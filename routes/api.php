@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Page Not Found.'
+    ], 404);
+});
+
+
 Route::get('make-store-customer', 'Api\OrderController@makeStoreCustomer');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -82,9 +89,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('store/get-login-online-status', 'Api\StoreController@getLoginOnlineStatus');
     // Route::get('store/get-login-online-status2', 'Api\StoreController@getLoginOnlineStatus2');
-    Route::get('store/get-login-online-status3', 'Api\StoreController@getLoginOnlineStatus2');
+    //  Route::get('store/get-login-online-status3', 'Api\StoreController@getLoginOnlineStatus2');
 });
-Route::get('store/get-login-online-status3', 'Api\StoreController@getLoginOnlineStatus2');
+//Route::get('store/get-login-online-status3', 'Api\StoreController@getLoginOnlineStatus2');
 
 
 //-----------------------  STORE  ---------------------------

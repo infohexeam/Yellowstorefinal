@@ -285,6 +285,63 @@ class StoreSettingsController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+
+                $sDAta = Mst_store::find($request->store_id);
+
+                $curl = curl_init();
+
+                if (isset($sDAta->store_mobile)) {
+                    $store_mobile = $sDAta->store_mobile;
+                } else {
+                    $store_mobile = '0000000000';
+                }
+                if (isset($sDAta->email)) {
+                    $email = $sDAta->email;
+                } else {
+                    $email = 'test@mail.com';
+                }
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => '{
+                        "email": ' . $email . ',
+                        "status": "ACTIVE",
+                        "bank": 
+                          {
+                            "accountNumber": ' . $request->acc_no . ',
+                            "accountHolder": ' . $request->account_holder . ',
+                            "ifsc": ' . $request->ifsc . '
+                          },
+                         
+                        "phone": '.$store_mobile.',
+                        "name": "VendorName",
+                        "id": "merchantVendorId1",
+                        "settlementCycleId": 2
+                      }',
+                    CURLOPT_HTTPHEADER => array(
+                        'x-client-id: 165253d13ce80549d879dba25b352561',
+                        'x-client-secret: bab0967cdc3e5559bded656346423baf0b1d38c4',
+                        'x-api-version: 2021-05-21',
+                        'Content-Type: application/json'
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+                $jData = json_decode($response);
+                if ($jData->subCode == 400) {
+                    $data['message'] = $jData->subCode;
+                }
+
+
                 $store_id = $request->store_id;
                 $data = new Trn_StoreBankData;
                 $data->store_id = $store_id;
