@@ -1127,6 +1127,62 @@ class StoreController extends Controller
         }
     }
 
+    public function getLoginOnlineStatus2(Request $request)
+    {
+        try {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                //dd(auth()->user()->token());
+                if ($accessToken = auth()->user()->token()) {
+                    $token =  $request->user()->tokens->find($accessToken);
+
+                    $divTok = DB::table('oauth_access_tokens')
+                        ->where('id', $token->id)
+                        ->first();
+
+                    $data['onBoardingStatus'] = Helper::onBoardingStatus($request->store_id);
+
+
+                    if ($divTok->revoked == 1) {
+                        $data['login_status'] = 0;
+                        $data['message'] = "Token expired";
+                    } else {
+                        $data['login_status'] = 1;
+                        $data['message'] = "Success";
+                    }
+                } else {
+                    $data['message'] = "Success";
+                }
+
+                $data['message'] = "Success";
+
+                $statusStore = Mst_store::select('online_status')->where('store_id', $request->store_id)->first();
+                $custCheck = Trn_StoreAdmin::where('store_id', '=', $request->store_id)->where('role_id', 0)->first();
+                $today = Carbon::now()->toDateString();
+                if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
+                    $data['store_status'] = 1;
+                } else {
+                    $data['store_status'] = 0;
+                }
+
+
+
+
+                $data['online_status'] = $statusStore->online_status;
+                $data['status'] = 1;
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store does not exist";
+            }
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
     public function getOnlineStatus(Request $request)
     {
         try {

@@ -81,8 +81,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('store/check-login-status', 'Api\StoreController@checkLoginStatus');
 
     Route::get('store/get-login-online-status', 'Api\StoreController@getLoginOnlineStatus');
+    Route::get('store/get-login-online-status2', 'Api\StoreController@getLoginOnlineStatus2');
 });
 
+Route::get('store/get-login-online-status', 'Api\StoreController@getLoginOnlineStatus2');
 
 //-----------------------  STORE  ---------------------------
 // 'middleware' => 'auth:api'

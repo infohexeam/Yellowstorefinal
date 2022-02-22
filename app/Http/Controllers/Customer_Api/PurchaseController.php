@@ -176,6 +176,9 @@ class PurchaseController extends Controller
 
 
                         if (isset($request->attributes)) {
+                            foreach ($request->attributes as $row) {
+                                $attr_group_id =  $row->attr_group_id;
+                            }
                         }
 
                         if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
