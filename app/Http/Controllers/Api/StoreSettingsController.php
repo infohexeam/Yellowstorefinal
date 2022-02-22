@@ -323,7 +323,7 @@ class StoreSettingsController extends Controller
                          
                         "phone": "' . $store_mobile . '",
                         "name": "' . $sDAta->store_name . '",
-                        "id": "' . $sDAta->store_name . $sDAta->store_id . '",
+                        "id": "' . str_replace(' ', '', $sDAta->store_name)  . $sDAta->store_id . '",
                         "settlementCycleId": 2
                       }',
                     CURLOPT_HTTPHEADER => array(

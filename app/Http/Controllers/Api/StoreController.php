@@ -316,8 +316,6 @@ class StoreController extends Controller
         return response($data);
     }
 
-
-
     public function checkLoginStatus(Request $request)
     {
 
