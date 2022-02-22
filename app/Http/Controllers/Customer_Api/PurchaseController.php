@@ -173,6 +173,11 @@ class PurchaseController extends Controller
                         ]
                     );
                     if (!$validator->fails()) {
+
+
+                        if (isset($request->attributes)) {
+                        }
+
                         if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
                             $cartItem = Trn_Cart::where('customer_id', $request->customer_id)
                                 ->where('remove_status', 0)
