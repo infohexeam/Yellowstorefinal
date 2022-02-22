@@ -48,6 +48,7 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_StoreAppBanner;
 use App\Models\admin\Mst_store_link_delivery_boy;
 use App\Models\admin\Trn_RecentlyVisitedStore;
+use App\Models\admin\Trn_StoreBankData;
 
 class StoreSettingsController extends Controller
 {
@@ -285,6 +286,12 @@ class StoreSettingsController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
+                $data = new Trn_StoreBankData;
+                $data->store_id = $store_id;
+                $data->account_number = $request->acc_no;
+                $data->ifsc = $request->ifsc;
+                $data->account_holder = $request->account_holder;
+                $data->save();
             }
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];

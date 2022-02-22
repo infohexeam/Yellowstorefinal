@@ -1129,7 +1129,8 @@ class StoreController extends Controller
 
     public function getLoginOnlineStatus2(Request $request)
     {
-        echo "here";
+        // echo "here";
+        // die;
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 //dd(auth()->user()->token());
