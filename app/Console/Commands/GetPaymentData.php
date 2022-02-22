@@ -110,19 +110,19 @@ class GetPaymentData extends Command
                 $osp->paymentRole = 1; // 1 == store's split
                 if ($osp->save()) {
                     if (count($responseFinal['vendors']) > 0) {
-                        foreach ($responseFinal['vendors'] as $row) {
+                        foreach ($responseFinal['vendors'] as $key) {
                             $osp = new Trn_OrderSplitPayments;
                             $osp->opt_id = $opt_id;
                             $osp->order_id = $row->order_id;
-                            $osp->vendorId = $row["id"];
-                            $osp->settlementId = $row["settlementId"];
-                            $osp->splitAmount = $row["settlementAmount"];
-                            $osp->serviceCharge = @$row["serviceCharge"];
-                            $osp->serviceTax = @$row["serviceTax"];
-                            $osp->splitServiceCharge = @$row["splitServiceCharge"];
-                            $osp->splitServiceTax = @$row["splitServiceTax"];
-                            $osp->settlementAmount = @$row["settlementAmount"];
-                            $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
+                            $osp->vendorId = $key["id"];
+                            $osp->settlementId = $key["settlementId"];
+                            $osp->splitAmount = $key["settlementAmount"];
+                            $osp->serviceCharge = @$key["serviceCharge"];
+                            $osp->serviceTax = @$key["serviceTax"];
+                            $osp->splitServiceCharge = @$key["splitServiceCharge"];
+                            $osp->splitServiceTax = @$key["splitServiceTax"];
+                            $osp->settlementAmount = @$key["settlementAmount"];
+                            $osp->settlementEligibilityDate = @$key["settlementEligibilityDate"];
                             $osp->paymentRole = 0;
                             $osp->save();
                         }
