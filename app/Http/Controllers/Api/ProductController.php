@@ -1816,13 +1816,17 @@ class ProductController extends Controller
                             $productData['product_price_offer'] = $request->sale_price;
 
                             // if (isset($request->regular_price) || isset($request->sale_price)) {
-                          
-                                Mst_store_product_varient::where('product_id', $request->product_id)
-                                    ->where('is_base_variant', 1)
-                                    ->update([
-                                        'product_varient_price' => $request->regular_price ,
-                                         'product_varient_offer_price' => $request->sale_price
-                                         ]);
+
+                            Mst_store_product_varient::where('product_id', $request->product_id)
+                                ->where('is_base_variant', 1)
+                                ->update([
+                                    'product_varient_price' => $request->regular_price,
+                                    'product_varient_offer_price' => $request->sale_price
+                                ]);
+
+                            $data['status'] = 0;
+                            $data['message'] = "reg price" + $request->regular_price . " - " . "sale price" + $request->sale_price;
+                            return response($data);
 
                             //     $data['status'] = 2;
                             //     $data['message'] = "Someting happened.";
