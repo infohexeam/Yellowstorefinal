@@ -305,7 +305,7 @@ class StoreSettingsController extends Controller
                         $email = 'test@mail.com';
                     }
 
-                    $vendorId = str_replace(' ', '', $sDAta->store_name)  . $sDAta->store_id;
+                    $vendorId = str_replace(' ', '', $sDAta->store_name)  . substr($request->account_holder, strlen($request->account_holder) - 4);
 
                     curl_setopt_array($curl, array(
                         CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
