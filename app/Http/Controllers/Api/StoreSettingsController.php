@@ -49,6 +49,7 @@ use App\Models\admin\Mst_StoreAppBanner;
 use App\Models\admin\Mst_store_link_delivery_boy;
 use App\Models\admin\Trn_RecentlyVisitedStore;
 use App\Models\admin\Trn_StoreBankData;
+use stdClass;
 
 class StoreSettingsController extends Controller
 {
@@ -287,31 +288,35 @@ class StoreSettingsController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
 
                 $sDAta = Mst_store::find($request->store_id);
+                $sBankDAta = Trn_StoreBankData::where('store_id', $request->store_id)->where('status', 1)->count();
+                if ($sBankDAta == 0) {
 
-                $curl = curl_init();
+                    $curl = curl_init();
 
-                if (isset($sDAta->store_mobile)) {
-                    $store_mobile = $sDAta->store_mobile;
-                } else {
-                    $store_mobile = '0000000000';
-                }
+                    if (isset($sDAta->store_mobile)) {
+                        $store_mobile = $sDAta->store_mobile;
+                    } else {
+                        $store_mobile = '0000000000';
+                    }
 
-                if (isset($sDAta->email)) {
-                    $email = $sDAta->email;
-                } else {
-                    $email = 'test@mail.com';
-                }
+                    if (isset($sDAta->email)) {
+                        $email = $sDAta->email;
+                    } else {
+                        $email = 'test@mail.com';
+                    }
 
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS => '{
+                    $vendorId = str_replace(' ', '', $sDAta->store_name)  . $sDAta->store_id;
+
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        CURLOPT_POSTFIELDS => '{
                         "email": "' . $email . '",
                         "status": "ACTIVE",
                         "bank": 
@@ -323,32 +328,42 @@ class StoreSettingsController extends Controller
                          
                         "phone": "' . $store_mobile . '",
                         "name": "' . $sDAta->store_name . '",
-                        "id": "' . str_replace(' ', '', $sDAta->store_name)  . $sDAta->store_id . '",
+                        "id": "' . $vendorId . '",
                         "settlementCycleId": 2
                       }',
-                    CURLOPT_HTTPHEADER => array(
-                        'x-client-id: 165253d13ce80549d879dba25b352561',
-                        'x-client-secret: bab0967cdc3e5559bded656346423baf0b1d38c4',
-                        'x-api-version: 2021-05-21',
-                        'Content-Type: application/json'
-                    ),
-                ));
+                        CURLOPT_HTTPHEADER => array(
+                            'x-client-id: 165253d13ce80549d879dba25b352561',
+                            'x-client-secret: bab0967cdc3e5559bded656346423baf0b1d38c4',
+                            'x-api-version: 2021-05-21',
+                            'Content-Type: application/json'
+                        ),
+                    ));
 
-                $response = curl_exec($curl);
+                    $response = curl_exec($curl);
 
-                curl_close($curl);
-                $jData = json_decode($response);
-                if (!isset($jData->subCode)) {
-                    $store_id = $request->store_id;
-                    $data = new Trn_StoreBankData;
-                    $data->store_id = $store_id;
-                    $data->account_number = $request->acc_no;
-                    $data->ifsc = $request->ifsc;
-                    $data->account_holder = $request->account_holder;
-                    $data->save();
-                    return  $response = ['status' => 1, 'message' => 'Bank details updated'];
+                    curl_close($curl);
+                    $jData = json_decode($response);
+                    if (!isset($jData->subCode)) {
+                        $store_id = $request->store_id;
+                        $data = new Trn_StoreBankData;
+                        $data->store_id = $store_id;
+                        $data->account_number = $request->acc_no;
+                        $data->ifsc = $request->ifsc;
+                        $data->account_holder = $request->account_holder;
+                        $data->status = 1;
+
+                        $data->phone = $store_mobile;
+                        $data->vendor_name = $sDAta->store_name;
+                        $data->vendor_id = $vendorId;
+                        $data->settlement_cycle_id = 2;
+
+                        $data->save();
+                        return  $response = ['status' => 1, 'message' => 'Bank details updated'];
+                    } else {
+                        return  $response = ['status' => $jData->subCode, 'message' => $jData->message];
+                    }
                 } else {
-                    return  $response = ['status' => $jData->subCode, 'message' => $jData->message];
+                    return $response = ['status' => 0, 'message' => 'Bank details already updated'];
                 }
             } else {
                 return $response = ['status' => 0, 'message' => 'Store not found'];
@@ -474,6 +489,9 @@ class StoreSettingsController extends Controller
                     foreach ($data['storeDetails']['store_images'] as $img) {
                         $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
                     }
+
+                    $data['bankDetail'] = new stdClass();
+                    $data['bankDetail'] = Trn_StoreBankData::where('store_id', $store_id)->first();
 
 
 
