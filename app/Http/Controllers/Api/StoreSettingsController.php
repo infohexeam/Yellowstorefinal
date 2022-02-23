@@ -490,8 +490,9 @@ class StoreSettingsController extends Controller
                         $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
                     }
 
-                    $data['bankDetail'] = new stdClass();
-                    $data['bankDetail'] = Trn_StoreBankData::where('store_id', $store_id)->first();
+                    $data['bankDetail'] = [];
+
+                    $data['bankDetail'] = Trn_StoreBankData::where('store_id', $store_id)->get();
 
 
 
