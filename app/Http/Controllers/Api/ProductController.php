@@ -1824,10 +1824,10 @@ class ProductController extends Controller
                                          'product_varient_offer_price' => $request->sale_price
                                          ]);
 
-                                $data['status'] = 2;
-                                $data['message'] = "Someting happened.";
-                                return response($data);
-                            }
+                            //     $data['status'] = 2;
+                            //     $data['message'] = "Someting happened.";
+                            //     return response($data);
+                            // }
 
                             $productData['tax_id'] = $request->tax_id;
 
