@@ -309,6 +309,7 @@ class StoreSettingsController extends Controller
 
                     $vendorId = preg_replace('/[^A-Za-z0-9\-]/', '', $string3) . substr($request->acc_no, strlen($request->acc_no) - 4);
                     // dd($vendorId);
+                    $string4 = str_replace('-', '', $sDAta->store_name);
 
                     curl_setopt_array($curl, array(
                         CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
@@ -330,7 +331,7 @@ class StoreSettingsController extends Controller
                           },
                          
                         "phone": "' . $store_mobile . '",
-                        "name": "' . $sDAta->store_name . '",
+                        "name": "' . preg_replace('/[^A-Za-z0-9\-]/', '', $string4)  . '",
                         "id": "' . $vendorId . '",
                         "settlementCycleId": 2
                       }',
