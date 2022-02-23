@@ -1819,6 +1819,9 @@ class ProductController extends Controller
 
                                 Mst_store_product_varient::where('product_id', $request->product_id)
                                     ->where('is_base_variant', 1)->update($provarUp);
+                                $data['status'] = 2;
+                                $data['message'] = "Someting happened.";
+                                return response($data);
                             }
 
                             $productData['tax_id'] = $request->tax_id;
