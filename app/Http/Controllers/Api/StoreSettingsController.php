@@ -331,7 +331,7 @@ class StoreSettingsController extends Controller
                           },
                          
                         "phone": "' . $store_mobile . '",
-                        "name": "' . preg_replace('/[^A-Za-z0-9\-]/', '', $string4)  . '",
+                        "name": "' . preg_replace('/[0-9]+/', '', $string4)  . '",
                         "id": "' . $vendorId . '",
                         "settlementCycleId": 2
                       }',
