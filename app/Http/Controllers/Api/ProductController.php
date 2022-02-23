@@ -1744,6 +1744,7 @@ class ProductController extends Controller
                                 $productVar->product_varient_price    = $request->regular_price;
                                 $productVar->product_varient_offer_price    = $request->sale_price;
                                 $productVar->product_varient_base_image = null;
+                                $productVar->is_base_variant = 1;
 
                                 if ($request->product_type == 2) {
                                     $productVar->stock_count                 = 1;
