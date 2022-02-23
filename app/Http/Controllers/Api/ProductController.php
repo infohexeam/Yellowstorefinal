@@ -2043,6 +2043,15 @@ class ProductController extends Controller
                         $productVar['product_varient_price'] = $request->var_regular_price;
                         $productVar['product_varient_offer_price'] = $request->var_sale_price;
                         if (Mst_store_product_varient::where('product_varient_id', $product_varient_id)->update($productVar)) {
+
+                            $prodata = Mst_store_product::find($request->product_id);
+                            Mst_store_product_varient::where('product_id', $request->product_id)
+                                ->where('is_base_variant', 1)
+                                ->update([
+                                    'product_varient_price' => $prodata->product_price,
+                                    'product_varient_offer_price' => $prodata->product_price_offer
+                                ]);
+
                             $vac = 0;
                             Trn_ProductVariantAttribute::where('product_varient_id', @$product_varient_id)->delete();
 
