@@ -62,6 +62,7 @@ use App\Models\admin\Trn_CustomerFeedback;
 use App\Models\admin\Trn_RecentlyVisitedProductCategory;
 use App\Models\admin\Mst_FeedbackQuestion;
 use App\Models\admin\Trn_store_setting;
+use App\Models\admin\Trn_StoreBankData;
 
 class ProductController extends Controller
 {
@@ -1136,6 +1137,11 @@ class ProductController extends Controller
                             $data['commision_percentage']  = $storeData->store_commision_percentage;
                         else
                             $data['commision_percentage']  = '0';
+
+                        $data['bankDetails']  = new \stdClass();
+
+                        $data['bankDetails']  = Trn_StoreBankData::where('store_id', $request->store_id)->get();
+
 
                         $data['timeSlotDetails']  = Trn_StoreDeliveryTimeSlot::select('store_delivery_time_slot_id', 'store_id', 'time_start', 'time_end')->where('store_id', $request->store_id)->get();
 
