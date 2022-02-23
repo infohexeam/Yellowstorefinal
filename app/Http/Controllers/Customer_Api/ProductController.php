@@ -1140,7 +1140,7 @@ class ProductController extends Controller
 
                         $data['bankDetails']  = new \stdClass();
 
-                        $bankDetails = Trn_StoreBankData::where('store_id', $request->store_id)->get();
+                        $bankDetails = Trn_StoreBankData::where('store_id', $request->store_id)->first();
                         if (isset($bankDetails->vendor_id))
                             $data['vendorId']  = $bankDetails->vendor_id;
                         else
