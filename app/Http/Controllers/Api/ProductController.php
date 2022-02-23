@@ -1824,9 +1824,9 @@ class ProductController extends Controller
                                     'product_varient_offer_price' => $request->sale_price
                                 ]);
 
-                            $data['status'] = 0;
-                            $data['message'] = "reg price" + $request->regular_price . " - " . "sale price" + $request->sale_price;
-                            return response($data);
+                            // $data['status'] = 0;
+                            // $data['message'] = "reg price" + $request->regular_price . " - " . "sale price" + $request->sale_price;
+                            // return response($data);
 
                             //     $data['status'] = 2;
                             //     $data['message'] = "Someting happened.";
