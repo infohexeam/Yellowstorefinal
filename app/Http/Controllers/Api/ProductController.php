@@ -1813,10 +1813,12 @@ class ProductController extends Controller
                             $productData['product_price_offer'] = $request->sale_price;
 
                             if (isset($request->regular_price) || isset($request->sale_price)) {
-                                $provarUp = Mst_store_product_varient::where('product_id', $request->product_id)->where('is_base_variant', 1);
-                                $provarUp->product_varient_price = $request->regular_price;
-                                $provarUp->product_varient_offer_price = $request->sale_price;
-                                $provarUp->update();
+                                $provarUp = array();
+                                $provarUp['product_varient_price'] = $request->regular_price;
+                                $provarUp['product_varient_offer_price']  = $request->sale_price;
+
+                                Mst_store_product_varient::where('product_id', $request->product_id)
+                                    ->where('is_base_variant', 1)->update($provarUp);
                             }
 
                             $productData['tax_id'] = $request->tax_id;
