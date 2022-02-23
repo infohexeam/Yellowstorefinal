@@ -1892,6 +1892,16 @@ class ProductController extends Controller
                                     }
                                 }
 
+                                Mst_store_product_varient::where('product_id', $request->product_id)
+                                    ->where('is_base_variant', 1)
+                                    ->update([
+                                        'product_varient_price' => $request->regular_price,
+                                        'product_varient_offer_price' => $request->sale_price
+                                    ]);
+                                $data['status'] = 0;
+                                $data['message'] = "product_varient_price :" . $request->regular_price . "product_varient_offer_price" . $request->sale_price;
+                                return response($data);
+
                                 $data['status'] = 1;
                                 $data['product_id'] = $request->product_id;
                                 $data['message'] = "Success.";
