@@ -1140,8 +1140,11 @@ class ProductController extends Controller
 
                         $data['bankDetails']  = new \stdClass();
 
-                        $data['bankDetails']  = Trn_StoreBankData::where('store_id', $request->store_id)->get();
-
+                        $bankDetails = Trn_StoreBankData::where('store_id', $request->store_id)->get();
+                        if (isset($bankDetails->vendor_id))
+                            $data['vendorId']  = $bankDetails->vendor_id;
+                        else
+                            $data['vendorId']  = '0';
 
                         $data['timeSlotDetails']  = Trn_StoreDeliveryTimeSlot::select('store_delivery_time_slot_id', 'store_id', 'time_start', 'time_end')->where('store_id', $request->store_id)->get();
 
