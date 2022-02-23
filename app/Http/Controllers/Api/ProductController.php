@@ -1807,21 +1807,23 @@ class ProductController extends Controller
                         }
                     } else {
                         if (Mst_store_product::find($request->product_id)) {
-                            $data['status'] = 2;
-                                $data['message'] = "Someting happened.";
-                                return response($data);
+                            // $data['status'] = 0;
+                            //     $data['message'] = "Someting happened.";
+                            //     return response($data);
                             $productData['product_name'] = $request->product_name;
                             $productData['product_description'] = $request->product_description;
                             $productData['product_price'] = $request->regular_price;
                             $productData['product_price_offer'] = $request->sale_price;
 
                             // if (isset($request->regular_price) || isset($request->sale_price)) {
-                            //     $provarUp = array();
-                                $provarUp['product_varient_price'] = $request->regular_price;
-                                $provarUp['product_varient_offer_price']  = $request->sale_price;
-
+                          
                                 Mst_store_product_varient::where('product_id', $request->product_id)
-                                    ->where('is_base_variant', 1)->update($provarUp);
+                                    ->where('is_base_variant', 1)
+                                    ->update([
+                                        'product_varient_price' => $request->regular_price ,
+                                         'product_varient_offer_price' => $request->sale_price
+                                         ]);
+
                                 $data['status'] = 2;
                                 $data['message'] = "Someting happened.";
                                 return response($data);
