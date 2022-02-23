@@ -1817,12 +1817,6 @@ class ProductController extends Controller
 
                             // if (isset($request->regular_price) || isset($request->sale_price)) {
 
-                            Mst_store_product_varient::where('product_id', $request->product_id)
-                                ->where('is_base_variant', 1)
-                                ->update([
-                                    'product_varient_price' => $request->regular_price,
-                                    'product_varient_offer_price' => $request->sale_price
-                                ]);
 
                             // $data['status'] = 0;
                             // $data['message'] = "reg price" + $request->regular_price . " - " . "sale price" + $request->sale_price;
@@ -1857,6 +1851,15 @@ class ProductController extends Controller
                             }
 
                             if (Mst_store_product::where('product_id', $request->product_id)->update($productData)) {
+
+                                Mst_store_product_varient::where('product_id', $request->product_id)
+                                    ->where('is_base_variant', 1)
+                                    ->update([
+                                        'product_varient_price' => $request->regular_price,
+                                        'product_varient_offer_price' => $request->sale_price
+                                    ]);
+
+
                                 $c = 1;
                                 $filename = "";
                                 if ($files = $request->file('product_images')) {
