@@ -305,9 +305,10 @@ class StoreSettingsController extends Controller
                         $email = 'test@mail.com';
                     }
                     $string2 = str_replace(' ', '-', $sDAta->store_name);
+                    $string3 = str_replace('-', '', $string2);
 
-                    $vendorId = preg_replace('/[^A-Za-z0-9\-]/', '', $string2) . substr($request->acc_no, strlen($request->acc_no) - 4);
-                    dd($vendorId);
+                    $vendorId = preg_replace('/[^A-Za-z0-9\-]/', '', $string3) . substr($request->acc_no, strlen($request->acc_no) - 4);
+                    // dd($vendorId);
 
                     curl_setopt_array($curl, array(
                         CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
