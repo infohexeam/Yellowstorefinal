@@ -107,7 +107,7 @@ class OrderController extends Controller
                                 $cusAdd = Trn_customerAddress::find($order->delivery_address);
                                 $order->customer_name = @$cusAdd->name;
                             } else {
-                                $order->customer_name = @$order->customer_first_name . " " . @$order->customer_last_name;
+                                $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
                             }
                         }
 
