@@ -10,7 +10,11 @@ class Trn_store_order extends Model
 
   protected $fillable = [
     'order_id', 'order_number', 'customer_id', 'order_item_id', 'product_varient_id', 'store_id',
-    'packing_charge', 'product_total_amount', 'quantity', 'shipping_address', 'country_id', 'state_id', 'district_id', 'shipping_landmark', 'shipping_pincode', 'service_order', 'delivery_address', 'coupon_discount_percentage', 'delivery_date', 'payment_type_id', 'service_booking_order', 'status_id', 'order_type', 'delivery_accept', 'delivery_time', 'trn_id', 'amount_reduced_by_coupon', 'is_split_data_saved', 'referenceId', 'txTime', 'txMsg', 'orderAmount', 'txStatus'
+    'packing_charge', 'product_total_amount', 'quantity', 'shipping_address', 'country_id', 'state_id', 'district_id',
+    'shipping_landmark', 'shipping_pincode', 'service_order', 'delivery_address',
+    'coupon_discount_percentage', 'delivery_date', 'payment_type_id', 'service_booking_order',
+    'status_id', 'order_type', 'delivery_accept', 'delivery_time', 'trn_id', 'amount_reduced_by_coupon',
+    'is_split_data_saved', 'referenceId', 'txTime', 'txMsg', 'orderAmount', 'txStatus'
   ];
 
   public function store()

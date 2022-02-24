@@ -75,7 +75,7 @@ class OrderController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
-                if ($query = Trn_store_order::select('order_id', 'order_number','delivery_address', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'order_type')->where('store_id', $request->store_id)) {
+                if ($query = Trn_store_order::select('order_id', 'order_number', 'delivery_address', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'order_type')->where('store_id', $request->store_id)) {
                     if (isset($request->order_number)) {
                         $query->where('order_number', 'LIKE', "%{$request->order_number}%");
                     }
@@ -103,8 +103,12 @@ class OrderController extends Controller
                         if ($order->order_type == 'POS') {
                             $order->customer_name = 'Store Customer';
                         } else {
-                            $cusAdd = Trn_customerAddress::find($order->delivery_address);
-                            $order->customer_name = @$cusAdd->name;
+                            if ($order->service_order == 0) {
+                                $cusAdd = Trn_customerAddress::find($order->delivery_address);
+                                $order->customer_name = @$cusAdd->name;
+                            } else {
+                                $order->customer_name = @$order->customer_first_name . " " . @$order->customer_last_name;
+                            }
                         }
 
 
@@ -498,9 +502,8 @@ class OrderController extends Controller
                                 if ($ospCount > 0) {
                                     $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->get();
                                     $row->orderSplitPayments = $osp;
-                                }else{
+                                } else {
                                     $row->orderSplitPayments = [];
-
                                 }
                             }
                         }
