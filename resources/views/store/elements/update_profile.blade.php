@@ -271,21 +271,21 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                    <label class="form-label">Bank Account Number </label>
-                                   <input type="text" class="form-control" name="acc_no"  placeholder="Bank Account Number">
+                                   <input type="text" @if (isset($bankDetail->account_number))  readonly  @endif value="{{ @$bankDetail->account_number }}"   class="form-control" name="acc_no"  placeholder="Bank Account Number">
                                  </div>
                             </div>
                             
                             <div class="col-md-6">
                                 <div class="form-group">
                                    <label class="form-label">Bank IFSC </label>
-                                   <input type="text" class="form-control" name="account_holder"  placeholder="Bank Account Number">
+                                   <input type="text" @if (isset($bankDetail->ifsc))  readonly  @endif class="form-control" name="account_holder" value="{{ @$bankDetail->ifsc }}" placeholder="Bank Account Number">
                                  </div>
                             </div>
                             
                             <div class="col-md-6">
                                 <div class="form-group">
                                    <label class="form-label">Account Holder Name </label>
-                                   <input type="text" class="form-control" name="ifsc"  placeholder="Bank Account Number">
+                                   <input type="text" @if (isset($bankDetail->account_holder))  readonly  @endif class="form-control" name="ifsc" value="{{ @$bankDetail->account_holder }}" placeholder="Bank Account Number">
                                  </div>
                             </div>
 

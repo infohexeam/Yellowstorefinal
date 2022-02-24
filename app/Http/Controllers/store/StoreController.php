@@ -76,8 +76,7 @@ use PDF;
 
 use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_ProductVideo;
-
-
+use App\Models\admin\Trn_StoreBankData;
 
 class StoreController extends Controller
 {
@@ -246,6 +245,8 @@ class StoreController extends Controller
 
     $delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
 
+    $bankDetail = Trn_StoreBankData::where('store_id', $store_id)->first();
+
 
     $all_delivery_boys = \DB::table('mst_delivery_boys')
       ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_delivery_boys.store_id')
@@ -271,7 +272,8 @@ class StoreController extends Controller
       'store_documents',
       'agencies',
       'delivery_boys',
-      'business_types'
+      'business_types',
+      'bankDetail'
     ));
   }
 
@@ -819,6 +821,8 @@ class StoreController extends Controller
         $product->service_type               =  @$request->service_type; // new
       else
         $product->service_type               =  0; // new
+
+      $product->is_added_from_web               =  1;
 
       // $product->product_offer_from_date = $request->product_offer_from_date;
       // $product->product_offer_to_date   = $request->product_offer_to_date;

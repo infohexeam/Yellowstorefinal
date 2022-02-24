@@ -1797,6 +1797,11 @@ class ProductController extends Controller
                             $a->deliveryCharge = $settingsRow->delivery_charge;
                         else
                             $a->deliveryCharge = '0';
+
+                        if (isset($settingsRow->packing_charge))
+                            $a->packingCharge = $settingsRow->packing_charge;
+                        else
+                            $a->packingCharge = '0';
                     }
                     $data['status'] = 1;
                     $data['message'] = "success";
