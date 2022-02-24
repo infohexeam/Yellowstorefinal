@@ -103,12 +103,10 @@ class OrderController extends Controller
                         if ($order->order_type == 'POS') {
                             $order->customer_name = 'Store Customer';
                         } else {
-                            if ($order->service_order == 0) {
-                                $cusAdd = Trn_customerAddress::find($order->delivery_address);
-                                $order->customer_name = @$cusAdd->name;
-                            } else {
+                            $cusAdd = Trn_customerAddress::find($order->delivery_address);
+                            $order->customer_name = @$cusAdd->name;
+                            if (!isset($cusAdd->name))
                                 $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
-                            }
                         }
 
 
