@@ -204,7 +204,7 @@
                       <div class="col-md-6">
                            <div class="form-group">
                     <label class="form-label">Business Type</label>
-                    <select name="business_type_id" required="" class="form-control" >
+                    <select readonly name="business_type_id" required="" class="form-control" >
                                  <option value=""> Select Business Type</option>
                                 @foreach($business_types as $key)
                                 <option {{old('business_type_id',$store->business_type_id) == $key->business_type_id ? 'selected':''}} value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>

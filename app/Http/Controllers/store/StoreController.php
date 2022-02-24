@@ -576,7 +576,7 @@ class StoreController extends Controller
 
           $data->save();
         } else {
-          return redirect()->back()->with('status', $jData->message);
+          return redirect()->back()->withErrors($jData->message)->withInput();
         }
       }
 
