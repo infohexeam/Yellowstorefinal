@@ -1569,7 +1569,9 @@ class ProductController extends Controller
                         }
 
                         @$data['prouctDetails']->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$data['prouctDetails']->product_base_image;
-                        $data['prouctDetails']->prouctVariantDetails = Mst_store_product_varient::where('product_id', $request->product_id)->get();
+                        $data['prouctDetails']->prouctVariantDetails = Mst_store_product_varient::where('product_id', $request->product_id)
+                            ->where('is_removed', 0)
+                            ->get();
                         $data['prouctDetails']->productImages = Mst_product_image::where('product_id', $request->product_id)->where('product_varient_id', 0)->get();
                         foreach ($data['prouctDetails']->productImages as $val) {
                             @$val->product_image = '/assets/uploads/products/base_product/base_image/' . @$val->product_image;
