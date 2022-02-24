@@ -261,6 +261,39 @@
 
                   </div>
 
+                  <div class="card-body border">
+                    <div class="card-header">
+                        <h3 class="mb-0 card-title">Bank Details</h3>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   <label class="form-label">Bank Account Number </label>
+                                   <input type="text" class="form-control" name="acc_no"  placeholder="Bank Account Number">
+                                 </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   <label class="form-label">Bank IFSC </label>
+                                   <input type="text" class="form-control" name="account_holder"  placeholder="Bank Account Number">
+                                 </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   <label class="form-label">Account Holder Name </label>
+                                   <input type="text" class="form-control" name="ifsc"  placeholder="Bank Account Number">
+                                 </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+
                  <br>
 
                      <div class="card-body border">

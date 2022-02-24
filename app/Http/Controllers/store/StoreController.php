@@ -1075,6 +1075,7 @@ class StoreController extends Controller
     $product_id = $product->product_id;
 
     $product_varients = Mst_store_product_varient::where('product_id', $product_id)
+      ->where('is_removed', 0)
       ->orderBy('product_varient_id', 'DESC')
       ->get();
     @$category_id = $product->product_cat_id;
@@ -1256,8 +1257,8 @@ class StoreController extends Controller
         $provarUp['product_varient_offer_price']  = $request->sale_price;
 
         Mst_store_product_varient::where('product_id', $product_id)
-            ->where('is_base_variant', 1)->update($provarUp);
-    }
+          ->where('is_base_variant', 1)->update($provarUp);
+      }
 
 
       $product['tax_id']                 = $request->tax_id; // new
