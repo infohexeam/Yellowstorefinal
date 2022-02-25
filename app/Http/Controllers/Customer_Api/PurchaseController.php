@@ -582,9 +582,14 @@ class PurchaseController extends Controller
         try {
 
             if (isset($request->coupon_code)) {
-                if ($coupon = Mst_Coupon::where('coupon_code', $request->coupon_code)
-                    ->where('coupon_status', 0)->first()
-                ) {
+
+                $coupon = Mst_Coupon::where('coupon_code', $request->coupon_code)->where('coupon_status', 0);
+                if (isset($request->store_id)) {
+                    $coupon = $coupon->where('store_id', $request->store_id);
+                }
+                $coupon = $coupon->first();
+
+                if (1) {
                     $current_time = Carbon::now()->toDateTimeString();
 
                     if ($coupon->valid_from >= $current_time) {
