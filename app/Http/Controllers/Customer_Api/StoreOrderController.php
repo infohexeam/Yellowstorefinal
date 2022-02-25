@@ -1317,7 +1317,7 @@ class StoreOrderController extends Controller
                             }
 
 
- 
+
                             $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
                             $vaproductDetail = Mst_store_product_varient::find($value->product_varient_id);
                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
@@ -1352,7 +1352,7 @@ class StoreOrderController extends Controller
 
                             foreach ($splitdata as $sd) {
                                 if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
-                                    $taxFullData->tax_value = 1;
+                                    @$taxFullData->tax_value = 1;
 
                                 $stax = ($sd->split_tax_value * $tTax) / @$taxFullData->tax_value;
                                 $sd->tax_split_value = number_format((float)$stax, 2, '.', '');

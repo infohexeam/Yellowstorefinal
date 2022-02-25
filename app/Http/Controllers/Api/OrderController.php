@@ -429,7 +429,7 @@ class OrderController extends Controller
                             else
                                 $value->product_name = @$baseProductDetail->product_name;
 
-                            $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id)->withTrashed();
+                            $taxFullData = Mst_Tax::withTrashed()->find(@$baseProductDetail->tax_id);
 
                             // $gstAmount = $value['productDetail']->product_varient_offer_price * $baseProductDetail->tax_value / (100 + $baseProductDetail->tax_value);
                             // $orgCost = $value['productDetail']->product_varient_offer_price * 100 / (100 + $baseProductDetail->tax_value);
@@ -452,7 +452,7 @@ class OrderController extends Controller
 
                                 foreach ($splitdata as $sd) {
                                     if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
-                                        $taxFullData->tax_value = 1;
+                                        @$taxFullData->tax_value = 1;
 
                                     $stax = ($sd->split_tax_value * $tTax) / @$taxFullData->tax_value;
                                     $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
