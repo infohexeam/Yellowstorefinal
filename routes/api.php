@@ -388,8 +388,8 @@ Route::get('customer/category-home', 'Customer_Api\ProductController@homePageCat
 Route::get('customer/sub-category-home', 'Customer_Api\ProductController@homePageSubCategory');
 
 Route::get('customer/view-product', 'Customer_Api\ProductController@viewProduct');
-Route::get('customer/view-product-attr', 'Customer_Api\ProductController@viewProductAttr');
-Route::get('customer/view-base-product', 'Customer_Api\ProductController@viewBaseProduct');
+Route::get('customer/view-product-attr', 'Customer_Api\ProductController@viewProductAttr'); //1
+Route::get('customer/view-base-product', 'Customer_Api\ProductController@viewBaseProduct'); //2
 Route::get('customer/view-product-popup', 'Customer_Api\ProductController@viewProductPopup');
 
 Route::get('customer/base-product/variants', 'Customer_Api\ProductController@viewBaseProductVariants');
