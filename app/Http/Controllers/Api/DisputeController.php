@@ -237,7 +237,7 @@ class DisputeController extends Controller
 
                     $ordData = Trn_store_order::find($data['disputeDetails']->order_id);
 
-                    $customerAddr = Trn_customerAddress::find($data['disputeDetails']->customer_id);
+                    $customerAddr = Trn_customerAddress::find($ordData->delivery_address);
 
                     if (!isset($customerAddr->name)) {
                         $customer = Trn_store_customer::find($data['disputeDetails']->customer_id);
