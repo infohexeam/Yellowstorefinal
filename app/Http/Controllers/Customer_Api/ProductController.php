@@ -273,10 +273,6 @@ class ProductController extends Controller
                             $j->attr_value = '';
                     }
                     $row->attributesData = $attributesData;
-                    $row->store_name = Mst_store::find($productData->store_id)->store_name;
-                    $row->product_name = $productData->product_name;
-                    $row->product_type = $productData->product_type;
-                    $row->service_type = $productData->service_type;
                 }
                 $data['productVartiantdata'] = $productVartiantdata;
 
@@ -932,6 +928,30 @@ class ProductController extends Controller
                         $data['status'] = 0;
                     }
                 }
+
+                $productVartiantdata  = Mst_store_product_varient::where('product_id', $vardata->product_id)
+                    ->where('stock_count', '>', 0)
+                    ->get();
+                foreach ($productVartiantdata as $row) {
+
+                    $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
+                    $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
+                    foreach ($attributesData as $j) {
+                        $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
+                        if (isset($datas->group_name))
+                            $j->attr_group = @$datas->group_name;
+                        else
+                            $j->attr_group = '';
+
+                        $datasvalue = Mst_attribute_value::where('attr_value_id', $j->attr_value_id)->first();
+                        if (isset($datasvalue->group_value))
+                            $j->attr_value = @$datasvalue->group_value;
+                        else
+                            $j->attr_value = '';
+                    }
+                    $row->attributesData = $attributesData;
+                }
+                $data['productVartiantdata'] = $productVartiantdata;
             } else {
                 $data['message'] = 'Product not found';
                 $data['status'] = 0;
