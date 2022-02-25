@@ -85,11 +85,13 @@ class DisputeController extends Controller
                                 $dispute->issue = $issue->issue;
                                 $ordData = Trn_store_order::find($dispute->order_id);
 
-                                if (!isset($ordData->delivery_address)) {
+
+                                $customerAddr = Trn_customerAddress::find($ordData->delivery_address);
+
+                                if (!isset($customerAddr->name)) {
                                     $customer = Trn_store_customer::find($dispute->customer_id);
                                     $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
                                 } else {
-                                    $customerAddr = Trn_customerAddress::find($ordData->delivery_address);
                                     $dispute->customer_name = @$customerAddr->name;
                                 }
 
@@ -149,11 +151,13 @@ class DisputeController extends Controller
 
                                 $ordData = Trn_store_order::find($dispute->order_id);
 
-                                if (!isset($ordData->delivery_address)) {
+
+                                $customerAddr = Trn_customerAddress::find($ordData->delivery_address);
+
+                                if (!isset($customerAddr->name)) {
                                     $customer = Trn_store_customer::find($dispute->customer_id);
                                     $dispute->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
                                 } else {
-                                    $customerAddr = Trn_customerAddress::find($ordData->delivery_address);
                                     $dispute->customer_name = @$customerAddr->name;
                                 }
 
@@ -233,12 +237,12 @@ class DisputeController extends Controller
 
                     $ordData = Trn_store_order::find($data['disputeDetails']->order_id);
 
+                    $customerAddr = Trn_customerAddress::find($data['disputeDetails']->customer_id);
 
-                    if (!isset($ordData->delivery_address)) {
+                    if (!isset($customerAddr->name)) {
                         $customer = Trn_store_customer::find($data['disputeDetails']->customer_id);
                         $data['disputeDetails']->customer_name = @$customer->customer_first_name . " " . @$customer->customer_last_name;
                     } else {
-                        $customerAddr = Trn_customerAddress::find($data['disputeDetails']->customer_id);
                         $data['disputeDetails']->customer_name = @$customerAddr->name;
                     }
 
