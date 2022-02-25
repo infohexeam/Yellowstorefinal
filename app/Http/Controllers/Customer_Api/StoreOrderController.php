@@ -1333,6 +1333,7 @@ class StoreOrderController extends Controller
                             else
                                 $value->product_name = @$baseProductDetail->product_name;
 
+                            $taxFullData = new \stdClass();
                             $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id)->withTrashed();
 
 
