@@ -1317,7 +1317,7 @@ class StoreOrderController extends Controller
                             }
 
 
-
+ 
                             $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
                             $vaproductDetail = Mst_store_product_varient::find($value->product_varient_id);
                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
@@ -1333,7 +1333,7 @@ class StoreOrderController extends Controller
                             else
                                 $value->product_name = @$baseProductDetail->product_name;
 
-                            $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
+                            $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id)->withTrashed();
 
 
                             $discount_amount = (@$vaproductDetail->product_varient_price - @$vaproductDetail->product_varient_offer_price) * $value->quantity;
@@ -1346,7 +1346,7 @@ class StoreOrderController extends Controller
                             $value->orgCost = number_format((float)$orgCost, 2, '.', '');
 
 
-                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
+                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->withTrashed()->get();
                             $stax = 0;
 
 
