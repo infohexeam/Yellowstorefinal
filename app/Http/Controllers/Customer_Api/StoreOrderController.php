@@ -1334,7 +1334,7 @@ class StoreOrderController extends Controller
                                 $value->product_name = @$baseProductDetail->product_name;
 
                             $taxFullData = new \stdClass();
-                            $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id)->withTrashed();
+                            $taxFullData = Mst_Tax::find(@$baseProductDetail->tax_id);
 
 
                             $discount_amount = (@$vaproductDetail->product_varient_price - @$vaproductDetail->product_varient_offer_price) * $value->quantity;
@@ -1347,7 +1347,7 @@ class StoreOrderController extends Controller
                             $value->orgCost = number_format((float)$orgCost, 2, '.', '');
 
 
-                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->withTrashed()->get();
+                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
                             $stax = 0;
 
 
