@@ -182,6 +182,8 @@ class ProductController extends Controller
                                     $productStatus = '0';
                                     if ($stock_count_sum > 0) {
                                         $productStatus = $product->product_status;
+                                    } else {
+                                        Mst_store_product::where('product_id', $product->product_id)->update(['product_status' => 0]);
                                     }
                                     $product->product_status = $productStatus;
                                 }
