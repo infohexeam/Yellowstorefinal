@@ -183,7 +183,7 @@
                                     <th class="wd-20p">Register Date</th>
                                      @if(auth()->user()->user_role_id  == 0)
                                     <th class="wd-20p">Sub<br>Admin</th>
-                                    <th class="wd-20p">{{__('Is PG Activated')}}</th>
+                                    {{-- <th class="wd-20p">{{__('Is PG Activated')}}</th> --}}
 
                                     @endif
 
@@ -206,7 +206,7 @@
 
                                     @if(auth()->user()->user_role_id  == 0)
                                     <td>{{ @$store->subadmin->name}} </td>
-                                    <td>
+                                    {{-- <td>
                                         
                                         
                                         <a href="{{ url('admin/change-pg-status/'.$store->store_id) }}"  onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
@@ -221,7 +221,7 @@
 
                                         <!--<input type="checkbox" class="form-control"   name="isPGActivated" value="1" id="isPGActivated" @if($store->is_pgActivated == 1) checked @endif />-->
                                         
-                                    </td>
+                                    </td> --}}
                                     @endif
 
                                  <td>

@@ -3388,7 +3388,7 @@ class SettingController extends Controller
 
 			$payments = Trn_OrderPaymentTransaction::join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
 				->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
-				->where('trn__order_split_payments.paymentRole', '=', 1)
+				//->where('trn__order_split_payments.paymentRole', '=', 1)
 				->where('trn_store_orders.order_id', '=', $decrId)
 				->get();
 
