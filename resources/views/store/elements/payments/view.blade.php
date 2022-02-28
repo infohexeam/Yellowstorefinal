@@ -163,13 +163,13 @@
 
                         <div class="row">
                            <div class="col-6" >
-                              <table>
+                              <table class="table table-bordered text-nowrap">
                                  <tr>
                                     <td>
                                        Total Order Amount : 
                                     </td>
                                     <td>
-                                        <h5>{{ @$total_amount }}</h5>
+                                        <b>{{ @$total_amount }}</b>
                                     </td>
                                  </tr>
 
@@ -178,7 +178,7 @@
                                        Admin Commission Amount : 
                                     </td>
                                     <td>
-                                       <h5>{{ @$total_admin_amount }}</h5>
+                                       <b>{{ @$total_admin_amount }}</b>
                                     </td>
                                  </tr>
 
@@ -187,7 +187,7 @@
                                        Store Commission Amount : 
                                     </td>
                                     <td>
-                                       <h5>{{ @$total_store_amount }}</h5>
+                                       <b>{{ @$total_store_amount }}</b>
                                     </td>
                                  </tr>
                               </table>
