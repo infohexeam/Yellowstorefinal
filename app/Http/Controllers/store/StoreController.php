@@ -3803,12 +3803,38 @@ class StoreController extends Controller
     $pageTitle = "Payments";
     $store_id  = Auth::guard('store')->user()->store_id;
 
-    $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id)
-      ->orderBy('settlment_id', 'DESC')->get();
+
+    
+        $a1 = Carbon::parse($request->date_from)->startOfDay();
+        $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+      
+
+
+
+    $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
+
+      if (isset($request->date_from)) {
+        $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+      }
+      if (isset($request->date_to)) {
+        $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+      }
+
+    $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
 
     $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
-      ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
-      ->where('trn_store_orders.store_id', $store_id)
+      ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
+      
+      if (isset($request->date_from)) {
+        $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+      }
+
+      if (isset($request->date_to)) {
+        $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+      }
+
+    $store_payments = $store_payments->where('trn_store_orders.store_id', $store_id)
       ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
       ->where('trn__order_split_payments.paymentRole', 1)
       ->get();

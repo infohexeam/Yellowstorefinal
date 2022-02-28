@@ -32,11 +32,10 @@
           @csrf
             <div class="row">
 
-               <div class="col-md-6">
+               {{-- <div class="col-md-6">
                 <div class="form-group">
                     <label class="form-label">Select Year</label>
                      <div id="date_fromly"></div>
-                     {{-- <input type="month" class="form-control" id="date_from" name="date_from"  value="{{ request()->input('date_from') }}" placeholder="From Date"> --}}
   	                <select required name="year" id="year" class="form-control custom-select">
                         <option value="">Select Year</option>
                       @for ($y=2010; $y<=2040;  $y++)
@@ -46,13 +45,12 @@
 						</select>
 
                   </div>
-               </div>
+               </div> --}}
 
-             <div class="col-md-6">
+             {{-- <div class="col-md-6">
                 <div class="form-group">
                     <label class="form-label">Select Month</label>
                      <div id="date_fromlm"></div>
-                     {{-- <input type="month" class="form-control" id="date_from" name="date_from"  value="{{ request()->input('date_from') }}" placeholder="From Date"> --}}
   	                <select required name="month" id="month" class="form-control custom-select">
     <option  value="">Select Month</option>
     <option {{ request()->input('month') == '01' ? 'selected':''}} value="01">January</option>
@@ -70,7 +68,7 @@
 						</select>
 
                   </div>
-               </div>
+               </div> --}}
 
                <!--  <div class="col-md-6">-->
                <!-- <div class="form-group">-->
@@ -80,6 +78,24 @@
 
                <!--   </div>-->
                <!--</div>-->
+
+
+               
+         <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label">From Date</label>
+                 <input type="date" class="form-control" name="date_from"  value="{{ request()->input('date_from') }}" placeholder="From Date">
+
+              </div>
+           </div>
+             <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label">To Date</label>
+                 <input type="date" class="form-control" name="date_to" value="{{ request()->input('date_to') }}" placeholder="To Date">
+
+              </div>
+           </div>
+          
 
                      <div class="col-md-12">
                      <div class="form-group">
@@ -120,6 +136,8 @@
                                  @php
                                  $i = 0;
                                  $total_store_amount = 0;
+                                 $total_admin_amount = 0;
+                                 $total_amount = 0;
                                  @endphp
                                  @foreach ($store_payments as $store_payment)
                                  <tr>
@@ -133,18 +151,56 @@
 
                                    </td>
                                  </tr>
+                                 @php
+                                    $total_store_amount += $store_payment->settlementAmount;
+                                    $total_admin_amount += (@$store_payment->orderAmount - @$store_payment->settlementAmount);
+                                    $total_amount += $store_payment->orderAmount; 
+                                 @endphp
                                  @endforeach
                               </tbody>
                            </table>
                         </div><br>
 
+                        <div class="row">
+                           <div class="col-6" >
+                              <table>
+                                 <tr>
+                                    <td>
+                                       Total Order Amount 
+                                    </td>
+                                    <td>
+                                       {{ @$total_amount }}
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                       Admin Commission Amount
+                                    </td>
+                                    <td>
+                                       {{ @$total_admin_amount }}
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                       Store Commission Amount 
+                                    </td>
+                                    <td>
+                                       {{ @$total_store_amount }}
+                                    </td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </div>
+
                             
                             <div class="row">
                               <div class="col-4" >
-                                    <a data-toggle="modal" data-target="#StockModal{{$store_id}}" class="btn btn-small btn-success">
+                                    {{-- <a data-toggle="modal" data-target="#StockModal{{$store_id}}" class="btn btn-small btn-success">
                                         <i class="fa fa-tick"></i>
                                         Pay
-                                    </a>
+                                    </a> --}}
                                     <a data-toggle="modal" data-target="#PaymentsModal" class="btn btn-small btn-primary">
                                        <i class="fa fa-tick"></i>
                                        Previous Payments
