@@ -148,12 +148,12 @@ class Helper
     public static function isWorkingDaysSet($store_id)
     {
         $storeData = Trn_StoreTimeSlot::where('store_id', $store_id)->where('time_start', null)->where('time_end', null)->count();
-        dd($storeData);
+        // dd($storeData);
 
         if ($storeData  == 7) {
-            return 0;
+            return 1;
         }
-        return 1;
+        return 0;
     }
 
     public static function findSubAdminName($store_id)
