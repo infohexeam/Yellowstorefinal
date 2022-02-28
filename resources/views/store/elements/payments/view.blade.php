@@ -127,7 +127,7 @@
                                     <td>{{ @$store_payment->order_number}}</td>
                                         <td>{!! date('d-M-Y', strtotime(@$store_payment->created_at)) !!}</td>
                                     <td>{{ @$store_payment->orderAmount }}</td>
-                                    <td>{{ @$store_payment->total_amount - @$store_payment->settlementAmount }}</td>
+                                    <td>{{ @$store_payment->orderAmount - @$store_payment->settlementAmount }}</td>
                                     <td>{{ @$store_payment->settlementAmount }}</td>
                                     
 
