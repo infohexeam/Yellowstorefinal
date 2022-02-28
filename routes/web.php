@@ -358,7 +358,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('admin/delivery_boy/order/list', 'SettingController@listDeliveryboyOrder')->name('admin.list_delivery_boy_order');
         // product
-a
+
         Route::get('admin/product/list', 'SettingController@listProduct')->name('admin.list_product');
         Route::get('admin/product/create', 'SettingController@createProduct')->name('admin.create_product');
         Route::post('admin/product/store', 'SettingController@storeProduct')->name('admin.store_product');
