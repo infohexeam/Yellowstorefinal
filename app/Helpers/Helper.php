@@ -60,9 +60,9 @@ class Helper
             $s = 2;
             if ($isServiceAreaSet == 1) {
                 $s = 3;
-                // if ($isWorkingDaysSet == 1) {
-                //     $s = 4;
-                // }
+                if ($isWorkingDaysSet == 1) {
+                    $s = 4;
+                }
             }
         }
         return $s;
