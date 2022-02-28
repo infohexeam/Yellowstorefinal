@@ -3964,40 +3964,74 @@ class SettingController extends Controller
 	}
 
 	public function list_stores_payments(Request $request, $store_name, $store_id)
-	{
+	{ //s
 		$pageTitle = $store_name . " (store) Payment Settlement";
 		$store_id  = Crypt::decryptString($store_id);
 
-		$store_payments = Trn_store_payment_settlment::where('store_id', $store_id)->get();
 
-		if (auth()->user()->user_role_id  == 0) {
-			$stores = Mst_store::all();
-		} else {
-			$stores = Mst_store::where('subadmin_id', auth()->user()->id)->get();
-			//  dd($store);
+		$a1 = Carbon::parse($request->date_from)->startOfDay();
+		$a2  = Carbon::parse($request->date_to)->endOfDay();
+
+		$payments_datas = new Trn_store_payment_settlment;
+
+		if (isset($request->date_from)) {
+			$payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+		}
+		if (isset($request->date_to)) {
+			$payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
 		}
 
-		$payments_datas = \DB::table('trn_store_payments_tracker')->where('store_id', $store_id)->get();
+		$payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
 
-		if ($_GET) {
+		$store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+			->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
 
-			$year = $request->year;
-			$month = $request->month;
-			$a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
-			$a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
-
-			$store_payments = Trn_store_payment_settlment::where('store_id', $store_id)
-				->whereBetween('created_at', [@$a1, @$a2])->get();
-
-			$payments = Trn_store_payment_settlment::whereBetween('created_at', [@$a1, @$a2])->get();
-			$payments_datas = \DB::table('trn_store_payments_tracker')
-				->where('store_id', $store_id)
-				->whereBetween('date_of_payment', [@$a1, @$a2])
-				->get();
-			return view('admin.masters.store_payments.list_payments', compact('store_id', 'store_payments', 'pageTitle', 'stores', 'payments_datas'));
+		if (isset($request->date_from)) {
+			$store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
 		}
 
-		return view('admin.masters.store_payments.list_payments', compact('store_id', 'store_payments', 'pageTitle', 'stores', 'payments_datas'));
+		if (isset($request->date_to)) {
+			$store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+		}
+
+		$store_payments = $store_payments->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
+			->where('trn__order_split_payments.paymentRole', 1)
+			->get();
+
+		//return view('store.elements.payments.view', compact('store_id', 'payments_datas','store_payments', 'pageTitle'));
+		return view('admin.masters.store_payments.list_payments', compact('store_id', 'store_payments', 'pageTitle', 'payments_datas'));
+
+
+		//$store_payments = Trn_store_payment_settlment::where('store_id', $store_id)->get();
+
+		// if (auth()->user()->user_role_id  == 0) {
+		// 	$stores = Mst_store::all();
+		// } else {
+		// 	$stores = Mst_store::where('subadmin_id', auth()->user()->id)->get();
+		// 	//  dd($store);
+		// }
+
+		// $payments_datas = \DB::table('trn_store_payments_tracker')->where('store_id', $store_id)->get();
+
+		// if ($_GET) {
+
+		// 	$year = $request->year;
+		// 	$month = $request->month;
+		// 	$a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
+		// 	$a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
+
+		// 	$store_payments = Trn_store_payment_settlment::where('store_id', $store_id)
+		// 		->whereBetween('created_at', [@$a1, @$a2])->get();
+
+		// 	$payments = Trn_store_payment_settlment::whereBetween('created_at', [@$a1, @$a2])->get();
+		// 	$payments_datas = \DB::table('trn_store_payments_tracker')
+		// 		->where('store_id', $store_id)
+		// 		->whereBetween('date_of_payment', [@$a1, @$a2])
+		// 		->get();
+		// 	return view('admin.masters.store_payments.list_payments', compact('store_id', 'store_payments', 'pageTitle', 'stores', 'payments_datas'));
+		// }
+
+		// return view('admin.masters.store_payments.list_payments', compact('store_id', 'store_payments', 'pageTitle', 'stores', 'payments_datas'));
 	}
 
 
