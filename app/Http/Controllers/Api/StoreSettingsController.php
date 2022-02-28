@@ -412,6 +412,7 @@ class StoreSettingsController extends Controller
                     Trn_StoreTimeSlot::insert($info);
                 }
                 $data['status'] = 1;
+                $data['onBoardingStatus'] = Helper::onBoardingStatus($store_id);
                 $data['message'] = "Working days updated successfully.";
                 return response($data);
                 // }
