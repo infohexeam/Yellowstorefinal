@@ -529,7 +529,15 @@ class StoreOrderController extends Controller
 
                     $store_order->order_type = 'APP';
                     $store_order->trn_id = $request->orderId;
-                    $store_order->is_split_data_saved = 0;
+
+                    if ($request->payment_type_id == 2) {
+
+                        if (Helper::isBankDataFilled($request->store_id) == 1) {
+                            $store_order->is_split_data_saved = 0;
+                        } else {
+                            $store_order->is_split_data_saved = 1;
+                        }
+                    }
 
                     $store_order->referenceId = $request->referenceId;
                     $store_order->txTime = $request->txTime;
