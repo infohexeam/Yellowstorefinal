@@ -60,9 +60,9 @@ class Helper
             $s = 2;
             if ($isServiceAreaSet == 1) {
                 $s = 3;
-                if ($isWorkingDaysSet == 1) {
-                    $s = 4;
-                }
+                // if ($isWorkingDaysSet == 1) {
+                //     $s = 4;
+                // }
             }
         }
         return $s;
@@ -163,7 +163,7 @@ class Helper
         if (isset($uData->admin_name))
             return @$uData->admin_name;
         else
-            return  '---';
+            return  '--';
 
         // if (isset($userId)) {
         //     if (User::find($userId)->admin_name) {
