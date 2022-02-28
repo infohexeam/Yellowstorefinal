@@ -3806,8 +3806,12 @@ class StoreController extends Controller
       ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
       ->where('trn_store_orders.store_id', $store_id)
       ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
+      ->where('trn__order_split_payments.paymentRole', 1)
       ->get();
-    dd($payments_datas);
+
+    return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'pageTitle'));
+
+    //dd($payments_datas);
 
     // $payments_datas = \DB::table('trn_store_payments_tracker')->where('store_id', $store_id)->get();
     // if ($_GET) {
@@ -3824,6 +3828,8 @@ class StoreController extends Controller
     //     ->get();
     //   return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'payments', 'store_payments', 'pageTitle'));
     // }
+
+
 
   }
 

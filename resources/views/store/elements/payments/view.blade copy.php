@@ -32,7 +32,7 @@
           @csrf
             <div class="row">
 
-               <div class="col-md-6">
+               <div class="col-md-3">
                 <div class="form-group">
                     <label class="form-label">Select Year</label>
                      <div id="date_fromly"></div>
@@ -48,7 +48,7 @@
                   </div>
                </div>
 
-             <div class="col-md-6">
+             <div class="col-md-3">
                 <div class="form-group">
                     <label class="form-label">Select Month</label>
                      <div id="date_fromlm"></div>
@@ -93,7 +93,21 @@
     </div>
        </form>
     </div>
-    
+      @if($_GET)
+       @if(request()->input('year') && request()->input('month'))
+        @php
+
+            $year = request()->input('year');
+            $month = request()->input('month');
+
+          @$s_count = \DB::table('mst_stores')
+            ->where('store_id', @$store_id)
+            ->where('created_at', '<', Carbon\Carbon::parse($year.'-'.$month)->startOfMonth()->addMonth())
+            ->count();
+
+
+        @endphp
+         @if ($s_count > 0)
 
          
                      <div class="card-body">
@@ -105,12 +119,16 @@
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
+                                    <th class="wd-15p">{{ __('Store') }}</th>
                                     <th class="wd-15p">{{ __('Order Number') }}</th>
                                     <th class="wd-15p">{{ __('Order Date') }}</th>
-                                    <th class="wd-15p">{{ __('Admin Commission Amount') }}</th>
-                                    <th class="wd-15p">{{ __('Store Commission Amount') }}</th>
-                                    <th class="wd-15p">{{ __('Total Order Amount') }}</th>
-                                  
+                                    <th class="wd-15p">{{ __('Commision Percentage') }}</th>
+                                    <th class="wd-15p">{{ __('Total') }}</th>
+                                     <th class="wd-20p">{{__('Store Amount')}}</th>
+                                    {{-- <th class="wd-20p">{{__('Delivery Boy')}}</th> --}}
+                                    {{-- <th class="wd-20p">{{__('Amount Paid')}}</th>
+                                    <th class="wd-15p">{{__('Amount to be Paid')}}</th>
+                                    <th class="wd-15p">{{__('Action')}}</th> --}}
 
                                  </tr>
                               </thead>
@@ -122,27 +140,85 @@
                                  @foreach ($store_payments as $store_payment)
                                  <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ @$store_payment->order_number}}</td>
-                                        <td>{!! date('d-M-Y', strtotime(@$store_payment->created_at)) !!}</td>
-                                    <td>{{ @$store_payment->orderAmount }}</td>
-                                    <td>{{ @$store_payment->total_amount - @$store_payment->settlementAmount }}</td>
-                                    <td>{{ @$store_payment->settlementAmount }}</td>
-                                    <td>{{ @$store_payment->total_amount }}</td>
+                                    <td>{{ $store_payment->store['store_name']}}</td>
+                                    <td>{{ @$store_payment->order['order_number']}}</td>
+                                        <td>{!! date('d/M/y', strtotime(@$store_payment->created_at)) !!}</td>
+                                    <td>{{ @$store_payment->store['store_commision_percentage']}}</td>
+                                    <td>{{ $store_payment->total_amount }}</td>
+                                     <td>
+                                        {{ (@$store_payment->total_amount - (@$store_payment->store['store_commision_percentage'] / 100  *$store_payment->total_amount  ) ) }}
+                                     </td>
 
                                    </td>
                                  </tr>
+                                 @php
+
+                                 @$sup_admin_comm =  @$sup_admin_comm + @$store_payment->store_commision_amount;
+
+                                 @$total_store_amount = @$total_store_amount + (@$store_payment->total_amount - (@$store_payment->store['store_commision_percentage'] / 100  *$store_payment->total_amount  ) );
+                                     //@$commision_pay =  $commision_pay + $store_payment->store_commision_amount;
+                                 @endphp
                                  @endforeach
                               </tbody>
                            </table>
                         </div><br>
+@php
 
-                            
+    $store_info = \DB::table('mst_stores')->where('store_id',$store_id)->first();
+
+    $balance_query = \DB::table('trn_store_payments_tracker')->where('store_id',$store_id);
+
+    if(request()->input('year') && request()->input('month'))
+    {
+         $year = request()->input('year');
+        $month = request()->input('month');
+
+        @$a1 =Carbon\Carbon:: parse($year.'-'.$month)->startOfMonth();
+        @$a2 =Carbon\Carbon:: parse($year.'-'.$month)->endOfMonth();
+
+        $balance_query = $balance_query->whereBetween('date_of_payment',[$a1,$a2]);
+    }
+    $paid_amount = $balance_query->sum('commision_paid');
+
+
+    $offline_total_amount = 0;
+    $balance_total_amount = @$total_store_amount - @$offline_total_amount;
+    $effective_balance_amount = @$balance_total_amount - @$store_info->store_commision_amount;
+    $amount_to_be_paid = $effective_balance_amount - $paid_amount;
+
+@endphp
+                            <div class="row">
+                                <div class="col-12" >
+
+                                   <h4>Store Fixed Amount: <b> Rs. {{ @$store_info->store_commision_amount}}</b></h4>
+                                </div>
+
+                                <div class="col-12" >
+                                   <h4> Total Order Amount for Store({{100 - @$store_info->store_commision_percentage}}% of Order Amount): <b> Rs. {{ @$total_store_amount }}</b></h4>
+                                </div>
+                                 <div class="col-12" >
+                                   <h4>  Payment Received by Store ( Offline Payment): <b> Rs. {{@$offline_total_amount}} </b> </h4>
+                                </div>
+                                 <div class="col-12" >
+                                   <h4>  Balance Order Amount: <b> Rs. {{ $balance_total_amount }} </b> </h4>
+                                </div>
+                                <div class="col-12" >
+                                   <h4>  Effective Balance Amount: <b> Rs. {{ @$effective_balance_amount }} </b> </h4>
+                                </div>
+                                <div class="col-12" >
+                                   <h4>  Paid Amount: <b> Rs. {{ @$paid_amount }} </b> </h4>
+                                </div>
+                                <div class="col-12" >
+                                   <h4> Amount To Be Paid: <b> Rs. {{ @$amount_to_be_paid }} </b> </h4>
+                                </div>
+
+                            </div>
                             <div class="row">
                               <div class="col-4" >
-                                    <a data-toggle="modal" data-target="#StockModal{{$store_id}}" class="btn btn-small btn-success">
+                                    {{-- <a data-toggle="modal" data-target="#StockModal{{$store_id}}" class="btn btn-small btn-success">
                                         <i class="fa fa-tick"></i>
                                         Pay
-                                    </a>
+                                    </a> --}}
                                     <a data-toggle="modal" data-target="#PaymentsModal" class="btn btn-small btn-primary">
                                        <i class="fa fa-tick"></i>
                                        Previous Payments
@@ -151,7 +227,9 @@
                             </div>
 
                      </div>
-
+@endif
+@endif
+         @endif
                   </div>
                </div>
             </div>
@@ -256,6 +334,15 @@ $(function(e) {
 } );
 
 
+
+$(document).ready(function() {
+ $('#reset').click(function(){
+  $('#year').remove();
+  $('#month').remove();
+    $('#date_fromly').append(' <select required name="year" id="year" class="form-control custom-select"><option value="">Select Year</option>@for ($y=2010; $y<=2040;  $y++)<option value="{{$y}}">{{$y}}</option>@endfor</select>');
+    $('#date_fromlm').append('  <select required name="month" id="month" class="form-control custom-select"><option  value="">Select Month</option><option  value="01">January</option><option  value="02">February</option><option  value="03">March</option><option  value="04">April</option><option  value="05">May</option><option  value="06">June</option><option  value="07">July</option><option  value="08">August</option><option  value="09">September</option><option  value="10">October</option><option  value="11">November</option><option  value="12">December</option></select>');
+   });
+});
 
 
             </script>
