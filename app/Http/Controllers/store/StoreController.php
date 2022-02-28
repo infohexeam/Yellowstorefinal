@@ -3802,14 +3802,18 @@ class StoreController extends Controller
   {
     $pageTitle = "Payments";
     $store_id  = Auth::guard('store')->user()->store_id;
-    $payments_datas = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+
+    $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id)
+      ->orderBy('settlment_id', 'DESC')->get();
+
+    $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
       ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
       ->where('trn_store_orders.store_id', $store_id)
       ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
       ->where('trn__order_split_payments.paymentRole', 1)
       ->get();
 
-    return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'pageTitle'));
+    return view('store.elements.payments.view', compact('store_id', 'payments_datas','store_payments', 'pageTitle'));
 
     //dd($payments_datas);
 
