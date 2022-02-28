@@ -151,9 +151,9 @@ class Helper
         // dd($storeData);
 
         if ($storeData  == 7) {
-            return 1;
+            return 0;
         }
-        return 0;
+        return 1;
     }
 
     public static function findSubAdminName($store_id)
