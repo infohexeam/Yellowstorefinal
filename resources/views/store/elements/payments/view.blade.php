@@ -166,28 +166,28 @@
                               <table>
                                  <tr>
                                     <td>
-                                       Total Order Amount 
+                                       Total Order Amount : 
                                     </td>
                                     <td>
-                                       {{ @$total_amount }}
-                                    </td>
-                                 </tr>
-
-                                 <tr>
-                                    <td>
-                                       Admin Commission Amount
-                                    </td>
-                                    <td>
-                                       {{ @$total_admin_amount }}
+                                        <h5>{{ @$total_amount }}</h5>
                                     </td>
                                  </tr>
 
                                  <tr>
                                     <td>
-                                       Store Commission Amount 
+                                       Admin Commission Amount : 
                                     </td>
                                     <td>
-                                       {{ @$total_store_amount }}
+                                       <h5>{{ @$total_admin_amount }}</h5>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                       Store Commission Amount : 
+                                    </td>
+                                    <td>
+                                       <h5>{{ @$total_store_amount }}</h5>
                                     </td>
                                  </tr>
                               </table>
