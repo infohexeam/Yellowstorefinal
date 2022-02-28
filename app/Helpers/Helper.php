@@ -149,10 +149,9 @@ class Helper
     {
         $storeData = Trn_StoreTimeSlot::where('store_id', $store_id)->where('time_start', null)->where('time_end', null)->count();
 
-        if ($storeData  == 0) {
+        if ($storeData  == 7) {
             return 0;
         }
-
         return 1;
     }
 
