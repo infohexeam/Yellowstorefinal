@@ -126,10 +126,7 @@
                                     <th class="wd-15p">{{ __('Total Order Amount') }}</th>
                                     <th class="wd-15p">{{ __('Admin Commission Amount') }}</th>
                                     <th class="wd-15p">{{ __('Store Commission Amount') }}</th>
-                                    <th class="wd-15p">{{ __('Total') }}</th>
-                                     <th class="wd-20p">{{__('Store Amount')}}</th>
-                                  
-
+                                 
                                  </tr>
                               </thead>
                               <tbody>
@@ -149,7 +146,6 @@
                                     <td>{{ @$store_payment->settlementAmount }}</td>
                                     
 
-                                   </td>
                                  </tr>
                                  @php
                                     $total_store_amount += $store_payment->settlementAmount;
