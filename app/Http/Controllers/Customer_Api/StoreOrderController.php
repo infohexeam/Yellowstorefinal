@@ -560,7 +560,7 @@ class StoreOrderController extends Controller
 
                     if ($request->payment_type_id == 2) {
 
-                        if (Helper::isBankDataFilled($request->store_id) == 1) {
+                        if (Helper::isBankDataFilled($request->store_id) == 0) {
                             $opt = new Trn_OrderPaymentTransaction;
                             $opt->order_id = $order_id;
                             $opt->paymentMode = $request->paymentMode;

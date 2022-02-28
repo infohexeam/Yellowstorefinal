@@ -199,6 +199,8 @@ class StoreSettingsController extends Controller
                     }
 
                     $data['status'] = 1;
+                    $data['onBoardingStatus'] = Helper::onBoardingStatus($store_id);
+
                     $data['message'] = " Store settings updated";
                     return response($data);
                 } else {
