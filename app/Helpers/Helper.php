@@ -21,7 +21,6 @@ use App\Models\admin\Mst_store_product_varient;
 
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_setting;
-use App\Models\admin\Trn_StoreBankData;
 
 class Helper
 {
@@ -56,17 +55,6 @@ class Helper
         $isServiceAreaSet = Helper::isServiceAreaSet($store_id);
         $isWorkingDaysSet = Helper::isWorkingDaysSet($store_id);
         $s = 1;
-
-        if ($isWorkingDaysSet == 1) {
-            $s = 4;
-            if ($isServiceAreaSet != 1) {
-                $s = 3;
-                if ($isProfileFilled != 1) {
-                    $s = 2;
-                }
-            }
-        }
-
         if ($isProfileFilled == 1) {
             $s = 2;
             if ($isServiceAreaSet == 1) {
@@ -76,18 +64,48 @@ class Helper
                 }
             }
         }
-
-
         return $s;
     }
-    public static function isBankDataFilled($store_id)
-    {
-        $sBankDAta = Trn_StoreBankData::where('store_id', $store_id)->where('status', 1)->count();
-        if ($sBankDAta > 0)
-            return 1;
-        else
-            return 0;
-    }
+
+
+    // public static function onBoardingStatus($store_id)
+    // {
+    //     $isProfileFilled = Helper::isProfileFilled($store_id);
+    //     $isServiceAreaSet = Helper::isServiceAreaSet($store_id);
+    //     $isWorkingDaysSet = Helper::isWorkingDaysSet($store_id);
+    //     $s = 1;
+
+    //     if ($isWorkingDaysSet == 1) {
+    //         $s = 4;
+    //         if ($isServiceAreaSet != 1) {
+    //             $s = 3;
+    //             if ($isProfileFilled != 1) {
+    //                 $s = 2;
+    //             }
+    //         }
+    //     }
+
+    //     if ($isProfileFilled == 1) {
+    //         $s = 2;
+    //         if ($isServiceAreaSet == 1) {
+    //             $s = 3;
+    //             if ($isWorkingDaysSet == 1) {
+    //                 $s = 4;
+    //             }
+    //         }
+    //     }
+
+
+    //     return $s;
+    // }
+    // public static function isBankDataFilled($store_id)
+    // {
+    //     $sBankDAta = Trn_StoreBankData::where('store_id', $store_id)->where('status', 1)->count();
+    //     if ($sBankDAta > 0)
+    //         return 1;
+    //     else
+    //         return 0;
+    // }
 
     public static function isProfileFilled($store_id)
     {
