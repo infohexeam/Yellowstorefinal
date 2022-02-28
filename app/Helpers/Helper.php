@@ -60,7 +60,7 @@ class Helper
         if (($isProfileFilled == 1) && ($isServiceAreaSet != 1) && ($isWorkingDaysSet != 1)) {
             $s = 2;
         }
-        
+
         if (($isProfileFilled == 1) && ($isServiceAreaSet == 1) && ($isWorkingDaysSet != 1)) {
             $s = 3;
         }
@@ -161,7 +161,7 @@ class Helper
     public static function isWorkingDaysSet($store_id)
     {
         $storeData = Trn_StoreTimeSlot::where('store_id', $store_id)->where('time_start', null)->where('time_end', null)->count();
-        dd($storeData);
+        //  dd($storeData);
 
         if ($storeData  == 7) {
             return 0;
