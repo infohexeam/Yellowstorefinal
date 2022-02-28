@@ -4,7 +4,7 @@
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
          <div class="card" >
-            <div class="row">
+            <div class="row"  style="min-height: 70vh;">
                <div class="col-12" >
 
                   @if ($message = Session::get('status'))
@@ -26,7 +26,7 @@
                      <div class="card-header">
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                      </div>
-                 <div class="card-body border" style="min-height: 70vh;" >
+                 <div class="card-body border" >
        <form action="" method="GET"
                 enctype="multipart/form-data">
           @csrf
@@ -107,9 +107,11 @@
                                     <th class="wd-15p">SL.No</th>
                                     <th class="wd-15p">{{ __('Order Number') }}</th>
                                     <th class="wd-15p">{{ __('Order Date') }}</th>
+                                    <th class="wd-15p">{{ __('Total Order Amount') }}</th>
                                     <th class="wd-15p">{{ __('Admin Commission Amount') }}</th>
                                     <th class="wd-15p">{{ __('Store Commission Amount') }}</th>
-                                    <th class="wd-15p">{{ __('Total Order Amount') }}</th>
+                                    <th class="wd-15p">{{ __('Total') }}</th>
+                                     <th class="wd-20p">{{__('Store Amount')}}</th>
                                   
 
                                  </tr>
@@ -127,7 +129,7 @@
                                     <td>{{ @$store_payment->orderAmount }}</td>
                                     <td>{{ @$store_payment->total_amount - @$store_payment->settlementAmount }}</td>
                                     <td>{{ @$store_payment->settlementAmount }}</td>
-                                    <td>{{ @$store_payment->total_amount }}</td>
+                                    
 
                                    </td>
                                  </tr>
