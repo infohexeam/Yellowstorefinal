@@ -3972,7 +3972,7 @@ class SettingController extends Controller
 		$a1 = Carbon::parse($request->date_from)->startOfDay();
 		$a2  = Carbon::parse($request->date_to)->endOfDay();
 
-		$payments_datas = new Trn_store_payment_settlment;
+		$payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
 
 		if (isset($request->date_from)) {
 			$payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
@@ -3995,6 +3995,7 @@ class SettingController extends Controller
 		}
 
 		$store_payments = $store_payments->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
+			->where('trn_store_orders.store_id', $store_id)
 			->where('trn__order_split_payments.paymentRole', 1)
 			->get();
 
