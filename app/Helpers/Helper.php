@@ -61,7 +61,7 @@ class Helper
             if ($isServiceAreaSet == 1) {
                 $s = 3;
                 if ($isWorkingDaysSet == 1) {
-                    $s = 4;
+                    $s = 5;
                 }
             }
         }
@@ -152,8 +152,9 @@ class Helper
 
         if ($storeData  == 7) {
             return 0;
+        } else {
+            return 1;
         }
-        return 1;
     }
 
     public static function findSubAdminName($store_id)
