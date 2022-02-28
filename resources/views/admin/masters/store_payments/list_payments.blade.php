@@ -193,10 +193,10 @@
                             
                             <div class="row">
                               <div class="col-4" >
-                                    {{-- <a data-toggle="modal" data-target="#StockModal{{$store_id}}" class="btn btn-small btn-success">
+                                    <a data-toggle="modal" data-target="#StockModal{{$store_id}}" class="btn btn-small btn-success">
                                         <i class="fa fa-tick"></i>
                                         Pay
-                                    </a> --}}
+                                    </a>
                                     <a data-toggle="modal" data-target="#PaymentsModal" class="btn btn-small btn-primary">
                                        <i class="fa fa-tick"></i>
                                        Previous Payments
