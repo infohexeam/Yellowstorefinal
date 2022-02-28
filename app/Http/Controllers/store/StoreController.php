@@ -3802,28 +3802,29 @@ class StoreController extends Controller
   {
     $pageTitle = "Payments";
     $store_id  = Auth::guard('store')->user()->store_id;
-    $payments_datas = \DB::table('trn_store_payments_tracker')->where('store_id', $store_id)->get();
+    $payments_datas = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+      ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id')
+      ->where('trn_store_orders.store_id', $store_id)
+      ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
+      ->get();
+    dd($payments_datas);
 
-    if ($_GET) {
+    // $payments_datas = \DB::table('trn_store_payments_tracker')->where('store_id', $store_id)->get();
+    // if ($_GET) {
+    //   $year = $request->year;
+    //   $month = $request->month;
+    //   $a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
+    //   $a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
+    //   $store_payments = Trn_store_payment_settlment::where('store_id', $store_id)
+    //     ->whereBetween('created_at', [@$a1, @$a2])->get();
+    //   $payments = Trn_store_payment_settlment::whereBetween('created_at', [@$a1, @$a2])->get();
+    //   $payments_datas = \DB::table('trn_store_payments_tracker')
+    //     ->where('store_id', $store_id)
+    //     ->whereBetween('date_of_payment', [@$a1, @$a2])
+    //     ->get();
+    //   return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'payments', 'store_payments', 'pageTitle'));
+    // }
 
-      $year = $request->year;
-      $month = $request->month;
-      $a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
-      $a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
-
-      $store_payments = Trn_store_payment_settlment::where('store_id', $store_id)
-        ->whereBetween('created_at', [@$a1, @$a2])->get();
-
-      $payments = Trn_store_payment_settlment::whereBetween('created_at', [@$a1, @$a2])->get();
-      $payments_datas = \DB::table('trn_store_payments_tracker')
-        ->where('store_id', $store_id)
-        ->whereBetween('date_of_payment', [@$a1, @$a2])
-        ->get();
-
-      return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'payments', 'store_payments', 'pageTitle'));
-    }
-
-    return view('store.elements.payments.view', compact('payments_datas', 'store_id', 'pageTitle'));
   }
 
   public function storeIncomingPayments(Request $request)
