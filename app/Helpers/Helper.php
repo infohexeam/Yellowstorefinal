@@ -55,15 +55,25 @@ class Helper
         $isServiceAreaSet = Helper::isServiceAreaSet($store_id);
         $isWorkingDaysSet = Helper::isWorkingDaysSet($store_id);
         $s = 1;
-        if ($isProfileFilled == 1) {
-            $s = 2;
-            if ($isServiceAreaSet == 1) {
+
+        if ($isWorkingDaysSet == 1) {
+            $s = 4;
+            if ($isServiceAreaSet != 1) {
                 $s = 3;
-                if ($isWorkingDaysSet == 1) {
-                    $s = 4;
+                if ($isProfileFilled != 1) {
+                    $s = 2;
                 }
             }
         }
+
+        if ($isProfileFilled == 1) {
+            $s = 2;
+        }
+        if ($isServiceAreaSet == 1) {
+            $s = 3;
+        }
+
+
         return $s;
     }
 
@@ -80,7 +90,7 @@ class Helper
             !isset($store->place) ||
             !isset($store->store_pincode) ||
             !isset($store->store_primary_address)
-            
+
         ) {
             return 0;
         } else {
