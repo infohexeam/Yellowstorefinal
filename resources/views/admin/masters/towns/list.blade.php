@@ -40,6 +40,7 @@
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
                                         <th class="wd-15p">{{__('Town')}}</th>
+                                        <th class="wd-15p">{{__('Pin Code')}}</th>
                                         <th class="wd-15p">{{__('District')}}</th>
                                         <th class="wd-15p">{{__('Action')}}</th>
                                     </tr>
@@ -52,6 +53,7 @@
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $data->town_name}}</td>
+                                        <td>{{ $data->pin}}</td>
                                         <td>{{ @$data->district['district_name']}}</td>
 
                                         <td>
