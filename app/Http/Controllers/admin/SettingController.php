@@ -3969,6 +3969,7 @@ class SettingController extends Controller
 		$store_id  = Crypt::decryptString($store_id);
 
 		$paidAmount = Trn_store_payments_tracker::where('store_id', $store_id)->sum('commision_paid');
+		$paid_details = Trn_store_payments_tracker::where('store_id', $store_id)->get();
 
 
 		$a1 = Carbon::parse($request->date_from)->startOfDay();
@@ -4002,7 +4003,7 @@ class SettingController extends Controller
 			->get();
 
 		//return view('store.elements.payments.view', compact('store_id', 'payments_datas','store_payments', 'pageTitle'));
-		return view('admin.masters.store_payments.list_payments', compact('paidAmount', 'store_id', 'store_payments', 'pageTitle', 'payments_datas'));
+		return view('admin.masters.store_payments.list_payments', compact('paid_details','paidAmount', 'store_id', 'store_payments', 'pageTitle', 'payments_datas'));
 
 
 		//$store_payments = Trn_store_payment_settlment::where('store_id', $store_id)->get();
