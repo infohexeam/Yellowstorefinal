@@ -73,6 +73,15 @@
                            </div>
                         </div>
 
+                        <div class="col-md-6">
+                          <div class="form-group">
+                           <label class="form-label">PIN Code</label>
+                           <input type="text" placeholder="PIN Code" id="pin" value="{{@$town->pin}}"  required class="form-control" name="pin" >
+       
+                            </div>
+                         </div>
+ 
+
 
 
 

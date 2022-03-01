@@ -129,8 +129,11 @@
 
                             </select>
 
- <label class="form-label">Town Name</label>
+                    <label class="form-label">Town Name</label>
                     <input type="text" placeholder="Town Name" id="town" required class="form-control" name="town_name" >
+
+                    <label class="form-label">PIN Code</label>
+                    <input type="text" placeholder="PIN Code" id="pin" required class="form-control" name="pin" >
 
 
 

@@ -452,6 +452,7 @@ class AdminController extends Controller
         $town = Town::find($town_id);
         $town->town_name = $request->town_name;
         $town->district_id = $request->district_id;
+        $town->pin = $request->pin;
         $town->update();
 
         return redirect('admin/towns/list')->with('status', 'Town updated successfully');
@@ -517,6 +518,7 @@ class AdminController extends Controller
             $data = $request->except('_token');
             $town->district_id         = $request->district_id;
             $town->town_name         = $request->town_name;
+            $town->pin         = $request->pin;
             $town->save();
             return redirect('admin/towns/list')->with('status', 'Town added successfully.');
         } else {
