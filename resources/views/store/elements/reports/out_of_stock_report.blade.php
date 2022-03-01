@@ -147,8 +147,15 @@
                                         @foreach ($data as $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('h:i:s')}}</td>
+                                            @php
+                                                if(!isset($d->updated_time)){
+                                                    $dateU = $d->updated_time;
+                                                }else{
+                                                    $dateU = $d->created_at;
+                                                }
+                                            @endphp
+                                            <td>{{ \Carbon\Carbon::parse($dateU)->format('d-m-Y')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($dateU)->format('h:i:s')}}</td>
 
                                             <td>{{ $d->product_name }}</td>
                                             <td>{{ $d->variant_name }}</td>
