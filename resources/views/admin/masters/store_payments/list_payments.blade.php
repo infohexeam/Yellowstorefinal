@@ -287,7 +287,7 @@
                               @php
                               $i = 0;
                               @endphp
-                              @foreach ($payments_datas as $payments_data)
+                              @foreach ($paid_details as $payments_data)
                                  <tr>
                                  <td>{{ ++$i }}</td>
                                  <td>{{date('M, Y', strtotime($payments_data->date_of_payment))}}</td>
