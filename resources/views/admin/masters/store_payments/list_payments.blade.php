@@ -241,6 +241,8 @@
                         </button>
                      </div>
 
+                     <h6>Total Order Amount Balance : <b id="tAmt"> {{ @$total_amount }} </b></h6>
+
                   <form action=" {{ url('admin/store/pay/'.Crypt::encryptString($store_id)) }} " method="POST" enctype="multipart/form-data" >
                  @csrf
                    <div class="modal-body">
@@ -248,13 +250,13 @@
                         <input type="hidden" name="date_of_payment" value="{{request()->input('date_from')}}" >
                     @endif
                     <label class="form-label">Pay Amount*</label>
-                    <input type="text" name="commision_paid" placeholder="Pay Amount" class="form-control" required="" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                    <input type="text" name="commision_paid"  oninput="checkAmt(this.value)"  placeholder="Pay Amount" class="form-control" required="" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                     <label class="form-label">Note</label>
                     <textarea type="text" name="payment_note" placeholder="Payment Note" class="form-control"></textarea>
                   </div>
 
                      <div class="modal-footer">
-                       <button type="submit" class="btn btn-raised btn-primary">
+                       <button type="submit" id="updateBtn" class="btn btn-raised btn-primary">
                     <i class="fa fa-check-square-o"></i> Submit</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                      </div>
@@ -304,7 +306,17 @@
             </div>
 
 
-                           <script>
+<script>
+   function checkAmt(p){
+      let ap = $('#tAmt').text();
+      if(p > ap){
+      $('#updateBtn').attr('disabled', true);
+
+      }else{
+      $('#updateBtn').attr('disabled', false);
+
+      }
+   }
 
 $(function(e) {
 	 $('#exampletable').DataTable( {
@@ -316,7 +328,7 @@ $(function(e) {
                 footer: true,
                 exportOptions: {
                      columns: [0,1,2,3,4,5,6]
-                 }
+                 } 
             },
             {
                 extend: 'excel',
