@@ -160,13 +160,19 @@ class Helper
 
     public static function isWorkingDaysSet($store_id)
     {
-        $storeData = Trn_StoreTimeSlot::where('store_id', $store_id)->where('time_start', null)->where('time_end', null)->count();
+        $storeData = Trn_StoreTimeSlot::where('store_id', $store_id)->get();
+        $c = 0;
+        foreach ($storeData as $row) {
+            if (isset($row->time_start) && isset($row->time_end)) {
+                $c++;
+            }
+        }
         //  dd($storeData);
 
-        if ($storeData  == 7) {
-            return 0;
-        } else {
+        if ($c > 0) {
             return 1;
+        } else {
+            return 0;
         }
     }
 
