@@ -4549,11 +4549,6 @@ class SettingController extends Controller
 	}
 
 
-
-
-
-
-
 	//configure points
 
 	public function listConfigurePoints(Request $request)
