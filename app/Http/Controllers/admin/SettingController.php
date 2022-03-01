@@ -4561,8 +4561,13 @@ class SettingController extends Controller
 
 		$pageTitle = "Configure Points";
 		$configure_points = Trn_configure_points::first();
+		if (isset($configure_points)) {
+			$configure_points_id = $configure_points->configure_points_id;
+		} else {
+			$configure_points_id = 1;
+		}
 
-		return view('admin.masters.configure_points.create', compact('configure_points', 'pageTitle'));
+		return view('admin.masters.configure_points.create', compact('configure_points_id', 'configure_points', 'pageTitle'));
 	}
 
 	public function createConfigurePoints(Request $request)
@@ -4603,19 +4608,35 @@ class SettingController extends Controller
 
 
 			$points = Trn_configure_points::find($cf_id);
-			// $points->points = $request->points;
-			$points->first_order_points = $request->first_order_points;
-			$points->referal_points = $request->referal_points;
-			$points->registraion_points = $request->registraion_points;
-			$points->rupee = $request->rupee;
-			$points->rupee_points = $request->rupee_points;
-			$points->order_amount = $request->order_amount;
-			$points->order_points = $request->order_points;
-			$points->redeem_percentage = $request->redeem_percentage;
-			$points->max_redeem_amount = $request->max_redeem_amount;
-			$points->joiner_points = $request->joiner_points;
+			if (isset($points)) {
+				// $points->points = $request->points;
+				$points->first_order_points = $request->first_order_points;
+				$points->referal_points = $request->referal_points;
+				$points->registraion_points = $request->registraion_points;
+				$points->rupee = $request->rupee;
+				$points->rupee_points = $request->rupee_points;
+				$points->order_amount = $request->order_amount;
+				$points->order_points = $request->order_points;
+				$points->redeem_percentage = $request->redeem_percentage;
+				$points->max_redeem_amount = $request->max_redeem_amount;
+				$points->joiner_points = $request->joiner_points;
 
-			$points->update();
+				$points->update();
+			} else {
+				$points = new Trn_configure_points;
+				$points->first_order_points = $request->first_order_points;
+				$points->referal_points = $request->referal_points;
+				$points->registraion_points = $request->registraion_points;
+				$points->rupee = $request->rupee;
+				$points->rupee_points = $request->rupee_points;
+				$points->order_amount = $request->order_amount;
+				$points->order_points = $request->order_points;
+				$points->redeem_percentage = $request->redeem_percentage;
+				$points->max_redeem_amount = $request->max_redeem_amount;
+				$points->joiner_points = $request->joiner_points;
+
+				$points->save();
+			}
 			return redirect('admin/configure_points/list')->with('status', 'Configure points updated successfully.');
 		} else {
 			return redirect()->back()->withErrors($validator)->withInput();
