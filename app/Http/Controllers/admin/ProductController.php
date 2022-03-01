@@ -117,7 +117,7 @@ class ProductController extends Controller
     $category = Mst_categories::all();
 
     $attr_groups = Mst_attribute_group::all();
-    $tax = Mst_Tax::all();
+    $tax = Mst_Tax::where('is_removed', '!=', 1)->get();
     $colors = Mst_attribute_value::join('mst_attribute_groups', 'mst_attribute_groups.attr_group_id', '=', 'mst_attribute_values.attribute_group_id')
       ->where('mst_attribute_groups.group_name', 'LIKE', '%color%')
       ->select('mst_attribute_values.*')

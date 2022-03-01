@@ -525,7 +525,7 @@ class ProductController extends Controller
         $data = array();
 
         try {
-            if ($data['taxDetails']  = Mst_Tax::select('tax_id', 'tax_name', 'tax_value')->orderBy('tax_id', 'DESC')->get()) {
+            if ($data['taxDetails']  = Mst_Tax::select('tax_id', 'tax_name', 'tax_value')->where('is_removed', '!=', 1)->orderBy('tax_id', 'DESC')->get()) {
                 $data['status'] = 1;
                 $data['message'] = "success";
                 return response($data);

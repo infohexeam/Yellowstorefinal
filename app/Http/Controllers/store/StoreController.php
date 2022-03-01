@@ -747,7 +747,7 @@ class StoreController extends Controller
 
     $products = Mst_store_product::all();
     $attr_groups = Mst_attribute_group::all();
-    $tax = Mst_Tax::all();
+    $tax = Mst_Tax::where('is_removed', '!=', 1)->get();
 
     $colors = Mst_attribute_value::join('mst_attribute_groups', 'mst_attribute_groups.attr_group_id', '=', 'mst_attribute_values.attribute_group_id')
       ->where('mst_attribute_groups.group_name', 'LIKE', '%color%')
@@ -1173,7 +1173,7 @@ class StoreController extends Controller
     $business_types = Mst_business_types::all();
     $attr_groups = Mst_attribute_group::all();
     $product_images = Mst_product_image::where('product_id', '=', $product_id)->orderBy('product_varient_id')->get();
-    $tax = Mst_Tax::all();
+    $tax = Mst_Tax::where('is_removed', '!=', 1)->get();
     $category = Mst_categories::where('category_status', 1)->get();
 
     $colors = Mst_attribute_value::join('mst_attribute_groups', 'mst_attribute_groups.attr_group_id', '=', 'mst_attribute_values.attribute_group_id')
@@ -2885,7 +2885,7 @@ class StoreController extends Controller
 
     $customer = Trn_store_customer::all();
     //  $products = Mst_store_product::where('store_id',$store_id)->where('stock_count','!=',0)->get();
-    $tax = Mst_Tax::all();
+    $tax = Mst_Tax::where('is_removed', '!=', 1)->get();
 
     $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
       ->where('mst_store_products.store_id', $store_id)
@@ -3804,42 +3804,42 @@ class StoreController extends Controller
     $store_id  = Auth::guard('store')->user()->store_id;
 
 
-    
-        $a1 = Carbon::parse($request->date_from)->startOfDay();
-        $a2  = Carbon::parse($request->date_to)->endOfDay();
 
-      
+    $a1 = Carbon::parse($request->date_from)->startOfDay();
+    $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+
 
 
 
     $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
 
-      if (isset($request->date_from)) {
-        $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
-      }
-      if (isset($request->date_to)) {
-        $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
-      }
+    if (isset($request->date_from)) {
+      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+    }
+    if (isset($request->date_to)) {
+      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    }
 
     $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
 
     $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
       ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
-      
-      if (isset($request->date_from)) {
-        $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
-      }
 
-      if (isset($request->date_to)) {
-        $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
-      }
+    if (isset($request->date_from)) {
+      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+    }
+
+    if (isset($request->date_to)) {
+      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    }
 
     $store_payments = $store_payments->where('trn_store_orders.store_id', $store_id)
       ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
       ->where('trn__order_split_payments.paymentRole', 1)
       ->get();
 
-    return view('store.elements.payments.view', compact('store_id', 'payments_datas','store_payments', 'pageTitle'));
+    return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'store_payments', 'pageTitle'));
 
     //dd($payments_datas);
 
