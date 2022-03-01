@@ -160,6 +160,7 @@
                         <div class="row">
                            <div class="col-6" >
                               <table class="table table-bordered text-nowrap">
+
                                  <tr>
                                     <td>
                                        Total Order Amount : 
@@ -186,6 +187,27 @@
                                        <b>{{ @$total_store_amount }}</b>
                                     </td>
                                  </tr>
+
+                                 <tr>
+                                    <td>
+                                       Total Order Amount Paid to Store : 
+                                    </td>
+                                    <td>
+                                        <b>{{ @$paidAmount }}</b>
+                                    </td>
+                                 </tr>
+
+
+                                 <tr>
+                                    <td>
+                                       Total Order Amount Balance : 
+                                    </td>
+                                    <td>
+                                        <b>{{ @$total_store_amount - @$paidAmount }}</b>
+                                    </td>
+                                 </tr>
+
+                               
                               </table>
                            </div>
                         </div>
