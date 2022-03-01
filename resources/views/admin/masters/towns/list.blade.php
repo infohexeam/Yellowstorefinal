@@ -39,8 +39,8 @@
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
-                                        <th class="wd-15p">{{__('Town')}}</th>
                                         <th class="wd-15p">{{__('Pin Code')}}</th>
+                                        {{-- <th class="wd-15p">{{__('Pin Code')}}</th> --}}
                                         <th class="wd-15p">{{__('District')}}</th>
                                         <th class="wd-15p">{{__('Action')}}</th>
                                     </tr>
@@ -53,7 +53,7 @@
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $data->town_name}}</td>
-                                        <td>{{ $data->pin}}</td>
+                                        {{-- <td>{{ $data->pin}}</td> --}}
                                         <td>{{ @$data->district['district_name']}}</td>
 
                                         <td>
@@ -131,11 +131,11 @@
 
                             </select>
 
-                    <label class="form-label">Town Name</label>
-                    <input type="text" placeholder="Town Name" id="town" required class="form-control" name="town_name" >
+                  <label class="form-label">PIN Code</label>
+                    <input type="text" placeholder="PIN Code" id="town" required class="form-control" name="town_name" >
 
-                    <label class="form-label">PIN Code</label>
-                    <input type="text" placeholder="PIN Code" id="pin" required class="form-control" name="pin" >
+                    {{-- <label class="form-label">PIN Code</label>
+                    <input type="text" placeholder="PIN Code" id="pin" required class="form-control" name="pin" > --}}
 
 
 

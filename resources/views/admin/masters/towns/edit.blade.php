@@ -68,18 +68,18 @@
 
                         <div class="col-md-6">
                          <div class="form-group">
-  <label class="form-label">Town Name</label>
-                    <input type="text" placeholder="Town Name" value="{{$town->town_name}}" required class="form-control" name="town_name" >
+                          <label class="form-label">PIN Code</label>
+                          <input type="text" placeholder="PIN Code" value="{{$town->town_name}}" required class="form-control" name="town_name" >
                            </div>
                         </div>
 
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                           <div class="form-group">
                            <label class="form-label">PIN Code</label>
                            <input type="text" placeholder="PIN Code" id="pin" value="{{@$town->pin}}"  required class="form-control" name="pin" >
        
                             </div>
-                         </div>
+                         </div> --}}
  
 
 
