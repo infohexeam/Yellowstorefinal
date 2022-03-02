@@ -555,7 +555,7 @@ class PurchaseController extends Controller
                             }
                         } else {
                             $data['status'] = 0;
-                            $data['message'] = "Coupon not found";
+                            $data['message'] = "Coupon not applicable";
                         }
                     } else {
                         $data['status'] = 0;
