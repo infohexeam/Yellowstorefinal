@@ -129,7 +129,7 @@ class StoreOrderController extends Controller
 
                                 $data['product_varient_id'] = $varProdu->product_varient_id;
                                 $data['product_id'] = $varProdu->product_id;
-                                $data['message'] = 'Stock unavilable';
+                                $data['message'] = 'Stock unavailable';
                                 $data['status'] = 2;
                                 //  return response($data);
                             }
@@ -892,7 +892,7 @@ class StoreOrderController extends Controller
                             $noStockProducts[] = $varProdu->product_varient_id;
 
                             $data['noStockProducts'] = $noStockProducts;
-                            $data['message'] = 'Stock unavilable';
+                            $data['message'] = 'Stock unavailable';
                             $data['status'] = 2;
                         }
                     } else {
