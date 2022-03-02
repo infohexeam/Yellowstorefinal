@@ -186,6 +186,26 @@
                                        <b>{{ @$total_store_amount }}</b>
                                     </td>
                                  </tr>
+
+                                 <tr>
+                                    <td>
+                                       Total Order Amount Paid to Store : 
+                                    </td>
+                                    <td>
+                                        <b>{{ @$paidAmount }}</b>
+                                    </td>
+                                 </tr>
+
+
+                                 <tr>
+                                    <td>
+                                       Total Order Amount Balance : 
+                                    </td>
+                                    <td>
+                                        <b>{{ @$total_store_amount - @$paidAmount }}</b>
+                                    </td>
+                                 </tr>
+                                 
                               </table>
                            </div>
                         </div>
@@ -265,7 +285,7 @@
                               @php
                               $i = 0;
                               @endphp
-                              @foreach ($payments_datas as $payments_data)
+                              @foreach ($paid_details as $payments_data)
                                  <tr>
                                  <td>{{ ++$i }}</td>
                                  <td>{{date('M, Y', strtotime($payments_data->date_of_payment))}}</td>

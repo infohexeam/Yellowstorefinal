@@ -52,32 +52,77 @@ class Helper
 
     public static function onBoardingStatus($store_id)
     {
-        $isProfileFilled = Helper::isProfileFilled($store_id);
-        $isServiceAreaSet = Helper::isServiceAreaSet($store_id);
-        $isWorkingDaysSet = Helper::isWorkingDaysSet($store_id);
-        $s = 1;
+        // $isProfileFilled = Helper::isProfileFilled($store_id);
+        // $isServiceAreaSet = Helper::isServiceAreaSet($store_id);
+        // $isWorkingDaysSet = Helper::isWorkingDaysSet($store_id);
+        // $s = 1;
 
-        if (($isProfileFilled == 1) && ($isServiceAreaSet != 1) && ($isWorkingDaysSet != 1)) {
-            $s = 2;
-        }
+        // if (($isProfileFilled == 1) && ($isServiceAreaSet != 1) && ($isWorkingDaysSet != 1)) {
+        //     $s = 2;
+        // }
 
-        if (($isProfileFilled == 1) && ($isServiceAreaSet == 1) && ($isWorkingDaysSet != 1)) {
-            $s = 3;
-        }
+        // if (($isProfileFilled == 1) && ($isServiceAreaSet == 1) && ($isWorkingDaysSet != 1)) {
+        //     $s = 3;
+        // }
 
-        if (($isProfileFilled == 1) && ($isServiceAreaSet == 1) && ($isWorkingDaysSet == 1)) {
-            $s = 4;
-        }
+        // if (($isProfileFilled == 1) && ($isServiceAreaSet == 1) && ($isWorkingDaysSet == 1)) {
+        //     $s = 4;
+        // }
 
         // if ($isProfileFilled == 1) {
         //     $s = 2;
         //     if ($isServiceAreaSet == 1) {
         //         $s = 3;
         //         if ($isWorkingDaysSet == 1) {
-        //             $s = 5;
+        //             $s = 5;   
         //         }
         //     }
         // }
+
+        $store =  Mst_store::find($store_id);
+        if (
+            !isset($store->store_contact_person_name) ||
+            !isset($store->store_contact_person_phone_number) ||
+            !isset($store->store_country_id) ||
+            !isset($store->store_state_id) ||
+            !isset($store->store_district_id) ||
+            !isset($store->town) ||
+            !isset($store->place) ||
+            !isset($store->store_pincode) ||
+            !isset($store->store_primary_address)
+
+        ) {
+            $s = 1;
+        } else {
+            $s = 2;
+        }
+
+        if (!isset($store->service_area) || ($store->service_area <= 0)) {
+            $s = 1;
+        } else {
+            $serviceData =  Trn_store_setting::where('store_id', $store_id)->count();
+            if ($serviceData <= 0) {
+                $s = 1;
+            } else {
+                $s = 3;
+            }
+        }
+
+        $storeData = Trn_StoreTimeSlot::where('store_id', $store_id)->get();
+        $c = 0;
+        foreach ($storeData as $row) {
+            if (isset($row->time_start) && isset($row->time_end)) {
+                $c++;
+            }
+        }
+        //  dd($storeData);
+
+        if ($c > 0) {
+            $s = 4;
+        } else {
+            $s = 1;
+        }
+
         return $s;
     }
 

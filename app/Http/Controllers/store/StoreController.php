@@ -3809,6 +3809,9 @@ class StoreController extends Controller
     $a2  = Carbon::parse($request->date_to)->endOfDay();
 
 
+    $paidAmount = Trn_store_payments_tracker::where('store_id', $store_id)->sum('commision_paid');
+    $paid_details = Trn_store_payments_tracker::where('store_id', $store_id)->orderBy('store_payments_tracker_id', 'DESC')->limit(15)->get();
+
 
 
 
@@ -3839,7 +3842,7 @@ class StoreController extends Controller
       ->where('trn__order_split_payments.paymentRole', 1)
       ->get();
 
-    return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'store_payments', 'pageTitle'));
+    return view('store.elements.payments.view', compact('paid_details', 'paidAmount', 'store_id', 'payments_datas', 'store_payments', 'pageTitle'));
 
     //dd($payments_datas);
 
