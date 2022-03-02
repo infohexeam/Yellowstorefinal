@@ -689,7 +689,7 @@ class AdminController extends Controller
 
 
 
-        return redirect('admin/taex/list')->with('status', 'Tax updated successfully.');
+        return redirect('admin/tax/list')->with('status', 'Tax updated successfully.');
     }
 
 
