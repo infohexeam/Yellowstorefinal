@@ -462,6 +462,7 @@ class StoreController extends Controller
                 $store->latitude   = $request->latitude;
                 $store->longitude   = $request->longitude;
                 $store->place   = $request->place;
+                $store->store_pincode   = $request->pincode;
 
                 $store->save();
 

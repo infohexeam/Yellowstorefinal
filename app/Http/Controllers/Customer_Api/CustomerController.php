@@ -283,6 +283,7 @@ class CustomerController extends Controller
 
                 $customer->latitude   = $request->latitude;
                 $customer->longitude   = $request->longitude;
+                $customer->customer_pincode   = $request->pincode;
                 $customer->place   = $request->place;
 
                 if (isset($request->referral_id)) {
@@ -933,6 +934,7 @@ class CustomerController extends Controller
                     $customer->state_id   = $request->state_id;
                     $customer->district_id   = $request->district_id;
                     $customer->town_id   = $request->town_id;
+                    $customer->customer_pincode   = $request->pincode;
 
                     if ($customer->update()) {
                         $data['status'] = 1;
