@@ -277,11 +277,11 @@ class ProductController extends Controller
                 $data['productVartiantdata'] = $productVartiantdata;
 
                 $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
-                ->where('product_id', $productData->product_id)->get();
-            foreach ($otherVariants as $r) {
-                $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
-            }
-            $data['otherVariants'] = $otherVariants;
+                    ->where('product_id', $productData->product_id)->get();
+                foreach ($otherVariants as $r) {
+                    $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+                }
+                $data['otherVariants'] = $otherVariants;
 
 
                 $data['message'] = 'Success';
@@ -611,7 +611,8 @@ class ProductController extends Controller
                     $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->toArray();
                     // dd($varIds);
 
-                    $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
+                    // $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
+                    $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', [$request->product_varient_id])->groupBy('attr_group_id')->get();
 
                     foreach ($attributesData as $j) {
                         $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
