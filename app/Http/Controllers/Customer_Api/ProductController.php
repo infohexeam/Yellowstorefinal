@@ -639,12 +639,11 @@ class ProductController extends Controller
 
                             if ($varAttrInfo > 0) {
                                 $l->attr_status = 1;
+                                $j->attr_value = $aarVat;
                             } else {
                                 $l->attr_status = 0;
                             }
                         }
-
-                        $j->attr_value = $aarVat;
                     }
 
                     // dd($attributesData);
