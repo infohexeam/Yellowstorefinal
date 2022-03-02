@@ -276,6 +276,13 @@ class ProductController extends Controller
                 }
                 $data['productVartiantdata'] = $productVartiantdata;
 
+                $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
+                    ->where('product_id', $productData->product_id)->get();
+                foreach ($otherVariants as $r) {
+                    $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+                }
+                $data['otherVariants'] = $otherVariants;
+
 
 
 
@@ -666,6 +673,13 @@ class ProductController extends Controller
 
                     $data['attributesData'] = $attributesData;
 
+
+                    $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
+                        ->where('product_id', $productData->product_id)->get();
+                    foreach ($otherVariants as $r) {
+                        $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+                    }
+                    $data['otherVariants'] = $otherVariants;
 
                     $data['itemPurchasedStatus'] = 0;
                     $data['feedbackAddedStatus'] = 0;
@@ -2022,6 +2036,13 @@ class ProductController extends Controller
 
                     $data['itemPurchasedStatus'] = 0;
                     $data['feedbackAddedStatus'] = 0;
+
+                    $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
+                        ->where('product_id', $productData->product_id)->get();
+                    foreach ($otherVariants as $r) {
+                        $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+                    }
+                    $data['otherVariants'] = $otherVariants;
 
 
                     // $data['feedbackData'] = [
