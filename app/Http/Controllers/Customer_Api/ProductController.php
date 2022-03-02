@@ -639,7 +639,6 @@ class ProductController extends Controller
 
                             if ($varAttrInfo > 0) {
                                 $l->attr_status = 1;
-                                $j->attr_value = $aarVat;
                             } else {
                                 $l->attr_status = 0;
                             }
@@ -836,14 +835,17 @@ class ProductController extends Controller
                         $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->toArray();
                         // dd($varIds);
 
-                        $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
+                        // $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
+                        $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', [$request->product_varient_id])->groupBy('attr_group_id')->get();
 
                         foreach ($attributesData as $j) {
                             $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
                             $j->attr_group = @$datas->group_name;
 
                             $aarVat = Trn_ProductVariantAttribute::select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
-                                ->whereIn('product_varient_id', $varIds)
+                                ->whereIn('product_varient_id', [$request->product_varient_id])
+                                // ->whereIn('product_varient_id', $varIds)
+
                                 ->where('attr_group_id', $j->attr_group_id)
                                 ->groupBy('attr_value_id')->get();
 
