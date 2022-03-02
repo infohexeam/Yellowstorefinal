@@ -55,6 +55,7 @@ class Helper
         $isProfileFilled = Helper::isProfileFilled($store_id);
         $isServiceAreaSet = Helper::isServiceAreaSet($store_id);
         $isWorkingDaysSet = Helper::isWorkingDaysSet($store_id);
+        dd($isProfileFilled, $isServiceAreaSet, $isWorkingDaysSet);
         $s = 1;
 
         // if (($isProfileFilled == 1) && ($isServiceAreaSet != 1) && ($isWorkingDaysSet != 1)) {
