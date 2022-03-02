@@ -620,7 +620,9 @@ class ProductController extends Controller
 
 
                         $aarVat = Trn_ProductVariantAttribute::select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
-                            ->whereIn('product_varient_id', $varIds)
+                            ->whereIn('product_varient_id', [$request->product_varient_id])
+                            // ->whereIn('product_varient_id', $varIds)
+
                             ->where('attr_group_id', $j->attr_group_id)
                             ->groupBy('attr_value_id')->get();
 
