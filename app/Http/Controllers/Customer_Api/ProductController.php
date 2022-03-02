@@ -277,13 +277,11 @@ class ProductController extends Controller
                 $data['productVartiantdata'] = $productVartiantdata;
 
                 $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
-                    ->where('product_id', $productData->product_id)->get();
-                foreach ($otherVariants as $r) {
-                    $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
-                }
-                $data['otherVariants'] = $otherVariants;
-
-
+                ->where('product_id', $productData->product_id)->get();
+            foreach ($otherVariants as $r) {
+                $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+            }
+            $data['otherVariants'] = $otherVariants;
 
 
                 $data['message'] = 'Success';

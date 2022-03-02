@@ -589,7 +589,7 @@ class PurchaseController extends Controller
                 }
                 $coupon = $coupon->first();
 
-                if (1) {
+                if ($coupon) {
                     $current_time = Carbon::now()->toDateTimeString();
 
                     if ($coupon->valid_from >= $current_time) {
