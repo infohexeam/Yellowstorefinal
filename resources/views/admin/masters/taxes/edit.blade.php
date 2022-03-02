@@ -82,7 +82,7 @@
                         <div class="form-group">
                            <center>
                            <button type="submit" id="submitAdd" class="btn btn-raised btn-primary">
-                           <i class="fa fa-check-square-o"></i> Add</button>
+                           <i class="fa fa-check-square-o"></i> Update</button>
                            <button type="reset" class="btn btn-raised btn-success">
                            Reset</button>
                            <a class="btn btn-danger" href="{{ route('admin.list_taxes') }}">Cancel</a>
