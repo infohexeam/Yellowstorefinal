@@ -462,7 +462,7 @@ class StoreController extends Controller
                 $store->latitude   = $request->latitude;
                 $store->longitude   = $request->longitude;
                 $store->place   = $request->place;
-                $store->store_pincode   = $request->pincode;
+                $store->store_pincode   = $request->store_pincode;
 
                 $store->save();
 
@@ -548,6 +548,7 @@ class StoreController extends Controller
                 $today = Carbon::now()->toDateString();
 
                 if ($custCheck) {
+                    //here
 
                     if (Hash::check($passChk, $custCheck->password)) {
                         if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
