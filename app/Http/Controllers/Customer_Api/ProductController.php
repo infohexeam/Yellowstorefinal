@@ -152,6 +152,7 @@ class ProductController extends Controller
                 $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                 $productData->rating = Helper::productRating($productData->product_id);
                 $productData->ratingCount = Helper::productRatingCount($productData->product_id);
+                $productData->store_name = Mst_store::find($productData->store_id)->store_name;
                 $data['productdata'] = $productData;
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
@@ -259,6 +260,8 @@ class ProductController extends Controller
 
                     $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
                     $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
+                    $row->store_name = Mst_store::find($row->store_id)->store_name;
+
                     foreach ($attributesData as $j) {
                         $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
                         if (isset($datas->group_name))
