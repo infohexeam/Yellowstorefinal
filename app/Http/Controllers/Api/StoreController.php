@@ -657,6 +657,21 @@ class StoreController extends Controller
                                 $data['status'] = 1;
                                 $data['message'] = "Login Success";
 
+
+                                Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
+                                    //   ->where('store_admin_id', $custCheck->store_admin_id)
+                                    ->delete();
+                                if (isset($request->device_token) && isset($request->device_type)) {
+
+                                    $cdt = new Trn_StoreDeviceToken;
+                                    $cdt->store_id = $custCheck->store_id;
+                                    $cdt->store_admin_id = $custCheck->store_admin_id;
+                                    $cdt->store_device_token = $request->device_token;
+                                    $cdt->store_device_type = $request->device_type;
+                                    $cdt->save();
+                                }
+
+
                                 DB::table('oauth_access_tokens')->where('user_id', $custCheck->store_admin_id)->update(['revoked' => 1]);
 
                                 $storeData = Mst_store::find($custCheck->store_id);
@@ -704,18 +719,7 @@ class StoreController extends Controller
                                 // $data['isServiceAreaSet'] = Helper::isServiceAreaSet($custCheck->store_id);
                                 // $data['isWorkingDaysSet'] = Helper::isWorkingDaysSet($custCheck->store_id);
 
-                                Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
-                                    //   ->where('store_admin_id', $custCheck->store_admin_id)
-                                    ->delete();
-                                if (isset($request->device_token) && isset($request->device_type)) {
 
-                                    $cdt = new Trn_StoreDeviceToken;
-                                    $cdt->store_id = $custCheck->store_id;
-                                    $cdt->store_admin_id = $custCheck->store_admin_id;
-                                    $cdt->store_device_token = $request->device_token;
-                                    $cdt->store_device_type = $request->device_type;
-                                    $cdt->save();
-                                }
                             } else {
                                 $storeData = Mst_store::find($custCheck->store_id);
                                 $data['store_id'] = $custCheck->store_id;

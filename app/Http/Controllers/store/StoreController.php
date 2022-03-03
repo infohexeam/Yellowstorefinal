@@ -2336,7 +2336,7 @@ class StoreController extends Controller
       $order->update();
 
 
-      $data = array('order_number' => $order_number, 'order_status' => $order_status, 'to_mail' => $customer_email);
+      $data = array('order_number' => $order_number, 'order_status' => $request->status_id, 'to_mail' => $customer_email);
 
 
       // Mail::send('store/mail-template/order-status-mail-template', $data, function($message) use ($data){
