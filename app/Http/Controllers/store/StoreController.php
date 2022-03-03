@@ -33,6 +33,7 @@ use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreTimeSlot;
 use App\Models\admin\Trn_DeliveryBoyLocation;
 use App\Models\admin\Trn_DeliveryBoyDeviceToken;
+use App\Models\admin\Trn_store_payments_tracker;
 
 use App\Models\admin\Mst_store_documents;
 use App\Models\admin\Mst_store_images;
