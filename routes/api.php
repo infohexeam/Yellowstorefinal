@@ -84,6 +84,7 @@ Route::get('store/get-online-status', 'Api\StoreController@getOnlineStatus');
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('store/logout', 'Api\StoreController@logout');
+    Route::get('store/logout-test', 'Api\StoreController@logoutTest');
     Route::get('store/logout-other-device', 'Api\StoreController@logoutOtherDevice');
     Route::post('store/check-login-status', 'Api\StoreController@checkLoginStatus');
 

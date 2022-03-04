@@ -280,6 +280,18 @@ class StoreController extends Controller
         return response($data);
     }
 
+    public function logoutTest(Request $request)
+    {
+        // echo "here";die;
+        $accessToken = auth()->user()->token();
+        $token = $request->user()->tokens->find($accessToken);
+        dd($accessToken, $token);
+        $token->revoke();
+        $data['status'] = 1;
+        $data['message'] = "Success";
+        return response($data);
+    }
+
     public function logoutOtherDevice(Request $request)
     {
 
