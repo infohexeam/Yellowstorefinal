@@ -241,7 +241,7 @@
                         </button>
                      </div>
 
-                     <h5>Balance to Pay : <b id="tAmt"> {{ @$total_amount }} </b></h5>
+                     <h5>Balance to Pay : <b id="tAmt"> {{ @$total_store_amount - @$paidAmount }} </b></h5>
 
                   <form action=" {{ url('admin/store/pay/'.Crypt::encryptString($store_id)) }} " method="POST" enctype="multipart/form-data" >
                  @csrf
