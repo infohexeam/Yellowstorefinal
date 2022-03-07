@@ -82,6 +82,11 @@ class PurchaseController extends Controller
                             $orderAmount = $request->order_amount;
                             $reducedOrderAmount = $orderAmount - $maxRedeemAmountPerOrder;
                             $customerUsedRewardPoint = $maxRedeemAmountPerOrder / $pointToRupeeRatio;
+                            if ($reducedOrderAmount < 0) {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed";
+                                return response($data);
+                            }
 
                             $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
                             $data['totalReducableAmount'] = number_format((float)$maxRedeemAmountPerOrder, 2, '.', '');
@@ -94,7 +99,11 @@ class PurchaseController extends Controller
                             $orderAmount = $request->order_amount;
                             $reducedOrderAmount = $orderAmount - $totalReducableAmount;
                             $customerUsedRewardPoint = $totalReducableAmount / $pointToRupeeRatio;
-
+                            if ($reducedOrderAmount < 0) {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed";
+                                return response($data);
+                            }
                             $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
                             $data['totalReducableAmount'] = number_format((float)$totalReducableAmount, 2, '.', '');
                             $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
