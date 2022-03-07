@@ -127,6 +127,12 @@ class BusinessTypeController extends Controller
                             $offerProduct->store_name = $storeData->store_name;
                             $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                             $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+
+                            $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                            $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                            $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                            $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
                             $productDataFinal[] =   $offerProduct;
                         }
                     }
@@ -307,6 +313,12 @@ class BusinessTypeController extends Controller
                                 $offerProduct->store_name = $storeData->store_name;
                                 $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                                 $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+
+                                $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                                $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                                $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                                $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
                                 $productDataFinal[] =   $offerProduct;
                             }
                         }

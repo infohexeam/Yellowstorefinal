@@ -153,6 +153,13 @@ class ProductController extends Controller
                 $productData->rating = Helper::productRating($productData->product_id);
                 $productData->ratingCount = Helper::productRatingCount($productData->product_id);
                 $productData->store_name = Mst_store::find($productData->store_id)->store_name;
+
+
+                $productData->productStock = Helper::productStock($productData->product_id);
+                $productData->variantCount = Helper::variantCount($productData->product_id);
+                $productData->isBaseVariant = Helper::isBaseVariant($productData->product_id);
+                $productData->attrCount = Helper::attrCount($productData->product_id);
+
                 $data['productdata'] = $productData;
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
@@ -598,6 +605,13 @@ class ProductController extends Controller
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
 
+
+                    $productData->productStock = Helper::productStock($productData->product_id);
+                    $productData->variantCount = Helper::variantCount($productData->product_id);
+                    $productData->isBaseVariant = Helper::isBaseVariant($productData->product_id);
+                    $productData->attrCount = Helper::attrCount($productData->product_id);
+
+
                     $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
                     $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->count();
 
@@ -822,6 +836,13 @@ class ProductController extends Controller
                         $productData->product_description =   strip_tags(@$productData->product_description);
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                         $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
+
+
+                        $productData->productStock = Helper::productStock($productData->product_id);
+                        $productData->variantCount = Helper::variantCount($productData->product_id);
+                        $productData->isBaseVariant = Helper::isBaseVariant($productData->product_id);
+                        $productData->attrCount = Helper::attrCount($productData->product_id);
+
 
                         $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
                         $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->count();
@@ -1540,6 +1561,11 @@ class ProductController extends Controller
 
                     $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                     $offerProduct->ratingCount = $countRating;
+
+                    $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                    $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                    $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                    $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
                 }
                 $data['status'] = 1;
                 $data['message'] = "success ";
@@ -2018,6 +2044,14 @@ class ProductController extends Controller
                     $productData->product_description =   strip_tags(@$productData->product_description);
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
+
+
+
+                    $productData->productStock = Helper::productStock($productData->product_id);
+                    $productData->variantCount = Helper::variantCount($productData->product_id);
+                    $productData->isBaseVariant = Helper::isBaseVariant($productData->product_id);
+                    $productData->attrCount = Helper::attrCount($productData->product_id);
+
 
                     $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->sum('rating');
                     $countRating = Trn_ReviewsAndRating::where('product_varient_id', $request->product_varient_id)->where('isVisible', 1)->count();
