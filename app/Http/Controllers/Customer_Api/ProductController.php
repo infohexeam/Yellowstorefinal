@@ -2681,6 +2681,7 @@ class ProductController extends Controller
                                 $offerProduct->store_name = $storeData->store_name;
                                 $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                                 $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                                $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
 
                                 $productDataFinal[] =   $offerProduct;
                             }
@@ -2711,6 +2712,7 @@ class ProductController extends Controller
                                 $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
 
                                 $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                                $allProduct->productStock = Helper::productStock($allProduct->product_id);
 
 
                                 $allProductDataFinal[] =   $allProduct;
@@ -2797,6 +2799,9 @@ class ProductController extends Controller
                                     $offerProduct->store_name = $storeData->store_name;
                                     $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                                     $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                                    $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+
                                     $productDataFinal[] =   $offerProduct;
                                 }
                             }
@@ -2826,6 +2831,7 @@ class ProductController extends Controller
                                     $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
                                     $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
                                     $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                                    $allProduct->productStock = Helper::productStock($allProduct->product_id);
 
                                     $allProductDataFinal[] =   $allProduct;
                                 }
@@ -2993,6 +2999,8 @@ class ProductController extends Controller
                             $offerProduct->store_name = $storeData->store_name;
                             $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                             $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                            $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
                             $productDataFinal[] =   $offerProduct;
                         }
                     }
@@ -3022,6 +3030,7 @@ class ProductController extends Controller
                             $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
                             $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
                             $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                            $allProduct->productStock = Helper::productStock($allProduct->product_id);
 
                             $allProductDataFinal[] =   $allProduct;
                         }
@@ -3163,6 +3172,8 @@ class ProductController extends Controller
                                 $offerProduct->store_name = $storeData->store_name;
                                 $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                                 $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                                $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
                                 $productDataFinal[] =   $offerProduct;
                             }
                         }
@@ -3193,6 +3204,8 @@ class ProductController extends Controller
                                 $rvProduct->store_name = $rvpstoreData->store_name;
                                 $rvProduct->rating = Helper::productRating($rvProduct->product_id);
                                 $rvProduct->ratingCount = Helper::productRatingCount($rvProduct->product_id);
+                                $rvProduct->productStock = Helper::productStock($rvProduct->product_id);
+
                                 $recentlyVisitedProductsArr[] = $rvProduct;
                             }
                         }
@@ -3217,6 +3230,7 @@ class ProductController extends Controller
                                 $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
                                 $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
                                 $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                                $allProduct->productStock = Helper::productStock($allProduct->product_id);
 
                                 $allProductDataFinal[] =   $allProduct;
                             }
@@ -3276,6 +3290,8 @@ class ProductController extends Controller
                             }
                             $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                             $offerProduct->ratingCount = $countRating;
+                            $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
                             //  $dataPurchase[] = $offerProduct;
                         }
                         //   $data['purchasedProducts'] = $dataPurchase;
@@ -3396,6 +3412,8 @@ class ProductController extends Controller
                         $offerProduct->store_name = $storeData->store_name;
                         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                        $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
                         $productDataFinal[] =   $offerProduct;
                     }
                 }
@@ -3676,6 +3694,7 @@ class ProductController extends Controller
                             $offerProduct->store_name = $storeData->store_name;
                             $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                             $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                            $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
                             $productDataFinal[] =   $offerProduct;
                         }
                     }
@@ -3906,6 +3925,7 @@ class ProductController extends Controller
 
                         $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                         $offerProduct->ratingCount = $countRating;
+                        $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
                     }
 
 
