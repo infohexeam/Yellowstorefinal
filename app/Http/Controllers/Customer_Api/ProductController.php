@@ -2682,6 +2682,9 @@ class ProductController extends Controller
                                 $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                                 $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
                                 $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                                $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                                $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                                $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
 
                                 $productDataFinal[] =   $offerProduct;
                             }
@@ -2714,6 +2717,9 @@ class ProductController extends Controller
                                 $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
                                 $allProduct->productStock = Helper::productStock($allProduct->product_id);
 
+                                $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                                $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                                $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
 
                                 $allProductDataFinal[] =   $allProduct;
                             }
@@ -2801,6 +2807,9 @@ class ProductController extends Controller
                                     $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
                                     $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
 
+                                    $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                                    $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                                    $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
 
                                     $productDataFinal[] =   $offerProduct;
                                 }
@@ -2832,6 +2841,10 @@ class ProductController extends Controller
                                     $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
                                     $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
                                     $allProduct->productStock = Helper::productStock($allProduct->product_id);
+
+                                    $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                                    $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                                    $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
 
                                     $allProductDataFinal[] =   $allProduct;
                                 }
@@ -3001,6 +3014,10 @@ class ProductController extends Controller
                             $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
                             $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
 
+                            $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                            $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                            $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
                             $productDataFinal[] =   $offerProduct;
                         }
                     }
@@ -3031,6 +3048,10 @@ class ProductController extends Controller
                             $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
                             $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
                             $allProduct->productStock = Helper::productStock($allProduct->product_id);
+
+                            $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                            $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                            $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
 
                             $allProductDataFinal[] =   $allProduct;
                         }
@@ -3174,6 +3195,10 @@ class ProductController extends Controller
                                 $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
                                 $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
 
+                                $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                                $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                                $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
                                 $productDataFinal[] =   $offerProduct;
                             }
                         }
@@ -3206,6 +3231,10 @@ class ProductController extends Controller
                                 $rvProduct->ratingCount = Helper::productRatingCount($rvProduct->product_id);
                                 $rvProduct->productStock = Helper::productStock($rvProduct->product_id);
 
+                                $rvProduct->variantCount = Helper::variantCount($rvProduct->product_id);
+                                $rvProduct->isBaseVariant = Helper::isBaseVariant($rvProduct->product_id);
+                                $rvProduct->attrCount = Helper::attrCount($rvProduct->product_id);
+
                                 $recentlyVisitedProductsArr[] = $rvProduct;
                             }
                         }
@@ -3231,6 +3260,10 @@ class ProductController extends Controller
                                 $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
                                 $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
                                 $allProduct->productStock = Helper::productStock($allProduct->product_id);
+
+                                $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                                $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                                $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
 
                                 $allProductDataFinal[] =   $allProduct;
                             }
@@ -3291,6 +3324,10 @@ class ProductController extends Controller
                             $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                             $offerProduct->ratingCount = $countRating;
                             $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                            $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                            $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                            $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
 
                             //  $dataPurchase[] = $offerProduct;
                         }
@@ -3413,6 +3450,10 @@ class ProductController extends Controller
                         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
                         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                        $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                        $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                        $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
 
                         $productDataFinal[] =   $offerProduct;
                     }
@@ -3695,6 +3736,10 @@ class ProductController extends Controller
                             $offerProduct->rating = Helper::productRating($offerProduct->product_id);
                             $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
                             $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                            $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                            $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                            $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
                             $productDataFinal[] =   $offerProduct;
                         }
                     }
@@ -3926,6 +3971,10 @@ class ProductController extends Controller
                         $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                         $offerProduct->ratingCount = $countRating;
                         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                        $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                        $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                        $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
                     }
 
 

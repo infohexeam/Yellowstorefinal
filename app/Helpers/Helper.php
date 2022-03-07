@@ -248,6 +248,63 @@ class Helper
         return 1;
     }
 
+    public static function isBaseVariant($product_id)
+    {
+        $v = Helper::variantCount($product_id);
+        if ($v < 1) {
+            return 0;
+        } elseif ($v == 1) {
+            $proCoubt = Mst_store_product_varient::where('product_id', $product_id)
+                ->where('is_removed', 0)
+                ->where('is_base_variant', 1)
+                ->where('stock_count', '>', 0)
+                ->count();
+            if ($proCoubt > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public static function attrCount($product_id)
+    {
+        $v = Helper::variantCount($product_id);
+        if ($v < 1) {
+            return 0;
+        } elseif ($v == 1) {
+            $proCoubt = Mst_store_product_varient::where('product_id', $product_id)
+                ->where('is_removed', 0)
+                ->where('is_base_variant', 1)
+                ->where('stock_count', '>', 0)
+                ->first();
+
+            if (isset($proCoubt)) {
+                $arrtVal  = Trn_ProductVariantAttribute::where('product_varient_id', $proCoubt->product_varient_id)
+                    ->count();
+                return $arrtVal;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public static function variantCount($product_id)
+    {
+        $proCoubt = Mst_store_product_varient::where('product_id', $product_id)
+            ->where('is_removed', 0)
+            ->where('stock_count', '>', 0)
+            ->count();
+        if ($proCoubt)
+            return $proCoubt;
+        else
+            return 0;
+    }
+
     public static function productStock($product_id)
     {
         $stockSum = Mst_store_product_varient::where('product_id', $product_id)->where('is_removed', 0)->sum('stock_count');
