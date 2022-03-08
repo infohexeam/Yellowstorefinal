@@ -233,8 +233,8 @@
                                     
                                      <div class="col-md-12">
                                       <div class="form-group">
-                                          <label class="form-label">Discription </label>
-                                          <input type="text"  class="form-control" name="discription" id="discription"  placeholder="Discription" />
+                                          <label class="form-label">Description </label>
+                                          <input type="text"  class="form-control" name="discription" id="discription"  placeholder="Description" />
                                       </div>
                                     </div>
     <input type="hidden"  class="form-control" name="customer_id" id="customerId"  />

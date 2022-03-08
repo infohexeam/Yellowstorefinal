@@ -174,7 +174,7 @@ use App\Models\admin\Trn_store_order;
                                  <th class="wd-15p">SL.No</th>
                                  <th class="wd-15p">{{ __('Date') }}</th>
                                  <th class="wd-15p">{{ __('Point') }}</th>
-                                 <th class="wd-15p">{{ __('Discription') }}</th>
+                                 <th class="wd-15p">{{ __('Description') }}</th>
                                </tr>
                              </thead>
                              <tbody>
