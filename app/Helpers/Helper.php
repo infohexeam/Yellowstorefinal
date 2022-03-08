@@ -19,6 +19,7 @@ use App\Models\admin\Trn_StoreTimeSlot;
 use App\Models\admin\Trn_ProductVariantAttribute;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_customer_reward;
+use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_store_setting;
@@ -55,8 +56,8 @@ class Helper
     {
         $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $cusId)->where('reward_point_status', 1)->sum('reward_points_earned');
         $totalusedPoints = Trn_store_order::where('customer_id', $cusId)->whereNotIn('status_id', [5])->sum('reward_points_used');
-
-        $customerRewardsCount = $totalCustomerRewardsCount - $totalusedPoints;
+        $redeemedPoints = Trn_points_redeemed::where('customer_id', $cusId)->sum('points');
+        $customerRewardsCount = ($totalCustomerRewardsCount - $totalusedPoints) - $redeemedPoints;
         return number_format($customerRewardsCount, 2);
     }
 
