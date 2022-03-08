@@ -172,6 +172,7 @@ use App\Models\admin\Trn_store_order;
                              <thead>
                                <tr>
                                  <th class="wd-15p">SL.No</th>
+                                 <th class="wd-15p">{{ __('Date') }}</th>
                                  <th class="wd-15p">{{ __('Point') }}</th>
                                  <th class="wd-15p">{{ __('Discription') }}</th>
                                </tr>
@@ -183,7 +184,12 @@ use App\Models\admin\Trn_store_order;
                                  @foreach ($redeemedpoints as $s)
                                  <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $s->points }}</td>
+                        <td>
+                           {{ \Carbon\Carbon::parse($s->created_at)->format('d-m-Y')}}
+                           {{ \Carbon\Carbon::parse($s->created_at)->format('H:i')}}
+                        
+                        </td>
+                        <td>{{ $s->points }}</td>
                                     <td>{{ $s->discription }}</td>
                                  </tr>
                                  @endforeach
