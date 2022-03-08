@@ -1510,9 +1510,41 @@ class StoreOrderController extends Controller
                 if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
                     $order_id = $request->order_id;
                     $customer_id = $request->customer_id;
-
                     $orderData = Trn_store_order::find($order_id);
+
+
+
+
+
+
                     if (isset($orderData->referenceId) && ($orderData->isRefunded < 2)) {
+
+
+                        $curl = curl_init();
+
+                        curl_setopt_array($curl, array(
+                            CURLOPT_URL => 'https://api.cashfree.com/api/v1/order/refund',
+                            CURLOPT_RETURNTRANSFER => true,
+                            CURLOPT_ENCODING => '',
+                            CURLOPT_MAXREDIRS => 10,
+                            CURLOPT_TIMEOUT => 0,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                            CURLOPT_CUSTOMREQUEST => 'POST',
+                            CURLOPT_POSTFIELDS => array('referenceId' => $orderData->referenceId, 'refundAmount' => $orderData->product_total_amount, 'refundNote' => 'full refund'),
+                            CURLOPT_HTTPHEADER => array(
+                                'appId: 165253d13ce80549d879dba25b352561',
+                                'secretKey: bab0967cdc3e5559bded656346423baf0b1d38c4',
+                                'ContentType: application/json'
+                            ),
+                        ));
+
+                        $response = curl_exec($curl);
+
+                        curl_close($curl);
+                        echo $response;
+                        die;
+
 
 
                         $data = [
