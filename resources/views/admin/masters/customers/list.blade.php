@@ -218,6 +218,9 @@
                         </div>
 
                         <div class="table-responsive ">
+                          <form action="{{route('admin.redeeem_customer_rp')}}" method="GET"
+                          enctype="multipart/form-data">
+                    @csrf
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-12 p-0">
                                   
@@ -235,10 +238,8 @@
                                       </div>
                                     </div>
     <input type="hidden"  class="form-control" name="customer_id" id="customerId"  />
-
-                                    <div class="col-md-12">
-                                        <button type="submit" id="saveBtn" class="btn btn-sm btn-gray" >Redeem Points</button>
-                                    </div>
+ 
+                                   
 
                               </tbody>
                            </table>
@@ -246,8 +247,12 @@
 
                      </div>
                      <div class="modal-footer">
+                      <div class="col-md-12">
+                        <button type="submit" id="saveBtn" class="btn  btn-gray" >Redeem Points</button>
+                    </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                      </div>
+                    </form>
                   </div>
                </div>
             </div>
