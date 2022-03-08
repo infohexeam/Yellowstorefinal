@@ -1556,7 +1556,7 @@ class StoreOrderController extends Controller
                             $data['refundId'] = $dataString->refundId;
                         } else {
                             $data['message'] = $dataString->message;
-                            $data['message'] = "Refund failed! Please contact store";
+                            //  $data['message'] = "Refund failed! Please contact store";
                         }
 
                         if ($dataString->status == "OK") {
