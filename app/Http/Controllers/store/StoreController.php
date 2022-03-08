@@ -2311,6 +2311,53 @@ class StoreController extends Controller
       //dd($customer_email);
 
       if ($request->status_id == 5) {
+        if (isset($order->referenceId) && ($order->isRefunded < 2)) {
+
+
+          $curl = curl_init();
+
+          curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.cashfree.com/api/v1/order/refund',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+              'appId' => '165253d13ce80549d879dba25b352561',
+              'secretKey' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
+              'ContentType' => 'application/json',
+              'referenceId' => $order->referenceId, 'refundAmount' => $order->product_total_amount, 'refundNote' => 'full refund'
+            ),
+            CURLOPT_HTTPHEADER => array(
+              'Accept' => 'application/json',
+              'x-api-version' => '2021-05-21',
+              'x-client-id' => '165253d13ce80549d879dba25b352561',
+              'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+            ),
+          ));
+
+          $response = curl_exec($curl);
+          // dd($response);
+          curl_close($curl);
+          $dataString = json_decode($response);
+          if ($dataString->status == "OK") {
+            $data['message'] = $dataString->message;
+            $data['refundId'] = $dataString->refundId;
+          } else {
+            $data['message'] = $dataString->message;
+            //  $data['message'] = "Refund failed! Please contact store";
+          }
+
+          if ($dataString->status == "OK") {
+            $order->refundId = $dataString->refundId;
+            $order->refundStatus = "Inprogress";
+            $order->isRefunded = 1;
+          }
+        }
+
         $orderData = Trn_store_order_item::where('order_id', $order_id)->get();
 
 
