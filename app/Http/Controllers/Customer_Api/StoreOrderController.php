@@ -1511,6 +1511,8 @@ class StoreOrderController extends Controller
                     $order_id = $request->order_id;
                     $customer_id = $request->customer_id;
                     $orderData = Trn_store_order::find($order_id);
+                    $data['message'] = "Order cancelled";
+                    $data['refundId'] = "";
 
 
 
@@ -1546,10 +1548,16 @@ class StoreOrderController extends Controller
                         ));
 
                         $response = curl_exec($curl);
-                        dd($response);
+                        // dd($response);
                         curl_close($curl);
-                        echo $response;
-                        die;
+                        $dataString = json_decode($response);
+
+                        $data['message'] = $dataString->message;
+                        $data['refundId'] = $dataString->refundId;
+                        dd($data);
+
+                        //echo $response;
+                        //  die;
 
 
 
@@ -1602,8 +1610,9 @@ class StoreOrderController extends Controller
                         // $response = curl_exec($curl);
 
                         // curl_close($curl);
-                        echo $response;
-                        die;
+                        //echo $response;
+
+                        //die;
                     }
 
                     $orderData->status_id = 5;
@@ -1627,7 +1636,6 @@ class StoreOrderController extends Controller
 
 
                         $data['status'] = 1;
-                        $data['message'] = "Order cancelled";
                     } else {
                         $data['status'] = 0;
                         $data['message'] = "failed";
