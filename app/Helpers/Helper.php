@@ -18,8 +18,9 @@ use App\Models\admin\Mst_Subadmin_Detail;
 use App\Models\admin\Trn_StoreTimeSlot;
 use App\Models\admin\Trn_ProductVariantAttribute;
 use App\Models\admin\Mst_store_product_varient;
-
+use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_store_customer;
+use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreBankData;
 
@@ -48,6 +49,15 @@ class Helper
         $cusData = Trn_store_customer::find($cusId);
 
         return $cusData->customer_mobile_number;
+    }
+
+    public static function findRewardPoints($cusId)
+    {
+        $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $cusId)->where('reward_point_status', 1)->sum('reward_points_earned');
+        $totalusedPoints = Trn_store_order::where('customer_id', $cusId)->whereNotIn('status_id', [5])->sum('reward_points_used');
+
+        $customerRewardsCount = $totalCustomerRewardsCount - $totalusedPoints;
+        return number_format($customerRewardsCount, 2);
     }
 
     public static function onBoardingStatus($store_id)
