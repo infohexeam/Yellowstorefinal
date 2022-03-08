@@ -1104,7 +1104,21 @@ class StoreOrderController extends Controller
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $customer_id = $request->customer_id;
-                if ($data['orderHistory'] = Trn_store_order::select('order_id', 'order_number', 'store_id', 'created_at', 'status_id', 'customer_id', 'product_total_amount')->where('customer_id', $request->customer_id)->orderBy('order_id', 'DESC')->get()) {
+                if ($data['orderHistory'] = Trn_store_order::select(
+                    'order_id',
+                    'order_number',
+                    'store_id',
+                    'created_at',
+                    'status_id',
+                    'customer_id',
+                    'product_total_amount',
+                    'is_split_data_saved',
+                    'referenceId',
+                    'txTime',
+                    'txMsg',
+                    'orderAmount',
+                    'txStatus'
+                )->where('customer_id', $request->customer_id)->orderBy('order_id', 'DESC')->get()) {
                     foreach ($data['orderHistory'] as $order) {
                         $storeData = Mst_store::find($order->store_id);
                         $order->store_name = $storeData->store_name;
