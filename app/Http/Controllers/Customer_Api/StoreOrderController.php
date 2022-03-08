@@ -1555,6 +1555,7 @@ class StoreOrderController extends Controller
                             $data['message'] = $dataString->message;
                             $data['refundId'] = $dataString->refundId;
                         } else {
+                            $data['message'] = $dataString->message;
                             $data['message'] = "Refund failed! Please contact store";
                         }
 
@@ -1563,7 +1564,7 @@ class StoreOrderController extends Controller
                             $orderData->refundStatus = "Inprogress";
                             $orderData->isRefunded = 1;
                         }
-                       // dd($dataString->message);
+                        // dd($dataString->message);
 
                         //echo $response;
                         //  die;
