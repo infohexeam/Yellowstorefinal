@@ -1554,6 +1554,11 @@ class StoreOrderController extends Controller
 
                         $data['message'] = $dataString->message;
                         $data['refundId'] = $dataString->refundId;
+                        if ($dataString->status == "OK") {
+                            $orderData->refundId = $dataString->refundId;
+                            $orderData->refundStatus = "Inprogress";
+                            $orderData->isRefunded = 1;
+                        }
                         dd($data);
 
                         //echo $response;
