@@ -1533,9 +1533,10 @@ class StoreOrderController extends Controller
                             CURLOPT_CUSTOMREQUEST => 'POST',
                             CURLOPT_POSTFIELDS => array('referenceId' => $orderData->referenceId, 'refundAmount' => $orderData->product_total_amount, 'refundNote' => 'full refund'),
                             CURLOPT_HTTPHEADER => array(
-                                'appId: 165253d13ce80549d879dba25b352561',
-                                'secretKey: bab0967cdc3e5559bded656346423baf0b1d38c4',
-                                'ContentType: application/json'
+                                'Accept' => 'application/json',
+                                'x-api-version' => '2021-05-21',
+                                'x-client-id' => '165253d13ce80549d879dba25b352561',
+                                'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
                             ),
                         ));
 
