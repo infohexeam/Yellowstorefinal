@@ -165,7 +165,7 @@ use App\Models\admin\Trn_store_order;
                          <p>Used Points : </p><h2>{{$totalusedPoints}}</h2> <br>
                          <p>Balance Points : </p><h2>{{$customerRewardsCount}}</h2> <br>
 
-                         redeemedpoints
+                         
 
                          <div class="table-responsive">
                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
@@ -189,6 +189,8 @@ use App\Models\admin\Trn_store_order;
                                  @endforeach
                              </tbody>
                            </table>
+                         </div>
+                         
                            
                            <center>
                            <a class="btn btn-cyan" href="{{ route('admin.list_customer') }}">Cancel</a>
