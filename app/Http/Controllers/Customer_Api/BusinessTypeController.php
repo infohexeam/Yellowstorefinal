@@ -78,7 +78,12 @@ class BusinessTypeController extends Controller
 
             curl_close($curl);
             $refundResponseFinal = json_decode($response, true);
-            dd($refundResponseFinal['refund'][0]['processed']);
+            if ($refundResponseFinal['refund'][0]['processed'] == "YES") {
+                Trn_store_order::where('order_id', $row->order_id)->update([
+                    "isRefunded" => 2,
+                    "refundStatus" => "Success",
+                ]);
+            }
         }
 
         $data = array();
