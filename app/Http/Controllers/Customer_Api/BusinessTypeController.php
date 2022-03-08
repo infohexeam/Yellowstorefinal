@@ -53,6 +53,34 @@ class BusinessTypeController extends Controller
 {
     public function test(Request $request)
     {
+
+
+
+        $RefundOrderDatas = Trn_store_order::where('isRefunded', 1)
+            ->get();
+
+        foreach ($RefundOrderDatas as $row) {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api.cashfree.com/api/v1/refundStatus/',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => array('appId' => '165253d13ce80549d879dba25b352561', 'secretKey' => 'bab0967cdc3e5559bded656346423baf0b1d38c4', 'refundId' => '11644414'),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            $refundResponseFinal = json_decode($response, true);
+            dd($refundResponseFinal);
+        }
+
         $data = array();
         try {
 
