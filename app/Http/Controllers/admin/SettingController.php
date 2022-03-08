@@ -2170,13 +2170,14 @@ class SettingController extends Controller
 	{
 
 		$pageTitle = "View Customer";
-
 		$decrId  = Crypt::decryptString($id);
 		$customers = Trn_store_customer::Find($decrId);
+		$redeemedpoints = Trn_points_redeemed::where('customer_id',$decrId)->get();
+
 		$customerAddress = Trn_customerAddress::where('customer_id', $decrId)->get();
 		$countries = Country::all();
 
-		return view('admin.masters.customers.view', compact('customerAddress', 'customers', 'pageTitle', 'countries'));
+		return view('admin.masters.customers.view', compact('redeemedpoints','customerAddress', 'customers', 'pageTitle', 'countries'));
 	}
 	public function editcustomer(Request $request, $id)
 	{

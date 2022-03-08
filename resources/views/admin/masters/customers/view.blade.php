@@ -164,6 +164,31 @@ use App\Models\admin\Trn_store_order;
                          <p>Total Points Earned : </p><h2>{{$totalCustomerRewardsCount}}</h2> <br>
                          <p>Used Points : </p><h2>{{$totalusedPoints}}</h2> <br>
                          <p>Balance Points : </p><h2>{{$customerRewardsCount}}</h2> <br>
+
+                         redeemedpoints
+
+                         <div class="table-responsive">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                             <thead>
+                               <tr>
+                                 <th class="wd-15p">SL.No</th>
+                                 <th class="wd-15p">{{ __('Point') }}</th>
+                                 <th class="wd-15p">{{ __('Discription') }}</th>
+                               </tr>
+                             </thead>
+                             <tbody>
+                                 @php
+                                    $i = 0;
+                                 @endphp
+                                 @foreach ($redeemedpoints as $s)
+                                 <tr>
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $s->points }}</td>
+                                    <td>{{ $s->discription }}</td>
+                                 </tr>
+                                 @endforeach
+                             </tbody>
+                           </table>
                            
                            <center>
                            <a class="btn btn-cyan" href="{{ route('admin.list_customer') }}">Cancel</a>
