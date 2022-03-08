@@ -78,7 +78,7 @@ class BusinessTypeController extends Controller
 
             curl_close($curl);
             $refundResponseFinal = json_decode($response, true);
-            dd($refundResponseFinal['refund'][0]);
+            dd($refundResponseFinal['refund'][0]->processed);
         }
 
         $data = array();
