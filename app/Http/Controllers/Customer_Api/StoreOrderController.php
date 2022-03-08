@@ -1117,7 +1117,9 @@ class StoreOrderController extends Controller
                     'txTime',
                     'txMsg',
                     'orderAmount',
-                    'txStatus'
+                    'txStatus',
+                    'isRefunded',
+                    'refundStatus'
                 )->where('customer_id', $request->customer_id)->orderBy('order_id', 'DESC')->get()) {
                     foreach ($data['orderHistory'] as $order) {
                         $storeData = Mst_store::find($order->store_id);
