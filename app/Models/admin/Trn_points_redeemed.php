@@ -9,8 +9,10 @@ class Trn_points_redeemed extends Model
     protected $primaryKey = "points_redeemed_id";
     protected $table = "trn_points_redeemeds";
 
-   protected $fillable = [
-                           'point_in_percentage',
-                           'isActive',
-               ];
+    protected $fillable = [
+        'customer_id',
+        'points',
+        'discription',
+        'isActive',
+    ];
 }

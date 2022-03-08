@@ -1496,6 +1496,61 @@ class StoreOrderController extends Controller
                     $customer_id = $request->customer_id;
 
                     $orderData = Trn_store_order::find($order_id);
+                    if (isset($orderData->referenceId) && ($orderData->isRefunded < 2)) {
+
+
+                        $data = [
+                            "refundAmount" => $orderData->product_total_amount,
+                            "refundNote" => "Order amount refund",
+                            "referenceId" => $orderData->referenceId,
+
+                        ];
+                        $dataString = json_encode($data);
+
+                        $headers = [
+                            'appId: 165253d13ce80549d879dba25b352561',
+                            'secretKey: bab0967cdc3e5559bded656346423baf0b1d38c4',
+                            'ContentType: application/json'
+                        ];
+
+                        $ch = curl_init();
+
+                        curl_setopt($ch, CURLOPT_URL, 'https://api.cashfree.com/api/v1/order/refund');
+                        curl_setopt($ch, CURLOPT_POST, true);
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                        $response = curl_exec($ch);
+
+
+                        // $curl = curl_init();
+
+                        // curl_setopt_array($curl, array(
+                        //     CURLOPT_URL => 'https://api.cashfree.com/api/v1/order/refund',
+                        //     CURLOPT_RETURNTRANSFER => true,
+                        //     CURLOPT_ENCODING => '',
+                        //     CURLOPT_MAXREDIRS => 10,
+                        //     CURLOPT_TIMEOUT => 0,
+                        //     CURLOPT_FOLLOWLOCATION => true,
+                        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        //     CURLOPT_CUSTOMREQUEST => 'POST',
+                        //     CURLOPT_POSTFIELDS => array(,,, 'refundAmount' => '1', 'refundNote' => 'full refund'),
+                        //     CURLOPT_HTTPHEADER => array(
+                        //         'appId: 165253d13ce80549d879dba25b352561',
+                        //         'secretKey: bab0967cdc3e5559bded656346423baf0b1d38c4',
+                        //         'ContentType: application/json'
+                        //     ),
+                        // ));
+
+                        // $response = curl_exec($curl);
+
+                        // curl_close($curl);
+                        echo $response;
+                        die;
+                    }
 
                     $orderData->status_id = 5;
                     if ($orderData->update()) {

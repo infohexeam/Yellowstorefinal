@@ -437,6 +437,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('admin/reward_transaction_type/destroy/{reward_type}', 'SettingController@destroyRewardType')->name('admin.destroy_reward_transaction_type');
 
         // customer reward
+        Route::post('admin/customer-reward/redeem', 'SettingController@redeemRewardPoint')->name('admin.redeeem_customer_rp');
 
         Route::get('admin/customer_reward/list', 'SettingController@listCustomerReward')->name('admin.list_customer_reward');
         Route::get('admin/add/reward-to-customer', 'MasterController@addRewardToCustomer')->name('admin.add_reward_to_customer');

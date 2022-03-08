@@ -4512,6 +4512,17 @@ class SettingController extends Controller
 		return redirect()->back()->with('status', 'Reward type deleted successfully');;
 	}
 
+	public function redeemRewardPoint(Request $request)
+	{
+		$pr = new Trn_points_redeemed;
+		$pr->customer_id = $request->customer_id;
+		$pr->points = $request->points;
+		$pr->discription = $request->discription;
+		$pr->isActive = 1;
+		$pr->save();
+		return redirect()->back()->with('status', 'Reward redeemed successfully');;
+	}
+
 	public function listCustomerReward(Request $request)
 	{
 

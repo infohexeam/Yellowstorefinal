@@ -1,5 +1,13 @@
 @extends('admin.layouts.app')
 @section('content')
+<style>
+     .line{
+        width: 112px;
+        height: 47px;
+        border-bottom: 1px solid black;
+        position: absolute;
+        }
+</style>
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-12 col-lg-12">
@@ -127,7 +135,10 @@
                       @foreach ($customers as $customer)
                       <tr>
                         <td>{{ ++$i }}</td>
-                        <td>{{$customer->customer_first_name." ".$customer->customer_last_name}}</td>
+                        <td>
+                            {{$customer->customer_first_name." ".$customer->customer_last_name}}
+                            <input type="hidden" id="cusId{{ $customer->customer_id }}" value="{{$customer->customer_first_name." ".$customer->customer_last_name}}" />   
+                        </td>
                        {{--  <td>{{$customer->countries['country_name']}}</td>  --}}
                         <td>{{$customer->customer_email}}</td>
                         <td>{{$customer->customer_mobile_number}}</td>
@@ -167,6 +178,10 @@
                        href="{{url('admin/customer/view/'.Crypt::encryptString($customer->customer_id))}}">View</a>
                         {{-- <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button> --}}
                          {{-- </form> --}}
+                                          
+                <button type="button" class="btn btn-sm btn-gray" data-toggle="modal" onclick="updateCustomerData({{$customer->customer_id}},{{ (new \App\Helpers\Helper)->findRewardPoints($customer->customer_id) }})" data-target="#reddemRewardModal"  >
+                    Redeem Points
+                </button>
 
                         </td>
 
@@ -185,10 +200,81 @@
     </div>
   </div>
 
+            <div class="modal fade" id="reddemRewardModal" tabindex="-1" role="dialog"  aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title" id="example-Modal3">Redeem Reward Points of <span id="customerName"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+                     <div class="modal-body">
+                         <div class="row" style="border-bottom: 1px solid black;" >
+                        <span class="modal-title" >
+                            <span  id="rewPts" style="font-size: x-large;font-weight: revert-layer;" ></span> 
+                            <span > Points available.</span> 
+                        </span> 
+                        </div>
 
+                        <div class="table-responsive ">
+                           <table class="table row table-borderless">
+                              <tbody class="col-lg-12 col-xl-12 p-0">
+                                  
+                                   <div class="col-md-12">
+                                      <div class="form-group">
+                                          <label class="form-label">Reward point to be redeemed </label>
+                                          <input type="number" step="0.01"  class="form-control" name="points" oninput="reduceRewPts(this.value)" id="reward_point"  placeholder="Reward point to be redeemed" />
+                                      </div>
+                                    </div>
+                                    
+                                     <div class="col-md-12">
+                                      <div class="form-group">
+                                          <label class="form-label">Discription </label>
+                                          <input type="text"  class="form-control" name="discription" id="discription"  placeholder="Discription" />
+                                      </div>
+                                    </div>
+    <input type="hidden"  class="form-control" name="customer_id" id="customerId"  />
+
+                                    <div class="col-md-12">
+                                        <button type="submit" id="saveBtn" class="btn btn-sm btn-gray" >Redeem Points</button>
+                                    </div>
+
+                              </tbody>
+                           </table>
+                        </div>
+
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
 <script>
+$('#reward_point').val(0)
+function reduceRewPts(valRew){
+    //console.log(valRew);
+    let rewPts = parseFloat($('#rewPts').text());
+    // console.log(valRew+" : "+rewPts);
+    if(valRew > rewPts){
+        $("#saveBtn").attr("disabled", true);
+    }else{
+        $("#saveBtn").attr("disabled", false);
+    }
 
+}
+function updateCustomerData(id,rewPts){
+  console.log(id);
+    let cusName = $('#cusId'+id).val();
+    $('#customerName').text(cusName);
+    $('#customerId').val(id);
+    $('#rewPts').text(rewPts);
 
+}
 
 $(function(e) {
 	 $('#exampletable').DataTable( {
@@ -215,33 +301,6 @@ $(function(e) {
 
 } );
 
-$(document).ready(function() {
- $('#reset').click(function(){
-    // $('#customer_first_name').val('');
-    // $('#customer_email').val('');
-   //  $('#customer_mobile_number').val('');
-    // $('#customer_profile_status').val('');
-
-  $('#customer_first_name').remove();
-  $('#customer_email').remove();
-  $('#customer_mobile_number').remove();
-  $('#customer_profile_status').remove();
-
-
-  $('#date_from').remove();
-    $('#date_to').remove();
-    $('#date_froml').append('<input type="date" class="form-control" name="date_from" id="date_from"  placeholder="From Date">');
-    $('#date_tol').append('<input type="date" class="form-control" name="date_to"   id="date_to" placeholder="To Date">');
-
-      $('#customer_first_namel').append('<input type="text" class="form-control" name="customer_first_name" id="customer_first_name"  placeholder="Customer Name">');
-      $('#customer_emaill').append('<input type="email" class="form-control" name="customer_email" id="customer_email" placeholder="Customer Email">');
-      $('#customer_mobile_numberl').append('<input type="number" class="form-control" name="customer_mobile_number"  id="customer_mobile_number" maxlength="10"  placeholder="Customer Mobile">');
-      $('#customer_profile_statusl').append('<select name="customer_profile_status" id="customer_profile_status"  class="form-control" ><option value="" >Select Profile Status</option><option  value="1" >Active</option><option  value="0" >InActive</option></select>');
-
-
-
-   });
-});
 </script>
 
 
