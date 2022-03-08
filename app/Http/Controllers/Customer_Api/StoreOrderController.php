@@ -1541,7 +1541,7 @@ class StoreOrderController extends Controller
                         ));
 
                         $response = curl_exec($curl);
-
+                        dd($curl);
                         curl_close($curl);
                         echo $response;
                         die;
