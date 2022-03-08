@@ -61,6 +61,7 @@ use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_CustomerFeedback;
 use App\Models\admin\Trn_RecentlyVisitedProductCategory;
 use App\Models\admin\Mst_FeedbackQuestion;
+use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreBankData;
 
@@ -1434,8 +1435,9 @@ class ProductController extends Controller
 
                 $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
                 $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
 
-                $customerRewardsCount = $totalCustomerRewardsCount - $totalusedPoints;
+                $customerRewardsCount =  ($totalCustomerRewardsCount - $totalusedPoints) - $redeemedPoints;
                 $data['customerRewardsCount'] = number_format($customerRewardsCount, 2);
 
                 if ($totalusedPoints >= 0)

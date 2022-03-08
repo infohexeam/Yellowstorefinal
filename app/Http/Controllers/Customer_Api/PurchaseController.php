@@ -45,8 +45,7 @@ use App\Models\admin\Trn_store_order;
 
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_configure_points;
-
-
+use App\Models\admin\Trn_points_redeemed;
 
 class PurchaseController extends Controller
 {
@@ -63,7 +62,9 @@ class PurchaseController extends Controller
 
                     $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
                     $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
-                    $customerRewardPoint = $totalCustomerRewardsCount - $totalusedPoints;
+                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+
+                    $customerRewardPoint = ($totalCustomerRewardsCount - $totalusedPoints) - $redeemedPoints;
 
                     //echo $customerRewardPoint;die;
 
