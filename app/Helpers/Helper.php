@@ -602,7 +602,10 @@ class Helper
 
         $data = [
             "to" => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => "default"),
+            'notification' => array(
+                'title' => $title, 'body' => $body, 'sound' => "default",
+                'icon' => "https://yellowstore.in/assets/uploads/favicon.png"
+            ),
 
         ];
         $dataString = json_encode($data);
