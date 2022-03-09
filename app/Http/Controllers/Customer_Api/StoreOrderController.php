@@ -1646,6 +1646,24 @@ class StoreOrderController extends Controller
                         }
 
 
+
+                        $storeDatas = Trn_StoreAdmin::where('store_id', $orderData->store_id)->where('role_id', 0)->first();
+                        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderData->store_id)->get();
+                        $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderData->store_id)->get();
+
+                        foreach ($storeDevice as $sd) {
+                            $title = 'Order cancelled';
+                            $body = 'Order cancelled by customer! Order Id: ' . $orderData->order_number;
+                            $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                        }
+
+                        foreach ($storeWeb as $sw) {
+                            $title = 'Order cancelled';
+                            $body = 'Order cancelled by customer! Order Id: ' . $orderData->order_number;
+                            $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                        }
+
+
                         $data['status'] = 1;
                     } else {
                         $data['status'] = 0;
