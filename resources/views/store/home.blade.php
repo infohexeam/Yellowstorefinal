@@ -356,12 +356,13 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->get();
             messaging
             .requestPermission()
             .then(function () {
-              //  console.log("working");
-                return messaging.getToken({ vapidKey: 'BA6V328NpU3KBKusQbV067G1jKrBpypf1KmnNd21d5wt8gYmHDJIOFUvs0UeYGE1KvTrntnSTkBy3Otg0VQUFmc' });
+                console.log("working");
+                return messaging.getToken({ vapidKey: 'BP_JpvDrfy-521nigpqvOv5WTXBK5i5AMa2g8CvI-nXK_mxHAQFHHrtwJc-kLAWNBtM-AJjqEARZ_49e6Wph5e8' });
             })
             .then(function(token) {
-               // console.log(token);
+                console.log("token : "+token);
      var _token = $('input[name="_token"]').val();
+     console.log("token_2 : "+_token);
 
       $.ajax({
             url:"{{ route('store.saveBrowserToken') }}",
