@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('command:getPaymentData')->everyFiveMinutes();
+        $schedule->command('command:getRefundData')->everyThirtyMinutes();
     }
 
     /**
