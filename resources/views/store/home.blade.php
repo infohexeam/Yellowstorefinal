@@ -369,7 +369,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->get();
             data:{token:token, _token:_token},
             success:function(result)
             {
-               // console.log(result);
+                console.log(result);
             }
        })         
   
