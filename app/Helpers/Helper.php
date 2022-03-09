@@ -602,7 +602,7 @@ class Helper
 
         $data = [
             "to" => $device_id,
-            'notification' => array('title' => $title, 'body' => $body),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => "default"),
 
         ];
         $dataString = json_encode($data);

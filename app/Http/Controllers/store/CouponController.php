@@ -585,7 +585,7 @@ class CouponController extends Controller
     $tok->store_web_token = $request->token;
     $tok->save();
 
-    echo "Oops! no response";
+    echo "Oops! response";
   }
 
 
