@@ -151,12 +151,12 @@ use App\Models\admin\Trn_store_order;
                               $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
                             $totalusedPoints = Trn_store_order::where('customer_id', $customers->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
             
-                            $customerRewardsCount = $totalCustomerRewardsCount - $totalusedPoints;
+                            $customerRewardsCount = ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPointsSum;
                             $customerRewardsCount = number_format($customerRewardsCount, 0);
                             $totalCustomerRewardsCount = number_format($totalCustomerRewardsCount, 0);
             
                             if ($totalusedPoints >= 0)
-                                $data['totalusedPoints']  = $totalusedPoints;
+                                $data['totalusedPoints']  = $totalusedPoints + $redeemedPointsSum ;
                             else
                                 $data['totalusedPoints']  = '0';
                     
