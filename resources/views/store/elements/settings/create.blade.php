@@ -19,16 +19,16 @@
             </div>
             <div class="col-lg-12">
                 
-                 @if(!isset($store->store_state_id) || !isset($store->store_district_id) || !isset($store->town_id))
-                    <div class="alert alert-danger">
-                        <p> You have to update your
-                         <a href="{{url('/store-profile/view')}}">profile </a>  
-                         inorder to add the settings
+                <!-- @if(!isset($store->store_state_id) || !isset($store->store_district_id) || !isset($store->town_id))-->
+                <!--    <div class="alert alert-danger">-->
+                <!--        <p> You have to update your-->
+                <!--         <a href="{{url('/store-profile/view')}}">profile </a>  -->
+                <!--         inorder to add the settings-->
                        
                         <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>-->
-                        </p>
-                    </div>
-                @endif
+                <!--        </p>-->
+                <!--    </div>-->
+                <!--@endif-->
         
         
                @if ($errors->any())
@@ -134,9 +134,9 @@
                       @endphp
                            
                           @foreach ($store_settings as $data)
-                              <tr >
+                              <tr id="trSec{{$c}}">
                               <td>
-                                <input step="0.1" required type="number" id="start{{$c}}" onchange="endKMChanged(this.id)" value="{{ $data->service_start }}" class="form-control endingKm" name="start[]">
+                                <input step="0.1" readonly required type="number" id="start{{$c}}" onchange="endKMChanged(this.id)" value="{{ $data->service_start }}" class="form-control endingKm" name="start[]">
                               </td>
                                 <td class="text-center"> -
                                 
@@ -144,7 +144,7 @@
 
                                 </td>
                               <td class="endcls" >
-                                <input step="0.1" required type="number" id="end{{$c}}" onchange="startKMChanged(this.id)" value="{{ $data->service_end }}" class="endkm form-control startingKm"   name="end[]">
+                                <input step="0.1" required type="number" id="end{{$c}}" oninput="startKMChanged(this.id,{{$c}})" value="{{ $data->service_end }}" class="endkm form-control startingKm"   name="end[]">
                               </td>
                               <td>
                                 <input type="number" step="0.01" required value="{{ $data->delivery_charge }}" id="delivery_charge0" class="form-control"  name="delivery_charge[]">
@@ -153,7 +153,7 @@
                                 <input type="number" step="0.01" required value="{{ $data->packing_charge }}"  id="packing_charge0" class="form-control"  name="packing_charge[]">
                               </td>
                                <td>
-                                 <a id="r" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
+                                 <a id="r" onclick="startKMChanged(this.id,{{$c}})" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
                               </td>
                             </tr>
                             @if ($c == count($store_settings))
@@ -167,15 +167,15 @@
                           @endforeach
 
                         @else
- <tr >
+                             <tr id="trSec0" >
                               <td>
-                                <input step="0.1" required  type="number"  onchange="endKMChanged(this.id)" id="start0"  class="form-control endingKm" name="start[]">
+                                <input step="0.1" required readonly type="number"  onchange="endKMChanged(this.id)" id="start0"  class="form-control endingKm" name="start[]">
                               </td>
                                 <td class="text-center"> 
                                 - 
                                 </td>
                               <td class="endcls"> 
-                                <input step="0.1" required  type="number"  onchange="startKMChanged(this.id)" id="end0" class="endkm form-control startingKm"   name="end[]">
+                                <input step="0.1" required  type="number"  oninput="startKMChanged(this.id,0)" id="end0" class="endkm form-control startingKm"   name="end[]">
                               </td>
                               <td>
                                 <input type="number" step="0.01" required  id="delivery_charge0" class="form-control"  name="delivery_charge[]">
@@ -184,7 +184,7 @@
                                 <input type="number" step="0.01" required   id="packing_charge0" class="form-control"  name="packing_charge[]">
                               </td>
                              <td>
-                                 <a id="r" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
+                                 <a id="r" onclick="startKMChanged(this.id,0)" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
                               </td>
                             </tr>
                          @endif
@@ -243,174 +243,82 @@ function makeValue(val)
 
 
 $(document).ready(function() {
-   var wrapper      = $("#table_body"); //Fields wrapper
-  var add_button      = $("#addDoc"); //Add button ID
+    var wrapper      = $("#table_body"); //Fields wrapper
+    var add_button      = $("#addDoc"); //Add button ID
 
- // var x = 1; //initlal text box count
-
+    var x = 1; //initlal text box count
+    let dummyCount= 0;
+    let serviceArea = $('#service_area').val();
 
   $(add_button).click(function(e){ //on add input button click
     e.preventDefault();
-    //max input box allowed
-     var x = $('#first tr:last td:nth-child(2) input').val();
 
-x++; //text box increment
-//$(wrapper).append(' <tr ><td><input  type="number" id="start'+x -1+'"  class="form-control" name="start[]"></td><td class="text-center"> - </td><td><input  type="number" id="end'+x -1+'" class="endkm form-control"   name="end[]"></td><td><input type="number" required  id="delivery_charge'+x -1+'" class="form-control"  name="delivery_charge[]"></td><td><input type="number" required   id="packing_charge'+x-1+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
-$(wrapper).append(' <tr ><td><input step="0.1" required onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="0"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" onchange="startKMChanged(this.id)" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" step="0.01" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]"></td><td><input type="number" step="0.01" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
-  });
+     var xVal = $('#first tr:last td:nth-child(2) input').val();
+     if((xVal != 0) && (dummyCount == 0) ){
+         dummyCount++;
+         x = xVal;
+     }
+     
+     let lastEndVal = $("#end"+x).val();
+     let lastStartVal = $("#start"+x).val();
+     
+       // console.log(lastStartVal +" : "+lastEndVal);
+        if(lastEndVal <= lastStartVal)
+        {
+            if(lastEndVal != lastStartVal)
+             alert("Wrong input entered. " +lastEndVal+ " is lessthan "+lastStartVal);
+             else
+             alert("Wrong input entered. ");
 
-  $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-    e.preventDefault(); $(this).parent().parent().remove(); x--;
-  })
-});
+        }else{
+            let lastEndValuePlus = parseFloat($("#end"+x).val()) + 0.1;
+            let serviceArea = $("#service_area").val();
+            if(lastEndValuePlus <= serviceArea)
+            {
+                x++; 
+                $(wrapper).append(' <tr id="trSec'+x+'" ><td><input step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" step="0.01" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]"></td><td><input type="number" step="0.01" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
+            }else{
+                alert("Service area already filled..");
+            }
+        }
 
-
-
-function endKMChanged(id)
-{
-  if(id != 'start0'){ 
-    var fullKm = $('#service_area').val();
-
-    let ending = [];
-    let starting = [];
-
-    $($(".startingKm").get().reverse()).each(function() {
-      let end = $(this).val();
-      ending.push(end);  
+        
     });
-
-    $($(".endingKm").get().reverse()).each(function() {
-      let start = $(this).val();
-      starting.push(start);   
-    });
-
-  //  console.log(starting);
-  //  console.log(ending);
-
-    $.each(ending, function(index, value){
-      
-             //  console.log(parseFloat(starting[0])+" - "+parseFloat(ending[1]));
-
-      if(parseFloat(starting[0]) < parseFloat(ending[1]))
-      {
-       //  console.log(parseFloat(starting[0])+" < "+parseFloat(ending[1]));
-      //   console.log(id);
-          $('#'+id).val(0);
-           $('#'+id).append('<p>dfdf</p>');
-         //  $('#'+id)
-         if(index == 0)
-         {
-          alert('starting KM should be greater than '+parseFloat(ending[1]));
-         }
-
-      }
-
-      if(parseFloat(starting[0]) > parseFloat(fullKm))
-      {
-         
-          $('#'+id).val(0);
-          
-          if(index == 0)
-         {
-          alert('starting KM should be less than '+parseFloat(fullKm));
-         }
-      }
-
-
-
-      var endingKMS = [];
-      $($(".startingKm").get().reverse()).each(function() {
-        let end = $(this).val();
-        endingKMS.push(end);  
-      });
-
-      if((jQuery.inArray("0.0", endingKMS) != -1) || (jQuery.inArray("0", endingKMS) != -1))
-      {
-       // $('#updateBtn').attr('disabled', 'disabled');
-      }
-      else
-      {
-       // $("#updateBtn").attr('disabled', false);
-      }
-
-
+    
+      $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent().parent().remove(); x--;
+      })
     });
 
 
-   
-  
-  }else
-  {
-    var fullKm = $('#service_area').val();
-    var startKm = $('#start0').val();
-    if(startKm > 0 ){
-      alert("Starting km should be 0");
-      $('#start0').val(0.0);
-    }
-  }
-
-}
-function startKMChanged(id)
+function startKMChanged(id,key)
 {
    var fullKm = $('#service_area').val();
-    var endKm = $('#'+id).val();
+   var endKm = $('#'+id).val();
+        var xVal = $('#first tr:last td:nth-child(2) input').val();
+
+   console.log(fullKm + " : " +xVal + " : "+key);
+   
+   for(let i = key+1; i<=xVal;i++){
+      console.log(i);
+      $("#trSec"+i).remove();
+   }
   
-    let ending = [];
-    let starting = [];
+    // let ending = [];
+    // let starting = [];
 
-    $($(".startingKm").get().reverse()).each(function() {
-      let end = $(this).val();
-      ending.push(end);  
+    // $($(".startingKm").get().reverse()).each(function() {
+    //   let end = $(this).val();
+    //   ending.push(end);  
     
-    });
-    $($(".endingKm").get().reverse()).each(function() {
-      let start = $(this).val();
-      starting.push(start);   
-    });
+    // });
+    // $($(".endingKm").get().reverse()).each(function() {
+    //   let start = $(this).val();
+    //   starting.push(start);   
+    // });
 
 
-    // console.log(starting);
-    // console.log(ending);
-
-    $.each(ending, function(index, value){
-      if(parseFloat(ending[0]) < parseFloat(starting[0]))
-      {
-       //  console.log(parseFloat(ending[0])+" < "+parseFloat(starting[0]));
-          $('#'+id).val(0);
-           if(index == 0)
-         {
-          alert('ending KM should be greater than '+parseFloat(starting[0]));
-         }
-      }
-
-      if(parseFloat(ending[0]) > parseFloat(fullKm))
-      {
-     //   console.log(parseFloat(ending[0])+" > "+parseFloat(fullKm));
-        $('#'+id).val(0);
-        if(index == 0)
-         {
-          alert('starting KM should be less than '+parseFloat(fullKm));
-         }
-      }
-
-      
-      var endingKMS = [];
-      $($(".startingKm").get().reverse()).each(function() {
-        let end = $(this).val();
-        endingKMS.push(end);  
-      });
-
-      if((jQuery.inArray("0.0", endingKMS) != -1) || (jQuery.inArray("0", endingKMS) != -1))
-      {
-       // $('#updateBtn').attr('disabled', 'disabled');
-      }
-      else
-      {
-       // $("#updateBtn").attr('disabled', false);
-      }
-
-
-    });
+  
 
 
   
@@ -517,7 +425,7 @@ $(document).ready(function() {
         });
         fileReader.readAsDataURL(f);
       }
-      console.log(files);
+  //    console.log(files);
     });
   } else {
     alert("Your browser doesn't support to File API")
@@ -656,7 +564,7 @@ var agc = 0;
           success:function(res){
 
            if(res){
-              console.log(res);
+          //    console.log(res);
             $('#town').prop("diabled",false);
             $('#town').empty();
 
