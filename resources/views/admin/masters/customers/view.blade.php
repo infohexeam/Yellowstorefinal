@@ -163,7 +163,7 @@ use App\Models\admin\Trn_store_order;
                            @endphp
                          <p>Total Points Earned : </p><h2>{{$totalCustomerRewardsCount}}</h2> <br>
                          <p>Used Points : </p><h2>{{$totalusedPoints + $redeemedPointsSum}}</h2> <br>
-                         <p>Balance Points : </p><h2>{{$totalCustomerRewardsCount - $redeemedPointsSum }}</h2> <br>
+                         <p>Balance Pointsd : </p><h2>{{$totalCustomerRewardsCount - $redeemedPointsSum }}</h2> <br>
 
                          
 

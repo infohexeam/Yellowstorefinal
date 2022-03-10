@@ -2173,7 +2173,7 @@ class SettingController extends Controller
 		$decrId  = Crypt::decryptString($id);
 		$customers = Trn_store_customer::Find($decrId);
 		$redeemedpoints = Trn_points_redeemed::where('customer_id', $decrId)->get();
-		$redeemedPointsSum = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+		$redeemedPointsSum = Trn_points_redeemed::where('customer_id', $decrId)->sum('points');
 
 		$customerAddress = Trn_customerAddress::where('customer_id', $decrId)->get();
 		$countries = Country::all();
