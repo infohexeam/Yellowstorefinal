@@ -134,7 +134,7 @@
                       @endphp
                            
                           @foreach ($store_settings as $data)
-                              <tr id="trSec{{$c}}">
+                              <tr class="trClass" id="trSec{{$c}}">
                               <td>
                                 <input step="0.1" readonly required type="number" id="start{{$c}}" onchange="endKMChanged(this.id)" value="{{ $data->service_start }}" class="form-control endingKm" name="start[]">
                               </td>
@@ -167,7 +167,7 @@
                           @endforeach
 
                         @else
-                             <tr id="trSec0" >
+                             <tr class="trClass" id="trSec0" >
                               <td>
                                 <input step="0.1" required readonly type="number"  onchange="endKMChanged(this.id)" id="start0"  class="form-control endingKm" name="start[]">
                               </td>
@@ -250,15 +250,17 @@ $(document).ready(function() {
   $(add_button).click(function(e){ //on add input button click
     e.preventDefault();
 
-     var xVal = $('#first tr:last td:nth-child(2) input').val();
-    //  if((xVal != 0) && (dummyCount == 0) ){
+    //  var xVal = $('#first tr:last td:nth-child(2) input').val();
+    // //  if((xVal != 0) && (dummyCount == 0) ){
+    // //      dummyCount++;
+    // //      x = xVal;
+    // //  }
+    //  if(dummyCount == 0){
     //      dummyCount++;
     //      x = xVal;
     //  }
-     if(dummyCount == 0){
-         dummyCount++;
-         x = xVal;
-     }
+
+    x = $('.trClass').length;
 
      let lastEndVal = $("#end"+x).val();
      let lastStartVal = $("#start"+x).val();
@@ -278,7 +280,7 @@ $(document).ready(function() {
             if(lastEndValuePlus <= serviceArea)
             {
                 x++; 
-                $(wrapper).append(' <tr id="trSec'+x+'" ><td><input step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" step="0.01" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]"></td><td><input type="number" step="0.01" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
+                $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" step="0.01" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]"></td><td><input type="number" step="0.01" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
             }else{
                 alert("Service area already filled..");
             }
