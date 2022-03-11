@@ -217,12 +217,9 @@
    </div>
 </div>
 </div>
-@endsection
 
 
-
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
-</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
 <script>
 function makeValue(val)
@@ -592,3 +589,8 @@ var agc = 0;
     });
 
 </script>
+
+@endsection
+
+
+
