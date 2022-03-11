@@ -251,6 +251,7 @@ $(document).ready(function() {
     e.preventDefault();
 
      var xVal = $('#first tr:last td:nth-child(2) input').val();
+     console.log(xVal);
      if((xVal != 0) && (dummyCount == 0) ){
          dummyCount++;
          x = xVal;
@@ -259,7 +260,7 @@ $(document).ready(function() {
      let lastEndVal = $("#end"+x).val();
      let lastStartVal = $("#start"+x).val();
      
-       // console.log(lastStartVal +" : "+lastEndVal);
+       console.log(lastStartVal +" : "+lastEndVal);
         if(lastEndVal <= lastStartVal)
         {
             if(lastEndVal != lastStartVal)
