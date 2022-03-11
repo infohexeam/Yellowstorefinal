@@ -260,7 +260,7 @@ $(document).ready(function() {
     //      x = xVal;
     //  }
 
-    x = $('.trClass').length;
+    x = ($('.trClass').length) - 1;
 
      let lastEndVal = $("#end"+x).val();
      let lastStartVal = $("#start"+x).val();
