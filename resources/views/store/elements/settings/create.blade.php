@@ -302,8 +302,8 @@ function startKMChanged(id,key)
 
    console.log(fullKm + " : " +xVal + " : "+key);
    
-   for(let i = key+1; i<=xVal;i++){
-      console.log(i);
+   for(let i = key+1; i<=500;i++){
+      //console.log(i);
       $("#trSec"+i).remove();
    }
   
