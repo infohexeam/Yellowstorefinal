@@ -252,7 +252,11 @@ $(document).ready(function() {
 
      var xVal = $('#first tr:last td:nth-child(2) input').val();
      console.log(xVal);
-     if((xVal != 0) && (dummyCount == 0) ){
+    //  if((xVal != 0) && (dummyCount == 0) ){
+    //      dummyCount++;
+    //      x = xVal;
+    //  }
+     if(dummyCount == 0){
          dummyCount++;
          x = xVal;
      }
