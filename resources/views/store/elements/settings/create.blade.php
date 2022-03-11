@@ -270,6 +270,7 @@ $(document).ready(function() {
         }else{
             let lastEndValuePlus = parseFloat($("#end"+x).val()) + 0.1;
             let serviceArea = $("#service_area").val();
+            console.log(lastEndValuePlus+" <= "+serviceArea);
             if(lastEndValuePlus <= serviceArea)
             {
                 x++; 
