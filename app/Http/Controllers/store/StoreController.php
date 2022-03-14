@@ -1071,6 +1071,17 @@ class StoreController extends Controller
         Mst_store_product_varient::create($data3);
         $vari_id = DB::getPdo()->lastInsertId();
 
+        $vac = 0;
+        foreach ($request->attr_group_id[500] as $attrGrp) {
+          $data4 = [
+            'product_varient_id' => $vari_id,
+            'attr_group_id' => $attrGrp,
+            'attr_value_id' => $request->attr_value_id[$vc][$vac],
+          ];
+          Trn_ProductVariantAttribute::create($data4);
+          $vac++;
+        }
+
         $vic = 0;
 
         foreach ($varImages as $vi) {
