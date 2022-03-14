@@ -162,6 +162,41 @@ input[type="file"] {
                           </select>
                       </div>
                    </div>
+                   
+                   
+                    <div id="attHalfRow500a" class="container"> 
+                          <div  id="attHalfSec500a" class="section">
+                            <div  class=" row">
+
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="form-label">Attribute* </label>
+                                    <select name="attr_group_id[500][]" onchange="findValue('500a500')"  id="attr_group500a0" class="attr_group form-control attrGroup500 proVariant" >
+                                      <option value="">Attribute</option>
+                                      @foreach($attr_groups as $key)
+                                        <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>
+                                      @endforeach
+                                    </select>
+                                  </div> 
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Value* </label>
+                                        <select name="attr_value_id[500][]"   id="attr_value0a0" class="attr_value form-control proVariant" >
+                                          <option value="">Value</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                          </div>
+
+                          <div class="col-md-2">
+                            <div class="form-group">
+                                <a  id="addVariantAttr500" onclick="addAttributes('500a',500)" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a>
+                            </div>
+                          </div>
+                        </div>
 
                      <div class="col-md-6">
                         <div class="form-group">
@@ -228,7 +263,7 @@ input[type="file"] {
                                 <div class="col-md-6">
                                   <div class="form-group">
                                     <label class="form-label">Attribute* </label>
-                                    <select name="attr_group_id[0][]" onchange="findValue('0a0')"  id="attr_group0a0" class="attr_group form-control proVariant" >
+                                    <select name="attr_group_id[0][]" onchange="findValue('0a0')"  id="attr_group0a0" class="attr_group form-control attrGroup0 proVariant" >
                                       <option value="">Attribute</option>
                                       @foreach($attr_groups as $key)
                                       <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>
@@ -250,7 +285,7 @@ input[type="file"] {
 
                           <div class="col-md-2">
                             <div class="form-group">
-                                <a  id="addVariantAttr0" onclick="addAttributes('0a')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a>
+                                <a  id="addVariantAttr0" onclick="addAttributes('0a',0)" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a>
                             </div>
                           </div>
                         </div>
@@ -345,8 +380,8 @@ function submitForm(){
   var fd = new FormData();
   var files = $('#fileInput')[0].files;
 
-  console.log(fd);
-  console.log(files);
+//   console.log(fd);
+//   console.log(files);
   // return false;
 
   // var _token = $('input[name="_token"]').val();
@@ -521,21 +556,44 @@ function salePriceChangeVar(p)
 }
 
 
-      var xx = 0; 
+      var xx = 1; 
 
-  function addAttributes(att_id_val){
+  function addAttributes(att_id_val,mainKey){
       
-  //  alert(att_id_val);
+  // alert(mainKey);
+  
+  var ek = $('.attrGroup'+mainKey).map((_,el) => el.value).get()
+
+// console.log(ek,att_id_val)
       var wrapper      = $("#attHalfSec"+att_id_val); 
       var add_button      = $("#addVariantAttr"+att_id_val); 
      // alert(wrapper);
-      ++xx;
-      var attid = att_id_val + xx;
+           var attid = att_id_val + xx;
+           var attid_2 = att_id_val + (xx -1);
       
+// console.log('#attr_group'+attid_2);
+console.log(att_id_val,mainKey,xx,attid,$('#attr_group'+attid_2).val());
+console.log(mainKey+"a"+xx);
+
+    let prevAttrVal = $('#attr_group'+attid_2).val();
+    if(prevAttrVal != ""){
+        
+   
+        $(".attrGroup"+mainKey).prop('disabled', true);
+        // $("#attr_group"+att_id_val+(xx - 1)).prop('disabled', true);
+
             var id_number = parseInt(att_id_val. replace(/[^0-9. ]/g, ""));
           
-
-          $(wrapper).append('<div  class="row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute </label><select name="attr_group_id['+id_number+'][]" onchange="findValue(\''+attid+'\')"id="attr_group'+attid+'" class="attr_group form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option  value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value </label><select name="attr_value_id['+id_number+'][]"   id="attr_value'+attid+'" class="attr_value form-control" ><option value="">Value</option></select></div></div><a href="#" class="remove_field ml-5 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+          $(wrapper).append('<div  class="row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute </label><select name="attr_group_id['+id_number+'][]" onchange="findValue(\''+attid+'\')"id="attr_group'+attid+'" class="attr_group attrGroup'+id_number+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option  value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value </label><select name="attr_value_id['+id_number+'][]"   id="attr_value'+attid+'" class="attr_value form-control" ><option value="">Value</option></select></div></div><a href="#" onclick="removeAttrRow('+mainKey+','+xx+')" class="remove_field ml-5 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+           ++xx;
+ 
+      for(let i=0;i< ek.length; i++){
+        $(".attrGroup"+mainKey+" option[value="+ek[i]+"]").hide();
+        
+      }
+    }else{
+        alert("Previous attribute empty");
+    }
       
       $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); $(this).parent('div').remove(); 
@@ -543,7 +601,12 @@ function salePriceChangeVar(p)
 
   }
 
-  
+  function removeAttrRow(x,y){
+      console.log(x,y);
+    //   console.log(".attrGroup"+x+"a"+(y-1));
+              $("#attr_group"+x+"a"+(y-1)).prop('disabled', false);
+
+  }
 
 
   $(document).ready(function() {
@@ -555,7 +618,7 @@ function salePriceChangeVar(p)
         //max input box allowed
           x++; //text box increment
           var attr_id_div = x+'a0';
-          $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute </label><select name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value </label><select name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" class="form-control"  oninput="regularPriceChangeVar('+x+')"  name="var_regular_price[]"   id="var_regular_price'+x+'"   placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" type="number" class="form-control"  name="var_sale_price[]"  id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Upload Images(1000*800 or more) *</label><input multiple type="file" class="form-control" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
+          $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute </label><select name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group attrGroup'+x+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value </label><select name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\','+x+')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" class="form-control"  oninput="regularPriceChangeVar('+x+')"  name="var_regular_price[]"   id="var_regular_price'+x+'"   placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" type="number" class="form-control"  name="var_sale_price[]"  id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Upload Images(1000*800 or more) *</label><input multiple type="file" class="form-control" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
       });
       
       $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
