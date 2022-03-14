@@ -122,6 +122,7 @@
                         <th class="wd-15p">{{ __('Name') }}</th>
                         <th class="wd-15p">{{ __('Email') }}</th>
                         <th class="wd-15p">{{ __('Mobile') }}</th>
+                        <th class="wd-15p">{{ __('Reg. Date') }}</th>
                         <th class="wd-15p">{{__('Profile Status')}}</th>
                        <th class="wd-15p">{{__('OTP Status')}}</th>
 
@@ -142,6 +143,7 @@
                        {{--  <td>{{$customer->countries['country_name']}}</td>  --}}
                         <td>{{$customer->customer_email}}</td>
                         <td>{{$customer->customer_mobile_number}}</td>
+                        <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y')}}</td>
 
                         <td>
                        <form action="{{route('admin.status_customer',$customer->customer_id)}}" method="POST">

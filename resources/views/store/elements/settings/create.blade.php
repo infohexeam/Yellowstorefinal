@@ -264,7 +264,7 @@ $(document).ready(function() {
 
      let lastEndVal = $("#end"+x).val();
      let lastStartVal = $("#start"+x).val();
-     console.log(x);
+    // console.log(x);
      
         if(lastEndVal <= lastStartVal)
         {
@@ -276,7 +276,7 @@ $(document).ready(function() {
         }else{
             let lastEndValuePlus = parseFloat($("#end"+x).val()) + 0.1;
             let serviceArea = $("#service_area").val();
-            console.log(lastEndValuePlus+" <= "+serviceArea);
+          //  console.log(lastEndValuePlus+" <= "+serviceArea);
             if(lastEndValuePlus <= serviceArea)
             {
                 x++; 
@@ -301,7 +301,7 @@ function startKMChanged(id,key)
    var endKm = $('#'+id).val();
         var xVal = $('#first tr:last td:nth-child(2) input').val();
 
-   console.log(fullKm + " : " +xVal + " : "+key);
+   //console.log(fullKm + " : " +xVal + " : "+key);
    
    for(let i = key+1; i<=500;i++){
       //console.log(i);
