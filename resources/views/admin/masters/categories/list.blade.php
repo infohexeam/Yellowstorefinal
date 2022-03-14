@@ -112,7 +112,9 @@ use App\Models\admin\Trn_CategoryBusinessType;
                                        @php
                                         $business_typez =  Trn_CategoryBusinessType::join('mst_store_business_types','mst_store_business_types.business_type_id','=','trn__category_business_types.business_type_id')
                                         ->join('mst_store_categories','mst_store_categories.category_id','=','trn__category_business_types.category_id')
-                                        ->groupBy('trn__category_business_types.business_type_id')->get();
+                                        ->where('trn__category_business_types.category_id',$category->category_id)
+                                        ->groupBy('trn__category_business_types.business_type_id')
+                                        ->get();
                                         
   
                                        @endphp
