@@ -77,6 +77,28 @@
                                     </td>
                                  </tr>
                                  @endforeach
+                                 @foreach($business_types as $business_type)
+                                    <div class="modal fade" id="viewModals{{$business_type->business_type_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
+                                       <div class="modal-dialog" role="document">
+                                          <div class="modal-content">
+                                             <div class="modal-header">
+                                                <h5 class="modal-title" id="example-Modal3">{{$pageTitle}}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                             </div>
+                                             <div class="modal-body">
+
+                                                <img  src="{{asset('/assets/uploads/business_type/icons/'.$business_type->business_type_icon)}}"  width="600" >
+
+                                             </div>
+                                             <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    @endforeach
                               </tbody>
                            </table>
                         </div>
@@ -84,54 +106,34 @@
                   </div>
                </div>
             </div>
+         </div>
+      </div>
+   </div>
+</div>
 
-
-              @foreach($business_types as $business_type)
-  <div class="modal fade" id="viewModals{{$business_type->business_type_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
-     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-           <div class="modal-header">
-              <h5 class="modal-title" id="example-Modal3">{{$pageTitle}}</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-           </div>
-           <div class="modal-body">
-
-            <img  src="{{asset('/assets/uploads/business_type/icons/'.$business_type->business_type_icon)}}"  width="600" >
-
-           </div>
-           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-           </div>
-        </div>
-     </div>
-  </div>
-  @endforeach
-
-                         <script>
+<script>
 
 $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip'
-      //   buttons: [
-      //       {
-      //           extend: 'pdf',
-      //           title: 'Restored Business Types',
-      //           footer: true,
-      //           exportOptions: {
-      //                columns: [0,1]
-      //            }
-      //       },
-      //       {
-      //           extend: 'excel',
-      //           title: 'Restored Business Types',
-      //           footer: true,
-      //           exportOptions: {
-      //                columns: [0,1]
-      //            }
-      //       }
-      //    ]
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Restored Business Types',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1]
+                 }
+            },
+            {
+                extend: 'excel',
+                title: 'Restored Business Types',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1]
+                 }
+            }
+         ]
     } );
 
 } );
