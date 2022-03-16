@@ -943,16 +943,21 @@ function changeBaseImage(id,varId)
 
 function showVariant(){
 
-if($("#varClass").is(":visible"))
-{
-      $("#varClass").hide();
-      $("#btnAddVar").text('Add Variant');
-}
-else
-{
-      $("#varClass").show();
-      $("#btnAddVar").text('Hide Variant');
-}
+   if($("#varClass").is(":visible"))
+   {
+         $("#varClass").hide();
+         $("#btnAddVar").text('Add Variant');
+   }
+   else
+   {
+      let firstAttrGrp = $('#attr_group500a0').val();
+      let firstAttrVal = $('#attr_value500a0').val();
+      if(!isEmpty(firstAttrGrp) && !isEmpty(firstAttrVal)){
+         $("#varClass").show();
+         $("#btnAddVar").text('Hide Variant');
+      }
+        
+   }
 
 }
 
