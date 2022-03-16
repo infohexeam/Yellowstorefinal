@@ -806,13 +806,14 @@ class AdminController extends Controller
 
 
                 $images = $request->file('images');
+                $town_id = 0;
+
                 if (isset($request->town_id)) {
                     $town_id = $request->town_id;
                 } else {
                     $town_id = 0;
                     $default_status = 1;
                 }
-                $town_id = 0;
 
                 // dd($product_image);
                 foreach ($images as $image) {
