@@ -171,59 +171,6 @@
                         </div>
                      </div>
 
-                     <div class="row">
-                        <div class="table-responsive ">
-                        <table   class="table table-striped table-bordered">
-                           <thead>
-                              <tr>
-                                <th class="wd-15p">SL.No</th>
-                                <th class="wd-15p">{{ __('Attr Group') }}</th>
-                                <th class="wd-15p">{{ __('Attr Val') }}</th>
-
-                                  <th  class="wd-20p">{{__('Action')}}</th>
-                              </tr>
-                           </thead>
-                            <tbody class="col-lg-12 col-xl-6 p-0">
-                            </tbody>
-                        </table>
-                        </div>
-                     </div>
-
-
-                     <div id="attHalfRow500a" class="container"> 
-                        <div  id="attHalfSec500a" class="section">
-                          <div  class=" row">
-
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label class="form-label">Attribute* </label>
-                                  <select name="attr_group_id[500][]" onchange="findValue('500a0')"  id="attr_group500a0" class="attr_group form-control attrGroup500 proVariant" >
-                                    <option value="">Attribute</option>
-                                    @foreach($attr_groups as $key)
-                                      <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>
-                                    @endforeach
-                                  </select>
-                                </div> 
-                              </div>
-                              <div class="col-md-6">
-                                  <div class="form-group">
-                                      <label class="form-label">Value* </label>
-                                      <select name="attr_value_id[500][]"   id="attr_value500a0" class="attr_value form-control proVariant" >
-                                        <option value="">Value</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-                          
-                        </div>
-
-                        <div class="col-md-2">
-                          <div class="form-group">
-                              <a  id="addVariantAttr500" onclick="addAttributes('500a',500)" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a>
-                          </div>
-                        </div>
-                      </div>
-
 
                      <div class="col-md-6">
                         <div class="form-group">
