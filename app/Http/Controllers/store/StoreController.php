@@ -1180,6 +1180,18 @@ class StoreController extends Controller
       ->where('is_removed', 0)
       ->orderBy('product_varient_id', 'DESC')
       ->get();
+
+    $product_base_varient = Mst_store_product_varient::where('product_id', $product_id)
+      ->where('is_base_variant', 1)
+      ->where('is_removed', 0)
+      ->first();
+    if (isset($product_base_varient->product_varient_id)) {
+      $product_base_varient_attrs = Trn_ProductVariantAttribute::where('product_varient_id', $product_base_varient->product_varient_id)
+        ->get();
+    } else {
+      $product_base_varient_attrs = null;
+    }
+
     @$category_id = $product->product_cat_id;
     $subcategories = Mst_SubCategory::where('category_id', @$category_id)->where('sub_category_status', 1)->get();
     // dd($subcategories);
@@ -1202,7 +1214,22 @@ class StoreController extends Controller
 
     $store = Mst_store::all();
 
-    return view('store.elements.product.edit', compact('subcategories', 'product_varients', 'category', 'agencies', 'colors', 'tax', 'product', 'pageTitle', 'attr_groups', 'store', 'product_images', 'business_types'));
+    return view('store.elements.product.edit', compact(
+      'product_base_varient_attrs',
+      'product_base_varient',
+      'subcategories',
+      'product_varients',
+      'category',
+      'agencies',
+      'colors',
+      'tax',
+      'product',
+      'pageTitle',
+      'attr_groups',
+      'store',
+      'product_images',
+      'business_types'
+    ));
   }
 
 

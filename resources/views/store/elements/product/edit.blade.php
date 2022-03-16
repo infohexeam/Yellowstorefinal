@@ -185,10 +185,24 @@
                                  </tr>
                               </thead>
                               <tbody class="col-lg-12 col-xl-12 p-1">
-                                 <td></td>
-                                 <td></td>
-                                 <td></td>
-                                 <td></td>
+                                 @php
+                                 $i = 0;
+                                 @endphp
+                                @if(!$product_base_varient_attrs->isEmpty())
+                                    @foreach ($product_base_varient_attrs as $val)
+                                       @php
+                                       $i++;
+                                       $attr_grp_name = \DB::table('mst_attribute_groups')->where('attr_group_id',$val->attr_group_id)->pluck('group_name');
+                                       $attr_val_name = \DB::table('mst_attribute_values')->where('attr_value_id',$val->attr_value_id)->pluck('group_value');
+                                       @endphp
+                                       <tr>
+                                          <td>{{$i}}</td>
+                                          <td>{{@$attr_grp_name[0]}}</td>
+                                          <td>{{@$attr_val_name[0]}}</td>
+                                          <td></td>
+                                       </tr>
+                                    @endforeach
+                                 @endif
                               </tbody>
                            </table>
                            </div>
