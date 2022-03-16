@@ -214,11 +214,18 @@
 
                       </div>
                       
-                        <div class="col-md-12">
+                      <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">UPI ID</label>
 
                            <input type="text" class="form-control" name="upi_id" value="{{old('upi_id',$store->upi_id)}}"  placeholder="UPI ID">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                           <label class="form-label">GSTIN</label>
+
+                           <input type="text" class="form-control" name="gst" value="{{old('gst',$store->gst)}}"  placeholder="GSTIN">
                         </div>
                       </div>
 

@@ -57,6 +57,8 @@
                   Phone: {{ @$store_data->store_mobile }} <br>
   
                 <p style="margin-top:2px;">  Phone: {{ @$store_data->store_mobile }}  </p>  <br>
+                <p>{{ @$store_data->gst }}</p>
+
                </div>
               </td>
             </tr>

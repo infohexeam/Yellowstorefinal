@@ -427,6 +427,7 @@ class StoreController extends Controller
         'place_id' => $sendPlaceId,
         //'store_qrcode' => $request->store_qrcode,
         'upi_id' => $request->upi_id,
+        'gst' => $request->gst,
 
       ];
 
