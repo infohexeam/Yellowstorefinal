@@ -440,7 +440,7 @@ var countPro = 0;
 
                          });
                          // add total amount
-                         html = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input type="hidden" class="classFullAmount" name="full_amount" value="'+total_sum.toFixed(2)+'">'+total_sum.toFixed(2)+'</td></tr>';
+                         html = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input type="hidden" id="classFullAmountId" class="classFullAmount" name="full_amount" value="'+total_sum.toFixed(2)+'">'+total_sum.toFixed(2)+'</td></tr>';
                          $('#myTable tr:last').after(html);
 
                         
@@ -514,9 +514,10 @@ let ts = 0;
      ts += parseFloat($(this).text());
     // console.log($(this).text());
     });
-     ht = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input type="hidden" class="classFullAmount" name="full_amount" value="'+ts.toFixed(2)+'">'+ts.toFixed(2)+'</td></tr>';
+     ht = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input id="classFullAmountId" type="hidden" class="classFullAmount" name="full_amount" value="'+ts.toFixed(2)+'">'+ts.toFixed(2)+'</td></tr>';
    $('#myTable tr:last').after(ht);
-   let total_sumr =   parseInt($(".classFullAmount").text());
+   let total_sumr =   parseFloat($("#classFullAmountId").text());
+   console.log($("#classFullAmountId").text());
   console.log(total_sumr);
    if(total_sumr <= 0){
      $('#order_btn').hide();
