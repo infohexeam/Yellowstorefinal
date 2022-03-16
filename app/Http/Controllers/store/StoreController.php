@@ -1073,11 +1073,12 @@ class StoreController extends Controller
 
         $vac = 0;
         foreach ($request->attr_group_id[500] as $attrGrp) {
-          $data4 = [
-            'product_varient_id' => $vari_id,
-            'attr_group_id' => $attrGrp,
-            'attr_value_id' => $request->attr_value_id[$vc][$vac],
-          ];
+          if (isset($attrGrp) && isset($request->attr_value_id[$vc][$vac]))
+            $data4 = [
+              'product_varient_id' => $vari_id,
+              'attr_group_id' => $attrGrp,
+              'attr_value_id' => $request->attr_value_id[$vc][$vac],
+            ];
           Trn_ProductVariantAttribute::create($data4);
           $vac++;
         }
