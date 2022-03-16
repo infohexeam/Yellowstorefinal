@@ -67,6 +67,8 @@ class Handler extends ExceptionHandler
                     ],
                     Response::HTTP_UNAUTHORIZED
                 );
+            } else {
+                return redirect('/');
             }
             return parent::render($request, $exception);
         }
