@@ -1148,7 +1148,8 @@ class StoreController extends Controller
     $product = Mst_store_product::where('product_id', '=', $id)->first();
     $product_id = $product->product_id;
     $product_varients = Mst_store_product_varient::where('product_id', $product_id)
-      ->orderBy('product_varient_id', 'DESC')
+      ->where('is_base_variant', '!=', 1)
+      ->where('is_removed', 0)->orderBy('product_varient_id', 'DESC')
       ->get();
     // $varient_product = Mst_store_product_varient::where('product_id', '=',$product_id)->first();
 
@@ -1175,6 +1176,7 @@ class StoreController extends Controller
     $product_id = $product->product_id;
 
     $product_varients = Mst_store_product_varient::where('product_id', $product_id)
+      ->where('is_base_variant', '!=', 1)
       ->where('is_removed', 0)
       ->orderBy('product_varient_id', 'DESC')
       ->get();
@@ -3985,7 +3987,9 @@ class StoreController extends Controller
     $removeProductVar['stock_count'] = 0;
     Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->update($removeProductVar);
 
-    $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)->where('is_removed', '!=', 1)->count();
+    $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)
+      ->where('is_base_variant', '!=', 1)
+      ->where('is_removed', '!=', 1)->count();
 
     if ($productVarCount < 1) {
       Mst_store_product::where('product_id', $pro_variant->product_id)->update($removeProduct);
@@ -4034,7 +4038,9 @@ class StoreController extends Controller
     $store_id  = Auth::guard('store')->user()->store_id;
     $attr_groups = Mst_attribute_group::all();
 
-    $product_variants = Mst_store_product_varient::where('product_id', '=', $product_id)->where('is_removed', 0)->get();
+    $product_variants = Mst_store_product_varient::where('product_id', '=', $product_id)
+      ->where('is_base_variant', '!=', 1)
+      ->where('is_removed', 0)->get();
     return view('store.elements.product.view_variants', compact('attr_groups', 'product_variants', 'pageTitle', 'store_id'));
   }
 

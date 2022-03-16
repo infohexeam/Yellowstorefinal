@@ -787,6 +787,8 @@ class ProductController extends Controller
                 if (isset($request->product_id) && Mst_store_product::find($request->product_id)) {
 
                     if ($data['productVariantsDetails']  = Mst_store_product_varient::where('product_id', '=', $request->product_id)
+                        ->where('is_base_variant', '!=', 1)
+                        ->where('is_removed', 0)
                         ->select(
                             'product_varient_id',
                             'product_id',
@@ -811,7 +813,10 @@ class ProductController extends Controller
                             }
                             $var->varianAttributes = Trn_ProductVariantAttribute::where('product_varient_id', $var->product_varient_id)->get();
 
-                            $pCo =   Mst_store_product_varient::where('product_id', '=', $request->product_id)->count();
+                            $pCo =   Mst_store_product_varient::where('product_id', '=', $request->product_id)
+                                ->where('is_base_variant', '!=', 1)
+                                ->where('is_removed', 0)
+                                ->count();
                             if ($pCo <= 1) {
                                 $var->isPrimary = 1;
                             } else {
@@ -1342,7 +1347,9 @@ class ProductController extends Controller
 
 
                 if ($productVar = Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->first()) {
-                    $productVarCount = Mst_store_product_varient::where('product_id', $productVar->product_id)->where('is_removed', '!=', 1)->count();
+                    $productVarCount = Mst_store_product_varient::where('product_id', $productVar->product_id)
+                        ->where('is_base_variant', '!=', 1)
+                        ->where('is_removed', '!=', 1)->count();
 
                     if ($productVarCount <= 1) {
                         Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
@@ -1572,8 +1579,8 @@ class ProductController extends Controller
 
                         @$data['prouctDetails']->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$data['prouctDetails']->product_base_image;
                         $data['prouctDetails']->prouctVariantDetails = Mst_store_product_varient::where('product_id', $request->product_id)
-                            ->where('is_removed', 0)
-                            ->orderBy('product_varient_id')
+                            ->where('is_base_variant', '!=', 1)
+                            ->where('is_removed', 0)->orderBy('product_varient_id')
                             ->get();
                         $data['prouctDetails']->productImages = Mst_product_image::where('product_id', $request->product_id)->where('product_varient_id', 0)->get();
                         foreach ($data['prouctDetails']->productImages as $val) {
