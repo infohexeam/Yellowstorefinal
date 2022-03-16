@@ -174,7 +174,7 @@
 
                         <div class="row">
                            <div class="table-responsive ">
-                           <table   class="table table-striped table-bordered">
+                           <table id="attrTable"   class="table table-striped table-bordered">
                               <thead>
                                  <tr>
                                  <th class="wd-15p">SL.No</th>
@@ -952,6 +952,7 @@ function showVariant(){
    {
       let firstAttrGrp = $('#attr_group500a0').val();
       let firstAttrVal = $('#attr_value500a0').val();
+      var rowCount = $('#myTable tr').length;
       if((firstAttrGrp != '' ) && (firstAttrVal != '')){
          $("#varClass").show();
          $("#btnAddVar").text('Hide Variant');
@@ -990,7 +991,11 @@ console.log(mainKey+"a"+xx);
 let prAttrValue = $('#attr_value'+attid_2).val();
 
   let prevAttrVal = $('#attr_group'+attid_2).val();
-  if(prevAttrVal != "" && prAttrValue != ''){
+
+  var rowCount = $('#attrTable tr').length;
+         
+
+  if((prevAttrVal != "" && prAttrValue != '') || (rowCount > 0)){
       
  
       $(".attrGroup"+mainKey).prop('disabled', true);
