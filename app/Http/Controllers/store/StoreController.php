@@ -1065,6 +1065,7 @@ class StoreController extends Controller
           'product_varient_base_image' => null,
           'stock_count' => $sCount,
           'color_id' =>  0,
+          'is_base_variant' => 1,
           'created_at' => $date,
           'updated_at' => $date,
         ];
@@ -1073,12 +1074,14 @@ class StoreController extends Controller
 
         $vac = 0;
         foreach ($request->attr_group_id[500] as $attrGrp) {
-          $data4 = [
-            'product_varient_id' => $vari_id,
-            'attr_group_id' => $attrGrp,
-            'attr_value_id' => $request->attr_value_id[$vc][$vac],
-          ];
-          Trn_ProductVariantAttribute::create($data4);
+          if (isset($attrGrp) && isset($request->attr_value_id[500][$vac])) {
+            $data4 = [
+              'product_varient_id' => $vari_id,
+              'attr_group_id' => $attrGrp,
+              'attr_value_id' => $request->attr_value_id[500][$vac],
+            ];
+            Trn_ProductVariantAttribute::create($data4);
+          }
           $vac++;
         }
 
@@ -1145,7 +1148,8 @@ class StoreController extends Controller
     $product = Mst_store_product::where('product_id', '=', $id)->first();
     $product_id = $product->product_id;
     $product_varients = Mst_store_product_varient::where('product_id', $product_id)
-      ->orderBy('product_varient_id', 'DESC')
+      ->where('is_base_variant', '!=', 1)
+      ->where('is_removed', 0)->orderBy('product_varient_id', 'DESC')
       ->get();
     // $varient_product = Mst_store_product_varient::where('product_id', '=',$product_id)->first();
 
@@ -1171,10 +1175,23 @@ class StoreController extends Controller
     $product = Mst_store_product::where('product_id', '=', $id)->first();
     $product_id = $product->product_id;
 
-    $product_varients = Mst_store_product_varient::where('product_id', $product_id)
+    $product_varients = Mst_store_product_varient::where('product_id', $id)
+      ->where('is_base_variant', '!=', 1)
       ->where('is_removed', 0)
       ->orderBy('product_varient_id', 'DESC')
       ->get();
+
+    $product_base_varient = Mst_store_product_varient::where('product_id', $id)
+      ->where('is_base_variant', 1)
+      ->where('is_removed', 0)
+      ->first();
+    if (isset($product_base_varient->product_varient_id)) {
+      $product_base_varient_attrs = Trn_ProductVariantAttribute::where('product_varient_id', $product_base_varient->product_varient_id)
+        ->get();
+    } else {
+      $product_base_varient_attrs = null;
+    }
+    // dd($product_varients, $product_base_varient, $product_base_varient_attrs);
     @$category_id = $product->product_cat_id;
     $subcategories = Mst_SubCategory::where('category_id', @$category_id)->where('sub_category_status', 1)->get();
     // dd($subcategories);
@@ -1197,7 +1214,22 @@ class StoreController extends Controller
 
     $store = Mst_store::all();
 
-    return view('store.elements.product.edit', compact('subcategories', 'product_varients', 'category', 'agencies', 'colors', 'tax', 'product', 'pageTitle', 'attr_groups', 'store', 'product_images', 'business_types'));
+    return view('store.elements.product.edit', compact(
+      'product_base_varient_attrs',
+      'product_base_varient',
+      'subcategories',
+      'product_varients',
+      'category',
+      'agencies',
+      'colors',
+      'tax',
+      'product',
+      'pageTitle',
+      'attr_groups',
+      'store',
+      'product_images',
+      'business_types'
+    ));
   }
 
 
@@ -3982,7 +4014,9 @@ class StoreController extends Controller
     $removeProductVar['stock_count'] = 0;
     Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->update($removeProductVar);
 
-    $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)->where('is_removed', '!=', 1)->count();
+    $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)
+      ->where('is_base_variant', '!=', 1)
+      ->where('is_removed', '!=', 1)->count();
 
     if ($productVarCount < 1) {
       Mst_store_product::where('product_id', $pro_variant->product_id)->update($removeProduct);
@@ -4031,7 +4065,9 @@ class StoreController extends Controller
     $store_id  = Auth::guard('store')->user()->store_id;
     $attr_groups = Mst_attribute_group::all();
 
-    $product_variants = Mst_store_product_varient::where('product_id', '=', $product_id)->where('is_removed', 0)->get();
+    $product_variants = Mst_store_product_varient::where('product_id', '=', $product_id)
+      ->where('is_base_variant', '!=', 1)
+      ->where('is_removed', 0)->get();
     return view('store.elements.product.view_variants', compact('attr_groups', 'product_variants', 'pageTitle', 'store_id'));
   }
 

@@ -171,7 +171,7 @@ input[type="file"] {
                                 <div class="col-md-6">
                                   <div class="form-group">
                                     <label class="form-label">Attribute* </label>
-                                    <select name="attr_group_id[500][]" onchange="findValue('500a500')"  id="attr_group500a0" class="attr_group form-control attrGroup500 proVariant" >
+                                    <select name="attr_group_id[500][]" onchange="findValue('500a0')"  id="attr_group500a0" class="attr_group form-control attrGroup500 proVariant" >
                                       <option value="">Attribute</option>
                                       @foreach($attr_groups as $key)
                                         <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>
@@ -182,7 +182,7 @@ input[type="file"] {
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Value* </label>
-                                        <select name="attr_value_id[500][]"   id="attr_value0a0" class="attr_value form-control proVariant" >
+                                        <select name="attr_value_id[500][]"   id="attr_value500a0" class="attr_value form-control proVariant" >
                                           <option value="">Value</option>
                                         </select>
                                     </div>
