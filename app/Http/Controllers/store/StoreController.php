@@ -1191,7 +1191,7 @@ class StoreController extends Controller
     } else {
       $product_base_varient_attrs = null;
     }
-    dd($product_varients, $product_base_varient, $product_base_varient_attrs);
+    // dd($product_varients, $product_base_varient, $product_base_varient_attrs);
     @$category_id = $product->product_cat_id;
     $subcategories = Mst_SubCategory::where('category_id', @$category_id)->where('sub_category_status', 1)->get();
     // dd($subcategories);
