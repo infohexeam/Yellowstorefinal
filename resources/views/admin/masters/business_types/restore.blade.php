@@ -114,30 +114,30 @@
 
 <script>
 
-$(function(e) {
-	 $('#exampletable').DataTable( {
-        dom: 'Bfrtip'
-        buttons: [
-            {
-                extend: 'pdf',
-                title: 'Restored Business Types',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1]
-                 }
-            },
-            {
-                extend: 'excel',
-                title: 'Restored Business Types',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1]
-                 }
-            }
-         ]
-    } );
+// $(function(e) {
+// 	 $('#exampletable').DataTable( {
+//         dom: 'Bfrtip'
+//         buttons: [
+//             {
+//                 extend: 'pdf',
+//                 title: 'Restored Business Types',
+//                 footer: true,
+//                 exportOptions: {
+//                      columns: [0,1]
+//                  }
+//             },
+//             {
+//                 extend: 'excel',
+//                 title: 'Restored Business Types',
+//                 footer: true,
+//                 exportOptions: {
+//                      columns: [0,1]
+//                  }
+//             }
+//          ]
+//     } );
 
-} );
+// } );
             </script>
 
             <!-- MESSAGE MODAL CLOSED -->
