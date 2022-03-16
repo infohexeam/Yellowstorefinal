@@ -162,7 +162,6 @@
                                             <th class="wd-15p">Subadmin</th>
                                             <th class="wd-15p">Stock</th>
                                             <th class="wd-15p">Date</th>
-                                            <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Variant Price</th>
                                             <th class="wd-15p">Vendor</th>
                                             <th class="wd-15p">Category</th>
@@ -171,10 +170,7 @@
                                             <th class="wd-15p">Minimum Stock</th>
                                             <th class="wd-15p">Product Status</th>
                                             <th class="wd-15p">Old Stock</th>
-                                            <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Newly<br>Added Stock</th>
-                                            <th class="wd-15p">Date</th>
-                                       
                                          </tr>
                                       </thead>
                                       <tbody>
@@ -192,8 +188,7 @@
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
 
                                             <td>{{ $d->stock_count }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('H:i')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}} {{ \Carbon\Carbon::parse($d->created_at)->format('H:i')}}</td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
                                             <td>{{ $d->agency_name }}</td>
                                             <td>{{ $d->category_name }}</td>
@@ -201,16 +196,14 @@
                                             <td>{{ $d->product_brand }}</td>
                                             <td>{{ $d->min_stock }}</td>
                                             <td> 
-                                                @if($d->product_status == 0)
+                                                @if($d->product_status == 1)
                                                     Active
                                                 @else
                                                     Inactive
                                                 @endif
                                             </td>
                                             <td>{{ $d->prev_stock }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}}</td>
                                             <td>{{ $d->stock }}</td>
-                                            <td>{{ \Carbon\Carbon::now()->toDateString() }}</td>
 
                                         </tr>
                                         @endforeach
