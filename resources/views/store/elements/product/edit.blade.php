@@ -952,7 +952,7 @@ function showVariant(){
    {
       let firstAttrGrp = $('#attr_group500a0').val();
       let firstAttrVal = $('#attr_value500a0').val();
-      if(!isEmpty(firstAttrGrp) && !isEmpty(firstAttrVal)){
+      if((firstAttrGrp != '' ) && (firstAttrVal != '')){
          $("#varClass").show();
          $("#btnAddVar").text('Hide Variant');
       }else{
