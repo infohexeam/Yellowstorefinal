@@ -188,7 +188,7 @@
                                  @php
                                  $i = 0;
                                  @endphp
-                                @if(!$product_base_varient_attrs->isEmpty())
+                                @if($product_base_varient_attrs != null)
                                     @foreach ($product_base_varient_attrs as $val)
                                        @php
                                        $i++;

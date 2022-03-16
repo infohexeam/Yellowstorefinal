@@ -1175,13 +1175,13 @@ class StoreController extends Controller
     $product = Mst_store_product::where('product_id', '=', $id)->first();
     $product_id = $product->product_id;
 
-    $product_varients = Mst_store_product_varient::where('product_id', $product_id)
+    $product_varients = Mst_store_product_varient::where('product_id', $id)
       ->where('is_base_variant', '!=', 1)
       ->where('is_removed', 0)
       ->orderBy('product_varient_id', 'DESC')
       ->get();
 
-    $product_base_varient = Mst_store_product_varient::where('product_id', $product_id)
+    $product_base_varient = Mst_store_product_varient::where('product_id', $id)
       ->where('is_base_variant', 1)
       ->where('is_removed', 0)
       ->first();
