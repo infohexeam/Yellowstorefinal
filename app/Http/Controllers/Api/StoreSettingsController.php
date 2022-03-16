@@ -813,8 +813,8 @@ class StoreSettingsController extends Controller
 
 
                 $data['totalNumberOfOrders'] = Trn_store_order::where('store_id', '=', $store_id)->get()->count();
-                $data['totalSales'] = Trn_store_order::where('store_id', '=', $store_id)->sum('product_total_amount');
-                $data['todaysSale'] = Trn_store_order::where('store_id', '=', $store_id)->whereDate('created_at', Carbon::today())->sum('product_total_amount');
+                $data['totalSales'] = Trn_store_order::where('store_id', '=', $store_id)->where('status_id', '!=', 5)->sum('product_total_amount');
+                $data['todaysSale'] = Trn_store_order::where('store_id', '=', $store_id)->where('status_id', '!=', 5)->whereDate('created_at', Carbon::today())->sum('product_total_amount');
                 $data['dailySalesCount'] = Trn_store_order::where('store_id', '=', $store_id)->whereDate('created_at', Carbon::today())->count();
                 $data['deliveryBoys'] =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
                     ->where('mst_delivery_boys.delivery_boy_status', 1)

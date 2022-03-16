@@ -135,9 +135,9 @@ class StoreController extends Controller
 
     $order = Trn_store_order::where('store_id', '=', $user_id)->get()->count();
     $agency = Mst_store_link_agency::where('store_id', '=', $user_id)->get()->count();
-    $total_sale = Trn_store_order::where('store_id', '=', $user_id)->sum('product_total_amount');
+    $total_sale = Trn_store_order::where('store_id', '=', $user_id)->where('status_id', '!=', 5)->sum('product_total_amount');
     // echo Carbon::today();die;
-    $today_sale = Trn_store_order::where('store_id', '=', $user_id)->whereDate('created_at', Carbon::today())->sum('product_total_amount');
+    $today_sale = Trn_store_order::where('store_id', '=', $user_id)->where('status_id', '!=', 5)->whereDate('created_at', Carbon::today())->sum('product_total_amount');
     $today_sale_count = Trn_store_order::where('store_id', '=', $user_id)->whereDate('created_at', Carbon::today())->count();
 
     $delivery_boys = Mst_delivery_boy::where('store_id', '=', $user_id)->count();
