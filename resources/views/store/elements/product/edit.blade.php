@@ -987,9 +987,10 @@ var ek = $('.attrGroup'+mainKey).map((_,el) => el.value).get()
 // console.log('#attr_group'+attid_2);
 console.log(att_id_val,mainKey,xx,attid,$('#attr_group'+attid_2).val());
 console.log(mainKey+"a"+xx);
+let prAttrValue = $('#attr_value'+attid_2).val();
 
   let prevAttrVal = $('#attr_group'+attid_2).val();
-  if(prevAttrVal != ""){
+  if(prevAttrVal != "" && prAttrValue != ''){
       
  
       $(".attrGroup"+mainKey).prop('disabled', true);

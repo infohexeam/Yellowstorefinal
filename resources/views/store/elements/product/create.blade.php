@@ -444,8 +444,14 @@ function showVariant(){
       }
       else
       {
-            $("#varClass").show();
-            $("#btnAddVar").text('Hide Variant');
+        let firstAttrGrp = $('#attr_group500a0').val();
+        let firstAttrVal = $('#attr_value500a0').val();
+        if((firstAttrGrp != '' ) && (firstAttrVal != '')){
+          $("#varClass").show();
+          $("#btnAddVar").text('Hide Variant');
+        }else{
+          alert("Base attribute and value can't be empty! ");
+        }
       }
 
 }
@@ -575,9 +581,11 @@ function salePriceChangeVar(p)
 console.log(att_id_val,mainKey,xx,attid,$('#attr_group'+attid_2).val());
 console.log(mainKey+"a"+xx);
 
-    let prevAttrVal = $('#attr_group'+attid_2).val();
-    if(prevAttrVal != ""){
-        
+let prAttrValue = $('#attr_value'+attid_2).val();
+
+  let prevAttrVal = $('#attr_group'+attid_2).val();
+  if(prevAttrVal != "" && prAttrValue != ''){
+      
    
         $(".attrGroup"+mainKey).prop('disabled', true);
         // $("#attr_group"+att_id_val+(xx - 1)).prop('disabled', true);
