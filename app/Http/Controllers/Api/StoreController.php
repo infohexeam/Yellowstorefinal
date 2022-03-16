@@ -579,27 +579,24 @@ class StoreController extends Controller
                                 $data['password'] = $passChk;
 
                                 $divTok = DB::table('oauth_access_tokens')
-                                    ->join('trn__store_device_tokens', 'trn__store_device_tokens.store_admin_id', 'oauth_access_tokens.user_id')
-                                    ->where('trn__store_device_tokens.store_admin_id', $custCheck->store_admin_id)
-                                    ->where('trn__store_device_tokens.store_device_id', $request->device_id)
-                                    ->where('oauth_access_tokens.scopes', [])
-                                    ->where('oauth_access_tokens.revoked', 0)
+                                    ->where('user_id', $custCheck->store_admin_id)
+                                    ->where('scopes', [])
+                                    ->where('revoked', 0)
                                     ->count();
 
 
+                                $devTokenC = Trn_StoreDeviceToken::where('store_admin_id', $custCheck->store_admin_id)
+                                    ->where('store_device_id', $request->device_id)
+                                    ->count();
 
-                                // $devToken = Trn_StoreDeviceToken::where('store_admin_id', $custCheck->store_admin_id)
-                                //     ->where('store_device_id', $request->device_id)
-                                //     ->count();
 
-
-                                if ($divTok > 0) {
+                                if (($divTok > 0) || ($devTokenC > 0)) {
                                     $data['login_status '] = 0;
                                 } else {
                                     $data['login_status '] = 1;
                                 }
 
-                                // $data['login_status '] = $divTok;
+                                $data['login_status '] = $divTok;
                             } else {
                                 $data['status'] = 2;
                                 $data['message'] = "OTP not verified";
