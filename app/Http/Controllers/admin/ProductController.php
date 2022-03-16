@@ -150,7 +150,7 @@ class ProductController extends Controller
         //   'product_brand' => ['required' ],
         //  'attr_group_id' => ['required' ],
         'product_cat_id' => ['required'],
-        'vendor_id' => ['required'],
+        //'vendor_id' => ['required'],
         //  'sub_category_id' => ['required' ],
         //  'attr_value_id' => ['required' ],
         //  'product_image.*' => ['required', 'dimensions:min_width=1000,min_height=800'],
@@ -317,7 +317,7 @@ class ProductController extends Controller
         // 'product_brand' => ['required' ],
         // 'attr_group_id' => ['required' ],
         'product_cat_id' => ['required'],
-        'vendor_id' => ['required'],
+        //'vendor_id' => ['required'],
         //'attr_value_id' => ['required' ],
         // 'product_image.*' => 'dimensions:min_width=1000,min_height=800'
 

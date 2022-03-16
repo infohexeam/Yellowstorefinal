@@ -214,8 +214,8 @@ iframe{
 
                      <div class="col-md-6">
                         <div class="form-group">
-                          <label class="form-label">Vendor *</label>
-                           <select required name="vendor_id" id="vendor_id" class="form-control"  >
+                          <label class="form-label">Vendor </label>
+                           <select  name="vendor_id" id="vendor_id" class="form-control"  >
                                  <option value="">Vendor</option>
                                 @foreach($agencies as $key)
                                 <option {{old('vendor_id',$product->vendor_id) == $key->agency_id ? 'selected':''}} value="{{$key->agency_id }}"> {{$key->agency_name }} </option>
