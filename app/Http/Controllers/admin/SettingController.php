@@ -3512,7 +3512,8 @@ class SettingController extends Controller
 			if (auth()->user()->user_role_id  == 0) {
 				$query = Trn_store_order::where('store_id', '=', $store_id);
 			} else {
-				$query = Trn_store_order::where('subadmin_id', auth()->user()->id);
+				$query = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')
+					->where('mst_stores.subadmin_id', auth()->user()->id);
 			}
 
 			if ($store_id != "") {
