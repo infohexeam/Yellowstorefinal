@@ -580,7 +580,7 @@ class StoreController extends Controller
 
                                 $divTok = DB::table('oauth_access_tokens')
                                     ->join('trn__store_device_tokens', 'trn__store_device_tokens.store_admin_id', 'oauth_access_tokens.user_id')
-                                    ->where('trn__store_device_tokens.user_id', $custCheck->store_admin_id)
+                                    ->where('trn__store_device_tokens.store_admin_id', $custCheck->store_admin_id)
                                     ->where('trn__store_device_tokens.store_device_id', $request->device_id)
                                     ->where('oauth_access_tokens.scopes', [])
                                     ->where('oauth_access_tokens.revoked', 0)
