@@ -808,12 +808,7 @@ class AdminController extends Controller
                 $images = $request->file('images');
                 $town_id = 0;
 
-                if (isset($request->town_id)) {
-                    $town_id = $request->town_id;
-                } else {
-                    $town_id = 0;
-                    $default_status = 1;
-                }
+
 
                 // dd($product_image);
                 foreach ($images as $image) {
@@ -829,9 +824,9 @@ class AdminController extends Controller
                     $data2 = [
                         [
                             'image'      => $filename,
-                            'town_id'      => $town_id,
+                            'town_id'      => $request->town_id,
                             'status' => $request->status,
-                            'default_status' => $default_status
+                            'default_status' => 0
                         ],
                     ];
 
