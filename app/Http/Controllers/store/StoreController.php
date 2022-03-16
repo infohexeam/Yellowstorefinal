@@ -1065,6 +1065,7 @@ class StoreController extends Controller
           'product_varient_base_image' => null,
           'stock_count' => $sCount,
           'color_id' =>  0,
+          'is_base_variant' => 1,
           'created_at' => $date,
           'updated_at' => $date,
         ];
