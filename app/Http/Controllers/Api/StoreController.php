@@ -594,13 +594,13 @@ class StoreController extends Controller
                                 //     ->count();
 
 
-                                // if ($divTok > 0) {
-                                //     $data['login_status '] = 1;
-                                // } else {
-                                //     $data['login_status '] = 0;
-                                // }
+                                if ($divTok > 0) {
+                                    $data['login_status '] = 0;
+                                } else {
+                                    $data['login_status '] = 1;
+                                }
 
-                                $data['login_status '] = $divTok;
+                                // $data['login_status '] = $divTok;
                             } else {
                                 $data['status'] = 2;
                                 $data['message'] = "OTP not verified";
