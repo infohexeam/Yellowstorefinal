@@ -955,6 +955,8 @@ function showVariant(){
       if(!isEmpty(firstAttrGrp) && !isEmpty(firstAttrVal)){
          $("#varClass").show();
          $("#btnAddVar").text('Hide Variant');
+      }else{
+         alert("Base attribute and value can't be empty! ");
       }
         
    }
