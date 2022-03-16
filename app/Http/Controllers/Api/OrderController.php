@@ -320,7 +320,12 @@ class OrderController extends Controller
 
                         $storeData = Mst_store::find($request->store_id);
                         $data['orderDetails']->store_name = $storeData->store_name;
-                        $data['orderDetails']->gst = $storeData->gst;
+
+                        if (isset($storeData->gst))
+                            $data['orderDetails']->gst = $storeData->gst;
+                        else
+                            $data['orderDetails']->gst = "";
+
                         $data['orderDetails']->store_primary_address = $storeData->store_primary_address;
                         $data['orderDetails']->store_mobile = $storeData->store_mobile;
 
