@@ -600,8 +600,7 @@ class StoreController extends Controller
                                 //     $data['login_status '] = 0;
                                 // }
 
-                                                                    $data['login_status '] = $divTok;
-
+                                $data['login_status '] = $divTok;
                             } else {
                                 $data['status'] = 2;
                                 $data['message'] = "OTP not verified";
