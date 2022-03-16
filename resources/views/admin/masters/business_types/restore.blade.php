@@ -77,7 +77,15 @@
                                     </td>
                                  </tr>
                                  @endforeach
-                                 @foreach($business_types as $business_type)
+                                 
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            @foreach($business_types as $business_type)
                                     <div class="modal fade" id="viewModals{{$business_type->business_type_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
                                        <div class="modal-dialog" role="document">
                                           <div class="modal-content">
@@ -99,13 +107,6 @@
                                        </div>
                                     </div>
                                     @endforeach
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
          </div>
       </div>
    </div>
