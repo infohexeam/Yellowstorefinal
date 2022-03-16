@@ -472,7 +472,7 @@ class StoreSettingsController extends Controller
                         'store_website_link',
                         'store_primary_address',
                         'town_id',
-                        'town_id',
+                        'gst',
                         'subadmin_id',
                         'upi_id',
                         'profile_image',
@@ -584,7 +584,7 @@ class StoreSettingsController extends Controller
                     $data2['store_district_id'] = $request->store_district_id;
                     $data2['town_id'] = $request->town_id;
                     $data2['store_username'] = $request->store_username;
-
+                    $data2['gst'] = $request->gst;
                     $data2['store_mobile'] = $request->store_mobile;
                     $data2['place'] = $request->place;
                     $data2['email'] = $request->email;
