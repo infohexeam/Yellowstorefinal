@@ -57,16 +57,19 @@ class Handler extends ExceptionHandler
             return redirect()->back();
         }
 
-        if ($exception instanceof AuthenticationException) {
-            return response()->json(
-                [
-                    'type' => 'error',
-                    'status' => Response::HTTP_UNAUTHORIZED,
-                    'message' => 'Access Token expired',
-                ],
-                Response::HTTP_UNAUTHORIZED
-            );
+        if (Auth::guard('api')->check()) {
+            if ($exception instanceof AuthenticationException) {
+                return response()->json(
+                    [
+                        'type' => 'error',
+                        'status' => Response::HTTP_UNAUTHORIZED,
+                        'message' => 'Access Token expired',
+                    ],
+                    Response::HTTP_UNAUTHORIZED
+                );
+            }
         }
+
         return parent::render($request, $exception);
     }
 }
