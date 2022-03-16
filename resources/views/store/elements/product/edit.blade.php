@@ -183,7 +183,11 @@
                                   <th  class="wd-20p">{{__('Action')}}</th>
                               </tr>
                            </thead>
-                            <tbody class="col-lg-12 col-xl-6 p-0">
+                            <tbody class="col-lg-12 col-xl-12 p-1">
+                               <td></td>
+                               <td></td>
+                               <td></td>
+                               <td></td>
                             </tbody>
                         </table>
                         </div>
