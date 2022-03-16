@@ -170,26 +170,28 @@
                             </select>
                         </div>
                      </div>
+                     <div class="col-md-12">
 
-                     <div class="row">
-                        <div class="table-responsive ">
-                        <table   class="table table-striped table-bordered">
-                           <thead>
-                              <tr>
-                                <th class="wd-15p">SL.No</th>
-                                <th class="wd-15p">{{ __('Attr Group') }}</th>
-                                <th class="wd-15p">{{ __('Attr Val') }}</th>
+                        <div class="row">
+                           <div class="table-responsive ">
+                           <table   class="table table-striped table-bordered">
+                              <thead>
+                                 <tr>
+                                 <th class="wd-15p">SL.No</th>
+                                 <th class="wd-15p">{{ __('Attr Group') }}</th>
+                                 <th class="wd-15p">{{ __('Attr Val') }}</th>
 
-                                  <th  class="wd-20p">{{__('Action')}}</th>
-                              </tr>
-                           </thead>
-                            <tbody class="col-lg-12 col-xl-12 p-1">
-                               <td></td>
-                               <td></td>
-                               <td></td>
-                               <td></td>
-                            </tbody>
-                        </table>
+                                    <th  class="wd-20p">{{__('Action')}}</th>
+                                 </tr>
+                              </thead>
+                              <tbody class="col-lg-12 col-xl-12 p-1">
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                              </tbody>
+                           </table>
+                           </div>
                         </div>
                      </div>
 
