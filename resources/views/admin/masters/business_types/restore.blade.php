@@ -77,7 +77,15 @@
                                     </td>
                                  </tr>
                                  @endforeach
-                                 @foreach($business_types as $business_type)
+                                 
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            @foreach($business_types as $business_type)
                                     <div class="modal fade" id="viewModals{{$business_type->business_type_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
                                        <div class="modal-dialog" role="document">
                                           <div class="modal-content">
@@ -99,13 +107,6 @@
                                        </div>
                                     </div>
                                     @endforeach
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
          </div>
       </div>
    </div>
@@ -113,30 +114,30 @@
 
 <script>
 
-$(function(e) {
-	 $('#exampletable').DataTable( {
-        dom: 'Bfrtip'
-        buttons: [
-            {
-                extend: 'pdf',
-                title: 'Restored Business Types',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1]
-                 }
-            },
-            {
-                extend: 'excel',
-                title: 'Restored Business Types',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1]
-                 }
-            }
-         ]
-    } );
+// $(function(e) {
+// 	 $('#exampletable').DataTable( {
+//         dom: 'Bfrtip'
+//         buttons: [
+//             {
+//                 extend: 'pdf',
+//                 title: 'Restored Business Types',
+//                 footer: true,
+//                 exportOptions: {
+//                      columns: [0,1]
+//                  }
+//             },
+//             {
+//                 extend: 'excel',
+//                 title: 'Restored Business Types',
+//                 footer: true,
+//                 exportOptions: {
+//                      columns: [0,1]
+//                  }
+//             }
+//          ]
+//     } );
 
-} );
+// } );
             </script>
 
             <!-- MESSAGE MODAL CLOSED -->
