@@ -201,7 +201,13 @@
                                           <td>{{$i}}</td>
                                           <td>{{@$attr_grp_name[0]}}</td>
                                           <td>{{@$attr_val_name[0]}}</td>
-                                          <td></td>
+                                          <td>
+                                             <form action="{{route('store.destroy_product_var_attr',$val->variant_attribute_id)}}" method="POST">
+                                                @csrf
+                                                @method('POST')
+                                                <button type="submit" onclick="return confirm('Do you want to delete this row?');"  class="btn btn-sm btn-danger">Delete</button>
+                                             </form>
+                                          </td>
                                        </tr>
                                     @endforeach
                                  @endif
