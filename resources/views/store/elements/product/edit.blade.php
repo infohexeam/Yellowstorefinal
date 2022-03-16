@@ -285,6 +285,7 @@
                  </div>
             </div>
 
+            <section style="display:none;" id="varClass"> 
 
             <div id="attSec" class="container"> 
                <p class="h5 ml-2">Add Product Variants </p>
@@ -372,6 +373,9 @@
              </div>
              </div>
            </div>
+            </section>
+
+            <a class="btn btn-primary btn-raised text-white mt-2" id="btnAddVar" onclick="showVariant()"> Add Variant </a>
 
             <div class="row">
                       <div class="col-md-12">
@@ -933,6 +937,24 @@ function changeBaseImage(id,varId)
              }
 
          }
+
+
+
+
+function showVariant(){
+
+if($("#varClass").is(":visible"))
+{
+      $("#varClass").hide();
+      $("#btnAddVar").text('Add Variant');
+}
+else
+{
+      $("#varClass").show();
+      $("#btnAddVar").text('Hide Variant');
+}
+
+}
 
 </script>
 
