@@ -792,7 +792,6 @@ class AdminController extends Controller
                 ],
                 [
                     'images.*.dimensions' => 'Banner image dimensions invalid',
-
                 ]
             );
             if ($img_validate->fails()) {
