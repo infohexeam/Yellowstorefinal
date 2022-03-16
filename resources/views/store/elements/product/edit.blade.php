@@ -953,7 +953,7 @@ function showVariant(){
       let firstAttrGrp = $('#attr_group500a0').val();
       let firstAttrVal = $('#attr_value500a0').val();
       var rowCount = $('#myTable tr').length;
-      if((firstAttrGrp != '' ) && (firstAttrVal != '')){
+      if(((firstAttrGrp != '' ) && (firstAttrVal != '')) || (rowCount > 0)){
          $("#varClass").show();
          $("#btnAddVar").text('Hide Variant');
       }else{
