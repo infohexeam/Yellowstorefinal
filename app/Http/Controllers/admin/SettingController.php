@@ -3485,7 +3485,8 @@ class SettingController extends Controller
 	public function listSubadminOrder(Request $request, Trn_store_order $query)
 	{
 		$pageTitle = "List Order";
-		$orders = Trn_store_order::where('subadmin_id', auth()->user()->id)->get();
+		$orders = Trn_store_order::join('mst_stores','mst_stores.store_id','','trn_store_orders.store_id')
+		->where('mst_stores.subadmin_id', auth()->user()->id)->get();
 		$status = Sys_store_order_status::all();
 
 		if (auth()->user()->user_role_id  == 0) {

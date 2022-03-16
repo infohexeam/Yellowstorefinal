@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trn_store_order extends Model
 {
-  protected $primaryKey = "order_id";
+  protected $primaryKey = "order_id"; // trn_store_orders
 
   protected $fillable = [
     'order_id', 'order_number', 'customer_id', 'order_item_id', 'product_varient_id', 'store_id',
