@@ -10,7 +10,7 @@ class Trn_StoreDeviceToken extends Model
     protected $primaryKey = "store_device_token_id";
 
     protected $fillable = [
-        'store_admin_id', 'store_id', 'store_device_token', 'store_device_type'
+        'store_admin_id', 'store_id', 'store_device_token', 'store_device_type', 'store_device_id'
 
     ];
     public function store()

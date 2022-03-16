@@ -679,6 +679,7 @@ class StoreController extends Controller
                                     $cdt->store_id = $custCheck->store_id;
                                     $cdt->store_admin_id = $custCheck->store_admin_id;
                                     $cdt->store_device_token = $request->device_token;
+                                    $cdt->store_device_id = $request->device_id;
                                     $cdt->store_device_type = $request->device_type;
                                     $cdt->save();
                                 }

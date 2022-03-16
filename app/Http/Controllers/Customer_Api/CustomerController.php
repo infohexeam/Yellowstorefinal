@@ -322,8 +322,8 @@ class CustomerController extends Controller
                 $data['message'] = "Customer Registration Success";
             } else {
                 $data['errors'] = $validator->errors();
-                $data['status'] = 0;
-                $data['message'] = "Customer Registration Failed";
+                $data['status'] = 2;
+                $data['message'] = "Customer exist! Please login";
             }
 
             return response($data);
