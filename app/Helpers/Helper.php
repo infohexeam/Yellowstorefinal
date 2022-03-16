@@ -698,7 +698,7 @@ class Helper
         $validate = Validator::make(
             $valid,
             [
-                'store_name'                       => 'required|unique:mst_stores',
+                'store_name'                       => 'required',
                 // 'store_contact_person_name'        => 'required',
                 // 'store_contact_person_phone_number'=> 'required',
                 // 'store_contact_address'             => 'required',

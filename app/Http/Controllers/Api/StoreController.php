@@ -519,8 +519,8 @@ class StoreController extends Controller
                 $data['message'] = "Store Registration Success";
             } else {
                 $data['errors'] = $validator->errors();
-                $data['status'] = 0;
-                $data['message'] = "Store Registration Failed";
+                $data['status'] = 2;
+                $data['message'] = "Store already registered! Please login";
             }
 
 
