@@ -645,8 +645,30 @@ class Helper
         $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
             cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
         $dist = $angle * $earthRadius;
+
         return number_format((float)$dist, 2, '.', '');
     }
+
+    public static function haversineGreatCircleDistance2($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
+    {
+        // convert from degrees to radians
+        $latFrom = deg2rad($latitudeFrom);
+        $lonFrom = deg2rad($longitudeFrom);
+        $latTo = deg2rad($latitudeTo);
+        $lonTo = deg2rad($longitudeTo);
+
+
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+        $dist = $angle * $earthRadius;
+
+        dd($latFrom, $lonFrom, $latTo, $lonTo, $latDelta, $lonDelta, $angle, $dist);
+        return number_format((float)$dist, 2, '.', '');
+    }
+
 
 
     public static function subAdminName($storeAdminId)
