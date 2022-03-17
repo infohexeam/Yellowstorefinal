@@ -1884,6 +1884,7 @@ class ProductController extends Controller
                         $a->districtData = @$a->districtFunction['district_name'];
 
                         $dist = Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $a->latitude, $a->longitude);
+                        $a->distance = @$dist;
 
                         $settingsRow = Trn_store_setting::where('store_id', $request->store_id)
                             ->where('service_start', '<=', $dist)
