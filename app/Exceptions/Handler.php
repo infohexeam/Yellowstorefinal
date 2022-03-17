@@ -57,8 +57,9 @@ class Handler extends ExceptionHandler
             return redirect()->back();
         }
 
-        if (Auth::guard('api')->check()) {
-            if ($exception instanceof AuthenticationException) {
+        if ($exception instanceof AuthenticationException) {
+            if (Auth::guard('api')->check()) {
+
                 return response()->json(
                     [
                         'type' => 'error',
@@ -67,6 +68,8 @@ class Handler extends ExceptionHandler
                     ],
                     Response::HTTP_UNAUTHORIZED
                 );
+            } else {
+                return redirect("/");
             }
         }
         return parent::render($request, $exception);
