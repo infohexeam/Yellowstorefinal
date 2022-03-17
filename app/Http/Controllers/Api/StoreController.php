@@ -592,10 +592,10 @@ class StoreController extends Controller
                                     ->count();
 
 
-                                if (($divTok > 0) || ($devTokenC > 0)) {
-                                    $data['login_status '] = 0;
-                                } else {
+                                if (($divTok > 0) && ($devTokenC == 0)) {
                                     $data['login_status '] = 1;
+                                } else {
+                                    $data['login_status '] = 0;
                                 }
 
                                 //  $data['login_status '] = $divTok;
