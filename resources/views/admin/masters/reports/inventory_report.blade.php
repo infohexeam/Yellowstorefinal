@@ -167,7 +167,7 @@
                                             <th class="wd-15p">Category</th>
                                             <th class="wd-15p">Sub Category</th>
                                             <th class="wd-15p">Brand</th>
-                                            <th class="wd-15p">Minimum Stock</th>
+                                            {{-- <th class="wd-15p">Minimum Stock</th> --}}
                                             <th class="wd-15p">Product Status</th>
                                             <th class="wd-15p">Old Stock</th>
                                             <th class="wd-15p">Newly<br>Added Stock</th>
@@ -194,7 +194,7 @@
                                             <td>{{ $d->category_name }}</td>
                                             <td>{{ $d->sub_category_name }}</td>
                                             <td>{{ $d->product_brand }}</td>
-                                            <td>{{ $d->min_stock }}</td>
+                                            {{-- <td>{{ $d->min_stock }}</td> --}}
                                             <td> 
                                                 @if($d->product_status == 1)
                                                     Active
