@@ -369,7 +369,56 @@ class StoreSettingsController extends Controller
                         return  $response = ['status' => $jData->subCode, 'message' => $jData->message];
                     }
                 } else {
-                    return $response = ['status' => 0, 'message' => 'Bank details already updated'];
+
+                    $sBankDAta = Trn_StoreBankData::where('store_id', $request->store_id)->where('status', 1)->orderBy('store_bank_data_id', 'DESC')->first();
+
+
+                    $curl = curl_init();
+
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors/' . $sBankDAta->vendor_id,
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'PUT',
+                        CURLOPT_POSTFIELDS => '{
+                            "bank": 
+                                {
+                                    "accountNumber": "' . $request->acc_no . '",
+                                    "accountHolder": "' . $request->account_holder . '",
+                                    "ifsc": "' . $request->ifsc . '"
+                                },
+                            "settlementCycleId": 2
+                            }',
+                        CURLOPT_HTTPHEADER => array(
+                            'X-Client-Id: 165253d13ce80549d879dba25b352561',
+                            'X-Client-Secret: bab0967cdc3e5559bded656346423baf0b1d38c4',
+                            'Content-Type: application/json'
+                        ),
+                    ));
+
+                    $response = curl_exec($curl);
+
+                    curl_close($curl);
+
+                    $sBankDAta = Trn_StoreBankData::where('store_id', $request->store_id)->where('status', 1)->orderBy('store_bank_data_id', 'DESC')->first();
+
+
+                    $jData = json_decode($response);
+                    if ($jData->status == "OK") {
+                        $store_id = $request->store_id;
+                        $data = Trn_StoreBankData::find($sBankDAta->store_bank_data_id);
+                        $data->account_number = $request->acc_no;
+                        $data->ifsc = $request->ifsc;
+                        $data->account_holder = $request->account_holder;
+                        $data->update();
+                        return  $response = ['status' => 1, 'message' => 'Bank details updated'];
+                    } else {
+                        return $response = ['status' => 0, 'message' => 'Unable to update bank details' . $jData->message];
+                    }
                 }
             } else {
                 return $response = ['status' => 0, 'message' => 'Store not found'];
