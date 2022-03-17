@@ -54,7 +54,9 @@ class BusinessTypeController extends Controller
     public function test(Request $request)
     {
 
-
+        $dist = Helper::haversineGreatCircleDistance($request->latitude, $request->longitude, $request->elatitude, $request->elongitude);
+        echo $dist;
+        die;
 
         $RefundOrderDatas = Trn_store_order::where('isRefunded', 1)
             ->get();
