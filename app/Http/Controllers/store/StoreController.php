@@ -630,7 +630,7 @@ class StoreController extends Controller
           return redirect('store/home')->with('status', 'Profile updated successfully.');
         } else {
           //  return $response = ['status' => 0, 'message' => 'Unable to update bank details' . $jData->message];
-          return redirect('store/home')->with('status', 'Unable to update bank details' . $jData->message);
+          return redirect()->back()->with('errStatus', 'Unable to update bank details' . $jData->message);
         }
       }
 

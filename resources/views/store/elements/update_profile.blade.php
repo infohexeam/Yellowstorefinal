@@ -37,6 +37,15 @@
                  
 
                   @endif
+
+                  @if ($message = Session::get('errStatus'))
+                  <div class="alert alert-danger">
+                     <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+                  </div>
+                 
+
+                  @endif
+
          <div class="card-body" style="min-height: 70vh;">
             <div class="border-0">
                <div class="tab-content">
