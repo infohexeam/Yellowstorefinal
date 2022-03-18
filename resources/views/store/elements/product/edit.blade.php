@@ -170,6 +170,8 @@
                             </select>
                         </div>
                      </div>
+                     @if($product_base_varient_attrs != null)
+
                      <div class="col-md-12">
 
                         <div class="row">
@@ -189,7 +191,6 @@
                                  $i = 0;
                                  $usedAttr = array();
                                  @endphp
-                                @if($product_base_varient_attrs != null)
                                     @foreach ($product_base_varient_attrs as $val)
                                        @php
                                        $i++;
@@ -210,12 +211,12 @@
                                           </td>
                                        </tr>
                                     @endforeach
-                                 @endif
                               </tbody>
                            </table>
                            </div>
                         </div>
                      </div>
+                     @endif
 
 
                      <div id="attHalfRow500a" class="container"> 
