@@ -558,7 +558,7 @@ class StoreSettingsController extends Controller
                     $data['storeDetails']['subadmin_phone'] = Helper::storeSubadminPhone($request->store_id);
                     $data['storeDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
                     $data['storeDetails']['store_qrcode'] = @$data['storeDetails']->store_name_slug . "-" . @$data['storeDetails']->store_mobile;
-
+                    $data['storeDetails']['store_username'] = @$data['storeDetails']->store_mobile;
                     if (isset($data['storeDetails']->profile_image))
                         $data['storeDetails']['profile_image'] = '/assets/uploads/store_images/images/' . $data['storeDetails']->profile_image;
 
