@@ -127,12 +127,12 @@ class CustomerController extends Controller
                                         // } else {
                                         $customer_id  = $user->customer_id;
                                         $configPoint = Trn_configure_points::find(1);
-                                        $orderAmount  = $configPoint->order_amount;
-                                        $orderPoint  = $configPoint->order_points;
+                                        $orderAmount  = @$configPoint->order_amount;
+                                        $orderPoint  = @$configPoint->order_points;
 
                                         $cr = new Trn_customer_reward;
                                         $cr->transaction_type_id = 0;
-                                        $cr->reward_points_earned = $configPoint->registraion_points;
+                                        $cr->reward_points_earned = @$configPoint->registraion_points;
                                         $cr->customer_id = $customer_id;
                                         $cr->order_id = null;
                                         $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
@@ -143,7 +143,7 @@ class CustomerController extends Controller
                                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                                             foreach ($customerDevice as $cd) {
                                                 $title = 'Registration points credited';
-                                                $body = $configPoint->registraion_points . ' points credited to your wallet..';
+                                                $body = @$configPoint->registraion_points . ' points credited to your wallet..';
                                                 //   $body = 'Registration points credited successully..';
                                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
                                             }
