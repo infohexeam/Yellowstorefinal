@@ -56,9 +56,6 @@ class StoreSettingsController extends Controller
 
     public function removeBanner(Request $request)
     {
-        $data = array();
-        try {
-            if (isset($request->store_image_id) && Mst_store_images::find($request->store_image_id)) {
                 $store_image_id = $request->store_image_id;
                 if (Mst_store_images::where('store_image_id', $store_image_id)->delete()) {
                     $data['status'] = 1;
@@ -67,11 +64,7 @@ class StoreSettingsController extends Controller
                     $data['status'] = 0;
                     $data['message'] = "failed.";
                 }
-            } else {
-                $data['status'] = 0;
-                $data['message'] = "Banner not found.";
-            }
-
+          
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
