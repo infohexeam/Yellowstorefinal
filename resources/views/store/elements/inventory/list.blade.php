@@ -33,10 +33,10 @@
                          @csrf
 
                          <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                <div class="form-group">
-                                   <label class="form-label" >Product Category * </label>
-                                   <select name="product_cat_id" required id="category" class="form-control"  >
+                                   <label class="form-label" >Product Category  </label>
+                                   <select name="product_cat_id"  id="category" class="form-control"  >
                                     <option value="">--Select--</option>
                                     @foreach($category as $key)
                                         <option {{old('product_cat_id',request()->input('product_cat_id')) == $key->category_id ? 'selected':''}} value="{{ @$key->category_id }}">{{ @$key->category_name }}</option>
@@ -44,6 +44,14 @@
                                      </select>
                                </div>
                             </div>
+                            
+                             <div class="col-md-6">
+                               <div class="form-group">
+                                   <label class="form-label" >Product Name  </label>
+                                   <input type="text" class="form-control" placeholder="Product Name"  value="{{old('product_name',request()->input('product_name'))}}" name="product_name" />
+                               </div>
+                            </div>
+                            
                          </div>
                          
                          <div class="col-md-12">
@@ -77,19 +85,18 @@
                     <tbody>
                       @php
                       $i = 0;
+                      if($_GET)
+                      $i = (request()->input('page') - 1) * 10;
                       @endphp
                       @foreach ($products as $product)
                       <tr>
                         <td>{{ ++$i }}</td>
                         
-                        <td>{!! wordwrap($product->product_name, 20, "<br />\n") !!}
-                        @if($product->product_name != $product->variant_name)
-                          @if (isset($product->variant_name))
-                            -
-                          @endif
-                          {!! wordwrap($product->variant_name, 20, "<br />\n") !!}
-                          
-                        @endif
+                        <td>
+                                                      {!! wordwrap($product->variant_name, 20, "<br />\n") !!}
+
+                            
+                      
                 </td>
                         <td>
                           @php

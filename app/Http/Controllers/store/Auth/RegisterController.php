@@ -227,6 +227,46 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
     }
+    
+    function redirectToChangePass(Request $request)
+    {
+       $store_admin_id = Crypt::decryptString($request->user_id);
+       $user = Trn_StoreAdmin::find($store_admin_id);
+          
+         return view('store.auth.passwords.change_password',compact('user'));
+
+    }  
+    
+    function findHashcode(Request $request)
+    {
+
+        $number = $request->number;
+        $data = Trn_StoreAdmin::where('store_mobile', $number)
+            ->first();
+
+        if ($data) {
+           echo Crypt::encryptString($data->store_admin_id);
+            
+        } else {
+            return false;
+        }
+    }
+    
+    
+     
+    function CheckExistanceMobile(Request $request)
+    {
+
+        $number = $request->number;
+        $data = Trn_StoreAdmin::where('store_mobile', $number)
+            ->count();
+
+        if ($data > 0) {
+            echo 'exists';
+        } else {
+            echo 'notExists';
+        }
+    }
 
     public function otpVerificationview(Request $request, $id)
     {

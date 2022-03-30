@@ -23,6 +23,8 @@ use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use App\Models\admin\Trn_TermsAndCondition;
 use App\Models\admin\Trn_StoreAdmin;
+use App\Models\admin\Mst_store_product;
+use App\Models\admin\Mst_GlobalProducts;
 
 use SoapClient;
 use Twilio\Rest\Client;
@@ -30,6 +32,52 @@ use Twilio\Rest\Client;
 class PublicController extends Controller
 {
 
+
+  public function isPCodeAvailable(Request $request)
+  {
+    $proEx = Mst_store_product::where('product_code', $request->product_code);
+    if (isset($request->product_id))
+      $proEx = $proEx->where('product_id', '!=', $request->product_id);
+    $proEx = $proEx->count();
+    
+    
+    
+       // dd($request->all(),$proEx,$proExGlob,$totalCount);
+
+
+    if ($proEx > 0) {
+      $a = 1;
+      return $a;
+    } else {
+      $a = 0;
+      return $a;
+    }
+  }
+  
+  
+   public function isPCodeAvailableGlobalPro(Request $request)
+  {
+    
+    
+    $proExGlob = Mst_GlobalProducts::where('product_code', $request->product_code);
+    if (isset($request->global_product_id))
+      $proExGlob = $proExGlob->where('global_product_id', '!=', $request->global_product_id);
+    $proExGlob = $proExGlob->count();
+
+    $totalCount =  $proExGlob;
+    
+       // dd($request->all(),$proEx,$proExGlob,$totalCount);
+
+
+    if ($totalCount > 0) {
+      $a = 1;
+      return $a;
+    } else {
+      $a = 0;
+      return $a;
+    }
+  }
+  
 
 
   public function pgtest()

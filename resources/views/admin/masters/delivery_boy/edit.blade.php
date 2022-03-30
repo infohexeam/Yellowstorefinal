@@ -155,7 +155,7 @@
                        </div>
                      </div>
                      </div>
-                  <div class="col-md-10">
+                  {{-- <div class="col-md-10">
                      <div class="form-group">
                         <label class="form-label">Availabilities</label>
                       @php
@@ -174,7 +174,7 @@
                            @endforeach
 
                      </div>
-               </div>
+               </div> --}}
                      <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label"> Address</label>

@@ -85,7 +85,7 @@
                                            </div>
                                           </div>
                                          
-                                         <div class="col-md-4">
+                                         <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Product </label>
                                                <select  name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Product"  >
@@ -95,7 +95,7 @@
                                             </div>
                                          </div>
                                          
-                                          <div class="col-md-4">
+                                          <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Vendor </label>
                                                <select  name="vendor_id" id="VendorId" class="form-control select2-show-search" data-placeholder="Vendor"  >
@@ -108,7 +108,7 @@
                                          </div>
                                          
                                          
-                                         <div class="col-md-4">
+                                         <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Category </label>
                                                <select  name="category_id" id="categoryId" class="form-control select2-show-search" data-placeholder="Category"  >
@@ -120,7 +120,7 @@
                                             </div>
                                          </div>
                                          
-                                          <div class="col-md-4">
+                                          <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Sub Category </label>
                                                <select  name="sub_category_id" id="subCategoryId" class="form-control select2-show-search" data-placeholder="Sub Category"  >
@@ -179,17 +179,39 @@
                                             <td>{{ ++$i }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('H:i:s')}}</td>
+                                            
                                             <td>{{ $d->store_name }}</td>
-                                            <td>{{ $d->agency_name }}</td>
+                                            
+                                            <td>
+                                                @if(isset($d->agency_name))
+                                                {{ $d->agency_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                                </td>
                                             <td>{{ $d->category_name }}</td>
-                                            <td>{{ $d->sub_category_name }}</td>
-                                            <td>{{ $d->product_brand }}</td>
+                                            <td>
+                                                @if(isset($d->sub_category_name))
+                                                {{ $d->sub_category_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                                </td>
+                                            <td>
+                                                @if(isset($d->product_brand))
+                                                {{ $d->product_brand }}
+                                                @else
+                                                ---
+                                                @endif
+                                                
+                                            </td>
                                             <td>{{ $d->product_code }}</td>
                                             <td>
                                                 @if($d->variant_name == $d->product_name)
                                                     {{ $d->product_name }}
                                                 @else
-                                                    {{ $d->product_name }} {{$d->variant_name }}
+                                                    <!--{{ $d->product_name }} -->
+                                                    {{$d->variant_name }}
                                                 @endif
                                             </td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>

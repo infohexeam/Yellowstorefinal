@@ -33,7 +33,7 @@
                      <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Customer Mobile Number *</label>
-                           <input type="text" class="form-control" required name="customer_mobile_number" value="{{old('customer_mobile_number')}}" placeholder="Customer Mobile Number">
+                           <input type="text" class="form-control"  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  required name="customer_mobile_number" value="{{old('customer_mobile_number')}}" placeholder="Customer Mobile Number">
                         </div>
                     </div>
 

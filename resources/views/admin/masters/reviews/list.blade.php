@@ -55,9 +55,13 @@
                             <label class="form-label">Visibility Status</label>
                             <div id="isVisiblel"></div>
                             <select class="form-control" name="isVisible" id="isVisible">
-                                        <option value=""> Visibility Status</option>
+                                        <option  {{request()->input('isVisible') == NULL ? 'selected':''}} value=""> Visibility Status</option>
                                     <option {{request()->input('isVisible') == 1 ? 'selected':''}} value=" 1 "> Visible </option>
+                                    @if($reviews->has('isVisible'))
                                     <option {{request()->input('isVisible') == 0 ? 'selected':''}} value=" 0 "> Not Visible </option>
+                                    @else
+                                    <option value=" 0 "> Not Visible </option>
+                                    @endif
                                 </select>
                         </div>
                     </div>
@@ -141,11 +145,11 @@
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>
-                                            @if(@$row->product_varient->product->product_name == @$row->product_varient->variant_name)
-                                            {{ @$row->product_varient->product->product_name}} {{ @$row->product_varient->variant_name}}
-                                            @else
-                                            {{ @$row->product_varient->product->product_name}}
-                                            @endif
+                                            
+                                            
+                                            {{ @$row->product_varient->variant_name}}
+                                            
+                                            
                                         </td>
                                         <td>{{ $row->rating}}</td>
                                         <td>{{ @$row->store->store_name}}</td>

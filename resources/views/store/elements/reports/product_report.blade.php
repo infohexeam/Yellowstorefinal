@@ -84,8 +84,12 @@
                                                     <div id="product_id1"></div>
 
                                                <select  name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Product"  >
+                                                    
                                                     <option value="">Product</option>
-                                                  
+                                                    @foreach($productVAriants as $row)
+                                                    <option value="{{$row->product_varient_id}}" {{request()->input('product_id') == $row->product_varient_id ? 'selected':''}} >{{$row->variant_name}}</option>
+
+                                                    @endforeach
                                                   </select>
                                             </div>
                                          </div>
@@ -224,11 +228,7 @@
 
                                                 </td>
                                             <td>
-                                                @if($d->variant_name == $d->product_name)
-                                                    {{ $d->product_name }}
-                                                @else
-                                                    {{ $d->product_name }} {{$d->variant_name }}
-                                                @endif
+                                               {{$d->variant_name }}
                                             </td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>

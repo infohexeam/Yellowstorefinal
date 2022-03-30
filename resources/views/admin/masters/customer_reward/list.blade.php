@@ -109,12 +109,11 @@ $date = Carbon\Carbon::now();
                                     <th class="wd-15p">{{ __('Customer') }}</th>
                                     <th class="wd-15p">{{ __('Customer Mobile') }}</th>
                                      <!--<th class="wd-20p">{{__('Reward Type')}}</th>-->
-                                    <th class="wd-20p">{{__('Order Number')}}</th>
-                                    <th class="wd-15p">{{__('Status')}}</th>
+                                    <!--<th class="wd-20p">{{__('Order Number')}}</th>-->
+                                    <!--<th class="wd-15p">{{__('Status')}}</th>-->
                                     <th class="wd-15p">{{__('Action')}}</th>
                                  </tr>
                               </thead>
-                                    @if($_GET)
 
                               <tbody>
                                  @php
@@ -128,14 +127,14 @@ $date = Carbon\Carbon::now();
                                       {{@$customer_reward->customer['customer_first_name']}} </td>
                                       <td> {{@$customer_reward->customer['customer_mobile_number']}} </td>
                                       <!--<td>{{@$customer_reward->reward_type['transaction_type']}} </td>-->
-                                    <td>{{ @$customer_reward->order['order_number']}} </td>
+                                    <!--<td>{{ @$customer_reward->order['order_number']}} </td>-->
 
-                                    <td><button type="button" class="btn btn-sm
-                                          @if($customer_reward->reward_point_status == 0) btn-danger @else btn-success @endif"> @if($customer_reward->reward_point_status == 0)
-                                          InActive
-                                          @else
-                                          Active
-                                          @endif</button> </td>
+                                    <!--<td><button type="button" class="btn btn-sm-->
+                                    <!--      @if($customer_reward->reward_point_status == 0) btn-danger @else btn-success @endif"> @if($customer_reward->reward_point_status == 0)-->
+                                    <!--      InActive-->
+                                    <!--      @else-->
+                                    <!--      Active-->
+                                    <!--      @endif</button> </td>-->
 
                                     <td>
                                      <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$customer_reward->reward_id}}" > View</button>
@@ -146,7 +145,6 @@ $date = Carbon\Carbon::now();
                                  </tr>
                                  @endforeach
                               </tbody>
-                                           @endif
 
                            </table>
                         </div>
@@ -183,22 +181,22 @@ $date = Carbon\Carbon::now();
                                         {{@$customer_reward->discription}}
                                    </h6></td>
                                  </tr>
-                                 <tr>
-                                    <td><h6>Order Number : {{ @$customer_reward->order['order_number']}}
-                                   </h6></td>
-                                 </tr>
-                                 <tr>
-                                    <td><h6>Customer : {{ @$customer_reward->customer['customer_first_name'] }}
-                                   </h6></td>
-                                 </tr>
+                                 <!--<tr>-->
+                                 <!--   <td><h6>Order Number : {{ @$customer_reward->order['order_number']}}-->
+                                 <!--  </h6></td>-->
+                                 <!--</tr>-->
+                                 <!--<tr>-->
+                                 <!--   <td><h6>Customer : {{ @$customer_reward->customer['customer_first_name'] }}-->
+                                 <!--  </h6></td>-->
+                                 <!--</tr>-->
                                  <tr>
                                     <td><h6>Approved Date : {{ \Carbon\Carbon::parse(@$customer_reward->reward_approved_date)->format('M d, Y')}}
                                    </h6></td>
                                  </tr>
-                                <tr>
-                                    <td><h6>Expiry Date : {{\Carbon\Carbon::parse(@$customer_reward->reward_point_expire_date)->format('M d, Y') }}
-                                   </h6></td>
-                                 </tr>
+                                <!--<tr>-->
+                                <!--    <td><h6>Expiry Date : {{\Carbon\Carbon::parse(@$customer_reward->reward_point_expire_date)->format('M d, Y') }}-->
+                                <!--   </h6></td>-->
+                                <!-- </tr>-->
 
                               </tbody>
                            </table>

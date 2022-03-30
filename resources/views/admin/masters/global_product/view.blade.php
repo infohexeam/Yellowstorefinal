@@ -150,6 +150,7 @@ iframe{
                               <thead>
                                  <tr>
                                    <th class="wd-15p">SL.No</th>
+                                    <th class="wd-15p">{{ __('Base Image') }}</th>
                                     <th class="wd-15p">{{ __('Image') }}</th>
 
                                  </tr>
@@ -165,6 +166,22 @@ iframe{
                                  @endphp
                                  <tr>
                                     <td>{{$i}}</td>
+                                   <td>
+                                        @if($product_image->image_name != $product->product_base_image)
+                                          <a href="#"  class="btn btn-sm
+                                          @if($product_image->image_name != $product->product_base_image) btn-danger @else btn-success @endif "   > @if($product_image->image_name != $product->product_base_image)
+                                            Not Default
+                                          @else
+                                            Base Image
+                                          @endif</a>
+                                          
+                                          @else
+                                             <a href="#"  class="btn btn-sm btn-success "   > Base Image   </a>
+                                          @endif
+                                          
+                             
+                                   
+                                    </td>
                                     @if($product_image->image_name)
                                     <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$product_image->image_name)}}"  width="50" ></td>
                                     @endif

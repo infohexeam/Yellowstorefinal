@@ -1,4 +1,7 @@
 <!doctype html>
+                   
+                  
+
 <html lang="en" dir="ltr">
    <head>
       <head>
@@ -44,45 +47,70 @@
                <!-- CONTAINER OPEN -->
                <div class="col col-login mx-auto">
                   <div class="text-center">
-                    {{--  <img src="{{URL::to('/assets/front-end/image/logo-white.png')}}" class="header-brand-img" alt=""> --}}
+                   <img src="{{URL::to('/assets/front-end/image/logo-white.png')}}" class="header-brand-img" alt=""> 
                   </div>
                </div>
                <div class="container-login100">
-                  <div class="wrap-login100 p-6" style="width:400px;">
-                     <form id="myForm" method="GET" action="{{ route('store_password.store_mobile') }}">
+                   
+                   
+                    
+                        
+                  <div   class="wrap-login100 p-6" style="width:400px;">
+                     <form id="myForm" method="POST" action="{{ route('store_password.change') }}">
                         @csrf
                         <span class="login100-form-title">
                         {{ __('Password Reset') }}
                         </span>
-                        @if(session('status'))
-                        <div class="alert alert-success" id="err_msg">
-                           <p>{{session('status')}}</p>
-                        </div>
-                        @endif
-                        @if (count($errors) > 0)
-                        @foreach ($errors->all() as $error)
-                        <p class="alert alert-danger">{{ $error }}</p>
-                        @endforeach
-                        @endif
-                        {{-- @if (session()->has('message'))
-                        <p class="alert alert-success">{{ session('message') }}</p>
-                        @endif --}}
-                                <div class="wrap-input100 validate-input">
-                                    <input class="input100" id="store_mobile" onkeyup="mobileValidation()" type="number" onchange="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  name="store_mobile" placeholder="Mobile Number" value="{{ old('store_mobile') }}" required autocomplete="store_mobile" >
-                                    <p id="error_store_mobile"></p>
+                        
+                        <input type="hidden" id="storeId" id="store_id" />
+                        
+                         <section id="sendOTPSec">
 
-                                </div>
+                            <div class="wrap-input100 validate-input">
+                                <input class="input100" id="store_mobile" oninput="mobileValidation()" type="text" 
+                                onchange="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  name="store_mobile" 
+                                placeholder="Mobile Number" value="{{ old('store_mobile') }}" autocomplete="store_mobile" >
+                                <p id="error_store_mobile"></p>
+                            </div>
+                            
+                            <div id="recaptcha-container"></div>
+    
+                            <div class="container-login100-form-btn">
+                               <button id="SendOTPBtn" onclick="sendOTP()" class="login100-form-btn btn-primary">
+                               {{ __('Send OTP') }}
+                               </button>
+                            </div>
+                        </section>
+                        
+                       
+                       
 
-                        <div class="container-login100-form-btn">
-                           <button type="submit" id="submit" class="login100-form-btn btn-primary">
-                           {{ __('Recover Password') }}
-                           </button>
-                        </div>
-                        <div class="container-login100-form-btn">
-                           <button type="reset" class="login100-form-btn btn-danger">
-                           {{ __('Clear') }}
-                           </button><br>
-                        </div>
+                        
+                          <section  id="confirmOTPSec" >
+                              <p id="sentSuccessMsg"></p>
+                              <input type="hidden" value="{{url()->full()}}"  name="curUrl" id="curUrl" />
+                            
+                            <div class="wrap-input100 validate-input">
+                                <input class="input100" id="otp"  type="number" name="otp" placeholder="Enter OTP" value="{{ old('otp') }}" autocomplete="otp" >
+                                <p id="error_otp"></p>
+                            </div>
+                            
+                            <div class="container-login100-form-btn">
+                               <button type="submit" onclick="codeverify()" class="login100-form-btn btn-primary">
+                               {{ __('Confirm OTP') }}
+                               </button>
+                            </div>
+                            <div class="container-login100-form-btn">
+                               <a  onclick="goBack()"  class="login100-form-btn btn-secondary">
+                               {{ __('Go Back') }}
+                               </a>
+                            </div>
+                            
+                        </section>
+
+                        
+                        
+                        
                      </form>
                   </div>
                </div>
@@ -91,33 +119,185 @@
          </div>
          <!-- End PAGE -->
       </div>
-        {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
- --}}
 
 
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
 
-     <script type="text/javascript">
+<script>
+
+function goBack(){
+    $('#confirmOTPSec').hide();
+            $('#sendOTPSec').show();
+    
+}
+
+    var firebaseConfig = {
+        apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
+        authDomain: "yellowstore-web-application.firebaseapp.com",
+        projectId: "yellowstore-web-application",
+        storageBucket: "yellowstore-web-application.appspot.com",
+        messagingSenderId: "444886856017",
+        appId: "1:444886856017:web:935481722416346323e370",
+        measurementId: "G-VX5SKTNN3F"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+
+     window.onload=function () {
+        $('#confirmOTPSec').hide();
+        render();
+     };
+     
+    function render() {
+        window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        recaptchaVerifier.render();
+    }
+    
+    function sendOTP(){
+       console.log(mobileValidation());
+        if(mobileValidation()){
+             
+             $('#error_store_mobile').empty();
+
+            var number = '+91'+$("#store_mobile").val();
+            
+             firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+                  
+                window.confirmationResult=confirmationResult;
+                coderesult=confirmationResult;
+                console.log(coderesult);
+      
+                $("#sentSuccessMsg").text("OTP send successfully.");
+                $("#sentSuccessMsg").show();
+                  
+            }).catch(function (error) {
+                $("#sentSuccessMsg").text(error.message);
+                $("#sentSuccessMsg").show();
+            });
+            
+             $('#confirmOTPSec').show();
+            $('#sendOTPSec').hide();
+    
+            $("form").submit(function(e){
+                e.preventDefault(e);
+            });    
+            
+        }else{
+            $('#error_store_mobile').html('<label class="text-danger">Mobile number invalid </label>');
+            
+            $("form").submit(function(e){
+                e.preventDefault(e);
+            }); 
+        }
+    }
+    
+   function codeverify() {
+        var code = $("#otp").val();
+        var number= $("#store_mobile").val();
+
+        coderesult.confirm(code).then(function (result) {
+            var user=result.user;
+            //console.log(user);
+            $("#sentSuccessMsg").text("OTP verified successfully.");
+            $("#sentSuccessMsg").show();
+            console.log("is  working");
+        
+        
+        
+               var _token= $('input[name="_token"]').val();
+
+               
+               $.ajax({
+                url:"{{ route('store.store_hashcode') }}",
+                method:"POST",
+                data:{number:number, _token:_token},
+                success:function(result)
+                {
+                    if(result != false){
+                                      var curUrl = $("#curUrl").val();
+                            window.location.replace(curUrl+"/user?user_id="+result);
+
+                        // console.log(curUrl+"/user?user_id="+result);
+
+                    }
+                    else
+                        alert("error! Please reload page...");
+
+                }
+            });  
+            
+
+            
+              //console.log(curUrl+"/customer?customer_id=12121212");
+
+
+            
+
+        }).catch(function (error) {
+            $("#sentSuccessMsg").text("OTP invalid");
+            $("#sentSuccessMsg").show();
+             $("form").submit(function(e){
+                e.preventDefault(e);
+            }); 
+        });
+        
+        // $("form").submit(function(e){
+        //     e.preventDefault(e);
+        // }); 
+
+    }
+    
+</script>
+
+<script type="text/javascript">
+	
 	function mobileValidation(){
-	var number= document.forms["myForm"]["store_mobile"].value;///get id with value
-	var numberpattern=/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;////Regular expression
-	if(numberpattern.test(number))
-	   {
+	    
+    	var number= $("#store_mobile").val();
 
-           $('#error_store_mobile').empty();
-                                       $('#submit').attr('disabled', false);
-		// document.forms["myForm"]["store_mobile"].style.backgroundColor='yellow';
-                 var _token= $('input[name="_token"]').val();
+    	
+    	//document.forms["myForm"]["store_mobile"].value;///get id with value
+    	var numberpattern=/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;////Regular expression
+    	
+	    if(numberpattern.test(number))
+	    {
+            $('#error_store_mobile').empty();
+            $('#submit').attr('disabled', false);
+            var _token= $('input[name="_token"]').val();
+            
+            $.ajax({
+                url:"{{ route('store.store_mobile_isExists') }}",
+                method:"POST",
+                data:{number:number, _token:_token},
+                success:function(result)
+                {
+                    console.log(result);
+                    if(result == 'exists')
+                    {
+                      $('#error_store_mobile').empty();
+                      $('#SendOTPBtn').attr('disabled', false);
+                      return true;
+                    }
+                    else
+                    {
+                        $('#error_store_mobile').html('<label class="text-danger">Store account desn\'t exist with this number </label>');
+                        $('#SendOTPBtn').prop('disabled', true);
+                        return false;
+                    }
+                }
+            });
+        }
+        else
+        {
+            $('#error_store_mobile').html('<label class="text-danger">Mobile number invalid </label>');
+            $('#SendOTPBtn').attr('disabled', true);
+            return false;
+        }
+        
+        return true;
 
-
-       }
-    else
-      {
-    	//document.forms["myForm"]["store_mobile"].style.backgroundColor='red';
-          $('#error_store_mobile').html('<label class="text-danger">Mobile Number Invalid </label>');
-            // $('#email').addClass('has-error');
-                $('#submit').attr('disabled', 'disabled');
-      }
 	}
 
 </script>

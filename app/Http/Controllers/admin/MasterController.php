@@ -620,12 +620,20 @@ class MasterController extends Controller
     public function updateRewardToCustomer(Request $request,$reward_to_customer_id)
     {
       try{ 
+          
+           if (Trn_store_customer::where('customer_mobile_number', '=', $request->customer_mobile_number)->exists()) 
+            {
+                return redirect()->back()->withErrors(['Customer exists'])->withInput();
+             }  
+            else
+            {
 
-        $reward['user_id'] = auth()->user()->id;
-        $reward['customer_mobile_number'] = $request->customer_mobile_number;
-        $reward['reward_discription'] = $request->reward_discription;
-        $reward['reward_points'] = $request->reward_points;
-        $reward['added_date'] = Carbon::now()->format('Y-m-d');
+                $reward['user_id'] = auth()->user()->id;
+                $reward['customer_mobile_number'] = $request->customer_mobile_number;
+                $reward['reward_discription'] = $request->reward_discription;
+                $reward['reward_points'] = $request->reward_points;
+                $reward['added_date'] = Carbon::now()->format('Y-m-d');
+            }
 
         Mst_RewardToCustomer::where('reward_to_customer_id',$reward_to_customer_id)->update($reward);
 

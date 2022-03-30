@@ -74,7 +74,7 @@
                            <center>
                            <button type="submit" class="btn btn-raised btn-primary">
                            <i class="fa fa-check-square-o"></i> Filter</button>
-                           <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
+                           <!--<button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>-->
                           <a href="{{route('admin.list_agency')}}"  class="btn btn-info">Cancel</a>
                            </center>
                         </div>
@@ -193,19 +193,7 @@ $(function(e) {
 
 
 
-$(document).ready(function() {
- $('#reset').click(function(){
 
-          $('#country').remove();
-
-
-     $('#state option:not(:first)').remove();
-
-     $('#city option:not(:first)').remove();
- $('#countryl').append('<select name="country_id"  class="form-control" id="country" ><option value=""> Select Country</option>@foreach($countries as $key)<option  value="{{$key->country_id}}"> {{$key->country_name }} </option>@endforeach</select>');
-
-   });
-});
 
 
 

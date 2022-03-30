@@ -25,8 +25,8 @@
                             </div>
                             @endif
                         <div class="card-body">
-                                    <a  href=" {{ url('admin/towns/list') }}" class="btn btn-block btn-info">
-                                    List Town </a>
+                                    <a  href=" {{ url('admin/pincode/list') }}" class="btn btn-block btn-info">
+                                    List Pincodes </a>
                                      
                                 <br>
                             <div class="table-responsive">
@@ -34,7 +34,7 @@
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
-                                        <th class="wd-15p">{{__('Town')}}</th>
+                                        <th class="wd-15p">{{__('Pincode')}}</th>
                                         <th class="wd-15p">{{__('District')}}</th>
                                         <th class="wd-15p">{{__('Action')}}</th>
                                     </tr>

@@ -3,6 +3,7 @@
 @php
 $date = Carbon\Carbon::now();
 use App\Models\admin\Trn_store_order;
+use App\Models\admin\Sys_store_order_status;
 use App\Models\admin\Mst_delivery_boy;
 use App\User;
 
@@ -142,6 +143,7 @@ use App\User;
                            $orderDAta = Trn_store_order::find($delivery_boy_order->order_id);
                            $dBoyDAta = Mst_delivery_boy::find($delivery_boy_order->delivery_boy_id);
                            $subadmin = User::find($delivery_boy_order->subadmin_id);
+                           $statusInfo = Sys_store_order_status::find($delivery_boy_order->status_id);
                         @endphp
                         <td>{{ ++$i }}</td>
                         <td>{{ \Carbon\Carbon::parse($delivery_boy_order->created_at)->format('M d, Y')}}</td>
@@ -154,7 +156,7 @@ use App\User;
 
 
                        <td>
-                        --
+                            {{@$statusInfo->status }}
                        </td>
                        <td>
                         <a class="btn btn-sm btn-blue"href="{{url('admin/order/view/'.Crypt::encryptString($delivery_boy_order->order_id))}}">View</a>

@@ -110,7 +110,7 @@
                                             <th class="wd-15p">Order Number</th>
 
                                             <th class="wd-15p">Customer</th>
-                                            <th class="wd-15p">Customer Phone</th>
+                                            <!--<th class="wd-15p">Customer Phone</th>-->
                                             
                                             <th class="wd-15p">Price</th>
                                             
@@ -152,7 +152,6 @@
                                             <!--</td>-->
                                             
                                               <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
-                                            <td>{{ $d->customer_mobile_number }}</td>
 
                                          
                                             

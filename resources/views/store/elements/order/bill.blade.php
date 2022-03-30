@@ -52,12 +52,14 @@
                    @if (isset($store_data->country->country_name))
                    {{  @$store_data->country->country_name }}
                    @endif
+                   <br>
+                    Phone: {{ @$store_data->store_mobile }}   <br>
+            GST : {{ @$store_data->gst }}
                    
                    <br>
-                  Phone: {{ @$store_data->store_mobile }} <br>
+                  <!--Phone: {{ @$store_data->store_mobile }} <br>-->
   
-                <p style="margin-top:2px;">  Phone: {{ @$store_data->store_mobile }}  </p>  <br>
-                <p>{{ @$store_data->gst }}</p>
+                
 
                </div>
               </td>
@@ -302,16 +304,23 @@
         <td style="font-size: smaller;">  {{ number_format((float)$tax_amount, 2, '.', '') }}</td>
       </tr>
   
-                 @php
-                  $dCharge = 0;
-                    $dCharge =   @$order->delivery_charge;
-                  @endphp
-  
-       @if(@$order->order_type == 'APP')
+                @php
+                $pCharge = 0;
+                $dCharge = 0;
+                  $dCharge =   @$order->delivery_charge;
+                  $pCharge =   @$order->packing_charge;
+                @endphp
+
+                @if(@$order->order_type == 'APP')
   
         <tr>
           <td style="font-size: smaller;">Delivery Charge &nbsp;</td>
           <td style="font-size: smaller;">  {{ number_format((float)$dCharge, 2, '.', '') }}</td>
+        </tr>
+        
+        <tr>
+          <td style="font-size: smaller;">Packing Charge &nbsp;</td>
+          <td style="font-size: smaller;">  {{ number_format((float)$pCharge, 2, '.', '') }}</td>
         </tr>
   
         @endif
@@ -328,26 +337,28 @@
   
   
      
-      @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
-      <tr>
-        <td style="font-size: smaller;">Coupon Discount &nbsp;</td>
+        @if(@$order->order_type == 'APP')
+     
+
+       <tr>
+        <td style="font-size: smaller;">Redeemed Amount &nbsp;</td>
+        <td style="font-size: smaller;">
+             @if(isset($order->amount_reduced_by_rp))
+       {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )
+       @else
+       0.00
+       @endif
+                                                   
+        </td>
+      </tr>
+      
+       <tr>
+        <td style="font-size: smaller;">Coupon Amount &nbsp;</td>
         <td style="font-size: smaller;">  {{ @$order->amount_reduced_by_coupon }}</td>
       </tr>
+      
       @endif
-  
-      @if(($order->reward_points_used != null) || ($order->reward_points_used != 0))
-      <!--<tr>-->
-      <!--  <td style="font-size: smaller;">Reward point used &nbsp;</td>-->
-      <!--  <td style="font-size: smaller;"> </td>-->
-      <!--</tr>-->
-      @if(($order->amount_reduced_by_rp != null) && ($order->amount_reduced_by_rp > 0))
-       <tr>
-        <td style="font-size: smaller;">Redeemed amount &nbsp;</td>
-        <td style="font-size: smaller;"> {{ @$order->amount_reduced_by_rp }} ({{ @$order->reward_points_used }} points)</td>
-      </tr>
-      @endif
-      @endif
-        
+
       <tr>
         <td style="font-size: smaller;font-weight: 500;">&nbsp;</td>
         <td style="font-size: smaller;font-weight: 500;">&nbsp;</td>

@@ -37,7 +37,7 @@
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
-                                        <th class="wd-15p">{{__('Town')}}</th>
+                                        <th class="wd-15p">{{__('Pincode')}}</th>
                                         <th class="wd-15p">{{__('Banner Image')}}</th>
                                         <th class="wd-15p">{{__('Action')}}</th>
                                     </tr>

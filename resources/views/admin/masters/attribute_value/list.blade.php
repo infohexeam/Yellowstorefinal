@@ -35,7 +35,7 @@
          <div class="card-body">
           
             <div class="table-responsive">
-               <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+               <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                   <thead>
                      <tr>
                         <th class="wd-15p">SL.No</th>
@@ -82,6 +82,46 @@
       </div>
    </div>
 </div>
+
+
+
+ <script> $(function(e) {
+               $('#exampletable').DataTable( {
+                   dom: 'Bfrtip',
+                   buttons: [
+                       {
+                           extend: 'pdf',
+                           title: 'AttributesValue',
+                           // orientation:'landscape',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1],
+                                alignment: 'right',
+                            },
+                             customize: function(doc) {
+                                 doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+                          doc.content.forEach(function(item) {
+                          if (item.table) {
+                             item.table.widths = [40, '*','*']
+                           }
+                          })
+                        }
+                       },
+                       {
+                           extend: 'excel',
+                           title: 'AttributesValue',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1]
+                            }
+                       }
+                    ]
+               } );
+           
+           } );
+           </script>
+           
+           
 
 <!-- MESSAGE MODAL CLOSED -->
 @endsection

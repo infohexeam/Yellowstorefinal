@@ -33,8 +33,41 @@
          
          <script src="https://www.google.com/recaptcha/api.js?render=6LdaDPgdAAAAAB82l56R-aueMZstr_Xe3iowacF8"></script>
 
+<style>
 
-   </head>
+.password-show {
+  position: relative;
+}
+.password-show input {
+  padding-right: 2.5rem;
+}
+.password-show__toggle {
+  position: absolute;
+  top: 15px;
+  right: 0;
+  bottom: 0;
+  width: 2.5rem;
+}
+.password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #555;
+}
+.password-show_toggle_show-icon {
+  display: block;
+}
+.password-show.show .password-show_toggle_show-icon {
+  display: none;
+}
+.password-show_toggle_hide-icon {
+  display: none;
+}
+.password-show.show .password-show_toggle_hide-icon {
+  display: block;
+}
+</style>
    </head>
    <body>
       <!-- BACKGROUND-IMAGE -->
@@ -91,7 +124,13 @@
                            @enderror
                         </div>
                         <div class="wrap-input100 validate-input">
-                           <input class="input100" type="password" name="password" placeholder="Password" id="password" type="password" required autocomplete="current-password">
+                                <div class="password-show">
+
+                           <input class="input100 form-control" type="password" name="password" placeholder="Password" id="exampleInputPassword1" type="password" required autocomplete="current-password">
+                           <div class="password-show__toggle">
+                              <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                            </div>
                            @error('password')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
@@ -99,18 +138,19 @@
                            @enderror
                            <span class="focus-input100"></span>
                         </div>
+                        </div>
                         <!-- <div class="container-login100-form-btn">-->
                         <!--  <a href="{{route('password.request')}}">ForgotPassword?</a>-->
                         <!--   </button>-->
                         <!--</div>-->
                         <div class="container-login100-form-btn">
-                           {{-- <button type="submit" class="login100-form-btn btn-primary">
+                            <button type="submit" class="login100-form-btn btn-primary">
                            {{ __('Login') }}
-                           </button> --}}
+                           </button> 
                            
-                            <button type="submit" data-sitekey="6LfkNvcdAAAAAKlMeQ0Jy_zmPRCTg714kKnWzkCd" data-callback="submitForm" class="g-recaptcha login100-form-btn btn-primary">
-                           {{ __('Login') }}
-                           </button>
+                           <!-- <button type="submit" data-sitekey="6LfkNvcdAAAAAKlMeQ0Jy_zmPRCTg714kKnWzkCd" data-callback="submitForm" class="g-recaptcha login100-form-btn btn-primary">-->
+                           <!--{{ __('Login') }}-->
+                           <!--</button>-->
                            
                         </div>
                         <div class="container-login100-form-btn">
@@ -128,6 +168,35 @@
       </div>
       </div>
       </div>
+         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
+      <script>
+
+$(document).ready(function() {
+  $(".password-show__toggle").on("click", function(e) {
+    console.log("click");
+    if (
+      !$(this)
+        .parent()
+        .hasClass("show")
+    ) {
+      $(this)
+        .parent()
+        .addClass("show");
+      $(this)
+        .prev()
+        .attr("type", "text");
+    } else {
+      $(this)
+        .parent()
+        .removeClass("show");
+      $(this)
+        .prev()
+        .attr("type", "password");
+    }
+  });
+});
+   </script>
       
       
         <script>

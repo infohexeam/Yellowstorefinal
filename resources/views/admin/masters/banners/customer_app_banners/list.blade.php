@@ -40,8 +40,8 @@
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
                                         <th class="wd-15p">{{__('Banner Image')}}</th>
-                                        <th class="wd-15p">{{__('Town')}}</th>
-                                        <th class="wd-15p">{{__('Default Banner')}}</th>
+                                        <th class="wd-15p">{{__('Pincode')}}</th>
+                                        <!--<th class="wd-15p">{{__('Default Banner')}}</th>-->
                                         <th class="wd-15p">{{__('Status')}}</th>
                                         <th class="wd-15p">{{__('Action')}}</th>
                                     </tr>
@@ -55,13 +55,13 @@
                                         <td>{{ ++$i }}</td>
                                     <td><img src="{{asset('assets/uploads/customer_banner/'.$data->image)}}"  width="50" ></td>
                                         <td>{{ @$data->town['town_name'] }}</td>
-                                    <td>
-                                        @if($data->default_status == 1)
-                                            Yes
-                                        @else
-                                            No
-                                        @endif
-                                    </td>
+                                    <!--<td>-->
+                                    <!--    @if($data->default_status == 1)-->
+                                    <!--        Yes-->
+                                    <!--    @else-->
+                                    <!--        No-->
+                                    <!--    @endif-->
+                                    <!--</td>-->
                                     
                                     <td>
                                         <form action="{{route('admin.status_customer_banner',$data->banner_id)}}" method="POST"> 
@@ -135,7 +135,7 @@
                   <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Country </label>
-                            <select name="country_id" onchange="findCountry(this.value)" class="form-control" id="country" >
+                            <select name="country_id"  onchange="findCountry(this.value)" class="form-control" id="country" >
                                 <option value=""> Select Country</option>
                                     @foreach( @$countries as $key)
                                     <option value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -146,7 +146,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">State </label>
+                           <label class="form-label">State   </label>
                             <select name="state_id"  onchange="findCity(this.value)"  class="form-control" id="state" >
                                 <option  value=""> Select State</option>
                             </select>
@@ -154,8 +154,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">District </label>
-                            <select name="district_id" onchange="findTown(this.value)" class="form-control" id="city">
+                           <label class="form-label">District  </label>
+                            <select name="district_id" onchange="findTown(this.value)"  class="form-control" id="city">
                                 <option value="">Select District</option>
                             </select>
                         </div>
@@ -163,9 +163,9 @@
 
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="form-label">Town </label>
-                              <select name="town_id" class="form-control" id="town">
-                                <option value="">Select Town</option>
+                              <label class="form-label">Pincode  </label>
+                              <select name="town_id"  class="form-control" id="town">
+                                <option value="">Select Pincode</option>
                               </select>
                            </div>
                         </div>
@@ -175,7 +175,7 @@
                         <div class="form-group">
                            <div id="teamArea">
                            <label class="form-label">Images * [in png,jpeg or jpg] </label>
-                           <input type="file"  class="form-control" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="images[]"  id="imgs" required  placeholder="Images">
+                           <input type="file"  class="form-control" accept="image/x-png,image/jpg,image/jpeg"  name="images[]"  id="imgs" required  placeholder="Images">
                         </div>
                      </div>
 
@@ -194,11 +194,11 @@
 
                     </div>
                     	<label class="custom-switch">
-                                                        <input type="hidden" name="status" value=0 />
-														<input type="checkbox" name="status"  checked value=1 class="custom-switch-input">
-														<span class="custom-switch-indicator"></span>
-														<span class="custom-switch-description">Active Status</span>
-													</label>
+                            <input type="hidden" name="status" value=0 />
+							<input type="checkbox" name="status"  checked value=1 class="custom-switch-input">
+							<span class="custom-switch-indicator"></span>
+							<span class="custom-switch-description">Active Status</span>
+						</label>
 													
                 </div>
 
@@ -346,7 +346,7 @@ function findTown(city_id){
             $('#town').prop("diabled",false);
             $('#town').empty();
 
-            $('#town').append('<option value="">Select Town</option>');
+            $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');

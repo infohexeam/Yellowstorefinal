@@ -61,15 +61,13 @@ class CouponController extends Controller
       $coImg = Mst_product_image::where('product_image_id', $imgId)->update(['image_flag' => 1]);
 
 
-
-      if ($dataImage->product_varient_id == 0) {
-
-        Mst_product_image::where('product_image_id', $dataImage->product_image_id)->where('product_varient_id', $dataImage->product_varient_id)->update(['image_flag' => 1]);
-        Mst_store_product::where('product_id', $dataImage->product_id)->update(['product_base_image' => $dataImage->product_image]);
-      } else {
         Mst_product_image::where('product_image_id', $dataImage->product_image_id)->where('product_varient_id', $dataImage->product_varient_id)->update(['image_flag' => 1]);
         Mst_store_product_varient::where('product_varient_id', $dataImage->product_varient_id)->update(['product_varient_base_image' => $dataImage->product_image]);
-      }
+      
+        $isBaseVar = Mst_store_product_varient::where('product_varient_id', $dataImage->product_varient_id)->first();
+        
+        if(@$isBaseVar->is_base_variant == 1)
+        Mst_store_product::where('product_id', $dataImage->product_id)->update(['product_base_image' => $dataImage->product_image]);
 
 
       return redirect()->back()->with('status', 'Base image successfully updated.');
@@ -334,6 +332,14 @@ class CouponController extends Controller
       $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->select('mst_store_products.product_id', 'mst_store_products.product_name')
         ->where('mst_store_products.store_id', Auth::guard('store')->user()->store_id)->orderBy('mst_store_products.product_id', 'DESC')->get();
+      
+    $productVAriants =  Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+     ->where('mst_store_products.is_removed', 0)
+     ->where('mst_store_product_varients.is_removed', 0)
+     ->get();
+    
+
+      
       $customers = Trn_store_customer::all();
 
       $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
@@ -374,11 +380,11 @@ class CouponController extends Controller
         ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
         ->where('mst_stores.store_id', Auth::guard('store')->user()->store_id)
-        ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-        //  ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
-        ->get();
+//         ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
+//   ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
+->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
-      //dd($data);
+     // dd($data);
       if ($_GET) {
 
         $datefrom = $request->date_from;
@@ -432,7 +438,8 @@ class CouponController extends Controller
         }
 
         if (isset($request->product_id)) {
-          $data = $data->where('mst_store_products.product_id', $request->product_id);
+          $data = $data->where('mst_store_product_varients.product_varient_id', $request->product_id);
+          
         }
 
         if (isset($request->vendor_id)) {
@@ -453,14 +460,14 @@ class CouponController extends Controller
 
 
 
-        $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-          //  ->groupBy('trn__recently_visited_products.product_varient_id', 'trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
-          ->get();
-
-        return view('store.elements.reports.product_report', compact('subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
+       // $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
+           
+           $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+//dd($data);
+        return view('store.elements.reports.product_report', compact( 'productVAriants' ,'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
       }
 
-      return view('store.elements.reports.product_report', compact('subCategories', 'categories', 'agencies', 'products', 'customers', 'data', 'pageTitle'));
+      return view('store.elements.reports.product_report', compact('productVAriants' , 'subCategories', 'categories', 'agencies', 'products', 'customers', 'data', 'pageTitle'));
     } catch (\Exception $e) {
       return redirect()->back()->withErrors([$e->getMessage()])->withInput();
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -843,7 +850,7 @@ class CouponController extends Controller
       // ->orderBy('mst_store_products.product_name','ASC')
       ->where('mst_store_product_varients.stock_count', '<=', 0)
 
-      ->orderBy('mst_store_product_varients.product_varient_id', 'DESC')
+      ->orderBy('mst__stock_details.created_at', 'DESC')
 
       ->select(
         'mst_store_products.product_id',
@@ -862,12 +869,11 @@ class CouponController extends Controller
         'mst_store_product_varients.product_varient_offer_price',
         'mst_store_product_varients.product_varient_base_image',
         'mst_store_product_varients.stock_count',
-        'mst_store_product_varients.created_at',
         'mst_store_categories.category_id',
         'mst_store_categories.category_name',
         'mst__stock_details.stock',
         'mst__stock_details.prev_stock',
-        'mst__stock_details.created_at AS updated_time',
+        'mst__stock_details.created_at',
         'mst_store_agencies.agency_name',
         'mst__sub_categories.sub_category_name',
 
@@ -892,24 +898,24 @@ class CouponController extends Controller
       // }
 
       if (isset($request->product_id)) {
-        $data = $data->where('mst_store_products.product_id', $request->product_id);
+        $inventoryData = $inventoryData->where('mst_store_products.product_id', $request->product_id);
       }
 
       if (isset($request->vendor_id)) {
-        $data = $data->where('mst_store_agencies.agency_id', $request->vendor_id);
+        $inventoryData = $inventoryData->where('mst_store_agencies.agency_id', $request->vendor_id);
       }
 
       if (isset($request->category_id)) {
-        $data = $data->where('mst_store_categories.category_id', $request->category_id);
+        $inventoryData = $inventoryData->where('mst_store_categories.category_id', $request->category_id);
       }
 
       if (isset($request->sub_category_id)) {
-        $data = $data->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+        $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
       }
     }
 
 
-    $inventoryData = $inventoryData->get();
+    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at','DESC')->get();
 
     //  dd($inventoryData);
 
@@ -1228,7 +1234,7 @@ class CouponController extends Controller
         }
       }
 
-      $data = $data->where('trn_store_orders.store_id', $store_id)
+      $data = $data->where('trn_store_orders.store_id', $store_id)->where('trn_store_orders.status_id', 9)
         ->orderBy('trn_store_orders.order_id', 'DESC')
         ->get();
 

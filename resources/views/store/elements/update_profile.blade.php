@@ -16,7 +16,7 @@
                      <ul class="nav">
                         <li class=""><a href="#tab-51" class="active show"
                            data-toggle="tab">Basic Information</a></li>
-                        <li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>
+                        <!--<li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>-->
                         <li><a href="#tab-71" data-toggle="tab" class="">Banner Images</a></li>
                        {{-- <li><a href="#tab-81" data-toggle="tab" class="">Agencies</a></li> --}}
                         {{-- <li><a id="dboyz" href="#tab-91" data-toggle="tab" class="">Delivery Boys</a></li> --}}
@@ -156,12 +156,12 @@
                          </div>
                          <div class="col-md-6">
                          <div class="form-group">
-                              <label class="form-label">Town *</label>
+                              <label class="form-label">Pincode *</label>
                               <select name="store_town" required="" class="form-control" id="town">
                                   @if(isset($store->town_id))
-                                 <option   value="{{$store->town_id}}">  {{@$store->town->town_name}}</option>
+                                 <option   value="{{$store->town_id}}">  {{@$store->town['town_name']}}</option>
                                  @else
-                            <option  value=""> Town</option>
+                            <option  value=""> Pincode</option>
                             @endif
 
                               </select>
@@ -171,7 +171,7 @@
 
                          <div class="col-md-6">
                            <div class="form-group">
-                              <label class="form-label">Store Place *</label>
+                              <label class="form-label">Store Location *</label>
                               <input required type="text" class="form-control" id="store_place" name="store_place" value="{{old('store_place',$store->place)}}" placeholder="Store Place">
                            </div>
                      </div>
@@ -200,7 +200,7 @@
                     <!--    </div>-->
                     <!-- </div>-->
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
 
                              <div class="form-group">
                            <label class="form-label"> Username</label>
@@ -210,7 +210,7 @@
                        </div>
 
 
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                            <div class="form-group">
                     <label class="form-label">Business Type</label>
                     <select readonly name="business_type_id" required="" class="form-control" >
@@ -223,14 +223,14 @@
 
                       </div>
                       
-                      <div class="col-md-6">
-                        <div class="form-group">
-                           <label class="form-label">UPI ID</label>
+                      <!--<div class="col-md-6">-->
+                      <!--  <div class="form-group">-->
+                      <!--     <label class="form-label">UPI ID</label>-->
 
-                           <input type="text" class="form-control" name="upi_id" value="{{old('upi_id',$store->upi_id)}}"  placeholder="UPI ID">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
+                      <!--     <input type="text" class="form-control" name="upi_id" value="{{old('upi_id',$store->upi_id)}}"  placeholder="UPI ID">-->
+                      <!--  </div>-->
+                      <!--</div>-->
+                      <div class="col-md-4">
                         <div class="form-group">
                            <label class="form-label">GSTIN</label>
 
@@ -260,7 +260,7 @@
                          <img  src="{{asset('/assets/uploads/store_images/images/'.$store->profile_image)}}"  width="70" >
                          @endif
                         <div class="form-group">
-                           <label class="form-label"> Store Profile </label>
+                           <label class="form-label"> Store Profile Image</label>
                            <input type="file"  class="form-control" accept="image/x-png,image/jpg,image/jpeg" name="profile_image"  placeholder="Image">
                         </div>
                      </div>
@@ -312,48 +312,48 @@
 
                  <br>
 
-                     <div class="card-body border">
-                       <div class="card-header">
-                  <h3 class="mb-0 card-title">Add Store Documents</h3>
-                    </div>
+                 <!--    <div class="card-body border">-->
+                 <!--      <div class="card-header">-->
+                 <!-- <h3 class="mb-0 card-title">Add Store Documents</h3>-->
+                 <!--   </div>-->
 
-                   <div class="card-body">
-                  <div class="row">
+                 <!--  <div class="card-body">-->
+                 <!-- <div class="row">-->
 
-                        <div id="doc_area">
-
-
-
-                    <div class="col-md-10">
-                        <div class="form-group">
-                           <label class="form-label">Document Title </label>
-                           <input type="text" class="form-control"
-                           name="store_document_other_file_head[]"  placeholder="Document Title">
-                      </div>
-                     </div>
-
-                     <div class="col-md-10">
-                        <div class="form-group">
-                           <label class="form-label"> Other File [in pdf,doc,docx or txt] </label>
-                           <input type="file" class="form-control" accept=".pdf,.docx,.txt,.doc"
-                           name="store_document_other_file[]"  placeholder="Store Document  File">
-                      </div>
-                     </div>
+                 <!--       <div id="doc_area">-->
 
 
-                        </div>
+
+                 <!--   <div class="col-md-10">-->
+                 <!--       <div class="form-group">-->
+                 <!--          <label class="form-label">Document Title </label>-->
+                 <!--          <input type="text" class="form-control"-->
+                 <!--          name="store_document_other_file_head[]"  placeholder="Document Title">-->
+                 <!--     </div>-->
+                 <!--    </div>-->
+
+                 <!--    <div class="col-md-10">-->
+                 <!--       <div class="form-group">-->
+                 <!--          <label class="form-label"> Other File [in pdf,doc,docx or txt] </label>-->
+                 <!--          <input type="file" class="form-control" accept=".pdf,.docx,.txt,.doc"-->
+                 <!--          name="store_document_other_file[]"  placeholder="Store Document  File">-->
+                 <!--     </div>-->
+                 <!--    </div>-->
 
 
-                      <div class="col-md-2">
-                        <div class="form-group">
-                           <label class="form-label">Add more</label>
-                            <button type="button" id="addDoc" class="btn btn-raised btn-success">
-                      Add More</button>
-                        </div>
-                        </div>
-                  </div>
-                   </div>
-                 </div>
+                 <!--       </div>-->
+
+
+                 <!--     <div class="col-md-2">-->
+                 <!--       <div class="form-group">-->
+                 <!--          <label class="form-label">Add more</label>-->
+                 <!--           <button type="button" id="addDoc" class="btn btn-raised btn-success">-->
+                 <!--     Add More</button>-->
+                 <!--       </div>-->
+                 <!--       </div>-->
+                 <!-- </div>-->
+                 <!--  </div>-->
+                 <!--</div>-->
 
                    <br>
                     <div class="card-body border">

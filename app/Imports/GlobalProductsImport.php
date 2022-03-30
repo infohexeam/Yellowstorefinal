@@ -39,7 +39,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
 
             
             $tax_data = Mst_Tax::where('tax_value',$row['tax'])->first();
-            $business_type = Mst_business_types::where('business_type_name',$row['product_type'])->first();
+          //  $business_type = Mst_business_types::where('business_type_name',$row['product_type'])->first();
            // $color_data = Mst_attribute_value::where('group_value',$row['color'])->first();
           //  $att_grp_data = Mst_attribute_group::where('group_name',$row['attribute_group'])->first();
          //   $att_val_data = Mst_attribute_value::where('group_value',$row['attribute_value'])->first();
@@ -71,12 +71,12 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
                     'product_name' => $row['product_name'],
                     'product_name_slug' => Str::of($row['product_name'])->slug('-'),
                     'product_description' => $row['product_description'],
-                    'regular_price' => $row['regular_price'],
+                    'regular_price' => $row['mrp'],
                     'sale_price' => $row['sale_price'],
                     'tax_id' => @$tax_data->tax_id ,
                     'min_stock' => $row['minstock'] ,
                     'product_code' => $row['product_code'],
-                    'business_type_id' => @$business_type->business_type_id ,
+                    'business_type_id' => 0 ,
                   //  'color_id' => @$color_data->attr_value_id ,
                     'product_brand' => $row['product_brand'],
                     'attr_group_id' => 0 ,
@@ -102,7 +102,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
         return [
             '*.product_name' => ['required'],
             '*.product_description' => ['required'],
-            '*.regular_price' => ['required','numeric'],
+            '*.mrp' => ['required','numeric'],
             '*.sale_price' => ['required','numeric'],
             '*.product_code' => ['required'],
         ];

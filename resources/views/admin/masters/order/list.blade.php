@@ -36,7 +36,7 @@ $date = Carbon\Carbon::now();
             <div class="row">
 
 
-
+                @if(auth()->user()->user_role_id  == 0)
                   <div class="col-md-4">
                   <div class="form-group">
                      <label class="form-label">Sub Admin</label>
@@ -73,8 +73,24 @@ $date = Carbon\Carbon::now();
                            </select>
                   </div>
                </div>
+               @else
+               
+                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Store</label>
+                          <div id="storel"></div>
+                          <select class="form-control" name="store_id" >
+                              <option value=""> Select Store </option>
+                            @foreach($store as $row)
+                              <option value="{{$row->store_id}}"> {{$row->store_name}} </option>
+                            @endforeach
+                          </select>
+                      </div>
+                   </div>
+               
+               @endif
 
-            <div class="col-md-4">
+            <div class="  @if(auth()->user()->user_role_id  == 0) col-md-4 @else col-md-6 @endif">
                 <div class="form-group">
                     <label class="form-label"> Status</label>
                       <div id="status_idl"></div>

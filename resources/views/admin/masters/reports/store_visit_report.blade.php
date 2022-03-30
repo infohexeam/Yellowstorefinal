@@ -52,7 +52,7 @@
                                             </div>
                                          </div>
                                         @if(auth()->user()->user_role_id  == 0) 
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                               <div class="form-group">
                                                  <label class="form-label">Sub Admin</label>
                                                  <div id="subadminl"></div>
@@ -66,7 +66,7 @@
                                            </div>
                                         @endif
                                          
-                                         <div class="col-md-4">
+                                         <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Store </label>
                                                <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
@@ -79,7 +79,7 @@
                                          </div>
                                          
                                          
-                                          <div class="col-md-4">
+                                          <div class="col-md-3">
                                           <div class="form-group">
                                               <label class="form-label">Customer</label>
                                                   <select name="customer_id" id="customer_id" class="form-control select2-show-search" data-placeholder="Customer" >
@@ -91,11 +91,11 @@
                                            </div>
                                           </div>
                                          
-                                         <div class="col-md-4">
+                                         <div class="col-md-3">
                                             <div class="form-group">
-                                              <label class="form-label">Town </label>
-                                               <select  name="town_id" id="townId" class="form-control select2-show-search" data-placeholder="Town"  >
-                                                    <option value="">Town</option>
+                                              <label class="form-label">Pincode </label>
+                                               <select  name="town_id" id="townId" class="form-control select2-show-search" data-placeholder="Pincode"  >
+                                                    <option value="">Pincode</option>
                                                   
                                                   </select>
                                             </div>
@@ -130,7 +130,7 @@
                                             <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Store<br>Name</th>
                                             <th class="wd-15p">Customer</th>
-                                            <th class="wd-15p">Town</th>
+                                            <th class="wd-15p">Pincode</th>
                                             <th class="wd-15p">Customer<br>Phone</th>
                                             <th class="wd-15p">Visit<br>Count</th>
                                             <th class="wd-15p">Order<br>Per Visit</th>
@@ -276,7 +276,7 @@
                     console.log(res);
                     $('#townId').prop("diabled",false);
                     $('#townId').empty();
-                    $('#townId').append('<option value="">Town</option>');
+                    $('#townId').append('<option value="">Pincode</option>');
                     $.each(res,function(town_id,town_name)
                     {
                       $('#townId').append('<option value="'+town_id+'">'+town_name+'</option>');

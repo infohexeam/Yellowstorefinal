@@ -6,7 +6,7 @@
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
          <div class="card">
-            <div class="row">
+            <div class="row" style="min-height:70vh;">
                <div class="col-12" >
 
                   @if ($message = Session::get('status'))
@@ -38,12 +38,13 @@
                            
                         </br>
                         <div class="table-responsive">
-                           <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
                                     <th class="wd-15p">Parent<br>Category</th>
                                     <th class="wd-15p">Sub Category<br>Type</th>
+                                    <th class="wd-20p">Business<br>Type</th>
                                     <th class="wd-15p">{{ __('Image') }}</th>
                                     <th class="wd-15p">{{__('Action')}}</th>
                                  </tr>
@@ -57,6 +58,7 @@
                                     <td>{{ ++$i }}</td>
                                     <td>{{ @$category->categories->category_name}}</td>
                                     <td>{{ $category->sub_category_name}}</td>
+                                     <td>{{ $category->business_type['business_type_name'] }}  </td>
                                     <td>
                                        @if($category->sub_category_icon == '')
                                        <img src="{{asset('/assets/uploads/avatar.jpg')}}"  width="50" >
@@ -130,4 +132,42 @@
             </div>
             @endforeach
             <!-- MESSAGE MODAL CLOSED -->
+            
+            
+            <script> $(function(e) {
+               $('#exampletable').DataTable( {
+                   dom: 'Bfrtip',
+                   buttons: [
+                       {
+                           extend: 'pdf',
+                           title: 'Sub Categories Restore List',
+                           // orientation:'landscape',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1,2,3,4],
+                                alignment: 'right',
+                            },
+                             customize: function(doc) {
+                                 doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+                          doc.content.forEach(function(item) {
+                          if (item.table) {
+                             item.table.widths = ['auto', 'auto','auto','auto','auto']
+                           }
+                          })
+                        }
+                       },
+                       {
+                           extend: 'excel',
+                           title: 'Sub Categories Restore List',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1,2,3,4]
+                            }
+                       }
+                    ]
+               } );
+           
+           } );
+           </script>
+           
             @endsection

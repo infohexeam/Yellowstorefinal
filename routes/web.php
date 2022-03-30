@@ -529,14 +529,14 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         //town master
-        Route::get('admin/towns/list', 'AdminController@listTown')->name('admin.list_towns');
-        Route::post('admin/towns/remove/{town_id}', 'AdminController@removeTown')->name('admin.destroy_town');
-        Route::post('admin/towns/create/', 'AdminController@createTown')->name('admin.create_town');
-        Route::post('admin/town/edit/{town_id}', 'AdminController@editTown')->name('admin.edit_town');
-        Route::get('admin/town/edit/{town_id}', 'AdminController@editTownView')->name('admin.edit_town_view');
+        Route::get('admin/pincode/list', 'AdminController@listTown')->name('admin.list_towns');
+        Route::post('admin/pincode/remove/{town_id}', 'AdminController@removeTown')->name('admin.destroy_town');
+        Route::post('admin/pincode/create/', 'AdminController@createTown')->name('admin.create_town');
+        Route::post('admin/pincode/edit/{town_id}', 'AdminController@editTown')->name('admin.edit_town');
+        Route::get('admin/pincode/edit/{town_id}', 'AdminController@editTownView')->name('admin.edit_town_view');
 
-        Route::get('admin/town/restore-list', 'AdminController@listRestoreTown')->name('admin.restore_list_town');
-        Route::post('admin/town/restore/{town_id}', 'AdminController@restoreTown')->name('admin.restore_town');
+        Route::get('admin/pincode/restore-list', 'AdminController@listRestoreTown')->name('admin.restore_list_town');
+        Route::post('admin/pincode/restore/{town_id}', 'AdminController@restoreTown')->name('admin.restore_town');
 
         //vihicle types master
         Route::get('admin/vehicle_types/list', 'AdminController@listVehicleTypes')->name('admin.list_vihicle_types');
@@ -560,6 +560,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('/admin/video/restore/{video_id}', 'MasterController@restoreVideo')->name('admin.restore_video');
 
         //Global Product 
+        Route::get('admin/img-status/{store_id}', 'ProductController@statusGlobalIMG')->name('admin.status_GlobIMG');
 
         Route::get('/admin/global/products/list', 'ProductController@listGlobalProducts')->name('admin.global_products');
         Route::get('/admin/global/product/create', 'ProductController@createGlobalProduct')->name('admin.create_global_product');
@@ -634,6 +635,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/store/app/banner/list', 'AdminController@listStoreAppBanner')->name('admin.list_store_app_banners');
         Route::post('admin/store/app/banner/create', 'AdminController@storeStoreAppBanner')->name('admin.create_store_app_banner');
         Route::post('admin/store/app/banner/remove/{banner_id}', 'AdminController@removeStoreAppBanner')->name('admin.destroy_store_app_banner');
+        Route::post('admin/store/app/banner/status/{banner_id}', 'AdminController@statusStoreBanner')->name('admin.status_store_banner');
 
 
         Route::get('admin/store-app-banner/restore-list', 'AdminController@listRestoreSAB')->name('admin.restore_list_sab');
@@ -707,6 +709,11 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store-password/request', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('store_password.request');
 
         // forget password otp
+                Route::post('store_password/change', 'Auth\ForgotPasswordController@otpChangePasswordFirebase')->name('store_password.change');
+                Route::post('store_password/exist_store_mobile', 'Auth\RegisterController@CheckExistanceMobile')->name('store.store_mobile_isExists');
+                Route::post('store_password/find-hash-code', 'Auth\RegisterController@findHashcode')->name('store.store_hashcode');
+        Route::get('store-password/request/user', 'Auth\RegisterController@redirectToChangePass');
+
         Route::get('store/forgot/password/resend_otp/{store_id}', 'Auth\ForgotPasswordController@ResendOTP')->name('resend_forgot_pass_otp.store');
         Route::post('store/forgot/password/otp_verify/{store_id}', 'Auth\ForgotPasswordController@otpVerification')->name('forgot_password_otp_verify.store');
         Route::get('change/store-password/{store_id}', 'Auth\ForgotPasswordController@changePassword')->name('resend_password_otp.store');
@@ -732,7 +739,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('store/product/edit/{id}', 'StoreController@editProduct')->name('store.edit_product');
         Route::get('store/ajax/product/set_default_image', 'StoreController@setDefaultImage');
-        Route::get('product/ajax/is-code-available', 'CouponController@isPCodeAvailable');
+        // Route::get('product/ajax/is-code-available', 'CouponController@isPCodeAvailable');
 
 
         Route::get('admin/change-img-status/{store_id}', 'CouponController@statusStoreIMG')->name('admin.status_storeIMG');
@@ -758,6 +765,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store/product/variant/attr/add', 'StoreController@addProductVariantAttr')->name('store.add_attr_to_variant');
         Route::get('store/product/variant/list/{product_id}', 'StoreController@listProductVariant');
 
+
+        Route::get('ajax/product-variant/attr-remove', 'StoreController@GetVarAttr_Remove');
+
+
         Route::get('store/product/variant/edit/{product_varient_id}', 'StoreController@editProductVariant');
         Route::post('store/product/variant/update/{product_varient_id}', 'StoreController@updateProductVariant')->name('store.update_product_variant');
 
@@ -776,6 +787,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store-password/update', 'StoreController@updatePassword')->name('store.update_password');
 
         // inventory management
+        Route::post('store/product-video-remove/{product_video_id}', 'StoreController@removeProductVideo')->name('store.destroy_product_video');
 
         Route::get('store/inventory/list', 'StoreController@listInventory')->name('store.list_inventory');
         Route::post('store/stock/update/ajax', 'StoreController@UpdateStock')->name('store.stock_update');
@@ -811,6 +823,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/ajax/get_state', 'StoreController@GetState');
         Route::get('store/ajax/get_city', 'StoreController@GetCity');
         Route::get('store/ajax/get_town', 'StoreController@GetTown');
+        Route::get('ajax/stre-order/prefix-unique', 'StoreController@isUniquePrefix');
 
         Route::post('store/agency/ajax/unique_email', 'StoreController@CheckAgencyEmail')->name('store.unique_email_agency');
         Route::post('store/agency/ajax/unique_username', 'StoreController@CheckAgencyUsername')->name('store.unique_username_agency');
@@ -953,4 +966,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::post('store/browser-token/save', 'CouponController@saveBrowserToken')->name('store.saveBrowserToken');
     });
+    
+    
+            Route::get('product/ajax/is-code-available', 'PublicController@isPCodeAvailable');
+            Route::get('g-product/ajax/is-code-available', 'PublicController@isPCodeAvailableGlobalPro');
+
+
 });

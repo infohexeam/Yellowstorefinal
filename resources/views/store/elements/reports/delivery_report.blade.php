@@ -111,7 +111,13 @@
                                                 @endif
                                             </td>
 
-                                             <td>{{ $d->delivery_boy_name }}</td>
+                                             <td>
+                                                 @if(isset($d->delivery_boy_name))
+                                                 {{ $d->delivery_boy_name }}
+                                                 @else
+                                                 ---
+                                                 @endif
+                                                 </td>
                                             <td>
                                                 @if($d->delivery_status_id == 1)
                                                     Assigned

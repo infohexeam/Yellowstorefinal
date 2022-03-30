@@ -62,7 +62,19 @@
             .password-show.show .password-show_toggle_hide-icon {
               display: block;
             }
-            </style>   </head>
+            </style>  
+              <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ&libraries=places"></script>
+
+            <script type="text/javascript">
+               function initialize() {
+                  var input3 = document.getElementById('store_place_id'); // replace textbox id here
+                  var autocomplete3 = new google.maps.places.Autocomplete(input3);
+            
+               }
+               google.maps.event.addDomListener(window, 'load', initialize);
+            </script>
+
+</head>
    <body>
       <!-- BACKGROUND-IMAGE -->
       <div class="login-img">
@@ -172,15 +184,28 @@
                             </div>
 
                         </div> -->
-
-                       <!--  <div class="wrap-input100 validate-input">
+                        <div class="row">
+                        <div class="col-md-6">
+                      <div class="wrap-input100 validate-input">
                              <input class="input100" id="store_gst_number" type="text" name="store_gst_number" placeholder="GST Number" value="{{ old('store_gst_number') }}"   >
-                                    {{-- @error('store_gst_number')
+                                    @error('store_gst_number')
                                     <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                     </span>
-                                    @enderror --}}
-                        </div> -->
+                                    @enderror
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                                <div class="wrap-input100 validate-input">
+                                    <input class="input100" id="store_place_id" type="text" name="store_place" placeholder="Store Location *" value="{{ old('store_place') }}" required  >
+                                        @error('store_place')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                </div>
+                            </div>
+                            </div>
 
                         <!-- <div class="wrap-input100 validate-input">
                                 <textarea  class="input100" id="store_contact_address"  name="store_contact_address" placeholder="Store Address *" required>{{ old('store_contact_address') }}</textarea>
@@ -276,16 +301,16 @@
                         </div> -->
 
                         <div class="row">
-                            <!-- <div class="col-md-6">
-                                <div class="wrap-input100 validate-input">
-                                    <input class="input100" id="store_place" type="text" name="store_place" placeholder="Place *" value="{{ old('store_place') }}" required  >
-                                        {{-- @error('store_place')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror --}}
-                                </div>
-                            </div> -->
+                            <!--<div class="col-md-6">-->
+                            <!--    <div class="wrap-input100 validate-input">-->
+                            <!--        <input class="input100" id="store_place" type="text" name="store_place" placeholder="Store Location *" value="{{ old('store_place') }}" required  >-->
+                            <!--            @error('store_place')-->
+                            <!--            <span class="invalid-feedback" role="alert">-->
+                            <!--            <strong>{{ $message }}</strong>-->
+                            <!--            </span>-->
+                            <!--            @enderror-->
+                            <!--    </div>-->
+                            <!--</div>-->
                             <div class="col-md-12">
                                 <div class="wrap-input100 validate-input">
                                     <select name="business_type_id" id="business_type_id" required="" class="input100"  >

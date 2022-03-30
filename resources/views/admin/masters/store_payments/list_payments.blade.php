@@ -292,7 +292,7 @@
                               @foreach ($paid_details as $payments_data)
                                  <tr>
                                  <td>{{ ++$i }}</td>
-                                 <td>{{date('M, Y', strtotime($payments_data->date_of_payment))}}</td>
+                                 <td>{{date('d-m-Y', strtotime($payments_data->date_of_payment))}}</td>
                                  <td>Rs. {{$payments_data->commision_paid}}</td>
                                  <td>{{$payments_data->payment_note}}</td>
                                  </tr>

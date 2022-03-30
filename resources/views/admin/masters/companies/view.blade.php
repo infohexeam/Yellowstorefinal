@@ -11,8 +11,13 @@
                      <div class="wideget-user-desc d-sm-flex">
                         <div class="wideget-user-img">
                            <input type="hidden" class="form-control" name="company_id" value="{{$company->company_id}}" >
+                         
                            
+                            @if(isset($company->company_logo))
                            <img class="avatar-xl rounded-circle mCS_img_loaded" src=" {{URL::to('assets/uploads/company/logos/'.$company->company_logo)}}" alt="img" style="width: 150px; height: 150px;">
+                           @else
+                           <img src="http://yellowstore.hexeam.org/assets/uploads/admin.png" width="150">
+                           @endif
                         </div>
                         
                      </div>

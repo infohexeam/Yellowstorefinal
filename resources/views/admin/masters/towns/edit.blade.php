@@ -68,8 +68,8 @@
 
                         <div class="col-md-6">
                          <div class="form-group">
-                          <label class="form-label">PIN Code</label>
-                          <input type="text" placeholder="PIN Code" value="{{$town->town_name}}" required class="form-control" name="town_name" >
+                          <label class="form-label">PIN Code (6 Digit pin. Must not start with 0)</label>
+                          <input type="text" placeholder="Enter a 6 digit PIN Code" pattern="[1-9][0-9]{5}" value="{{$town->town_name}}" required class="form-control" name="town_name" onkeypress="return isNumber(event)">
                            </div>
                         </div>
 
@@ -80,10 +80,6 @@
        
                             </div>
                          </div> --}}
- 
-
-
-
 
                         </div>
 
@@ -106,6 +102,15 @@
 </div>
 
 <script type="text/javascript">
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
 
        $(document).ready(function() {
            var coc = 0;

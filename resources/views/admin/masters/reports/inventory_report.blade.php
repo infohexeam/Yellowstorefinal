@@ -188,12 +188,30 @@
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
 
                                             <td>{{ $d->stock_count }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}} {{ \Carbon\Carbon::parse($d->created_at)->format('H:i')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($d->updated_at)->format('d-m-Y')}} {{ \Carbon\Carbon::parse($d->updated_at)->format('H:i')}}</td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
-                                            <td>{{ $d->agency_name }}</td>
+                                            <td>
+                                                @if(isset($d->agency_name))
+                                                {{ $d->agency_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
                                             <td>{{ $d->category_name }}</td>
-                                            <td>{{ $d->sub_category_name }}</td>
-                                            <td>{{ $d->product_brand }}</td>
+                                            <td>
+                                                @if(isset($d->sub_category_name))
+                                                {{ $d->sub_category_name }}
+                                                 @else
+                                                ---
+                                                @endif
+                                                </td>
+                                            <td>
+                                                @if(isset($d->product_brand))
+                                                {{ $d->product_brand }}
+                                                 @else
+                                                ---
+                                                @endif
+                                                </td>
                                             {{-- <td>{{ $d->min_stock }}</td> --}}
                                             <td> 
                                                 @if($d->product_status == 1)
@@ -223,25 +241,27 @@
 
 
 <script>
-    $(function(e) {
+   $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Inventory Report',
+                title: 'Inventory report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
                  },
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
             },
             {
                 extend: 'excel',
-                title: 'Inventory Report',
-                footer: true
-              
+                title: 'Inventory report',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+                 }
             }
          ]
     } );
@@ -250,41 +270,38 @@
 </script>
 
 <script>
-      $(document).ready(function() {
+     $(document).ready(function() {
         
-        $("#categoryId").on('change', function(){    
+        $("#subadminId").on('change', function(){    
             
-        let categoryId = $('#categoryId').val();
-        
-       // console.log(categoryId);
-
-        var _token= $('input[name="_token"]').val();
-        
+         let subadminId = $('#subadminId').val();
+         
+         var _token= $('input[name="_token"]').val();
             $.ajax({
               type:"GET",
-              url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+categoryId,
+              url:"{{ url('admin/store-name-list') }}?subadmin_id="+subadminId,
     
               success:function(res){
                     if(res){
-                       // console.log(res);
-                        $('#subCategoryId').prop("diabled",false);
-                        $('#subCategoryId').empty();
-                        $('#subCategoryId').append('<option value="">Sub Category</option>');
-                        $.each(res,function(sub_category_id,sub_category_name)
+                        console.log(res);
+                        $('#storeId').prop("diabled",false);
+                        $('#storeId').empty();
+                        $('#storeId').append('<option value="">Store</option>');
+                        $.each(res,function(store_id,store_name)
                         {
-                          $('#subCategoryId').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
+                          $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
+                          
+                          let storeId = getUrlParameter('storeId');
+                            if ( typeof storeId !== "undefined" && storeId) {
+                                $("#storeId option").each(function(){
+                                    if($(this).val()==storeId){ 
+                                        $(this).attr("selected","selected");    
+                                    }
+                                });
+                            } 
+                    
+                    
                         });
-                        
-                        let subCategoryId = getUrlParameter('sub_category_id');
-                        if ( typeof subCategoryId !== "undefined" && subCategoryId) {
-                            $("#subCategoryId option").each(function(){
-                                if($(this).val()==subCategoryId){ 
-                                    $(this).attr("selected","selected");    
-                                }
-                            });
-                        } 
-                    
-                    
                     }else
                     {
                       $('#storeId').empty();
@@ -311,6 +328,8 @@
         }
         return false;
     };
+    
+    
 </script>
 
 @endsection

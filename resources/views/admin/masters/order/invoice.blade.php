@@ -20,7 +20,9 @@
                  <input type="hidden" class="form-control" name="order_id" value="{{$order->order_id}}">
                  
                  <div class="col-md-12">
+                     <p><img width="150" height="90" src="{{url('/assets/Yellow-Store-logo.png')}}" style="display: block;margin-left: auto;margin-right: auto;" /></p>
                  <div class="row">
+                     
                                 <div class="col-md-6 text-left">
                                     <p class="h3">Invoice From:</p>
                                       @php
@@ -57,6 +59,7 @@
                                   
 
                                        Phone: {{ @$store_data->store_mobile }} <br>
+                                       GST : {{ @$store_data->gst }} <br>
 
                                     </div>
                                     
@@ -121,6 +124,7 @@
                         <table class="table table-bordered table-hover mb-0 text-nowrap">
                           <thead>
                                     <tr>
+                                        <td>SL.No</td>
                                        <td>Item<br>Name</td>
                                        <td>Qty</td>
                                        <td>MRP</td>
@@ -141,9 +145,11 @@
                                        $gand_total = 0;
                                        $tval = 0;
                                        $t_val = 0;
+                                       $c = 0;
                                     @endphp
                                     @foreach ($order_items as $order_item)
                                        <tr>
+                                           <td>{{ ++$c }}</td>
                                           <td>{{@$order_item->product->product_name}}   
                                              @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
                                              @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
@@ -243,13 +249,13 @@
                                     @endforeach
                                     
                                     <tr>
-                                       <td colspan="9" class=" text-right">Sub Total</td>
+                                       <td colspan="10" class=" text-right">Sub Total</td>
                                        <td class=" h4">   {{ number_format((float)$subtotal, 2, '.', '') }}   </td>
                                     </tr>
                                     
 
                                     <tr>
-                                       <td colspan="9" class=" text-right">Total Tax</td>
+                                       <td colspan="10" class=" text-right">Total Tax</td>
                                        <td class=" h4">   {{ number_format((float)$tax_amount, 2, '.', '') }}   </td>
                                     </tr>
                                     
@@ -259,32 +265,34 @@
                                    
                                   
                                     @php
+                                    $pCharge = 0;
                                     $dCharge = 0;
                                       $dCharge =   @$order->delivery_charge;
+                                      $pCharge =   @$order->packing_charge;
                                     @endphp
 
                                     @if(@$order->order_type == 'APP')
 
                                     <tr>
-                                       <td colspan="9" class=" text-right">Delivery Charge</td>
+                                       <td colspan="10" class=" text-right">Delivery Charge</td>
                                        <td class="  h4">{{ $dCharge }}</td>
                                     </tr>
 
-                                    {{-- <tr>
-                                       <td colspan="9" class=" text-right">Packing Charge</td>
-                                       <td class=" h4"> 0 </td>
-                                    </tr> --}}
+                                     <tr>
+                                       <td colspan="10" class=" text-right">Packing Charge</td>
+                                       <td class=" h4"> {{ $pCharge }}</td>
+                                    </tr> 
 
                                     @endif
 
 
                                     <tr>
-                                       <td colspan="9" class="font-weight-bold text-uppercase text-right">Grand Total</td>
+                                       <td colspan="10" class="font-weight-bold text-uppercase text-right">Grand Total</td>
                                        <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$order->product_total_amount }}</td>
                                     </tr>
 
                                     <tr>
-                                       <td colspan="9" class=" text-right">Applied Discount</td>
+                                       <td colspan="10" class=" text-right">Applied Discount</td>
                                        <td class=" h4"> {{ @$dis_amt }} </td>
                                     </tr>
 
@@ -294,32 +302,35 @@
                                     @if(@$order->order_type == 'APP')
 
                                     
-                                    @if(($order->reward_points_used != null) || ($order->reward_points_used != 0))
-                                    
+
                                         <!--<tr>-->
                                         <!--   <td colspan="8" class=" text-right">Reward point used</td>-->
                                         <!--   <td class=" h4"> </td>-->
                                         <!--</tr>-->
                                         <tr>
-                                           <td colspan="9" class=" text-right">Reward point amount</td>
-                                           <td class=" h4"> {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )</td>
+                                           <td colspan="10" class=" text-right">Redeemed amount</td>
+                                           <td class=" h4"> 
+                                                   @if(isset($order->amount_reduced_by_rp))
+                                                   {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )
+                                                   @else
+                                                   0.00
+                                                   @endif
+                                                   
+                                           </td>
                                         </tr>
                                         
                                     
-                                    @endif
 
                                    
 
                                  
 
-                                    @if(($order->amount_reduced_by_coupon != null) && ($order->amount_reduced_by_coupon > 0))
 
                                     <tr>
-                                       <td colspan="9" class=" text-right">Coupon Discount</td>
+                                       <td colspan="10" class=" text-right">Coupon Amount</td>
                                        <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
                                     </tr>
 
-                                    @endif
 
                                     
                                     

@@ -1286,7 +1286,7 @@ class StoreOrderController extends Controller
                         }
 
                         $data['orderDetails']->delivery_date = Carbon::parse($data['orderDetails']->delivery_date)->format('d-m-Y');
-                        $data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->updated_at)->format('h:i');
+                        //$data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->updated_at)->format('h:i');
                         $data['orderDetails']->processed_by = null;
 
                         $invoice_data = \DB::table('trn_order_invoices')->where('order_id', $order_id)->first();

@@ -8,6 +8,8 @@
    </div>
 </footer>
 </div>
+
+
 <!-- BACK-TO-TOP -->
 <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
 <!-- JQUERY JS -->
@@ -52,6 +54,14 @@
 <script src="{{URL::to('/assets/js/custom.js')}}"></script>
 
 
+<script src="{{URL::to('/assets/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{URL::to('/assets/js/jszip.min.js')}}"></script>
+<script src="{{URL::to('/assets/js/pdfmake.min.js')}}"></script>
+<script src="{{URL::to('/assets/js/vfs_fonts.js')}}"></script>
+<script src="{{URL::to('/assets/js/buttons.html5.min.js')}}"></script>
+<script src="{{URL::to('/assets/js/buttons.print.min.js')}}"></script>
+ 
+ 
 	<!-- FORMELEMENTS JS -->
 	<script src="{{URL::to('assets/js/form-elements.js')}}"></script>
 

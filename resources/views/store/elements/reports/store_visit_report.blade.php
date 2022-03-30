@@ -66,9 +66,9 @@
                                          
                                          <div class="col-md-6">
                                             <div class="form-group">
-                                              <label class="form-label">Town </label>
-                                               <select  name="town_id" id="townId" class="form-control select2-show-search" data-placeholder="Town"  >
-                                                    <option value="">Town</option>
+                                              <label class="form-label">Pincode </label>
+                                               <select  name="town_id" id="townId" class="form-control select2-show-search" data-placeholder="Pincode"  >
+                                                    <option value="">Pincode</option>
                                                   
                                                   </select>
                                             </div>
@@ -103,7 +103,7 @@
                                             <th class="wd-15p">Date</th>
                                             {{-- <th class="wd-15p">Time</th> --}}
                                             <th class="wd-15p">Customer</th>
-                                            <th class="wd-15p">Town</th>
+                                            <th class="wd-15p">Pincode</th>
                                             <th class="wd-15p">Customer<br>Phone</th>
                                             <th class="wd-15p">Visit<br>Count</th>
                                             <th class="wd-15p">Order<br>Per Visit</th>
@@ -207,7 +207,7 @@
                     console.log(res);
                     $('#townId').prop("diabled",false);
                     $('#townId').empty();
-                    $('#townId').append('<option value="">Town</option>');
+                    $('#townId').append('<option value="">Pincode</option>');
                     $.each(res,function(town_id,town_name)
                     {
                       $('#townId').append('<option value="'+town_id+'">'+town_name+'</option>');

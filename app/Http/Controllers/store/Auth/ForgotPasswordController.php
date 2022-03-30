@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 
 use App\Models\admin\Mst_store;
 use App\Models\admin\Trn_store_otp_verify;
+use App\Models\admin\Trn_StoreAdmin;
 
 class ForgotPasswordController extends Controller
 {
@@ -141,8 +142,7 @@ class ForgotPasswordController extends Controller
         return view('store.auth.passwords.forgot_password_otp',compact('stores'));
     }
 
-    public function otpVerification(Request $request,
-                    Trn_store_otp_verify $otp_verify,$store_id)
+    public function otpVerification(Request $request, Trn_store_otp_verify $otp_verify,$store_id)
     {
 
 
@@ -202,12 +202,12 @@ class ForgotPasswordController extends Controller
 
         }
 
-        protected function resetPassword(Request $request,$store_id)
+        protected function resetPassword(Request $request,$user_id)
         {
 
             $password   = Hash::make($request->password);
             $data['password'] = $password;
-            if(Mst_store::where('store_id',$store_id)->update($data))
+            if(Trn_StoreAdmin::where('store_admin_id',$user_id)->update($data))
             {
                 return redirect('store-login')->with('message','Password updated login to continue.');
             }

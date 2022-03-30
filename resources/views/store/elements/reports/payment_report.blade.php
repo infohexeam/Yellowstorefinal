@@ -127,7 +127,14 @@
                                                 Pending
                                                 @endif
                                             </td>
-                                            <td>{{ $d->trn_id }}</td>
+                                            <td>
+                                                 @if(isset($d->trn_id))
+                                                    {{ $d->trn_id }}
+                                                @else
+                                                    ---
+                                                @endif
+                                                
+                                                </td>
 
 
                                         </tr>

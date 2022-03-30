@@ -56,14 +56,23 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           <td><strong>Order Date: </strong> </td> <td>{{ \Carbon\Carbon::parse(@$order->created_at)->format('d M Y')}}</td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Customer Name: </strong> </td> <td>{{ @$order->customer->customer_first_name}} {{ @$order->customer->customer_last_name}} </td>
+                                          <td><strong>Customer Name: </strong> </td> <td>{{ @$order->customer['customer_first_name']}} {{ @$order->customer['customer_last_name']}} </td>
                                        </tr>
                                  
                                        <tr>
                                           <td> <h3> <strong>Total Amount: </strong> </h3>  </td> <td> <h3> <i class="fa fa-inr"></i> {{ @$order->product_total_amount }} </h3></td>
                                        </tr>
+                                       
                                        <tr>
-                                          <td><strong>Payment Mode: </strong> </td> <td>{{ @$order->payment_type->payment_type}}</td>
+                                          <td><strong>Delivery Charge: </strong> </td> <td>{{ @$order->delivery_charge}}</td>
+                                       </tr>
+                                       
+                                       <tr>
+                                          <td><strong>Packing  Charge: </strong> </td> <td>{{ @$order->packing_charge}}</td>
+                                       </tr>
+                                       
+                                       <tr>
+                                          <td><strong>Payment Mode: </strong> </td> <td>{{ @$order->payment_type['payment_type']}}</td>
                                        </tr>
                                        <tr>
                                           <td><strong>Delivery Type: </strong> </td> 
@@ -79,23 +88,29 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           </td>
                                        </tr>
 
+                                        @if(@$order->order_type == 'POS')
                                        <tr>
-                                          <td><strong>Processed By: </strong> </td> <td> -- </td>
+                                          <td><strong>Processed By: </strong> </td> <td> {{ @$order->storeadmin['admin_name'] }} </td>
                                        </tr>
+                                       @endif
 
                                          <tr>
                                           <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
                                        </tr>
 
                                           <tr>
-                                          <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}}</td>
+                                          <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}} @if(@$order->status->status_id == 9) ( {{ \Carbon\Carbon::parse(@$order->delivery_date)->format('d-m-Y')}} {{ @$order->delivery_time }}  ) @endif </td>
                                        </tr>
                                        @php
                                        $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                                      @endphp
                                      <tr>
                                        <td>   <strong>Delivery Address :</strong> </td> 
-                                       <td> {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
+                                       <td> 
+                                       
+                                        @if(@$order->order_type != 'POS')
+
+                                        {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
 
                                           @if (isset($order->place))
                                           {{ @$order->place }} ,
@@ -114,6 +129,12 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                            @endif
                                            <br>
                                            {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
+                                           
+                                           @else
+                                           ---
+                                            @endif
+
+
                                        </td>
                                      </tr>
 
@@ -208,9 +229,10 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                     <tr>
                                        <td>Item</td>
                                        <td>Qty</td>
+                                       <td>Sale<br>Price</td>
                                        <td>Discount<br>Amount</td>
                                        <td>Tax<br>Amount</td>
-                                       <td>Subtotal</td>
+                                       <!--<td>Subtotal</td>-->
                                        <td>Total</td>
                                     </tr>
                                  </thead>
@@ -249,12 +271,14 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                            @endif
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
+                                          <td>{{ @$order_item->product_varient->product_varient_offer_price}} </td>
                                  
                                            <td>
                                               @php
                                                  $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
                                               @endphp
-                                              {{@$discountAmt}} 
+                                            {{ number_format((float)$discountAmt, 2, '.', '') }}  
+
                                              </td>
                                  
                                              @php
@@ -283,10 +307,10 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @endif
                                           </td>
 
-                                          <td>
-                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
+                                          <!--<td>-->
+                                          <!--  {{ number_format((float)$orgCost, 2, '.', '') }}  -->
                                             
-                                           </td>
+                                          <!-- </td>-->
                                            <td>
                                              {{ number_format((float)$Tot, 2, '.', '') }}  
 
@@ -317,11 +341,59 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                 </div>
 
                 @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
+               @php
+               $c = 0;
+               @endphp
                @foreach ($payments as $payment)
                   
                 <div class="card">
                   <div class="card-body">
-                <h5>Payment Split Information</h5>
+                      @if($c == 0)
+                      @php
+                      $c = 1;
+                      @endphp
+                       <h5>Payment Information</h5>
+                    <table class="table table-bordered text-nowrap w-100">
+                       <tr>
+                          <td>
+                            Payment Mode:
+                          </td>
+                          <td>
+                             {{ @$payment->paymentMode }}
+                          </td>
+                       </tr>
+    
+                       <tr>
+                          <td>
+                             Reference Id:
+                          </td>
+                          <td>
+                             {{ @$payment->referenceId }}
+                          </td>
+                       </tr>
+    
+                       <tr>
+                          <td>
+                             Status:
+                          </td>
+                          <td>
+                             {{ @$payment->txStatus }}
+                          </td>
+                       </tr>
+    
+                       <tr>
+                          <td>
+                             Txn Time:
+                          </td>
+                          <td>{{ \Carbon\Carbon::parse(@$payment->created_at)->format('Y-m-d H:i:s')}}</td>
+    
+                       </tr>
+    
+    
+                    </table>
+                    @endif
+                
+                <h5>Payment Split Information @if(@$payment->paymentRole == 1) for Store @else for Admin @endif</h5>
                 <table class="table table-bordered text-nowrap w-100">
                    <tr>
                       <td>
@@ -362,45 +434,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
                 </table>
 
-                <h5>Payment Information</h5>
-                <table class="table table-bordered text-nowrap w-100">
-                   <tr>
-                      <td>
-                        Payment Mode:
-                      </td>
-                      <td>
-                         {{ @$payment->paymentMode }}
-                      </td>
-                   </tr>
-
-                   <tr>
-                      <td>
-                         Reference Id:
-                      </td>
-                      <td>
-                         {{ @$payment->referenceId }}
-                      </td>
-                   </tr>
-
-                   <tr>
-                      <td>
-                         Status:
-                      </td>
-                      <td>
-                         {{ @$payment->txStatus }}
-                      </td>
-                   </tr>
-
-                   <tr>
-                      <td>
-                         Txn Time:
-                      </td>
-                      <td>{{ \Carbon\Carbon::parse(@$payment->created_at)->format('Y-m-d H:i:s')}}</td>
-
-                   </tr>
-
-
-                </table>
+               
                   </div>
                 </div>
                @endforeach

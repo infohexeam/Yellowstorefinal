@@ -40,8 +40,9 @@
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
-                                        <th class="wd-15p">{{__('Town')}}</th>
+                                        <th class="wd-15p">{{__('Pincode')}}</th>
                                         <th class="wd-15p">{{__('Banner Image')}}</th>
+                                        <th class="wd-15p">{{__('Status')}}</th>
                                         <th class="wd-15p">{{__('Action')}}</th>
                                     </tr>
                                 </thead>
@@ -54,8 +55,23 @@
                                         <td>{{ ++$i }}</td>
 
                                         <td>{{ @$data->town['town_name'] }}</td>
+                                        
+                                        
+                                    
                                     <td><img src="{{asset('assets/uploads/store_banner/'.$data->image)}}"  width="50" ></td>
-
+                                     <td>
+                                        <form action="{{route('admin.status_store_banner',$data->banner_id)}}" method="POST"> 
+                                            @csrf 
+                                            @method('POST')
+                                            <button type="submit" onclick="return confirm('Are you sure?');"  class="btn btn-sm @if($data->status == 0) btn-danger @else btn-success @endif"> 
+                                                @if($data->status == 0)
+                                                    Inactive
+                                                @else
+                                                    Active
+                                                @endif
+                                            </button>
+                                         </form> 
+                                    </td>
                                         <td>
                                             <form action="{{route('admin.destroy_store_app_banner',$data->banner_id)}}" method="POST">
                                                 @csrf
@@ -114,8 +130,8 @@
 
                    <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">Country *</label>
-                            <select name="country_id" required="" onchange="findCountry(this.value)" class="form-control" id="country" >
+                           <label class="form-label">Country </label>
+                            <select name="country_id" onchange="findCountry(this.value)" class="form-control" id="country" >
                                 <option value=""> Select Country</option>
                                     @foreach( @$countries as $key)
                                     <option value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -126,16 +142,16 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">State *</label>
-                            <select name="state_id" required=""  onchange="findCity(this.value)"  class="form-control" id="state" >
+                           <label class="form-label">State </label>
+                            <select name="state_id"  onchange="findCity(this.value)"  class="form-control" id="state" >
                                 <option  value=""> Select State</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">District *</label>
-                            <select name="district_id" required="" onchange="findTown(this.value)" class="form-control" id="city">
+                           <label class="form-label">District </label>
+                            <select name="district_id"  onchange="findTown(this.value)" class="form-control" id="city">
                                 <option value="">Select District</option>
                             </select>
                         </div>
@@ -143,9 +159,9 @@
 
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="form-label">Town *</label>
-                              <select name="town_id" required="" class="form-control" id="town">
-                                <option value="">Select Town</option>
+                              <label class="form-label">Pincode </label>
+                              <select name="town_id"  class="form-control" id="town">
+                                <option value="">Select Pincode</option>
                               </select>
                            </div>
                         </div>
@@ -154,7 +170,7 @@
                         <div class="form-group">
                            <div id="teamArea">
                            <label class="form-label">Images * [620*290] [in png,jpeg or jpg] </label>
-                           <input type="file"  class="form-control" id="imgs" required accept="image/x-png,image/jpg,image/jpeg" multiple="" name="images[]"  placeholder="Images">
+                           <input type="file"  class="form-control" id="imgs" required accept="image/x-png,image/jpg,image/jpeg" name="images[]"  placeholder="Images">
                         </div>
                      </div>
   </div>
@@ -165,11 +181,16 @@
                             Add More</button>
                                 </div>
                          </div>
-
+                        <label class="custom-switch">
+                            <input type="hidden" name="status" value=0 />
+							<input type="checkbox" name="status"  checked value=1 class="custom-switch-input">
+							<span class="custom-switch-indicator"></span>
+							<span class="custom-switch-description">Active Status</span>
+						</label>
                     </div>
                 </div>
 
-
+                      
 
                   </div>
 
@@ -315,7 +336,7 @@ function findTown(city_id){
             $('#town').prop("diabled",false);
             $('#town').empty();
 
-            $('#town').append('<option value="">Select Town</option>');
+            $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');

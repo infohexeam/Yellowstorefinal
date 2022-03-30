@@ -56,14 +56,20 @@ class StoreSettingsController extends Controller
 
     public function removeBanner(Request $request)
     {
+        $data = array();
         try {
-            $store_image_id = $request->store_image_id;
-            if (Mst_store_images::where('store_image_id', $store_image_id)->delete()) {
-                $data['status'] = 1;
-                $data['message'] = "success";
+            if (isset($request->store_image_id) && Mst_store_images::find($request->store_image_id)) {
+                $store_image_id = $request->store_image_id;
+                if (Mst_store_images::where('store_image_id', $store_image_id)->delete()) {
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed.";
+                }
             } else {
                 $data['status'] = 0;
-                $data['message'] = "failed.";
+                $data['message'] = "Banner not found.";
             }
 
             return response($data);
@@ -151,6 +157,16 @@ class StoreSettingsController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
                 $data2 = array();
+                
+                if (isset($request->order_number_prefix)){
+                    $storePrefix = Mst_store::where('order_number_prefix',$request->order_number_prefix)->where('store_id','!=',$store_id)->count();
+                    if($storePrefix > 0){
+                        $data['status'] = 0;
+                        $data['message'] = "Order prefix already taken";
+                        return response($data);
+                    }
+                }
+                    
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -180,7 +196,7 @@ class StoreSettingsController extends Controller
                     //  echo $request->service_area;die;
                     if (isset($request->service_area))
                         $data2['service_area'] = $request->service_area;
-
+                   
 
                     if (isset($request->order_number_prefix))
                         $data2['order_number_prefix'] = $request->order_number_prefix;
@@ -558,7 +574,7 @@ class StoreSettingsController extends Controller
                     $data['storeDetails']['subadmin_phone'] = Helper::storeSubadminPhone($request->store_id);
                     $data['storeDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
                     $data['storeDetails']['store_qrcode'] = @$data['storeDetails']->store_name_slug . "-" . @$data['storeDetails']->store_mobile;
-                    $data['storeDetails']['store_username'] = @$data['storeDetails']->store_mobile;
+
                     if (isset($data['storeDetails']->profile_image))
                         $data['storeDetails']['profile_image'] = '/assets/uploads/store_images/images/' . $data['storeDetails']->profile_image;
 
@@ -770,7 +786,7 @@ class StoreSettingsController extends Controller
                             $data20 = [
                                 'password'      => Hash::make($request->password),
                             ];
-                            Trn_StoreAdmin::where('store_id', $request->store_id)->update($data20);
+                            Trn_StoreAdmin::where('store_admin_id', $storeData->store_admin_id)->update($data20);
                             Mst_store::where('store_id', $request->store_id)->update($data20);
 
                             $data['status'] = 1;
@@ -874,14 +890,16 @@ class StoreSettingsController extends Controller
 
 
                 // $data['categoriesCount'] = Mst_categories::count();
-                // $data['totalNumberOfProducts'] = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-                //     ->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')->count();
+                $data['totalNumberOfProducts'] =  Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                      ->where('mst_store_products.is_removed', 0)
+                      ->where('mst_store_products.store_id', $store_id)
+                      ->orderBy('mst_store_products.product_id', 'DESC')->count();
 
-                $data['totalNumberOfProducts'] = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-                    ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-                    ->where('mst_store_products.is_removed', 0)
-                    ->where('mst_store_product_varients.is_removed', 0)->where('mst_store_products.store_id', '=', $store_id)
-                    ->orderBy('mst_store_products.product_id', 'DESC')->count();
+                // $data['totalNumberOfProducts'] = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                //     ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                //     ->where('mst_store_products.is_removed', 0)
+                //     ->where('mst_store_product_varients.is_removed', 0)->where('mst_store_products.store_id', '=', $store_id)
+                //     ->orderBy('mst_store_products.product_id', 'DESC')->count();
 
 
                 $data['totalNumberOfOrders'] = Trn_store_order::where('store_id', '=', $store_id)->get()->count();
@@ -896,7 +914,7 @@ class StoreSettingsController extends Controller
                 $data['currentIssues'] = \DB::table("mst_disputes")->where('dispute_status', '=', 2)->where('store_id', '=', $store_id)->count();
                 $data['newIssues'] = \DB::table("mst_disputes")->where('dispute_status', '=', 2)->where('store_id', '=', $store_id)->whereDate('created_at', Carbon::today())->count();
 
-                $banners =  Mst_StoreAppBanner::where('town_id', @$store->town_id)
+                $banners =  Mst_StoreAppBanner::where('town_id', @$store->town_id)->orWhere('town_id', null)
                     ->select('banner_id', 'town_id', 'image')
                     ->get();
                 foreach ($banners as $b) {

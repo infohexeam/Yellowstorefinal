@@ -17,7 +17,12 @@
                         <li class=""><a href="#tab-51" class="active show"
                            data-toggle="tab">Product Information</a></li>
                         <li><a href="#tab-61" data-toggle="tab" class="">Images</a></li>
+                                                @if($product->service_type != 1)
+
                         <li><a href="#tab-71" data-toggle="tab" class="">Product Variants</a></li>
+                                                @endif
+
+                         <li><a href="#tab-72" data-toggle="tab" class="">Product Videos</a></li>
 
 
 
@@ -28,7 +33,7 @@
          </div>
       </div>
       <input type="hidden" name="product_id" id="productId" value="{{$product->product_id}}">
-      <div class="card">
+      <div class="card" style="min-height:80vh;">
          <div class="card-body">
             <div class="border-0">
                <div class="tab-content">
@@ -170,7 +175,12 @@
                             </select>
                         </div>
                      </div>
-                     @if($product_base_varient_attrs != null)
+                         @php
+                             $i = 0;
+                             $k = 0;
+                             $usedAttr = array();
+                         @endphp
+                     @if(count($product_base_varient_attrs) > 0 )
 
                      <div class="col-md-12">
 
@@ -187,10 +197,14 @@
                                  </tr>
                               </thead>
                               <tbody class="col-lg-12 col-xl-12 p-1">
-                                 @php
-                                 $i = 0;
-                                 $usedAttr = array();
-                                 @endphp
+                                
+                                    @foreach ($product_base_varient_attrs as $val)
+                                    @php
+                                    $k++;
+                                    @endphp
+                                    @endforeach
+                              </tbody>
+
                                     @foreach ($product_base_varient_attrs as $val)
                                        @php
                                        $i++;
@@ -198,16 +212,22 @@
                                        $attr_val_name = \DB::table('mst_attribute_values')->where('attr_value_id',$val->attr_value_id)->pluck('group_value');
                                       $usedAttr[] = $val->attr_group_id;
                                       @endphp
-                                       <tr>
+                                       <tr id="trId{{$val->variant_attribute_id}}">
                                           <td>{{$i}}</td>
                                           <td>{{@$attr_grp_name[0]}}</td>
                                           <td>{{@$attr_val_name[0]}}</td>
                                           <td>
-                                             <form action="{{route('store.destroy_product_var_attr',$val->variant_attribute_id)}}" method="POST">
+                                             <!--<form id="removeVarAttr" action="{{route('store.destroy_product_var_attr',$val->variant_attribute_id)}}" method="POST">-->
                                                 @csrf
                                                 @method('POST')
-                                                <button type="submit" onclick="return confirm('Do you want to delete this row?');"  class="btn btn-sm btn-danger">Delete</button>
-                                             </form>
+                                                <a type="submit" onclick="removeTableRowValidate({{$val->product_varient_id}},{{$val->variant_attribute_id}})"  
+                                                    class="btn btn-sm btn-danger text-white">Delete</a>
+                                                <!--@if(($i == 1) && ($k == 1))-->
+                                                <!--@else-->
+                                                <!--    onclick="removeTableRowTr({{$val->variant_attribute_id}})"  -->
+                                                <!--@endif-->
+                                                
+                                             <!--</form>-->
                                           </td>
                                        </tr>
                                     @endforeach
@@ -258,8 +278,8 @@
 
                      <div class="col-md-6">
                         <div class="form-group">
-                          <label class="form-label">Vendor *</label>
-                           <select required name="vendor_id" id="vendor_id" class="form-control"  >
+                          <label class="form-label">Vendor </label>
+                           <select  name="vendor_id" id="vendor_id" class="form-control"  >
                                  <option value="">Vendor</option>
                                 @foreach($agencies as $key)
                                 <option {{old('vendor_id',$product->vendor_id) == $key->agency_id ? 'selected':''}} value="{{$key->agency_id }}"> {{$key->agency_name }} </option>
@@ -414,7 +434,7 @@
                                        <div class="form-group">
                                           <label class="form-label">Product Name</label>
                                              <select name="product_varient_id"   class=" form-control  " >
-                                                <option value="">Base Product</option>
+                                                <option value="{{ @$product_base_varient->product_varient_id }}">{{ @$product_base_varient->variant_name }}</option>
                                                 @foreach($product_varients as $key)
                                                 <option value="{{$key->product_varient_id}}"> {{$key->variant_name}} </option>
                                                       @endforeach
@@ -459,37 +479,36 @@
                                  @endphp
                                 @if(!$product_images->isEmpty())
                                  @foreach ($product_images as $product_image)
-                                 @php
-                                 $i++;
-                                 @endphp
+                                 
                                  
                                    @if($product_image->product_varient_id != 0)
-                                  @endif
-
+                                    @php
+                                 $i++;
+                                 @endphp
                                  <tr>
                                     <td>{{$i}}</td>
                                     <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$product_image->product_image)}}"  width="50" ></td>
-                                    <td>{{@$product_image->variant->variant_name}}</td>
+                                    <td>
+                                         @if(@$product_image->variant->is_base_variant != 1)
+                                         @else
+                                        @endif
+                                        {{@$product_image->variant->variant_name}}
+                                       
+                                        
+                                    </td>
                                     <td>
                                         @if($product_image->image_flag != 1)
                                           <a href="{{ url('admin/change-img-status/'.$product_image->product_image_id) }}"  onclick="return confirm('Do you want to change status?');" class="btn btn-sm
                                           @if($product_image->image_flag != 1) btn-danger @else btn-success @endif "   > @if($product_image->image_flag != 1)
-                                          Not Default
+                                            Not Default
                                           @else
-                                          Base Image
+                                            Base Image
                                           @endif</a>
                                           
-                                           @else
-                                           
+                                          @else
                                              <a href="#"  class="btn btn-sm btn-success "   > Base Image   </a>
-                                          
-                                          
                                           @endif
-                                        
-                                    <!--    <input type="checkbox" class="csatatus{{$product_image->product_varient_id}}" @if (@$product_image->image_flag == 1) checked @endif value="1" -->
-                                    <!--onchange="changeBaseImage({{$product_image->product_image_id}},{{$product_image->product_varient_id}})"  name="image_flag" -->
-                                    <!--id="image_flag{{$product_image->product_image_id}}">-->
-                                    
+                                   
                                     </td>
 
                                     <td>
@@ -501,6 +520,9 @@
                                         </form>
                                     </td>
                                  </tr>
+                                 
+                                  @endif
+
                                  @endforeach
                                  @else
                                  <tr>
@@ -561,7 +583,7 @@
                                           @method('POST')
                                           <a  data-toggle="modal" data-target="#AttrModal{{$value->product_varient_id}}" class="text-white btn btn-sm btn-indigo">Attributes</a>
 
-                                          <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                        </form>
                                        <a  data-toggle="modal" data-target="#AddAttrModal{{$value->product_varient_id}}" class="mt-2  text-white btn btn-sm btn-yellow">Add Attributes</a>
 
@@ -581,6 +603,64 @@
                         </div>
                      </div>
                   </div>
+                  
+                  
+                     <div class="tab-pane" id="tab-72">
+
+                     <div id="profile-log-switch">
+                        <div class="media-heading">
+                           <h5><strong>Product Videos</strong></h5>
+                        </div><br>
+                        <div class="table-responsive ">
+                           <table  id="example5" class="table table-striped table-bordered">
+                              <thead>
+                                 <tr>
+                                   <th class="wd-15p">S.No</th>
+                                    <th class="wd-15p">{{ __('Platform') }}</th>
+                                    <th class="wd-15p">{{ __('Video') }}</th>
+                                    <th class="wd-15p">{{__('Action')}}</th>
+                                   {{--  <th  class="wd-20p">{{__('Action')}}</th> --}}
+                                 </tr>
+                              </thead>
+                               <tbody class="col-lg-12 col-xl-6 p-0">
+                                 @php
+                                 $i = 0;
+                                 @endphp
+                                @if(!$videos->isEmpty())
+                                 @foreach ($videos as $value)
+                                 <tr>
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $value->platform}}</td>
+                                   
+                                    <td  >
+                                    <div class="exam"> {!!$value->link!!} </div>
+                                    </td>
+                                     
+
+                                    <td>
+                                       <form action="{{route('store.destroy_product_video',$value->product_video_id)}}" method="POST">
+                                         @csrf
+                                          @method('POST')
+                                          <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                       </form>
+                                    </td>
+                                 </tr>
+                                 @endforeach
+                                 @else
+                                 <tr>
+                                <td colspan="3"><center> No data available in the table</center></td>
+                                  </tr>
+                                  @endif
+                              </tbody>
+                           </table>
+                           <center>
+                           <a class="btn btn-cyan" href="{{ route('admin.global_products') }}">Cancel</a>
+                           </center>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  
             </div>
 
 
@@ -800,6 +880,63 @@ function isCodeAvailable(value)
 
 
 <script>
+function removeTableRowTr(varAttrId){
+// trId
+     var _token= $('input[name="_token"]').val();
+
+  $.ajax({
+            type:"GET",
+            url:"{{ url('ajax/product-variant/attr-remove')}}?variant_attribute_id="+varAttrId,
+            success:function(res){
+                if(res){
+                    if(res == '1'){
+                                             console.log(varAttrId,res);
+                        $("#trId"+varAttrId).remove();
+                    }
+                    else{
+                        alert('Faied');
+                        
+                    }
+                }else
+                {
+                    alert("error");
+                }
+        }
+        });
+        
+    
+}
+function removeTableRowValidate(varId,varAttrId){
+
+    console.log(varId,varAttrId);
+
+
+            
+            
+     var _token= $('input[name="_token"]').val();
+        $.ajax({
+            type:"GET",
+            url:"{{ url('ajax/product-variant/attr-count')}}?product_varient_id="+varId,
+            success:function(res){
+                if(res){
+                   //  console.log(res);
+                    if(res == '1'){
+                       
+                        alert('Only one attribute avilable! Remove all other product variants to delete this attribute');
+                        
+                    }
+                    else{
+                        removeTableRowTr(varAttrId);
+
+                    }
+                }else
+                {
+                    alert("error");
+                }
+        }
+        });
+}
+
 $(document).ready(function() {
         salePriceChange();
 });
@@ -999,7 +1136,8 @@ let prAttrValue = $('#attr_value'+attid_2).val();
   if((prevAttrVal != "" && prAttrValue != '') || (rowCount > 0)){
       
  
-      $(".attrGroup"+mainKey).prop('disabled', true);
+           $(".attrGroup"+mainKey).attr('readonly',true);
+//   $(".attrGroup"+mainKey).prop('disabled', true);
       // $("#attr_group"+att_id_val+(xx - 1)).prop('disabled', true);
 
           var id_number = parseInt(att_id_val. replace(/[^0-9. ]/g, ""));
@@ -1024,7 +1162,7 @@ let prAttrValue = $('#attr_value'+attid_2).val();
 function removeAttrRow(x,y){
     console.log(x,y);
   //   console.log(".attrGroup"+x+"a"+(y-1));
-            $("#attr_group"+x+"a"+(y-1)).prop('disabled', false);
+            $("#attr_group"+x+"a"+(y-1)).attr('readonly', false);
 
 }
 

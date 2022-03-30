@@ -130,8 +130,7 @@
                                       <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
-                                            <th class="wd-15p">Product</th>
-                                            <th class="wd-15p">Variant</th>
+                                            <th class="wd-15p">Product Name</th>
                                             <th class="wd-15p">Stock</th>
                                             <th class="wd-15p">Updated Date <br> and Time</th>
                                             <th class="wd-15p">Variant Price</th>
@@ -142,7 +141,7 @@
                                             {{-- <th class="wd-15p">Minimum Stock</th> --}}
                                             <th class="wd-15p">Product Status</th>
                                             <th class="wd-15p">Old Stock</th>
-                                            <th class="wd-15p">Newly<br>Updated Stock</th>
+                                            <th class="wd-15p">Newly<br>Added Stock</th>
                                        
                                          </tr>
                                       </thead>
@@ -154,7 +153,6 @@
                                         @foreach ($data as $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ $d->product_name }}</td>
                                             <td>{{ $d->variant_name }}</td>
                                             <td>{{ $d->stock_count }}</td>
                                             <td>
@@ -163,10 +161,32 @@
                                                 {{ \Carbon\Carbon::parse($d->updated_time)->format('H:i:s')}}
                                             </td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
-                                            <td>{{ $d->agency_name }}</td>
+                                            <td>
+                                                @if(isset($d->agency_name))
+                                                {{ $d->agency_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                                </td>
                                             <td>{{ $d->category_name }}</td>
-                                            <td>{{ $d->sub_category_name }}</td>
-                                            <td>{{ $d->product_brand }}</td>
+                                            <td>
+                                                 @if(isset($d->sub_category_name))
+                                                {{ $d->sub_category_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                                
+                                                </td>
+                                            <td>
+                                                
+                                                 @if(isset($d->product_brand))
+                                                {{ $d->product_brand }}
+                                                @else
+                                                ---
+                                                @endif
+                                                
+                                                
+                                                </td>
                                             {{-- <td>{{ $d->min_stock }}</td> --}}
                                             <td> 
                                                 @if($d->product_status == 1)

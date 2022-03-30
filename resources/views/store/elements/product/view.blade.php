@@ -59,6 +59,11 @@
                                   <tr>
                                     <td><strong> Category:</strong> {{@$product->categories['category_name']}}</td>
                                  </tr>
+                                 
+                                  <tr>
+                                    <td><strong> Sub Category:</strong> {{@$product->sub_category['sub_category_name']}}</td>
+                                 </tr>
+                                 
                                  <tr>
                                     <td><strong> Type:</strong> 
                                        
@@ -95,39 +100,44 @@
                                  <tr>
                                     <td><strong>Offer To Date :</strong> {{ $product->product_offer_to_date}}</td>
                                  </tr> --}}
+                               
+                                {{-- <tr>
+                                     <td><strong>Commision Rate :</strong>{{ $product->product_commision_rate}}</td>
+                                </tr> --}}
+                                
                                 <tr>
+                                  <td><strong>Store:</strong> {{ @$product->store['store_name']}}</td>
+                                </tr>
+                               
+
+
+                              </tbody>
+                              <tbody class="col-lg-12 col-xl-6 p-0">
+                                  
+                                   <tr>
                                     <td><strong>MRP:</strong> {{ $product->product_price}}</td>
                                  </tr>
                                <tr>
                                     <td><strong>Sale Price:</strong> {{ $product->product_price_offer}}</td>
                                 </tr>
-                                {{-- <tr>
-                                     <td><strong>Commision Rate :</strong>{{ $product->product_commision_rate}}</td>
-                                </tr> --}}
-                                 <tr>
+                                
+                                  <tr>
                                     <td><strong>Tax:</strong> {{ @$product->tax['tax_name']}} ({{ @$product->tax['tax_value']}})</td>
                                 </tr>
-
-
-                              </tbody>
-                              <tbody class="col-lg-12 col-xl-6 p-0">
 
                                  <tr>
                                     <td><strong>Vendor:</strong> {{ @$product->agency['agency_name']}}</td>
                                 </tr>
 
                                  <tr>
-                                     <td><strong>Description:</strong> </td>
-                                     <td> {!! @$product->product_description!!}</td>
+                                     <td><strong>Description:</strong> {!! @$product->product_description !!}</td>
                                  </tr>
                                
                                  <tr>
                                     <td><strong>Image:</strong> <img data-toggle="modal" data-target="#viewSingleProduct" src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" ></td>
                                  </tr>
 
-                                <tr>
-                                  <td><strong>Store:</strong> {{ @$product->store['store_name']}}</td>
-                                </tr>
+                                
                                 <tr>
                                      <td><strong>Minimum Stock Count:</strong> {{ @$product->stock_count}}</td>
                                 </tr>
@@ -135,10 +145,65 @@
                            </table>
 
 
-                           <center>
+                          
+                        </div>
+                        
+                        <br>
+                        
+                             @php
+                             $i = 0;
+                             $k = 0;
+                             $usedAttr = array();
+                         @endphp
+                     @if(count($product_base_varient_attrs) > 0 )
+                        <h4>Attributes</h4>
+                     <div class="col-md-12">
+
+                        <div class="row">
+                           <div class="table-responsive ">
+                           <table id="attrTable"   class="table table-striped table-bordered">
+                              <thead>
+                                 <tr>
+                                 <th class="wd-15p">SL.No</th>
+                                 <th class="wd-15p">{{ __('Attr Group') }}</th>
+                                 <th class="wd-15p">{{ __('Attr Val') }}</th>
+
+                                 </tr>
+                              </thead>
+                              <tbody class="col-lg-12 col-xl-12 p-1">
+                                
+                                    @foreach ($product_base_varient_attrs as $val)
+                                    @php
+                                    $k++;
+                                    @endphp
+                                    @endforeach
+                              </tbody>
+
+                                    @foreach ($product_base_varient_attrs as $val)
+                                       @php
+                                       $i++;
+                                       $attr_grp_name = \DB::table('mst_attribute_groups')->where('attr_group_id',$val->attr_group_id)->pluck('group_name');
+                                       $attr_val_name = \DB::table('mst_attribute_values')->where('attr_value_id',$val->attr_value_id)->pluck('group_value');
+                                      $usedAttr[] = $val->attr_group_id;
+                                      @endphp
+                                       <tr id="trId{{$val->variant_attribute_id}}">
+                                          <td>{{$i}}</td>
+                                          <td>{{@$attr_grp_name[0]}}</td>
+                                          <td>{{@$attr_val_name[0]}}</td>
+                                         
+                                       </tr>
+                                    @endforeach
+                              </tbody>
+                           </table>
+                           </div>
+                        </div>
+                     </div>
+                     @endif
+                     
+                      <center>
                        <a class="btn btn-cyan" href="{{route('store.list_product') }}">Cancel</a>
                            </center>
-                        </div>
+                           
                      </div>
                  </div>
                   <div class="tab-pane" id="tab-61">
@@ -164,21 +229,28 @@
                                  @endphp
                                 @if(!$product_images->isEmpty())
                                  @foreach ($product_images as $product_image)
-                                 @php
+                               
+                                 @if($product_image->product_varient_id != 0)
+                                   @php
                                  $i++;
                                  @endphp
-                                 @if($product_image->product_varient_id != 0)
-                                  @endif
 
                                  <tr>
                                     <td>{{$i}}</td>
                                     @if($product_image->product_image)
                                     <td><img data-toggle="modal" data-target="#viewModal{{$product_image->product_image_id}}" src="{{asset('/assets/uploads/products/base_product/base_image/'.@$product_image->product_image)}}"  width="50" ></td>
-                                    <td>{{@$product_image->variant->variant_name}}</td>
+                                    <td>
+                                        @if(@$product_image->variant->is_base_variant != 1)
+                                         @else
+                                        @endif
+                                        {{@$product_image->variant->variant_name}}
+                                       
+                                                                                </td>
                                      <td><input type="checkbox"  @if (@$product_image->image_flag == 1) checked @endif disabled "></td>
                                     @endif
                                  </tr>
                                  
+                                  @endif
 
                                  @endforeach
                                  
@@ -187,7 +259,10 @@
                                  <tr>
                                 <td colspan="3"><center> No data available in the table</center></td>
                                   </tr>
-                                  @endif
+                                  
+                                                                    @endif
+
+
                               </tbody>
                            </table>
                            <center>

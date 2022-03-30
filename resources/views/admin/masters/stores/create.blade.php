@@ -122,7 +122,7 @@
 
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="form-label">Town *</label>
+                              <label class="form-label">Pincode *</label>
                               <select name="store_town" required="" class="form-control" id="town">
                              @if(old('store_town'))
                                 @php
@@ -130,7 +130,7 @@
                                 @endphp
                                 <option  value="{{$town->town_id}}"> {{$town->town_name}} </option>
                             @else
-                                <option value="">Select Town</option>
+                                <option value="">Select Pincode</option>
                              @endif
                               </select>
                            </div>
@@ -215,7 +215,7 @@
     @if (auth()->user()->user_role_id == 0)
 
 
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                           <div class="form-group">
                            <label class="form-label">Sub Admin *</label>
                              <select required name="subadmin_id"  class="form-control"  >
@@ -227,15 +227,15 @@
                            </div>
                       </div>
     @endif
-                    <div class="col-md-6">
-                        <div class="form-group">
-                           <label class="form-label">Store License *</label>
-                           <input type="text" class="form-control" required name="store_document_license" value="{{old('store_document_license')}}" placeholder="Store License">
-                        </div>
-                     </div>
+                    <!--<div class="col-md-4">-->
+                    <!--    <div class="form-group">-->
+                    <!--       <label class="form-label">Store License *</label>-->
+                    <!--       <input type="text" class="form-control" required name="store_document_license" value="{{old('store_document_license')}}" placeholder="Store License">-->
+                    <!--    </div>-->
+                    <!-- </div>-->
 
 
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group">
 
                            <label class="form-label"> Store GSTIN </label>
@@ -257,41 +257,41 @@
                   </div>
 
 
-                   <h3 class="mb-0 card-title">Add Store Documents </h3>
-                   <div class="card-body">
-                  <div class="row">
-                         <div id="doc_area">
+                  <!-- <h3 class="mb-0 card-title">Add Store Documents </h3>-->
+                  <!-- <div class="card-body">-->
+                  <!--<div class="row">-->
+                  <!--       <div id="doc_area">-->
 
 
 
-                    <div class="col-md-10">
-                        <div class="form-group">
-                           <label class="form-label"> Document Title </label>
-                           <input type="text" class="form-control docTitle" id="docTitle_0" 
-                           name="store_document_other_file_head[]"  value="{{ old('store_document_other_file_head.0') }}" placeholder="Document Title">
-                      </div>
-                     </div>
+                  <!--  <div class="col-md-10">-->
+                  <!--      <div class="form-group">-->
+                  <!--         <label class="form-label"> Document Title </label>-->
+                  <!--         <input type="text" class="form-control docTitle" id="docTitle_0" -->
+                  <!--         name="store_document_other_file_head[]"  value="{{ old('store_document_other_file_head.0') }}" placeholder="Document Title">-->
+                  <!--    </div>-->
+                  <!--   </div>-->
 
-                     <div class="col-md-10">
-                        <div class="form-group">
-                           <label class="form-label"> Other File [in pdf,doc,docx or txt] </label>
-                           <input type="file"   accept=".pdf,.docx,.txt,.doc" class="form-control docFile" id="docFile_0"
-                           name="store_document_other_file[]"  placeholder="Store Document  File">
-                      </div>
-                     </div>
+                  <!--   <div class="col-md-10">-->
+                  <!--      <div class="form-group">-->
+                  <!--         <label class="form-label"> Other File [in pdf,doc,docx or txt] </label>-->
+                  <!--         <input type="file"   accept=".pdf,.docx,.txt,.doc" class="form-control docFile" id="docFile_0"-->
+                  <!--         name="store_document_other_file[]"  placeholder="Store Document  File">-->
+                  <!--    </div>-->
+                  <!--   </div>-->
 
 
-                        </div>
+                  <!--      </div>-->
 
-                      <div class="col-md-2">
-                        <div class="form-group">
-                           <label class="form-label">Add more</label>
-                            <button type="button" id="addDoc" class="btn btn-raised btn-success">
-                      Add More</button>
-                        </div>
-                        </div>
-                  </div>
-                    </div>
+                  <!--    <div class="col-md-2">-->
+                  <!--      <div class="form-group">-->
+                  <!--         <label class="form-label">Add more</label>-->
+                  <!--          <button type="button" id="addDoc" class="btn btn-raised btn-success">-->
+                  <!--    Add More</button>-->
+                  <!--      </div>-->
+                  <!--      </div>-->
+                  <!--</div>-->
+                  <!--  </div>-->
 
               <h3 class="mb-0 card-title">Add Store Images</h3>
                    <div class="card-body">

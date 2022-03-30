@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="container">
-   <div class="row justify-content-center">
+   <div class="row " style="min-height: 70vh;">
       <div class="col-md-12 col-lg-12">
          <div class="card">
             <div class="row">
@@ -76,6 +76,48 @@
                   </div>
                </div>
             </div>
+            </div>
+                  </div>
+               </div>
+            
+            
+            <script>
+
+               $(function(e) {
+                   $('#exampletable').DataTable( {
+                       dom: 'Bfrtip',
+                       buttons: [
+                           {
+                               extend: 'pdf',
+                               title: 'Categories',
+                               // orientation:'landscape',
+                               footer: true,
+                               exportOptions: {
+                                    columns: [0,1,2,3,4],
+                                    alignment: 'right',
+                                },
+                                 customize: function(doc) {
+                                     doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+                              doc.content.forEach(function(item) {
+                              if (item.table) {
+                                 item.table.widths = ['auto', 'auto','auto','auto','auto']
+                               }
+                              })
+                            }
+                           },
+                           {
+                               extend: 'excel',
+                               title: 'Categories',
+                               footer: true,
+                               exportOptions: {
+                                    columns: [0,1,2,3,4]
+                                }
+                           }
+                        ]
+                   } );
+               
+               } );
+                           </script>
 
             <!-- MESSAGE MODAL CLOSED -->
             @endsection

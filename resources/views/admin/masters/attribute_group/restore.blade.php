@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
 <div class="col-md-12 col-lg-12">
 <div class="card">
-<div class="row">
+<div class="row" style="min-height:70vh;">
    <div class="col-12" >
       
       @if ($message = Session::get('status'))
@@ -32,8 +32,9 @@
          
          <div class="card-body">
           <a href=" {{ url('admin/attribute_group/list') }}" class=" text-white btn btn-block btn-success"> List Attribute Group </a>
+          <br/>
             <div class="table-responsive">
-               <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+               <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                   <thead>
                      <tr>
                         <th class="wd-15p">SL.No</th>
@@ -72,4 +73,42 @@
 </div>
 
 <!-- MESSAGE MODAL CLOSED -->
+
+
+ <script> $(function(e) {
+               $('#exampletable').DataTable( {
+                   dom: 'Bfrtip',
+                   buttons: [
+                       {
+                           extend: 'pdf',
+                           title: 'AttrGroup',
+                           // orientation:'landscape',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1],
+                                alignment: 'right',
+                            },
+                             customize: function(doc) {
+                                 doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+                          doc.content.forEach(function(item) {
+                          if (item.table) {
+                             item.table.widths = [40, '*','*']
+                           }
+                          })
+                        }
+                       },
+                       {
+                           extend: 'excel',
+                           title: 'AttrGroup',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1]
+                            }
+                       }
+                    ]
+               } );
+           
+           } );
+           </script>
+           
 @endsection

@@ -1,5 +1,9 @@
 @extends('admin.layouts.app')
 @section('content')
+@php
+use App\User;
+
+@endphp
 <div class="container">
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
@@ -27,7 +31,8 @@
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                      </div>
                     <div class="card-body border">
-                <form onsubmit="return emptyCheck()" action="{{route('admin.list_store')}}" method="GET"
+                        <!--onsubmit="return emptyCheck()"-->
+                <form  action="{{route('admin.list_store')}}" method="GET"
                          enctype="multipart/form-data">
                    @csrf
             <div class="row">
@@ -72,9 +77,9 @@
 
                 <div class="col-md-3">
                   <div class="form-group">
-                     <label class="form-label">Town</label>
+                     <label class="form-label">Pincode</label>
                      <select name="store_town_id" class="form-control" id="town">
-                             <option value="">Select Town</option>
+                             <option value="">Select Pincode</option>
                                @if (request()->input('store_town_id'))
                                  @foreach(@$town as $key)
                                     <option {{request()->input('store_town_id') == @$key->town_id ? 'selected':''}} value="{{@$key->town_id}}"> {{@$key->town_name }} </option>
@@ -205,7 +210,11 @@
                         <td>{{ \Carbon\Carbon::parse($store->created_at)->format('d-m-Y')}}</td>
 
                                     @if(auth()->user()->user_role_id  == 0)
-                                    <td>{{ @$store->subadmin->name}} </td>
+                                    <td>
+                                        
+                                        {{ @$store->name}} 
+                                        
+                                        </td>
                                     {{-- <td>
                                         
                                         

@@ -49,6 +49,7 @@
         </li>
       </ul>
     </div>-->
+    
 
     @if(Auth::check() && Auth::user()->user_role_id == 0 )
     <ul class="side-menu">
@@ -79,12 +80,13 @@
         <ul class="slide-menu">
                       <li><a class="slide-item" href="{{route('admin.list_business_type')}}">{{ __('Business Types') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_category')}}">{{ __('Product Category') }}</a></li>
+                      <li><a class="slide-item" href="{{route('admin.sub_category')}}">{{ __('Product Sub Category') }}</a></li>
                       {{-- <li><a class="slide-item" href="{{route('admin.list_districts')}}">{{ __('Districts') }}</a></li> --}}
-                      <li><a class="slide-item" href="{{route('admin.list_towns')}}">{{ __('Towns') }}</a></li>
+                      <li><a class="slide-item" href="{{route('admin.list_towns')}}">{{ __('Pincodes') }}</a></li>
                         <li><a class="slide-item" href="{{route('admin.list_vihicle_types')}}">{{ __('Vehicle Types') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_taxes')}}">{{ __('Tax') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.videos')}}">{{ __('Video') }}</a></li>
-                      <li><a class="slide-item" href="{{route('admin.sub_category')}}">{{ __('Product Sub Category') }}</a></li>
+                      
    <li><a class="slide-item" href="{{route('admin.list_attribute_group')}}">{{ __('Attribute Group') }}</a></li>
      <li><a class="slide-item" href="{{route('admin.list_attribute_value')}}">{{ __('Attribute Value') }}</a></li>
                       <li><a class="slide-item" href="{{route('admin.list_feedback_questions')}}">{{ __('Feedback Questions') }}</a></li>
@@ -360,7 +362,7 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
       </li>
 
       <li class="slide">
-        <a class="side-menu__item" href="{{route('admin.list_subadmin_order')}}">
+        <a class="side-menu__item" href="{{route('admin.list_order')}}">
           <i class="side-menu__icon ti ti-shopping-cart-full"></i>
           <span class="side-menu__label"> {{ __('Order') }}</span>
         </a>

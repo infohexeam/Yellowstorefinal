@@ -47,9 +47,9 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Regular Price *</label>
+                            <label class="form-label">MRP *</label>
                             <input step="0.01" type="number" class="form-control" required 
-                             name="regular_price"   id="regular_price" value="{{old('regular_price')}}" placeholder="Regular Price" oninput="regularPriceChange()" >
+                             name="regular_price"   id="regular_price" value="{{old('regular_price')}}" placeholder="MRP" oninput="regularPriceChange()" >
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -81,7 +81,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Product Code *</label>
-                            <input type="text" required class="form-control" name="product_code" id="product_code" value="{{old('product_code')}}" placeholder="Product Code">
+                            <input type="text" required class="form-control" name="product_code" oninput="isCodeAvailable(this.value)"  id="product_code" value="{{old('product_code')}}" placeholder="Product Code">
+                                                <p id="productCodeMsg" style="color:red"></p>
+
                         </div>
                     </div>
 
@@ -106,7 +108,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                  {{--  <div class="col-md-6">
                      <div class="form-group">
                         <label class="form-label">Attribute </label>
                        <select name="attr_group_id"  class="attr_group form-control" >
@@ -131,7 +133,7 @@
                             @endif
                                 </select>
                         </div>
-                    </div>
+                    </div> --}}
  
                     <div class="col-md-6">
                       <div class="form-group">
@@ -232,6 +234,28 @@
    <script>CKEDITOR.replace('product_description');</script>
 
 <script>
+
+
+function isCodeAvailable(value) {
+    var _token = $('input[name="_token"]').val();
+    $.ajax({
+      type: "GET",
+      url: "{{ url('product/ajax/is-code-available') }}?product_code=" + value,
+
+
+      success: function(res) {
+        if (res == 1) {
+          $('#productCodeMsg').text('Product code exists');
+          $('#submit').hide();
+        } else {
+          $('#productCodeMsg').text('');
+          $('#submit').show();
+
+        }
+      }
+
+    });
+  }
 
 function regularPriceChange(){
     salePriceChange();
@@ -387,7 +411,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div> <br> <div  class="row"><div class="col-md-12"><div class="form-group"><label class="form-label">Platform</label><select name="platform[]"  class="form-control"><option value="">Platform</option><option value="Youtube">Youtube</option><option value="Vimeo">Vimeo</option></select></div></div><div class="col-md-12"><div class="form-group"><label class="form-label">Embedded Code </label><textarea class="form-control"  name="video_code[]"  rows="3" placeholder="Embedded Code"></textarea></div></div></div><a href="#" class="remove_field mb-2 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div> <br> <div  class="row"><div class="col-md-12"><div class="form-group"><label class="form-label">Platform</label><select name="platform[]"  class="form-control"><option value="">Platform</option><option value="Youtube">Youtube</option><option value="Vimeo">Vimeo</option></select></div></div><div class="col-md-12"><div class="form-group"><label class="form-label">Video Link </label><textarea class="form-control"  name="video_code[]"  rows="3" placeholder="Video Link"></textarea></div></div></div><a href="#" class="remove_field mb-2 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
       });
 
 

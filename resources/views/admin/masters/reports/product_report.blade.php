@@ -103,7 +103,7 @@
                                            </div>
                                           </div>
                                          
-                                         <div class="col-md-4">
+                                         <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Product </label>
                                                     <div id="product_id1"></div>
@@ -115,7 +115,7 @@
                                             </div>
                                          </div>
                                          
-                                          <div class="col-md-4">
+                                          <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Vendor </label>
                                                     <div id="VendorId1"></div>
@@ -129,7 +129,7 @@
                                          </div>
                                          
                                          
-                                         <div class="col-md-4">
+                                         <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Category </label>
                                                     <div id="categoryId1"></div>
@@ -142,7 +142,7 @@
                                             </div>
                                          </div>
                                          
-                                          <div class="col-md-4">
+                                          <div class="col-md-3">
                                             <div class="form-group">
                                               <label class="form-label">Sub Category </label>
                                                     <div id="subCategoryId1"></div>
@@ -260,7 +260,8 @@
                                                 @if($d->variant_name == $d->product_name)
                                                     {{ $d->product_name }}
                                                 @else
-                                                    {{ $d->product_name }} {{$d->variant_name }}
+                                                    <!--{{ $d->product_name }} -->
+                                                    {{$d->variant_name }}
                                                 @endif
                                             </td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>

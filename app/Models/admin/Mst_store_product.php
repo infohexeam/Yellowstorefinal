@@ -54,6 +54,13 @@ class Mst_store_product extends Model
 
     return $this->belongsTo('App\Models\admin\Mst_categories', 'product_cat_id', 'category_id');
   }
+  
+   public function sub_category()
+  {
+
+    return $this->belongsTo('App\Models\admin\Mst_SubCategory', 'sub_category_id', 'sub_category_id');
+  }
+  
 
   public function attr_value()
   {

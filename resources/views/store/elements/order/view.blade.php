@@ -1,8 +1,8 @@
+
 @extends('store.layouts.app')
 @section('content')
 @php
 use App\Models\admin\Trn_StoreDeliveryTimeSlot;
-use App\Models\admin\Mst_store_product;
    
 @endphp
 <div class="container">
@@ -56,39 +56,24 @@ use App\Models\admin\Mst_store_product;
                                           <td><strong>Order Date: </strong> </td> <td>{{ \Carbon\Carbon::parse(@$order->created_at)->format('d M Y')}}</td>
                                        </tr>
                                        <tr>
-                                          <td><strong>Customer Name: </strong> </td> <td>
-                                             @if(!isset($order->customerAddress['name']))
-                                             {{ @$order->customer->customer_first_name}}
-                                             {{ @$order->customer->customer_last_name}}
-                                             @else
-                                             {{ @$order->customerAddress['name']}}
-                                             @endif                                          </td>
+                                          <td><strong>Customer Name: </strong> </td> <td>{{ @$order->customer['customer_first_name']}} {{ @$order->customer['customer_last_name']}} </td>
                                        </tr>
                                  
                                        <tr>
                                           <td> <h3> <strong>Total Amount: </strong> </h3>  </td> <td> <h3> <i class="fa fa-inr"></i> {{ @$order->product_total_amount }} </h3></td>
                                        </tr>
-                                       @if(isset($order->amount_reduced_by_coupon) && ($order->amount_reduced_by_coupon != 0))
-                                       
-                                        <tr>
-                                          <td><strong>Coupon Discount: </strong> </td> <td><i class="fa fa-inr"></i> {{ @$order->amount_reduced_by_coupon}}</td>
-                                       </tr>
-                                       
-                                       @endif
-                                       
-                                       @if(isset($order->amount_reduced_by_rp) && ($order->amount_reduced_by_rp != 0))
-                                        <tr>
-                                          <td><strong>Redeemed Amount: </strong> </td> <td><i class="fa fa-inr"></i> {{ @$order->amount_reduced_by_rp}} ({{@$order->reward_points_used}})</td>
-                                       </tr>
-                                       
-                                       @endif
-
                                        
                                        <tr>
-                                          <td><strong>Payment Mode: </strong> </td> <td>{{ @$order->payment_type->payment_type}}</td>
+                                          <td><strong>Delivery Charge: </strong> </td> <td>{{ @$order->delivery_charge}}</td>
                                        </tr>
-
-                                    @if (isset($order->time_slot) && ($order->time_slot != 0)) 
+                                       
+                                       <tr>
+                                          <td><strong>Packing  Charge: </strong> </td> <td>{{ @$order->packing_charge}}</td>
+                                       </tr>
+                                       
+                                       <tr>
+                                          <td><strong>Payment Mode: </strong> </td> <td>{{ @$order->payment_type['payment_type']}}</td>
+                                       </tr>
                                        <tr>
                                           <td><strong>Delivery Type: </strong> </td> 
                                           <td>
@@ -102,15 +87,58 @@ use App\Models\admin\Mst_store_product;
                                              @endif
                                           </td>
                                        </tr>
-                                    @endif
 
+                                        @if(@$order->order_type == 'POS')
                                        <tr>
-                                          <td><strong>Processed By: </strong> </td> <td> -- </td>
+                                          <td><strong>Processed By: </strong> </td> <td> {{ @$order->storeadmin['admin_name'] }} </td>
                                        </tr>
+                                       @endif
 
                                          <tr>
                                           <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
                                        </tr>
+
+                                          <tr>
+                                          <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}} @if(@$order->status->status_id == 9) ( {{ \Carbon\Carbon::parse(@$order->delivery_date)->format('d-m-Y')}} {{ @$order->delivery_time }}  ) @endif </td>
+                                       </tr>
+                                       @php
+                                       $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
+                                     @endphp
+                                     <tr>
+                                       <td>   <strong>Delivery Address :</strong> </td> 
+                                       <td> 
+                                       
+                                        @if(@$order->order_type != 'POS')
+
+                                        {{ @$oredrAddr->name}} <br/> {{ @$oredrAddr->address}}
+
+                                          @if (isset($order->place))
+                                          {{ @$order->place }} ,
+                                          @endif
+      
+                                          @if (isset($order->customerAddress->districtFunction->district_name))
+                                          {{  @$order->customerAddress->districtFunction->district_name }} ,
+                                          @endif
+      
+                                          @if (isset($order->customerAddress->stateFunction->state_name))
+                                          {{  @$order->customerAddress->stateFunction->state_name }} ,
+                                          @endif
+      
+                                           @if (isset($order->customerAddress->stateFunction->country->country_name))
+                                           {{  @$order->customerAddress->stateFunction->country->country_name }}
+                                           @endif
+                                           <br>
+                                           {{ @$oredrAddr->pincode}} <br> {{ @$oredrAddr->phone}} 
+                                           
+                                           @else
+                                           ---
+                                            @endif
+
+
+                                       </td>
+                                     </tr>
+
+                                     
                                     
                                       
                                     </tbody>
@@ -119,57 +147,76 @@ use App\Models\admin\Mst_store_product;
                            </div>{{-- card body end --}}
                      </div><!-- COL END -->
                   </div>
-                  @php
-                            $itemsArr = \DB::table('trn_order_items')->where('order_id',$order->order_id)->get();
-                            $itemsArrC = \DB::table('trn_order_items')->where('order_id',$order->order_id)->count();
-                              $isServiceOrder = 0;
-                             if($itemsArrC > 0){
-                                 foreach($itemsArr as $item){
-                                    $itemsArrPro =  Mst_store_product::find(@$item->product_id);
-                                    if (($itemsArrPro->product_type == 2) && ($itemsArrPro->service_type == 2)) {
-                                       $isServiceOrder = 1;
-                                    //   echo $isServiceOrder."<br>";
-                                    }
-                                 }
-                              }
-                  @endphp
-                  @if($order->service_booking_order == 0) 
 
-                  @if($isServiceOrder == 0))
-                   <div class="col-md-2">
-                   </div>
-                   
-                   
-                   @if($order->status_id == '7')
-                   <div class="col-md-4">
-                        <div class="form-group">
-                           <label>Delivery Boy</label>
+                      @if (isset($order->delivery_boy['delivery_boy_name']))
+                  
+                     <div class="col-md-12">
+                        <div class="card">
+                           <div class="card-header">
+                              <div class="card-title">Delivery Boy Details</div>
+                           </div>
+                           <div class="card-body">
+                         <div class="table-responsive">
+                           <table class="table row table-borderless">
+                              <tbody class="col-lg-12 col-xl-6 p-0">
+                                 <tr>
+                                    <td><strong>Delivery Name :</strong> {{@$order->delivery_boy['delivery_boy_name']}}</td>
+                                 </tr>
 
-                            <select disabled name="delivery_boy_id"  class="attr_value form-control" >
-                              <!--<option value="">Select Delivery Boy</option>-->
-                              @foreach ($delivery_boys as $data)
-                                @if($order->delivery_boy_id == $data->delivery_boy_id)
-                                 <option {{request()->input('delivery_boy_id',$order->delivery_boy_id) == $data->delivery_boy_id ? 'selected':''}} value="{{$data->delivery_boy_id}}">{{ $data->delivery_boy_name}}</option>
-                                @endif
-                              @endforeach
-                            </select>
-                        </div>
-                   </div>
-                   @endif
-                   <div class=" @if($order->status_id  == '7') col-md-4 @else col-md-8  @endif">
-                        <div class="form-group">
-                           <label>Order Status</label>
-                            <select disabled name="status_id" class="attr_value form-control" >
-                                 <option value="">Status</option>
-                              @foreach ($status as $key)
-                              <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} value=" {{ $key->status_id}} "> {{ $key->status}}</option>
-                              @endforeach                            
-                              </select>
-                        </div>
-                   </div>
-                   <div class="col-md-2">
-                   </div>
-                   @endif
+                                 <tr>
+                                    <td><strong>Delivery Phone :</strong> {{@$order->delivery_boy['delivery_boy_mobile']}}</td>
+                                 </tr>
+
+                                <tr>
+                                    <td><strong>Delivery Date :</strong> {{ \Carbon\Carbon::parse($order->delivery_date)->format('M d, Y')}}</td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                           </div>
+                        </div>{{-- card body end --}}
+                     </div><!-- COL END -->
+                  </div>
+               @endif
+
+
+                     <div class="col-md-12">
+                        <div class="card">
+                           <div class="card-header">
+                              <div class="card-title">Sub Admin Details</div>
+                           </div>
+                           <div class="card-body">
+                         <div class="table-responsive">
+                           <table class="table row table-borderless">
+                              <tbody class="col-lg-12 col-xl-6 p-0">
+                                 <tr>
+                                    <td><strong>Sub Admin Name :</strong>
+                                       @if(isset($order->store->subadmin->name))
+                                       {{ @$order->store->subadmin->name}}
+                                       @else
+                                          ---
+                                       @endif
+                                    </td>
+                                 </tr>
+                                   <tr>
+                                    <td><strong>Sub Admin Phone :</strong> 
+                                       @if(isset($order->store->subadmin->phone))
+                                       {{ @$order->store->subadmin->phone}}
+                                       @else
+                                          ---
+                                       @endif
+                                 </tr>
+
+                              </tbody>
+                           </table>
+                           </div>
+                        </div>{{-- card body end --}}
+                     </div><!-- COL END -->
+                  </div>
+
+                  @if($order->service_booking_order != 1)
+                  
+                  
+                
                </div>
 
                   <div  class="row">
@@ -182,10 +229,10 @@ use App\Models\admin\Mst_store_product;
                                     <tr>
                                        <td>Item</td>
                                        <td>Qty</td>
-
+                                       <td>Sale<br>Price</td>
                                        <td>Discount<br>Amount</td>
                                        <td>Tax<br>Amount</td>
-                                       <td>SubTotal</td>
+                                       <!--<td>Subtotal</td>-->
                                        <td>Total</td>
                                     </tr>
                                  </thead>
@@ -199,20 +246,6 @@ use App\Models\admin\Mst_store_product;
                                        $t_val = 0;
                                     @endphp
                                     @foreach ($order_items as $order_item)
-                                    
-                                    
-                                      @php
-                                             $tax_info = \DB::table('mst_store_products')
-                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
-                                             ->where('mst_store_products.product_id', $order_item->product_id)
-                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
-                                             ->first();  
-                                             $tval  = $order_item->unit_price * @$order_item->quantity;
-                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
-                                             $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
-                                             $Tot = $tTax + $orgCost;
-                                          @endphp
-                                          
                                        <tr>
                                           <td>
                                              <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
@@ -238,16 +271,27 @@ use App\Models\admin\Mst_store_product;
                                            @endif
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
-                                          
-                                        
+                                          <td>{{ @$order_item->product_varient->product_varient_offer_price}} </td>
+                                 
                                            <td>
                                               @php
                                                  $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
                                               @endphp
-                                              {{@$discountAmt}} 
+                                            {{ number_format((float)$discountAmt, 2, '.', '') }}  
+
                                              </td>
                                  
-                                           
+                                             @php
+                                             $tax_info = \DB::table('mst_store_products')
+                                             ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
+                                             ->where('mst_store_products.product_id', $order_item->product_id)
+                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
+                                             ->first();  
+                                             $tval  = $order_item->unit_price * @$order_item->quantity;
+                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                             $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
+                                             $Tot = $tTax + $orgCost;
+                                          @endphp
                                         
                                           @php
                                             
@@ -263,12 +307,10 @@ use App\Models\admin\Mst_store_product;
                                              @endif
                                           </td>
 
-                                          <td>
-                                             {{ number_format((float)$orgCost, 2, '.', '') }}  
-                                             
-                                            </td>
-                                  
-
+                                          <!--<td>-->
+                                          <!--  {{ number_format((float)$orgCost, 2, '.', '') }}  -->
+                                            
+                                          <!-- </td>-->
                                            <td>
                                              {{ number_format((float)$Tot, 2, '.', '') }}  
 
@@ -295,27 +337,70 @@ use App\Models\admin\Mst_store_product;
                   </div>
                   <br>
                   
-                   <!--<div class="row">-->
-                   <!--  <div class="col-md-12">-->
-                   <!--        <div class="form-group">-->
-                   <!--           <textarea name="order_note" placeholder="Note" class="form-control">{{ $order->order_note}}</textarea>-->
-                   <!--        </div>-->
-                   <!--  </div>-->
-                   <!--</div>-->
+                
                 </div>
 
                 @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
-               
+               @php
+               $c = 0;
+               @endphp
+               @foreach ($payments as $payment)
+                  
                 <div class="card">
                   <div class="card-body">
-                <h5>Payment Split Information</h5>
+                      @if($c == 0)
+                      @php
+                      $c = 1;
+                      @endphp
+                       <h5>Payment Information</h5>
+                    <table class="table table-bordered text-nowrap w-100">
+                       <tr>
+                          <td>
+                            Payment Mode:
+                          </td>
+                          <td>
+                             {{ @$payment->paymentMode }}
+                          </td>
+                       </tr>
+    
+                       <tr>
+                          <td>
+                             Reference Id:
+                          </td>
+                          <td>
+                             {{ @$payment->referenceId }}
+                          </td>
+                       </tr>
+    
+                       <tr>
+                          <td>
+                             Status:
+                          </td>
+                          <td>
+                             {{ @$payment->txStatus }}
+                          </td>
+                       </tr>
+    
+                       <tr>
+                          <td>
+                             Txn Time:
+                          </td>
+                          <td>{{ \Carbon\Carbon::parse(@$payment->created_at)->format('Y-m-d H:i:s')}}</td>
+    
+                       </tr>
+    
+    
+                    </table>
+                    @endif
+                
+                <h5>Payment Split Information @if(@$payment->paymentRole == 1) for Store @else for Admin @endif</h5>
                 <table class="table table-bordered text-nowrap w-100">
                    <tr>
                       <td>
                          Split Amount:
                       </td>
                       <td>
-                         {{ @$payments->splitAmount }}
+                         {{ @$payment->splitAmount }}
                       </td>
                    </tr>
 
@@ -324,7 +409,7 @@ use App\Models\admin\Mst_store_product;
                          Split Charge:
                       </td>
                       <td>
-                         {{ @$payments->serviceCharge }}
+                         {{ @$payment->serviceCharge }}
                       </td>
                    </tr>
 
@@ -333,7 +418,7 @@ use App\Models\admin\Mst_store_product;
                          Service Tax:
                       </td>
                       <td>
-                         {{ @$payments->serviceTax }}
+                         {{ @$payment->serviceTax }}
                       </td>
                    </tr>
 
@@ -342,54 +427,18 @@ use App\Models\admin\Mst_store_product;
                          Settlement Amount:
                       </td>
                       <td>
-                         {{ @$payments->settlementAmount }}
+                         {{ @$payment->settlementAmount }}
                       </td>
                    </tr>
 
 
                 </table>
 
-                <h5>Payment Information</h5>
-                <table class="table table-bordered text-nowrap w-100">
-                   <tr>
-                      <td>
-                        Payment Mode:
-                      </td>
-                      <td>
-                         {{ @$payments->paymentMode }}
-                      </td>
-                   </tr>
-
-                   <tr>
-                      <td>
-                         Reference Id:
-                      </td>
-                      <td>
-                         {{ @$payments->referenceId }}
-                      </td>
-                   </tr>
-
-                   <tr>
-                      <td>
-                         Status:
-                      </td>
-                      <td>
-                         {{ @$payments->txStatus }}
-                      </td>
-                   </tr>
-
-                   <tr>
-                      <td>
-                         Txn Time:
-                      </td>
-                      <td>{{ \Carbon\Carbon::parse(@$payments->created_at)->format('Y-m-d H:i:s')}}</td>
-
-                   </tr>
-
-
-                </table>
+               
                   </div>
                 </div>
+               @endforeach
+
                 @endif
 
 
@@ -442,17 +491,9 @@ use App\Models\admin\Mst_store_product;
                 </div>
 
                 @endif
-
-
-                 
-
                
                   <br>
-                  <center>
-                     <!--<button type="submit"   class="btn btn-block btn-blue"  >Submit</button>-->
-                     {{-- <a type="button" class="btn btn-cyan" onclick="history.back()">Cancel</a> --}}
-                  </center>
-               </br>
+                
                </form>
               
           
@@ -460,14 +501,12 @@ use App\Models\admin\Mst_store_product;
       </div>
       </div>
       </div>
-   </div>
-      </div>
-   </div>
    @endsection
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script type="text/javascript">
-$('#print').click(function(){
-$('#print'). hide();
+   $('#print').click(function(){
+   $('#print'). hide();
 });
 
 

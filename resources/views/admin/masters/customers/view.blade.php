@@ -29,7 +29,7 @@ use App\Models\admin\Trn_store_order;
             </div>
          </div>
       </div>
-      <div class="card">
+      <div class="card" style="min-height:70vh;" >
          <div class="card-body">
             <div class="border-0">
                <div class="tab-content">
@@ -49,15 +49,7 @@ use App\Models\admin\Trn_store_order;
                                     </td>
                                  </tr>
                                  
-                                 <tr>
-                                    <td><strong>Moblie :</strong> {{ $customers->customer_mobile_number}}</td>
-                                 </tr>
-                                 
-                                  @if(isset($customers->customer_email)) 
-                                   <tr>
-                                    <td><strong>Email :</strong> {{ $customers->customer_email}}</td>
-                                   </tr>
-                                  @endif
+                               
                                   
                                   @if(isset($customers->country['country_name'])) 
                                    <tr>
@@ -78,10 +70,28 @@ use App\Models\admin\Trn_store_order;
                                   
                                    @if(isset($customers->town['town_name'])) 
                                 <tr>
-                                    <td><strong>Town :</strong> {{ @$customers->town['town_name']}}</td>
+                                    <td><strong>Pincode :</strong> {{ @$customers->town['town_name']}}</td>
                                  </tr>
                                   @endif
-                                  @if(isset($customers->gender)) 
+                                 
+
+
+                                
+
+                              </tbody>
+                              <tbody class="col-lg-12 col-xl-6 p-0">
+                                  
+                                    <tr>
+                                    <td><strong>Moblie :</strong> {{ $customers->customer_mobile_number}}</td>
+                                 </tr>
+                                 
+                                  @if(isset($customers->customer_email)) 
+                                   <tr>
+                                    <td><strong>Email :</strong> {{ $customers->customer_email}}</td>
+                                   </tr>
+                                  @endif
+                                  
+                                   @if(isset($customers->gender)) 
                                     <tr>
                                     <td><strong>Gender :</strong> {{ @$customers->gender}}</td>
                                  </tr>
@@ -95,20 +105,10 @@ use App\Models\admin\Trn_store_order;
                                   
                                     @if(isset($customers->place)) 
                                     <tr>
-                                    <td><strong>Place :</strong> {{ @$customers->place}}</td>
+                                    <td><strong>Current Location :</strong> {{ @$customers->place}}</td>
                                  </tr>
                                   @endif
-
-
-                                  @if(isset($customers->customer_address)) 
-
-                                   <tr>
-                                     <td><strong>Address :</strong>{!! $customers->customer_address!!}</td>
-                                    </tr> 
-                                  @endif
-
-                              </tbody>
-                              <tbody class="col-lg-12 col-xl-6 p-0">
+                                  
                                   @if(isset($customers->customer_username)) 
                                 <tr>
                                     <td><strong> Username :</strong> {{ $customers->customer_username}}</td>
@@ -139,7 +139,7 @@ use App\Models\admin\Trn_store_order;
                   
                   
                   
-                  
+
                   <div class="tab-pane show" id="tab-53">
                      <div id="profile-log-switch">
                         <div class="media-heading">
@@ -163,9 +163,53 @@ use App\Models\admin\Trn_store_order;
                            @endphp
                          <p>Total Points Earned : </p><h2>{{$totalCustomerRewardsCount}}</h2> <br>
                          <p>Used Points : </p><h2>{{$totalusedPoints + $redeemedPointsSum}}</h2> <br>
-                         <p>Balance Pointsd : </p><h2>{{$totalCustomerRewardsCount - ($redeemedPointsSum + $totalusedPoints) }}</h2> <br>
+                         <p>Balance Points : </p><h2>{{$totalCustomerRewardsCount - ($redeemedPointsSum + $totalusedPoints) }}</h2> <br>
 
+                        <h3>Earned Points</h3>
+
+                      <div class="table-responsive">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                             <thead>
+                               <tr>
+                                 <th class="wd-15p">SL.No</th>
+                                 <th class="wd-15p">{{ __('Date') }}</th>
+                                 <th class="wd-15p">{{ __('Point') }}</th>
+                                 <th class="wd-15p">{{ __('Description') }}</th>
+                               </tr>
+                             </thead>
+                             <tbody>
+                                 @php
+                                    $i = 0;
+                                 @endphp
+                                 @foreach ($customerRewards as $row)
+                                 <tr>
+                                    <td>{{ ++$i }}</td>
+                                    <td>
+                                         {{ \Carbon\Carbon::parse($row->created_at)->format('d-m-Y')}}
+                                    </td>
+                                     <td>
+                                                 
+                                        {{ $row->reward_points_earned }}</td>
+                                    <td>
+                                        @php
+                                        $rewardDis = '';
+                                          if (($row->discription == null) && ($row->discription == '')) {
+                                                $orderInfo = Trn_store_order::find($row->order_id);
+                                                $rewardDis = 'from order ' . $orderInfo->order_number;
+                                            } else {
+                                                $rewardDis = $row->discription;
+                                            }
+                                        @endphp
+                                        {{ @$rewardDis }}</td>
+
+                                 </tr>
+                                 @endforeach
+                             </tbody>
+                           </table>
+                         </div>
                          
+                         
+                        <h3>Admin Redeemed Points</h3>
 
                          <div class="table-responsive">
                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
@@ -186,7 +230,7 @@ use App\Models\admin\Trn_store_order;
                                     <td>{{ ++$i }}</td>
                         <td>
                            {{ \Carbon\Carbon::parse($s->created_at)->format('d-m-Y')}}
-                           {{ \Carbon\Carbon::parse($s->created_at)->format('H:i')}}
+                           <!--{{ \Carbon\Carbon::parse($s->created_at)->format('H:i')}}-->
                         
                         </td>
                         <td>{{ $s->points }}</td>
@@ -216,8 +260,11 @@ use App\Models\admin\Trn_store_order;
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                 @if(count($customerAddress) > 0)
                                 @foreach($customerAddress as $val)
-                                 <tr>
-                                    <td><strong>{{ $loop->iteration }} :</strong> {{ $val->address}}</td>
+                                 <tr> 
+                                 <td> 
+                                 <h4><strong>Address {{ $loop->iteration }}  {{ ($val->default_status == 1)  ? '( Default )': '' }}</strong>  </h4>
+                                 
+                                    {{ $val->name}} <br/> {{ $val->phone}} <br/> {{ $val->address}} <br> {{ $val->place}} {{ $val->stateFunction->state_name }}, {{ $val->districtFunction->district_name}},  {{ $val->street}}  </td>
                                  </tr>
                                  @endforeach
                                  @else

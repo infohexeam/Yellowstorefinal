@@ -154,6 +154,7 @@ Route::group(['prefix' => 'store'], function () {
 
     Route::get('product/base-image', 'Api\ProductController@setDefaultImage');
 
+    Route::get('product-code', 'Api\ProductController@productExists');
 
     //----------- INVENTORY API ----------------
     Route::get('product/inventory/list', 'Api\InventoryController@listInventoryProducts');

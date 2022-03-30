@@ -15,12 +15,13 @@
                @endif
 
             <div class="table-responsive">
-               <table id="example" class="table table-bordered text-nowrap w-80">
+               <table  class="table table-bordered text-nowrap w-80">
                  <thead>
                                  <tr>
                                    <th class="wd-15p">S.No</th>
                                     <th class="wd-15p">{{ __('Store') }}</th>
                                     <th class="wd-15p">{{ __('Phone') }}</th>
+                                    <th class="wd-15p">{{ __('Action') }}</th>
 
                                  </tr>
                 </thead>
@@ -42,7 +43,17 @@
                                  $all_assigned_store[] = $data->store_id;
                            @endphp
                            <td>
-                              <a class="btn btn-small btn-danger" href="{{ url('admin/link/destroy/delivery_boy_store/'.$data->store_link_delivery_boy_id) }}">Delete</a>
+                               @php
+                                   $stores__ids = \DB::table('mst_store_link_delivery_boys')
+                                ->join('mst_stores','mst_stores.store_id','=','mst_store_link_delivery_boys.store_id')
+                                ->where('mst_store_link_delivery_boys.delivery_boy_id','=',$delivery_boy->delivery_boy_id)
+                                ->select('mst_stores.*')
+                                ->where('mst_stores.subadmin_id',auth()->user()->id)
+                                ->pluck('store_id')->toArray();
+                                $thisStore = $data->store_id;
+                               @endphp
+                              <a class="btn btn-small btn-danger @if(!in_array( $thisStore ,$stores__ids)) disabled @endif"     href="{{ url('admin/link/destroy/delivery_boy_store/'.$data->store_link_delivery_boy_id) }}">Delete</a>
+                           
                            </td>
                         </tr>
                       @endforeach
@@ -74,21 +85,21 @@
                            <select name="store_id[]" required="" class="form-control" >
                                  <option value=""> Select Store</option>
                                 @foreach($store as $key)
- @if (!in_array($key->store_id, $all_assigned_store))
-                                <option {{old('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }} </option>
- @endif
+                                    @if (!in_array($key->store_id, $all_assigned_store))
+                                        <option {{old('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }} </option>
+                                     @endif
                                 @endforeach
                               </select>
                         </div>
                      </div>
                      </div>
 
-                     <div class="col-md-2">
-                        <div class="form-group">
-                           <label class="form-label">Add more</label>
-                            <button type="button" id="addStore" class="btn btn-raised btn-success"> Add More</button>
-                        </div>
-                        </div>
+                     <!--<div class="col-md-2">-->
+                     <!--   <div class="form-group">-->
+                     <!--      <label class="form-label">Add more</label>-->
+                     <!--       <button type="button" id="addStore" class="btn btn-raised btn-success"> Add More</button>-->
+                     <!--   </div>-->
+                     <!--   </div>-->
                       </div>
 
 

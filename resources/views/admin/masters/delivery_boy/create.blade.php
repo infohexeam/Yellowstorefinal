@@ -207,16 +207,16 @@
                      </div>
 
 
-                          <div class="col-md-6">
-                        <div class="form-group">
-     <label class="form-label">Availabilities *</label>
+     <!--                     <div class="col-md-6">-->
+     <!--                   <div class="form-group">-->
+     <!--<label class="form-label">Availabilities *</label>-->
 
-                           @foreach($availabilities as $key)
-                           <input type="checkbox" name="delivery_boy_availability_id[{{ $loop->iteration}}]"
-                             {{ (is_array(old('delivery_boy_availability_id')) && in_array($key->availability_id, old('delivery_boy_availability_id'))) ? ' checked' : '' }} name="delivery_boy_availability_id[{{$loop->iteration}}]" value="{{$key->availability_id}}" > {{$key->availabilable_days}}
-                           @endforeach
-                         </div>
-                     </div>
+     <!--                      @foreach($availabilities as $key)-->
+     <!--                      <input type="checkbox" name="delivery_boy_availability_id[{{ $loop->iteration}}]"-->
+     <!--                        {{ (is_array(old('delivery_boy_availability_id')) && in_array($key->availability_id, old('delivery_boy_availability_id'))) ? ' checked' : '' }} name="delivery_boy_availability_id[{{$loop->iteration}}]" value="{{$key->availability_id}}" > {{$key->availabilable_days}}-->
+     <!--                      @endforeach-->
+     <!--                    </div>-->
+     <!--                </div>-->
 
 
 

@@ -2,7 +2,7 @@
 <footer class="footer dash">
    <div class="container">
       <div class="row align-items-center flex-row-reverse">
-         <div class="col-md-12 col-sm-12 text-center">
+         <div class="col-md-12 col-sm-12 text-center" style="padding: 7px;">
             Copyright &copy; {{date('Y')}} | All rights reserved.
          </div>
       </div>

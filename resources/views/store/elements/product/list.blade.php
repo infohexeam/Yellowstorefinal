@@ -216,8 +216,13 @@
                        <a class="btn btn-sm btn-cyan"
                        href="{{url('store/product/view/'.$product->product_id)}}">View</a> 
                         <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                      @php
+                                                      $varCount = \DB::table('mst_store_product_varients')->where('product_id',$product->product_id)->count();
+
+                      @endphp
+                       @if($varCount >= 2)
                        <br> <a class="mt-2 btn btn-sm btn-orange" href="{{url('store/product/variant/list/'.$product->product_id)}}">Product Variant</a> 
-  
+                        @endif
                       </form> 
 
                         </td> 

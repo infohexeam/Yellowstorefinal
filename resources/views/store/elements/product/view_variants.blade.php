@@ -140,7 +140,10 @@
                              <form action="{{route('store.destroy_product_var_attr',$val->variant_attribute_id)}}" method="POST">
                                 @csrf
                                 @method('POST')
-                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger" 
+                                                                @if(($i == 1) && ( count($var_atts) == 1 )) disabled @endif
+
+                                >Delete</button>
                              </form>
                           </td>
                        </tr>
@@ -191,6 +194,7 @@
                  <tbody class="col-lg-12 col-xl-6 p-0">
                     @php
                     $i = 0;
+                    $varIdz = array();
                     @endphp
                     @if(!$var_atts->isEmpty())
                     @foreach ($var_atts as $val)
@@ -205,6 +209,9 @@
                           <td>{{@$attr_val_name[0]}}</td>
                          
                        </tr>
+                       @php
+                        $varIdz[] = $val->attr_group_id;
+                       @endphp
                     @endforeach
                     @else
                     <tr>
@@ -227,8 +234,10 @@
                                    <select name="attr_grp_id"   class="attr_groupz form-control" >
                                       <option value="">Attribute</option>
                                       @foreach($attr_groups as $key)
-                                      <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>
-                                            @endforeach
+                                          @if(!in_array($key->attr_group_id,$varIdz))
+                                          <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>
+                                          @endif
+                                      @endforeach
                                    </select>
                                 </div>
                                 </div>

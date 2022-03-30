@@ -81,7 +81,7 @@
                         </a>
                         </br>
                 <div class="table-responsive">
-                  <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                  <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                     <thead>
                       <tr>
                         <th class="wd-15p">SL.No</th>
@@ -119,11 +119,21 @@
 
                         <td>
                         @php
+                            
+                            	if (auth()->user()->user_role_id  == 0) {
                             $stores__data = \DB::table('mst_store_link_delivery_boys')
                             ->join('mst_stores','mst_stores.store_id','=','mst_store_link_delivery_boys.store_id')
                             ->where('mst_store_link_delivery_boys.delivery_boy_id','=',$delivery_boy->delivery_boy_id)
                             ->select('mst_stores.*')
                             ->get();
+                            }else{
+                                                        $stores__data = \DB::table('mst_store_link_delivery_boys')
+                                ->join('mst_stores','mst_stores.store_id','=','mst_store_link_delivery_boys.store_id')
+                                ->where('mst_store_link_delivery_boys.delivery_boy_id','=',$delivery_boy->delivery_boy_id)
+                                ->select('mst_stores.*')
+                                ->where('mst_stores.subadmin_id',auth()->user()->id)
+                                ->get();
+                            }
                         @endphp
                        @foreach ($stores__data as $s)
                                                    {{ $s->store_name }} <br>
@@ -174,7 +184,43 @@
       </div>
     </div>
   </div>
+<script>
 
+               $(function(e) {
+                   $('#exampletable').DataTable( {
+                       dom: 'Bfrtip',
+                       buttons: [
+                           {
+                               extend: 'pdf',
+                               title: 'Delivery Boys List',
+                               // orientation:'landscape',
+                               footer: true,
+                               exportOptions: {
+                                    columns: [0,1,2,3,4,5,6],
+                                    alignment: 'right',
+                                },
+                                 customize: function(doc) {
+                                     doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+                              doc.content.forEach(function(item) {
+                              if (item.table) {
+                                 item.table.widths = ['auto', 'auto','auto','auto','auto','auto','auto']
+                               }
+                              })
+                            }
+                           },
+                           {
+                               extend: 'excel',
+                               title: 'Delivery Boys List',
+                               footer: true,
+                               exportOptions: {
+                                    columns: [0,1,2,3,4,5,6]
+                                }
+                           }
+                        ]
+                   } );
+               
+               } );
+                           </script>
 
 
 <script>

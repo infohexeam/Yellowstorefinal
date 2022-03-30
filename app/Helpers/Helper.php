@@ -24,9 +24,29 @@ use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreBankData;
+use Auth;
 
 class Helper
 {
+    
+    public static function get_guard()
+    {
+        if(Auth::guard('web')->check())
+            {return "web";}
+        elseif(Auth::guard('store')->check())
+            {return "store";}
+        elseif(Auth::guard('api')->check())
+            {return "api";}
+        elseif(Auth::guard('customer')->check())
+            {return "customer";}
+        elseif(Auth::guard('api-customer')->check())
+            {return "api-customer";}
+            else{
+                return "";
+            }
+    }
+
+
 
     public static function findStoreName($store_id)
     {
@@ -194,7 +214,7 @@ class Helper
         if (isset($uData->admin_name))
             return @$uData->admin_name;
         else
-            return  '--';
+            return  '---';
 
         // if (isset($userId)) {
         //     if (User::find($userId)->admin_name) {
@@ -279,6 +299,14 @@ class Helper
             return 0;
         }
     }
+    
+    public static function varAttrCount($product_varient_id)
+    {
+       $arrtVal  = Trn_ProductVariantAttribute::where('product_varient_id', $product_varient_id)
+                    ->count();
+                return $arrtVal;
+    }
+    
 
     public static function attrCount($product_id)
     {
@@ -677,7 +705,7 @@ class Helper
         if (isset($storeAdminData->name))
             return $storeAdminData->name;
         else
-            return '--';
+            return '---';
     }
 
 

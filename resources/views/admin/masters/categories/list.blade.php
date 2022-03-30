@@ -107,7 +107,8 @@ use App\Models\admin\Trn_CategoryBusinessType;
                                        <img src="{{asset('/assets/uploads/category/icons/'.$category->category_icon)}}"  width="50" >
                                     @endif
                                  </td>
-                                    <td>{{ @$category->business_type['business_type_name'] }}
+                                    <td>
+                                        <!--{{ @$category->business_type['business_type_name'] }}-->
 
                                        @php
                                         $business_typez =  Trn_CategoryBusinessType::join('mst_store_business_types','mst_store_business_types.business_type_id','=','trn__category_business_types.business_type_id')
@@ -115,7 +116,7 @@ use App\Models\admin\Trn_CategoryBusinessType;
                                         ->where('trn__category_business_types.category_id',$category->category_id)
                                         ->groupBy('trn__category_business_types.business_type_id')
                                         ->get();
-                                        
+                                       
   
                                        @endphp
                                     
@@ -226,14 +227,14 @@ use App\Models\admin\Trn_CategoryBusinessType;
                                // orientation:'landscape',
                                footer: true,
                                exportOptions: {
-                                    columns: [0,1,2,3],
+                                    columns: [0,1,2,3,4],
                                     alignment: 'right',
                                 },
                                  customize: function(doc) {
                                      doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
                               doc.content.forEach(function(item) {
                               if (item.table) {
-                                 item.table.widths = [40, '*','*']
+                                 item.table.widths = ['auto', 'auto','auto','auto','auto']
                                }
                               })
                             }

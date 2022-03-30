@@ -332,7 +332,7 @@ class AdminController extends Controller
 
     public function listRestoreTown(Request $request)
     {
-        $pageTitle = "Restore Towns";
+        $pageTitle = "Restore Pincodes";
         $towns = Town::onlyTrashed()->orderBy('town_id', 'DESC')->get();
         return view('admin.masters.towns.restore', compact('pageTitle', 'towns'));
     }
@@ -433,7 +433,7 @@ class AdminController extends Controller
 
     public function listTown(Request $request)
     {
-        $pageTitle = "Towns";
+        $pageTitle = "Pincodes";
         $towns = Town::orderBy('town_id', 'DESC')->get();
         // $districts = District::orderBy('district_name','ASC')->get();
         $countries   = Country::all();
@@ -444,7 +444,7 @@ class AdminController extends Controller
         $town = Town::find($town_id);
         $delete = $town->delete();
 
-        return redirect('admin/towns/list')->with('status', 'Town deleted successfully');
+        return redirect('admin/pincode/list')->with('status', 'Pincode deleted successfully');
     }
 
     public function editTown(Request $request, $town_id, Town $town)
@@ -455,12 +455,12 @@ class AdminController extends Controller
         $town->pin = $request->pin;
         $town->update();
 
-        return redirect('admin/towns/list')->with('status', 'Town updated successfully');
+        return redirect('admin/pincode/list')->with('status', 'Pincode updated successfully');
     }
 
     public function editTownView(Request $request, $town_id)
     {
-        $pageTitle = "Edit Town";
+        $pageTitle = "Edit Pincode";
         $town = Town::where('town_id', $town_id)->first();
         $d_data = District::where('district_id', $town->district_id)->first();
         $s_data = State::where('state_id', $d_data->state_id)->first();
@@ -520,7 +520,7 @@ class AdminController extends Controller
             $town->town_name         = $request->town_name;
             $town->pin         = $request->pin;
             $town->save();
-            return redirect('admin/towns/list')->with('status', 'Town added successfully.');
+            return redirect('admin/pincode/list')->with('status', 'Pincode added successfully.');
         } else {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -697,7 +697,7 @@ class AdminController extends Controller
     public function listStoreAppBanner(Request $request)
     {
         $pageTitle = "Store App Banners";
-        $banners = Mst_StoreAppBanner::all();
+        $banners = Mst_StoreAppBanner::orderBy('banner_id','DESC')->get();
         $countries   = Country::all();
 
         return view('admin.masters.banners.store_app_banners.list', compact('countries', 'pageTitle', 'banners'));
@@ -710,8 +710,11 @@ class AdminController extends Controller
             $img_validate = Validator::make(
                 $request->all(),
                 [
-                    'images.*' => 'required|dimensions:width=620,height=290',
-                    'town_id' => 'required',
+                    // 'images.*' => 'required|dimensions:width=620,height=290',
+                    // 'town_id' => 'required',
+                    // 'district_id' => 'required',
+                    // 'state_id' => 'required',
+                    // 'country_id' => 'required',
                 ],
                 [
                     'images.*.dimensions' => 'Banner image dimensions invalid',
@@ -733,7 +736,7 @@ class AdminController extends Controller
                 $town_id = $request->town_id;
                 // dd($product_image);
                 foreach ($images as $image) {
-                    $filename = time() . '.' . $image->getClientOriginalExtension();
+                    $filename = time() .rand(). '.' . $image->getClientOriginalExtension();
                     // dd($filename);
                     $destination_path = 'assets/uploads/store_banner/';
 
@@ -746,6 +749,7 @@ class AdminController extends Controller
                         [
                             'image'      => $filename,
                             'town_id'      => $town_id,
+                            'status'      => $request->status,
                         ],
                     ];
 
@@ -768,7 +772,7 @@ class AdminController extends Controller
     public function listCustomerAppBanner(Mst_CustomerAppBanner $banner)
     {
         $pageTitle = "Customer App Banners";
-        $banners = Mst_CustomerAppBanner::all();
+        $banners = Mst_CustomerAppBanner::orderBy('banner_id','DESC')->get();
         $countries   = Country::all();
 
         return view('admin.masters.banners.customer_app_banners.list', compact('countries', 'pageTitle', 'banners'));
@@ -789,6 +793,10 @@ class AdminController extends Controller
                 $request->all(),
                 [
                     'images.*' => 'required',
+                    // 'country_id' => 'required',
+                    // 'state_id' => 'required',
+                    // 'district_id' => 'required',
+                    // 'town_id' => 'required',
                 ],
                 [
                     'images.*.dimensions' => 'Banner image dimensions invalid',
@@ -806,14 +814,17 @@ class AdminController extends Controller
 
 
                 $images = $request->file('images');
+                
+                // dd($request->all());
                 $town_id = 0;
 
 
 
                 // dd($product_image);
-                foreach ($images as $image) {
-                    $filename = time() . '.' . $image->getClientOriginalExtension();
+                foreach ($request->file('images') as $image) {
+                    $filename = time() . rand() .'.' . $image->getClientOriginalExtension();
                     // dd($filename);
+                    //echo $filename." - "; 
                     $destination_path = 'assets/uploads/customer_banner/';
 
                     $store_img = Image::make($image->getRealPath());
@@ -821,17 +832,25 @@ class AdminController extends Controller
 
 
 
-                    $data2 = [
-                        [
+                    // $data2 = [
+                    //     [
+                    //         'image'      => $filename,
+                    //         'town_id'      => $request->town_id,
+                    //         'status' => $request->status,
+                    //         'default_status' => 0
+                    //     ],
+                    // ];
+
+                    Mst_CustomerAppBanner::insert( [
                             'image'      => $filename,
                             'town_id'      => $request->town_id,
                             'status' => $request->status,
                             'default_status' => 0
-                        ],
-                    ];
-
-                    Mst_CustomerAppBanner::insert($data2);
+                        ]);
                 }
+                
+                
+                //dd($request->all());
             }
         }
 
@@ -888,4 +907,21 @@ class AdminController extends Controller
 
         return redirect()->back()->with('status', 'Banner status changed successfully');
     }
+    
+    public function statusStoreBanner(Request $request, $banner_id)
+    {
+
+        $banner = Mst_StoreAppBanner::Find($banner_id);
+        $status = $banner->status;
+
+        if ($status == 0) {
+            $banner->status  = 1;
+        } else {
+            $banner->status  = 0;
+        }
+        $banner->update();
+
+        return redirect()->back()->with('status', 'Banner status changed successfully');
+    }
+    
 }

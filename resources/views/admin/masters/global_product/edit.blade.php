@@ -127,7 +127,9 @@ iframe{
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Product Code *</label>
-                            <input type="text" required class="form-control" name="product_code" id="product_code" value="{{old('sale_price',$product->product_code)}}" placeholder="Product Code">
+                            <input type="text" required class="form-control" name="product_code" id="product_code" oninput="isCodeAvailable(this.value,{{$product->global_product_id}})" value="{{old('sale_price',$product->product_code)}}" placeholder="Product Code">
+                                                <p id="productCodeMsg" style="color:red"></p>
+
                         </div>
                     </div>
 
@@ -302,8 +304,9 @@ iframe{
                                  <tr>
                                    <th class="wd-15p">S.No</th>
                                     <th class="wd-15p">{{ __('Image') }}</th>
+                                   <th class="wd-15p">{{ __('Base Image') }}</th>
 
-                                   {{--  <th  class="wd-20p">{{__('Action')}}</th> --}}
+                                   <th  class="wd-20p">{{__('Action')}}</th> 
                                  </tr>
                               </thead>
                                <tbody class="col-lg-12 col-xl-6 p-0">
@@ -318,6 +321,23 @@ iframe{
                                  <tr>
                                     <td>{{$i}}</td>
                                     <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$product_image->image_name)}}"  width="50" ></td>
+                                      <td>
+                                        @if($product_image->image_name != $product->product_base_image)
+                                          <a href="{{ url('admin/img-status/'.$product_image->global_product_image_id) }}"   class="btn btn-sm
+                                          @if($product_image->image_name != $product->product_base_image) btn-danger @else btn-success @endif "   > @if($product_image->image_name != $product->product_base_image)
+                                            Not Default
+                                          @else
+                                            Base Image
+                                          @endif</a>
+                                          
+                                          @else
+                                             <a href="#"  class="btn btn-sm btn-success "   > Base Image   </a>
+                                          @endif
+                                          
+                                    {{--  {{$product_image->image_name }} -
+                                          {{$product->product_base_image }}  --}}
+                                   
+                                    </td>
                                     <td>
                                         <form action="{{route('admin.destroy_global_product_image',$product_image->global_product_image_id)}}" method="POST">
                                             @csrf
@@ -364,7 +384,7 @@ iframe{
                                  @php
                                  $i = 0;
                                  @endphp
-                                @if(!$product_images->isEmpty())
+                                @if(!$videos->isEmpty())
                                  @foreach ($videos as $value)
                                  <tr>
                                     <td>{{ ++$i }}</td>
@@ -416,6 +436,32 @@ iframe{
 <script>CKEDITOR.replace('product_description');</script>
 
 <script type="text/javascript">
+
+
+function isCodeAvailable(value,global_product_id)
+{
+            var _token= $('input[name="_token"]').val();
+        $.ajax({
+          type:"GET",
+          url:"{{ url('g-product/ajax/is-code-available') }}?product_code="+value+"&global_product_id="+global_product_id,
+
+
+          success:function(res){
+                if(res == 1)
+                {
+                   $('#productCodeMsg').text('Product code exists'); 
+                   $('#submit').hide();
+                }
+                else{
+                   $('#productCodeMsg').text(''); 
+                   $('#submit').show();
+
+                }
+          }
+
+        });
+}
+
 
 $(document).ready(function() {
     salePriceChange();
@@ -485,7 +531,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div> <br> <div  class="row"><div class="col-md-12"><div class="form-group"><label class="form-label">Platform</label><select name="platform[]"  class="form-control"><option value="">Platform</option><option value="Youtube">Youtube</option><option value="Vimeo">Vimeo</option></select></div></div><div class="col-md-12"><div class="form-group"><label class="form-label">Embedded Code </label><textarea class="form-control"  name="video_code[]"  rows="3" placeholder="Embedded Code"></textarea></div></div></div><a href="#" class="remove_field mb-2 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div> <br> <div  class="row"><div class="col-md-12"><div class="form-group"><label class="form-label">Platform</label><select name="platform[]"  class="form-control"><option value="">Platform</option><option value="Youtube">Youtube</option><option value="Vimeo">Vimeo</option></select></div></div><div class="col-md-12"><div class="form-group"><label class="form-label">Video Link Code </label><textarea class="form-control"  name="video_code[]"  rows="3" placeholder="Video Link"></textarea></div></div></div><a href="#" class="remove_field mb-2 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
       });
 
 

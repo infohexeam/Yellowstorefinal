@@ -156,28 +156,28 @@
                    buttons: [
                        {
                            extend: 'pdf',
-                           title: 'Categories',
+                           title: 'Sub Categories List',
                            // orientation:'landscape',
                            footer: true,
                            exportOptions: {
-                                columns: [0,1,2,3,4],
+                                columns: [0,1,2,3,4,5],
                                 alignment: 'right',
                             },
                              customize: function(doc) {
                                  doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
                           doc.content.forEach(function(item) {
                           if (item.table) {
-                             item.table.widths = [40, '*','*']
+                             item.table.widths = ['auto', 'auto','auto','auto','auto','auto']
                            }
                           })
                         }
                        },
                        {
                            extend: 'excel',
-                           title: 'Categories',
+                           title: 'Sub Categories List',
                            footer: true,
                            exportOptions: {
-                                columns: [0,1,2,3,4]
+                                columns: [0,1,2,3,4,5]
                             }
                        }
                     ]

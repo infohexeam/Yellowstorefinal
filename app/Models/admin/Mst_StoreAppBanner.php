@@ -12,7 +12,7 @@ class Mst_StoreAppBanner extends Model
 	protected $primaryKey = "banner_id";
 
     protected $fillable = [
-    					'banner_id','image','town_id'
+    					'banner_id','image','town_id','status'
     					  ];
 
     public function town() //town  relation

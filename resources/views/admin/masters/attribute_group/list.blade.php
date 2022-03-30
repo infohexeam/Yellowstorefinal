@@ -36,8 +36,8 @@
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
-                           <label class="form-label">Attribute Group Name</label>
-                           <input type="text" class="form-control" name="group_name" value="{{old('group_name')}}" placeholder="Attribute Group Name">
+                           <!--<label class="form-label">Attribute Group Name</label>-->
+                           <input type="text" class="form-control" name="group_name" value="{{old('group_name')}}" placeholder="Enter Attribute Group Name">
                         </div>
                   
                         <div class="form-group">
@@ -63,7 +63,7 @@
                          </a>
                          @endif
             <div class="table-responsive">
-               <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+               <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                   <thead>
                      <tr>
                         <th class="wd-15p">SL.No</th>
@@ -104,4 +104,42 @@
 </div>
 
 <!-- MESSAGE MODAL CLOSED -->
+
+
+ <script> $(function(e) {
+               $('#exampletable').DataTable( {
+                   dom: 'Bfrtip',
+                   buttons: [
+                       {
+                           extend: 'pdf',
+                           title: 'AttrGroup',
+                           // orientation:'landscape',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1],
+                                alignment: 'right',
+                            },
+                             customize: function(doc) {
+                                 doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+                          doc.content.forEach(function(item) {
+                          if (item.table) {
+                             item.table.widths = [40, '*','*']
+                           }
+                          })
+                        }
+                       },
+                       {
+                           extend: 'excel',
+                           title: 'AttrGroup',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0,1]
+                            }
+                       }
+                    ]
+               } );
+           
+           } );
+           </script>
+           
 @endsection

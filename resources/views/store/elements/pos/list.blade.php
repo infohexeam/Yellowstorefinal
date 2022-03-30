@@ -37,7 +37,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Customer</label>
-                                        <select name="customer_id2" id="customer_id2" class="form-control" >
+                                        <select name="customer_id2" id="customer_id2" class="form-control" readonly="">
                                              <option value="" >Store Customer</option>
                                              <!--@foreach ($customer as $data)-->
                                              <!--     <option value="{{ $data->customer_id }}" >{{ $data->customer_first_name }} {{ $data->customer_last_name }} - {{ $data->customer_mobile_number }} </option>-->

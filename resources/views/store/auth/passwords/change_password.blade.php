@@ -28,8 +28,41 @@
          <link href="{{URL::to('/assets/css/icons.css')}}" rel="stylesheet"/>
          <!-- COLOR SKIN CSS -->
          <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{URL::to('/assets/colors/color1.css')}}" />
-   </head>
-   </head>
+  <style>
+
+            .password-show {
+              position: relative;
+            }
+            .password-show input {
+              padding-right: 2.5rem;
+            }
+            .password-show__toggle {
+              position: absolute;
+              top: 15px;
+              right: 0;
+              bottom: 0;
+              width: 2.5rem;
+            }
+            .password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: #555;
+            }
+            .password-show_toggle_show-icon {
+              display: block;
+            }
+            .password-show.show .password-show_toggle_show-icon {
+              display: none;
+            }
+            .password-show_toggle_hide-icon {
+              display: none;
+            }
+            .password-show.show .password-show_toggle_hide-icon {
+              display: block;
+            }
+            </style>     </head>
    <body>
       <!-- BACKGROUND-IMAGE -->
       <div class="login-img">
@@ -49,7 +82,7 @@
                </div>
                <div class="container-login100">
                   <div class="wrap-login100 p-6" style="width:400px;">
-                     <form id="myForm" onsubmit="return validateForm()" method="POST" action="{{ route('change-store-password',$stores->store_id) }} ">
+                     <form id="myForm" onsubmit="return validateForm()" method="POST" action="{{ route('change-store-password',$user->store_admin_id) }} ">
                         @csrf
                         <span class="login100-form-title">
                         {{ __('Reset Password') }}
@@ -68,28 +101,48 @@
                         <p class="alert alert-success">{{ session('message') }}</p>
                         @endif
 
-                                                <div id="passlabel" class="wrap-input100 validate-input">
-                           <input class="input100" type="password" onkeyup="validatePassLength()" name="password" value="{{old('password')}}" placeholder="Password" id="password" type="password" required autocomplete="current-password">
-                <p id="showpassmessage"><p>
+                          <div id="passlabel" class="wrap-input100 validate-input form-group">
+                            <div class="password-show">
 
-                           @error('password')
+                           <input class="input100 form-control" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="password" value="{{old('password')}}" placeholder="Password *" id="password" type="password" required autocomplete="current-password">
+                           <div class="password-show__toggle">
+                            <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                            <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                          </div> 
+                                                              <span id="error_pass" style="color:red;" ></span>
+
+                          
+                          <p id="showpassmessage"><p>
+                            <p id="showpassmessage2"><p>
+    
+                           {{-- @error('password')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
                            </span>
-                           @enderror
+                           @enderror --}}
                            <span  class="focus-input100"></span>
                         </div>
 
-                        <div class="wrap-input100 validate-input">
-                           <input class="input100" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password" value="{{old('password')}}" id="confirm_password" type="password" required autocomplete="current-password">
-                                        <p id="showmessage"><p>
-           @error('password_confirmation')
+                        </div>
+
+                        <div class="wrap-input100 validate-input form-group">
+                            <div class="password-show">
+
+                           <input class="input100 form-control" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password *" value="{{old('password_confirmation')}}" id="confirm_password" type="password" required autocomplete="current-password">
+                           <div class="password-show__toggle">
+                            <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                            <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                          </div>        
+                           <p id="showmessage"><p>
+           {{-- @error('password_confirmation')
                            <span class="invalid-feedback" role="alert">
                            <strong>{{ $message }}</strong>
                            </span>
-                           @enderror
+                           @enderror --}}
 
                            <span  class="focus-input100"></span>
+                        </div>
+
                         </div>
 
 
@@ -113,29 +166,98 @@
          <!-- End PAGE -->
       </div>
 
-
-
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
 <script>
+
+    $(document).ready(function() {
+      $(".password-show__toggle").on("click", function(e) {
+        console.log("click");
+        if (
+          !$(this)
+            .parent()
+            .hasClass("show")
+        ) {
+          $(this)
+            .parent()
+            .addClass("show");
+          $(this)
+            .prev()
+            .attr("type", "text");
+        } else {
+          $(this)
+            .parent()
+            .removeClass("show");
+          $(this)
+            .prev()
+            .attr("type", "password");
+        }
+      });
+    });
+       </script>
+       
+
+<script type = "text/javascript" >  
+    function preventBack() { window.history.forward(); }  
+    setTimeout("preventBack()", 0);  
+    window.onunload = function () { null };  
+</script> 
+<script>
+
+function checkPasswordComplexity(pwd) {
+ var re = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/
+
+    if(pwd != '')  
+    {
+        
+      if(re.test(pwd) == false)
+      {
+           document.getElementById('showpassmessage2').style.color = 'red';
+   //         document.getElementById('showpassmessage2').innerHTML = 'passwords must be in alphanumeric format';
+        document.getElementById('showpassmessage2').innerHTML = 'Password must include at least one upper case letter, lower case letter, number, and special character';
+                                $('#submit').attr('disabled', 'disabled');
+   validatePass();
+      }
+      else
+      {
+             document.getElementById('showpassmessage2').innerHTML = '';
+                        $('#submit').attr('disabled', false);
+    validatePass();
+      }
+    }
+    else
+    {
+           document.getElementById('showpassmessage2').innerHTML = '';
+                        $('#submit').attr('disabled', false);
+      validatePass();
+
+    }
+}
+
 function validatePass() {
   var x = document.forms["myForm"]["password"].value;
   var y = document.forms["myForm"]["confirm_password"].value;
    document.getElementById('showmessage').innerHTML = '';
+   if(y != '')
+   {
     if (x == y) {
-    document.getElementById('password').border.color = 'green';
-    document.getElementById('confirm_password').border.color = 'green';
+   // document.getElementById('password').border.color = 'green';
+    //document.getElementById('confirm_password').border.color = 'green';
 
 
     } else {
         document.getElementById('showmessage').style.color = 'red';
-        document.getElementById('showmessage').innerHTML = 'passwords not matching';
+        document.getElementById('showmessage').innerHTML = 'Passwords not matching';
     }
+   }
 }
 </script>
 
 <script>
 function validatePassLength() {
   var x = document.forms["myForm"]["password"].value;
+     if(x != '')
+{
    if(x.length < 8)
    {
      document.getElementById('showpassmessage').style.color = 'red';
@@ -146,9 +268,16 @@ function validatePassLength() {
                    document.getElementById('showpassmessage').innerHTML = '';
 
    }
+}
+else
+{
+                   document.getElementById('showpassmessage').innerHTML = '';
+
+}
 
 }
 </script>
+
 
 
 <script>
@@ -159,7 +288,7 @@ function validateForm() {
     {
         if (x != y) {
             document.getElementById('showmessage').style.color = 'red';
-            document.getElementById('showmessage').innerHTML = 'passwords not matching';
+            document.getElementById('showmessage').innerHTML = 'Passwords not matching';
             var elmnt = document.getElementById("passlabel");
             elmnt.scrollIntoView();
             return false;
@@ -175,6 +304,8 @@ function validateForm() {
     }
 }
 </script>
+
+
       <!-- BACKGROUND-IMAGE CLOSED -->
       <!-- JQUERY JS -->
       <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
@@ -193,5 +324,8 @@ function validateForm() {
       <script src="{{URL::to('/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js')}}"></script>
       <!-- CUSTOM JS-->
       <script src="{{URL::to('/assets/js/custom.js')}}"></script>
+      
+      
+      
    </body>
 </html>

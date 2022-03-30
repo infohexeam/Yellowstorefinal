@@ -202,10 +202,29 @@
                                             <td>
                                                 {{ (new \App\Helpers\Helper)->orderTotalTax($d->order_id) }}
                                             </td>
-                                            <td>{{ $d->amount_reduced_by_coupon }}</td>
-                                            <td>{{ $d->reward_points_used }}</td>
+                                            <td>
+                                                @if(isset($d->amount_reduced_by_coupon))
+                                                {{ $d->amount_reduced_by_coupon }}
+                                                @else
+                                                ---
+                                                @endif
+                                                
+                                                </td>
+                                            <td>
+                                                @if(isset($d->reward_points_used))
+                                                {{ $d->reward_points_used }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
                                             
-                                            <td>{{ $d->delivery_boy_name }}</td>
+                                            <td>
+                                                @if(isset($d->delivery_boy_name))
+                                                {{ $d->delivery_boy_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if($d->delivery_status_id == 1)
                                                     Assigned
@@ -214,7 +233,7 @@
                                                 @elseif($d->delivery_status_id == 3)
                                                     Completed
                                                 @else
-                                                    --
+                                                    ---
                                                 @endif
                                             </td>
 

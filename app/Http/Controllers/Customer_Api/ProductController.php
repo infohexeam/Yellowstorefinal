@@ -209,7 +209,7 @@ class ProductController extends Controller
 
 
 
-                $productImages = Mst_product_image::where('product_id', $productData->product_id)->where('product_varient_id', 0)->get();
+                $productImages = Mst_product_image::where('product_id', $productData->product_id)->where('product_varient_id', 0)->orderBy('image_flag','DESC')->get();
                 foreach ($productImages as $pi) {
                     $pi->product_image = '/assets/uploads/products/base_product/base_image/' . $pi->product_image;
                 }
@@ -687,6 +687,8 @@ class ProductController extends Controller
 
 
                     $data['productData'] = $productData;
+                    
+                    
 
                     $data['attributesData'] = $attributesData;
 
@@ -719,7 +721,7 @@ class ProductController extends Controller
 
 
 
-                    $productImages = Mst_product_image::where('product_varient_id', $productVarientId)->get();
+                    $productImages = Mst_product_image::where('product_varient_id', $productVarientId)->orderBy('image_flag','DESC')->get();
                     foreach ($productImages as $pi) {
                         $pi->product_image = '/assets/uploads/products/base_product/base_image/' . $pi->product_image;
                     }
@@ -779,6 +781,16 @@ class ProductController extends Controller
                         //     $rvs->update();
 
                         // }
+                        
+                        
+                        $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
+                        ->where('product_id', $gData->product_id)
+                        ->get();
+                        foreach ($otherVariants as $r) {
+                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+                        }
+                        $data['otherVariants'] = $otherVariants;
+                    
 
                         $orderData = Trn_store_order::join('trn_order_items', 'trn_order_items.order_id', '=', 'trn_store_orders.order_id')
                             ->where('trn_order_items.product_varient_id', $productVarientId)
@@ -931,7 +943,7 @@ class ProductController extends Controller
                         $data['reviewData'] = $reviewData;
 
 
-                        $productImages = Mst_product_image::where('product_varient_id', $productVarientId)->get();
+                        $productImages = Mst_product_image::where('product_varient_id', $productVarientId)->orderBy('image_flag','DESC')->get();
                         foreach ($productImages as $pi) {
                             $pi->product_image = '/assets/uploads/products/base_product/base_image/' . $pi->product_image;
                         }
@@ -1444,6 +1456,13 @@ class ProductController extends Controller
                     $data['totalusedPoints']  = $totalusedPoints;
                 else
                     $data['totalusedPoints']  = '0';
+
+                $totalAdminRedeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+
+                if ($totalAdminRedeemedPoints >= 0)
+                    $data['totalAdminRedeemedPoints']  = $totalAdminRedeemedPoints;
+                else
+                    $data['totalAdminRedeemedPoints']  = '0';
 
 
                 $data['customerRewards'] = Trn_customer_reward::where('customer_id', $request->customer_id)
@@ -2115,7 +2134,7 @@ class ProductController extends Controller
                     $data['reviewData'] = $reviewData;
 
 
-                    $productImages = Mst_product_image::where('product_varient_id', $request->product_varient_id)->get();
+                    $productImages = Mst_product_image::where('product_varient_id', $request->product_varient_id)->orderBy('image_flag','DESC')->get();
                     foreach ($productImages as $pi) {
                         $pi->product_image = '/assets/uploads/products/base_product/base_image/' . $pi->product_image;
                     }
@@ -2272,7 +2291,7 @@ class ProductController extends Controller
 
                         $data['reviewData'] = $reviewData;
 
-                        $productImages = Mst_product_image::where('product_varient_id', $request->product_varient_id)->get();
+                        $productImages = Mst_product_image::where('product_varient_id', $request->product_varient_id)->orderBy('image_flag','DESC')->get();
                         foreach ($productImages as $pi) {
                             $pi->product_image = '/assets/uploads/products/base_product/base_image/' . $pi->product_image;
                         }
@@ -2459,6 +2478,9 @@ class ProductController extends Controller
                                 } else {
                                     $ratingData = $sumRating / $countRating;
                                 }
+                                
+                                  $product->variantCount = Helper::variantCount($product->product_id);
+                            $product->attrCount = Helper::varAttrCount($product->product_varient_id);
 
                                 $product->rating = number_format((float)$ratingData, 2, '.', '');
                                 $product->ratingCount = $countRating;
@@ -2611,6 +2633,10 @@ class ProductController extends Controller
 
                                     $product->rating = number_format((float)$ratingData, 2, '.', '');
                                     $product->ratingCount = $countRating;
+                                    
+                                     $product->variantCount = Helper::variantCount($product->product_id);
+                            $product->attrCount = Helper::varAttrCount($product->product_varient_id);
+                            
                                     $listProductsFinal[] = $product;
                                 }
                             }
@@ -2690,79 +2716,181 @@ class ProductController extends Controller
 
 
 
-                        $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
-
-                        if (isset($latitude) && ($longitude)) {
-                            $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
-                                                        * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
-                                                        + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                            $productData = $productData->orderBy('distance');
-                        }
-
-                        if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                    ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                    // ->select(
+                    //     'mst_store_products.product_id',
+                    //     'mst_store_products.product_type',
+                    //     'mst_store_products.service_type',
+                    //     'mst_store_products.product_name',
+                    //     'mst_store_products.product_code',
+                    //     'mst_store_products.product_base_image',
+                    //     'mst_store_products.show_in_home_screen',
+                    //     'mst_store_products.product_status',
+                    //     'mst_store_product_varients.product_varient_id',
+                    //     'mst_store_product_varients.variant_name',
+                    //     'mst_store_product_varients.product_varient_price',
+                    //     'mst_store_product_varients.product_varient_offer_price',
+                    //     'mst_store_product_varients.product_varient_base_image',
+                    //     'mst_store_product_varients.stock_count',
+                    //     'mst_store_product_varients.store_id'
+                    // );
+                if (isset($latitude) && ($longitude)) {
+                    $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                                    * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                                    + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                    $productData = $productData->orderBy('distance');
+                }
+                
+                 if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
                             $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
                         }
+                        
+                $productData = $productData->where('mst_store_products.product_status', 1)
+                    ->where('mst_store_product_varients.stock_count', '>', 0)
+                                             ->where('mst_store_products.product_cat_id', $category_id)
+                ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1)
+                    ->where('mst_store_products.show_in_home_screen', 1)->get();
+                $productDataFinal = array();
+                foreach ($productData as $offerProduct) {
+                    $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                    $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                    $storeData = Mst_store::find($offerProduct->store_id);
+                    $offerProduct->store_name = $storeData->store_name;
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                    if ($countRating == 0) {
+                        $countRating = 1;
+                    }
+                    $ratingData = $sumRating / $countRating;
+                    $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                    $offerProduct->ratingCount = $countRating;
+                    $productDataFinal[] =   $offerProduct;
+                }
+                $data['offerProducts']  =    $productDataFinal;
+                
 
-                        $productData = $productData->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->where('mst_store_products.product_cat_id', $category_id)
-                            ->where('mst_store_products.show_in_home_screen', 1)->get();
-                        $productDataFinal = array();
-                        $stockCount = 0;
-                        foreach ($productData as $offerProduct) {
 
-                            if (Helper::productStock($offerProduct->product_id) > 0) {
-                                $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                                $storeData = Mst_store::find($offerProduct->store_id);
-                                $offerProduct->store_name = $storeData->store_name;
-                                $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                                $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                                $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
-                                $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
-                                $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
-                                $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
-
-                                $productDataFinal[] =   $offerProduct;
-                            }
-                        }
-                        $data['offerProducts']  =    $productDataFinal;
+                        // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
 
-                        $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                        // if (isset($latitude) && ($longitude)) {
+                        //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                        //                                 * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                        //                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                        //     $productData = $productData->orderBy('distance');
+                        // }
 
+                        // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                        //     $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                        // }
+
+                        // $productData = $productData->where('mst_store_products.product_status', 1)
+                        //     ->where('mst_store_products.store_id', $store_id)
+                        //     ->where('mst_store_products.product_cat_id', $category_id)
+                        //     ->where('mst_store_products.show_in_home_screen', 1)->get();
+                        // $productDataFinal = array();
+                        // $stockCount = 0;
+                        // foreach ($productData as $offerProduct) {
+
+                        //     if (Helper::productStock($offerProduct->product_id) > 0) {
+                        //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        //         $storeData = Mst_store::find($offerProduct->store_id);
+                        //         $offerProduct->store_name = $storeData->store_name;
+                        //         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                        //         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                        //         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                        //         $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                        //         $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                        //         $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
+                        //         $productDataFinal[] =   $offerProduct;
+                        //     }
+                        // }
+                        // $data['offerProducts']  =    $productDataFinal;
+
+
+                        // $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+
+                        // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                        //     $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                        // }
+
+                        // $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                        //     ->where('mst_store_products.product_cat_id', $category_id)
+                        //     ->where('mst_store_products.store_id', $store_id)
+                        //     ->get();
+
+                        // $allProductDataFinal = array();
+
+                        // foreach ($allProducts as $allProduct) {
+                        //     if (Helper::productStock($allProduct->product_id) > 0) {
+                        //         $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        //         $storeData = Mst_store::find($allProduct->store_id);
+                        //         $allProduct->store_name = $storeData->store_name;
+                        //         $allProduct->rating = Helper::productRating($allProduct->product_id);
+                        //         $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
+                        //         $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+
+                        //         $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                        //         $allProduct->productStock = Helper::productStock($allProduct->product_id);
+
+                        //         $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                        //         $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                        //         $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
+
+                        //         $allProductDataFinal[] =   $allProduct;
+                        //     }
+                        // }
+
+                        // $data['listProducts']  = $allProductDataFinal;
+                        
+                        
+                        
+                        
+                         $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                        
                         if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
                             $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
                         }
 
+
                         $allProducts = $allProducts->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.product_cat_id', $category_id)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->get();
+                        ->where('mst_store_products.store_id', $store_id)
+                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                        ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_product_varients.is_base_variant', 1)
+                        ->where('mst_store_products.product_cat_id', $category_id)
+                        ->get();
 
-                        $allProductDataFinal = array();
+                    foreach ($allProducts as $allProduct) {
+                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($allProduct->store_id);
+                        $allProduct->store_name = $storeData->store_name;
+                        
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->count();
+        
+                                if ($countRating == 0) {
+                                    $ratingData = $sumRating / 1;
+                                } else {
+                                    $ratingData = $sumRating / $countRating;
+                                }
+        
+                                $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                                $allProduct->ratingCount = $countRating;
+                                
+                                 $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                            $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
+                            
+                        
+                    }
 
-                        foreach ($allProducts as $allProduct) {
-                            if (Helper::productStock($allProduct->product_id) > 0) {
-                                $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
-                                $storeData = Mst_store::find($allProduct->store_id);
-                                $allProduct->store_name = $storeData->store_name;
-                                $allProduct->rating = Helper::productRating($allProduct->product_id);
-                                $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
-                                $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-
-                                $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
-                                $allProduct->productStock = Helper::productStock($allProduct->product_id);
-
-                                $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
-                                $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
-                                $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
-
-                                $allProductDataFinal[] =   $allProduct;
-                            }
-                        }
-
-                        $data['listProducts']  = $allProductDataFinal;
+                    $data['listProducts']  = $allProducts;
+                    
 
 
 
@@ -2815,79 +2943,169 @@ class ProductController extends Controller
 
 
 
-                            $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                            // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
+                            // if (isset($latitude) && ($longitude)) {
+                            //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                            //                             * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                            //                             + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                            //     $productData = $productData->orderBy('distance');
+                            // }
+
+                            // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                            //     $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                            // }
+
+                            // $productData = $productData->where('mst_store_products.product_status', 1)
+                            //     ->where('mst_store_products.store_id', $store_id)
+                            //     ->where('mst_store_products.product_cat_id', $category_id)
+                            //     ->where('mst_store_products.show_in_home_screen', 1)->get();
+                            // $productDataFinal = array();
+                            // $stockCount = 0;
+                            // foreach ($productData as $offerProduct) {
+
+                            //     if (Helper::productStock($offerProduct->product_id) > 0) {
+                            //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                            //         $storeData = Mst_store::find($offerProduct->store_id);
+                            //         $offerProduct->store_name = $storeData->store_name;
+                            //         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                            //         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                            //         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                            //         $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                            //         $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                            //         $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
+                            //         $productDataFinal[] =   $offerProduct;
+                            //     }
+                            // }
+                            // $data['offerProducts']  =    $productDataFinal;
+                            
+                            
+                            
+                             $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                                ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                               
                             if (isset($latitude) && ($longitude)) {
                                 $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
-                                                        * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
-                                                        + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                                                * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                                                + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                                 $productData = $productData->orderBy('distance');
                             }
-
-                            if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                                $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
-                            }
-
+                            
+                             if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                                        $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                                    }
+                                    
                             $productData = $productData->where('mst_store_products.product_status', 1)
-                                ->where('mst_store_products.store_id', $store_id)
-                                ->where('mst_store_products.product_cat_id', $category_id)
+                                ->where('mst_store_product_varients.stock_count', '>', 0)
+                                                         ->where('mst_store_products.product_cat_id', $category_id)
+                            ->where('mst_store_product_varients.is_removed', 0)
+                                ->where('mst_store_product_varients.is_base_variant', 1)
                                 ->where('mst_store_products.show_in_home_screen', 1)->get();
                             $productDataFinal = array();
-                            $stockCount = 0;
                             foreach ($productData as $offerProduct) {
-
-                                if (Helper::productStock($offerProduct->product_id) > 0) {
-                                    $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                                    $storeData = Mst_store::find($offerProduct->store_id);
-                                    $offerProduct->store_name = $storeData->store_name;
-                                    $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                                    $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                                    $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
-
-                                    $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
-                                    $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
-                                    $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
-
-                                    $productDataFinal[] =   $offerProduct;
+                                $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                                $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                                $storeData = Mst_store::find($offerProduct->store_id);
+                                $offerProduct->store_name = $storeData->store_name;
+                                
+                                $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                                $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
+        
+                                if ($countRating == 0) {
+                                    $ratingData = $sumRating / 1;
+                                } else {
+                                    $ratingData = $sumRating / $countRating;
                                 }
+        
+                                $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                                $offerProduct->ratingCount = $countRating;
+                        
+                        
+                                $productDataFinal[] =   $offerProduct;
                             }
                             $data['offerProducts']  =    $productDataFinal;
+                
 
 
 
-                            $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                            // $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
-                            if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                                $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
-                            }
+                            // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                            //     $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                            // }
 
-                            $allProducts = $allProducts->where('mst_store_products.product_status', 1)
-                                ->where('mst_store_products.product_cat_id', $category_id)
-                                ->where('mst_store_products.store_id', $store_id)
-                                ->get();
+                            // $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                            //     ->where('mst_store_products.product_cat_id', $category_id)
+                            //     ->where('mst_store_products.store_id', $store_id)
+                            //     ->get();
 
-                            $allProductDataFinal = array();
+                            // $allProductDataFinal = array();
 
-                            foreach ($allProducts as $allProduct) {
-                                if (Helper::productStock($allProduct->product_id) > 0) {
-                                    $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
-                                    $storeData = Mst_store::find($allProduct->store_id);
-                                    $allProduct->store_name = $storeData->store_name;
-                                    $allProduct->rating = Helper::productRating($allProduct->product_id);
-                                    $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
-                                    $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-                                    $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
-                                    $allProduct->productStock = Helper::productStock($allProduct->product_id);
+                            // foreach ($allProducts as $allProduct) {
+                            //     if (Helper::productStock($allProduct->product_id) > 0) {
+                            //         $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                            //         $storeData = Mst_store::find($allProduct->store_id);
+                            //         $allProduct->store_name = $storeData->store_name;
+                            //         $allProduct->rating = Helper::productRating($allProduct->product_id);
+                            //         $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
+                            //         $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+                            //         $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                            //         $allProduct->productStock = Helper::productStock($allProduct->product_id);
 
-                                    $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
-                                    $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
-                                    $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
+                            //         $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                            //         $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                            //         $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
 
-                                    $allProductDataFinal[] =   $allProduct;
-                                }
-                            }
+                            //         $allProductDataFinal[] =   $allProduct;
+                            //     }
+                            // }
 
-                            $data['listProducts']  = $allProductDataFinal;
+                            // $data['listProducts']  = $allProductDataFinal;
+                            
+                            
+                            
+                            $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                        
+                        if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                            $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                        }
+
+
+                        $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                        ->where('mst_store_products.store_id', $store_id)
+                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                        ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_product_varients.is_base_variant', 1)
+                        ->where('mst_store_products.product_cat_id', $category_id)
+                        ->get();
+
+                    foreach ($allProducts as $allProduct) {
+                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($allProduct->store_id);
+                        $allProduct->store_name = $storeData->store_name;
+                        
+                       $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->count();
+
+                        if ($countRating == 0) {
+                            $ratingData = $sumRating / 1;
+                        } else {
+                            $ratingData = $sumRating / $countRating;
+                        }
+
+                        $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                        $allProduct->ratingCount = $countRating;
+                        
+                          $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                            $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
+                            
+                    }
+
+                    $data['listProducts']  = $allProducts;
 
 
 
@@ -2986,115 +3204,154 @@ class ProductController extends Controller
 
 
 
-                    // $data['offerProducts']  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
-                    //     ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                    //     ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
-                    //     ->where('mst_store_products.product_status', 1)
-                    //     ->where('mst_store_products.store_id', $store_id)
-                    //     ->where('mst_store_product_varients.stock_count', '>', 0)
-                    //     //->orWhere('mst_store_products.product_type',2)
-                    //     ->where('mst_store_products.show_in_home_screen', 1)->get();
-
-                    // foreach ($data['offerProducts'] as $offerProduct) {
-                    //     $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                    //     $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
-                    //     $storeData = Mst_store::find($offerProduct->store_id);
-                    //     $offerProduct->store_name = $storeData->store_name;
-                    //     //    $offerProduct->rating = number_format((float)4.20, 1, '.', '');
-                    //     //    $offerProduct->ratingCount = 120;
-
-                    //     $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                    //     $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
-
-                    //     if ($countRating == 0) {
-                    //         $countRating = 1;
-                    //     }
-
-                    //     $ratingData = $sumRating / $countRating;
-
-                    //     $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
-                    //     $offerProduct->ratingCount = $countRating;
-                    // }
-
-
-                    $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                        ->select(
-                            'mst_store_products.product_id',
-                            'mst_store_products.product_type',
-                            'mst_store_products.service_type',
-                            'mst_store_products.product_name',
-                            'mst_store_products.product_code',
-                            'mst_store_products.product_base_image',
-                            'mst_store_products.show_in_home_screen',
-                            'mst_store_products.product_status',
-                            'mst_store_products.store_id'
-                        );
-
-                    if (isset($latitude) && ($longitude)) {
-                        $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
-                                        * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
-                                        + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                        $productData = $productData->orderBy('distance');
-                    }
-                    $productData = $productData->where('mst_store_products.product_status', 1)
+                    $data['offerProducts']  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                        // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
+                        ->where('mst_store_products.product_status', 1)
                         ->where('mst_store_products.store_id', $store_id)
+                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                        //->orWhere('mst_store_products.product_type',2)
+                          ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1)
                         ->where('mst_store_products.show_in_home_screen', 1)->get();
-                    $productDataFinal = array();
-                    $stockCount = 0;
-                    foreach ($productData as $offerProduct) {
 
-                        if (Helper::productStock($offerProduct->product_id) > 0) {
-                            $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                            $storeData = Mst_store::find($offerProduct->store_id);
-                            $offerProduct->store_name = $storeData->store_name;
-                            $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                            $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                            $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                    foreach ($data['offerProducts'] as $offerProduct) {
+                        $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($offerProduct->store_id);
+                        $offerProduct->store_name = $storeData->store_name;
+                        //    $offerProduct->rating = number_format((float)4.20, 1, '.', '');
+                        //    $offerProduct->ratingCount = 120;
 
-                            $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
-                            $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
-                            $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+                       $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
 
-                            $productDataFinal[] =   $offerProduct;
+                        if ($countRating == 0) {
+                            $ratingData = $sumRating / 1;
+                        } else {
+                            $ratingData = $sumRating / $countRating;
                         }
+
+                        $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                        $offerProduct->ratingCount = $countRating;
                     }
-                    $data['offerProducts']  =    $productDataFinal;
+
+
+                    // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                    //     ->select(
+                    //         'mst_store_products.product_id',
+                    //         'mst_store_products.product_type',
+                    //         'mst_store_products.service_type',
+                    //         'mst_store_products.product_name',
+                    //         'mst_store_products.product_code',
+                    //         'mst_store_products.product_base_image',
+                    //         'mst_store_products.show_in_home_screen',
+                    //         'mst_store_products.product_status',
+                    //         'mst_store_products.store_id'
+                    //     );
+
+                    // if (isset($latitude) && ($longitude)) {
+                    //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                    //                     * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                    //                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                    //     $productData = $productData->orderBy('distance');
+                    // }
+                    // $productData = $productData->where('mst_store_products.product_status', 1)
+                    //     ->where('mst_store_products.store_id', $store_id)
+                    //     ->where('mst_store_products.show_in_home_screen', 1)->get();
+                    // $productDataFinal = array();
+                    // $stockCount = 0;
+                    // foreach ($productData as $offerProduct) {
+
+                    //     if (Helper::productStock($offerProduct->product_id) > 0) {
+                    //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                    //         $storeData = Mst_store::find($offerProduct->store_id);
+                    //         $offerProduct->store_name = $storeData->store_name;
+                    //         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                    //         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                    //         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                    //         $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                    //         $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                    //         $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
+                    //         $productDataFinal[] =   $offerProduct;
+                    //     }
+                    // }
+                    // $data['offerProducts']  =    $productDataFinal;
 
 
                     $data['recentlyVisitedProducts'] = [];
                     $data['purchasedProducts']  = [];
-
-
-
-
-                    $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-
-                    $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                    
+                    
+                    
+                    
+                     $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                        // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
+                        ->where('mst_store_products.product_status', 1)
                         ->where('mst_store_products.store_id', $store_id)
+                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                          ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1)
                         ->get();
 
-                    $allProductDataFinal = array();
-
                     foreach ($allProducts as $allProduct) {
-                        if (Helper::productStock($allProduct->product_id) > 0) {
-                            $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
-                            $storeData = Mst_store::find($allProduct->store_id);
-                            $allProduct->store_name = $storeData->store_name;
-                            $allProduct->rating = Helper::productRating($allProduct->product_id);
-                            $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
-                            $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-                            $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
-                            $allProduct->productStock = Helper::productStock($allProduct->product_id);
+                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($allProduct->store_id);
+                        $allProduct->store_name = $storeData->store_name;
+                        
+                       $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->count();
 
-                            $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
-                            $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
-                            $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
-
-                            $allProductDataFinal[] =   $allProduct;
+                        if ($countRating == 0) {
+                            $ratingData = $sumRating / 1;
+                        } else {
+                            $ratingData = $sumRating / $countRating;
                         }
+
+                        $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                        $allProduct->ratingCount = $countRating;
+                        
+                        $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                            $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
+                
+                
                     }
 
-                    $data['allProducts']  = $allProductDataFinal;
+                    $data['allProducts']  = $allProducts;
+
+
+
+                //   $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                //     $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                //         ->where('mst_store_products.store_id', $store_id)
+                //         ->get();
+
+                //     $allProductDataFinal = array();
+
+                //     foreach ($allProducts as $allProduct) {
+                //         if (Helper::productStock($allProduct->product_id) > 0) {
+                //             $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                //             $storeData = Mst_store::find($allProduct->store_id);
+                //             $allProduct->store_name = $storeData->store_name;
+                //             $allProduct->rating = Helper::productRating($allProduct->product_id);
+                //             $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
+                //             $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+                //             $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                //             $allProduct->productStock = Helper::productStock($allProduct->product_id);
+
+                //             $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                //             $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                //             $allPr oduct->attrCount = Helper::attrCount($allProduct->product_id);
+
+                //             $allProductDataFinal[] =   $allProduct;
+                //         }
+                //     }
+
+                //     $data['allProducts']  = $allProductDataFinal;
 
 
 
@@ -3132,14 +3389,11 @@ class ProductController extends Controller
                             $data['storeInfo']->district_name = '';
 
 
-
-
-                        if (isset($request->latitude) && ($request->longitude)) {
-                            $latitude = $request->latitude;
-                            $longitude = $request->longitude;
-                        } else {
                             $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
 
+
+                        if (isset($cusAddData->latitude) && ($cusAddData->longitude)) {
+                            
                             if (isset($cusAddData)) {
                                 $cusAddDataLat =  $cusAddData->latitude;
                                 $cusAddDataLog =  $cusAddData->longitude;
@@ -3150,6 +3404,10 @@ class ProductController extends Controller
 
                             $latitude = $cusAddDataLat;
                             $longitude = $cusAddDataLog;
+                            
+                        } else {
+                            $latitude = $request->latitude;
+                            $longitude = $request->longitude;
                         }
 
                         if (isset($latitude) && ($longitude)) {
@@ -3196,58 +3454,98 @@ class ProductController extends Controller
                         foreach ($data['categoriesList'] as $cat) {
                             $cat->category_icon = '/assets/uploads/category/icons/' . $cat->category_icon;
                         }
+                        
+                        
+                        
+                     $data['offerProducts']  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                        // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
+                        ->where('mst_store_products.product_status', 1)
+                        ->where('mst_store_products.store_id', $store_id)
+                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                        //->orWhere('mst_store_products.product_type',2)
+                          ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1)
+                        ->where('mst_store_products.show_in_home_screen', 1)->get();
 
+                    foreach ($data['offerProducts'] as $offerProduct) {
+                        $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($offerProduct->store_id);
+                        $offerProduct->store_name = $storeData->store_name;
+                        //    $offerProduct->rating = number_format((float)4.20, 1, '.', '');
+                        //    $offerProduct->ratingCount = 120;
 
-                        $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                            ->select(
-                                'mst_store_products.product_id',
-                                'mst_store_products.product_type',
-                                'mst_store_products.service_type',
-                                'mst_store_products.product_name',
-                                'mst_store_products.product_code',
-                                'mst_store_products.product_base_image',
-                                'mst_store_products.show_in_home_screen',
-                                'mst_store_products.product_status',
-                                'mst_store_products.store_id'
-                            );
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
 
-                        if (isset($latitude) && ($longitude)) {
-                            $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
-                                            * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
-                                            + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                            $productData = $productData->orderBy('distance');
+                        if ($countRating == 0) {
+                            $ratingData = $sumRating / 1;
+                        } else {
+                            $ratingData = $sumRating / $countRating;
                         }
-                        $productData = $productData->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->where('mst_store_products.show_in_home_screen', 1)->get();
-                        $productDataFinal = array();
-                        $stockCount = 0;
-                        foreach ($productData as $offerProduct) {
 
-                            if (Helper::productStock($offerProduct->product_id) > 0) {
-                                $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                                $storeData = Mst_store::find($offerProduct->store_id);
-                                $offerProduct->store_name = $storeData->store_name;
-                                $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                                $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                                $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                        $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                        $offerProduct->ratingCount = $countRating;
+                    }
+                    
 
-                                $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
-                                $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
-                                $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
 
-                                $productDataFinal[] =   $offerProduct;
-                            }
-                        }
-                        $data['offerProducts']  =    $productDataFinal;
+                        // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                        //     ->select(
+                        //         'mst_store_products.product_id',
+                        //         'mst_store_products.product_type',
+                        //         'mst_store_products.service_type',
+                        //         'mst_store_products.product_name',
+                        //         'mst_store_products.product_code',
+                        //         'mst_store_products.product_base_image',
+                        //         'mst_store_products.show_in_home_screen',
+                        //         'mst_store_products.product_status',
+                        //         'mst_store_products.store_id'
+                        //     );
+
+                        // if (isset($latitude) && ($longitude)) {
+                        //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                        //                     * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                        //                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                        //     $productData = $productData->orderBy('distance');
+                        // }
+                        // $productData = $productData->where('mst_store_products.product_status', 1)
+                        //     ->where('mst_store_products.store_id', $store_id)
+                        //     ->where('mst_store_products.show_in_home_screen', 1)->get();
+                        // $productDataFinal = array();
+                        // $stockCount = 0;
+                        // foreach ($productData as $offerProduct) {
+
+                        //     if (Helper::productStock($offerProduct->product_id) > 0) {
+                        //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        //         $storeData = Mst_store::find($offerProduct->store_id);
+                        //         $offerProduct->store_name = $storeData->store_name;
+                        //         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                        //         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                        //         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                        //         $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                        //         $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                        //         $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
+                        //         $productDataFinal[] =   $offerProduct;
+                        //     }
+                        // }
+                        // $data['offerProducts']  =    $productDataFinal;
 
                         $recentlyVisitedProducts  = Trn_RecentlyVisitedProducts::join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
-                            ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
+                            ->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                      ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
 
                             ->where('trn__recently_visited_products.customer_id', $request->customer_id)
                             ->where('mst_store_products.store_id', $store_id)
 
                             ->where('mst_store_products.product_status', 1)
+                             ->where('mst_store_product_varients.is_removed', 0)
+                             ->where('mst_store_products.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1)
+                    
                             // ->groupBy('trn__recently_visited_products.product_id')
                             ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
                             ->orderBy('trn__recently_visited_products.created_at', 'DESC')
@@ -3279,34 +3577,69 @@ class ProductController extends Controller
                         $data['recentlyVisitedProducts'] = $recentlyVisitedProductsArr;
 
 
-                        $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                        // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
+                        ->where('mst_store_products.product_status', 1)
+                        ->where('mst_store_products.store_id', $store_id)
+                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                          ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1)
+                        ->get();
 
-                        $allProducts = $allProducts->where('mst_store_products.product_status', 1)
-                            ->where('mst_store_products.store_id', $store_id)
-                            ->get();
+                    foreach ($allProducts as $allProduct) {
+                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($allProduct->store_id);
+                        $allProduct->store_name = $storeData->store_name;
+                        
+                      $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->count();
 
-                        $allProductDataFinal = array();
-
-                        foreach ($allProducts as $allProduct) {
-                            if (Helper::productStock($allProduct->product_id) > 0) {
-                                $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
-                                $storeData = Mst_store::find($allProduct->store_id);
-                                $allProduct->store_name = $storeData->store_name;
-                                $allProduct->rating = Helper::productRating($allProduct->product_id);
-                                $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
-                                $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
-                                $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
-                                $allProduct->productStock = Helper::productStock($allProduct->product_id);
-
-                                $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
-                                $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
-                                $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
-
-                                $allProductDataFinal[] =   $allProduct;
-                            }
+                        if ($countRating == 0) {
+                            $ratingData = $sumRating / 1;
+                        } else {
+                            $ratingData = $sumRating / $countRating;
                         }
 
-                        $data['allProducts']  = $allProductDataFinal;
+                        $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                        $allProduct->ratingCount = $countRating;
+                        
+                         $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                            $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
+                
+                    }
+
+                    $data['allProducts']  = $allProducts;
+
+                        //$allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+
+                        // $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                        //     ->where('mst_store_products.store_id', $store_id)
+                        //     ->get();
+
+                        // $allProductDataFinal = array();
+
+                        // foreach ($allProducts as $allProduct) {
+                        //     if (Helper::productStock($allProduct->product_id) > 0) {
+                        //         $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        //         $storeData = Mst_store::find($allProduct->store_id);
+                        //         $allProduct->store_name = $storeData->store_name;
+                        //         $allProduct->rating = Helper::productRating($allProduct->product_id);
+                        //         $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
+                        //         $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+                        //         $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                        //         $allProduct->productStock = Helper::productStock($allProduct->product_id);
+
+                        //         $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                        //         $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                        //         $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
+
+                        //         $allProductDataFinal[] =   $allProduct;
+                        //     }
+                        // }
+
+                        // $data['allProducts']  = $allProductDataFinal;
 
 
                         $PurproductData = Trn_store_order_item::select(
@@ -3410,8 +3743,39 @@ class ProductController extends Controller
                 $latitude = $request->latitude;
                 $longitude = $request->longitude;
 
-                // $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
-                //     ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                    ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                    
+                if (isset($latitude) && ($longitude)) {
+                    $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                                    * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                                    + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                    $productData = $productData->orderBy('distance');
+                }
+                $productData = $productData->where('mst_store_products.product_status', 1)
+                    ->where('mst_store_product_varients.stock_count', '>', 0)
+                 ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1)
+                    ->where('mst_store_products.show_in_home_screen', 1)->get();
+                $productDataFinal = array();
+                foreach ($productData as $offerProduct) {
+                    $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                    $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                    $storeData = Mst_store::find($offerProduct->store_id);
+                    $offerProduct->store_name = $storeData->store_name;
+                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
+                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                    if ($countRating == 0) {
+                        $countRating = 1;
+                    }
+                    $ratingData = $sumRating / $countRating;
+                    $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                    $offerProduct->ratingCount = $countRating;
+                    $productDataFinal[] =   $offerProduct;
+                }
+                $data['offerProducts']  =    $productDataFinal;
+
+                // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                 //     ->select(
                 //         'mst_store_products.product_id',
                 //         'mst_store_products.product_type',
@@ -3421,13 +3785,7 @@ class ProductController extends Controller
                 //         'mst_store_products.product_base_image',
                 //         'mst_store_products.show_in_home_screen',
                 //         'mst_store_products.product_status',
-                //         'mst_store_product_varients.product_varient_id',
-                //         'mst_store_product_varients.variant_name',
-                //         'mst_store_product_varients.product_varient_price',
-                //         'mst_store_product_varients.product_varient_offer_price',
-                //         'mst_store_product_varients.product_varient_base_image',
-                //         'mst_store_product_varients.stock_count',
-                //         'mst_store_product_varients.store_id'
+                //         'mst_store_products.store_id'
                 //     );
                 // if (isset($latitude) && ($longitude)) {
                 //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
@@ -3436,66 +3794,27 @@ class ProductController extends Controller
                 //     $productData = $productData->orderBy('distance');
                 // }
                 // $productData = $productData->where('mst_store_products.product_status', 1)
-                //     ->where('mst_store_product_varients.stock_count', '>', 0)
                 //     ->where('mst_store_products.show_in_home_screen', 1)->get();
                 // $productDataFinal = array();
+                // $stockCount = 0;
                 // foreach ($productData as $offerProduct) {
-                //     $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                //     $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
-                //     $storeData = Mst_store::find($offerProduct->store_id);
-                //     $offerProduct->store_name = $storeData->store_name;
-                //     $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                //     $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
-                //     if ($countRating == 0) {
-                //         $countRating = 1;
+
+                //     if (Helper::productStock($offerProduct->product_id) > 0) {
+                //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                //         $storeData = Mst_store::find($offerProduct->store_id);
+                //         $offerProduct->store_name = $storeData->store_name;
+                //         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                //         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                //         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                //         $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                //         $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                //         $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
+                //         $productDataFinal[] =   $offerProduct;
                 //     }
-                //     $ratingData = $sumRating / $countRating;
-                //     $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
-                //     $offerProduct->ratingCount = $countRating;
-                //     $productDataFinal[] =   $offerProduct;
                 // }
                 // $data['offerProducts']  =    $productDataFinal;
-
-                $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                    ->select(
-                        'mst_store_products.product_id',
-                        'mst_store_products.product_type',
-                        'mst_store_products.service_type',
-                        'mst_store_products.product_name',
-                        'mst_store_products.product_code',
-                        'mst_store_products.product_base_image',
-                        'mst_store_products.show_in_home_screen',
-                        'mst_store_products.product_status',
-                        'mst_store_products.store_id'
-                    );
-                if (isset($latitude) && ($longitude)) {
-                    $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
-                                    * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
-                                    + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                    $productData = $productData->orderBy('distance');
-                }
-                $productData = $productData->where('mst_store_products.product_status', 1)
-                    ->where('mst_store_products.show_in_home_screen', 1)->get();
-                $productDataFinal = array();
-                $stockCount = 0;
-                foreach ($productData as $offerProduct) {
-
-                    if (Helper::productStock($offerProduct->product_id) > 0) {
-                        $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                        $storeData = Mst_store::find($offerProduct->store_id);
-                        $offerProduct->store_name = $storeData->store_name;
-                        $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                        $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                        $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
-
-                        $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
-                        $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
-                        $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
-
-                        $productDataFinal[] =   $offerProduct;
-                    }
-                }
-                $data['offerProducts']  =    $productDataFinal;
 
 
                 $data['recentlyVisitedStores'] = [];
@@ -3623,107 +3942,38 @@ class ProductController extends Controller
                 $data['message'] = 'success';
                 $data['status'] = 1;
             } else {
-                if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                    $data['sliderImages'] =  Mst_CustomerAppBanner::select('banner_id', 'image', 'town_id', 'status', 'default_status')->where('default_status', 1)->where('store_id', 0)->where('status', 1)->get();
-                    foreach ($data['sliderImages'] as $img) {
-                        $img->image = '/assets/uploads/customer_banner/' . $img->image;
+                if (isset($request->customer_id) &&  $cusDataz = Trn_store_customer::find($request->customer_id)) {
+                    
+                    $sliderImages =  Mst_CustomerAppBanner::select('banner_id', 'image', 'town_id', 'status', 'default_status');
+                    
+                    
+                    $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)
+                    ->where('default_status', 1)->first();
+                    $pinCode = 0;
+                        if(isset($cusAddData->town_id)){
+                           $pinCode = $cusAddData->town_id;
+                        }elseif(isset($cusDataz->town_id)){
+                            $pinCode = $cusDataz->town_id;
+                        }else{
+                            $pinCode = 0;
+                        }
+                       // dd($pinCode);
+                    $sliderImages = $sliderImages->where('town_id',$pinCode )->orWhere('town_id',null)->where('status', 1)->get();
+                    
+                    //dd($sliderImages);
+                    
+                    foreach ($sliderImages as $img) {
+                        $img->image = '/assets/uploads/customer_banner/' . @$img->image;
                     }
+                    $data['sliderImages'] =  $sliderImages;
+                    
                     $data['BusinessTypes'] = Mst_business_types::select('business_type_id', 'business_type_name', 'business_type_icon', 'business_type_status')->where('business_type_status', 1)->orderBy('business_type_name', 'ASC')->get();
                     foreach ($data['BusinessTypes'] as $BT) {
                         $BT->business_type_icon = '/assets/uploads/business_type/icons/' . $BT->business_type_icon;
                     }
 
-                    // $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
-                    //     ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-                    //     ->select(
-                    //         'mst_store_products.product_id',
-                    //         'mst_store_products.product_type',
-                    //         'mst_store_products.service_type',
-                    //         'mst_store_products.product_name',
-                    //         'mst_store_products.product_code',
-                    //         'mst_store_products.product_base_image',
-                    //         'mst_store_products.show_in_home_screen',
-                    //         'mst_store_products.product_status',
-                    //         'mst_store_product_varients.product_varient_id',
-                    //         'mst_store_product_varients.variant_name',
-                    //         'mst_store_product_varients.product_varient_price',
-                    //         'mst_store_product_varients.product_varient_offer_price',
-                    //         'mst_store_product_varients.product_varient_base_image',
-                    //         'mst_store_product_varients.stock_count',
-                    //         'mst_store_product_varients.store_id'
-                    //     );
-
-                    // $productData = $productData->where('mst_store_products.product_status', 1)
-                    //     ->where('mst_store_product_varients.stock_count', '>', 0)
-                    //     //  ->orWhere('mst_store_products.product_type',2)
-
-                    //     ->where('mst_store_products.show_in_home_screen', 1);
-
-
-                    // if ((isset($request->customer_id)) && ($request->customer_id != 0)) {
-                    //     // near by store
-                    //     // dd($cusData);
-
-                    //     if (isset($request->latitude) && ($request->longitude)) {
-                    //         $latitude = $request->latitude;
-                    //         $longitude = $request->longitude;
-                    //     } else {
-                    //         $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
-                    //         $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
-                    //         if (isset($cusAddData)) {
-                    //             $cusAddDataLat =  $cusAddData->latitude;
-                    //             $cusAddDataLog =  $cusAddData->longitude;
-                    //         } else {
-                    //             $cusAddDataLat =  $cusData->latitude;
-                    //             $cusAddDataLog =  $cusData->longitude;
-                    //         }
-
-                    //         $latitude = $cusAddDataLat;
-                    //         $longitude = $cusAddDataLog;
-                    //     }
-
-                    //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
-                    //                 * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
-                    //                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                    //     $productData = $productData->orderBy('distance');
-                    // }
-
-                    // $productData = $productData->get();
-
-                    // $productDataFinal = array();
-
-                    // foreach ($productData as $offerProduct) {
-
-                    //     $timeslotdata = Helper::findHoliday($offerProduct->store_id);
-
-                    //     if ($timeslotdata == true) {
-
-                    //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                    //         $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
-                    //         $storeData = Mst_store::find($offerProduct->store_id);
-                    //         $offerProduct->store_name = $storeData->store_name;
-                    //         //$offerProduct->rating = number_format((float)4.20, 1, '.', '');
-                    //         //$offerProduct->ratingCount = 120;
-
-                    //         $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                    //         $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
-
-                    //         if ($countRating == 0) {
-                    //             $countRating = 1;
-                    //         }
-
-                    //         $ratingData = $sumRating / $countRating;
-
-                    //         $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
-                    //         $offerProduct->ratingCount = $countRating;
-                    //         $productDataFinal[] = $offerProduct;
-                    //     }
-                    // }
-                    // $data['offerProducts']  = $productDataFinal;
-
-
-
-                    $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                    $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                         ->select(
                             'mst_store_products.product_id',
                             'mst_store_products.product_type',
@@ -3733,12 +3983,28 @@ class ProductController extends Controller
                             'mst_store_products.product_base_image',
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
-                            'mst_store_products.store_id'
+                            'mst_store_product_varients.product_varient_id',
+                            'mst_store_product_varients.variant_name',
+                            'mst_store_product_varients.product_varient_price',
+                            'mst_store_product_varients.product_varient_offer_price',
+                            'mst_store_product_varients.product_varient_base_image',
+                            'mst_store_product_varients.stock_count',
+                            'mst_store_product_varients.store_id'
                         );
 
+                    $productData = $productData->where('mst_store_products.product_status', 1)
+                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                        //  ->orWhere('mst_store_products.product_type',2)
+
+                        ->where('mst_store_products.show_in_home_screen', 1)
+                    
+                    ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_base_variant', 1);
 
                     if ((isset($request->customer_id)) && ($request->customer_id != 0)) {
                         // near by store
+                        // dd($cusData);
+
                         if (isset($request->latitude) && ($request->longitude)) {
                             $latitude = $request->latitude;
                             $longitude = $request->longitude;
@@ -3752,35 +4018,110 @@ class ProductController extends Controller
                                 $cusAddDataLat =  $cusData->latitude;
                                 $cusAddDataLog =  $cusData->longitude;
                             }
+
                             $latitude = $cusAddDataLat;
                             $longitude = $cusAddDataLog;
                         }
+
                         $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                     * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $productData = $productData->orderBy('distance');
                     }
 
-                    $productData = $productData->where('mst_store_products.product_status', 1)
-                        ->where('mst_store_products.show_in_home_screen', 1)->get();
+                    $productData = $productData->get();
+
                     $productDataFinal = array();
-                    $stockCount = 0;
+
                     foreach ($productData as $offerProduct) {
-                        if (Helper::productStock($offerProduct->product_id) > 0) {
+
+                        $timeslotdata = Helper::findHoliday($offerProduct->store_id);
+
+                        if ($timeslotdata == true) {
+
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                            $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
                             $storeData = Mst_store::find($offerProduct->store_id);
                             $offerProduct->store_name = $storeData->store_name;
-                            $offerProduct->rating = Helper::productRating($offerProduct->product_id);
-                            $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
-                            $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                            //$offerProduct->rating = number_format((float)4.20, 1, '.', '');
+                            //$offerProduct->ratingCount = 120;
 
-                            $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
-                            $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
-                            $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
-                            $productDataFinal[] =   $offerProduct;
+                            $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
+                            $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+
+                            if ($countRating == 0) {
+                                $countRating = 1;
+                            }
+
+                            $ratingData = $sumRating / $countRating;
+
+                            $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                            $offerProduct->ratingCount = $countRating;
+                            $productDataFinal[] = $offerProduct;
                         }
                     }
-                    $data['offerProducts']  =    $productDataFinal;
+                    $data['offerProducts']  = $productDataFinal;
+
+
+
+                    // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+                    //     ->select(
+                    //         'mst_store_products.product_id',
+                    //         'mst_store_products.product_type',
+                    //         'mst_store_products.service_type',
+                    //         'mst_store_products.product_name',
+                    //         'mst_store_products.product_code',
+                    //         'mst_store_products.product_base_image',
+                    //         'mst_store_products.show_in_home_screen',
+                    //         'mst_store_products.product_status',
+                    //         'mst_store_products.store_id'
+                    //     );
+
+
+                    // if ((isset($request->customer_id)) && ($request->customer_id != 0)) {
+                    //     // near by store
+                    //     if (isset($request->latitude) && ($request->longitude)) {
+                    //         $latitude = $request->latitude;
+                    //         $longitude = $request->longitude;
+                    //     } else {
+                    //         $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
+                    //         $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
+                    //         if (isset($cusAddData)) {
+                    //             $cusAddDataLat =  $cusAddData->latitude;
+                    //             $cusAddDataLog =  $cusAddData->longitude;
+                    //         } else {
+                    //             $cusAddDataLat =  $cusData->latitude;
+                    //             $cusAddDataLog =  $cusData->longitude;
+                    //         }
+                    //         $latitude = $cusAddDataLat;
+                    //         $longitude = $cusAddDataLog;
+                    //     }
+                    //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                    //                 * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                    //                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                    //     $productData = $productData->orderBy('distance');
+                    // }
+
+                    // $productData = $productData->where('mst_store_products.product_status', 1)
+                    //     ->where('mst_store_products.show_in_home_screen', 1)->get();
+                    // $productDataFinal = array();
+                    // $stockCount = 0;
+                    // foreach ($productData as $offerProduct) {
+                    //     if (Helper::productStock($offerProduct->product_id) > 0) {
+                    //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                    //         $storeData = Mst_store::find($offerProduct->store_id);
+                    //         $offerProduct->store_name = $storeData->store_name;
+                    //         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                    //         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                    //         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+
+                    //         $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                    //         $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                    //         $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+                    //         $productDataFinal[] =   $offerProduct;
+                    //     }
+                    // }
+                    // $data['offerProducts']  =    $productDataFinal;
 
 
 
@@ -4747,7 +5088,7 @@ class ProductController extends Controller
                     $data['productVariantsDetails']->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $data['productVariantsDetails']->product_varient_base_image;
                     $data['productVariantsDetails']->variantImages = Mst_product_image::where('product_varient_id', $data['productVariantsDetails']->product_varient_id)
                         ->select('product_image_id', 'product_image')
-                        ->get();
+                        ->orderBy('image_flag','DESC')->get();
                     foreach ($data['productVariantsDetails']->variantImages as $varImg) {
                         $varImg->product_image = '/assets/uploads/products/base_product/base_image/' . $varImg->product_image;
                     }

@@ -1,5 +1,14 @@
 @extends('admin.layouts.app')
 @section('content')
+@php
+$date = Carbon\Carbon::now();
+use App\Models\admin\Trn_store_order;
+use App\Models\admin\Sys_store_order_status;
+use App\Models\admin\Mst_delivery_boy;
+use App\User;
+
+@endphp
+
 <div class="row" id="user-profile">
    <div class="col-lg-12">
       <div class="card">
@@ -33,6 +42,7 @@
                         <li class=""><a href="#tab-51" class="active show"
                            data-toggle="tab">Profile</a></li>
                             <li><a href="#tab-61" data-toggle="tab" class="">Stores</a></li>
+                            <li><a href="#tab-71" data-toggle="tab" class="">Delivery boy orders</a></li>
 
                      </ul>
                   </div>
@@ -87,7 +97,7 @@
                                  <tr>
                                     <td><strong>District :</strong> {{ $delivery_boy->district['district_name']}}</td>
                                  </tr>
-                                 <tr>
+                         {{--        <tr>
                                     <td><strong>Availability :</strong>
                                     @php
                                        @$avilabilityArray = explode(",", @$delivery_boy->delivery_boy_availability_id);
@@ -108,7 +118,7 @@
                                        {{ @$av->availabilable_days }} 
                                     @endforeach
                                       </td>
-                                 </tr>
+                                 </tr> --}}
                                   <tr>
                                     <td><strong>Commission Amount (Monthly) : </strong>
                                      {{ @$delivery_boy->delivery_boy_commision}}
@@ -176,6 +186,72 @@
                         </div>
                      </div>
                   </div>
+                  
+                  
+                  <div class="tab-pane" id="tab-71">
+                     <div id="profile-log-switch">
+                        <div class="media-heading">
+                           <!--<h5><strong>Delivery boy Orders</strong></h5>-->
+                        </div>
+                         <div class="table-responsive">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                              <thead>
+                     <tr>
+                        <th class="wd-15p">SL.No</th>
+                        <th class="wd-15p">{{ __('Order Date') }}</th>
+
+                         <th class="wd-15p">{{ __('Order Number') }}</th>
+                        <!--<th class="wd-15p">{{ __('Delivery Boy') }}</th>-->
+                        <!--<th class="wd-15p">{{ __('Delivery Mobile') }}</th>-->
+                        <th class="wd-20p">{{__('Store')}}</th>
+                        <th class="wd-20p">{{__('Subadmin')}}</th>
+
+                         <th class="wd-20p">{{__('Status')}}</th>
+                        <!--<th class="wd-15p">{{__('Action')}}</th>-->
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @php
+                     $i = 0;
+                     @endphp
+                     @foreach ($delivery_boy_orders as $delivery_boy_order)
+                     <tr>
+                        @php
+                           $orderDAta = Trn_store_order::find($delivery_boy_order->order_id);
+                           $dBoyDAta = Mst_delivery_boy::find($delivery_boy_order->delivery_boy_id);
+                           $subadmin = User::find($delivery_boy_order->subadmin_id);
+                           $statusInfo = Sys_store_order_status::find($delivery_boy_order->status_id);
+                        @endphp
+                        <td>{{ ++$i }}</td>
+                        <td>{{ \Carbon\Carbon::parse($delivery_boy_order->created_at)->format('M d, Y')}}</td>
+                        <td>{{ @$orderDAta->order_number}}</td>
+                        <!--<td>{{ @$dBoyDAta->delivery_boy_name }}</td>-->
+                        <!--<td>{{ @$dBoyDAta->delivery_boy_mobile }}</td>-->
+                        <td>{{@$delivery_boy_order->store['store_name']}}</td>
+                        <td>{{@$subadmin->name}}</td>
+
+
+
+                       <td>
+                            {{@$statusInfo->status }}
+                       </td>
+                       <!--<td>-->
+                       <!-- <a class="btn btn-sm btn-blue"href="{{url('admin/order/view/'.Crypt::encryptString($delivery_boy_order->order_id))}}">View</a>-->
+
+                       <!--</td>-->
+
+                        {{-- <td>
+                        <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewModal{{$delivery_boy_order->delivery_boy_order_id}}" > View</button>
+
+                        </td> --}}
+                     </tr>
+                     @endforeach
+                  </tbody>
+                </table>
+                        </div>
+                     </div>
+                 </div>
+                 
              </div>
 {{-- </div>
 </div> --}}

@@ -2,7 +2,7 @@
 @section('content')
 <div class="row" id="user-profile" style="min-height: 70vh;">
    <div class="col-lg-12">
-      <div class="card">
+      <div class="card" >
          <div class="card-body">
             <div class="wideget-user">
                <h4>{{$pageTitle}}</h4>
@@ -16,7 +16,7 @@
                      <ul class="nav">
                         <li class=""><a href="#tab-51" class="active show"
                            data-toggle="tab">Profile</a></li>
-                        <li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>
+                        <!--<li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>-->
                         <li><a href="#tab-71" data-toggle="tab" class="">Images</a></li>
                        <li><a href="#tab-81" data-toggle="tab" class="">Agencies</a></li>
                         <li><a href="#tab-91" data-toggle="tab" class="">Products</a></li>
@@ -29,7 +29,7 @@
          </div>
       </div>
       <input type="hidden" name="store_id" value="{{$store->store_id}}">
-      <div class="card">
+      <div class="card" style="min-height:70vh;">
          <div class="card-body">
             <div class="border-0">
                <div class="tab-content">
@@ -57,7 +57,7 @@
                                     <td><strong>Website Link:</strong> <a target="_balnk" href="{{ $store->store_website_link}}" >{{ $store->store_website_link}}</a></td>
                                  </tr>
                                     <tr>
-                                    <td><strong> PinCode:</strong> {{ $store->store_pincode}}</td>
+                                    <td><strong> Pincode:</strong> {{ $store->store_pincode}}</td>
                                  </tr>
                                  </tr>
                                 <tr>

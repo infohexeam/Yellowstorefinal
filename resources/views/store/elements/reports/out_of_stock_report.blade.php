@@ -127,14 +127,13 @@
                                             <th class="wd-15p">SL.No</th>
                                             <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Time</th>
-                                            <th class="wd-15p">Product</th>
-                                            <th class="wd-15p">Variant</th>
+                                            <th class="wd-15p">Product Name</th>
                                             <th class="wd-15p">Variant Price</th>
                                             <th class="wd-15p">Vendor</th>
                                             <th class="wd-15p">Category</th>
                                             <th class="wd-15p">Sub Category</th>
                                             <th class="wd-15p">Brand</th>
-                                            <th class="wd-15p">Product Status</th>
+                                            <!--<th class="wd-15p">Product Status</th>-->
                                           
                                        
                                          </tr>
@@ -157,20 +156,40 @@
                                             <td>{{ \Carbon\Carbon::parse($dateU)->format('d-m-Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($dateU)->format('h:i:s')}}</td>
 
-                                            <td>{{ $d->product_name }}</td>
                                             <td>{{ $d->variant_name }}</td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
-                                            <td>{{ $d->agency_name }}</td>
-                                            <td>{{ $d->category_name }}</td>
-                                            <td>{{ $d->sub_category_name }}</td>
-                                            <td>{{ $d->product_brand }}</td>
-                                            <td> 
-                                                @if($d->product_status == 0)
-                                                    Active
+                                            <td>
+                                                @if(isset($d->agency_name))
+                                                {{ $d->agency_name }}
                                                 @else
-                                                    Inactive
+                                                ---
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if(isset($d->category_name))
+                                                {{ $d->category_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($d->sub_category_name))
+                                                {{ $d->sub_category_name }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($d->product_brand))
+                                                {{ $d->product_brand }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
+                                            <!--<td> -->
+                                            <!--Inactive-->
+                                               
+                                            <!--</td>-->
                                             
 
                                         </tr>

@@ -26,11 +26,11 @@
                             @endif
                         <div class="card-body">
                                     <a  data-toggle="modal" data-target="#StockModal01" class="btn btn-block btn-info text-white">
-                                    <i class="fa fa-plus"></i> Add Town </a>
+                                    <i class="fa fa-plus"></i> Add Pincode </a>
                         @if(auth()->user()->user_role_id == 0)
-                        <a href=" {{ url('admin/town/restore-list') }}" class=" text-white btn btn-block btn-danger">
+                        <a href=" {{ url('admin/pincode/restore-list') }}" class=" text-white btn btn-block btn-danger">
                                    <i class="fa fa-recycle"></i>
-                                  Restore Town
+                                  Restore Pincode
                                 </a>
                         @endif
                                 <br>
@@ -59,7 +59,7 @@
                                         <td>
                                             <form action="{{route('admin.destroy_town',$data->town_id)}}" method="POST">
                                                 @csrf
-                                                <a href="{{url('admin/town/edit/'.$data->town_id)}}" class="btn btn-sm btn-cyan"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                                                <a href="{{url('admin/pincode/edit/'.$data->town_id)}}" class="btn btn-sm btn-cyan"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
 
                                                 @method('POST')
                                                 <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
@@ -98,7 +98,7 @@
                <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h5 class="modal-title" id="example-Modal3">Add New Town</h5>
+                        <h5 class="modal-title" id="example-Modal3">Add New Pincode</h5>
                         <button type="button" class="close" data-dismiss="modal" onclick="clearTax()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -131,8 +131,8 @@
 
                             </select>
 
-                  <label class="form-label">PIN Code</label>
-                    <input type="text" placeholder="PIN Code" id="town" required class="form-control" name="town_name" >
+                  <label class="form-label">PIN Code (6 Digit pin. Must not start with 0)</label>
+                    <input type="text" placeholder="Enter a 6 digit PIN Code" pattern="[1-9][0-9]{5}" id="town" required class="form-control" name="town_name" onkeypress="return isNumber(event)">
 
                     {{-- <label class="form-label">PIN Code</label>
                     <input type="text" placeholder="PIN Code" id="pin" required class="form-control" name="pin" > --}}
@@ -157,7 +157,7 @@
                <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h5 class="modal-title" id="example-Modal3">Edit Town</h5>
+                        <h5 class="modal-title" id="example-Modal3">Edit Pincode</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -194,6 +194,15 @@
 
 
 <script>
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+
 function clearText()
 {
       $('#state option:not(:first)').remove();
@@ -213,7 +222,7 @@ $(function(e) {
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Towns',
+                title: 'Pincodes',
                 footer: true,
                 exportOptions: {
                      columns: [0,1,2]
@@ -222,7 +231,7 @@ $(function(e) {
             },
             {
                 extend: 'excel',
-                title: 'Towns',
+                title: 'Pincodes',
                 footer: true,
                 exportOptions: {
                      columns: [0,1,2]

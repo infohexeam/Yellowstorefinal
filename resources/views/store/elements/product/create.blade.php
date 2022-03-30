@@ -200,8 +200,8 @@ input[type="file"] {
 
                      <div class="col-md-6">
                         <div class="form-group">
-                          <label class="form-label">Vendor *</label>
-                           <select required name="vendor_id" id="vendor_id" class="form-control"  >
+                          <label class="form-label">Vendor </label>
+                           <select  name="vendor_id" id="vendor_id" class="form-control"  >
                                  <option value="">Vendor</option>
                                 @foreach($agencies as $key)
                                 <option {{old('vendor_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id }}"> {{$key->agency_name }} </option>
@@ -416,7 +416,7 @@ function isCodeAvailable(value)
             var _token= $('input[name="_token"]').val();
         $.ajax({
           type:"GET",
-          url:"{{ url('product/ajax/is-code-available') }}?product_code="+value,
+          url:"{{ url('g-product/ajax/is-code-available') }}?product_code="+value,
 
 
           success:function(res){
@@ -588,12 +588,13 @@ let prAttrValue = $('#attr_value'+attid_2).val();
   if(prevAttrVal != "" && prAttrValue != ''){
       
    
-        $(".attrGroup"+mainKey).prop('disabled', true);
+        $(".attrGroup"+mainKey).attr('readonly',true);
+        
         // $("#attr_group"+att_id_val+(xx - 1)).prop('disabled', true);
 
             var id_number = parseInt(att_id_val. replace(/[^0-9. ]/g, ""));
           
-          $(wrapper).append('<div  class="row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute </label><select name="attr_group_id['+id_number+'][]" onchange="findValue(\''+attid+'\')"id="attr_group'+attid+'" class="attr_group attrGroup'+id_number+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option  value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value </label><select name="attr_value_id['+id_number+'][]"   id="attr_value'+attid+'" class="attr_value form-control" ><option value="">Value</option></select></div></div><a href="#" onclick="removeAttrRow('+mainKey+','+xx+')" class="remove_field ml-5 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+          $(wrapper).append('<div  class="row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute </label><select name="attr_group_id['+mainKey+'][]" onchange="findValue(\''+attid+'\')"id="attr_group'+attid+'" class="attr_group attrGroup'+id_number+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option  value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value </label><select name="attr_value_id['+mainKey+'][]"   id="attr_value'+attid+'" class="attr_value form-control" ><option value="">Value</option></select></div></div><a href="#" onclick="removeAttrRow('+mainKey+','+xx+')" class="remove_field ml-5 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
            ++xx;
  
       for(let i=0;i< ek.length; i++){
@@ -613,7 +614,7 @@ let prAttrValue = $('#attr_value'+attid_2).val();
   function removeAttrRow(x,y){
       console.log(x,y);
     //   console.log(".attrGroup"+x+"a"+(y-1));
-              $("#attr_group"+x+"a"+(y-1)).prop('disabled', false);
+              $("#attr_group"+x+"a"+(y-1)).attr('readonly', false);
 
   }
 
@@ -777,7 +778,7 @@ var agsc = 0;
          url:"{{ url('store/product/ajax/get_attr_value') }}?attr_group_id="+attr_group_id,
 
          success:function(res){
-           //alert(data);
+           console.log(res);
            if(res){
             $('#attr_value'+c).prop("diabled",false);
             $('#attr_value'+c).empty();

@@ -17,7 +17,7 @@
                         <li class=""><a href="#tab-51" class="active show"
                            data-toggle="tab">Store Information</a></li>
                        <li><a href="#tab-42" data-toggle="tab" class="">Change Password</a></li>
-                        <li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>
+                        <!--<li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>-->
                         <li><a href="#tab-71" data-toggle="tab" class="">Images</a></li>
                        <li><a href="#tab-81" data-toggle="tab" class="">Agencies</a></li>
                         <li><a id="dboyz" href="#tab-91" data-toggle="tab" class="">Delivery Boys</a></li>
@@ -154,9 +154,9 @@
                          </div>
                          <div class="col-md-6">
                          <div class="form-group">
-                              <label class="form-label">Town *</label>
+                              <label class="form-label">Pincode *</label>
                               <select name="store_town" required="" class="form-control" id="town">
-                                 <option  selected="" value="{{$store->town_id}}">  {{@$store->town->town_name}}</option>
+                                 <option  selected="" value="{{$store->town_id}}">  {{@$store->town['town_name']}}</option>
                               </select>
                            </div>
                         </div>
@@ -214,12 +214,12 @@
                            </div>
                      @endif
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                           <label class="form-label">Store License</label>
-                           <input type="text" class="form-control" name="store_document_license" value="{{old('store_document_license',@$store->store_doc->store_document_license)}}" placeholder="Store License">
-                        </div>
-                     </div>
+                    <!--<div class="col-md-6">-->
+                    <!--    <div class="form-group">-->
+                    <!--       <label class="form-label">Store License</label>-->
+                    <!--       <input type="text" class="form-control" name="store_document_license" value="{{old('store_document_license',@$store->store_doc->store_document_license)}}" placeholder="Store License">-->
+                    <!--    </div>-->
+                    <!-- </div>-->
 
 
                      <div class="col-md-6">
@@ -272,48 +272,48 @@
 
                  <br>
 
-                     <div class="card-body border">
-                       <div class="card-header">
-                  <h3 class="mb-0 card-title">Add Store Documents</h3>
-                    </div>
+                 <!--    <div class="card-body border">-->
+                 <!--      <div class="card-header">-->
+                 <!-- <h3 class="mb-0 card-title">Add Store Documents</h3>-->
+                 <!--   </div>-->
 
-                   <div class="card-body">
-                  <div class="row">
+                 <!--  <div class="card-body">-->
+                 <!-- <div class="row">-->
 
-                        <div id="doc_area">
-
-
-
-                    <div class="col-md-10">
-                        <div class="form-group">
-                           <label class="form-label">Document Title </label>
-                           <input type="text" class="form-control docTitle" id="docTitle_0" 
-                           name="store_document_other_file_head[]"  placeholder="Document Title">
-                      </div>
-                     </div>
-
-                     <div class="col-md-10">
-                        <div class="form-group">
-                           <label class="form-label"> Other File [in pdf,doc,docx or txt] </label>
-                           <input type="file" class="form-control" accept=".pdf,.docx,.txt,.doc" id="docFile_0"
-                           name="store_document_other_file[]"  placeholder="Store Document  File">
-                      </div>
-                     </div>
+                 <!--       <div id="doc_area">-->
 
 
-                        </div>
+
+                 <!--   <div class="col-md-10">-->
+                 <!--       <div class="form-group">-->
+                 <!--          <label class="form-label">Document Title </label>-->
+                 <!--          <input type="text" class="form-control docTitle" id="docTitle_0" -->
+                 <!--          name="store_document_other_file_head[]"  placeholder="Document Title">-->
+                 <!--     </div>-->
+                 <!--    </div>-->
+
+                 <!--    <div class="col-md-10">-->
+                 <!--       <div class="form-group">-->
+                 <!--          <label class="form-label"> Other File [in pdf,doc,docx or txt] </label>-->
+                 <!--          <input type="file" class="form-control" accept=".pdf,.docx,.txt,.doc" id="docFile_0"-->
+                 <!--          name="store_document_other_file[]"  placeholder="Store Document  File">-->
+                 <!--     </div>-->
+                 <!--    </div>-->
 
 
-                      <div class="col-md-2">
-                        <div class="form-group">
-                           <label class="form-label">Add more</label>
-                            <button type="button" id="addDoc" class="btn btn-raised btn-success">
-                      Add More</button>
-                        </div>
-                        </div>
-                  </div>
-                   </div>
-                 </div>
+                 <!--       </div>-->
+
+
+                 <!--     <div class="col-md-2">-->
+                 <!--       <div class="form-group">-->
+                 <!--          <label class="form-label">Add more</label>-->
+                 <!--           <button type="button" id="addDoc" class="btn btn-raised btn-success">-->
+                 <!--     Add More</button>-->
+                 <!--       </div>-->
+                 <!--       </div>-->
+                 <!-- </div>-->
+                 <!--  </div>-->
+                 <!--</div>-->
 
                    <br>
                     <div class="card-body border">
@@ -645,7 +645,17 @@
                                               @csrf
                                               @method('POST')
                                                   @if((!isset($product->global_product_id)) || ($product->global_product_id == 0) )
+                                                  @php
+                                                    $prductDataCount = \DB::table('mst__global_products')
+                                                    ->where('isConvertedFromProducts',@$product->product_id)->count();
+
+                                                  @endphp
+                                                  @if($prductDataCount <= 0)
                                                   <button type="submit" onclick="return confirm('Are you sure?');"  class="btn btn-sm btn-info">Convert to Global</button>
+                                                    @else
+                                                  <button type="submit" disabled onclick="return confirm('Are you sure?');"  class="btn btn-sm btn-info">Convert to Global</button>
+
+                                                    @endif
                                                   @endif
                                               <br>
                                               <a href="{{url('admin/product/home-screen/'.$product->product_id)}}" onclick="return confirm('Are you sure?');"  class="mt-2 btn btn-sm @if($product->show_in_home_screen == 0) btn-green @else btn-warning   @endif">

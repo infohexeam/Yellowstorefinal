@@ -109,7 +109,7 @@ class CustomerController extends Controller
 
                                     // customer reward 
                                     $rewardCount = Trn_customer_reward::where('customer_id', $user->customer_id)->count();
-                                    if ($rewardCount == 0) {
+                                    if ($rewardCount <= 1) {
                                         //     $rewards = Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->get();
                                         //     Mst_RewardToCustomer::where('customer_mobile_number', $user->customer_mobile_number)->delete();
                                         //     foreach ($rewards as $r) {
@@ -125,29 +125,29 @@ class CustomerController extends Controller
                                         //         $cr1->save();
                                         //     }
                                         // } else {
-                                        $customer_id  = $user->customer_id;
-                                        $configPoint = Trn_configure_points::find(1);
-                                        $orderAmount  = @$configPoint->order_amount;
-                                        $orderPoint  = @$configPoint->order_points;
+                                        // $customer_id  = $user->customer_id;
+                                        // $configPoint = Trn_configure_points::find(1);
+                                        // $orderAmount  = $configPoint->order_amount;
+                                        // $orderPoint  = $configPoint->order_points;
 
-                                        $cr = new Trn_customer_reward;
-                                        $cr->transaction_type_id = 0;
-                                        $cr->reward_points_earned = @$configPoint->registraion_points;
-                                        $cr->customer_id = $customer_id;
-                                        $cr->order_id = null;
-                                        $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-                                        $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                                        $cr->reward_point_status = 1;
-                                        $cr->discription = 'Registration points';
-                                        if ($cr->save()) {
-                                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
-                                            foreach ($customerDevice as $cd) {
-                                                $title = 'Registration points credited';
-                                                $body = @$configPoint->registraion_points . ' points credited to your wallet..';
-                                                //   $body = 'Registration points credited successully..';
-                                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
-                                            }
-                                        }
+                                        // $cr = new Trn_customer_reward;
+                                        // $cr->transaction_type_id = 0;
+                                        // $cr->reward_points_earned = $configPoint->registraion_points;
+                                        // $cr->customer_id = $customer_id;
+                                        // $cr->order_id = null;
+                                        // $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                                        // $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                                        // $cr->reward_point_status = 1;
+                                        // $cr->discription = 'Registration points';
+                                        // if ($cr->save()) {
+                                        //     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+                                        //     foreach ($customerDevice as $cd) {
+                                        //         $title = 'Registration points credited';
+                                        //         $body = $configPoint->registraion_points . ' points credited to your wallet..';
+                                        //         //   $body = 'Registration points credited successully..';
+                                        //         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        //     }
+                                        // }
                                     }
                                 }
                             } else {
@@ -295,6 +295,8 @@ class CustomerController extends Controller
                 $customer->save();
 
                 $customer_id = DB::getPdo()->lastInsertId();
+                
+                if($request->customer_mobile_number )
 
 
                 $customer_otp =  rand(1000, 9999);
@@ -313,8 +315,58 @@ class CustomerController extends Controller
 
 
                 // customer reward
-                if (1) {
+                
+                //  if (isset($request->device_token) && isset($request->device_type)) {
+                //         Trn_CustomerDeviceToken::where('customer_id', $customer_id)->delete();
+
+                //         $cdt = new Trn_CustomerDeviceToken;
+                //         $cdt->customer_id =$customer_id;
+                //         $cdt->customer_device_token = $request->device_token;
+                //         $cdt->customer_device_type = $request->device_type;
+                //         $cdt->save();
+                //     }
+                                    
+
+                        $rewards = Mst_RewardToCustomer::where('customer_mobile_number',  $request->customer_mobile_number)->get();
+                        if(count($rewards) > 0){
+                            foreach ($rewards as $r) {
+                                $cr1 = new Trn_customer_reward;
+                                $cr1->transaction_type_id = 0;
+                                $cr1->reward_points_earned = $r->reward_points;
+                                $cr1->customer_id = $customer_id;
+                                $cr1->order_id = null;
+                                $cr1->reward_approved_date = $r->added_date;
+                                $cr1->reward_point_expire_date = $r->added_date;
+                                $cr1->reward_point_status = 1;
+                                $cr1->discription = $r->reward_discription;
+                                $cr1->save();
+                            }
+                          Mst_RewardToCustomer::where('customer_mobile_number', $request->customer_mobile_number)->delete();
+                            
+                        }
+                        
+                $configPoint = Trn_configure_points::find(1);
+
+                $cr = new Trn_customer_reward;
+                $cr->transaction_type_id = 0;
+                $cr->reward_points_earned = $configPoint->registraion_points;
+                $cr->customer_id = $customer_id;
+                $cr->order_id = null;
+                $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                $cr->reward_point_status = 1;
+                $cr->discription = 'Registration points';
+                if ($cr->save()) {
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Registration points credited';
+                        $body = $configPoint->registraion_points . ' points credited to your wallet..! Verify your account and Login now';
+                        //   $body = 'Registration points credited successully..';
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                    }
                 }
+            
+                
 
                 $data['customer_id'] = $customer_id;
                 $data['otp'] = $customer_otp;

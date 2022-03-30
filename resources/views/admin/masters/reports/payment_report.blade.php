@@ -164,7 +164,13 @@
                                                 @endif
 
                                             </td>
-                                            <td>{{ $d->trn_id }}</td>
+                                            <td>
+                                                @if(isset($d->trn_id))
+                                                {{ $d->trn_id }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
 
 
                                         </tr>
@@ -209,6 +215,149 @@
     } );
 
 } );
+</script>
+
+<script>
+
+
+    $(document).ready(function() {
+        
+        $("#subadminId").on('change', function(){    
+            
+         let subadminId = $('#subadminId').val();
+         
+         var _token= $('input[name="_token"]').val();
+            $.ajax({
+              type:"GET",
+              url:"{{ url('admin/store-name-list') }}?subadmin_id="+subadminId,
+    
+              success:function(res){
+                    if(res){
+                       // console.log(res);
+                        $('#storeId').prop("diabled",false);
+                        $('#storeId').empty();
+                        $('#storeId').append('<option value="">Store</option>');
+                        $.each(res,function(store_id,store_name)
+                        {
+                          $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
+                        });
+                    }else
+                    {
+                      $('#storeId').empty();
+                    }
+                }
+    
+            });
+        });
+    });
+    
+    
+    $(document).ready(function() {
+ 
+     let subadminId = $('#subadminId').val();
+      if ( typeof subadminId === "undefined") {
+          subadminId = '';
+      }
+     let storeId = $('#storeId').val();
+     
+     var _token= $('input[name="_token"]').val();
+        $.ajax({
+          type:"GET",
+          url:"{{ url('admin/product-name-list') }}?subadmin_id="+subadminId+'&store_id'+storeId,
+
+          success:function(res){
+                if(res){
+                   // console.log(res);
+                    $('#productId').prop("diabled",false);
+                    $('#productId').empty();
+                    $('#productId').append('<option value="">Product</option>');
+                    $.each(res,function(product_id,product_name)
+                    {
+                      $('#productId').append('<option value="'+product_id+'">'+product_name+'</option>');
+                    });
+                    
+                    let productId = getUrlParameter('product_id');
+                    if ( typeof productId !== "undefined" && productId) {
+                        $("#productId option").each(function(){
+                            if($(this).val()==productId){ 
+                                $(this).attr("selected","selected");    
+                            }
+                        });
+                    } 
+    
+                }else
+                {
+                  $('#storeId').empty();
+                }
+            }
+
+        });
+
+    });
+    
+    
+    $(document).ready(function() {
+        
+        $("#categoryId").on('change', function(){    
+            
+        let categoryId = $('#categoryId').val();
+        
+       // console.log(categoryId);
+
+        var _token= $('input[name="_token"]').val();
+        
+            $.ajax({
+              type:"GET",
+              url:"{{ url('admin/sub-category-list') }}?category_id="+categoryId,
+    
+              success:function(res){
+                    if(res){
+                       // console.log(res);
+                        $('#subCategoryId').prop("diabled",false);
+                        $('#subCategoryId').empty();
+                        $('#subCategoryId').append('<option value="">Sub Category</option>');
+                        $.each(res,function(sub_category_id,sub_category_name)
+                        {
+                          $('#subCategoryId').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
+                        });
+                        
+                        let subCategoryId = getUrlParameter('sub_category_id');
+                        if ( typeof subCategoryId !== "undefined" && subCategoryId) {
+                            $("#subCategoryId option").each(function(){
+                                if($(this).val()==subCategoryId){ 
+                                    $(this).attr("selected","selected");    
+                                }
+                            });
+                        } 
+                    
+                    
+                    }else
+                    {
+                      $('#storeId').empty();
+                    }
+                }
+    
+            });
+        });
+    });
+    
+    
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+    
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+    
+            if (sParameterName[0] === sParam) {
+                return typeof sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+        return false;
+    };
+
 </script>
 
 @endsection
