@@ -198,9 +198,13 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                     </td>
                                  </tr>
                                    <tr>
+                                      @php
+                                         $subadminData = \DB::table('mst_subadmin_details')->where('subadmin_id',@$order->store->subadmin_id)
+                                         ->first();
+                                      @endphp
                                     <td><strong>Sub Admin Phone :</strong> 
-                                       @if(isset($order->store->subadmin->phone))
-                                       {{ @$order->store->subadmin->phone}}
+                                       @if(isset($subadminData->phone))
+                                       {{ @$subadminData->phone}}
                                        @else
                                           ---
                                        @endif
