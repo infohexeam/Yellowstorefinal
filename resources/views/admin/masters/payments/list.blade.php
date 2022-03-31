@@ -53,7 +53,7 @@ $date = Carbon\Carbon::now();
                                               <div class="form-group">
                                                  <label class="form-label">Sub Admin</label>
                                                  <div id="subadminl"></div>
-                                                       <select  name="subadmin_id" id="subadminId" class="form-control select2-show-search" data-placeholder="Sub Admin" >
+                                                       <select  name="subadmin_id" id="subadmin" class="form-control select2-show-search" data-placeholder="Sub Admin" >
                                                           <option value="">Sub Admin</option>
                                                              @foreach($subadmins as $key)
                                                              <option {{request()->input('subadmin_id') == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
@@ -363,7 +363,7 @@ $(function(e) {
            if(sc !=0 )
            {
         var subadmin_id = $(this).val();
-        var storeID =  $("#store").val();
+        var storeID =  $("#storeId").val();
 
         //alert(storeID);
         var _token= $('input[name="_token"]').val();
