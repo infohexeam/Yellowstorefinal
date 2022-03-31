@@ -375,14 +375,14 @@ $(function(e) {
           success:function(res){
 
             if(res){
-            $('#store').prop("diabled",false);
-            $('#store').empty();
+            $('#storeId').prop("diabled",false);
+            $('#storeId').empty();
 
           //  $('#store').append('<option value="">Select Store</option>');
-            $('#store').append('<option value="0">All</option>');
+            $('#storeId').append('<option value="0">All</option>');
             $.each(res,function(store_name,store_id)
             {
-              $('#store').append('<option value="'+store_id+'">'+store_name+'</option>');
+              $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
             });
 
           //  $('#store option[value="'+storeID+'"]').prop('selected', true);
@@ -390,7 +390,7 @@ $(function(e) {
 
             }else
             {
-              $('#store').empty();
+              $('#storeId').empty();
 
             }
             }
