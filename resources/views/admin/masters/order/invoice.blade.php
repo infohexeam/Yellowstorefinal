@@ -150,7 +150,10 @@
                                     @foreach ($order_items as $order_item)
                                        <tr>
                                            <td>{{ ++$c }}</td>
-                                          <td>{{@$order_item->product->product_name}}   
+                                          <td>
+                                             {{ @$order_item->product_varient->variant_name }}
+                                             
+                                             {{-- {{@$order_item->product->product_name}}   
                                              @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
                                              @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
                                                 -
@@ -158,7 +161,7 @@
                                               @endif
                                            
                                            
-                                           @endif
+                                           @endif --}}
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
                                            <td> {{ @$order_item->product_varient->product_varient_price }}</td>
@@ -281,6 +284,18 @@
                                      <tr>
                                        <td colspan="10" class=" text-right">Packing Charge</td>
                                        <td class=" h4"> {{ $pCharge }}</td>
+                                    </tr> 
+
+                                    @else
+
+                                    <tr>
+                                       <td colspan="10" class=" text-right">Delivery Charge</td>
+                                       <td class="  h4">0.00</td>
+                                    </tr>
+
+                                     <tr>
+                                       <td colspan="10" class=" text-right">Packing Charge</td>
+                                       <td class=" h4"> 0.00 </td>
                                     </tr> 
 
                                     @endif

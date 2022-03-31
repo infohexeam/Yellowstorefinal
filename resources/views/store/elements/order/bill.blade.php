@@ -322,6 +322,19 @@
           <td style="font-size: smaller;">Packing Charge &nbsp;</td>
           <td style="font-size: smaller;">  {{ number_format((float)$pCharge, 2, '.', '') }}</td>
         </tr>
+
+        @else
+
+        <tr>
+          <td style="font-size: smaller;">Delivery Charge &nbsp;</td>
+          <td style="font-size: smaller;">  0.00 </td>
+        </tr>
+        
+        <tr>
+          <td style="font-size: smaller;">Packing Charge &nbsp;</td>
+          <td style="font-size: smaller;"> 0.00 </td>
+        </tr>
+  
   
         @endif
   

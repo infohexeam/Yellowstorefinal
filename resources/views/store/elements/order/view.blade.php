@@ -250,8 +250,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           <td>
                                              <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
                                              <br>
+                                             {{ @$order_item->product_varient->variant_name }}
                                              
-                                             {{@$order_item->product->product_name}}   
+                                             {{-- {{@$order_item->product->product_name}}   
                                              @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
                                              @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
                                                 @if(strlen($order_item->product->product_name.$order_item->product_varient->variant_name) < 15)
@@ -268,7 +269,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                               @endif
                                            
                                            
-                                           @endif
+                                           @endif --}}
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
                                           <td>{{ @$order_item->product_varient->product_varient_offer_price}} </td>
