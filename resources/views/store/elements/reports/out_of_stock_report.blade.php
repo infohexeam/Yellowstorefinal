@@ -232,6 +232,53 @@
     } );
 
 } );
+
+
+$(document).ready(function() {
+        
+        $("#categoryId").on('change', function(){    
+            
+        let categoryId = $('#categoryId').val();
+        
+       // console.log(categoryId);
+
+        var _token= $('input[name="_token"]').val();
+        
+            $.ajax({
+              type:"GET",
+              url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+categoryId,
+    
+              success:function(res){
+                    if(res){
+                       // console.log(res);
+                        $('#subCategoryId').prop("diabled",false);
+                        $('#subCategoryId').empty();
+                        $('#subCategoryId').append('<option value="">Sub Category</option>');
+                        $.each(res,function(sub_category_id,sub_category_name)
+                        {
+                          $('#subCategoryId').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
+                        });
+                        
+                        let subCategoryId = getUrlParameter('sub_category_id');
+                        if ( typeof subCategoryId !== "undefined" && subCategoryId) {
+                            $("#subCategoryId option").each(function(){
+                                if($(this).val()==subCategoryId){ 
+                                    $(this).attr("selected","selected");    
+                                }
+                            });
+                        } 
+                    
+                    
+                    }else
+                    {
+                      $('#storeId').empty();
+                    }
+                }
+    
+            });
+        });
+    });
+    
 </script>
 
 @endsection
