@@ -151,7 +151,14 @@ use App\User;
                         <td>{{ @$dBoyDAta->delivery_boy_name }}</td>
                         <td>{{ @$dBoyDAta->delivery_boy_mobile }}</td>
                         <td>{{@$delivery_boy_order->store['store_name']}}</td>
-                        <td>{{@$subadmin->name}}</td>
+                        <td>
+                            @if(isset($subadmin->name))
+                            {{@$subadmin->name}}
+                            @else
+                            ---
+                            @endif
+                            
+                            </td>
 
 
 
@@ -264,9 +271,10 @@ $(function(e) {
             {
                 extend: 'pdf',
                 title: 'Delivery Boy Orders',
+                orientation : 'landscape',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
+                     columns: [0,1,2,3,4,5,6,7]
                  }
             },
             {
@@ -274,7 +282,7 @@ $(function(e) {
                 title: 'Delivery Boy Orders',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
+                     columns: [0,1,2,3,4,5,6,7]
                  }
             }
          ]

@@ -31,7 +31,7 @@
                   <div class="row">
                      <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label"> Name</label>
+                           <label class="form-label">Delivery Boy Name</label>
                            <input type="hidden" name="delivery_boy_id" value="{{$delivery_boy->delivery_boy_id}}">
                            <input type="text" required class="form-control" name="delivery_boy_name" value="{{old('delivery_boy_name',$delivery_boy->delivery_boy_name)}}" placeholder="Delivery Boy Name">
                         </div>
@@ -94,7 +94,7 @@
                          <div class="col-md-6">
 
   <div class="form-group">
-                              <label class="form-label">Town</label>
+                              <label class="form-label">Pincode</label>
                               <select name="town_id"  class="form-control" id="">
                                  <option  selected="" value="{{@$delivery_boy->town_id}}">  {{@$delivery_boy->town->town_name}}</option>
                               </select>
@@ -385,7 +385,7 @@ function validatePassLength() {
             $('#town').prop("diabled",false);
             $('#town').empty();
 
-            $('#town').append('<option value="">Select Town</option>');
+            $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');

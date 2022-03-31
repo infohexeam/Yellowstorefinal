@@ -528,15 +528,17 @@ class SettingController extends Controller
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
 		if (auth()->user()->user_role_id  == 0) {
-			$stores = Mst_store::leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
-				->orderBy('mst_stores.store_id', 'desc')->get();
+	        $stores = Mst_store::
+			    leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
+->orderBy('mst_stores.store_id', 'desc')->get();				
+		    
 		} else {
-
-			$stores = Mst_store::leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
+		    
+		      $stores = Mst_store::leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
 				->where('mst_stores.subadmin_id', auth()->user()->id)
-				->orderBy('mst_stores.store_id', 'desc')->get();
-
-			// 			$stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+			->orderBy('mst_stores.store_id', 'desc')->get();
+				
+// 			$stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
 			//  dd($store);
 		}
 
@@ -562,7 +564,7 @@ class SettingController extends Controller
 
 
 			$query = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
-				->leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
+			    ->leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
 				->where('trn__store_admins.role_id', 0)
 				->select('*');
 
@@ -916,8 +918,8 @@ class SettingController extends Controller
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
 		$products = Mst_store_product::where('store_id', $store_id)->orderBy('product_id', 'DESC')
-			->where('is_removed', 0)
-			->get();
+		->where('is_removed',0)
+		->get();
 
 		return view('admin.masters.stores.edit', compact('products', 'subadmins', 'all_delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'delivery_boys', 'business_types'));
 	}
@@ -2115,11 +2117,11 @@ class SettingController extends Controller
 			}
 
 			if (isset($customer_profile_status)) {
-				if ($customer_profile_status == 0) {
-					$query = $query->whereIn("customer_profile_status", [$customer_profile_status, null]);
-				} else {
-					$query = $query->where("customer_profile_status", $customer_profile_status);
-				}
+			    if($customer_profile_status == 0){
+				    $query = $query->whereIn("customer_profile_status", [$customer_profile_status, null]);
+			    }else{
+				    $query = $query->where("customer_profile_status", $customer_profile_status);
+			    }
 			}
 
 			if (isset($request->date_from) && isset($request->date_to)) {
@@ -2185,16 +2187,16 @@ class SettingController extends Controller
 		$pageTitle = "View Customer";
 		$decrId  = Crypt::decryptString($id);
 		$customers = Trn_store_customer::Find($decrId);
-		$redeemedpoints = Trn_points_redeemed::where('customer_id', $decrId)->orderBy('points_redeemed_id', 'DESC')->get();
+		$redeemedpoints = Trn_points_redeemed::where('customer_id', $decrId)->orderBy('points_redeemed_id','DESC')->get();
 		$redeemedPointsSum = Trn_points_redeemed::where('customer_id', $decrId)->sum('points');
-
-		$customerRewards = Trn_customer_reward::where('customer_id', $decrId)
-			->where('reward_point_status', 1)->orderBy('reward_id', 'DESC')->get();
-
+        
+        $customerRewards = Trn_customer_reward::where('customer_id', $decrId)
+                    ->where('reward_point_status', 1)->orderBy('reward_id', 'DESC')->get();
+                    
 		$customerAddress = Trn_customerAddress::where('customer_id', $decrId)->get();
 		$countries = Country::all();
 
-		return view('admin.masters.customers.view', compact('customerRewards', 'redeemedPointsSum', 'redeemedpoints', 'customerAddress', 'customers', 'pageTitle', 'countries'));
+		return view('admin.masters.customers.view', compact('customerRewards','redeemedPointsSum', 'redeemedpoints', 'customerAddress', 'customers', 'pageTitle', 'countries'));
 	}
 	public function editcustomer(Request $request, $id)
 	{
@@ -2721,17 +2723,19 @@ class SettingController extends Controller
 		if (auth()->user()->user_role_id  == 0) {
 			$delivery_boys = Mst_delivery_boy::orderBy('delivery_boy_id', 'DESC')->get();
 		} else {
-
-			$storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->pluck('store_id');
+		    
+		    		    			$storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->pluck('store_id');
 
 
 			$delivery_boys = \DB::table('mst_delivery_boys')
-				->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
+							->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
 
-				->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
+				->whereIn('mst_store_link_delivery_boys.store_id',$storesSubadmins )
 				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
 				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
 				->get();
+				
+				
 		}
 
 		$countries = Country::all();
@@ -2821,7 +2825,7 @@ class SettingController extends Controller
 
 	public function viewDelivery_boy(Request $request, $id)
 	{
-		$pageTitle = "View Delivery Boy";
+		$pageTitle = "View Delivery Boy"; 
 
 		$decrId  = Crypt::decryptString($id);
 		$delivery_boy = Mst_delivery_boy::Find($decrId);
@@ -2841,14 +2845,14 @@ class SettingController extends Controller
 		$assigned_stores = Mst_store_link_delivery_boy::where('delivery_boy_id', '=', $delivery_boy_id)->get();
 		//dd($assigned_stores);
 		$availabilities = Sys_delivery_boy_availability::all();
-
-
-		$delivery_boy_orders = Trn_store_order::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+		
+		
+			$delivery_boy_orders = Trn_store_order::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
 			->join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->where('trn_store_orders.delivery_boy_id', $delivery_boy_id)
 			->orderBy('trn_store_orders.order_id', 'DESC')->get();
+			
 
-
-		return view('admin.masters.delivery_boy.view', compact('delivery_boy_orders', 'pageTitle', 'delivery_boy', 'countries', 'stores', 'vehicle_types', 'availabilities', 'assigned_stores'));
+		return view('admin.masters.delivery_boy.view', compact('delivery_boy_orders','pageTitle', 'delivery_boy', 'countries', 'stores', 'vehicle_types', 'availabilities', 'assigned_stores'));
 	}
 	public function updateDelivery_boy(Request $request, Mst_delivery_boy $delivery_boy, $delivery_boy_id)
 	{
@@ -2865,7 +2869,7 @@ class SettingController extends Controller
 				'delivery_boy_address'          	=> 'required',
 				'vehicle_number'        	    	=> 'required',
 				'vehicle_type_id'					=> 'required',
-				//	'delivery_boy_availability_id'  	=> 'required',
+			//	'delivery_boy_availability_id'  	=> 'required',
 				//'store_id'        	        		=> 'required',
 				'country_id'			    		=> 'required',
 				'state_id'       		    		=> 'required',
@@ -2900,7 +2904,7 @@ class SettingController extends Controller
 
 		if (!$validator->fails()) {
 			$data = $request->except('_token');
-			//	$data['delivery_boy_availability_id'] = implode(',', $data['delivery_boy_availability_id']);
+		//	$data['delivery_boy_availability_id'] = implode(',', $data['delivery_boy_availability_id']);
 			// $data->delivery_boy_availability_id = implode($data->delivery_boy_availability_id);
 			//dd($data);
 
@@ -2910,7 +2914,7 @@ class SettingController extends Controller
 			$delivery_boy->delivery_boy_address  = $request->delivery_boy_address;
 			$delivery_boy->vehicle_number 		 = $request->vehicle_number;
 			$delivery_boy->vehicle_type_id   	 = $request->vehicle_type_id;
-			//	$delivery_boy->delivery_boy_availability_id  = $data['delivery_boy_availability_id'];
+		//	$delivery_boy->delivery_boy_availability_id  = $data['delivery_boy_availability_id'];
 			//$delivery_boy->store_id               = $request->store_id;
 			$delivery_boy->country_id             = $request->country_id;
 			$delivery_boy->state_id  		      = $request->state_id;
@@ -2973,7 +2977,7 @@ class SettingController extends Controller
 				'delivery_boy_address'          	=> 'required',
 				'vehicle_number'        	    	=> 'required',
 				'vehicle_type_id'					=> 'required',
-				//	'delivery_boy_availability_id'  	=> 'required',
+			//	'delivery_boy_availability_id'  	=> 'required',
 				//'store_id'        	        		=> 'required',
 				'country_id'			    		=> 'required',
 				'state_id'       		    		=> 'required',
@@ -2993,7 +2997,7 @@ class SettingController extends Controller
 				//'delivery_boy_email.required' 		   => 'Email required',
 				'delivery_boy_address.required'        => 'Address required',
 				'vehicle_type_id.required'        	   => 'Vehicle type required',
-				//	'delivery_boy_availability_id.required' => 'Availability required',
+			//	'delivery_boy_availability_id.required' => 'Availability required',
 				//'store_id.required'               	   => 'Store required',
 				'country_id.required'         		   => 'Country required',
 				'state_id.required'        			   => 'State required',
@@ -3011,7 +3015,7 @@ class SettingController extends Controller
 
 		if (!$validator->fails()) {
 			$data = $request->except('_token');
-			//	$data['delivery_boy_availability_id'] = implode(',', $data['delivery_boy_availability_id']);
+		//	$data['delivery_boy_availability_id'] = implode(',', $data['delivery_boy_availability_id']);
 			//dd($data);
 
 			$delivery_boy->delivery_boy_name 	 = $request->delivery_boy_name;
@@ -3020,7 +3024,7 @@ class SettingController extends Controller
 			$delivery_boy->delivery_boy_address  = $request->delivery_boy_address;
 			$delivery_boy->vehicle_number 		 = $request->vehicle_number;
 			$delivery_boy->vehicle_type_id   	 = $request->vehicle_type_id;
-			//	$delivery_boy->delivery_boy_availability_id  = $data['delivery_boy_availability_id'];
+		//	$delivery_boy->delivery_boy_availability_id  = $data['delivery_boy_availability_id'];
 			$delivery_boy->store_id               = $request->store_id;
 
 
@@ -3273,13 +3277,13 @@ class SettingController extends Controller
 		$status = Sys_store_order_status::all();
 		$store = Mst_store::select("*");
 
-		if (auth()->user()->user_role_id  != 0) {
-			$store = $store->where('subadmin_id', auth()->user()->id);
-		}
+        if (auth()->user()->user_role_id  != 0) {
+           $store = $store->where('subadmin_id', auth()->user()->id);
+        }
 
 		$store = $store->get();
 
-
+		
 		$product = Mst_store_product::all();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
@@ -3287,12 +3291,12 @@ class SettingController extends Controller
 		$dateto = Carbon::now()->format('Y-m-d');
 		$a1 = Carbon::parse($datefrom)->startOfDay();
 		$a2 = Carbon::parse($dateto)->endOfDay();
-
-		$orders = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')
-			->select("*");
+		
+		$orders = Trn_store_order::join('mst_stores','mst_stores.store_id','=','trn_store_orders.store_id')
+		    ->select("*");
 		if (auth()->user()->user_role_id  != 0) {
-			$orders = $orders->where('mst_stores.subadmin_id', auth()->user()->id);
-		}
+           $orders = $orders->where('mst_stores.subadmin_id', auth()->user()->id);
+        }
 		$orders = $orders->whereDate('trn_store_orders.created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
 		$orders = $orders->whereDate('trn_store_orders.created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
 		$orders = $orders->orderBy('trn_store_orders.order_id', 'DESC')->get();
@@ -3318,11 +3322,11 @@ class SettingController extends Controller
 			if ($status_id) {
 				$query = $query->where('status_id', $status_id);
 			}
-
-			if (auth()->user()->user_role_id  != 0) {  // if subadmin
-				$store_id = 0;
-				$subadmin_id = auth()->user()->id;
-			}
+			
+				if (auth()->user()->user_role_id  != 0) {  // if subadmin
+                   $store_id = 0;
+                   $subadmin_id = auth()->user()->id;
+                }
 
 			if ($store_id == 0 && isset($subadmin_id)) {
 				$store_data = DB::table('mst_stores')->select("store_id")->where('subadmin_id', $subadmin_id)->get();
@@ -3414,13 +3418,13 @@ class SettingController extends Controller
 				$query = $query->whereBetween('dispute_date', [$a1, $a2]);
 			}
 
-			$disputes = $query->orderBy('dispute_id', 'DESC')->get();
+			$disputes = $query->orderBy('dispute_id','DESC')->get();
 
 
 			return view('admin.masters.disputes.list', compact('dateto', 'datefrom', 'disputes', 'stores', 'pageTitle'));
 		}
 
-		$disputes = \DB::table("mst_disputes")->select("*")->orderBy('dispute_id', 'DESC')->get();
+		$disputes = \DB::table("mst_disputes")->select("*")->orderBy('dispute_id','DESC')->get();
 		return view('admin.masters.disputes.list', compact('disputes', 'stores', 'pageTitle'));
 	}
 
@@ -3531,61 +3535,8 @@ class SettingController extends Controller
 		return view('admin.masters.payments.list', compact('subadmins', 'payments', 'pageTitle', 'order', 'customer', 'payment_type', 'store'));
 	}
 
-	public function listSubadminOrder(Request $request, Trn_store_order $query)
-	{
-		$pageTitle = "List Order";
-		$orders = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')
-			->where('mst_stores.subadmin_id', auth()->user()->id)->get();
-		$status = Sys_store_order_status::all();
-
-		if (auth()->user()->user_role_id  == 0) {
-			$store = Mst_store::all();
-		} else {
-			$store = Mst_store::where('subadmin_id', auth()->user()->id)->get();
-			//  dd($store);
-		}
-
-		if ($_GET) {
-
-			$store_id = $request->store_id;
-			//dd($store_id);
-			$status_id = $request->status_id;
-			$a1 = Carbon::parse($request->date_from)->startOfDay();
-			$a2  = Carbon::parse($request->date_to)->endOfDay();
-			//dd($a);
-			// $orders = Trn_store_order::where('store_id','=',$store_id)
-			// 				->where('status_id','=',$status_id)
-			//                 ->whereBetween('created_at',[$a1,$a2])
-			//                 ->get();
-
-			if (auth()->user()->user_role_id  == 0) {
-				$query = Trn_store_order::where('store_id', '=', $store_id);
-			} else {
-				$query = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')
-					->where('mst_stores.subadmin_id', auth()->user()->id);
-			}
-
-			if ($store_id != "") {
-				$query = $query->where('store_id', '=', $store_id);
-			}
-
-			if ($status_id != "") {
-				$query = $query->where('status_id', '=', $status_id);
-			}
-
-			if (isset($request->date_from) && isset($request->date_to)) {
-				$query = $query->whereBetween('created_at', [$a1, $a2]);
-			}
-
-			$orders = $query->get();
-
-			return view('subadmin.elements.order.list', compact('orders', 'pageTitle', 'status', 'store', 'status'));
-		}
 
 
-
-		return view('subadmin.elements.order.list', compact('orders', 'pageTitle', 'status', 'store', 'status'));
-	}
 	public function listDeliveryboyOrder(Request $request)
 	{
 
@@ -3621,7 +3572,7 @@ class SettingController extends Controller
 
 		$delivery_boy_orders = $delivery_boy_orders->orderBy('trn_store_orders.order_id', 'DESC')->get();
 
-		//dd($delivery_boy_orders);
+        //dd($delivery_boy_orders);
 
 		$order_item = Trn_store_order_item::all();
 		$store = Mst_Store::all();

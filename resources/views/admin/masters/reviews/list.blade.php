@@ -125,7 +125,7 @@
                           
 
                             <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="exampletable" class="table table-striped table-bdataed text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -224,7 +224,9 @@
                                  <tr>
                                     <td><strong>Product Name:</strong> 
                                         @if(@$row->product_varient->product->product_name == @$row->product_varient->variant_name)
-                                        {{ @$row->product_varient->product->product_name}} {{ @$row->product_varient->variant_name}}
+                                        <!--{{ @$row->product_varient->product->product_name}} -->
+                                        
+                                        {{ @$row->product_varient->variant_name}}
                                         @else
                                         {{ @$row->product_varient->product->product_name}}
                                         @endif
@@ -314,4 +316,43 @@
 });
 
 </script>
+
+
+                         <script>
+
+$(function(e) {
+	 $('#exampletable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Customer rating and reviews',
+                // orientation:'landscape',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,4,5],
+                     alignment: 'right',
+                 },
+                  customize: function(doc) {
+                      doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+				   doc.content.forEach(function(item) {
+					if (item.table) {
+						item.table.widths = [40, 'auto','auto','auto','auto','auto']
+					 }
+				   })
+				 }
+            },
+            {
+                extend: 'excel',
+                title: 'Customer rating and reviews',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,4,5],
+                 }
+            }
+         ]
+    } );
+
+} );
+            </script>
 @endsection

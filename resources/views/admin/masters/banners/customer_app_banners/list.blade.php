@@ -54,7 +54,13 @@
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                     <td><img src="{{asset('assets/uploads/customer_banner/'.$data->image)}}"  width="50" ></td>
-                                        <td>{{ @$data->town['town_name'] }}</td>
+                                        <td>
+                                            @if(isset($data->town['town_name']))
+                                            {{ @$data->town['town_name'] }}
+                                            @else
+                                            ---
+                                            @endif
+                                            </td>
                                     <!--<td>-->
                                     <!--    @if($data->default_status == 1)-->
                                     <!--        Yes-->

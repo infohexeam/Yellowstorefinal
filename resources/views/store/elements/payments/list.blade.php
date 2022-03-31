@@ -220,38 +220,34 @@ $date = Carbon\Carbon::now();
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
 </script>
 <script type="text/javascript">
 
-
-
-
-
-$(function(e) {
+ $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Incoming Payments',
+                title: 'payments',
                 footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
-                 }
+                
+                 orientation : 'landscape',
+                pageSize : 'LEGAL',
             },
             {
                 extend: 'excel',
-                title: 'Incoming Payments',
+                title: 'payments',
                 footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
-                 }
+               
             }
          ]
     } );
 
 } );
+
+
 </script>
 
 @endsection

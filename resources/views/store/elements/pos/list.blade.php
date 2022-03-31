@@ -53,14 +53,18 @@
                                         <select name="product_id" onchange="productSelected(this.value)" id="product_id" class="form-control select2-show-search" data-placeholder="Select Product" >
                                              <option value="" >Select Product</option>
                                               @foreach ($products as $data)
-                                                  <option value="{{ $data->product_id }}|{{ $data->product_varient_id }}" >{{ $data->product_name }} 
-                                                  @if( $data->product_name != $data->variant_name)
+                                                  <option value="{{ $data->product_id }}|{{ $data->product_varient_id }}" >
+                                                 
+                                                                                                      {{$data->variant_name}}
+
+                                              {{--  {{ $data->product_name }} 
+                                               @if( $data->product_name != $data->variant_name)
                                                        @if (isset($data->variant_name))
                                                        -
                                                      <!--@endif-->
                                                      
                                                      {{$data->variant_name}}
-                                                    @endif
+                                                    @endif  --}}
 
                                                   </option>
                                              @endforeach

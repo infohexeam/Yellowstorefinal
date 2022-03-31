@@ -39,7 +39,7 @@ use App\Models\admin\Mst_store;
                         </div>
                         <h6 class="mt-4 mb-1">{{ __('Orders') }}</h6>
                         <h2 class="mb-2 number-font">{{Trn_store_order::count()}}</h2>
-                        <p class="text-muted">{{ __('Total Orders') }}</p>
+                        <p class="text-muted">{{ __('Total store Orders') }}</p>
                      </div>
                </a>
                </div>
@@ -86,8 +86,8 @@ use App\Models\admin\Mst_store;
 													<table class="table card-table border table-vcenter text-nowrap align-items-center">
 														<thead class="">
 															<tr>
-																<th>Si.No</th>
-																<th>Order Number</th>
+																<th>SL.No</th>
+																<!--<th>Order Number</th>-->
 																<th>Store</th>
 																<th>Total Amount</th>
 																<th>Status</th>
@@ -100,7 +100,7 @@ use App\Models\admin\Mst_store;
                                                              @foreach ($ordersData as $row)
                                                              <tr>
                                                                 <td>{{ ++$i }}</td>	
-																<td class="text-sm font-weight-600">{{ $row->order_number }}</td>
+																<!--<td class="text-sm font-weight-600">{{ $row->order_number }}</td>-->
 																<td>{{ @$row->store->store_name }}</td>
 																<td>{{ @$row->product_total_amount }}</td>
 																<td>{{ @$row->status->status }}</td>

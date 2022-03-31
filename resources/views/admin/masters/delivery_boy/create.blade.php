@@ -123,9 +123,9 @@
 
                       <div class="col-md-6">
                           <div class="form-group">
-                              <label class="form-label">Town *</label>
+                              <label class="form-label">Pincode *</label>
                               <select name="town_id" required="" class="form-control" id="town">
-                                 <option value="">Select Town</option>
+                                 <option value="">Select Pincode</option>
                                   @if(old('town_id'))
 
                                 @php
@@ -541,7 +541,7 @@ function validateForm() {
             $('#town').prop("diabled",false);
             $('#town').empty();
 
-            $('#town').append('<option value="">Select Town</option>');
+            $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');

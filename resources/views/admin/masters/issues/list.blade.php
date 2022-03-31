@@ -27,7 +27,7 @@
                          
                                 <br>
                             <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="exampletable1" class="table table-striped table-bdataed text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -163,14 +163,39 @@
                </div>
             </div>
 <!-- MESSAGE MODAL CLOSED -->
-
+@endforeach
 <script>
 function clearTax()
 {
       $('#issue').val('');
 
 }
+
+$(function(e) {
+	 $('#exampletable1').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Issues',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2]
+                 }
+            },
+            {
+                extend: 'excel',
+                title: 'Issues',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2]
+                 }
+            }
+         ]
+    } );
+
+} );
 </script>
-                                    @endforeach
+                                    
 
 @endsection

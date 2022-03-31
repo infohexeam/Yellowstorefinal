@@ -53,7 +53,7 @@ $date = Carbon\Carbon::now();
                                               <div class="form-group">
                                                  <label class="form-label">Sub Admin</label>
                                                  <div id="subadminl"></div>
-                                                       <select  name="subadmin_id" id="subadminId" class="form-control select2-show-search" data-placeholder="Sub Admin" >
+                                                       <select  name="subadmin_id" id="subadmin" class="form-control select2-show-search" data-placeholder="Sub Admin" >
                                                           <option value="">Sub Admin</option>
                                                              @foreach($subadmins as $key)
                                                              <option {{request()->input('subadmin_id') == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
@@ -66,7 +66,7 @@ $date = Carbon\Carbon::now();
                                          <div class="col-md-6">
                                             <div class="form-group">
                                               <label class="form-label">Store </label>
-                                               <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
+                                               <select  name="store_id" id="store" class="form-control select2-show-search" data-placeholder="Store"  >
                                                      <option value="">Store</option>
                                                     @foreach($store as $key)
                                                     <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
@@ -122,7 +122,7 @@ $date = Carbon\Carbon::now();
                         <td>{{ @$row->order_number }}</td>
                         <td>{{ (new App\Helpers\Helper)->findCustomerName($row->customer_id) }}</td>
                         <td>{{ (new App\Helpers\Helper)->findStoreName($row->store_id) }}</td>
-                        <td>{{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }}</td>
+                        <td>{{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }} </td>
                       
                         <td>{{ @$row->orderAmount }}</td>
                         <td>{{ @$row->splitAmount }}</td>
@@ -293,8 +293,11 @@ $date = Carbon\Carbon::now();
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
 <script type="text/javascript">
+
+
 
 
 $(function(e) {
@@ -304,9 +307,10 @@ $(function(e) {
             {
                 extend: 'pdf',
                 title: 'Incoming Payments',
+                orientation : 'landscape',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
+                     columns: [0,1,2,3,4,5,6,7,8]
                  }
             },
             {
@@ -314,7 +318,7 @@ $(function(e) {
                 title: 'Incoming Payments',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
+                     columns: [0,1,2,3,4,5,6,7,8]
                  }
             }
          ]
@@ -328,11 +332,11 @@ $(function(e) {
         var sc = 0;
 
 
-       $('#subadminId').change(function(){
+       $('#subadmin').change(function(){
            if(sc !=0 )
            {
         var subadmin_id = $(this).val();
-        var storeID =  $("#storeId").val();
+        var storeID =  $("#store").val();
 
         //alert(storeID);
         var _token= $('input[name="_token"]').val();
@@ -344,14 +348,14 @@ $(function(e) {
           success:function(res){
 
             if(res){
-            $('#storeId').prop("diabled",false);
-            $('#storeId').empty();
+            $('#store').prop("diabled",false);
+            $('#store').empty();
 
           //  $('#store').append('<option value="">Select Store</option>');
-            $('#storeId').append('<option value="0">All</option>');
+            $('#store').append('<option value="0">All</option>');
             $.each(res,function(store_name,store_id)
             {
-              $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
+              $('#store').append('<option value="'+store_id+'">'+store_name+'</option>');
             });
 
           //  $('#store option[value="'+storeID+'"]').prop('selected', true);
@@ -359,7 +363,7 @@ $(function(e) {
 
             }else
             {
-              $('#storeId').empty();
+              $('#store').empty();
 
             }
             }

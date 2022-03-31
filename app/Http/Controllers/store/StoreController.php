@@ -2079,7 +2079,7 @@ class StoreController extends Controller
       if (isset($request->date_from) && isset($request->date_to)) {
         $query->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2);
       }
-      $orders = $query->paginate(10);
+      $orders = $query->orderBy('order_id', 'DESC')->paginate(10);
       // dd(DB::getQueryLog());
       return view('store.elements.order.list', compact('assign_delivery_boys', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
     }

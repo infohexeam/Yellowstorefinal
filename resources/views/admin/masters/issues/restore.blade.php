@@ -74,6 +74,31 @@
 {{-- container end --}}
 </div>
 
+<script>
+    $(function(e) {
+	 $('#exampletable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Issues',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2]
+                 }
+            },
+            {
+                extend: 'excel',
+                title: 'Issues',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2]
+                 }
+            }
+         ]
+    } );
 
+} );
+</script>
 
 @endsection

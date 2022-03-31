@@ -112,23 +112,33 @@
    </div>
 </div>
 
-<script>
+   <script>
 
 // $(function(e) {
 // 	 $('#exampletable').DataTable( {
-//         dom: 'Bfrtip'
+//         dom: 'Bfrtip',
 //         buttons: [
 //             {
 //                 extend: 'pdf',
-//                 title: 'Restored Business Types',
+//                 title: 'Store app banners',
+//                 // orientation:'landscape',
 //                 footer: true,
 //                 exportOptions: {
-//                      columns: [0,1]
-//                  }
+//                      columns: [0,1],
+//                      alignment: 'right',
+//                  },
+//                   customize: function(doc) {
+//                       doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
+// 				   doc.content.forEach(function(item) {
+// 					if (item.table) {
+// 						item.table.widths = [40, '*','*']
+// 					 }
+// 				   })
+// 				 }
 //             },
 //             {
 //                 extend: 'excel',
-//                 title: 'Restored Business Types',
+//                 title: 'Store app banners',
 //                 footer: true,
 //                 exportOptions: {
 //                      columns: [0,1]
@@ -138,7 +148,7 @@
 //     } );
 
 // } );
-            </script>
+             </script>
 
             <!-- MESSAGE MODAL CLOSED -->
             @endsection

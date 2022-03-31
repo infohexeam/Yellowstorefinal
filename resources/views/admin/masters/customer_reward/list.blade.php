@@ -216,25 +216,29 @@ $date = Carbon\Carbon::now();
 
                                     <script>
 
-$(function(e) {
+ $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Customer Rewards',
+                title: 'customer Reward',
                 footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
-                 }
+                
+                 orientation : 'landscape',
+                pageSize : 'LEGAL',
+                  exportOptions: {
+                     columns: [0,1,2,3]
+                 },
             },
             {
                 extend: 'excel',
-                title: 'Customer Rewards',
+                title: 'Out of stock report',
                 footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
-                 }
+                 exportOptions: {
+                     columns: [0,1,2,3]
+                 },
+               
             }
          ]
     } );
@@ -242,19 +246,7 @@ $(function(e) {
 } );
 
 
-$(document).ready(function() {
- $('#reset').click(function(){
-     $('#customer_name').val('');
 
-  $('#date_from').remove();
-    $('#date_to').remove();
-    $('#date_froml').append('<input type="date" class="form-control" name="date_from" id="date_from"  placeholder="From Date">');
-    $('#date_tol').append('<input type="date" class="form-control" name="date_to"   id="date_to" placeholder="To Date">');
-
-
-
-   });
-});
             </script>
 
 

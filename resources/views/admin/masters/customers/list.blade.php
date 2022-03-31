@@ -122,9 +122,9 @@
                         <th class="wd-15p">{{ __('Name') }}</th>
                         <th class="wd-15p">{{ __('Email') }}</th>
                         <th class="wd-15p">{{ __('Mobile') }}</th>
-                        <th class="wd-15p">{{ __('Reg. Date') }}</th>
-                        <th class="wd-15p">{{__('Profile Status')}}</th>
-                       <th class="wd-15p">{{__('OTP Status')}}</th>
+                        <th class="wd-15p">{{ __('Reg.') }}<br>date</th>
+                        <th class="wd-15p">{{__('Profile')}}<br>status</th>
+                       <th class="wd-15p">{{__('OTP')}}<br>status</th>
 
                         <th class="wd-15p">{{__('Action')}}</th>
                       </tr>
@@ -141,7 +141,14 @@
                             <input type="hidden" id="cusId{{ $customer->customer_id }}" value="{{$customer->customer_first_name." ".$customer->customer_last_name}}" />   
                         </td>
                        {{--  <td>{{$customer->countries['country_name']}}</td>  --}}
-                        <td>{{$customer->customer_email}}</td>
+                        <td>
+                            @if(isset($customer->customer_email))
+                            {{$customer->customer_email}}
+                            @else
+                            ---
+                            @endif
+                            
+                            </td>
                         <td>{{$customer->customer_mobile_number}}</td>
                         <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y')}}</td>
 
@@ -288,9 +295,10 @@ $(function(e) {
             {
                 extend: 'pdf',
                 title: 'Customers',
+                orientation : 'landscape',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5]
+                     columns: [0,1,2,3,4,5,6]
                  }
             },
             {
@@ -298,7 +306,7 @@ $(function(e) {
                 title: 'Customers',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5]
+                     columns: [0,1,2,3,4,5,6]
                  }
             }
          ]

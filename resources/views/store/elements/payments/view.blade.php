@@ -304,31 +304,30 @@
 
                            <script>
 
-$(function(e) {
+
+
+ $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Store Payments',
+                title: 'payments',
                 footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
-                 }
+                
+                 orientation : 'landscape',
+                pageSize : 'LEGAL',
             },
             {
                 extend: 'excel',
-                title: 'Store Payments',
+                title: 'payments',
                 footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,5,6]
-                 }
+               
             }
          ]
     } );
 
 } );
-
 
 
 

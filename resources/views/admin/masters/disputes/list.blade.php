@@ -110,7 +110,7 @@ $date = Carbon\Carbon::now();
                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                               <thead>
                                  <tr>
-                                    <th class="wd-15p">SL.No</th>
+                                    <th class="wd-15p">SL.<br>No</th>
                                     <th class="wd-10p">Dispute<br>Date</th>
                                     <th class="wd-15p">Issue<br>Type</th>
                                     <th class="wd-15p">Order<br>Date</th>
@@ -144,7 +144,13 @@ $date = Carbon\Carbon::now();
                                     <td>{{ @$dispute->order_number}}</td>
                                     <td>{{ @$store->store_name}}</td>
 
-                                    <td>{{ @$subadmin->name}}</td>
+                                    <td>
+                                        @if(isset($subadmin->name))
+                                        {{ @$subadmin->name}}
+                                        @else
+                                        ---
+                                        @endif
+                                        </td>
                                     {{-- <td>{{ @$dispute->dispute_status}}</td> --}}
                         <td>
                            <button type="button" class="btn btn-sm @if($dispute->dispute_status == '1') btn-success @elseif($dispute->dispute_status == '2') btn-danger @else btn-warning @endif"
@@ -310,7 +316,9 @@ $date = Carbon\Carbon::now();
                                     @if(@$product_varientD->variant_name == @$productdataD->product_name)
                                         {{@$productdataD->product_name}}
                                     @else
-                                        {{@$product_varientD->variant_name}} {{@$productdataD->product_name}}
+                                        <!--{{@$product_varientD->variant_name}} -->
+                                        
+                                        {{@$productdataD->product_name}}
                                     @endif
                                     </h6></td>
                                  </tr>
@@ -352,7 +360,7 @@ $(function(e) {
                 title: 'Disputes',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5]
+                     columns: [0,1,2,3,4,5,6,7]
                  }
             },
             {
@@ -360,7 +368,7 @@ $(function(e) {
                 title: 'Disputes',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5]
+                     columns: [0,1,2,3,4,5,6,7]
                  }
             }
          ]
