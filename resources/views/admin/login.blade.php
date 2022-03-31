@@ -144,13 +144,13 @@
                         <!--   </button>-->
                         <!--</div>-->
                         <div class="container-login100-form-btn">
-                            <button type="submit" class="login100-form-btn btn-primary">
+                            {{-- <button type="submit" class="login100-form-btn btn-primary">
                            {{ __('Login') }}
-                           </button> 
+                           </button>  --}}
                            
-                           <!-- <button type="submit" data-sitekey="6LfkNvcdAAAAAKlMeQ0Jy_zmPRCTg714kKnWzkCd" data-callback="submitForm" class="g-recaptcha login100-form-btn btn-primary">-->
-                           <!--{{ __('Login') }}-->
-                           <!--</button>-->
+                           <button type="submit" data-sitekey="6LfkNvcdAAAAAKlMeQ0Jy_zmPRCTg714kKnWzkCd" data-callback="submitForm" class="g-recaptcha login100-form-btn btn-primary">
+                           {{ __('Login') }}
+                           </button>
                            
                         </div>
                         <div class="container-login100-form-btn">
