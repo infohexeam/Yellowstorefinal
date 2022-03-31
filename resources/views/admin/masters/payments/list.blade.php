@@ -53,7 +53,7 @@ $date = Carbon\Carbon::now();
                                               <div class="form-group">
                                                  <label class="form-label">Sub Admin</label>
                                                  <div id="subadminl"></div>
-                                                       <select  name="subadmin_id" id="subadmin" class="form-control select2-show-search" data-placeholder="Sub Admin" >
+                                                       <select  name="subadmin_id" id="subadminId" class="form-control select2-show-search" data-placeholder="Sub Admin" >
                                                           <option value="">Sub Admin</option>
                                                              @foreach($subadmins as $key)
                                                              <option {{request()->input('subadmin_id') == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
@@ -293,39 +293,8 @@ $date = Carbon\Carbon::now();
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
-</script>
+
 <script type="text/javascript">
-
-
-   $(document).ready(function() {
- $('#reset').click(function(){
-   //  $('#subadmin').val('');
-    // $('#store').val('');
-    // $('#payment_type_id').val('');
-
-  $('#subadmin').remove();
-  $('#store').remove();
-  $('#payment_type_id').remove();
-
-  $('#date_from').remove();
-    $('#date_to').remove();
-    $('#date_tol').append('<input type="month" required  class="form-control" name="date_to" id="date_to"  placeholder="To Date">');
-    $('#date_froml').append('<input type="month" required class="form-control" name="date_from" id="date_from"  placeholder="From Date">');
-
-     $('#subadminl').append('<select  name="subadmin_id" id="subadmin" class="form-control"  ><option value=""> Select Sub Admin</option>@foreach($subadmins as $key)<option  value="{{$key->id}}"> {{$key->name }} </option>@endforeach</select>');
-     $('#payment_type_idl').append('<select class="form-control" name="payment_type_id" id="payment_type_id"><option value=""> Select Payment Type</option>@foreach ($payment_type as $key)<option value=" {{ $key->payment_type_id}} "> {{ $key->payment_type}}</option>@endforeach</select>');
-     $('#storel').append('<select  class="form-control" id="store" required name="store_id" "><option> Select Status</option></select>');
- $('#year').remove();
-  $('#month').remove();
-    $('#date_fromly').append(' <select required name="year" id="year" class="form-control custom-select"><option value="">Select Year</option>@for ($y=2010; $y<=2040;  $y++)<option value="{{$y}}">{{$y}}</option>@endfor</select>');
-    $('#date_fromlm').append('  <select required name="month" id="month" class="form-control custom-select"><option  value="">Select Month</option><option  value="01">January</option><option  value="02">February</option><option  value="03">March</option><option  value="04">April</option><option  value="05">May</option><option  value="06">June</option><option  value="07">July</option><option  value="08">August</option><option  value="09">September</option><option  value="10">October</option><option  value="11">November</option><option  value="12">December</option></select>');
-
-
-
-   });
-});
-
 
 
 $(function(e) {
@@ -359,7 +328,7 @@ $(function(e) {
         var sc = 0;
 
 
-       $('#subadmin').change(function(){
+       $('#subadminId').change(function(){
            if(sc !=0 )
            {
         var subadmin_id = $(this).val();
