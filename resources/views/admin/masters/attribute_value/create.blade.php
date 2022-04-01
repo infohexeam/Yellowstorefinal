@@ -46,7 +46,7 @@
                       </div>
                       </div>
 
-                         {{-- <div class="row color_code" style="display: none">
+                         <div class="row color_code" style="display: none">
                         
                           <div class="col-md-6">
                         <div class="form-group">
@@ -61,7 +61,7 @@
                       Add More</button>
                         </div>
                         </div>
-                          </div> --}}
+                          </div>
  
                         
                            <div class="row"  id="teamColorArea">
