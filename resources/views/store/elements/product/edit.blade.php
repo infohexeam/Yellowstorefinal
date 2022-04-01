@@ -1076,7 +1076,46 @@ function changeBaseImage(id,varId)
 
          }
 
+         $(document).ready(function() {
+    var pcc = 0;
+      //  alert("dd");
+       $('#category').change(function(){
+         if(pcc != 0)
+         { 
+        var category_id = $(this).val();
+       //alert(business_type_id);
+        var _token= $('input[name="_token"]').val();
+        //alert(_token);
+        $.ajax({
+          type:"GET",
+          url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+category_id,
 
+
+          success:function(res){
+           // alert(data);
+            if(res){
+            $('#sub_category_id').prop("diabled",false);
+            $('#sub_category_id').empty();
+            $('#sub_category_id').append('<option value="">Product Sub Category</option>');
+            $.each(res,function(sub_category_id,sub_category_name)
+            {
+              $('#sub_category_id').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
+            });
+
+            }else
+            {
+              $('#sub_category_id').empty();
+
+            }
+            }
+
+        });
+         }else{
+           pcc++;
+         }
+      });
+
+    });
 
 
 function showVariant(){
