@@ -416,7 +416,7 @@ function isCodeAvailable(value)
             var _token= $('input[name="_token"]').val();
         $.ajax({
           type:"GET",
-          url:"{{ url('g-product/ajax/is-code-available') }}?product_code="+value,
+          url:"{{ url('product/ajax/is-code-available') }}?product_code="+value,
 
 
           success:function(res){
