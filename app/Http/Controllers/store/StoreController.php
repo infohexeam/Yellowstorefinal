@@ -110,12 +110,11 @@ class StoreController extends Controller
     echo count($arr);
   }
 
-      public function removeProductVideo(Request $request,$product_video_id)
-      {
-            $pro_variant = Trn_ProductVideo::where('product_video_id', '=', $product_video_id)->delete();
-            return redirect()->back()->with('status', 'Video deleted');
-
-      }
+  public function removeProductVideo(Request $request, $product_video_id)
+  {
+    $pro_variant = Trn_ProductVideo::where('product_video_id', '=', $product_video_id)->delete();
+    return redirect()->back()->with('status', 'Video deleted');
+  }
 
   public function index()
   {
@@ -890,10 +889,10 @@ class StoreController extends Controller
         //'attr_group_id'   => 'required',
         // 'attr_value_id'   => 'required',
         'product_cat_id'   => 'required',
-       // 'vendor_id'   => 'required',
+        // 'vendor_id'   => 'required',
         // 'color_id'   => 'required',
-        'product_image.*' => 'dimensions:min_width=1000,min_height=800',
-        'product_image.*' => 'required',
+        'product_image.*' => 'dimensions:min_width=1000,min_height=800|mimes:jpeg,jpg,png|max:10000',
+        'product_image.*' => 'required|mimes:jpeg,jpg,png|max:10000',
 
 
 
@@ -1023,70 +1022,70 @@ class StoreController extends Controller
           }
         }
       }
-      
+
       // new cases product variant
-       $varImages = Mst_product_image::where('product_id', $id)->orderBy('product_image_id', 'DESC')->get();
-        
-        $date = Carbon::now();
+      $varImages = Mst_product_image::where('product_id', $id)->orderBy('product_image_id', 'DESC')->get();
 
-        $sCount = 0;
-        if (($request->service_type == 1) || ($request->product_type == 2)) {
-          $sCount = 1;
-        }
+      $date = Carbon::now();
 
-        $data3 = [
-          'product_id' => $id,
-          'store_id' => $store_id,
-          'variant_name' => $request->product_name,
-          'product_varient_price' => $request->regular_price,
-          'product_varient_offer_price' => $request->sale_price,
-          'product_varient_base_image' => null,
-          'stock_count' => $sCount,
-          'color_id' =>  0,
-          'is_base_variant' => 1,
-          'created_at' => $date,
-          'updated_at' => $date,
-        ];
-        Mst_store_product_varient::create($data3);
-        $vari_id = DB::getPdo()->lastInsertId();
+      $sCount = 0;
+      if (($request->service_type == 1) || ($request->product_type == 2)) {
+        $sCount = 1;
+      }
 
-        $vac = 0;
-        foreach ($request->attr_group_id[500] as $attrGrp) {
-          if (isset($attrGrp) && isset($request->attr_value_id[500][$vac])) {
-            $data4 = [
-              'product_varient_id' => $vari_id,
-              'attr_group_id' => $attrGrp,
-              'attr_value_id' => $request->attr_value_id[500][$vac],
-            ];
-            Trn_ProductVariantAttribute::create($data4);
-          }
-          $vac++;
-        }
-        
-        // dd($request->all());
+      $data3 = [
+        'product_id' => $id,
+        'store_id' => $store_id,
+        'variant_name' => $request->product_name,
+        'product_varient_price' => $request->regular_price,
+        'product_varient_offer_price' => $request->sale_price,
+        'product_varient_base_image' => null,
+        'stock_count' => $sCount,
+        'color_id' =>  0,
+        'is_base_variant' => 1,
+        'created_at' => $date,
+        'updated_at' => $date,
+      ];
+      Mst_store_product_varient::create($data3);
+      $vari_id = DB::getPdo()->lastInsertId();
 
-        $vic = 0;
-        foreach ($varImages as $vi) {
-          $data77 = [
-            [
-              'product_image'      => $vi->product_image,
-              'product_id' => $id,
-              'product_varient_id' => $vari_id,
-              'image_flag'         => 0,
-              'created_at'         => Carbon::now(),
-              'updated_at'         => Carbon::now(),
-            ],
+      $vac = 0;
+      foreach ($request->attr_group_id[500] as $attrGrp) {
+        if (isset($attrGrp) && isset($request->attr_value_id[500][$vac])) {
+          $data4 = [
+            'product_varient_id' => $vari_id,
+            'attr_group_id' => $attrGrp,
+            'attr_value_id' => $request->attr_value_id[500][$vac],
           ];
-          Mst_product_image::insert($data77);
-          $proImg_Id = DB::getPdo()->lastInsertId();
-
-          if ($vic == 0) {
-            DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $vi->product_image]);
-            $vic++;
-            DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-          }
+          Trn_ProductVariantAttribute::create($data4);
         }
-      
+        $vac++;
+      }
+
+      // dd($request->all());
+
+      $vic = 0;
+      foreach ($varImages as $vi) {
+        $data77 = [
+          [
+            'product_image'      => $vi->product_image,
+            'product_id' => $id,
+            'product_varient_id' => $vari_id,
+            'image_flag'         => 0,
+            'created_at'         => Carbon::now(),
+            'updated_at'         => Carbon::now(),
+          ],
+        ];
+        Mst_product_image::insert($data77);
+        $proImg_Id = DB::getPdo()->lastInsertId();
+
+        if ($vic == 0) {
+          DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $vi->product_image]);
+          $vic++;
+          DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+        }
+      }
+
       //end 
 
       $date = Carbon::now();
@@ -1168,70 +1167,70 @@ class StoreController extends Controller
       }
       //--------------------------    avoided ------------------------------------------
 
-    //   $countVariants = Mst_store_product_varient::where('product_id', $id)->count();
-    //   $varImages = Mst_product_image::where('product_id', $id)->orderBy('product_image_id', 'DESC')->get();
+      //   $countVariants = Mst_store_product_varient::where('product_id', $id)->count();
+      //   $varImages = Mst_product_image::where('product_id', $id)->orderBy('product_image_id', 'DESC')->get();
 
-    //  if ($countVariants < 1) {
-    //     $date = Carbon::now();
+      //  if ($countVariants < 1) {
+      //     $date = Carbon::now();
 
-    //     $sCount = 0;
-    //     if (($request->service_type == 1) || ($request->product_type == 2)) {
-    //       $sCount = 1;
-    //     }
+      //     $sCount = 0;
+      //     if (($request->service_type == 1) || ($request->product_type == 2)) {
+      //       $sCount = 1;
+      //     }
 
-    //     $data3 = [
-    //       'product_id' => $id,
-    //       'store_id' => $store_id,
-    //       'variant_name' => $request->product_name,
-    //       'product_varient_price' => $request->regular_price,
-    //       'product_varient_offer_price' => $request->sale_price,
-    //       'product_varient_base_image' => null,
-    //       'stock_count' => $sCount,
-    //       'color_id' =>  0,
-    //       'is_base_variant' => 1,
-    //       'created_at' => $date,
-    //       'updated_at' => $date,
-    //     ];
-    //     Mst_store_product_varient::create($data3);
-    //     $vari_id = DB::getPdo()->lastInsertId();
+      //     $data3 = [
+      //       'product_id' => $id,
+      //       'store_id' => $store_id,
+      //       'variant_name' => $request->product_name,
+      //       'product_varient_price' => $request->regular_price,
+      //       'product_varient_offer_price' => $request->sale_price,
+      //       'product_varient_base_image' => null,
+      //       'stock_count' => $sCount,
+      //       'color_id' =>  0,
+      //       'is_base_variant' => 1,
+      //       'created_at' => $date,
+      //       'updated_at' => $date,
+      //     ];
+      //     Mst_store_product_varient::create($data3);
+      //     $vari_id = DB::getPdo()->lastInsertId();
 
-    //     $vac = 0;
-    //     foreach ($request->attr_group_id[500] as $attrGrp) {
-    //       if (isset($attrGrp) && isset($request->attr_value_id[500][$vac])) {
-    //         $data4 = [
-    //           'product_varient_id' => $vari_id,
-    //           'attr_group_id' => $attrGrp,
-    //           'attr_value_id' => $request->attr_value_id[500][$vac],
-    //         ];
-    //         Trn_ProductVariantAttribute::create($data4);
-    //       }
-    //       $vac++;
-    //     }
+      //     $vac = 0;
+      //     foreach ($request->attr_group_id[500] as $attrGrp) {
+      //       if (isset($attrGrp) && isset($request->attr_value_id[500][$vac])) {
+      //         $data4 = [
+      //           'product_varient_id' => $vari_id,
+      //           'attr_group_id' => $attrGrp,
+      //           'attr_value_id' => $request->attr_value_id[500][$vac],
+      //         ];
+      //         Trn_ProductVariantAttribute::create($data4);
+      //       }
+      //       $vac++;
+      //     }
 
-    //     $vic = 0;
+      //     $vic = 0;
 
-    //     foreach ($varImages as $vi) {
+      //     foreach ($varImages as $vi) {
 
-    //       $data77 = [
-    //         [
-    //           'product_image'      => $vi->product_image,
-    //           'product_id' => $id,
-    //           'product_varient_id' => $vari_id,
-    //           'image_flag'         => 0,
-    //           'created_at'         => Carbon::now(),
-    //           'updated_at'         => Carbon::now(),
-    //         ],
-    //       ];
-    //       Mst_product_image::insert($data77);
-    //       $proImg_Id = DB::getPdo()->lastInsertId();
+      //       $data77 = [
+      //         [
+      //           'product_image'      => $vi->product_image,
+      //           'product_id' => $id,
+      //           'product_varient_id' => $vari_id,
+      //           'image_flag'         => 0,
+      //           'created_at'         => Carbon::now(),
+      //           'updated_at'         => Carbon::now(),
+      //         ],
+      //       ];
+      //       Mst_product_image::insert($data77);
+      //       $proImg_Id = DB::getPdo()->lastInsertId();
 
-    //       if ($vic == 0) {
-    //         DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $vi->product_image]);
-    //         $vic++;
-    //         DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-    //       }
-    //     }
-    //   }
+      //       if ($vic == 0) {
+      //         DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $vi->product_image]);
+      //         $vic++;
+      //         DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+      //       }
+      //     }
+      //   }
 
 
       return redirect('store/product/list')->with('status', 'Product added successfully.');
@@ -1269,14 +1268,14 @@ class StoreController extends Controller
     $pageTitle = "View Product";
 
     $product = Mst_store_product::where('product_id', '=', $id)->first();
-    
-     $product_base_varient = Mst_store_product_varient::where('product_id', $id)
+
+    $product_base_varient = Mst_store_product_varient::where('product_id', $id)
       ->where('is_base_variant', 1)
       ->where('is_removed', 0)
       ->first();
-      $product_base_varient_attrs = Trn_ProductVariantAttribute::where('product_varient_id', @$product_base_varient->product_varient_id)
-        ->get();
-      
+    $product_base_varient_attrs = Trn_ProductVariantAttribute::where('product_varient_id', @$product_base_varient->product_varient_id)
+      ->get();
+
     $product_id = $product->product_id;
     $product_varients = Mst_store_product_varient::where('product_id', $product_id)
       ->where('is_base_variant', '!=', 1)
@@ -1295,7 +1294,7 @@ class StoreController extends Controller
     // $categories = Mst_categories::where([['category_status', '=', '1'],['parent_id', '==', '0'],])->whereIn('category_id',['1','4','9'])->get();
 
 
-    return view('store.elements.product.view', compact('product_base_varient_attrs','product_base_varient','product_varients', 'product', 'pageTitle', 'product_images'));
+    return view('store.elements.product.view', compact('product_base_varient_attrs', 'product_base_varient', 'product_varients', 'product', 'pageTitle', 'product_images'));
   }
 
 
@@ -1318,8 +1317,8 @@ class StoreController extends Controller
       ->where('is_removed', 0)
       ->first();
     // if (isset($product_base_varient->product_varient_id)) {
-      $product_base_varient_attrs = Trn_ProductVariantAttribute::where('product_varient_id', @$product_base_varient->product_varient_id)
-        ->get();
+    $product_base_varient_attrs = Trn_ProductVariantAttribute::where('product_varient_id', @$product_base_varient->product_varient_id)
+      ->get();
     // } else {
     //   $product_base_varient_attrs = null;
     // }
@@ -1474,9 +1473,12 @@ class StoreController extends Controller
         //  'attr_group_id'   => 'required',
         // 'attr_value_id'   => 'required',
         'product_cat_id'   => 'required',
-      //  'vendor_id'   => 'required',
+        //  'vendor_id'   => 'required',
         // 'color_id'   => 'required',
         //  'product_image.*' => 'dimensions:min_width=1000,min_height=800',
+        'product_image.*' => 'dimensions:min_width=1000,min_height=800|mimes:jpeg,jpg,png|max:10000',
+        'product_image.*' => 'mimes:jpeg,jpg,png|max:10000',
+
 
 
 
@@ -1562,8 +1564,8 @@ class StoreController extends Controller
       DB::table('mst_store_products')->where('product_id', $product_id)->update($product);
 
       // adding product images
-        $baseVar =   Mst_store_product_varient::where('product_id',$product_id)->where('is_base_variant',1)->first();
-      
+      $baseVar =   Mst_store_product_varient::where('product_id', $product_id)->where('is_base_variant', 1)->first();
+
       if ($request->hasFile('product_image')) {
         // echo "here";die;
         $allowedfileExtension = ['jpg', 'png', 'jpeg',];
@@ -1594,33 +1596,33 @@ class StoreController extends Controller
           Mst_product_image::insert($data1);
         }
       }
-      
+
 
       $data3 = [
-          'variant_name' => $request->product_name,
-          'product_varient_price' => $request->regular_price,
-          'product_varient_offer_price' => $request->sale_price,
-        ];
-        
-        Mst_store_product_varient::where("product_varient_id",@$baseVar->product_varient_id)->update($data3);
-        
-          $vac = 0;
-          
-        foreach ($request->attr_group_id[500] as $attrGrp) {
-          if (isset($attrGrp) && isset($request->attr_value_id[500][$vac])) {
-            $data4 = [
-              'product_varient_id' => @$baseVar->product_varient_id,
-              'attr_group_id' => $attrGrp,
-              'attr_value_id' => $request->attr_value_id[500][$vac],
-            ];
-            Trn_ProductVariantAttribute::create($data4);
-            echo @$baseVar->product_varient_id." : "." : ".$attrGrp." : ".$request->attr_value_id[500][$vac]."<br>";
-          }
+        'variant_name' => $request->product_name,
+        'product_varient_price' => $request->regular_price,
+        'product_varient_offer_price' => $request->sale_price,
+      ];
 
-          $vac++;
+      Mst_store_product_varient::where("product_varient_id", @$baseVar->product_varient_id)->update($data3);
+
+      $vac = 0;
+
+      foreach ($request->attr_group_id[500] as $attrGrp) {
+        if (isset($attrGrp) && isset($request->attr_value_id[500][$vac])) {
+          $data4 = [
+            'product_varient_id' => @$baseVar->product_varient_id,
+            'attr_group_id' => $attrGrp,
+            'attr_value_id' => $request->attr_value_id[500][$vac],
+          ];
+          Trn_ProductVariantAttribute::create($data4);
+          echo @$baseVar->product_varient_id . " : " . " : " . $attrGrp . " : " . $request->attr_value_id[500][$vac] . "<br>";
         }
 
-                  //  dd($request->all());
+        $vac++;
+      }
+
+      //  dd($request->all());
 
       $date = Carbon::now();
       $vc = 0;
@@ -1721,11 +1723,11 @@ class StoreController extends Controller
     $removeProductVar = array();
     $removeProductVar['is_removed'] = 1;
     $removeProductVar['stock_count'] = 0;
-    
+
     $productData  = Mst_store_product::find($product);
-    
-    if(isset($productData->global_product_id))
-    $removeProduct['global_product_id'] = 0;
+
+    if (isset($productData->global_product_id))
+      $removeProduct['global_product_id'] = 0;
 
     Mst_store_product::where('product_id', $product)->update($removeProduct);
 
@@ -3028,15 +3030,15 @@ class StoreController extends Controller
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_categories.category_status', 1)
       ->where('mst_store_product_varients.is_removed', 0);
-      
-       if ($request->product_cat_id) {
-        $products = $products->where('mst_store_products.product_cat_id', $request->product_cat_id);
-      }
-       if ($request->product_name) {
-          $products = $products->where('mst_store_products.product_name', 'LIKE', '%' . $request->product_name . '%');
-      }
-      
-      $products = $products->orderBy('mst_store_product_varients.updated_at', 'DESC')
+
+    if ($request->product_cat_id) {
+      $products = $products->where('mst_store_products.product_cat_id', $request->product_cat_id);
+    }
+    if ($request->product_name) {
+      $products = $products->where('mst_store_products.product_name', 'LIKE', '%' . $request->product_name . '%');
+    }
+
+    $products = $products->orderBy('mst_store_product_varients.updated_at', 'DESC')
       ->select(
         'mst_store_products.product_id',
         'mst_store_products.product_name',
@@ -3055,7 +3057,7 @@ class StoreController extends Controller
       ->paginate(10);
     $category = Mst_categories::where('category_status', 1)->get();
 
-  
+
 
     return view('store.elements.inventory.list', compact('category', 'products', 'pageTitle'));
   }
@@ -3204,109 +3206,108 @@ class StoreController extends Controller
   {
     // try {
 
-      $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
+    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
 
-      $orderNumber = @$storeOrderCount + 1;
+    $orderNumber = @$storeOrderCount + 1;
 
-      $storeData = Mst_store::where('store_id', Auth::guard('store')->user()->store_id)->select('order_number_prefix')->first();
+    $storeData = Mst_store::where('store_id', Auth::guard('store')->user()->store_id)->select('order_number_prefix')->first();
 
-      if (isset($storeData->order_number_prefix)) {
-        $orderNumberPrefix = $storeData->order_number_prefix;
-      } else {
-        $orderNumberPrefix = 'ORDRYSTR';
-      }
+    if (isset($storeData->order_number_prefix)) {
+      $orderNumberPrefix = $storeData->order_number_prefix;
+    } else {
+      $orderNumberPrefix = 'ORDRYSTR';
+    }
 
-      $store_order->order_number = $orderNumberPrefix . @$orderNumber;
+    $store_order->order_number = $orderNumberPrefix . @$orderNumber;
     //dd(Auth::guard('store')->user()->store_admin_id);
-      $store_order->customer_id = 3;
-      $store_order->store_id =  Auth::guard('store')->user()->store_id;
-      if(isset(Auth::guard('store')->user()->subadmin_id)){
-          $store_order->subadmin_id =  Auth::guard('store')->user()->subadmin_id;
+    $store_order->customer_id = 3;
+    $store_order->store_id =  Auth::guard('store')->user()->store_id;
+    if (isset(Auth::guard('store')->user()->subadmin_id)) {
+      $store_order->subadmin_id =  Auth::guard('store')->user()->subadmin_id;
+    } else {
+      $store_order->subadmin_id =  0;
+    }
+
+    $store_order->store_admin_id =  Auth::guard('store')->user()->store_admin_id;
+
+    $store_order->product_total_amount =  $request->get('full_amount');
+    $store_order->payment_type_id = 1;
+    $store_order->payment_status = 9;
+    $store_order->status_id = 9;
+    $store_order->order_type = 'POS';
+
+    $store_order->save();
+    $order_id = DB::getPdo()->lastInsertId();
+
+
+
+    $invoice_info['order_id'] = $order_id;
+    $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+    $invoice_info['invoice_id'] = "INV0" . $order_id;
+
+    Trn_order_invoice::insert($invoice_info);
+
+    // dd($data);
+    $quantity = $request->get('quantity');
+    $single_quantity_rate = $request->get('single_quantity_rate');
+    $discount_amount = $request->get('discount_amount');
+    $discount_percentage = $request->get('discount_percentage');
+    $total_tax = $request->get('total_tax');
+    $total_amount = $request->get('total_amount');
+    $pro_variant = $request->get('product_varient_id');
+
+    $i = 0;
+
+    foreach ($request->get('product_id') as $p_id) {
+      //  echo "here";
+
+      $product_detail = Mst_store_product::where('product_id', '=', $p_id)->get();
+
+      $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
+
+      Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $quantity[$i]);
+
+      if (!isset($discount_amount[$i])) {
+        $discount_amount[$i] = 0;
       }
-      else{
-           $store_order->subadmin_id =  0;
-      }
-
-      $store_order->store_admin_id =  Auth::guard('store')->user()->store_admin_id;
-
-      $store_order->product_total_amount =  $request->get('full_amount');
-      $store_order->payment_type_id = 1;
-      $store_order->payment_status = 9;
-      $store_order->status_id = 9;
-      $store_order->order_type = 'POS';
-
-      $store_order->save();
-      $order_id = DB::getPdo()->lastInsertId();
 
 
+      $negStock = -1 * abs($quantity[$i]);
 
-      $invoice_info['order_id'] = $order_id;
-      $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
-      $invoice_info['invoice_id'] = "INV0" . $order_id;
+      $sd = new Mst_StockDetail;
+      $sd->store_id = Auth::guard('store')->user()->store_id;
+      $sd->product_id = $p_id;
+      $sd->stock = $negStock;
+      $sd->product_varient_id = $pro_variant[$i];
+      $sd->prev_stock = $productVarOlddata->stock_count;
+      $sd->save();
 
-      Trn_order_invoice::insert($invoice_info);
-
-      // dd($data);
-      $quantity = $request->get('quantity');
-      $single_quantity_rate = $request->get('single_quantity_rate');
-      $discount_amount = $request->get('discount_amount');
-      $discount_percentage = $request->get('discount_percentage');
-      $total_tax = $request->get('total_tax');
-      $total_amount = $request->get('total_amount');
-      $pro_variant = $request->get('product_varient_id');
-
-      $i = 0;
-
-      foreach ($request->get('product_id') as $p_id) {
-        //  echo "here";
-
-        $product_detail = Mst_store_product::where('product_id', '=', $p_id)->get();
-
-        $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
-
-        Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $quantity[$i]);
-
-        if (!isset($discount_amount[$i])) {
-          $discount_amount[$i] = 0;
-        }
+      $data = [
+        'order_id' => $order_id,
+        'product_id' => $p_id,
+        'product_varient_id' => $pro_variant[$i],
+        'customer_id' => $request->get('customer_id'),
+        'store_id' => Auth::guard('store')->user()->store_id,
+        'quantity' => $quantity[$i],
+        'unit_price' =>  $single_quantity_rate[$i],
+        'tax_amount' => $total_tax[$i],
+        'total_amount' => $total_amount[$i],
+        'discount_amount' => $discount_amount[$i],
+        'discount_percentage' => $discount_percentage[$i],
 
 
-        $negStock = -1 * abs($quantity[$i]);
-
-        $sd = new Mst_StockDetail;
-        $sd->store_id = Auth::guard('store')->user()->store_id;
-        $sd->product_id = $p_id;
-        $sd->stock = $negStock;
-        $sd->product_varient_id = $pro_variant[$i];
-        $sd->prev_stock = $productVarOlddata->stock_count;
-        $sd->save();
-
-        $data = [
-          'order_id' => $order_id,
-          'product_id' => $p_id,
-          'product_varient_id' => $pro_variant[$i],
-          'customer_id' => $request->get('customer_id'),
-          'store_id' => Auth::guard('store')->user()->store_id,
-          'quantity' => $quantity[$i],
-          'unit_price' =>  $single_quantity_rate[$i],
-          'tax_amount' => $total_tax[$i],
-          'total_amount' => $total_amount[$i],
-          'discount_amount' => $discount_amount[$i],
-          'discount_percentage' => $discount_percentage[$i],
-
-
-        ];
+      ];
 
 
 
-        Trn_store_order_item::insert($data);
+      Trn_store_order_item::insert($data);
 
-        //  $order_item->save();
+      //  $order_item->save();
 
-        $i++;
-      }
-      // die;
-      return  redirect()->back()->with('status', 'Order placed successfully.');
+      $i++;
+    }
+    // die;
+    return  redirect()->back()->with('status', 'Order placed successfully.');
     // } catch (\Exception $e) {
     //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     // }
@@ -3561,7 +3562,7 @@ class StoreController extends Controller
         $request->all(),
         [
           'admin_name' => ['required'],
-          'phone' => ['required','unique:trn__store_admins,store_mobile,' . $store_admin_id . ',store_admin_id'],
+          'phone' => ['required', 'unique:trn__store_admins,store_mobile,' . $store_admin_id . ',store_admin_id'],
           'username' => ['required'],
           //'password' => 'sometimes|same:password_confirmation',
           'role_id' => ['required'],
@@ -3631,13 +3632,13 @@ class StoreController extends Controller
       $category = Mst_categories::where('category_status', 1)->get();
 
       $global_product = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
-      ->where('created_by','!=',$store_id)
-      ->orderBy('global_product_id', 'DESC')->get();
+        ->where('created_by', '!=', $store_id)
+        ->orderBy('global_product_id', 'DESC')->get();
       //dd($global_product);
 
       if ($_GET) {
         $query = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
-              ->where('created_by','!=',$store_id);
+          ->where('created_by', '!=', $store_id);
         if ($request->product_cat_id) {
           $query = $query->where('product_cat_id', $request->product_cat_id);
         }
@@ -3659,7 +3660,7 @@ class StoreController extends Controller
     $product_videos = Trn_GlobalProductVideo::where('global_product_id', $global_product_id)->get();
 
 
-    return view('store.elements.global_product.view', compact('product_videos','product_images', 'product', 'global_product_id', 'pageTitle'));
+    return view('store.elements.global_product.view', compact('product_videos', 'product_images', 'product', 'global_product_id', 'pageTitle'));
   }
 
   public function convertGlobalProducts(Request $request, Mst_store_product $product, $global_product_id)
@@ -4191,53 +4192,51 @@ class StoreController extends Controller
     $pro_variant_attr->delete();
     return redirect()->back()->with('status', 'Product variant attribute deleted successfully.');
   }
-  
-   public function GetVarAttr_Count(Request $request)
+
+  public function GetVarAttr_Count(Request $request)
   {
     $product_varient_id = $request->product_varient_id;
     // dd($grp_id);
     $provar = Mst_store_product_varient::find($product_varient_id);
-    
+
     $productVarCount = Mst_store_product_varient::where('product_id', $provar->product_id)
       ->where('is_base_variant', '!=', 1)
       ->where('is_removed', '!=', 1)->count();
 
     $attrCount  = Trn_ProductVariantAttribute::where("product_varient_id", '=', $product_varient_id)->count();
-    
-    if($productVarCount <= 0){
+
+    if ($productVarCount <= 0) {
+      return '0';
+    } else {
+      if ($attrCount <= 1) {
+        return '1';
+      } else {
         return '0';
-    }else{
-        if($attrCount <= 1){
-            return '1';
-        }else{
-            return '0';
-        }
+      }
     }
 
     echo $productVarCount;
   }
-  
+
   public function isUniquePrefix(Request $request)
   {
     $store_id =   Auth::guard('store')->user()->store_id;
     $prefix = $request->prefix;
-    
-    $storePrefix = Mst_store::where('order_number_prefix',$prefix)->where('store_id','!=',$store_id)->count();
-    
-    if($storePrefix > 0){
-        return 'exist';
-    }else{
-        return 'available';
-    }
 
-    
+    $storePrefix = Mst_store::where('order_number_prefix', $prefix)->where('store_id', '!=', $store_id)->count();
+
+    if ($storePrefix > 0) {
+      return 'exist';
+    } else {
+      return 'available';
+    }
   }
-  
-      public function GetVarAttr_Remove(Request $request)
-      {
-       $pro_variant_attr = Trn_ProductVariantAttribute::where('variant_attribute_id', '=', $request->variant_attribute_id)->delete();
-        echo '1';
-      }
+
+  public function GetVarAttr_Remove(Request $request)
+  {
+    $pro_variant_attr = Trn_ProductVariantAttribute::where('variant_attribute_id', '=', $request->variant_attribute_id)->delete();
+    echo '1';
+  }
 
   public function addProductVariantAttr(Request $request, Trn_ProductVariantAttribute $var_att)
   {
@@ -4286,7 +4285,7 @@ class StoreController extends Controller
     $product_base_varient_attrs  = Trn_ProductVariantAttribute::where("product_varient_id", '=', $product_varient_id)->get();
 
     $product_variant = Mst_store_product_varient::find($product_varient_id);
-    return view('store.elements.product.edit_variant', compact('product_base_varient_attrs','attr_groups', 'product_variant', 'pageTitle', 'store_id'));
+    return view('store.elements.product.edit_variant', compact('product_base_varient_attrs', 'attr_groups', 'product_variant', 'pageTitle', 'store_id'));
   }
 
   public function updateProductVariant(Request $request, $product_varient_id)

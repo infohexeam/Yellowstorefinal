@@ -285,8 +285,8 @@
                                  <tr>
                                  <th class="wd-15p">SL.No</th>
                                     <th class="wd-15p">{{ __('Variant Name') }}</th>
+                                    <th class="wd-15p">{{ __('MRP') }}</th>
                                     <th class="wd-15p">{{ __('Sale Price') }}</th>
-                                    <th class="wd-15p">{{ __('Offer Price') }}</th>
                                     <th class="wd-15p">{{ __('Image') }}</th>
                                     <th class="wd-15p">{{ __('Stock Count') }}</th>
                                     <th  class="wd-20p">{{__('Action')}}</th>
