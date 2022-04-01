@@ -245,8 +245,8 @@
 
                               <div class="col-md-6">
                                 <div class="form-group">
-                                  <label class="form-label">Attribute* </label>
-                                  <select name="attr_group_id[500][]" onchange="findValue('500a0')"  id="attr_group500a0" class="attr_group form-control attrGroup500 proVariant" >
+                                  <label class="form-label">Attribute </label>
+                                  <select name="attr_group_id[500][]" onchange="findValue('500a0')"  id="attr_group500a0" class="attr_group form-control attrGroup500 " >
                                     <option value="">Attribute</option>
                                     @foreach($attr_groups as $key)
                                        @if(!in_array($key->attr_group_id, $usedAttr))
@@ -258,8 +258,8 @@
                               </div>
                               <div class="col-md-6">
                                   <div class="form-group">
-                                      <label class="form-label">Value* </label>
-                                      <select name="attr_value_id[500][]"   id="attr_value500a0" class="attr_value form-control proVariant" >
+                                      <label class="form-label">Value </label>
+                                      <select name="attr_value_id[500][]"   id="attr_value500a0" class="attr_value form-control " >
                                         <option value="">Value</option>
                                       </select>
                                   </div>
@@ -318,7 +318,7 @@
                    <div class="col-md-12">
                      <div class="form-group">
                          <label class="form-label">Variant Name </label>
-                         <input  type="text" class="form-control proVariant"  name="variant_name[]"   id="variant_name0" placeholder="Variant Name">
+                         <input  type="text" class="form-control proVariant"  name="variant_name[]"  oninput="variantNameFilled(this.value,0)"  id="variant_name0" placeholder="Variant Name">
                      </div>
                  </div>
 
@@ -328,8 +328,8 @@
 
                            <div class="col-md-6">
                              <div class="form-group">
-                               <label class="form-label">Attribute </label>
-                               <select name="attr_group_id[0][]" onchange="findValue('0a0')"  id="attr_group0a0" class="attr_group form-control proVariant " >
+                               <label class="form-label">Attribute  </label>
+                               <select  name="attr_group_id[0][]" onchange="findValue('0a0')"  id="attr_group0a0" class="attr_group form-control proVariant " >
                                  <option value="">Attribute</option>
                                  @foreach($attr_groups as $key)
                                  @if(!in_array($key->attr_group_id, $usedAttr))
@@ -341,8 +341,8 @@
                            </div>
                            <div class="col-md-6">
                                <div class="form-group">
-                                   <label class="form-label">Value </label>
-                                   <select name="attr_value_id[0][]"   id="attr_value0a0" class="attr_value form-control proVariant" >
+                                   <label class="form-label">Value  </label>
+                                   <select  name="attr_value_id[0][]"   id="attr_value0a0" class="attr_value form-control proVariant" >
                                      <option value="">Value</option>
                                    </select>
                                </div>
@@ -654,7 +654,7 @@
                               </tbody>
                            </table>
                            <center>
-                           <a class="btn btn-cyan" href="{{ route('admin.global_products') }}">Cancel</a>
+                           <a class="btn btn-cyan" href="{{ route('store.list_product') }}">Cancel</a>
                            </center>
                         </div>
                      </div>
@@ -1147,6 +1147,21 @@ function showVariant(){
 
 
 <script>
+
+
+function variantNameFilled(nameValue, h){
+    if ($('#variant_name0').is(':empty')) {
+        $("#attr_group0a0").prop('required',false);
+        $("#attr_value0a0").prop('required',false);
+
+    }else{
+        $("#attr_group0a0").prop('required',true);
+        $("#attr_value0a0").prop('required',true);
+    }
+}
+
+
+
      var xx = 1; 
 
 function addAttributes(att_id_val,mainKey){
@@ -1216,7 +1231,7 @@ $(document).ready(function() {
      //max input box allowed
        x++; //text box increment
        var attr_id_div = x+'a0';
-       $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute </label><select name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key) @if(!in_array($key->attr_group_id, $usedAttr)) <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option> @endif @endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value </label><select name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\','+x+')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" class="form-control"   name="var_regular_price[]"   id="var_regular_price'+x+'" oninput="regularPriceChangeVar('+x+')"  placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" type="number" class="form-control"  name="var_sale_price[]"  id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Images </label><input multiple type="file" class="form-control" accept="image/png, image/jpeg, image/jpg" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
+       $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute * </label><select required name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key) @if(!in_array($key->attr_group_id, $usedAttr)) <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option> @endif @endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value *</label><select required name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\','+x+')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" class="form-control"   name="var_regular_price[]"   id="var_regular_price'+x+'" oninput="regularPriceChangeVar('+x+')"  placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" type="number" class="form-control"  name="var_sale_price[]"  id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Images </label><input multiple type="file" class="form-control" accept="image/png, image/jpeg, image/jpg" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
    });
    
    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
@@ -1281,19 +1296,19 @@ function servTypeChanged(v){
 }
 
 
-$(document).ready(function () {
-        $('#variant_name0').on('input', function() {
-            let attVal = $("#variant_name0").val();
-            if(attVal == '')
-            {
-                $(".proVariant").prop('required',false); 
-            }
-            else
-            {
-                $(".proVariant").prop('required',true); 
-            }
-        });
-    });
+// $(document).ready(function () {
+//         $('#variant_name0').on('input', function() {
+//             let attVal = $("#variant_name0").val();
+//             if(attVal == '')
+//             {
+//                 $(".proVariant").prop('required',false); 
+//             }
+//             else
+//             {
+//                 $(".proVariant").prop('required',true); 
+//             }
+//         });
+//     });
 
 
 </script>

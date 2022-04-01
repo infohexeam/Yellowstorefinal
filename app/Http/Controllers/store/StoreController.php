@@ -1014,9 +1014,11 @@ class StoreController extends Controller
           Mst_product_image::insert($data1);
 
           $proImg_Id = DB::getPdo()->lastInsertId();
+          $productBaseImg = "";
 
           if ($c == 1) {
             DB::table('mst_store_products')->where('product_id', $id)->update(['product_base_image' => $filename]);
+            $productBaseImg = $filename;
             $c++;
             DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
           }
@@ -1079,7 +1081,7 @@ class StoreController extends Controller
         Mst_product_image::insert($data77);
         $proImg_Id = DB::getPdo()->lastInsertId();
 
-        if ($vic == 0) {
+        if ($productBaseImg ==  $vi->product_image) {
           DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $vi->product_image]);
           $vic++;
           DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
