@@ -5938,11 +5938,12 @@ class SettingController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'group_name'   => 'required',
+				'group_name'                 => 'required|unique:mst_attribute_groups,group_name,' . $GrpId . ',attr_group_id',
 
 			],
 			[
 				'group_name.required'        => 'Group name required',
+				'group_name.unique'                 => 'Group name already exists',
 
 
 			]

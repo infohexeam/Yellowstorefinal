@@ -289,13 +289,13 @@ function salePriceChange()
             }
             else
             {
-                $('#sale_priceMsg').html('Sale price should be less than or equal to regular price');
+                $('#sale_priceMsg').html('Sale price should be less than or equal to MRP');
                 $("#submit").attr("disabled", true);
             }
         }
         else
         {
-             $('#sale_priceMsg').html('Regular price is empty');
+             $('#sale_priceMsg').html('MRP is empty');
              $("#submit").attr("disabled", true);
 
         }

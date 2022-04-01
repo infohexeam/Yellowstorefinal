@@ -79,7 +79,7 @@ iframe{
                                  </tr>
                                 
                                 <tr>
-                                    <td><strong>Regular Price:</strong> {{ $product->regular_price}}</td>
+                                    <td><strong>MRP:</strong> {{ $product->regular_price}}</td>
                                  </tr>
                                <tr>
                                     <td><strong>Sale Price:</strong> {{ $product->sale_price}}</td>

@@ -55,7 +55,7 @@
 					
 				</div>
 				
-                          <div class="col-md-6">
+                          {{-- <div class="col-md-6">
                           	  <div class="color_code" style="display: none">
                         
                         <div class="form-group">
@@ -63,7 +63,7 @@
                            <input type="text" class="form-control" name="Hexvalue"  value="{{old('Hexvalue',$attributevalue->Hexvalue)}}" placeholder="Color Code">
                            </div>
                          </div>
-                     </div>
+                     </div> --}}
                  </div>
 
 			<div class="col-md-12">

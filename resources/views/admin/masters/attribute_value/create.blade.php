@@ -46,7 +46,7 @@
                       </div>
                       </div>
 
-                         <div class="row color_code" style="display: none">
+                         {{-- <div class="row color_code" style="display: none">
                         
                           <div class="col-md-6">
                         <div class="form-group">
@@ -61,7 +61,7 @@
                       Add More</button>
                         </div>
                         </div>
-                          </div>
+                          </div> --}}
  
                         
                            <div class="row"  id="teamColorArea">
@@ -104,34 +104,34 @@
 @endsection
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-     $('.attribute_group').change(function(){
-      //alert('dsd');
-      var attribute_group_id = $(this).val();
-     // alert(attribute_group_id);
+   //  $(document).ready(function(){
+   //   $('.attribute_group').change(function(){
+   //    //alert('dsd');
+   //    var attribute_group_id = $(this).val();
+   //   // alert(attribute_group_id);
 
-        if($(this).val() == 2)
+   //      if($(this).val() == 2)
 
-        {
-          $('.color_code').show();
+   //      {
+   //        $('.color_code').show();
          
-           $('#addNewTeam').hide();
+   //         $('#addNewTeam').hide();
            
 
 
-        } 
+   //      } 
        
-        else
-        {
-          $('.color_code').hide();
-          /*$('#addNewColor').hide();*/
-            $('#addNewTeam').show();
+   //      else
+   //      {
+   //        $('.color_code').hide();
+   //        /*$('#addNewColor').hide();*/
+   //          $('#addNewTeam').show();
 
 
              
-        }
-     });
-   });
+   //      }
+   //   });
+   // });
 
 
 $(document).ready(function() {
