@@ -709,9 +709,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store-password/request', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('store_password.request');
 
         // forget password otp
-                Route::post('store_password/change', 'Auth\ForgotPasswordController@otpChangePasswordFirebase')->name('store_password.change');
-                Route::post('store_password/exist_store_mobile', 'Auth\RegisterController@CheckExistanceMobile')->name('store.store_mobile_isExists');
-                Route::post('store_password/find-hash-code', 'Auth\RegisterController@findHashcode')->name('store.store_hashcode');
+        Route::post('store_password/change', 'Auth\ForgotPasswordController@otpChangePasswordFirebase')->name('store_password.change');
+        Route::post('store_password/exist_store_mobile', 'Auth\RegisterController@CheckExistanceMobile')->name('store.store_mobile_isExists');
+        Route::post('store_password/find-hash-code', 'Auth\RegisterController@findHashcode')->name('store.store_hashcode');
         Route::get('store-password/request/user', 'Auth\RegisterController@redirectToChangePass');
 
         Route::get('store/forgot/password/resend_otp/{store_id}', 'Auth\ForgotPasswordController@ResendOTP')->name('resend_forgot_pass_otp.store');
@@ -767,6 +767,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         Route::get('ajax/product-variant/attr-remove', 'StoreController@GetVarAttr_Remove');
+        Route::get('ajax/product-variant/attr-count', 'StoreController@GetVarAttr_Count');
 
 
         Route::get('store/product/variant/edit/{product_varient_id}', 'StoreController@editProductVariant');
@@ -966,10 +967,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::post('store/browser-token/save', 'CouponController@saveBrowserToken')->name('store.saveBrowserToken');
     });
-    
-    
-            Route::get('product/ajax/is-code-available', 'PublicController@isPCodeAvailable');
-            Route::get('g-product/ajax/is-code-available', 'PublicController@isPCodeAvailableGlobalPro');
 
 
+    Route::get('product/ajax/is-code-available', 'PublicController@isPCodeAvailable');
+    Route::get('g-product/ajax/is-code-available', 'PublicController@isPCodeAvailableGlobalPro');
 });
