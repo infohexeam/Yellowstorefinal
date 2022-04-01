@@ -1587,7 +1587,7 @@ class StoreController extends Controller
               'product_image'      => $filename,
               'product_id' => $product_id,
               'product_varient_id' => @$baseVar->product_varient_id,
-              'image_flag'         => 1,
+              'image_flag'         => 0,
               'created_at'         => $date,
               'updated_at'         => $date,
             ],
