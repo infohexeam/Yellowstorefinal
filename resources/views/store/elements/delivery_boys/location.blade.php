@@ -92,7 +92,7 @@
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
   const selectedMode = document.getElementById("mode").value;
-    alert('hi');
+  //  alert('hi');
     
     
     let latO1 = 11.25380152502914;

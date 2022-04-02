@@ -53,7 +53,7 @@ class DeliveryBoyOrderController extends Controller
                 ) {
                     foreach ($assignedOrders as $order) {
                         //dd($order);
-                        if (($order->status_id != 9) && ($order->delivery_accept != 2)) {
+                        if (($order->status_id != 9) &&  ($order->status_id >= 7) &&  ($order->delivery_accept != 2)) {
                             if (!isset($order->delivery_accept))
                                 $order->delivery_accept = "0";
 

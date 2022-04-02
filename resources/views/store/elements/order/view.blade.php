@@ -178,7 +178,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                   </div>
                @endif
 
-
+{{-- 
                      <div class="col-md-12">
                         <div class="card">
                            <div class="card-header">
@@ -209,9 +209,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                               </tbody>
                            </table>
                            </div>
-                        </div>{{-- card body end --}}
-                     </div><!-- COL END -->
-                  </div>
+                        </div>
+                     </div>
+                  </div> --}}
 
                   @if($order->service_booking_order != 1)
                   

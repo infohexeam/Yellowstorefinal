@@ -88,7 +88,7 @@
                         <th class="wd-15p">{{ __('Name') }}</th>
                         <th class="wd-15p">{{ __('Mobile') }}</th>
                         <th class="wd-15p">{{ __('Email') }}</th>
-                          <th class="wd-15p">{{ __('Town') }}</th>
+                          <th class="wd-15p">{{ __('Pincode') }}</th>
                           <th class="wd-15p">{{ __('Stores') }}</th>
                          <th class="wd-15p">{{__('Status')}}</th>
  

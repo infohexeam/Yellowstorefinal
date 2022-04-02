@@ -61,12 +61,12 @@ class CouponController extends Controller
       $coImg = Mst_product_image::where('product_image_id', $imgId)->update(['image_flag' => 1]);
 
 
-        Mst_product_image::where('product_image_id', $dataImage->product_image_id)->where('product_varient_id', $dataImage->product_varient_id)->update(['image_flag' => 1]);
-        Mst_store_product_varient::where('product_varient_id', $dataImage->product_varient_id)->update(['product_varient_base_image' => $dataImage->product_image]);
-      
-        $isBaseVar = Mst_store_product_varient::where('product_varient_id', $dataImage->product_varient_id)->first();
-        
-        if(@$isBaseVar->is_base_variant == 1)
+      Mst_product_image::where('product_image_id', $dataImage->product_image_id)->where('product_varient_id', $dataImage->product_varient_id)->update(['image_flag' => 1]);
+      Mst_store_product_varient::where('product_varient_id', $dataImage->product_varient_id)->update(['product_varient_base_image' => $dataImage->product_image]);
+
+      $isBaseVar = Mst_store_product_varient::where('product_varient_id', $dataImage->product_varient_id)->first();
+
+      if (@$isBaseVar->is_base_variant == 1)
         Mst_store_product::where('product_id', $dataImage->product_id)->update(['product_base_image' => $dataImage->product_image]);
 
 
@@ -167,16 +167,12 @@ class CouponController extends Controller
       $coupons = Mst_Coupon::where('store_id', $store_id)->orderBy('coupon_id', 'DESC')->get();
       if ($_GET) {
         $couponDetail =  Mst_Coupon::where('store_id', $store_id)->where('coupon_status', $request->status);
-        //   echo $request->status;
-        // dd($coupons);
-        //  die;
 
-        if ($request->coupon_status == 0) {
-          $today = Carbon::now()->toDateTimeString();
-
-          // $couponDetail = $couponDetail->whereDate('valid_from' ,'<=' ,$today)->whereDate('valid_to','>=',$today);
-          $couponDetail = $couponDetail->whereDate('valid_to', '>=', $today);
-        }
+        // active coupon in the sense , active base on todays date
+        // if ($request->coupon_status == 0) {
+        //   $today = Carbon::now()->toDateTimeString();
+        //   $couponDetail = $couponDetail->whereDate('valid_to', '>=', $today);
+        // }
 
         $coupons = $couponDetail->orderBy('coupon_id', 'DESC')->get();
 
@@ -332,14 +328,14 @@ class CouponController extends Controller
       $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->select('mst_store_products.product_id', 'mst_store_products.product_name')
         ->where('mst_store_products.store_id', Auth::guard('store')->user()->store_id)->orderBy('mst_store_products.product_id', 'DESC')->get();
-      
-    $productVAriants =  Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-     ->where('mst_store_products.is_removed', 0)
-     ->where('mst_store_product_varients.is_removed', 0)
-     ->get();
-    
 
-      
+      $productVAriants =  Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+        ->where('mst_store_products.is_removed', 0)
+        ->where('mst_store_product_varients.is_removed', 0)
+        ->get();
+
+
+
       $customers = Trn_store_customer::all();
 
       $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
@@ -380,11 +376,11 @@ class CouponController extends Controller
         ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
         ->where('mst_stores.store_id', Auth::guard('store')->user()->store_id)
-//         ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-//   ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
-->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        //         ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
+        //   ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
+        ->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
-     // dd($data);
+      // dd($data);
       if ($_GET) {
 
         $datefrom = $request->date_from;
@@ -439,7 +435,6 @@ class CouponController extends Controller
 
         if (isset($request->product_id)) {
           $data = $data->where('mst_store_product_varients.product_varient_id', $request->product_id);
-          
         }
 
         if (isset($request->vendor_id)) {
@@ -460,14 +455,14 @@ class CouponController extends Controller
 
 
 
-       // $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-           
-           $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
-//dd($data);
-        return view('store.elements.reports.product_report', compact( 'productVAriants' ,'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
+        // $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
+
+        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        //dd($data);
+        return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
       }
 
-      return view('store.elements.reports.product_report', compact('productVAriants' , 'subCategories', 'categories', 'agencies', 'products', 'customers', 'data', 'pageTitle'));
+      return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'data', 'pageTitle'));
     } catch (\Exception $e) {
       return redirect()->back()->withErrors([$e->getMessage()])->withInput();
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -915,7 +910,7 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at','DESC')->get();
+    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->get();
 
     //  dd($inventoryData);
 

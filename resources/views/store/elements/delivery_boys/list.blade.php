@@ -1,6 +1,6 @@
 @extends('store.layouts.app')
 @section('content')
-<div class="row" id="user-profile">
+<div class="row" style="min-height: 70vh;" id="user-profile">
    <div class="col-lg-12">
       <div class="card">
          <div class="card-body">
@@ -29,7 +29,7 @@
             </div>
          </div>
       </div>
-      <div class="card">
+      <div class="card" style="min-height: 70vh;">
          <div class="card-body">
             <div class="border-0">
                <div class="tab-content">
@@ -47,7 +47,7 @@
                                    <th class="wd-15p">SL.No</th>
                                    <th class="wd-15p">{{ __('Name') }}</th>
                                    <th class="wd-15p">{{ __('Mobile') }}</th>
-                                     <th class="wd-15p">{{ __('Town') }}</th>
+                                     <th class="wd-15p">{{ __('Pincode') }}</th>
 
                                      <th  class="wd-20p">{{__('Action')}}</th>
                                  </tr>

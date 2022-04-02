@@ -4444,7 +4444,7 @@ class StoreController extends Controller
   {
     try {
 
-      $pageTitle = "Delivery";
+      $pageTitle = "Delivery Boys";
       $store_id  = Auth::guard('store')->user()->store_id;
       $delivery_boys = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
         ->select('mst_delivery_boys.town_id', 'mst_delivery_boys.delivery_boy_id', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_mobile')
