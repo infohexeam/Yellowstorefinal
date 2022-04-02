@@ -287,8 +287,10 @@ $(document).ready(function() {
      let lastStartVal = $("#start"+x).val();
     // console.log(x);
      
-        if(lastEndVal <= lastStartVal)
+        if(parseFloat(lastEndVal) <= parseFloat(lastStartVal))
         {
+                //console.log(lastEndVal + "<"+lastStartVal);
+
             if(lastEndVal != lastStartVal)
              alert("Wrong input entered. " +lastEndVal+ " is lessthan "+lastStartVal);
              else
@@ -321,9 +323,9 @@ function startKMChanged(id,key)
    var fullKm = $('#service_area').val();
    var endKm = $('#'+id).val();
         var xVal = $('#first tr:last td:nth-child(2) input').val();
+   x = key;
 
-   //console.log(fullKm + " : " +xVal + " : "+key);
-   
+   console.log(fullKm + " : " +xVal + " : "+key + " : "+x );
    for(let i = key+1; i<=500;i++){
       //console.log(i);
       $("#trSec"+i).remove();

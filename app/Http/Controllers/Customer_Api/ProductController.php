@@ -2678,10 +2678,10 @@ class ProductController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
+                    $category_id = $request->category_id;
+                    $store_id = $request->store_id;
 
                     if ($request->customer_id == 0) {
-                        $category_id = $request->category_id;
-                        $store_id = $request->store_id;
 
                         $data['categoryInfo'] = Mst_categories::find($category_id);
                         $data['storeInfo'] = Mst_store::find($store_id);
@@ -2752,6 +2752,7 @@ class ProductController extends Controller
                             ->where('mst_store_products.product_cat_id', $category_id)
                             ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_removed', 0)
+                            ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.is_base_variant', 1)
                             ->where('mst_store_products.show_in_home_screen', 1)->get();
                         $productDataFinal = array();
@@ -2987,7 +2988,7 @@ class ProductController extends Controller
                             $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                                 ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
-                            if (isset($latitude) && ($longitude)) {
+                            if (isset($latitude) && isset($longitude)) {
                                 $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                                 * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
@@ -3000,6 +3001,7 @@ class ProductController extends Controller
 
                             $productData = $productData->where('mst_store_products.product_status', 1)
                                 ->where('mst_store_product_varients.stock_count', '>', 0)
+                                ->where('mst_store_products.store_id', $store_id)
                                 ->where('mst_store_products.product_cat_id', $category_id)
                                 ->where('mst_store_product_varients.is_removed', 0)
                                 ->where('mst_store_products.is_removed', 0)
