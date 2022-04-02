@@ -54,10 +54,10 @@ class BusinessTypeController extends Controller
 {
     public function test(Request $request)
     {
-        
-       
-        $data['data'] =  Trn_DeliveryBoyLocation::where('delivery_boy_id',$request->delivery_boy_id)->orderBy('dbl_id','DESC')->get();
-            return response($data);
+
+
+        $data['data'] =  Trn_DeliveryBoyLocation::where('delivery_boy_id', $request->delivery_boy_id)->orderBy('dbl_id', 'DESC')->get();
+        return response($data);
 
         $dist = Helper::haversineGreatCircleDistance($request->latitude, $request->longitude, $request->elatitude, $request->elongitude);
         echo $dist;
@@ -134,11 +134,11 @@ class BusinessTypeController extends Controller
                         $img->image = '/assets/uploads/customer_banner/' . $img->image;
                     }
 
-                   
-                   
-                   $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
-                    ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-                    
+
+
+                    $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+
                     if (isset($latitude) && ($longitude)) {
                         $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                         * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
@@ -147,9 +147,10 @@ class BusinessTypeController extends Controller
                     }
                     $productData = $productData->where('mst_store_products.product_status', 1)
                         ->where('mst_store_product_varients.stock_count', '>', 0)
-                     ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_products.is_removed', 0)
                         ->where('mst_store_product_varients.is_base_variant', 1)
-                                                ->where('mst_stores.business_type_id', $business_type_id)
+                        ->where('mst_stores.business_type_id', $business_type_id)
 
                         ->where('mst_store_products.show_in_home_screen', 1)->get();
                     $productDataFinal = array();
@@ -168,10 +169,10 @@ class BusinessTypeController extends Controller
                         $offerProduct->ratingCount = $countRating;
                         $productDataFinal[] =   $offerProduct;
                     }
-                $data['offerProducts']  =    $productDataFinal;
-                    
-                    
-                    
+                    $data['offerProducts']  =    $productDataFinal;
+
+
+
 
 
                     $latitude = $request->latitude;
@@ -213,7 +214,7 @@ class BusinessTypeController extends Controller
 
 
                     $data['recentlyVisitedStores'] = [];
-                    
+
 
                     $nearByStores =  Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
                         ->where('trn__store_admins.role_id', 0)->where('mst_stores.online_status', 1)
@@ -397,65 +398,66 @@ class BusinessTypeController extends Controller
                         //     }
                         // }
                         // $data['offerProducts']  =    $productDataFinal;
-                        
-                        
-                            $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
-                                ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
-                                
-                                
-                                if ((isset($request->customer_id)) && ($request->customer_id != 0)) {
-                                        // near by store
-                                        $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
-                                        // dd($cusData);
-            
-                                        if (isset($request->latitude) && ($request->longitude)) {
-                                            $latitude = $request->latitude;
-                                            $longitude = $request->longitude;
-                                        } else {
-                                            $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
-            
-                                            if (isset($cusAddData)) {
-                                                $cusAddDataLat =  $cusAddData->latitude;
-                                                $cusAddDataLog =  $cusAddData->longitude;
-                                            }
-            
-                                            $latitude = $cusAddDataLat;
-                                            $longitude = $cusAddDataLog;
-                                        }
-                                        $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+
+
+                        $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                            ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+
+
+                        if ((isset($request->customer_id)) && ($request->customer_id != 0)) {
+                            // near by store
+                            $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
+                            // dd($cusData);
+
+                            if (isset($request->latitude) && ($request->longitude)) {
+                                $latitude = $request->latitude;
+                                $longitude = $request->longitude;
+                            } else {
+                                $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
+
+                                if (isset($cusAddData)) {
+                                    $cusAddDataLat =  $cusAddData->latitude;
+                                    $cusAddDataLog =  $cusAddData->longitude;
+                                }
+
+                                $latitude = $cusAddDataLat;
+                                $longitude = $cusAddDataLog;
+                            }
+                            $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                                         * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                                         + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                                        $productData = $productData->orderBy('distance');
-                                    }
-                                    
-                                $productData = $productData->where('mst_store_products.product_status', 1)
-                                    ->where('mst_store_product_varients.stock_count', '>', 0)
-                                 ->where('mst_store_product_varients.is_removed', 0)
-                                    ->where('mst_store_product_varients.is_base_variant', 1)
-                                                            ->where('mst_stores.business_type_id', $business_type_id)
-            
-                                    ->where('mst_store_products.show_in_home_screen', 1)->get();
-                                $productDataFinal = array();
-                                foreach ($productData as $offerProduct) {
-                                    $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                                    $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
-                                    $storeData = Mst_store::find($offerProduct->store_id);
-                                    $offerProduct->store_name = $storeData->store_name;
-                                    $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
-                                    $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
-                                    if ($countRating == 0) {
-                                        $countRating = 1;
-                                    }
-                                    $ratingData = $sumRating / $countRating;
-                                    $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
-                                    $offerProduct->ratingCount = $countRating;
-                                    $productDataFinal[] =   $offerProduct;
-                                }
-                            $data['offerProducts']  =    $productDataFinal;
-                                
-                                
-            
-            
+                            $productData = $productData->orderBy('distance');
+                        }
+
+                        $productData = $productData->where('mst_store_products.product_status', 1)
+                            ->where('mst_store_product_varients.stock_count', '>', 0)
+                            ->where('mst_store_product_varients.is_removed', 0)
+                            ->where('mst_store_products.is_removed', 0)
+                            ->where('mst_store_product_varients.is_base_variant', 1)
+                            ->where('mst_stores.business_type_id', $business_type_id)
+
+                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                        $productDataFinal = array();
+                        foreach ($productData as $offerProduct) {
+                            $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                            $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                            $storeData = Mst_store::find($offerProduct->store_id);
+                            $offerProduct->store_name = $storeData->store_name;
+                            $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
+                            $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                            if ($countRating == 0) {
+                                $countRating = 1;
+                            }
+                            $ratingData = $sumRating / $countRating;
+                            $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                            $offerProduct->ratingCount = $countRating;
+                            $productDataFinal[] =   $offerProduct;
+                        }
+                        $data['offerProducts']  =    $productDataFinal;
+
+
+
+
 
 
                         $recentlyVisited  = Trn_RecentlyVisitedStore::join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id')

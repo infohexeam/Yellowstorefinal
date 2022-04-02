@@ -263,6 +263,7 @@ class ProductController extends Controller
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
                     ->where('stock_count', '>', 0)
+
                     ->get();
                 foreach ($productVartiantdata as $row) {
 
@@ -626,7 +627,8 @@ class ProductController extends Controller
                     $productData->ratingCount = $countRating;
 
 
-                    $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->toArray();
+                    $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)
+                        ->where('is_removed', 0)->pluck('product_varient_id')->toArray();
                     // dd($varIds);
 
                     // $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
@@ -695,7 +697,9 @@ class ProductController extends Controller
 
 
                     $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
-                        ->where('product_id', $productData->product_id)->get();
+                        ->where('is_removed', 0)
+                        ->where('product_id', $productData->product_id)
+                        ->get();
                     foreach ($otherVariants as $r) {
                         $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
                     }
@@ -786,6 +790,8 @@ class ProductController extends Controller
 
                         $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
                             ->where('product_id', $gData->product_id)
+                            ->where('is_removed', 0)
+
                             ->get();
                         foreach ($otherVariants as $r) {
                             $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
@@ -870,7 +876,8 @@ class ProductController extends Controller
                         $productData->ratingData = number_format((float)$ratingData, 2, '.', '');
                         $productData->ratingCount = $countRating;
 
-                        $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->toArray();
+                        $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)
+                            ->where('is_removed', 0)->pluck('product_varient_id')->toArray();
                         // dd($varIds);
 
                         // $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
@@ -985,6 +992,7 @@ class ProductController extends Controller
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $vardata->product_id)
                     ->where('stock_count', '>', 0)
+                    ->where('is_removed', 0)
                     ->get();
                 foreach ($productVartiantdata as $row) {
 
@@ -1558,6 +1566,8 @@ class ProductController extends Controller
                     ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
                     ->whereOr('mst_store_product_varients.variant_name', 'LIKE', "%{$product}%")
                     ->where('mst_store_product_varients.stock_count', '>', 0)
+                    ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_products.is_removed', 0)
                     // ->orWhere('mst_store_products.product_type',2)
 
                     ->get();
@@ -1621,7 +1631,9 @@ class ProductController extends Controller
                         ->where('mst_store_products.store_id', $request->store_id)
                         //  ->orWhere('mst_store_products.product_type',2)
 
-                        ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
+                    ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_products.is_removed', 0)
+                    ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
                         ->whereOr('mst_store_product_varients.variant_name', 'LIKE', "%{$product}%");
 
                     if (isset($request->customer_id)) {

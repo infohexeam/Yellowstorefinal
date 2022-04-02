@@ -122,7 +122,7 @@ $date = Carbon\Carbon::now();
                                  @foreach ($customer_rewards as $customer_reward)
                                  <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $customer_reward->reward_points_earned}}</td>
+                                    <td> {{ round($customer_reward->reward_points_earned, 0) }}</td>
                                     <td>
                                       {{@$customer_reward->customer['customer_first_name']}} </td>
                                       <td> {{@$customer_reward->customer['customer_mobile_number']}} </td>
