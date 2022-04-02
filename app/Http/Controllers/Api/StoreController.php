@@ -1750,7 +1750,7 @@ class StoreController extends Controller
 
                     ->where('mst_store_products.product_type', 1)
                     // ->orderBy('mst_store_products.product_name','ASC')
-                    ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+                    //  ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 
                     ->select(
                         'mst_store_products.product_id',
@@ -1815,7 +1815,7 @@ class StoreController extends Controller
 
 
 
-                $inventoryData = $inventoryData->orderBy('mst__stock_details.stock_detail_id', 'DESC');
+                $inventoryData = $inventoryData->orderBy('updated_time', 'DESC');
 
 
                 $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
