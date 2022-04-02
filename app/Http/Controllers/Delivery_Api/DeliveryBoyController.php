@@ -551,6 +551,7 @@ class DeliveryBoyController extends Controller
                     ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
                     ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 
+                $deliveryReport = $deliveryReport->where('trn_store_orders.status_id', '=', 7);
 
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
                 $a2  = Carbon::parse($request->date_to)->endOfDay();
