@@ -1137,7 +1137,7 @@ function myFunction(id)
             $('#town').prop("diabled",false);
             $('#town').empty();
 
-            $('#town').append('<option value="">Select Town</option>');
+            $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');

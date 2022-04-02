@@ -143,12 +143,12 @@
                         </div>
                     </div>
 
-                      <div class="col-md-6">
+                      {{-- <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">Store Pincode *</label>
-                           <input type="text" required class="form-control" name="store_pincode" value="{{old('store_pincode')}}" placeholder="Store Pincode" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
-                        </div>
-                    </div>
+                           <label class="form-label">Store Pincode *</label> --}}
+                           <input type="hidden" required class="form-control" name="store_pincode" value="0" placeholder="Store Pincode" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                        {{-- </div>
+                    </div> --}}
 
                     <div class="col-md-6">
                           <div class="form-group">
@@ -589,7 +589,7 @@ function findTown(city_id){
             $('#town').prop("diabled",false);
             $('#town').empty();
 
-            $('#town').append('<option value="">Select Town</option>');
+            $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');
