@@ -2456,7 +2456,8 @@ class StoreController extends Controller
                     ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
                     ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
                     ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')
-                    ->whereIn('status_id', [7, 8, 9]);
+                    // ->whereIn('status_id', [7, 8, 9]);
+                    ->whereIn('status_id', 9);
 
 
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
