@@ -2750,6 +2750,7 @@ class ProductController extends Controller
                         $productData = $productData->where('mst_store_products.product_status', 1)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             ->where('mst_store_products.product_cat_id', $category_id)
+                            ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
                             ->where('mst_store_products.show_in_home_screen', 1)->get();
@@ -2862,6 +2863,7 @@ class ProductController extends Controller
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             ->where('mst_store_product_varients.is_removed', 0)
+                            ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
                             ->where('mst_store_products.product_cat_id', $category_id)
                             ->get();
@@ -3000,6 +3002,7 @@ class ProductController extends Controller
                                 ->where('mst_store_product_varients.stock_count', '>', 0)
                                 ->where('mst_store_products.product_cat_id', $category_id)
                                 ->where('mst_store_product_varients.is_removed', 0)
+                                ->where('mst_store_products.is_removed', 0)
                                 ->where('mst_store_product_varients.is_base_variant', 1)
                                 ->where('mst_store_products.show_in_home_screen', 1)->get();
                             $productDataFinal = array();
@@ -3077,6 +3080,7 @@ class ProductController extends Controller
                                 ->where('mst_store_products.store_id', $store_id)
                                 ->where('mst_store_product_varients.stock_count', '>', 0)
                                 ->where('mst_store_product_varients.is_removed', 0)
+                                ->where('mst_store_products.is_removed', 0)
                                 ->where('mst_store_product_varients.is_base_variant', 1)
                                 ->where('mst_store_products.product_cat_id', $category_id)
                                 ->get();
@@ -3211,6 +3215,7 @@ class ProductController extends Controller
                         //->orWhere('mst_store_products.product_type',2)
                         ->where('mst_store_product_varients.is_removed', 0)
                         ->where('mst_store_products.is_removed', 0)
+                        ->where('mst_store_products.is_removed', 0)
 
                         ->where('mst_store_product_varients.is_base_variant', 1)
                         ->where('mst_store_products.show_in_home_screen', 1)->get();
@@ -3294,6 +3299,7 @@ class ProductController extends Controller
                         ->where('mst_store_products.store_id', $store_id)
                         ->where('mst_store_product_varients.stock_count', '>', 0)
                         ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_products.is_removed', 0)
                         ->where('mst_store_product_varients.is_base_variant', 1)
                         ->get();
 
@@ -3582,6 +3588,7 @@ class ProductController extends Controller
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             ->where('mst_store_product_varients.is_removed', 0)
+                            ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
                             ->get();
 
@@ -3752,6 +3759,7 @@ class ProductController extends Controller
                 $productData = $productData->where('mst_store_products.product_status', 1)
                     ->where('mst_store_product_varients.stock_count', '>', 0)
                     ->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_products.is_removed', 0)
                     ->where('mst_store_product_varients.is_base_variant', 1)
                     ->where('mst_store_products.show_in_home_screen', 1)->get();
                 $productDataFinal = array();
@@ -3996,6 +4004,7 @@ class ProductController extends Controller
                         ->where('mst_store_products.show_in_home_screen', 1)
 
                         ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_products.is_removed', 0)
                         ->where('mst_store_product_varients.is_base_variant', 1);
 
                     if ((isset($request->customer_id)) && ($request->customer_id != 0)) {
