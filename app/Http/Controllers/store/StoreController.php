@@ -3652,6 +3652,11 @@ class StoreController extends Controller
         if ($request->product_cat_id) {
           $query = $query->where('product_cat_id', $request->product_cat_id);
         }
+
+        if (isset($request->product_name)) {
+          $query = $query->where('product_name', 'LIKE', '%' . $request->product_name . '%');
+        }
+
         $global_product = $query->orderBy('global_product_id', 'DESC')->get();
       }
 
@@ -4062,7 +4067,7 @@ class StoreController extends Controller
 
   public function storePayments(Request $request)
   {
-    $pageTitle = "Payments";
+    $pageTitle = "Payments Settlements";
     $store_id  = Auth::guard('store')->user()->store_id;
 
 

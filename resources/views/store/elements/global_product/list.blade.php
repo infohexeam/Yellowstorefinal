@@ -36,10 +36,20 @@
                                  @csrf
 
                                  <div class="row">
-                                    <div class="col-md-12">
+
+                                      <div class="col-md-6">
+                  <div class="form-group">
+                     <label class="form-label">Product Name</label>
+                       <input type="text" class="form-control" 
+                       name="product_name"  value="{{ request()->input('product_name') }}" placeholder="Product Name">
+
+                  </div>
+               </div>
+
+                                    <div class="col-md-6">
                                        <div class="form-group">
-                                           <label class="form-label" >Product Category * </label>
-                                           <select name="product_cat_id" required id="category" class="form-control"  >
+                                           <label class="form-label" >Product Category  </label>
+                                           <select name="product_cat_id"  id="category" class="form-control"  >
                                                 <option value="">-Select-</option>
                                                 @foreach($category as $key)
                                                 <option {{old('product_cat_id',request()->input('product_cat_id')) == $key->category_id ? 'selected':''}} value="{{ @$key->category_id }}">{{ @$key->category_name }}</option>

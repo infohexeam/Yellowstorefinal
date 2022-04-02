@@ -99,7 +99,7 @@ $date = Carbon\Carbon::now();
                                     <th class="wd-15p">Issue<br>Type</th>
                                     <th class="wd-15p">Order<br>Date</th>
                                     <th class="wd-15p">Order<br>Number</th>
-                                    <th class="wd-15p">Store<br>Name</th>
+                                    {{-- <th class="wd-15p">Store<br>Name</th> --}}
                                     <th class="wd-10p">Sub<br>Admin</th>
                                     <th class="wd-20p">Dispute<br>status</th>
                                     <th class="wd-10p">Action</th>
@@ -126,7 +126,7 @@ $date = Carbon\Carbon::now();
 
                                     <td>{{  date("d-m-Y", strtotime(@$order->created_at)) }}</td>
                                     <td>{{ @$dispute->order_number}}</td>
-                                    <td>{{ @$store->store_name}}</td>
+                                    {{-- <td>{{ @$store->store_name}}</td> --}}
 
                                     <td>{{ @$subadmin->name}}</td>
                                     {{-- <td>{{ @$dispute->dispute_status}}</td> --}}
@@ -336,7 +336,7 @@ $(function(e) {
                 title: 'Disputes',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5]
+                     columns: [0,1,2,3,4]
                  }
             },
             {
@@ -344,7 +344,7 @@ $(function(e) {
                 title: 'Disputes',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5]
+                     columns: [0,1,2,3,4]
                  }
             }
          ]
