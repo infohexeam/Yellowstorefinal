@@ -76,7 +76,6 @@ use PDF;
 
 
 use App\Models\admin\Mst_StockDetail;
-use App\Models\admin\Mst_StoreAppBanner;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_StoreBankData;
 
@@ -133,9 +132,6 @@ class StoreController extends Controller
     //  $data['categoriesCount'] = $catCount; 
 
 
-    $banners =  Mst_StoreAppBanner::where('town_id', @$store->town_id)->orWhere('town_id', null)
-      ->select('banner_id', 'town_id', 'image')
-      ->get();
 
     $store = Mst_store::where('store_id', '=', $user_id)->get();
     $product = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
@@ -183,7 +179,6 @@ class StoreController extends Controller
       'pageTitle',
       'product',
       'order',
-      'banners',
       'agency',
       'recentvisitCountWeek',
       'recentvisitCountMonth'

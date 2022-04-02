@@ -47,7 +47,7 @@ $boys_count = $delivery_boys = \DB::table('mst_delivery_boys')
 
           <div class="col-lg-6 ">
             <div class="card">
-               <a href="{{ url('admin/subadmin/order/list') }}">
+               <a href="{{ route('admin.list_order') }}">
                   <div class="card-body text-center statistics-info">
                      <div class="counter-icon bg-secondary mb-0 box-secondary-shadow">
                            <i class="fe fe-shopping-cart text-white"></i>
