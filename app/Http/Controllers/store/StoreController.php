@@ -514,37 +514,38 @@ class StoreController extends Controller
       $sDAta = Mst_store::find($store_id);
       $sBankDAta = Trn_StoreBankData::where('store_id', $store_id)->where('status', 1)->count();
       if ($sBankDAta == 0) {
+        if (isset($request->acc_no) && isset($request->account_holder) && isset($request->ifsc)) {
 
-        $curl = curl_init();
+          $curl = curl_init();
 
-        if (isset($sDAta->store_mobile)) {
-          $store_mobile = $sDAta->store_mobile;
-        } else {
-          $store_mobile = '0000000000';
-        }
+          if (isset($sDAta->store_mobile)) {
+            $store_mobile = $sDAta->store_mobile;
+          } else {
+            $store_mobile = '0000000000';
+          }
 
-        if (isset($sDAta->email)) {
-          $email = $sDAta->email;
-        } else {
-          $email = 'test@mail.com';
-        }
-        $string2 = str_replace(' ', '-', $sDAta->store_name);
-        $string3 = str_replace('-', '', $string2);
+          if (isset($sDAta->email)) {
+            $email = $sDAta->email;
+          } else {
+            $email = 'test@mail.com';
+          }
+          $string2 = str_replace(' ', '-', $sDAta->store_name);
+          $string3 = str_replace('-', '', $string2);
 
-        $vendorId = preg_replace('/[^A-Za-z0-9\-]/', '', $string3) . substr($request->acc_no, strlen($request->acc_no) - 4);
-        // dd($vendorId);
-        $string4 = str_replace('-', '', $sDAta->store_name);
+          $vendorId = preg_replace('/[^A-Za-z0-9\-]/', '', $string3) . substr($request->acc_no, strlen($request->acc_no) - 4);
+          // dd($vendorId);
+          $string4 = str_replace('-', '', $sDAta->store_name);
 
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => '{
+          curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
                         "email": "' . $email . '",
                         "status": "ACTIVE",
                         "bank": 
@@ -559,34 +560,35 @@ class StoreController extends Controller
                         "id": "' . $vendorId . '",
                         "settlementCycleId": 2
                       }',
-          CURLOPT_HTTPHEADER => array(
-            'x-client-id: 165253d13ce80549d879dba25b352561',
-            'x-client-secret: bab0967cdc3e5559bded656346423baf0b1d38c4',
-            'x-api-version: 2021-05-21',
-            'Content-Type: application/json'
-          ),
-        ));
+            CURLOPT_HTTPHEADER => array(
+              'x-client-id: 165253d13ce80549d879dba25b352561',
+              'x-client-secret: bab0967cdc3e5559bded656346423baf0b1d38c4',
+              'x-api-version: 2021-05-21',
+              'Content-Type: application/json'
+            ),
+          ));
 
-        $response = curl_exec($curl);
+          $response = curl_exec($curl);
 
-        curl_close($curl);
-        $jData = json_decode($response);
-        if (!isset($jData->subCode)) {
-          $data = new Trn_StoreBankData;
-          $data->store_id = $store_id;
-          $data->account_number = $request->acc_no;
-          $data->ifsc = $request->ifsc;
-          $data->account_holder = $request->account_holder;
-          $data->status = 1;
+          curl_close($curl);
+          $jData = json_decode($response);
+          if (!isset($jData->subCode)) {
+            $data = new Trn_StoreBankData;
+            $data->store_id = $store_id;
+            $data->account_number = $request->acc_no;
+            $data->ifsc = $request->ifsc;
+            $data->account_holder = $request->account_holder;
+            $data->status = 1;
 
-          $data->phone = $store_mobile;
-          $data->vendor_name = $sDAta->store_name;
-          $data->vendor_id = $vendorId;
-          $data->settlement_cycle_id = 2;
+            $data->phone = $store_mobile;
+            $data->vendor_name = $sDAta->store_name;
+            $data->vendor_id = $vendorId;
+            $data->settlement_cycle_id = 2;
 
-          $data->save();
-        } else {
-          return redirect()->back()->withErrors($jData->message)->withInput();
+            $data->save();
+          } else {
+            return redirect()->back()->withErrors($jData->message)->withInput();
+          }
         }
       } else {
         $sBankDAta = Trn_StoreBankData::where('store_id', $store_id)->where('status', 1)->orderBy('store_bank_data_id', 'DESC')->first();
