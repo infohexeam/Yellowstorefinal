@@ -1267,6 +1267,7 @@ class CouponController extends Controller
         'trn_store_orders.payment_type_id',
         'trn_store_orders.payment_status',
         'trn_store_orders.trn_id',
+        'trn_store_orders.referenceId',
 
         'trn_store_orders.status_id',
         'trn_store_orders.payment_status',
