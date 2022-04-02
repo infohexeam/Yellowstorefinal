@@ -717,7 +717,16 @@ class StoreSettingsController extends Controller
                             }
                         }
                     }
+
+                    $storeImgs = Mst_store_images::where('store_id', $store_id)->get();
+                    foreach ($storeImgs as $img) {
+                        $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
+                    }
+
+
                     $data['status'] = 1;
+                    $data['storeImgs'] = $storeImgs;
+
                     $data['message'] = "Store Info updated successfully.";
                     return response($data);
                 } else {
