@@ -128,8 +128,8 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                 @if(isset($d->trn_id))
-                                                    {{ $d->trn_id }}
+                                                 @if(isset($d->referenceId))
+                                                    {{ $d->referenceId }}
                                                 @else
                                                     ---
                                                 @endif
