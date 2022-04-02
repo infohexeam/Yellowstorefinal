@@ -346,6 +346,23 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
 
       </li>
 
+      <li class="slide">
+        <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti-panel"></i><span class="side-menu__label">{{ __('Masters') }}</span><i class="angle fa fa-angle-right"></i></a>
+        <ul class="slide-menu">
+
+              <li><a class="slide-item" href="{{route('admin.list_category')}}">{{ __('Product Category') }}</a></li>
+
+       <li><a class="slide-item" href="{{route('admin.list_attribute_group')}}">{{ __('Attribute Group') }}</a></li>
+     <li><a class="slide-item" href="{{route('admin.list_attribute_value')}}">{{ __('Attribute Value') }}</a></li>
+                        <li><a class="slide-item" href="{{route('admin.list_vihicle_types')}}">{{ __('Vehicle Types') }}</a></li>
+  <!--<li><a class="slide-item" href="{{route('admin.videos')}}">{{ __('Video') }}</a></li>-->
+                      <li><a class="slide-item" href="{{route('admin.sub_category')}}">{{ __('Product Sub Category') }}</a></li>
+
+
+        </ul>
+      </li>
+      
+
        <li class="slide">
         <a class="side-menu__item" href="{{route('admin.list_store_subadmin')}}">
           <i class="side-menu__icon ti ti-archive"></i>
@@ -414,21 +431,7 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
       <!--</li>-->
 
 
-      <li class="slide">
-        <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti-panel"></i><span class="side-menu__label">{{ __('Masters') }}</span><i class="angle fa fa-angle-right"></i></a>
-        <ul class="slide-menu">
-
-              <li><a class="slide-item" href="{{route('admin.list_category')}}">{{ __('Product Category') }}</a></li>
-
-       <li><a class="slide-item" href="{{route('admin.list_attribute_group')}}">{{ __('Attribute Group') }}</a></li>
-     <li><a class="slide-item" href="{{route('admin.list_attribute_value')}}">{{ __('Attribute Value') }}</a></li>
-                        <li><a class="slide-item" href="{{route('admin.list_vihicle_types')}}">{{ __('Vehicle Types') }}</a></li>
-  <!--<li><a class="slide-item" href="{{route('admin.videos')}}">{{ __('Video') }}</a></li>-->
-                      <li><a class="slide-item" href="{{route('admin.sub_category')}}">{{ __('Product Sub Category') }}</a></li>
-
-
-        </ul>
-      </li>
+    
        <li class="slide">
         <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti-settings"></i><span class="side-menu__label">{{ __('Settings') }}</span><i class="angle fa fa-angle-right"></i></a>
         <ul class="slide-menu">

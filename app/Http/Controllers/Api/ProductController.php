@@ -1520,7 +1520,7 @@ class ProductController extends Controller
 
                     if ($productVarCount <= 1) {
                         Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
-                        Mst_store_product::where('product_id', $productVar->product_id)->update($removeProduct);
+                        //  Mst_store_product::where('product_id', $productVar->product_id)->update($removeProduct);
                         // update(['product_status' => 0]);
 
                     } else {

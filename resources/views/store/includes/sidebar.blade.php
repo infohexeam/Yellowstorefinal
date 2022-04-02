@@ -48,17 +48,6 @@
       <li class="slide">
         <a class="side-menu__item" href="{{url('store/home')}}"><i class="side-menu__icon ti-shield"></i><span class="side-menu__label"> Dashboard</span></a>
       </li>
-
-      @if(Auth::guard('store')->user()->role_id == 0)
-
-
-      <li class="slide">
-       <a class="side-menu__item" href="{{route('store.store_admin')}}">
-         <i class="side-menu__icon ti-user"></i>
-         <span class="side-menu__label"> {{ __('Store Admin') }}</span>
-       </a>
-     </li>
-     @endif
       
        {{-- <li class="slide">
         <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti-panel"></i><span class="side-menu__label">{{ __('Masters') }}</span><i class="angle fa fa-angle-right"></i></a>
@@ -150,7 +139,16 @@
 
             </ul>
         </li>
-    
+      @if(Auth::guard('store')->user()->role_id == 0)
+
+
+       <li class="slide">
+        <a class="side-menu__item" href="{{route('store.store_admin')}}">
+          <i class="side-menu__icon ti-user"></i>
+          <span class="side-menu__label"> {{ __('Store Admin') }}</span>
+        </a>
+      </li>
+      @endif
 
       <li class="slide">
         <a class="side-menu__item" href="{{route('store.list_disputes')}}">
