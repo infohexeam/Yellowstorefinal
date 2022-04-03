@@ -346,13 +346,13 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                $c = 0;
                @endphp
                @foreach ($payments as $payment)
-                  
+               @if($c == 0)
+               @php
+               $c = 1;
+               @endphp
                 <div class="card">
                   <div class="card-body">
-                      @if($c == 0)
-                      @php
-                      $c = 1;
-                      @endphp
+                    
                        <h5>Payment Information</h5>
                     <table class="table table-bordered text-nowrap w-100">
                        <tr>
@@ -434,10 +434,11 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
                 </table>
 
-                @endif
                
                   </div>
                 </div>
+                @endif
+
                @endforeach
 
                 @endif
