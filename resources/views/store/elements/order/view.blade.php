@@ -460,11 +460,13 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                    <tr>
                                       <td><strong>Service: </strong> </td> 
                                       <td> 
-                                          @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                       {{$serviceDetail->variant_name}}
+                                         
+                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
                                             {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
                                           @else
                                             {{$serviceDetail->product_name}}
-                                          @endif
+                                          @endif --}}
                                       </td>
                                    </tr>
                                    <tr>

@@ -27,12 +27,15 @@
               @foreach ($order_items as $order_item)
                 <tr>
                   <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center"> 
-                    {{@$order_item->product->product_name}}
+                   
+                    {{ @$order_item->product_varient->variant_name }}
+                   
+                    {{-- {{@$order_item->product->product_name}}
                     @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
                       -
                     {{ @$order_item->product_varient->variant_name }}
                     
-                    @endif
+                    @endif --}}
                   </td>
                   <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">
                     {{@$order_item->quantity}} 

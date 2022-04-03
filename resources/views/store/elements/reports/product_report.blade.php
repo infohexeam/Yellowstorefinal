@@ -431,7 +431,7 @@ $(document).ready(function() {
     });
     
     
-    $(document).ready(function() {
+$(document).ready(function() {
         
         $("#categoryId").on('change', function(){    
             
@@ -443,7 +443,7 @@ $(document).ready(function() {
         
             $.ajax({
               type:"GET",
-              url:"{{ url('admin/sub-category-list') }}?category_id="+categoryId,
+              url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+categoryId,
     
               success:function(res){
                     if(res){
@@ -475,6 +475,7 @@ $(document).ready(function() {
             });
         });
     });
+    
     
     
     var getUrlParameter = function getUrlParameter(sParam) {

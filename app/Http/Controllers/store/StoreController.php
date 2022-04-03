@@ -2156,6 +2156,7 @@ class StoreController extends Controller
         ->where('trn__order_split_payments.paymentRole', '=', 1)
         ->where('trn_store_orders.store_id', '=', $store_id)
         ->where('trn_store_orders.order_id', '=', $decrId)
+        ->where('trn__order_payment_transactions.order_id', '=', $decrId)
         ->first();
 
 
