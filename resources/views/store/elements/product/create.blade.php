@@ -673,6 +673,8 @@ function proTypeChanged(val)
     $("#service_type_input").prop('required',false);
     $("div#service_type_id").hide();
     $("div#attSec").show();
+    $("#btnAddVar").show();
+
  }
 }
 var vc = 1;
@@ -680,6 +682,7 @@ function servTypeChanged(v){
   if(vc != 1){
     if(v == 1){
       $("div#attSec").hide();
+      $("#btnAddVar").hide();
 
       $(".proVariant").prop('required',false);
    
@@ -688,6 +691,7 @@ function servTypeChanged(v){
     else{
       $("div#attSec").show();
       $(".proVariant").prop('required',false);  // edited after call
+      $("#btnAddVar").show();
 
     }
   }
