@@ -392,7 +392,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
     
     
                     </table>
-                
+                    @if(@$payment->paymentRole == 1)
                 <h5>Payment Split Information @if(@$payment->paymentRole == 1) for Store @else for Admin @endif</h5>
                 <table class="table table-bordered text-nowrap w-100">
                    <tr>
@@ -433,7 +433,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
 
                 </table>
-
+                @endif
                
                   </div>
                 </div>
