@@ -344,10 +344,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                 @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
                @php
                $c = 0;
-             //  dd($payments);
                @endphp
                @foreach ($payments as $payment)
-                  <h1>hehehheheh</h1>
+                  
                 <div class="card">
                   <div class="card-body">
                       @if($c == 0)
@@ -393,7 +392,6 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
     
     
                     </table>
-                    @endif
                 
                 <h5>Payment Split Information @if(@$payment->paymentRole == 1) for Store @else for Admin @endif</h5>
                 <table class="table table-bordered text-nowrap w-100">
@@ -436,6 +434,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
                 </table>
 
+                @endif
                
                   </div>
                 </div>
