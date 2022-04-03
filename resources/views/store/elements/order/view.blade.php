@@ -344,6 +344,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                 @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
                @php
                $c = 0;
+               dd($payments);
                @endphp
                @foreach ($payments as $payment)
                   
