@@ -344,10 +344,10 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                 @if(($order->order_type == 'APP') && ($order->payment_type_id == 2))
                @php
                $c = 0;
-               dd($payments);
+             //  dd($payments);
                @endphp
                @foreach ($payments as $payment)
-                  
+                  <h1>hehehheheh</h1>
                 <div class="card">
                   <div class="card-body">
                       @if($c == 0)
