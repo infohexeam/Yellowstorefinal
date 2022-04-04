@@ -1914,7 +1914,9 @@ class StoreController extends Controller
 
 
                     ->select(
-                        'mst_store_products.product_id',
+                        'mst__stock_details.*',
+                        'mst__stock_details.updated_at AS updated_time',
+
                         'mst_store_products.product_name',
                         'mst_store_products.product_code',
                         'mst_store_products.product_cat_id',
@@ -1924,17 +1926,13 @@ class StoreController extends Controller
                         'mst_store_products.min_stock',
 
                         'mst_store_products.tax_id',
-                        'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
                         'mst_store_product_varients.product_varient_offer_price',
                         'mst_store_product_varients.product_varient_base_image',
                         'mst_store_product_varients.stock_count',
-                        'mst__stock_details.updated_at AS updated_time',
                         'mst_store_categories.category_id',
                         'mst_store_categories.category_name',
-                        'mst__stock_details.stock',
-                        'mst__stock_details.prev_stock',
                         'mst_store_agencies.agency_name',
                         'mst__sub_categories.sub_category_name',
 
