@@ -453,15 +453,15 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                             <table class="table row table-borderless">
                                 <tbody class="col-lg-12 col-xl-6 p-0">
                                     @php
-                                        $serviceVarDetail = \DB::table('mst_store_product_varients')->where('product_varient_id',$order->product_varient_id)->first();
-                                        $serviceDetail = \DB::table('mst_store_products')->where('product_id',$serviceVarDetail->product_id)->first();
-                                        $addCus = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
+                                        $serviceVarDetail = \DB::table('mst_store_product_varients')->where('product_varient_id',@$order->product_varient_id)->first();
+                                        $serviceDetail = \DB::table('mst_store_products')->where('product_id',@$serviceVarDetail->product_id)->first();
+                                        $addCus = \DB::table('trn_customer_addresses')->where('customer_address_id',@$order->delivery_address)->first();
 
                                     @endphp
                                    <tr>
                                       <td><strong>Service: </strong> </td> 
                                       <td> 
-                                       {{$serviceDetail->variant_name}}
+                                       {{@$serviceDetail->variant_name}}
                                          
                                           {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
                                             {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}

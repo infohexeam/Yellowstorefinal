@@ -42,33 +42,33 @@
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                    <td><strong>Store Name:</strong> {{ $store->store_name}}</td>
+                                    <td><strong>Store Name:</strong> {{ @$store->store_name}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Contact Person Name:</strong> {{ $store->store_contact_person_name}}</td>
+                                    <td><strong>Contact Person Name:</strong> {{ @$store->store_contact_person_name}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Contact Person Number:</strong> {{ $store->store_contact_person_phone_number}}</td>
+                                    <td><strong>Contact Person Number:</strong> {{ @$store->store_contact_person_phone_number}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Store Mobile Number:</strong> {{ $store->store_mobile}}</td>
+                                    <td><strong>Store Mobile Number:</strong> {{ @$store->store_mobile}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>Website Link:</strong> <a target="_balnk" href="{{ $store->store_website_link}}" >{{ $store->store_website_link}}</a></td>
+                                    <td><strong>Website Link:</strong> <a target="_balnk" href="{{ @$store->store_website_link}}" >{{ $store->store_website_link}}</a></td>
                                  </tr>
                                     <tr>
-                                    <td><strong> Pincode:</strong> {{ $store->store_pincode}}</td>
+                                    <td><strong> Pincode:</strong> {{ @$store->store_pincode}}</td>
                                  </tr>
                                  </tr>
                                 <tr>
-                                    <td><strong> Business Type:</strong> {{ $store->business_type['business_type_name']}}</td>
+                                    <td><strong> Business Type:</strong> {{ @$store->business_type['business_type_name']}}</td>
                                  </tr>
 
                                    <tr>
-                                    <td><strong> Store Commission Amount (Monthly):</strong> {{ $store->store_commision_amount}}</td>
+                                    <td><strong> Store Commission Amount (Monthly):</strong> {{ @$store->store_commision_amount}}</td>
                                  </tr>
                                   <tr>
-                                    <td><strong> Store Commission Percentage (Per Order):</strong> {{ $store->store_commision_percentage}}</td>
+                                    <td><strong> Store Commission Percentage (Per Order):</strong> {{ @$store->store_commision_percentage}}</td>
                                  </tr>
 
                                   {{-- <tr>
@@ -84,7 +84,7 @@
                               </tbody>
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                     <td><strong>Email:</strong> {{ $store->email}}</td>
+                                     <td><strong>Email:</strong> {{ @$store->email}}</td>
                                  </tr>
                                  <tr>
                                      <td><strong>Registered Date:</strong> {{ \Carbon\Carbon::parse($store->created_at)->format('d-m-Y')}}</td>
@@ -114,7 +114,7 @@
                                    <tr>
                                      <td><strong>Address :</strong>
                                      <span style="display: inline-flex;" > <?php
-                                        echo nl2br($store->store_primary_address);
+                                        echo nl2br(@$store->store_primary_address);
                                         ?> </span>
                                      </td>
 
