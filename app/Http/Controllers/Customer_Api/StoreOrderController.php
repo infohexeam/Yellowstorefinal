@@ -894,18 +894,18 @@ class StoreOrderController extends Controller
                             $data['status'] = 2;
                         }
 
-                        if(isset($value['price'])){
-                                if($varProdu->product_varient_offer_price != $value['price']){
-                                    $data['product_name'] = @$varProdu->variant_name;
+                        if (isset($value['price'])) {
+                            if ($varProdu->product_varient_offer_price != $value['price']) {
+                                $data['product_name'] = @$varProdu->variant_name;
 
-                                    $noStockProducts2[] = $varProdu->product_varient_id;
-        
-                                    $data['noStockProducts'] = $noStockProducts2;
-                                    $data['message'] = 'Stock unavailable';
-                                    $data['status'] = 2;
-                                }
+                                $noStockProducts2[] = $varProdu->product_varient_id;
+
+                                $data['noStockProducts'] = $noStockProducts2;
+                                $data['message'] = 'Stock unavailable';
+                                $data['price'] = @$value['price'];
+                                $data['status'] = 2;
+                            }
                         }
-
                     } else {
                         $data['message'] = 'Product not found';
                         $data['status'] = 2;
