@@ -1344,11 +1344,13 @@ class ProductController extends Controller
         }
 
 
+        ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
+        ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+        ->get();
 
-
-        $data = $data->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-          ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
-          ->get();
+        $data = $data->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
+        ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+        ->get();
       } else {
 
 
@@ -1399,9 +1401,9 @@ class ProductController extends Controller
         }
 
         $data = $data->where('mst_stores.subadmin_id', auth()->user()->id)
-          // ->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-          ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
-          ->get();
+        ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
+        ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+        ->get();
       }
 
       return view('admin.masters.reports.store_visit_report', compact('stores', 'subadmins', 'customers', 'data', 'pageTitle'));
