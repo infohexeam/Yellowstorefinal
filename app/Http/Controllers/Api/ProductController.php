@@ -35,6 +35,7 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_ProductVariantAttribute;
 
 use App\Models\admin\Mst_product_image;
+use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_GlobalProductImage;
 use App\Models\admin\Trn_RecentlyVisitedProducts;
 use App\Models\admin\Trn_RecentlyVisitedStore;
@@ -1983,6 +1984,16 @@ class ProductController extends Controller
                             if ($productVar->save()) {
                                 $Varid = DB::getPdo()->lastInsertId();
 
+
+                                $sd = new Mst_StockDetail;
+                                $sd->store_id = $productData->store_id;
+                                $sd->product_id = $id;
+                                $sd->stock = 0;
+                                $sd->product_varient_id = $Varid;
+                                $sd->prev_stock = 0;
+                                $sd->save();
+
+
                                 $data['product_variant_id'] = $Varid;
 
                                 $c = 1;
@@ -2243,6 +2254,17 @@ class ProductController extends Controller
 
                         if ($productVar->save()) {
                             $Varid = DB::getPdo()->lastInsertId();
+
+
+                            $sd = new Mst_StockDetail;
+                            $sd->store_id = @$productData->store_id;
+                            $sd->product_id = $request->product_id;
+                            $sd->stock = 0;
+                            $sd->product_varient_id = $Varid;
+                            $sd->prev_stock = 0;
+                            $sd->save();
+
+
 
                             $vac = 0;
 
