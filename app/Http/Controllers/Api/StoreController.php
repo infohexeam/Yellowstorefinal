@@ -1895,7 +1895,7 @@ class StoreController extends Controller
 
                 $inventoryData =  Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                     ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-                    ->leftjoin('mst_stock_details', 'mst_stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
+                    ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
                     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
                     ->leftjoin('mst_sub_categories', 'mst_sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
                     ->where('mst_store_products.store_id', $store_id)
