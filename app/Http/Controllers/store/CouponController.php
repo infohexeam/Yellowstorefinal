@@ -32,6 +32,7 @@ use App\Models\admin\District;
 use App\Models\admin\Town;
 use App\Models\admin\Mst_store_agencies;
 use App\Models\admin\Mst_categories;
+use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Trn_StoreWebToken;
 use App\Models\admin\Trn_StoreAdmin;
@@ -837,17 +838,18 @@ class CouponController extends Controller
     $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
 
 
-    $inventoryData =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-      ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-      ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
-      ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-      ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+    $inventoryData =  Mst_StockDetail::join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'mst__stock_details.product_varient_id')
+    ->join('mst_store_products', 'mst_store_products.product_id', '=', 'mst__stock_details.product_id')
+    ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+    ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+    ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
 
       ->where('mst_store_products.store_id', $store_id)
       ->where('mst_store_products.product_type', 1)
       // ->orderBy('mst_store_products.product_name','ASC')
       ->where('mst_store_product_varients.stock_count', '<=', 0)
 
+      ->orderBy('mst__stock_details.created_at', 'DESC')
 
       ->select(
         'mst_store_products.product_id',
@@ -913,13 +915,13 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC');
+    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->get();
 
     //  dd($inventoryData);
 
     $inventoryData = collect($inventoryData);
-    //$inventoryDatas = $inventoryData->unique('product_varient_id');
-    $data =   $inventoryData->values()->all();
+    $inventoryDatas = $inventoryData->unique('product_varient_id');
+    $data =   $inventoryDatas->values()->all();
 
     //   dd($data);
 
