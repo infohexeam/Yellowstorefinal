@@ -898,9 +898,9 @@ class StoreOrderController extends Controller
                             if ($varProdu->product_varient_offer_price != $value['price']) {
                                 $data['product_name'] = @$varProdu->variant_name;
 
-                                $noStockProducts2[] = $varProdu->product_varient_id;
+                                $noStockProducts[] = $varProdu->product_varient_id;
 
-                                $data['noStockProducts'] = $noStockProducts2;
+                                $data['noStockProducts'] = $noStockProducts;
                                 $data['message'] = 'Stock unavailable..';
                                 $data['price'] = @$value['price'];
                                 $data['currentPrice'] = @$varProdu->product_varient_offer_price;
