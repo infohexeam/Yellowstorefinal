@@ -1223,6 +1223,16 @@ class ProductController extends Controller
                                     Mst_store_product_varient::create($data3);
                                     @$vari_id = DB::getPdo()->lastInsertId();
 
+
+                                    $sd = new Mst_StockDetail;
+                                    $sd->store_id = $request->store_id;
+                                    $sd->product_id = $product_id;
+                                    $sd->stock = 0;
+                                    $sd->product_varient_id = $vari_id;
+                                    $sd->prev_stock = 0;
+                                    $sd->save();
+
+
                                     $vac = 0;
                                     foreach ($product_variant['variant_attributes'] as $attrGrp) {
                                         if (($attrGrp['attr_group_id'] != 0) && ($attrGrp['attr_value_id'] != 0)) {
@@ -1986,7 +1996,7 @@ class ProductController extends Controller
 
 
                                 $sd = new Mst_StockDetail;
-                                $sd->store_id = $productData->store_id;
+                                $sd->store_id = @$productData->store_id;
                                 $sd->product_id = $id;
                                 $sd->stock = 0;
                                 $sd->product_varient_id = $Varid;
