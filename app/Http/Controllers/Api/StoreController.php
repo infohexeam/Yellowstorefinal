@@ -1898,7 +1898,6 @@ class StoreController extends Controller
                     ->leftjoin('mst_stock_details', 'mst_stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
                     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
                     ->leftjoin('mst_sub_categories', 'mst_sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-
                     ->where('mst_store_products.store_id', $store_id)
                     ->where('mst_store_product_varients.stock_count', '<=', 0)
                     ->where('mst_store_products.product_type', 1)
@@ -1934,7 +1933,6 @@ class StoreController extends Controller
                     );
 
 
-
                 $datefrom = $request->date_from;
                 $dateto = $request->date_to;
 
@@ -1967,25 +1965,13 @@ class StoreController extends Controller
                     $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                 }
 
-                $inventoryData = $inventoryData->groupBy('product_varient_id')->orderBy('mst__stock_details.stock_detail_id', 'DESC');
+                $inventoryData = $inventoryData->groupBy('mst_store_product_varients.product_varient_id');
 
                 if (isset($request->page)) {
                     $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
                 } else {
                     $inventoryData = $inventoryData->paginate(10);
                 }
-
-
-
-                // $inventoryData = $inventoryData->get();
-
-
-
-                // $inventoryData = collect($inventoryData);
-                //         $inventoryDatas = $inventoryData->unique('product_varient_id');
-                //           $dataReViStoreSS =   $inventoryDatas->values()->all();
-
-
 
 
                 $data['inventoryData'] = $inventoryData;
