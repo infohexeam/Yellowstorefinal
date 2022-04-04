@@ -913,13 +913,13 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->groupBy('mst__stock_details.product_varient_id');
+    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC');
 
     //  dd($inventoryData);
 
     $inventoryData = collect($inventoryData);
-    $inventoryDatas = $inventoryData->unique('product_varient_id');
-    $data =   $inventoryDatas->values()->all();
+    //$inventoryDatas = $inventoryData->unique('product_varient_id');
+    $data =   $inventoryData->values()->all();
 
     //   dd($data);
 
