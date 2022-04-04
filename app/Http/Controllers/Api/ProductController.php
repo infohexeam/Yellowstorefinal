@@ -93,8 +93,10 @@ class ProductController extends Controller
 
                     $isBaseVar = Mst_store_product_varient::where('product_varient_id', $imageData->product_varient_id)->first();
 
-                    if (@$isBaseVar->is_base_variant == 1)
+                    if (@$isBaseVar->is_base_variant == 1) {
                         Mst_store_product::where('product_id', $imageData->product_id)->update(['product_base_image' => $imageData->product_image]);
+                    }
+                    Mst_store_product_varient::where('product_varient_id', $imageData->product_varient_id)->update(['product_base_image' => $product_varient_base_image->product_image]);
 
 
                     $data['status'] = 1;
