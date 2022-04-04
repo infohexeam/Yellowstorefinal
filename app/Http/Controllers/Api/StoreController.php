@@ -1911,6 +1911,7 @@ class StoreController extends Controller
                     // ->orderBy('mst_store_products.product_name','ASC')
                     ->where('mst_store_products.is_removed', 0)
                     ->where('mst_store_product_varients.is_removed', 0)
+                    ->orderBy('mst__stock_details.created_at', 'DESC')
 
                     ->select(
                         'mst_store_products.product_id',
@@ -1929,7 +1930,7 @@ class StoreController extends Controller
                         'mst_store_product_varients.product_varient_offer_price',
                         'mst_store_product_varients.product_varient_base_image',
                         'mst_store_product_varients.stock_count',
-                        'mst__stock_details.updated_at AS created_at',
+                        'mst__stock_details.updated_at AS updated_time',
                         'mst_store_categories.category_id',
                         'mst_store_categories.category_name',
                         'mst__stock_details.stock',
@@ -1972,11 +1973,12 @@ class StoreController extends Controller
                     $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                 }
 
-                $inventoryData = $inventoryData->orderBy('mst__stock_details.updated_at', 'DESC');
+                $inventoryData = $inventoryData->groupBy('product_varient_id');
+
                 if (isset($request->page)) {
-                    $inventoryData = $inventoryData->paginate(50, ['data'], 'page', $request->page);
+                    $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
                 } else {
-                    $inventoryData = $inventoryData->paginate(50);
+                    $inventoryData = $inventoryData->paginate(10);
                 }
 
 
