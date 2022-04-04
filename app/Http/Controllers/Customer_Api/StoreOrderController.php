@@ -901,7 +901,7 @@ class StoreOrderController extends Controller
                                 $noStockProducts2[] = $varProdu->product_varient_id;
 
                                 $data['noStockProducts'] = $noStockProducts2;
-                                $data['message'] = 'Stock unavailable';
+                                $data['message'] = 'Stock unavailable..';
                                 $data['price'] = @$value['price'];
                                 $data['status'] = 2;
                             }
