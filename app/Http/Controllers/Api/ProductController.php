@@ -1921,7 +1921,13 @@ class ProductController extends Controller
                         $product->product_name_slug      = Str::of($request->product_name)->slug('-');
                         $product->store_id               = $request->store_id;
                         $product->global_product_id      =  @$request->global_product_id; // new
-                        $product->product_status         = 0;
+
+                        if ($request->product_type == 2) {
+                            $product->product_status         = 1;
+                        } else {
+                            $product->product_status         = 0;
+                        }
+
 
                         if ($product->save()) {
                             $id = DB::getPdo()->lastInsertId();

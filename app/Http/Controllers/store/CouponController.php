@@ -874,6 +874,7 @@ class CouponController extends Controller
         'mst__stock_details.created_at',
         'mst_store_agencies.agency_name',
         'mst__sub_categories.sub_category_name',
+        'mst__stock_details.created_at AS updated_time',
 
       );
 
