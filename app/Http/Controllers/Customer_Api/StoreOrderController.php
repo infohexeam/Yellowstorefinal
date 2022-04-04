@@ -905,6 +905,7 @@ class StoreOrderController extends Controller
                                 $data['price'] = @$value['price'];
                                 $data['currentPrice'] = @$varProdu->product_varient_offer_price;
                                 $data['status'] = 2;
+                                return response($data);
                             }
                         }
                     } else {
