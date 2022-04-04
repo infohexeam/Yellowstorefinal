@@ -31,8 +31,8 @@
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
-                                        <th class="wd-15p">{{__('Product Category')}}</th>
                                         <th class="wd-15p">{{__('Question')}}</th>
+                                        <th class="wd-15p">{{__('Product Category')}}</th>
                                         <th class="wd-15p">{{__('Action')}}</th>
                                     </tr>
                                 </thead>
