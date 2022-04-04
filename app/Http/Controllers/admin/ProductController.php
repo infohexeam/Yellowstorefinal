@@ -51,18 +51,18 @@ class ProductController extends Controller
   {
     $this->middleware('auth');
   }
-  
-  
-   public function statusGlobalIMG(Request $request, $imgId)
+
+
+  public function statusGlobalIMG(Request $request, $imgId)
   {
     try {
 
-        $product_image = Trn_GlobalProductImage::where('global_product_image_id', $imgId)->first();
-        Mst_GlobalProducts::where('global_product_id', $product_image->global_product_id)->update(['product_base_image' => $product_image->image_name]);
+      $product_image = Trn_GlobalProductImage::where('global_product_image_id', $imgId)->first();
+      Mst_GlobalProducts::where('global_product_id', $product_image->global_product_id)->update(['product_base_image' => $product_image->image_name]);
 
 
 
-     
+
       return redirect()->back()->with('status', 'Base image successfully updated.');
     } catch (\Exception $e) {
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -574,12 +574,12 @@ class ProductController extends Controller
     try {
 
       $product = Mst_store_product::find($product_id);
-      $productGlobal = Mst_GlobalProducts::where('isConvertedFromProducts',$product_id)->count();
-      if($productGlobal >= 1){
+      $productGlobal = Mst_GlobalProducts::where('isConvertedFromProducts', $product_id)->count();
+      if ($productGlobal >= 1) {
         return redirect()->back()->withErrors(['Product already added!'])->withInput();
       }
-      $product_image = Mst_product_image::where('product_id', $product_id)->where('product_varient_id','!=',0)->get();
-//dd($product->store_id);
+      $product_image = Mst_product_image::where('product_id', $product_id)->where('product_varient_id', '!=', 0)->get();
+      //dd($product->store_id);
       $global_product->product_name = $product->product_name;
       $global_product->created_by = $product->store_id;
       $global_product->product_name_slug = Str::of($product->product_name)->slug('-');
@@ -645,7 +645,7 @@ class ProductController extends Controller
         $global_product->vendor_id =  0;
 
 
-        $global_product->isConvertedFromProducts =  $product_id;
+      $global_product->isConvertedFromProducts =  $product_id;
 
       $global_product->product_base_image = $product->product_base_image; // update after image uploads
       $global_product->created_date = Carbon::now()->format('Y-m-d');
@@ -656,16 +656,16 @@ class ProductController extends Controller
       $global_product_id = \DB::getPdo()->lastInsertId();
 
 
-    $data1 = [[
-          'global_product_id'   => $global_product_id,
-          'image_name'  => $product->product_base_image,
-          'created_at'  => Carbon::now(),
-          'updated_at'  => Carbon::now(),
-        ],];
-        Trn_GlobalProductImage::insert($data1);
-        
+      $data1 = [[
+        'global_product_id'   => $global_product_id,
+        'image_name'  => $product->product_base_image,
+        'created_at'  => Carbon::now(),
+        'updated_at'  => Carbon::now(),
+      ],];
+      Trn_GlobalProductImage::insert($data1);
 
-   
+
+
       return redirect()->back()->with('status', 'Product updated to global product successfully.');
     } catch (\Exception $e) {
       // return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();
@@ -700,25 +700,25 @@ class ProductController extends Controller
   public function showReport(Request $request)
   {
     // dd($request);
-   // try {
+    // try {
 
-      if (auth()->user()->user_role_id  == 0) {
-        $stores = Mst_store::orderby('store_id', 'DESC')->get();
-      } else {
-        $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
-      }
+    if (auth()->user()->user_role_id  == 0) {
+      $stores = Mst_store::orderby('store_id', 'DESC')->get();
+    } else {
+      $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+    }
 
-      $subadmins = User::where('user_role_id', '!=', 0)->get();
-      $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
-      $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
-      $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
-      $customers = Trn_store_customer::all();
+    $subadmins = User::where('user_role_id', '!=', 0)->get();
+    $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
+    $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
+    $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
+    $customers = Trn_store_customer::all();
 
-      $pageTitle = "Product Wise Reports";
-      if (auth()->user()->user_role_id  == 0) {
-          
-          
-        $data = Trn_RecentlyVisitedProducts::select(
+    $pageTitle = "Product Wise Reports";
+    if (auth()->user()->user_role_id  == 0) {
+
+
+      $data = Trn_RecentlyVisitedProducts::select(
         'trn__recently_visited_products.rvp_id',
         'trn__recently_visited_products.visit_count',
         'trn__recently_visited_products.created_at',
@@ -750,99 +750,145 @@ class ProductController extends Controller
         ->leftJoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
         ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-        ->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
+        ->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
         ->get();
 
 
-        if ($_GET) {
+      if ($_GET) {
 
-          // dd($request->all());
+        // dd($request->all());
 
-          $datefrom = $request->date_from;
-          $dateto = $request->date_to;
+        $datefrom = $request->date_from;
+        $dateto = $request->date_to;
 
-          $a1 = Carbon::parse($request->date_from)->startOfDay();
-          $a2  = Carbon::parse($request->date_to)->endOfDay();
-
-
-               $data = Trn_RecentlyVisitedProducts::select(
-              'trn__recently_visited_products.rvp_id',
-              'trn__recently_visited_products.visit_count',
-              'trn__recently_visited_products.created_at',
-              'trn__recently_visited_products.updated_at',
-              'trn_store_customers.customer_id',
-              'trn_store_customers.customer_first_name',
-              'trn_store_customers.customer_last_name',
-              'trn_store_customers.customer_mobile_number',
-              'mst_stores.store_id',
-              'mst_stores.store_name',
-              'mst_stores.store_mobile',
-              'mst_store_products.product_id',
-              'mst_store_products.product_code',
-              'mst_store_products.product_name',
-              'mst_store_products.product_brand',
-              'mst_store_product_varients.product_varient_id',
-              'mst_store_product_varients.variant_name',
-              'mst_store_agencies.agency_id',
-              'mst_store_agencies.agency_name',
-              'mst_store_categories.category_id',
-              'mst_store_categories.category_name',
-              'mst__sub_categories.sub_category_id',
-              'mst__sub_categories.sub_category_name'
-            )
-              ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
-              ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
-              ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
-              ->leftJoin('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
-              ->leftJoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-              ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-              ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
-    
-
-            if (isset($request->date_from)) {
-              $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
-            }
-    
-            if (isset($request->date_to)) {
-              $data = $data->whereDate('trn__recently_visited_products.created_at', '<=', $a2);
-            }
-            
-            
-          if (isset($request->store_id)) {
-            $data = $data->where('mst_stores.store_id', $request->store_id);
-          }
-
-          if (isset($request->subadmin_id)) {
-            $data = $data->where('mst_stores.subadmin_id', $request->subadmin_id);
-          }
-          
-    
-            if (isset($request->product_id)) {
-              $data = $data->where('mst_store_products.product_id', $request->product_id);
-            }
-    
-            if (isset($request->vendor_id)) {
-              $data = $data->where('mst_store_products.vendor_id', $request->vendor_id);
-            }
-    
-            if (isset($request->category_id)) {
-              $data = $data->where('mst_store_products.product_cat_id', $request->category_id);
-            }
-    
-            if (isset($request->sub_category_id)) {
-              $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
-            }
-    
-            if (isset($request->customer_id)) {
-              $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
-            }
-    
-               $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        $a1 = Carbon::parse($request->date_from)->startOfDay();
+        $a2  = Carbon::parse($request->date_to)->endOfDay();
 
 
-          return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
+        $data = Trn_RecentlyVisitedProducts::select(
+          'trn__recently_visited_products.rvp_id',
+          'trn__recently_visited_products.visit_count',
+          'trn__recently_visited_products.created_at',
+          'trn__recently_visited_products.updated_at',
+          'trn_store_customers.customer_id',
+          'trn_store_customers.customer_first_name',
+          'trn_store_customers.customer_last_name',
+          'trn_store_customers.customer_mobile_number',
+          'mst_stores.store_id',
+          'mst_stores.store_name',
+          'mst_stores.store_mobile',
+          'mst_store_products.product_id',
+          'mst_store_products.product_code',
+          'mst_store_products.product_name',
+          'mst_store_products.product_brand',
+          'mst_store_product_varients.product_varient_id',
+          'mst_store_product_varients.variant_name',
+          'mst_store_agencies.agency_id',
+          'mst_store_agencies.agency_name',
+          'mst_store_categories.category_id',
+          'mst_store_categories.category_name',
+          'mst__sub_categories.sub_category_id',
+          'mst__sub_categories.sub_category_name'
+        )
+          ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
+          ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
+          ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
+          ->leftJoin('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
+          ->leftJoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+          ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+          ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
+
+
+        if (isset($request->date_from)) {
+          $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
         }
-      } else {
+
+        if (isset($request->date_to)) {
+          $data = $data->whereDate('trn__recently_visited_products.created_at', '<=', $a2);
+        }
+
+
+        if (isset($request->store_id)) {
+          $data = $data->where('mst_stores.store_id', $request->store_id);
+        }
+
+        if (isset($request->subadmin_id)) {
+          $data = $data->where('mst_stores.subadmin_id', $request->subadmin_id);
+        }
+
+
+        if (isset($request->product_id)) {
+          $data = $data->where('mst_store_products.product_id', $request->product_id);
+        }
+
+        if (isset($request->vendor_id)) {
+          $data = $data->where('mst_store_products.vendor_id', $request->vendor_id);
+        }
+
+        if (isset($request->category_id)) {
+          $data = $data->where('mst_store_products.product_cat_id', $request->category_id);
+        }
+
+        if (isset($request->sub_category_id)) {
+          $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
+        }
+
+        if (isset($request->customer_id)) {
+          $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
+        }
+
+        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+
+
+        return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
+      }
+    } else {
+      $data = Trn_RecentlyVisitedProducts::select(
+        'trn__recently_visited_products.rvp_id',
+        'trn__recently_visited_products.visit_count',
+        'trn__recently_visited_products.created_at',
+        'trn__recently_visited_products.updated_at',
+        'trn_store_customers.customer_id',
+        'trn_store_customers.customer_first_name',
+        'trn_store_customers.customer_last_name',
+        'trn_store_customers.customer_mobile_number',
+        'mst_stores.store_id',
+        'mst_stores.store_name',
+        'mst_stores.store_mobile',
+        'mst_store_products.product_id',
+        'mst_store_products.product_code',
+        'mst_store_products.product_name',
+        'mst_store_products.product_brand',
+        'mst_store_product_varients.product_varient_id',
+        'mst_store_product_varients.variant_name',
+        'mst_store_agencies.agency_id',
+        'mst_store_agencies.agency_name',
+        'mst_store_categories.category_id',
+        'mst_store_categories.category_name',
+        'mst__sub_categories.sub_category_id',
+        'mst__sub_categories.sub_category_name'
+      )
+        ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
+        ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
+        ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
+        ->leftjoin('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
+        ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+        ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+        ->where('mst_stores.subadmin_id', auth()->user()->id)
+        ->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')          //  ->groupBy('trn__recently_visited_products.product_varient_id', 'trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
+        ->get();
+
+
+      if ($_GET) {
+
+        $datefrom = $request->date_from;
+        $dateto = $request->date_to;
+
+        $a1 = Carbon::parse($request->date_from)->startOfDay();
+        $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+
         $data = Trn_RecentlyVisitedProducts::select(
           'trn__recently_visited_products.rvp_id',
           'trn__recently_visited_products.visit_count',
@@ -874,93 +920,47 @@ class ProductController extends Controller
           ->leftjoin('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
           ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
           ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-          ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-          ->where('mst_stores.subadmin_id', auth()->user()->id)
-->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')          //  ->groupBy('trn__recently_visited_products.product_varient_id', 'trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
-          ->get();
+          ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
 
+        $data = $data->where('mst_stores.subadmin_id', auth()->user()->id);
 
-        if ($_GET) {
-
-          $datefrom = $request->date_from;
-          $dateto = $request->date_to;
-
-          $a1 = Carbon::parse($request->date_from)->startOfDay();
-          $a2  = Carbon::parse($request->date_to)->endOfDay();
-
-
-          $data = Trn_RecentlyVisitedProducts::select(
-            'trn__recently_visited_products.rvp_id',
-            'trn__recently_visited_products.visit_count',
-            'trn__recently_visited_products.created_at',
-            'trn__recently_visited_products.updated_at',
-            'trn_store_customers.customer_id',
-            'trn_store_customers.customer_first_name',
-            'trn_store_customers.customer_last_name',
-            'trn_store_customers.customer_mobile_number',
-            'mst_stores.store_id',
-            'mst_stores.store_name',
-            'mst_stores.store_mobile',
-            'mst_store_products.product_id',
-            'mst_store_products.product_code',
-            'mst_store_products.product_name',
-            'mst_store_products.product_brand',
-            'mst_store_product_varients.product_varient_id',
-            'mst_store_product_varients.variant_name',
-            'mst_store_agencies.agency_id',
-            'mst_store_agencies.agency_name',
-            'mst_store_categories.category_id',
-            'mst_store_categories.category_name',
-            'mst__sub_categories.sub_category_id',
-            'mst__sub_categories.sub_category_name'
-          )
-            ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
-            ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
-            ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
-            ->leftjoin('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
-            ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-            ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-            ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
-
-          $data = $data->where('mst_stores.subadmin_id', auth()->user()->id);
-
-          if (isset($request->date_from)) {
-            $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
-          }
-
-          if (isset($request->date_to)) {
-            $data = $data->whereDate('trn__recently_visited_products.created_at', '<=', $a2);
-          }
-
-          if (isset($request->store_id)) {
-            $data = $data->where('mst_stores.store_id', $request->store_id);
-          }
-
-          if (isset($request->product_id)) {
-            $data = $data->where('mst_store_products.product_id', $request->product_id);
-          }
-
-          if (isset($request->vendor_id)) {
-            $data = $data->where('mst_store_products.vendor_id', $request->vendor_id);
-          }
-
-          if (isset($request->category_id)) {
-            $data = $data->where('mst_store_products.product_cat_id', $request->category_id);
-          }
-
-          if (isset($request->customer_id)) {
-            $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
-          }
-
-
-
-          $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id' )->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
-
-          return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
+        if (isset($request->date_from)) {
+          $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
         }
-      }
 
-      return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'subadmins', 'stores', 'data', 'pageTitle'));
+        if (isset($request->date_to)) {
+          $data = $data->whereDate('trn__recently_visited_products.created_at', '<=', $a2);
+        }
+
+        if (isset($request->store_id)) {
+          $data = $data->where('mst_stores.store_id', $request->store_id);
+        }
+
+        if (isset($request->product_id)) {
+          $data = $data->where('mst_store_products.product_id', $request->product_id);
+        }
+
+        if (isset($request->vendor_id)) {
+          $data = $data->where('mst_store_products.vendor_id', $request->vendor_id);
+        }
+
+        if (isset($request->category_id)) {
+          $data = $data->where('mst_store_products.product_cat_id', $request->category_id);
+        }
+
+        if (isset($request->customer_id)) {
+          $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
+        }
+
+
+
+        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+
+        return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
+      }
+    }
+
+    return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'subadmins', 'stores', 'data', 'pageTitle'));
     // } catch (\Exception $e) {
     //   // return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();
     //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -1344,13 +1344,10 @@ class ProductController extends Controller
         }
 
 
-        ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-        ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
-        ->get();
 
         $data = $data->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-        ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
-        ->get();
+          ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+          ->get();
       } else {
 
 
@@ -1401,9 +1398,9 @@ class ProductController extends Controller
         }
 
         $data = $data->where('mst_stores.subadmin_id', auth()->user()->id)
-        ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-        ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
-        ->get();
+          ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
+          ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+          ->get();
       }
 
       return view('admin.masters.reports.store_visit_report', compact('stores', 'subadmins', 'customers', 'data', 'pageTitle'));
