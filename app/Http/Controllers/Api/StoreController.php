@@ -1976,7 +1976,7 @@ class StoreController extends Controller
                     $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                 }
 
-                $inventoryData = $inventoryData->groupBy('product_varient_id')->orderBy('mst__stock_details.stock_detail_id', 'DESC');
+                $inventoryData = $inventoryData->groupBy('mst__stock_details.product_varient_id')->orderBy('mst__stock_details.updated_at', 'DESC');
 
                 if (isset($request->page)) {
                     $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
