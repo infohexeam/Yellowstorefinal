@@ -1900,7 +1900,7 @@ class StoreController extends Controller
                     ->where('mst_store_product_varients.stock_count', '<=', 0)
                     ->where('mst_store_products.product_type', 1)
                     // ->orderBy('mst_store_products.product_name','ASC')
-                    ->orderBy('mst__stock_details.created_at', 'DESC')
+
 
                     ->select(
                         'mst_store_products.product_id',
@@ -1963,7 +1963,7 @@ class StoreController extends Controller
                     $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                 }
 
-                $inventoryData = $inventoryData->groupBy('product_varient_id');
+                $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->groupBy('mst__stock_details.product_varient_id');
 
                 if (isset($request->page)) {
                     $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);

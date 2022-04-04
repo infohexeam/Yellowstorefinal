@@ -848,7 +848,6 @@ class CouponController extends Controller
       // ->orderBy('mst_store_products.product_name','ASC')
       ->where('mst_store_product_varients.stock_count', '<=', 0)
 
-      ->orderBy('mst__stock_details.created_at', 'DESC')
 
       ->select(
         'mst_store_products.product_id',
@@ -914,7 +913,7 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->get();
+    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->groupBy('mst__stock_details.product_varient_id');
 
     //  dd($inventoryData);
 
