@@ -3948,14 +3948,16 @@ class SettingController extends Controller
 	{
 		$pageTitle = "Store Payment Settlement";
 		$store_payment_settlments = Trn_store_payment_settlment::all();
-		$store = Mst_store::all();
+		$store = Mst_store::orderBy('store_id')->get();
 		// dd($store);
 		if ($_GET) {
 
 
 			$store_id = $request->store_id;
 
-			$store_payment_settlments = Trn_store_payment_settlment::where('store_id', 'like', '%' . $store_id . '%')->get();
+			$store_payment_settlments = Trn_store_payment_settlment::where('store_id', 'like', '%' . $store_id . '%')
+				->orderBy('store_id', 'DESC')
+				->get();
 
 			return view('admin.masters.store_payments.list', compact('store_payment_settlments', 'pageTitle', 'store'));
 		}

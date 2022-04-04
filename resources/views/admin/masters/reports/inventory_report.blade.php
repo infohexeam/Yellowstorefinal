@@ -273,11 +273,7 @@
      $(document).ready(function() {
         
         $("#subadminId").on('change', function(){    
-           let k =0;
-           if(k == 0){
-               k++;
-            }else{
-
+            
          let subadminId = $('#subadminId').val();
          
          var _token= $('input[name="_token"]').val();
@@ -313,9 +309,6 @@
                 }
     
             });
-
-            }
-
         });
     });
     
