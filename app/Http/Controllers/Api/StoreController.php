@@ -23,6 +23,7 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
 use App\Models\admin\Mst_StockDetail;
+use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use File;
@@ -1897,7 +1898,7 @@ class StoreController extends Controller
                     ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                     ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
                     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-                    ->leftjoin('mst_sub_categories', 'mst_sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+                    ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
                     ->where('mst_store_products.store_id', $store_id)
                     ->where('mst_store_product_varients.stock_count', '<=', 0)
                     ->where('mst_store_products.product_type', 1)
