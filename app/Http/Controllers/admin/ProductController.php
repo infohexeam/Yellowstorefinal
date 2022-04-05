@@ -2058,6 +2058,7 @@ class ProductController extends Controller
 
 
 
+
   public function showInventoryReport(Request $request)
   {
     //echo "working..";die;
@@ -2085,18 +2086,20 @@ class ProductController extends Controller
     $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
     $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
 
-    $data = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+
+
+    $data =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
       ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-      ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
       ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
       ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
       ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+      ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
 
-      // ->where('mst_store_products.store_id',$store_id)
       ->where('mst__stock_details.stock', '>', 0)
+
       ->where('mst_store_products.product_type', 1)
-      // ->orderBy('mst_store_products.product_name','ASC')
-      ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+      //   ->where('mst_store_products.is_removed', 0)
+      //->where('mst_store_product_varients.is_removed', 0)
 
       ->select(
         'mst_store_products.product_id',
@@ -2177,9 +2180,14 @@ class ProductController extends Controller
       }
     }
 
-    $data = $data->get();
-    //   dd($data);
+    $data = $data->orderBy('updated_time', 'DESC')->get();
+    //   
 
+    //  dd($inventoryData);
+
+    $data = collect($data);
+    $data = $data->unique('product_varient_id');
+    $data =   $data->values()->all();
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
   }
@@ -2225,6 +2233,8 @@ class ProductController extends Controller
       ->where('mst_store_products.product_type', 1)
       // ->orderBy('mst_store_products.product_name','ASC')
       ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+      ->where('mst_store_products.is_removed', 0)
+      ->where('mst_store_product_varients.is_removed', 0)
 
       ->select(
         'mst_store_products.product_id',
@@ -2311,6 +2321,11 @@ class ProductController extends Controller
 
     return view('admin.masters.reports.out_of_stock_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
   }
+
+
+
+
+
 
 
   public function showReferalReport(Request $request)

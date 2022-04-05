@@ -72,9 +72,14 @@
                                               <label class="form-label">Store </label>
                                                <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
                                                      <option value="">Store</option>
-                                                    @foreach($stores as $key)
-                                                    <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
-                                                    @endforeach
+                                                      @if(request()->input('subadmin_id'))
+                                                      @php
+                                                        $storesData = \DB::table('mst_stores')->where('subadmin_id',request()->input('subadmin_id'))->get();
+                                                      @endphp
+                                                      @foreach($storesData as $key)
+                                                      <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
+                                                      @endforeach
+                                                    @endif
                                                   </select>
                                             </div>
                                          </div>
@@ -156,8 +161,8 @@
                                       <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
-                                            <th class="wd-15p">Product</th>
-                                            <th class="wd-15p">Variant</th>
+                                            <th class="wd-15p">Product Name</th>
+                                            {{-- <th class="wd-15p">Variant</th> --}}
                                             <th class="wd-15p">Store</th>
                                             <th class="wd-15p">Subadmin</th>
                                             <th class="wd-15p">Stock</th>
@@ -181,7 +186,7 @@
                                         @foreach ($data as $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ $d->product_name }}</td>
+                                            {{-- <td>{{ $d->product_name }}</td> --}}
                                             <td>{{ $d->variant_name }}</td>
                                             
                                             <td>{{ $d->store_name }}</td>
@@ -270,10 +275,14 @@
 </script>
 
 <script>
-     $(document).ready(function() {
-        
-        $("#subadminId").on('change', function(){    
-            
+  $(document).ready(function() {
+        var cc = 0;
+       $('#subadminId').change(function(){
+                    let storeIdc = $('#storeId').val();
+
+           if((cc != 0) || (storeIdc == ''))
+           {
+               
          let subadminId = $('#subadminId').val();
          
          var _token= $('input[name="_token"]').val();
@@ -309,6 +318,9 @@
                 }
     
             });
+        }else{
+            cc++;
+        }
         });
     });
     
