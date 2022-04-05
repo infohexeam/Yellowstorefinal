@@ -235,19 +235,31 @@ function onSignInSubmit() {
         console.log(phoneNo);
         // getCode(phoneNo);
         var appVerifier = window.recaptchaVerifier;
-          //  console.log(appVerifier); 
+           console.log(appVerifier); 
         phoneNo = '+91'+phoneNo;
             //  console.log(phoneNo);
-  firebase.auth().signInWithPhoneNumber(phoneNo, appVerifier)
-        .then(function (confirmationResult) {
-    
+            firebase.auth().signInWithPhoneNumber(phoneNo,window.recaptchaVerifier).then(function (confirmationResult) {
+              
             window.confirmationResult=confirmationResult;
             coderesult=confirmationResult;
-           // console.log(coderesult);
+  
         }).catch(function (error) {
+            // $("#error").text(error.message);
+            // $("#error").show();
             console.log(error.message);
-    
+
         });
+
+//   firebase.auth().signInWithPhoneNumber(phoneNo, appVerifier)
+//         .then(function (confirmationResult) {
+    
+//             window.confirmationResult=confirmationResult;
+//             coderesult=confirmationResult;
+//             console.log(coderesult);
+//         }).catch(function (error) {
+//             console.log(error.message);
+    
+//         });
     });
 }
 
