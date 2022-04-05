@@ -75,7 +75,7 @@
                         
                          <div class="form-group">
                                 <!--<label for="phone_no">Phone Number</label>-->
-                                 <a href="#" class="mb-2" style="color:blue"  id="getcode" >Click here to get code! </a>
+                                 <a href="#" class="mb-2" style="color:blue" onclick="phoneSendAuth()"  id="getcode" >Click here to get code! </a>
 
                                 <input readonly type="hidden" class="form-control" value="{{$stores->store_mobile}}" name="phone_no" id="store_mobile" >
                             </div>
