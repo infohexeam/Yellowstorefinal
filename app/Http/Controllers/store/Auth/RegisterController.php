@@ -179,7 +179,7 @@ class RegisterController extends Controller
             $store->town_id            = $request->store_town_id;
             $store->place            = $request->store_place;
             $store->business_type_id            = $request->business_type_id;
-            $store->store_username            = $request->username;
+            $store->store_username            = $request->store_mobile;
             $store->subadmin_id            = 2; // default subadmin
 
             $timestamp = time();
