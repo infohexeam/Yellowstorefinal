@@ -75,16 +75,16 @@
                         
                          <div class="form-group">
                                 <!--<label for="phone_no">Phone Number</label>-->
-                                 <a href="#" class="mb-2" style="color:blue" id="getcode" >Click here to get code! </a>
+                                 <a href="#" class="mb-2" style="color:blue"  id="getcode" >Click here to get code! </a>
 
-                                <input readonly type="hidden" class="form-control" value="{{$stores->store_mobile}}" name="phone_no" id="number" >
+                                <input readonly type="hidden" class="form-control" value="{{$stores->store_mobile}}" name="phone_no" id="store_mobile" >
                             </div>
                             <div id="recaptcha-container"></div>
                              <div class="form-group mt-4">
                                 <input type="text" name="" id="codeToVerify" name="getcode" class="form-control" placeholder="Enter Code">
                             </div>
 
-                                <a href="#" class="btn btn-primary btn-block" id="verifPhNum">Verify Phone No</a>
+                                <a href="#" class="btn btn-primary btn-block" onclick="codeverify()"  id="verifPhNum">Verify Phone No</a>
                                 
 
                         <!--<div class="wrap-input100 validate-input">-->
@@ -124,6 +124,82 @@
       </div>
 
 
+      <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+      
+
+      <script>
+
+        var firebaseConfig = {
+           apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
+          authDomain: "yellowstore-web-application.firebaseapp.com",
+          projectId: "yellowstore-web-application",
+          storageBucket: "yellowstore-web-application.appspot.com",
+          messagingSenderId: "444886856017",
+          appId: "1:444886856017:web:935481722416346323e370",
+          measurementId: "G-VX5SKTNN3F"
+        };
+        
+          firebase.initializeApp(firebaseConfig);
+
+          window.onload=function () {
+            render();
+          };
+        
+            function render() {
+                window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
+                recaptchaVerifier.render();
+            }
+
+
+        function phoneSendAuth() {
+            var number = '+91'+$("#store_mobile").val();
+            console.log(number);
+            console.log(window.recaptchaVerifier) 
+            
+            firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+                
+                window.confirmationResult=confirmationResult;
+                coderesult=confirmationResult;
+                console.log(coderesult);
+    
+            console.log("hey! otp is on air");
+                
+            }).catch(function (error) {
+                console.log(error.message);
+            });
+        }
+
+
+        function codeverify() {
+
+  
+
+var code = $("#codeToVerify").val();
+
+
+
+    coderesult.confirm(code).then(function (result) {
+
+        var user=result.user;
+
+        console.log(user);
+
+        console.log("otp success");
+
+
+
+        }).catch(function (error) {
+            console.log("otp invalid");
+        });
+
+    }
+
+
+        </script>
+
       <!-- BACKGROUND-IMAGE CLOSED -->
       <!-- JQUERY JS -->
       <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
@@ -142,141 +218,10 @@
       <script src="{{URL::to('/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js')}}"></script>
       <!-- CUSTOM JS-->
       <script src="{{URL::to('/assets/js/custom.js')}}"></script>
+
+
+
+
    </body>
-
-
-   
-<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
-{{-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script> --}}
-
-
-   
-   {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/8.0.1/firebase.js"></script> --}}
-<script>
-    
-
-
-$(document).ready(function() {
-
-  
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
-        authDomain: "yellowstore-web-application.firebaseapp.com",
-        projectId: "yellowstore-web-application",
-        storageBucket: "yellowstore-web-application.appspot.com",
-        messagingSenderId: "444886856017",
-        appId: "1:444886856017:web:935481722416346323e370",
-        measurementId: "G-VX5SKTNN3F"
-      };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig); 
-    window.onload=function () {
-                // $('#secDiv').hide();
-
-      render();
-    };
-
-    // function render() {
-        window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
-        recaptchaVerifier.render();
-   // }
-
-
-    // window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-    //     'size': 'invisible',
-    //     'callback': function (response) {
-    //         // reCAPTCHA solved, allow signInWithPhoneNumber.
-    //       //  console.log('recaptcha resolved');
-    //     }
-    // }); 
-    onSignInSubmit();
-});
-
-
-
-function onSignInSubmit() {
-    $('#verifPhNum').on('click', function() {
-        let phoneNo = '';
-        var code = $('#codeToVerify').val();
-      //  console.log(code);
-        $(this).attr('disabled', 'disabled');
-        $(this).text('Processing..');
-        confirmationResult.confirm(code).then(function (result) {
-            
-            var _token = $('input[name="_token"]').val();
-            var phoneNumber = $('#number').val();
-
-              $.ajax({
-                    url:"{{ route('saveOVS') }}",
-                    method:"POST",
-                    data:{phoneNumber:phoneNumber, _token:_token},
-                    success:function(result)
-                    {
-                       // console.log(result);
-                       window.location('https://yellowstore.in/store-login');
-
-                    }
-               })   
-       
-                  //  alert('Succecss');
-            var user = result.user;
-             console.log(user);
-
-        }.bind($(this))).catch(function (error) {
-        
-            // User couldn't sign in (bad verification code?)
-            // ...
-            $(this).removeAttr('disabled');
-            $(this).text('Invalid Code');
-            setTimeout(() => {
-                $(this).text('Verify Phone No');
-            }, 2000);
-        }.bind($(this)));
-    
-    });
-     
-    
-    $('#getcode').on('click', function () {
-        var phoneNo = $('#number').val();
-        console.log(phoneNo);
-        // getCode(phoneNo);
-        var appVerifier = window.recaptchaVerifier;
-           console.log(appVerifier); 
-        phoneNo = '+91'+phoneNo;
-            //  console.log(phoneNo);
-            firebase.auth().signInWithPhoneNumber(phoneNo,window.recaptchaVerifier).then(function (confirmationResult) {
-              
-            window.confirmationResult=confirmationResult;
-            coderesult=confirmationResult;
-  
-        }).catch(function (error) {
-            // $("#error").text(error.message);
-            // $("#error").show();
-            console.log(error.message);
-
-        });
-
-//   firebase.auth().signInWithPhoneNumber(phoneNo, appVerifier)
-//         .then(function (confirmationResult) {
-    
-//             window.confirmationResult=confirmationResult;
-//             coderesult=confirmationResult;
-//             console.log(coderesult);
-//         }).catch(function (error) {
-//             console.log(error.message);
-    
-//         });
-    });
-}
-
-
-
-</script>
-
-
 </html>
 
