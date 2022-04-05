@@ -148,8 +148,7 @@
                                             <th class="wd-15p">SL.No</th>
                                             <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Time</th>
-                                            <th class="wd-15p">Product</th>
-                                            <th class="wd-15p">Variant</th>
+                                            <th class="wd-15p">Product Name</th>
                                             
                                             <th class="wd-15p">Store</th>
                                             <th class="wd-15p">Subadmin</th>
@@ -175,7 +174,7 @@
                                             <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('h:i:s')}}</td>
 
-                                            <td>{{ $d->product_name }}</td>
+                                            {{-- <td>{{ $d->product_name }}</td> --}}
                                             <td>{{ $d->variant_name }}</td>
                                             
                                             <td>{{ $d->store_name }}</td>
@@ -284,11 +283,16 @@ $(document).ready(function() {
 
 <script>
 
+$(document).ready(function() {
+        var cc = 0;
+       $('#subadminId').change(function(){
+                    let storeIdc = $('#storeIdc').val();
 
-    $(document).ready(function() {
-        
-        $("#subadminId").on('change', function(){    
-            
+           if((cc != 0) || (storeIdc == ''))
+           {
+               
+    
+
          let subadminId = $('#subadminId').val();
          
          var _token= $('input[name="_token"]').val();
@@ -298,13 +302,24 @@ $(document).ready(function() {
     
               success:function(res){
                     if(res){
-                       // console.log(res);
+                        console.log(res);
                         $('#storeId').prop("diabled",false);
                         $('#storeId').empty();
                         $('#storeId').append('<option value="">Store</option>');
                         $.each(res,function(store_id,store_name)
                         {
                           $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
+                          
+                          let storeId = getUrlParameter('storeId');
+                            if ( typeof storeId !== "undefined" && storeId) {
+                                $("#storeId option").each(function(){
+                                    if($(this).val()==storeId){ 
+                                        $(this).attr("selected","selected");    
+                                    }
+                                });
+                            } 
+                    
+                    
                         });
                     }else
                     {
@@ -313,6 +328,10 @@ $(document).ready(function() {
                 }
     
             });
+           }
+           else{
+               cc++;
+           }
         });
     });
     
