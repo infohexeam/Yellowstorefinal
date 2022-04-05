@@ -149,7 +149,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
 
    
@@ -159,6 +159,8 @@
 
 
 $(document).ready(function() {
+
+  
 
     const firebaseConfig = {
         apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
@@ -204,7 +206,7 @@ function onSignInSubmit() {
                     success:function(result)
                     {
                        // console.log(result);
-                       window.location('http://yellowstore.hexeam.org/store-login');
+                       window.location('https://yellowstore.in/store-login');
 
                     }
                })   
