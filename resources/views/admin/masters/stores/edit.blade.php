@@ -98,7 +98,7 @@
                         <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">Contact Person Number</label>
-                            <input type="text" required  maxlength="10" name="store_contact_person_phone_number" id='txtcontact'  onpaste="return false" class="form-control" value="{{old('store_contact_person_phone_number',$store->store_contact_person_phone_number)}}"  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  placeholder="Contact Person Number ">
+                            <input type="text"   maxlength="10" name="store_contact_person_phone_number" id='txtcontact'  onpaste="return false" class="form-control" value="{{old('store_contact_person_phone_number',$store->store_contact_person_phone_number)}}"  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  placeholder="Contact Person Number ">
                            </div>
                         </div>
                               <div class="col-md-6">

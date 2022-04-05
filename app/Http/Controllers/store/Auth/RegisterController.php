@@ -222,21 +222,20 @@ class RegisterController extends Controller
             // $otp_verify->save();
             return redirect('store-login');
 
-          //  return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($store_id));
+            //  return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($store_id));
         } else {
             return redirect()->back()->withErrors($validator)->withInput();
         }
     }
-    
+
     function redirectToChangePass(Request $request)
     {
-       $store_admin_id = Crypt::decryptString($request->user_id);
-       $user = Trn_StoreAdmin::find($store_admin_id);
-          
-         return view('store.auth.passwords.change_password',compact('user'));
+        $store_admin_id = Crypt::decryptString($request->user_id);
+        $user = Trn_StoreAdmin::find($store_admin_id);
 
-    }  
-    
+        return view('store.auth.passwords.change_password', compact('user'));
+    }
+
     function findHashcode(Request $request)
     {
 
@@ -245,15 +244,14 @@ class RegisterController extends Controller
             ->first();
 
         if ($data) {
-           echo Crypt::encryptString($data->store_admin_id);
-            
+            echo Crypt::encryptString($data->store_admin_id);
         } else {
             return false;
         }
     }
-    
-    
-     
+
+
+
     function CheckExistanceMobile(Request $request)
     {
 
