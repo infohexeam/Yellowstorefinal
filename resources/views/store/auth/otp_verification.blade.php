@@ -180,10 +180,10 @@ $(document).ready(function() {
       render();
     };
 
-     function render() {
+    // function render() {
         window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
         recaptchaVerifier.render();
-    }
+   // }
 
 
     // window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
