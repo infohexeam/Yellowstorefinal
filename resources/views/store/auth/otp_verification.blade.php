@@ -175,14 +175,25 @@ $(document).ready(function() {
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig); 
+    window.onload=function () {
+                // $('#secDiv').hide();
 
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        'size': 'invisible',
-        'callback': function (response) {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-          //  console.log('recaptcha resolved');
-        }
-    }); 
+      render();
+    };
+
+     function render() {
+        window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        recaptchaVerifier.render();
+    }
+
+
+    // window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    //     'size': 'invisible',
+    //     'callback': function (response) {
+    //         // reCAPTCHA solved, allow signInWithPhoneNumber.
+    //       //  console.log('recaptcha resolved');
+    //     }
+    // }); 
     onSignInSubmit();
 });
 
