@@ -1631,9 +1631,9 @@ class ProductController extends Controller
                         ->where('mst_store_products.store_id', $request->store_id)
                         //  ->orWhere('mst_store_products.product_type',2)
 
-                    ->where('mst_store_product_varients.is_removed', 0)
-                    ->where('mst_store_products.is_removed', 0)
-                    ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
+                        ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_products.is_removed', 0)
+                        ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
                         ->whereOr('mst_store_product_varients.variant_name', 'LIKE', "%{$product}%");
 
                     if (isset($request->customer_id)) {
@@ -3919,7 +3919,7 @@ class ProductController extends Controller
                 $otherStoresFinal = array();
                 foreach ($otherStoresData as $otherStores) {
 
-                    $timeslotdata = Helper::findHoliday($nearByStore->store_id);
+                    $timeslotdata = Helper::findHoliday($otherStores->store_id);
 
                     if ($timeslotdata == true) {
 
