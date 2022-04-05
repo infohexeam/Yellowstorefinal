@@ -72,9 +72,9 @@
 
                 <div class="col-md-3">
                   <div class="form-group">
-                     <label class="form-label">Town</label>
+                     <label class="form-label">Pincode</label>
                      <select name="town_id" class="form-control" id="town">
-                             <option value="">Select Town</option>
+                             <option value="">Select Pincode</option>
                                @if (request()->input('town_id'))
                                  @foreach(@$town as $key)
                                     <option {{request()->input('town_id') == @$key->town_id ? 'selected':''}} value="{{@$key->town_id}}"> {{@$key->town_name }} </option>
@@ -121,7 +121,7 @@
                                     <th class="wd-15p">SL.No</th>
                                     <th class="wd-15p">{{ __('Name') }}</th>
                                     <th class="wd-15p">{{ __('Mobile') }}</th>
-                                    <th class="wd-15p">{{ __('Town') }}</th>
+                                    <th class="wd-15p">{{ __('Pincode') }}</th>
                                     <th class="wd-15p">{{ __('Commision') }}<br> Amount</th>
                                     <th class="wd-15p">{{ __('Commision') }}<br> Percentage</th>
                                     <th class="wd-15p">{{ __('Assigned') }}<br>Stores</th>
@@ -221,7 +221,7 @@
                                     <td><h6>Phone:</td><td>{{  @$subadmin->subadmins->phone }}</h6></td>
                                  </tr>
                                   <tr>
-                                    <td><h6>Town:</td><td>{{ @$subadmin->subadmins->town['town_name']}}</h6></td>
+                                    <td><h6>Pincode:</td><td>{{ @$subadmin->subadmins->town['town_name']}}</h6></td>
                                  </tr>
                                   <tr>
                                     <td><h6>Address:</td><td>{{ @$subadmin->subadmins['subadmin_address']}}</h6></td>
@@ -397,7 +397,7 @@ $(document).ready(function() {
          $('#town').prop("diabled",false);
             $('#town').empty();
 
-           $('#town').append('<option value="">Select Town</option>');
+           $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');
