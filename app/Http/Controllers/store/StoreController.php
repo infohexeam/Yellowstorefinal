@@ -3492,9 +3492,19 @@ class StoreController extends Controller
   {
     // dd($request->all());
 
+
+
     $start = $request->start;
     $end = $request->end;
     $day = $request->day;
+
+
+
+    foreach ($request->day as $s) {
+      if ($start[$i]  >= $end[$i]) {
+        return redirect()->back()->withErrors(['Starting time can\'t be greaterthan ending time for'])->withInput();
+      }
+    }
 
     $s_count = Trn_StoreTimeSlot::where('store_id', Auth::guard('store')->user()->store_id)->count();
 
