@@ -1387,7 +1387,7 @@ class ProductController extends Controller
 
 
             $storeData =    $storeData->orderBy('mst_stores.store_id', 'ASC')->get();
-            // dd($storeData);
+            dd($storeData);
             $storesList  =  array();
 
             foreach ($storeData as $s) {
