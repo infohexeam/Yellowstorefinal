@@ -92,7 +92,7 @@
                      <div class="col-md-6">
                      <div class="form-group">
                         <label class="form-label">Product Price </label>
-                        <input type="text" class="form-control" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" name="product_price" value="{{old('product_price')}}" placeholder="Product Price">
+                        <input type="text" class="form-control"  name="product_price" value="{{old('product_price')}}" placeholder="Product Price">
                      </div>
 
 
@@ -106,7 +106,7 @@
                 <div class="col-md-6">
                      <div class="form-group">
                          <label class="form-label">Product Offer Price</label>
-                        <input type="text" class="form-control" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" name="product_price_offer" value="{{old('product_price_offer')}}" placeholder="Product Offer Price">
+                        <input type="text" class="form-control" onkeypress="preventNonNumericalInput(event)"    name="product_price_offer" value="{{old('product_price_offer')}}" placeholder="Product Offer Price">
                      </div>
 
                      <div class="form-group">
@@ -221,6 +221,17 @@
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
 </script>
 <script type="text/javascript">
+
+
+
+function preventNonNumericalInput(e) {
+  e = e || window.event;
+  var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+  var charStr = String.fromCharCode(charCode);
+
+  if (!charStr.match(/^[0-9]+$/))
+    e.preventDefault();
+}
 
 
 $(document).ready(function() {

@@ -170,7 +170,7 @@
                         @else
                              <tr class="trClass" id="trSec0" >
                               <td>
-                                <input step="0.1" required readonly type="number"  onchange="endKMChanged(this.id)" id="start0"  class="form-control endingKm" name="start[]">
+                                <input step="0.1" required value="0" readonly type="number"  onchange="endKMChanged(this.id)" id="start0"  class="form-control endingKm" name="start[]">
                               </td>
                                 <td class="text-center"> 
                                 - 
