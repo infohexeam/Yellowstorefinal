@@ -99,7 +99,7 @@
                                     <td><strong>District:</strong> {{ @$store->district['district_name']}}</td>
                                  </tr>
                                   <tr>
-                                    <td><strong>Town:</strong> {{ @$store->town['town_name']}}</td>
+                                    <td><strong>Pincode:</strong> {{ @$store->town['town_name']}}</td>
                                  </tr>
                                   <tr>
                                     <td><strong>Place:</strong> {{ @$store->place}}</td>
