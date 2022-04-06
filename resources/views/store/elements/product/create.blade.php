@@ -233,7 +233,7 @@ input[type="file"] {
                    <div class="form-group">
                     <div class="BaseFeatureArea"> 
                         {{-- <label class="form-label">Upload Images(1000*800) *</label> --}}
-                         <label class="form-label">Upload Images(1000*800 or more) *</label>
+                         <label class="form-label">Upload Images *</label>
                         <input type="file" accept="image/png, image/jpeg, image/jpg" required class="form-control imgValidation" name="product_image[]" multiple="" value="{{old('product_image')}}" placeholder="Product Feature Image">
                         <br>
                      </div>
@@ -311,7 +311,7 @@ input[type="file"] {
 
                         <div class="col-md-12">
                           <div class="form-group">
-                            <label class="form-label">Upload Images(1000*800 or more) *</label>
+                            <label class="form-label">Upload Images*</label>
                             <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg"  multiple class="form-control proVariant imgValidation" name="var_images[0][]" >
                           </div>
                       </div>
@@ -375,16 +375,6 @@ input[type="file"] {
 
 <script>
 
-$(document).ready(function() {       
-    $('.imgValidation').bind('change', function() {
-        var a=(this.files[0].size);
-       //return true; oooyi?? 300 kb mathiyooiii
-        if(a > 1000000) {
-            alert('Image size too large!');
-            $(this).val('');
-        };
-    });
-});
 
 
 function preventNonNumericalInput(e) {
@@ -651,7 +641,7 @@ let prAttrValue = $('#attr_value'+attid_2).val();
         //max input box allowed
           x++; //text box increment
           var attr_id_div = x+'a0';
-          $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute *</label><select required name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group attrGroup'+x+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value *</label><select required name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\','+x+')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" onkeypress="preventNonNumericalInput(event)" class="form-control"  oninput="regularPriceChangeVar('+x+')"  name="var_regular_price[]"   id="var_regular_price'+x+'"   placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" onkeypress="preventNonNumericalInput(event)" type="number" class="form-control"  name="var_sale_price[]"  id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Upload Images(1000*800 or more) *</label><input multiple  type="file" class="form-control imgValidation" accept="image/png, image/jpeg, image/jpg" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
+          $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute *</label><select required name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group attrGroup'+x+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value *</label><select required name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\','+x+')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" onkeypress="preventNonNumericalInput(event)" class="form-control"  oninput="regularPriceChangeVar('+x+')"  name="var_regular_price[]"   id="var_regular_price'+x+'"   placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" onkeypress="preventNonNumericalInput(event)" type="number" class="form-control"  name="var_sale_price[]"  id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Upload Images*</label><input multiple  type="file" class="form-control imgValidation" accept="image/png, image/jpeg, image/jpg" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
       });
       
       $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
