@@ -3499,9 +3499,10 @@ class StoreController extends Controller
     $day = $request->day;
 
 
+    $i = 0;
 
     foreach ($request->day as $s) {
-      if ($start[$i]  >= $end[$i]) {
+      if ($start[$i]  > $end[$i]) {
         return redirect()->back()->withErrors(['Starting time can\'t be greaterthan ending time for'])->withInput();
       }
     }
