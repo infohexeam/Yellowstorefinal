@@ -39,7 +39,7 @@
                         <div class="form-group">
 
                            <label class="form-label">Icon [150*150]</label>
-                           <input type="file" class="form-control" required accept="image/x-png,image/jpg,image/jpeg"
+                           <input type="file" class="form-control imgValidation" required accept="image/x-png,image/jpg,image/jpeg"
                            name="business_type_icon"  value="{{old('business_type_icon')}}" placeholder="Business Type Icon">
                         </div>
                      </div>
@@ -63,4 +63,6 @@
       </div>
    </div>
 </div>
+
+
 @endsection

@@ -709,7 +709,8 @@ class SettingController extends Controller
 			$img_validate = Validator::make(
 				$request->all(),
 				[
-					'store_image.*' => 'required|dimensions:min_width=1000,min_height=800',
+					//'store_image.*' => 'required|dimensions:min_width=1000,min_height=800',
+					'store_image.*' => 'required',
 				],
 				[
 					'store_image.*.dimensions' => 'store image dimensions invalid',

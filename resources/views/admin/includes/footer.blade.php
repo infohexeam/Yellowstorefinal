@@ -106,6 +106,20 @@
 <script src="{{URL::to('/assets/js/buttons.print.min.js')}}"></script>
 <script type="text/javascript">
    $('#err_msg').fadeOut(5000);
+
+
+     $(document).ready(function() {       
+      $('.imgValidation').bind('change', function() {
+         var a=(this.files[0].size);
+         //return true; oooyi?? 300 kb mathiyooiii
+         if(a > 100000) {
+               alert('Image size too large!');
+               $(this).val('');
+         };
+      });
+   });
+         
+		 
 </script>
 
 
