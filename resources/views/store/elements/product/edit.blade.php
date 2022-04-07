@@ -214,7 +214,9 @@
                                       @endphp
                                        <tr id="trId{{$val->variant_attribute_id}}">
                                           <td>{{$i}}</td>
-                                          <td>{{@$attr_grp_name[0]}}</td>
+                                          <td>{{@$attr_grp_name[0]}}
+                                              <input type="hidden" class="attrGroup500" value="{{$val->attr_group_id}}" />
+                                          </td>
                                           <td>{{@$attr_val_name[0]}}</td>
                                           <td>
                                              <!--<form id="removeVarAttr" action="{{route('store.destroy_product_var_attr',$val->variant_attribute_id)}}" method="POST">-->
@@ -329,7 +331,7 @@
                            <div class="col-md-6">
                              <div class="form-group">
                                <label class="form-label">Attribute  </label>
-                               <select  name="attr_group_id[0][]" onchange="findValue('0a0')"  id="attr_group0a0" class="attr_group form-control proVariant " >
+                               <select  name="attr_group_id[0][]" onchange="findValue('0a0')"  id="attr_group0a0" class="attr_group form-control proVariant attrGroup0" >
                                  <option value="">Attribute</option>
                                  @foreach($attr_groups as $key)
                                  {{-- @if(!in_array($key->attr_group_id, $usedAttr)) --}}
@@ -1197,8 +1199,8 @@ var ek = $('.attrGroup'+mainKey).map((_,el) => el.value).get()
          var attid_2 = att_id_val + (xx -1);
     
 // console.log('#attr_group'+attid_2);
-console.log(att_id_val,mainKey,xx,attid,$('#attr_group'+attid_2).val());
-console.log(mainKey+"a"+xx);
+//console.log(att_id_val,mainKey,xx,attid,$('#attr_group'+attid_2).val());
+//console.log(mainKey+"a"+xx);
 let prAttrValue = $('#attr_value'+attid_2).val();
 
   let prevAttrVal = $('#attr_group'+attid_2).val();
@@ -1221,6 +1223,8 @@ let prAttrValue = $('#attr_value'+attid_2).val();
     for(let i=0;i< ek.length; i++){
       $(".attrGroup"+mainKey+" option[value="+ek[i]+"]").hide();
       
+            console.log("attrGroup"+mainKey);
+
     }
   }else{
       alert("Previous attribute empty");
