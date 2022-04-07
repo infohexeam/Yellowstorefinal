@@ -291,11 +291,8 @@ $date = Carbon\Carbon::now();
                                  @endphp
                                  <tr>
                                     <td><h6>Product Name : 
-                                    @if(@$product_varientD->variant_name == @$productdataD->product_name)
-                                        {{@$productdataD->product_name}}
-                                    @else
-                                        {{@$product_varientD->variant_name}} {{@$productdataD->product_name}}
-                                    @endif
+                                       {{@$product_varientD->variant_name}}
+                                  
                                     </h6></td>
                                  </tr>
                                  
