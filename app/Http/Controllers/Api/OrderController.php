@@ -555,7 +555,9 @@ class OrderController extends Controller
         }
     }
 
-    public function listDeliveryBoys(Request $request)
+
+
+    public function activeDelievryBoysList(Request $request)
     {
         $data = array();
         try {
@@ -571,6 +573,48 @@ class OrderController extends Controller
                     )
                     ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
                     ->where('mst_delivery_boys.availability_status', 1)
+                    ->where('mst_delivery_boys.delivery_boy_status', 1)
+                    ->get()
+                ) {
+
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+
+    public function listDeliveryBoys(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                if ($data['deliveryBoysDetails'] = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+                    ->select(
+                        'mst_delivery_boys.delivery_boy_id',
+                        'mst_delivery_boys.delivery_boy_name',
+                        'mst_delivery_boys.delivery_boy_name',
+                        'mst_delivery_boys.delivery_boy_name',
+                        'mst_delivery_boys.delivery_boy_mobile'
+                    )
+                    ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
                     ->where('mst_delivery_boys.delivery_boy_status', 1)
                     ->get()
                 ) {

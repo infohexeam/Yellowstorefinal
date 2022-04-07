@@ -166,6 +166,8 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('order/list', 'Api\OrderController@listOrders'); // order list
     Route::get('order/view', 'Api\OrderController@viewOrder'); // show single order
     Route::get('delivery-boys/list', 'Api\OrderController@listDeliveryBoys'); // delivery boys
+    Route::get('delivery-boys/active-list', 'Api\OrderController@activeDelievryBoysList'); // old delivery boys
+
     Route::get('order-status/list', 'Api\OrderController@listOrderStatus'); // order status
     Route::post('order/update', 'Api\OrderController@updateOrder'); // order update
     Route::get('order/invoice', 'Api\OrderController@orderInvoice'); // order 
