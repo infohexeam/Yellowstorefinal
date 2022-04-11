@@ -421,6 +421,8 @@ class DeliveryBoyOrderController extends Controller
                         $data['orderDetails']->store_latitude = @$storeData->latitude;
                         $data['orderDetails']->store_longitude = @$storeData->longitude;
                         $data['orderDetails']->store_place = @$storeData->place;
+                        $data['orderDetails']->store_pincode = @$storeData->store_pincode;
+
 
                         if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
                             $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
@@ -684,7 +686,7 @@ class DeliveryBoyOrderController extends Controller
                     $order = Trn_store_order::Find($order_id);
 
                     // $order->delivery_date = Carbon::now()->format('Y-m-d');
-                    // $order->delivery_time = Carbon::now()->format('H:i'); 
+                    // $order->delivery_time = Carbon::now()->format('H:i');
 
                     $configPoint = Trn_configure_points::find(1);
                     $orderAmount  = $configPoint->order_amount;
