@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Web Routes new
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -71,7 +71,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('/send', 'MasterController@sendPushNotification');
 
 
-        // feedback questions 
+        // feedback questions
         Route::get('admin/feedback-questions/list', 'MasterController@listFeedbackQuestion')->name('admin.list_feedback_questions');
         Route::post('admin/feedback-question/store', 'MasterController@storeFeedbackQuestion')->name('admin.store_feedback_question');
         Route::post('admin/feedback-question/update/{feedback_question_id}', 'MasterController@updateFeedbackQuestion')->name('admin.update_feedback_question');
@@ -547,7 +547,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/vehicle-types/restore-list', 'AdminController@listRestoreVehicleTypes')->name('admin.restore_list_vehicle_type');
         Route::post('admin/vehicle-types/restore/{vehicle_type_id}', 'AdminController@restoreVehicleTypes')->name('admin.restore_vehicle_type');
 
-        //Video 
+        //Video
 
         Route::get('/admin/video/list', 'MasterController@listVideo')->name('admin.videos');
         Route::get('/admin/video/create', 'MasterController@createVideo')->name('admin.create_video');
@@ -559,7 +559,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('/admin/video/restore-list', 'MasterController@listRestoreVideo')->name('admin.restore_list_videos');
         Route::post('/admin/video/restore/{video_id}', 'MasterController@restoreVideo')->name('admin.restore_video');
 
-        //Global Product 
+        //Global Product
         Route::get('admin/img-status/{store_id}', 'ProductController@statusGlobalIMG')->name('admin.status_GlobIMG');
 
         Route::get('/admin/global/products/list', 'ProductController@listGlobalProducts')->name('admin.global_products');
@@ -858,7 +858,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store/delivery/time/slot/update', 'StoreController@update_delivery_time_slots')->name('store.update_delivery_time_slots');
 
 
-        //Global Product 
+        //Global Product
 
         Route::get('/store/global/products/list', 'StoreController@listGlobalProducts')->name('store.global_products');
         // add to global product
@@ -880,7 +880,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('store/share-items', 'StoreController@ShareItems')->name('store.share_item_list');
 
-        //invoice 
+        //invoice
 
         Route::get('store/product_invoice/pdf/{id}', 'StoreController@generatePdf')->name('store.generate_invoice_pdf');
         Route::get('store/product_invoice/whatsup/send/{id}', 'StoreController@SendInvoice')->name('store.send_invoice');
