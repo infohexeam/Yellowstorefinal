@@ -26,8 +26,8 @@
                         </ul>
                      </div>
                      @endif
-                    
-                    
+
+
                   <div class="card-header">
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                   </div>
@@ -40,7 +40,7 @@
                                       <div class="col-md-6">
                   <div class="form-group">
                      <label class="form-label">Product Name</label>
-                       <input type="text" class="form-control" 
+                       <input type="text" class="form-control"
                        name="product_name"  value="{{ request()->input('product_name') }}" placeholder="Product Name">
 
                   </div>
@@ -58,7 +58,7 @@
                                        </div>
                                     </div>
                                  </div>
-                                 
+
                                  <div class="col-md-12">
                                     <div class="form-group">
                                        <center>
@@ -71,12 +71,12 @@
                                  </div>
                            </form>
                         </div>
-             
+
                     <div class="card-body">
                         <form action="{{route('store.global_to_store_products')}}" name="ff" method="POST" enctype="multipart/form-data">
-                        @csrf 
+                        @csrf
                         <div class="table-responsive">
-                           <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
@@ -94,7 +94,7 @@
                                  $i = 0;
                                  @endphp
 
-                                                 
+
                   @foreach ($global_product as $value)
                                  <tr>
                                     <td>{{ ++$i }}</td>
@@ -104,20 +104,20 @@
                                     <td><img data-toggle="modal" data-target="#viewModal{{$value->global_product_id}}" src="{{asset('/assets/uploads/products/base_product/base_image/'.$value->product_base_image)}}"  width="50" >&nbsp;</td>
                                     <td>{{$value->product_brand}}</td>
 
-                                    
+
                                     <td>
-                                       
-                                        <a class="btn btn-sm btn-cyan" href="{{url('store/global/product/view/'.Crypt::encryptString($value->global_product_id))}}">View</a> 
+
+                                        <a class="btn btn-sm btn-cyan" href="{{url('store/global/product/view/'.Crypt::encryptString($value->global_product_id))}}">View</a>
                                           <a href="{{route('store.global_product_add_to_store',$value->global_product_id)}}" onclick="return confirm('Do you want to add this item to store products?');"  class="btn btn-sm btn-secondary">Add To Store</a>
                                     </td>
                                     <td>
-                                       <input type="checkbox" class="gProClass" name="global_product_idz[]" value="{{$value->global_product_id}}"> 
+                                       <input type="checkbox" class="gProClass" name="global_product_idz[]" value="{{$value->global_product_id}}">
                                     </td>
 
                                  </tr>
                                  @endforeach
 
-                     
+
                               </tbody>
                            </table>
 
@@ -170,5 +170,34 @@
       }
    }
 </script>
+<script>
+
+    $(function(e) {
+        $('#exampletable').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'pdf',
+                    title: 'Global Product',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1,2,3,5]
+                     }
+                },
+                {
+                    extend: 'excel',
+                    title: 'Global Product',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1,2,3,5]
+                     }
+                }
+             ]
+        } );
+
+    } );
+
+  </script>
+
 
 @endsection

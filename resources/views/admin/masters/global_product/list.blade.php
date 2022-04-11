@@ -7,7 +7,7 @@
    <div class="row justify-content-center">
       <div class="col-md-12 col-lg-12">
          <div class="card">
-            <div class="row" style="min-height: 70vh;"> 
+            <div class="row" style="min-height: 70vh;">
                <div class="col-12" >
 
                   @if ($message = Session::get('status'))
@@ -48,7 +48,7 @@
                           Restore Global Products
                         </a>
                         @endif
-                        
+
                         </br>
                         <div class="table-responsive">
                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
@@ -82,7 +82,7 @@
                                         @endif
                                         </td>
 
-                                    
+
                                     <td>
                                        <form action="{{route('admin.destroy_global_product',$value->global_product_id)}}" method="POST">
                                          @csrf
@@ -90,7 +90,7 @@
                                           <a class="btn btn-sm btn-cyan"  href="{{url('/admin/global/product/edit/'.
                                           Crypt::encryptString($value->global_product_id))}}">Edit</a>
                                            <a class="btn btn-sm btn-cyan"
-                       href="{{url('admin/global/product/view/'.Crypt::encryptString($value->global_product_id))}}">View</a> 
+                       href="{{url('admin/global/product/view/'.Crypt::encryptString($value->global_product_id))}}">View</a>
                                           <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
                                        </form>
                                     </td>
@@ -130,7 +130,7 @@
             <!-- MESSAGE MODAL CLOSED -->
 
 
-            
+
             <script>
 
                $(function(e) {
@@ -147,7 +147,7 @@
                            },
                            {
                                extend: 'excel',
-                               title: 'Delivery Boys',
+                               title: 'Global Product',
                                footer: true,
                                exportOptions: {
                                     columns: [0,1,2,3,5]
@@ -155,9 +155,9 @@
                            }
                         ]
                    } );
-               
+
                } );
-                          
+
              </script>
 
 
