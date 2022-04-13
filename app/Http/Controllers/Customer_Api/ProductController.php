@@ -3310,7 +3310,7 @@ class ProductController extends Controller
                         ->get();
 
                     foreach ($allProducts as $allProduct) {
-                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                         $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                         $storeData = Mst_store::find($allProduct->store_id);
                         $allProduct->store_name = $storeData->store_name;
