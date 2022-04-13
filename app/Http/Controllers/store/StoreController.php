@@ -4498,16 +4498,12 @@ class StoreController extends Controller
       $pageTitle = "Delivery Boys";
       $store_id  = Auth::guard('store')->user()->store_id;
       $delivery_boys = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
-        ->select(
-            'mst_delivery_boys.town_id',
-            'mst_delivery_boys.delivery_boy_id',
-            'mst_delivery_boys.delivery_boy_name',
-            'mst_delivery_boys.delivery_boy_mobile')
+        ->select('mst_delivery_boys.town_id','mst_delivery_boys.delivery_boy_id','mst_delivery_boys.delivery_boy_name','mst_delivery_boys.delivery_boy_mobile')
         ->where('mst_delivery_boys.delivery_boy_status',1)
         ->where('mst_store_link_delivery_boys.store_id', $store_id)
         ->get();
 
-      )
+
 
       $assigned_delivery_boys = [];
       $inprogress_delivery_boys = [];
