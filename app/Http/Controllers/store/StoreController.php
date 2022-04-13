@@ -129,7 +129,7 @@ class StoreController extends Controller
 
     $catCount = Mst_categories::whereIn('category_id', $storeProductData)->count();
 
-    //  $data['categoriesCount'] = $catCount; 
+    //  $data['categoriesCount'] = $catCount;
 
 
 
@@ -548,13 +548,13 @@ class StoreController extends Controller
             CURLOPT_POSTFIELDS => '{
                         "email": "' . $email . '",
                         "status": "ACTIVE",
-                        "bank": 
+                        "bank":
                           {
                             "accountNumber": "' . $request->acc_no . '",
                             "accountHolder": "' . $request->account_holder . '",
                             "ifsc": "' . $request->ifsc . '"
                           },
-                         
+
                         "phone": "' . $store_mobile . '",
                         "name": "' . preg_replace('/[0-9]+/', '', $string4)  . '",
                         "id": "' . $vendorId . '",
@@ -606,7 +606,7 @@ class StoreController extends Controller
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'PUT',
           CURLOPT_POSTFIELDS => '{
-                "bank": 
+                "bank":
                     {
                         "accountNumber": "' . $request->acc_no . '",
                         "accountHolder": "' . $request->account_holder . '",
@@ -1106,7 +1106,7 @@ class StoreController extends Controller
         }
       }
 
-      //end 
+      //end
 
       $date = Carbon::now();
       $vc = 0;
@@ -3502,7 +3502,7 @@ class StoreController extends Controller
     $i = 0;
 
     foreach ($request->day as $s) {
-      // echo $start[$i]."  : ". 
+      // echo $start[$i]."  : ".
       if ($start[$i]  > $end[$i]) {
         return redirect()->back()->withErrors(['Starting time can\'t be greater than ending time.'])->withInput();
       }
@@ -3608,7 +3608,7 @@ class StoreController extends Controller
 
       // $store_a = Trn_StoreAdmin::Find($store_admin_id);
 
-      //  echo  $password = $store_a->password; 
+      //  echo  $password = $store_a->password;
       //   echo $newpassword = $request->password; die;
 
       $validator = Validator::make(
@@ -4499,7 +4499,9 @@ class StoreController extends Controller
       $store_id  = Auth::guard('store')->user()->store_id;
       $delivery_boys = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
         ->select('mst_delivery_boys.town_id', 'mst_delivery_boys.delivery_boy_id', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_mobile')
-        ->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
+        ->where('mst_delivery_boys.delivery_boy_status',1)
+        ->where('mst_store_link_delivery_boys.store_id', $store_id)
+        ->get();
 
       $assigned_delivery_boys = [];
       $inprogress_delivery_boys = [];
