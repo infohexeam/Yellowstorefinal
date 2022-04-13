@@ -35,7 +35,7 @@
                                       </ul>
                                    </div>
                                    @endif
-                            <table id="example" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="Bannertable" class="table table-striped table-bdataed text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -367,6 +367,33 @@ function findTown(city_id){
 
         });
 }
+
+
+$(function(e) {
+     $('#Bannertable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Customer Banner',
+                footer: true,
+                exportOptions: {
+                     columns: [0,2,3]
+                 }
+            },
+            {
+                extend: 'excel',
+                title: 'Customer Banner',
+                footer: true,
+                exportOptions: {
+                     columns: [0,2,3]
+                 }
+            }
+         ]
+    } );
+
+} );
+
 </script>
 
 
