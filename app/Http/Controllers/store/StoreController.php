@@ -1470,9 +1470,9 @@ class StoreController extends Controller
     $product_base_varient = Mst_store_product_varient::where('product_id', $product_id)
       ->where('is_base_variant', 1)
       ->where('is_removed', 0)
-      ->first(); 
+      ->first();
     $image_id=Mst_product_image::where('product_varient_id',$product_base_varient->product_varient_id)->get();
-    
+
     $store_id =  Auth::guard('store')->user()->store_id;
     $product_id = $request->product_id;
     //echo $product_id;die;
@@ -1543,7 +1543,7 @@ class StoreController extends Controller
     if (!$validator->fails()) {
 
 
-     
+
       if($image_id->isEmpty()==true)
     {
         return redirect('store/product/list')->withErrors(['msg' => 'Product Base-Image Must be added']);
@@ -1551,7 +1551,7 @@ class StoreController extends Controller
     }
     else
     {
-      
+
 
       $product['product_name']          = $request->product_name;
       $product['product_description']    = $request->product_description;
@@ -4410,27 +4410,24 @@ class StoreController extends Controller
 
       $order_number  = $request->order_number;
 
-      $query = \DB::table("mst_disputes")->where('store_id', $store_id)->select("*");
+      $disputes = Mst_dispute::where('store_id', $store_id)->orderBy('dispute_id', 'DESC')->get();
 
-
-      if (isset($order_number)) {
-        $query = $query->where('order_number', $order_number);
-      }
 
       if (isset($request->date_from) && isset($request->date_to)) {
-        $query = $query->whereBetween('dispute_date', [$a1, $a2]);
+        $disputes = $disputes->whereBetween('dispute_date', [$request->date_from, $request->date_to]);
       }
-      if (isset($request->date_from)) {
-        $query = $query->whereDate('dispute_date', $request->date_from);
+
+      if (isset($request->date_from) && isset($request->date_to) && isset($order_number)) {
+        $disputes = $disputes->where('order_number', $order_number)->whereBetween('dispute_date', [$request->date_from, $request->date_to]);
       }
-      $query->orderBy('dispute_id', 'DESC');
-      $disputes = $query->get();
+
       return view('store.elements.disputes.list', compact('dateto', 'datefrom', 'disputes', 'pageTitle'));
     }
 
     $disputes = \DB::table("mst_disputes")->where('store_id', $store_id)->select("*")->orderBy('dispute_id', 'DESC')->get();
     return view('store.elements.disputes.list', compact('disputes', 'pageTitle'));
   }
+
 
   public function statusDisputes(Request $request, $dispute_id)
   {
