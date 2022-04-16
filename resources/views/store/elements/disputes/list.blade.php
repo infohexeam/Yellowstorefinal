@@ -1,4 +1,4 @@
- @extends('store.layouts.app')
+@extends('store.layouts.app')
 @section('content')
 @php
 $date = Carbon\Carbon::now();
@@ -34,7 +34,7 @@ $date = Carbon\Carbon::now();
                    @csrf
             <div class="row">
 
-                
+
 
 
                 <div class="col-md-4">
@@ -62,7 +62,7 @@ $date = Carbon\Carbon::now();
                  <div class="form-group">
                     <label class="form-label">From Date</label>
                     <div id="date_froml"></div>
-                     <input type="date" class="form-control" name="date_from" id="date_from"  value="{{ request()->input('date_from') }}" placeholder="From Date">
+                     <input type="date" class="form-control" name="date_from" id="date_from"  value="{{ request()->input('date_from') }}" placeholder="From Date" required>
 
                   </div>
                </div>
@@ -70,7 +70,7 @@ $date = Carbon\Carbon::now();
                <div class="form-group">
                     <label class="form-label">To Date</label>
                     <div id="date_tol"></div>
-                     <input type="date" class="form-control"  name="date_to"  id="date_to" value="{{ request()->input('date_to') }}" placeholder="To Date">
+                     <input type="date" class="form-control"  name="date_to"  id="date_to" value="{{ request()->input('date_to') }}" placeholder="To Date" required>
 
                   </div>
                </div>
@@ -89,7 +89,7 @@ $date = Carbon\Carbon::now();
                </div>
 
                     <div class="card-body">
-                       
+
                         <div class="table-responsive">
                            <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                               <thead>
@@ -138,7 +138,7 @@ $date = Carbon\Carbon::now();
                                             @elseif($dispute->dispute_status == '2') Open
                                             @elseif($dispute->dispute_status == '3') Inprogress
                                             @elseif($dispute->dispute_status == '4') Return
-                                            @else 
+                                            @else
                                        @endif
                            </button>
                     </td>
@@ -192,9 +192,9 @@ $date = Carbon\Carbon::now();
                               <option {{$dispute->dispute_status == '3' ? 'selected':''}} value="3"> Inprogress     </option>
                               <option {{$dispute->dispute_status == '4' ? 'selected':''}} value="4"> Return     </option>
                            </select>
-                           
+
                            <br>
-                           
+
                            <textarea class="form-control" name="store_response" placeholder="Store Response..." >{{ $dispute->store_response }}</textarea>
                   </div>
 
@@ -237,30 +237,30 @@ $date = Carbon\Carbon::now();
                                     <td><h6>Customer Phone : {{$customer->customer_mobile_number}}</h6></td>
                                  </tr>
                                  <tr>
-                                    <td><h6>Dispute Status : 
+                                    <td><h6>Dispute Status :
                                        @if($dispute->dispute_status == '1' )Closed
                                             @elseif($dispute->dispute_status == '2') Open
                                             @elseif($dispute->dispute_status == '3') Inprogress
                                             @elseif($dispute->dispute_status == '4') Return
-                                            @else 
+                                            @else
                                        @endif
                                  </h6></td>
                                  </tr>
                                  <tr>
                                     <td><h6>Issue : {{@$issue->issue}} </h6></td>
                                  </tr>
-                                 
+
                                    <tr>
                                     <td><h6>Description : {{@$dispute->discription}} </h6></td>
                                  </tr>
-                                 
-                                 
+
+
                                    <tr>
                                     <td><h6>Store Response : {{@$dispute->store_response}} </h6></td>
                                  </tr>
-                                 
+
                               </tbody>
-                              
+
                                 @if($issue->issue_type_id == 2)
                                 @php
                                     $colorsArray = explode(",", $dispute->item_ids);
@@ -271,43 +271,43 @@ $date = Carbon\Carbon::now();
                                     ->where('product_varient_id',@$dispute->product_id)
                                     ->where('product_id',@$productdata->product_id)
                                     ->first();
-                                    
-                                    
+
+
                                       $orderItemsDataz = \DB::table('trn_order_items')
                                     ->whereIn('order_item_id',@$colorsArray)
                                     ->get();
 
                                 @endphp
-                            
+
                               <tbody class="col-lg-12 col-xl-12 p-0">
                                   <tr>
                                     <td><h4>Product Details</h4></td>
                                  </tr>
                                  @foreach($orderItemsDataz as $key)
-                                 
+
                                  @php
                                    $product_varientD = \DB::table('mst_store_product_varients')->where('product_varient_id',@$key->product_varient_id)->first();
                                     $productdataD = \DB::table('mst_store_products')->where('product_id',@$key->product_id)->first();
                                  @endphp
                                  <tr>
-                                    <td><h6>Product Name : 
+                                    <td><h6>Product Name :
                                        {{@$product_varientD->variant_name}}
-                                  
+
                                     </h6></td>
                                  </tr>
-                                 
-                                 
+
+
                                  <tr>
                                     <td><h6>Purchased Quantity  : {{$key->quantity}}</h6></td>
                                  </tr>
-                                 
+
                                  @endforeach
-                                 
+
                               </tbody>
-                              
-                                
+
+
                               @endif
-                              
+
                            </table>
                         </div>
 
