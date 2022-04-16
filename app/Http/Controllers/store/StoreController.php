@@ -311,15 +311,15 @@ class StoreController extends Controller
         'store_pincode'               => 'required',
         'store_primary_address'            => 'required',
         'store_country_id'             => 'required',
-        //	'profile_image'			       => 'required',
+        //  'profile_image'            => 'required',
         'store_state_id'                  => 'required',
-        //'email'       		       => 'required',
+        //'email'                  => 'required',
 
 
-        //'store_commision_amount'			       => 'required',
+        //'store_commision_amount'             => 'required',
 
         'store_district_id'                => 'required',
-        //	'store_username'   => 'required|unique:mst_stores,store_username,'.$store_id.',store_id',
+        //  'store_username'   => 'required|unique:mst_stores,store_username,'.$store_id.',store_id',
         'store_username'   => 'required',
         //'store_commision_percentage' =>'required',
 
@@ -331,7 +331,7 @@ class StoreController extends Controller
         'store_contact_person_name.required'        => 'Contact person name required',
         'store_contact_person_phone_number.required' => 'Contact person number required',
 
-        //  'email.required'         				 => 'Email required',
+        //  'email.required'                 => 'Email required',
 
         'store_pincode.required'               => 'Pincode required',
         'store_primary_address.required'             => 'Primary address required',
@@ -341,7 +341,7 @@ class StoreController extends Controller
         'store_username.required'               => 'Username required',
         //'store_commision_amount.required'                => 'Store commision amount required',
 
-        //'store_commision_percentage.required'	=>'Store commision percentage required',
+        //'store_commision_percentage.required' =>'Store commision percentage required',
 
 
 
@@ -386,7 +386,7 @@ class StoreController extends Controller
 
     if (!$validator->fails()) {
       $data = $request->except('_token');
-      //	dd($store);
+      //  dd($store);
       $filenamePro = $store->profile_image;
       if ($request->hasFile('profile_image')) {
 
@@ -1414,12 +1414,13 @@ class StoreController extends Controller
     return response()->json($global_product);
   }
 
-  public function destroyProductImage(Request $request, $product_image_id, Mst_product_image $pro_image)
+  public function destroyProductImage(Request $request, $product_image_id,$p_id, Mst_product_image $pro_image)
   {
     // echo $product_image_id;die;
     $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
     $pro_image->delete();
-
+    $image_id = Mst_product_image::where('product_varient_id', '=', $p_id)->first();
+    $image_id->update(['image_flag'=>1]);
     return redirect()->back()->with('status', 'Product Image Deleted Successfully.');
   }
 
@@ -1466,7 +1467,12 @@ class StoreController extends Controller
 
   public function updateProduct(Request $request, $product_id, Mst_store_product_varient $varient_product)
   {
-
+    $product_base_varient = Mst_store_product_varient::where('product_id', $product_id)
+      ->where('is_base_variant', 1)
+      ->where('is_removed', 0)
+      ->first(); 
+    $image_id=Mst_product_image::where('product_varient_id',$product_base_varient->product_varient_id)->get();
+    
     $store_id =  Auth::guard('store')->user()->store_id;
     $product_id = $request->product_id;
     //echo $product_id;die;
@@ -1537,6 +1543,15 @@ class StoreController extends Controller
     if (!$validator->fails()) {
 
 
+     
+      if($image_id->isEmpty()==true)
+    {
+        return redirect('store/product/list')->withErrors(['msg' => 'Product Base-Image Must be added']);
+
+    }
+    else
+    {
+      
 
       $product['product_name']          = $request->product_name;
       $product['product_description']    = $request->product_description;
@@ -1739,9 +1754,10 @@ class StoreController extends Controller
           $vc++;
         }
       }
-
-
       return redirect('store/product/list')->with('status', 'Product Updated Successfully.');
+
+    }
+
     } else {
 
       return redirect()->back()->withErrors($validator)->withInput();
@@ -1955,7 +1971,7 @@ class StoreController extends Controller
     //dd($city_id);
     $town = Town::where("district_id", '=', $city_id)
       ->pluck("town_name", "town_id");
-    //	echo $town;die;
+    //  echo $town;die;
     return response()->json($town);
   }
 

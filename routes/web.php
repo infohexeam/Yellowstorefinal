@@ -751,7 +751,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/product/view/{id}', 'StoreController@viewProduct')->name('store.view_product');
 
         Route::post('store/product/destroy/{product}', 'StoreController@destroyProduct')->name('store.destroy_product');
-        Route::post('store/product/destroy/image/{product_image_id}', 'StoreController@destroyProductImage')->name('store.destroy_product_image');
+        Route::post('store/product/destroy/image/{product_image_id}/{p_id}', 'StoreController@destroyProductImage')->name('store.destroy_product_image');
 
         Route::post('store/product/status/{product_id}', 'StoreController@statusProduct')->name('store.status_product');
         Route::post('store/product/stock/update/{product_id}', 'StoreController@stockUpdate')->name('store.stock_update_product');
