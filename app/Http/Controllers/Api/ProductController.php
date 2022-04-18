@@ -1134,16 +1134,22 @@ class ProductController extends Controller
 
                         if (isset($request->regular_price) || isset($request->sale_price)) {
                             $provarUp = Mst_store_product_varient::where('product_id', $product_id)->where('is_base_variant', 1);
+                            $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
                             $provarUp->product_varient_price = $request->regular_price;
                             $provarUp->product_varient_offer_price = $request->sale_price;
+                            $provarUp->product_varient_base_image = $image_id->product_image;
+
                             $provarUp->update();
                         }
+                        $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
+
 
                         $product['stock_count']         = $request->min_stock; // stock count
                         $product['product_code']        = $request->product_code;
                         $product['product_type']       = $request->product_type; // product type
                         $product['service_type']       = $request->service_type; // new type
 
+                        $product['product_base_image']            = $image_id->product_image;
 
 
                         $product['product_cat_id']         = $request->product_cat_id;
