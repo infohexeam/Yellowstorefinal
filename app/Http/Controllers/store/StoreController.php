@@ -311,15 +311,15 @@ class StoreController extends Controller
         'store_pincode'               => 'required',
         'store_primary_address'            => 'required',
         'store_country_id'             => 'required',
-        //  'profile_image'            => 'required',
+        //	'profile_image'			       => 'required',
         'store_state_id'                  => 'required',
-        //'email'                  => 'required',
+        //'email'       		       => 'required',
 
 
-        //'store_commision_amount'             => 'required',
+        //'store_commision_amount'			       => 'required',
 
         'store_district_id'                => 'required',
-        //  'store_username'   => 'required|unique:mst_stores,store_username,'.$store_id.',store_id',
+        //	'store_username'   => 'required|unique:mst_stores,store_username,'.$store_id.',store_id',
         'store_username'   => 'required',
         //'store_commision_percentage' =>'required',
 
@@ -331,7 +331,7 @@ class StoreController extends Controller
         'store_contact_person_name.required'        => 'Contact person name required',
         'store_contact_person_phone_number.required' => 'Contact person number required',
 
-        //  'email.required'                 => 'Email required',
+        //  'email.required'         				 => 'Email required',
 
         'store_pincode.required'               => 'Pincode required',
         'store_primary_address.required'             => 'Primary address required',
@@ -341,7 +341,7 @@ class StoreController extends Controller
         'store_username.required'               => 'Username required',
         //'store_commision_amount.required'                => 'Store commision amount required',
 
-        //'store_commision_percentage.required' =>'Store commision percentage required',
+        //'store_commision_percentage.required'	=>'Store commision percentage required',
 
 
 
@@ -386,7 +386,7 @@ class StoreController extends Controller
 
     if (!$validator->fails()) {
       $data = $request->except('_token');
-      //  dd($store);
+      //	dd($store);
       $filenamePro = $store->profile_image;
       if ($request->hasFile('profile_image')) {
 
@@ -1558,10 +1558,13 @@ class StoreController extends Controller
       $product['product_price']         = $request->regular_price;
       $product['product_price_offer']    = $request->sale_price;
 
+
       if (isset($request->regular_price) || isset($request->sale_price)) {
+         $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
         $provarUp = array();
         $provarUp['product_varient_price'] = $request->regular_price;
         $provarUp['product_varient_offer_price']  = $request->sale_price;
+        $provarUp['product_varient_base_image']  = $image_id->product_image;
 
         Mst_store_product_varient::where('product_id', $product_id)
           ->where('is_base_variant', 1)->update($provarUp);
@@ -1580,13 +1583,14 @@ class StoreController extends Controller
       //$product['color_id']               = $request->color_id; // new
 
       //  $product['attr_group_id']         = $request->attr_group_id;
-      // $product['attr_value_id']         = $request->attr_value_id;
+     $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
       $product['product_cat_id']         = $request->product_cat_id;
       $product['vendor_id']            = $request->vendor_id; // new
       $product['product_brand']            = $request->product_brand; // new
 
       $product['sub_category_id']            = $request->sub_category_id; // new
       $product['product_type']            = $request->product_type; // new
+      $product['product_base_image']            = $image_id->product_image;
       if ($request->product_type == 2)
         $product['service_type']            = $request->service_type; // new
       else
@@ -1971,7 +1975,7 @@ class StoreController extends Controller
     //dd($city_id);
     $town = Town::where("district_id", '=', $city_id)
       ->pluck("town_name", "town_id");
-    //  echo $town;die;
+    //	echo $town;die;
     return response()->json($town);
   }
 
@@ -4443,7 +4447,6 @@ class StoreController extends Controller
     $disputes = \DB::table("mst_disputes")->where('store_id', $store_id)->select("*")->orderBy('dispute_id', 'DESC')->get();
     return view('store.elements.disputes.list', compact('disputes', 'pageTitle'));
   }
-
 
   public function statusDisputes(Request $request, $dispute_id)
   {
