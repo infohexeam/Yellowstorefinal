@@ -340,9 +340,9 @@ $(document).ready(function() {
                 title: 'Product Report',
                 orientation : 'landscape',
                 footer: true,
-                // exportOptions: {
-                //      columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
-                //  }
+                exportOptions: {
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
+                 }
             },
             {
                 extend: 'excel',
