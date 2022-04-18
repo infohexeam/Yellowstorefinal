@@ -38,18 +38,18 @@ $date = Carbon\Carbon::now();
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">From Date</label>
-                               <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date">
-        
+                               <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date" required>
+
                          </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">To Date</label>
-                             <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date">
+                             <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date" required>
                         </div>
                      </div>
-                  
-                     
+
+
                      <div class="col-md-12">
                         <div class="form-group">
                             <center>
@@ -59,13 +59,13 @@ $date = Carbon\Carbon::now();
                             </center>
                         </div>
                       </div>
- 
- 
+
+
                 </div>
             </form>
         </div>
 
-        
+
         <div class="card-body">
             <div class="table-responsive">
                <table id="exampletable" class="table table-striped table-bpaymented text-nowrap w-100">
@@ -83,7 +83,7 @@ $date = Carbon\Carbon::now();
                         <th class="wd-20p">Delivery<br>Charge</th>
                         <th class="wd-20p">Transaction<br>Status</th>
                      </tr>
-                     
+
                   </thead>
                   <tbody>
                      @php
@@ -104,7 +104,7 @@ $date = Carbon\Carbon::now();
                         <td>{{ @$row->settlementAmount }}</td>
                         <td>{{ @$row->delivery_charge }}</td>
                         <td>{{ @$row->txStatus }}</td>
-                       
+
 
                      </tr>
                      @endforeach
@@ -112,8 +112,8 @@ $date = Carbon\Carbon::now();
                   </tbody>
                </table>
              </div>
-             
-             
+
+
 
          </div>
       </div>
@@ -141,69 +141,69 @@ $date = Carbon\Carbon::now();
                         <div class="table-responsive ">
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
-                           
+
                                   <tr>
                                     <td><h6>Order Number : {{ @$row->order_number }}</h6></td>
                                  </tr>
-                                 
+
                                 <tr>
                                     <td><h6>Customer Name : {{ (new App\Helpers\Helper)->findCustomerName($row->customer_id) }}</h6></td>
                                  </tr>
-                                 
+
                                  <tr>
                                     <td><h6>Customer Phone : {{ (new App\Helpers\Helper)->findCustomerPhone($row->customer_id) }}</h6></td>
                                  </tr>
-                                 
+
                                  <tr>
                                     <td><h6>Order Amount :{{ @$row->orderAmount }}</h6></td>
                                  </tr>
-                                
+
                                  <tr>
                                     <td><h6>Split Amount :{{ @$row->settlementAmount }}</h6></td>
                                  </tr>
-                                 
+
                                  <tr>
                                     <td><h6>Payment Gateway Order ID :{{ @$row->PGOrderId }}</h6></td>
                                  </tr>
-                                 
+
                                   <tr>
                                     <td><h6>Transaction Status :{{ @$row->txStatus }}</h6></td>
                                  </tr>
-                                 
-                                
+
+
                               </tbody>
-                              
-                            
+
+
                               <tbody class="col-lg-12 col-xl-6 p-0">
-                                  
+
                                  <!--<tr>-->
                                  <!--   <td><h6>Store Name  : {{ (new App\Helpers\Helper)->findStoreName($row->store_id) }}</h6></td>-->
                                  <!--</tr>-->
-                                 
+
                                  <!--<tr>-->
                                  <!--   <td><h6>Store Phone  : {{ (new App\Helpers\Helper)->findStorePhone($row->store_id) }}</h6></td>-->
                                  <!--</tr>-->
-                                 
+
                                  <!--<tr>-->
                                  <!--   <td><h6>Subadmin Name  : {{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }}</h6></td>-->
                                  <!--</tr>-->
-                                 
+
                                  <tr>
                                     <td><h6>Delivery Charge :{{ @$row->delivery_charge }}</h6></td>
                                  </tr>
-                                 
+
                                  <tr>
                                     <td><h6>Payment Mode :{{ @$row->paymentMode }}</h6></td>
                                  </tr>
-                                 
+
                                  <tr>
                                     <td><h6>Reference ID :{{ @$row->referenceId }}</h6></td>
                                  </tr>
-                                 
-                                 
-                                
-                              
-                                 
+
+
+
+
+
                            </table>
                         </div>
 
@@ -232,7 +232,7 @@ $date = Carbon\Carbon::now();
                 extend: 'pdf',
                 title: 'payments',
                 footer: true,
-                
+
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
             },
@@ -240,7 +240,7 @@ $date = Carbon\Carbon::now();
                 extend: 'excel',
                 title: 'payments',
                 footer: true,
-               
+
             }
          ]
     } );

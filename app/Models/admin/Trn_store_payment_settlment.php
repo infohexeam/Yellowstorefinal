@@ -9,7 +9,7 @@ class Trn_store_payment_settlment extends Model
     protected $primaryKey = "settlment_id";
 
     protected $fillable = [
-    					     'settlment_id','store_commision_percentage','order_id','store_id','store_commision_amount','admin_commision_amount','total_amount','store_commision_percentage','commision_paid','commision_to_be_paid',
+    					     'settlment_id','store_commision_percentage','order_id','store_id','store_commision_amount','admin_commision_amount','total_amount','store_commision_percentage','commision_paid','commision_to_be_paid','created_at'
     						  ];
 
     public function store()

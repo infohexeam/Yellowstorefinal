@@ -4126,6 +4126,8 @@ class StoreController extends Controller
 
   public function storePayments(Request $request)
   {
+    if($_GET)
+    {
     $pageTitle = "Payments Settlements";
     $store_id  = Auth::guard('store')->user()->store_id;
 
@@ -4143,25 +4145,56 @@ class StoreController extends Controller
 
     $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
 
-    if (isset($request->date_from)) {
-      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
-    }
-    if (isset($request->date_to)) {
-      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
-    }
+    // if (isset($request->date_from)) {
+    //   $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+    // }
+    // if (isset($request->date_to)) {
+    //   $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    // }
 
     $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
 
     $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
       ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
 
-    if (isset($request->date_from)) {
-      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
-    }
+    // if (isset($request->date_from)) {
+    //   $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+    // }
 
-    if (isset($request->date_to)) {
-      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    // if (isset($request->date_to)) {
+    //   $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    // }
+
+    $store_payments = $store_payments->whereBetween('trn_store_orders.created_at', [$a1, $a2])->where('trn_store_orders.store_id', $store_id)
+      ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
+      ->where('trn__order_split_payments.paymentRole', 1)
+      ->get();
+
+    return view('store.elements.payments.view', compact('paid_details', 'paidAmount', 'store_id', 'payments_datas', 'store_payments', 'pageTitle'));
+
     }
+    else
+    {
+    $pageTitle = "Payments Settlements";
+    $store_id  = Auth::guard('store')->user()->store_id;
+
+
+    $paidAmount = Trn_store_payments_tracker::where('store_id', $store_id)->sum('commision_paid');
+    $paid_details = Trn_store_payments_tracker::where('store_id', $store_id)->orderBy('store_payments_tracker_id', 'DESC')->limit(15)->get();
+
+
+
+
+    $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
+
+
+
+    $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
+
+    $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
+      ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
+
+
 
     $store_payments = $store_payments->where('trn_store_orders.store_id', $store_id)
       ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
@@ -4170,25 +4203,8 @@ class StoreController extends Controller
 
     return view('store.elements.payments.view', compact('paid_details', 'paidAmount', 'store_id', 'payments_datas', 'store_payments', 'pageTitle'));
 
-    //dd($payments_datas);
 
-    // $payments_datas = \DB::table('trn_store_payments_tracker')->where('store_id', $store_id)->get();
-    // if ($_GET) {
-    //   $year = $request->year;
-    //   $month = $request->month;
-    //   $a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
-    //   $a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
-    //   $store_payments = Trn_store_payment_settlment::where('store_id', $store_id)
-    //     ->whereBetween('created_at', [@$a1, @$a2])->get();
-    //   $payments = Trn_store_payment_settlment::whereBetween('created_at', [@$a1, @$a2])->get();
-    //   $payments_datas = \DB::table('trn_store_payments_tracker')
-    //     ->where('store_id', $store_id)
-    //     ->whereBetween('date_of_payment', [@$a1, @$a2])
-    //     ->get();
-    //   return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'payments', 'store_payments', 'pageTitle'));
-    // }
-
-
+    }
 
   }
 
