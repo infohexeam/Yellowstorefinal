@@ -53,7 +53,7 @@ class ProductController extends Controller
         try {
 
 
-            $proEx = Mst_store_product::where('product_code', $request->product_code);
+            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id', $request->store_id)->where('is_removed', 0);
             if (isset($request->product_id))
                 $proEx = $proEx->where('product_id', '!=', $request->product_id);
             $proEx = $proEx->count();
@@ -66,7 +66,6 @@ class ProductController extends Controller
                 $data['status'] = 1;
                 $data['message'] = "Avilable";
             }
-
 
             return response($data);
         } catch (\Exception $e) {
