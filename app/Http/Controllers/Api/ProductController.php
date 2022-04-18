@@ -53,18 +53,18 @@ class ProductController extends Controller
         try {
 
 
-            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id', $request->store_id)->where('is_removed', 0);
-            if (isset($request->product_id))
-                $proEx = $proEx->where('product_id', '!=', $request->product_id);
-            $proEx = $proEx->count();
+            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->where('is_removed', 0)->get();
+            // if (isset($request->product_id))
+            //     $proEx = $proEx->where('product_id', '!=', $request->product_id);
+            // $proEx = $proEx->count();
 
 
-            if ($proEx > 0) {
-                $data['status'] = 0;
-                $data['message'] = "Not avilable";
-            } else {
+            if ($proEx->isEmpty()) {
                 $data['status'] = 1;
                 $data['message'] = "Avilable";
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Not Avilable";
             }
 
             return response($data);
