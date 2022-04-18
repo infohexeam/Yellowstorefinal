@@ -1404,13 +1404,19 @@ class ProductController extends Controller
     {
         $data = array();
         try {
-            if (isset($request->product_image_id) && Mst_product_image::find($request->product_image_id)) {
+            if (isset($request->product_image_id) && Mst_product_image::find($request->product_image_id) && isset($request->product_id)) {
 
                 if (1) {
+                    // $product_id=isset($request->product_id) ? $request->product_id : '';
                     $proImageData = Mst_product_image::find($request->product_image_id);
                     Mst_product_image::where('product_image_id', $request->product_image_id)->delete();
+                     $image_id = Mst_product_image::where('product_id', '=', $request->product_id)->first();
+                     $image_id->update(['image_flag'=>1]);
 
                     if ($proImageData->product_varient_id == 0) {
+
+                         $image_id = Mst_product_image::where('product_id', '=', $request->product_id)->first();
+                        $image_id->update(['image_flag'=>1]);
                         $secImg = Mst_product_image::where('product_id', $proImageData->product_id)->where('product_varient_id', 0)->first();
                         $thirdImg = Mst_product_image::where('product_id', $proImageData->product_id)->first();
                         if ($secImg) {
@@ -1421,6 +1427,9 @@ class ProductController extends Controller
                             Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => null]);
                         }
                     } else {
+
+                         $image_id = Mst_product_image::where('product_id', '=', $request->product_id)->first();
+                         $image_id->update(['image_flag'=>1]);
                         $secImg = Mst_product_image::where('product_id', $proImageData->product_id)
                             ->where('product_varient_id', $proImageData->product_varient_id)->first();
                         if ($secImg) {
