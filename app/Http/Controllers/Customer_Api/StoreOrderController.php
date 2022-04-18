@@ -458,7 +458,8 @@ class StoreOrderController extends Controller
                     ]
                 );
 
-                if (!$validator->fails()) {
+                $cust=Trn_store_customer::where('customer_id',$request->customer_id)->where('customer_profile_status',1)->first();
+                if (!$validator->fails() && $cust->customer_id!='') {
                     $noStockProducts = array();
 
 
@@ -989,7 +990,7 @@ class StoreOrderController extends Controller
         try {
             // dd($request->all());
             // if(isset($request->customer_id) && Mst_store::find($request->customer_id))
-            // { 
+            // {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -1324,7 +1325,7 @@ class StoreOrderController extends Controller
                         // dispute section
                         if ($disputeData = Mst_dispute::where('order_id', $request->order_id)->first()) {
                             $data['orderDetails']->dispute_status = 1;
-                            //$data['orderDetails']->issue_id = $disputeData->issue_id; 
+                            //$data['orderDetails']->issue_id = $disputeData->issue_id;
                             $data['orderDetails']->issue_id = @$disputeData->issues->issue_type->issue_type;
                             $data['orderDetails']->issues = @$disputeData->issues->issue;
                             if (isset($disputeData->issues->issue_type->issue_type))
