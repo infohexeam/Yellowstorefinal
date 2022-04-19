@@ -457,9 +457,8 @@ class StoreOrderController extends Controller
                         // 'product_variants.*.discount_percentage.required'    =>'Discount percentage required',
                     ]
                 );
-
                 $cust=Trn_store_customer::where('customer_id',$request->customer_id)->where('customer_profile_status',1)->first();
-                if (!$validator->fails() && $cust->customer_id!='') {
+                if (!$validator->fails() && $cust->customer_id!=0) {
                     $noStockProducts = array();
 
 
