@@ -421,11 +421,10 @@ class StoreOrderController extends Controller
 
                 //   $responseData = $response->getBody()->getContents();
             }
+            $cust=Trn_store_customer::where('customer_id',$request->customer_id)->where('customer_profile_status',1)->first();
 
 
-
-
-            if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id)) {
+            if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id) &&  $cust->customer_id!=0) {
                 $validator = Validator::make(
                     $request->all(),
                     [
