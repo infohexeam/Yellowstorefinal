@@ -476,7 +476,7 @@ class CouponController extends Controller
   public function showStoreVisitReport(Request $request)
   {
     
-    // try {
+    try {
 
       $pageTitle = "Store Visit Reports";
       $customers = Trn_store_customer::all();
@@ -562,10 +562,10 @@ class CouponController extends Controller
       }
 
       return view('store.elements.reports.store_visit_report', compact('customers', 'data', 'pageTitle'));
-    // } catch (\Exception $e) {
-    //   return redirect()->back()->withErrors([$e->getMessage()])->withInput();
-    //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
-    // }
+    } catch (\Exception $e) {
+      return redirect()->back()->withErrors([$e->getMessage()])->withInput();
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
   }
 
   public function listTownNames(Request $request)
