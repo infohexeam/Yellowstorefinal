@@ -2914,7 +2914,7 @@ class ProductController extends Controller
                 );
                 $dataRVS =  $dataRVS->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_stores.customer_id');
                 $dataRVS =  $dataRVS->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id');
-                $dataRVS = $dataRVS->join('mst_towns', 'mst_towns.town_id', '=', 'mst_stores.town_id');
+                $dataRVS = $dataRVS->join('mst_towns', 'mst_towns.town_id', '=', 'trn_store_customers.town_id');
 
                 $dataRVS = $dataRVS->where('mst_stores.store_id', $request->store_id);
 
@@ -2931,7 +2931,7 @@ class ProductController extends Controller
                 }
 
                 if (isset($request->town_id)) {
-                    $dataRVS = $dataRVS->where('mst_stores.town_id', '=', $request->town_id);
+                    $dataRVS = $dataRVS->where('trn_store_customers.town_id', '=', $request->town_id);
                 }
 
 
