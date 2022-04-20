@@ -7,16 +7,14 @@
     use App\Models\admin\Trn_Cart;
 
 @endphp
-
 <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-12 col-lg-12">
-      <div class="card">
-        <div class="row">
-          <div class="col-12">
-
-
-            @if ($message = Session::get('status'))
+    <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-12">
+            <div class="card">
+                <div class="row">
+                    <div class="col-12" >
+    
+                      @if ($message = Session::get('status'))
                       <div class="alert alert-success">
                          <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
                       </div>
@@ -35,37 +33,38 @@
                              <div class="card-header">
                                 <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                              </div>
-
-                    <div class="card-body border">
-                 <form action="{{route('store.show_reports')}}" method="GET" enctype="multipart/form-data">
+                             
+                             
+                            <div class="card-body border">
+                                <form action="{{route('store.show_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
-
-
+                                       
+                                       
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">From Date</label>
                                                    <div id="date_froml"  ></div>
                                                    <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date">
-
+                            
                                               </div>
                                            </div>
-
+                                            
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="form-label">To Date</label>
                                                     <div  id="date_tol" ></div>
                                                  <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date">
-
+                            
                                              </div>
                                           </div>
+              
+              
+                                       
+                                      
 
-
-
-
-
-
-
+                                         
+                                         
                                           <div class="col-md-4">
                                           <div class="form-group">
                                               <label class="form-label">Customer</label>
@@ -78,14 +77,14 @@
                                                   </select>
                                            </div>
                                           </div>
-
+                                         
                                          <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Product </label>
                                                     <div id="product_id1"></div>
 
                                                <select  name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Product"  >
-
+                                                    
                                                     <option value="">Product</option>
                                                     @foreach($productVAriants as $row)
                                                     <option value="{{$row->product_varient_id}}" {{request()->input('product_id') == $row->product_varient_id ? 'selected':''}} >{{$row->variant_name}}</option>
@@ -94,7 +93,7 @@
                                                   </select>
                                             </div>
                                          </div>
-
+                                         
                                           <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Vendor </label>
@@ -107,8 +106,8 @@
                                                   </select>
                                             </div>
                                          </div>
-
-
+                                         
+                                         
                                          <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Category </label>
@@ -121,7 +120,7 @@
                                                   </select>
                                             </div>
                                          </div>
-
+                                         
                                           <div class="col-md-4">
                                             <div class="form-group">
                                               <label class="form-label">Sub Category </label>
@@ -134,8 +133,8 @@
                                                   </select>
                                             </div>
                                          </div>
-
-
+                                         
+                                         
                                          <div class="col-md-12">
                                             <div class="form-group">
                                                 <center>
@@ -145,18 +144,17 @@
                                                 </center>
                                             </div>
                                           </div>
-
-
+                     
+                     
                                     </div>
                                 </form>
-                </div>
-
-
-               <div class="card-body">
-
-                <div class="table-responsive">
-                  <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
-                    <thead>
+                            </div>
+               
+                        
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                                      <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
                                             <th class="wd-15p">Date</th>
@@ -173,8 +171,8 @@
                                             <th class="wd-15p">Count <br>in Cart</th>
                                          </tr>
                                       </thead>
-                    <tbody>
-
+                                      <tbody>
+                                          
                                         @php
                                         $i = 0;
                                         @endphp
@@ -188,7 +186,7 @@
                                                     ---
                                                 @endif
                                                 </td>
-
+                                           
                                             <td>
                                                 @if(isset($d->agency_name))
                                                 {{ $d->agency_name }}
@@ -235,12 +233,12 @@
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>
                                             @php
-
+                                            
                                             if(($d->product_varient_id != 0) && isset($d->product_varient_id)){
                                                 $visitCount = Trn_RecentlyVisitedProducts::join('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn__recently_visited_products.product_varient_id');
-
+                                                
                                                 if(auth()->user()->user_role_id  != 0)
-                                                {
+                                                {    
                                                     $visitCount = $visitCount->join('mst_stores','mst_stores.store_id','=','mst_store_product_varients.store_id');
                                                     $visitCount = $visitCount->where('mst_stores.subadmin_id', auth()->user()->id);
                                                 }
@@ -250,9 +248,9 @@
                                             }else{
 
                                                 $visitCount = Trn_RecentlyVisitedProducts::join('mst_store_products','mst_store_products.product_id','=','trn__recently_visited_products.product_id');
-
+                                                
                                                 if(auth()->user()->user_role_id  != 0)
-                                                {
+                                                {    
                                                     $visitCount = $visitCount->join('mst_stores','mst_stores.store_id','=','mst_store_products.store_id');
                                                     $visitCount = $visitCount->where('mst_stores.subadmin_id', auth()->user()->id);
                                                 }
@@ -263,60 +261,59 @@
                                             }
                                             @endphp
                                             <td>{{ @$visitCount }}</td>
-
+                                            
                                             @php
-
+                                            
                                                 $puchasedCount =  Trn_store_order::join('trn_order_items','trn_order_items.order_id','=','trn_store_orders.order_id');
-
+                                                
                                                 if(auth()->user()->user_role_id  != 0)
-                                                {
+                                                {    
                                                     $puchasedCount = $puchasedCount->join('mst_stores','mst_stores.store_id','=','trn_store_orders.store_id');
                                                     $puchasedCount = $puchasedCount->where('mst_stores.subadmin_id', auth()->user()->id);
                                                 }
-
+                                                
                                                 $puchasedCount = $puchasedCount->where('trn_store_orders.customer_id', $d->customer_id);
                                                 $puchasedCount = $puchasedCount->where('trn_order_items.product_varient_id', $d->product_varient_id);
                                                 $puchasedCount = $puchasedCount->sum('trn_order_items.quantity');
-
+                                                
                                             @endphp
                                             <td>{{ @$puchasedCount }}</td>
                                             @php
-
+                                            
                                             if(auth()->user()->user_role_id  == 0)
                                             {
                                                 $countInCart = Trn_Cart::where('customer_id', $d->customer_id);
                                                 $countInCart = $countInCart->where('product_varient_id', $d->product_varient_id);
-                                                $countInCart = $countInCart->sum('quantity');
+                                                $countInCart = $countInCart->sum('quantity');   
                                             }
                                             else
-                                            {
+                                            {   
                                                 $countInCart = Trn_Cart::join('mst_stores','mst_stores.store_id','=','trn__carts.store_id');
                                                 $countInCart = $countInCart->where('mst_stores.subadmin_id', auth()->user()->id);
                                                 $countInCart = $countInCart->where('trn__carts.customer_id', $d->customer_id);
                                                 $countInCart = $countInCart->where('trn__carts.product_varient_id', $d->product_varient_id);
-                                                $countInCart = $countInCart->sum('trn__carts.quantity');
+                                                $countInCart = $countInCart->sum('trn__carts.quantity'); 
                                             }
 
                                             @endphp
                                             <td>{{@$countInCart}}</td>
-
+                                            
                                         </tr>
                                         @endforeach
-
-
+                               
+                                    
                                       </tbody>
-                  </table>
-
-
+                                   </table>
+                                </div>
+                            </div>
+                      </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+
 
 
 <script>
@@ -332,23 +329,24 @@ $(document).ready(function() {
 
  });
     $(function(e) {
-     $('#exampletable').DataTable( {
+	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Product Report',
-                orientation : 'landscape',
+                title: 'Product report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
-                 }
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+                 },
+                 orientation : 'landscape',
+                pageSize : 'LEGAL',
             },
             {
                 extend: 'excel',
-                title: 'Product Report',
+                title: 'Product report',
                 footer: true,
-
+              
             }
          ]
     } );
@@ -358,16 +356,16 @@ $(document).ready(function() {
 
 <script>
     $(document).ready(function() {
-
-        $("#subadminId").on('change', function(){
-
+        
+        $("#subadminId").on('change', function(){    
+            
          let subadminId = $('#subadminId').val();
-
+         
          var _token= $('input[name="_token"]').val();
             $.ajax({
               type:"GET",
               url:"{{ url('admin/store-name-list') }}?subadmin_id="+subadminId,
-
+    
               success:function(res){
                     if(res){
                        // console.log(res);
@@ -383,20 +381,20 @@ $(document).ready(function() {
                       $('#storeId').empty();
                     }
                 }
-
+    
             });
         });
     });
-
-
+    
+    
     $(document).ready(function() {
-
+ 
      let subadminId = $('#subadminId').val();
       if ( typeof subadminId === "undefined") {
           subadminId = '';
       }
      let storeId = $('#storeId').val();
-
+     
      var _token= $('input[name="_token"]').val();
         $.ajax({
           type:"GET",
@@ -412,16 +410,16 @@ $(document).ready(function() {
                     {
                       $('#productId').append('<option value="'+product_id+'">'+product_name+'</option>');
                     });
-
+                    
                     let productId = getUrlParameter('product_id');
                     if ( typeof productId !== "undefined" && productId) {
                         $("#productId option").each(function(){
-                            if($(this).val()==productId){
-                                $(this).attr("selected","selected");
+                            if($(this).val()==productId){ 
+                                $(this).attr("selected","selected");    
                             }
                         });
-                    }
-
+                    } 
+    
                 }else
                 {
                   $('#storeId').empty();
@@ -431,22 +429,22 @@ $(document).ready(function() {
         });
 
     });
-
-
+    
+    
 $(document).ready(function() {
-
-        $("#categoryId").on('change', function(){
-
+        
+        $("#categoryId").on('change', function(){    
+            
         let categoryId = $('#categoryId').val();
-
+        
        // console.log(categoryId);
 
         var _token= $('input[name="_token"]').val();
-
+        
             $.ajax({
               type:"GET",
               url:"{{ url('store/product/ajax/get_subcategory') }}?category_id="+categoryId,
-
+    
               success:function(res){
                     if(res){
                        // console.log(res);
@@ -457,38 +455,38 @@ $(document).ready(function() {
                         {
                           $('#subCategoryId').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
                         });
-
+                        
                         let subCategoryId = getUrlParameter('sub_category_id');
                         if ( typeof subCategoryId !== "undefined" && subCategoryId) {
                             $("#subCategoryId option").each(function(){
-                                if($(this).val()==subCategoryId){
-                                    $(this).attr("selected","selected");
+                                if($(this).val()==subCategoryId){ 
+                                    $(this).attr("selected","selected");    
                                 }
                             });
-                        }
-
-
+                        } 
+                    
+                    
                     }else
                     {
                       $('#storeId').empty();
                     }
                 }
-
+    
             });
         });
     });
-
-
-
+    
+    
+    
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
             sURLVariables = sPageURL.split('&'),
             sParameterName,
             i;
-
+    
         for (i = 0; i < sURLVariables.length; i++) {
             sParameterName = sURLVariables[i].split('=');
-
+    
             if (sParameterName[0] === sParam) {
                 return typeof sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
             }
@@ -498,5 +496,5 @@ $(document).ready(function() {
 
 </script>
 
+@endsection
 
-  @endsection

@@ -129,7 +129,7 @@ class StoreController extends Controller
 
     $catCount = Mst_categories::whereIn('category_id', $storeProductData)->count();
 
-    //  $data['categoriesCount'] = $catCount;
+    //  $data['categoriesCount'] = $catCount; 
 
 
 
@@ -548,13 +548,13 @@ class StoreController extends Controller
             CURLOPT_POSTFIELDS => '{
                         "email": "' . $email . '",
                         "status": "ACTIVE",
-                        "bank":
+                        "bank": 
                           {
                             "accountNumber": "' . $request->acc_no . '",
                             "accountHolder": "' . $request->account_holder . '",
                             "ifsc": "' . $request->ifsc . '"
                           },
-
+                         
                         "phone": "' . $store_mobile . '",
                         "name": "' . preg_replace('/[0-9]+/', '', $string4)  . '",
                         "id": "' . $vendorId . '",
@@ -606,7 +606,7 @@ class StoreController extends Controller
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'PUT',
           CURLOPT_POSTFIELDS => '{
-                "bank":
+                "bank": 
                     {
                         "accountNumber": "' . $request->acc_no . '",
                         "accountHolder": "' . $request->account_holder . '",
@@ -1106,7 +1106,7 @@ class StoreController extends Controller
         }
       }
 
-      //end
+      //end 
 
       $date = Carbon::now();
       $vc = 0;
@@ -1414,13 +1414,12 @@ class StoreController extends Controller
     return response()->json($global_product);
   }
 
-  public function destroyProductImage(Request $request, $product_image_id,$p_id, Mst_product_image $pro_image)
+  public function destroyProductImage(Request $request, $product_image_id, Mst_product_image $pro_image)
   {
     // echo $product_image_id;die;
     $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
     $pro_image->delete();
-    $image_id = Mst_product_image::where('product_varient_id', '=', $p_id)->first();
-    $image_id->update(['image_flag'=>1]);
+
     return redirect()->back()->with('status', 'Product Image Deleted Successfully.');
   }
 
@@ -1467,11 +1466,6 @@ class StoreController extends Controller
 
   public function updateProduct(Request $request, $product_id, Mst_store_product_varient $varient_product)
   {
-    $product_base_varient = Mst_store_product_varient::where('product_id', $product_id)
-      ->where('is_base_variant', 1)
-      ->where('is_removed', 0)
-      ->first();
-    $image_id=Mst_product_image::where('product_varient_id',$product_base_varient->product_varient_id)->get();
 
     $store_id =  Auth::guard('store')->user()->store_id;
     $product_id = $request->product_id;
@@ -1544,27 +1538,15 @@ class StoreController extends Controller
 
 
 
-      if($image_id->isEmpty()==true)
-    {
-        return redirect('store/product/list')->withErrors(['msg' => 'Product Base-Image Must be added']);
-
-    }
-    else
-    {
-
-
       $product['product_name']          = $request->product_name;
       $product['product_description']    = $request->product_description;
       $product['product_price']         = $request->regular_price;
       $product['product_price_offer']    = $request->sale_price;
 
-
       if (isset($request->regular_price) || isset($request->sale_price)) {
-         $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
         $provarUp = array();
         $provarUp['product_varient_price'] = $request->regular_price;
         $provarUp['product_varient_offer_price']  = $request->sale_price;
-        $provarUp['product_varient_base_image']  = $image_id->product_image;
 
         Mst_store_product_varient::where('product_id', $product_id)
           ->where('is_base_variant', 1)->update($provarUp);
@@ -1583,14 +1565,13 @@ class StoreController extends Controller
       //$product['color_id']               = $request->color_id; // new
 
       //  $product['attr_group_id']         = $request->attr_group_id;
-     $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
+      // $product['attr_value_id']         = $request->attr_value_id;
       $product['product_cat_id']         = $request->product_cat_id;
       $product['vendor_id']            = $request->vendor_id; // new
       $product['product_brand']            = $request->product_brand; // new
 
       $product['sub_category_id']            = $request->sub_category_id; // new
       $product['product_type']            = $request->product_type; // new
-      $product['product_base_image']            = $image_id->product_image;
       if ($request->product_type == 2)
         $product['service_type']            = $request->service_type; // new
       else
@@ -1758,10 +1739,9 @@ class StoreController extends Controller
           $vc++;
         }
       }
+
+
       return redirect('store/product/list')->with('status', 'Product Updated Successfully.');
-
-    }
-
     } else {
 
       return redirect()->back()->withErrors($validator)->withInput();
@@ -3522,7 +3502,7 @@ class StoreController extends Controller
     $i = 0;
 
     foreach ($request->day as $s) {
-      // echo $start[$i]."  : ".
+      // echo $start[$i]."  : ". 
       if ($start[$i]  > $end[$i]) {
         return redirect()->back()->withErrors(['Starting time can\'t be greater than ending time.'])->withInput();
       }
@@ -3628,7 +3608,7 @@ class StoreController extends Controller
 
       // $store_a = Trn_StoreAdmin::Find($store_admin_id);
 
-      //  echo  $password = $store_a->password;
+      //  echo  $password = $store_a->password; 
       //   echo $newpassword = $request->password; die;
 
       $validator = Validator::make(
@@ -4130,8 +4110,6 @@ class StoreController extends Controller
 
   public function storePayments(Request $request)
   {
-    if($_GET)
-    {
     $pageTitle = "Payments Settlements";
     $store_id  = Auth::guard('store')->user()->store_id;
 
@@ -4149,56 +4127,25 @@ class StoreController extends Controller
 
     $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
 
-    // if (isset($request->date_from)) {
-    //   $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
-    // }
-    // if (isset($request->date_to)) {
-    //   $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
-    // }
-
-    $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
-
-    $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
-      ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
-
-    // if (isset($request->date_from)) {
-    //   $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
-    // }
-
-    // if (isset($request->date_to)) {
-    //   $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
-    // }
-
-    $store_payments = $store_payments->whereBetween('trn_store_orders.created_at', [$a1, $a2])->where('trn_store_orders.store_id', $store_id)
-      ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
-      ->where('trn__order_split_payments.paymentRole', 1)
-      ->get();
-
-    return view('store.elements.payments.view', compact('paid_details', 'paidAmount', 'store_id', 'payments_datas', 'store_payments', 'pageTitle'));
-
+    if (isset($request->date_from)) {
+      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
     }
-    else
-    {
-    $pageTitle = "Payments Settlements";
-    $store_id  = Auth::guard('store')->user()->store_id;
-
-
-    $paidAmount = Trn_store_payments_tracker::where('store_id', $store_id)->sum('commision_paid');
-    $paid_details = Trn_store_payments_tracker::where('store_id', $store_id)->orderBy('store_payments_tracker_id', 'DESC')->limit(15)->get();
-
-
-
-
-    $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
-
-
+    if (isset($request->date_to)) {
+      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    }
 
     $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
 
     $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
       ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
 
+    if (isset($request->date_from)) {
+      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+    }
 
+    if (isset($request->date_to)) {
+      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    }
 
     $store_payments = $store_payments->where('trn_store_orders.store_id', $store_id)
       ->where('trn__order_payment_transactions.isFullPaymentToAdmin', 1)
@@ -4207,8 +4154,25 @@ class StoreController extends Controller
 
     return view('store.elements.payments.view', compact('paid_details', 'paidAmount', 'store_id', 'payments_datas', 'store_payments', 'pageTitle'));
 
+    //dd($payments_datas);
 
-    }
+    // $payments_datas = \DB::table('trn_store_payments_tracker')->where('store_id', $store_id)->get();
+    // if ($_GET) {
+    //   $year = $request->year;
+    //   $month = $request->month;
+    //   $a1 = Carbon::parse($year . '-' . $month)->startOfMonth();
+    //   $a2  = Carbon::parse($year . '-' . $month)->endOfMonth();
+    //   $store_payments = Trn_store_payment_settlment::where('store_id', $store_id)
+    //     ->whereBetween('created_at', [@$a1, @$a2])->get();
+    //   $payments = Trn_store_payment_settlment::whereBetween('created_at', [@$a1, @$a2])->get();
+    //   $payments_datas = \DB::table('trn_store_payments_tracker')
+    //     ->where('store_id', $store_id)
+    //     ->whereBetween('date_of_payment', [@$a1, @$a2])
+    //     ->get();
+    //   return view('store.elements.payments.view', compact('store_id', 'payments_datas', 'payments', 'store_payments', 'pageTitle'));
+    // }
+
+
 
   }
 
@@ -4430,17 +4394,21 @@ class StoreController extends Controller
 
       $order_number  = $request->order_number;
 
-      $disputes = Mst_dispute::where('store_id', $store_id)->orderBy('dispute_id', 'DESC')->get();
+      $query = \DB::table("mst_disputes")->where('store_id', $store_id)->select("*");
 
+
+      if (isset($order_number)) {
+        $query = $query->where('order_number', $order_number);
+      }
 
       if (isset($request->date_from) && isset($request->date_to)) {
-        $disputes = $disputes->whereBetween('dispute_date', [$request->date_from, $request->date_to]);
+        $query = $query->whereBetween('dispute_date', [$a1, $a2]);
       }
-
-      if (isset($request->date_from) && isset($request->date_to) && isset($order_number)) {
-        $disputes = $disputes->where('order_number', $order_number)->whereBetween('dispute_date', [$request->date_from, $request->date_to]);
+      if (isset($request->date_from)) {
+        $query = $query->whereDate('dispute_date', $request->date_from);
       }
-
+      $query->orderBy('dispute_id', 'DESC');
+      $disputes = $query->get();
       return view('store.elements.disputes.list', compact('dateto', 'datefrom', 'disputes', 'pageTitle'));
     }
 
@@ -4530,12 +4498,8 @@ class StoreController extends Controller
       $pageTitle = "Delivery Boys";
       $store_id  = Auth::guard('store')->user()->store_id;
       $delivery_boys = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
-        ->select('mst_delivery_boys.town_id','mst_delivery_boys.delivery_boy_id','mst_delivery_boys.delivery_boy_name','mst_delivery_boys.delivery_boy_mobile')
-        ->where('mst_delivery_boys.delivery_boy_status',1)
-        ->where('mst_store_link_delivery_boys.store_id', $store_id)
-        ->get();
-
-
+        ->select('mst_delivery_boys.town_id', 'mst_delivery_boys.delivery_boy_id', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_mobile')
+        ->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
 
       $assigned_delivery_boys = [];
       $inprogress_delivery_boys = [];
@@ -4544,7 +4508,6 @@ class StoreController extends Controller
       $delivery_boys1 = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
         // ->select('mst_delivery_boys.town_id','mst_delivery_boys.delivery_boy_id','mst_delivery_boys.delivery_boy_name','mst_delivery_boys.delivery_boy_name','mst_delivery_boys.delivery_boy_name','mst_delivery_boys.delivery_boy_mobile')
         ->where('mst_store_link_delivery_boys.store_id', $store_id)
-        ->where('mst_delivery_boys.delivery_boy_status',1)
         ->pluck('mst_delivery_boys.delivery_boy_id')
         ->toArray();
 

@@ -1349,12 +1349,17 @@ class ProductController extends Controller
         $data = array();
         try {
             $store = $request->store;
+
+
             $storeData = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id');
+
             $storeData = $storeData->where('trn__store_admins.role_id', 0)
                 ->where('mst_stores.online_status', 1);
+
             if (isset($store)) {
                 $storeData = $storeData->where('mst_stores.store_name', 'LIKE', "%{$store}%");
             }
+
             $storeData  = $storeData->where('trn__store_admins.store_account_status', 1);
 
             if (($request->customer_id == 0) && (isset($request->latitude)) && (isset($request->longitude))) {
@@ -1363,6 +1368,7 @@ class ProductController extends Controller
                                     + sin(radians(" . $request->latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                 $storeData = $storeData->orderBy('distance', 'ASC');
             }
+
             if (isset($request->customer_id) && ($request->customer_id != 0)) {
                 $cusData = Trn_store_customer::select('latitude', 'longitude')->where('customer_id', '=', $request->customer_id)->first();
                 $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
@@ -1378,6 +1384,8 @@ class ProductController extends Controller
                                     + sin(radians(" . $cusAddDataLat . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                 $storeData = $storeData->orderBy('distance', 'ASC');
             }
+
+
             $storeData =    $storeData->orderBy('mst_stores.store_id', 'ASC')->get();
             // dd($storeData);
             $storesList  =  array();
@@ -2874,7 +2882,7 @@ class ProductController extends Controller
                             ->get();
 
                         foreach ($allProducts as $allProduct) {
-                            $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
+                            $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                             $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                             $storeData = Mst_store::find($allProduct->store_id);
                             $allProduct->store_name = $storeData->store_name;
@@ -3310,7 +3318,7 @@ class ProductController extends Controller
                         ->get();
 
                     foreach ($allProducts as $allProduct) {
-                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
+                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                         $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                         $storeData = Mst_store::find($allProduct->store_id);
                         $allProduct->store_name = $storeData->store_name;

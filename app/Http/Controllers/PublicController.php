@@ -33,15 +33,15 @@ class PublicController extends Controller
 {
 
 
-    public function isPCodeAvailable(Request $request)
-    {
-      $proEx = Mst_store_product::where('product_code', $request->product_code)->where('is_removed', 0);
-      if (isset($request->product_id))
+  public function isPCodeAvailable(Request $request)
+  {
+    $proEx = Mst_store_product::where('product_code', $request->product_code);
+    if (isset($request->product_id))
       $proEx = $proEx->where('product_id', '!=', $request->product_id);
     $proEx = $proEx->count();
-
-
-
+    
+    
+    
        // dd($request->all(),$proEx,$proExGlob,$totalCount);
 
 
@@ -53,19 +53,19 @@ class PublicController extends Controller
       return $a;
     }
   }
-
-
+  
+  
    public function isPCodeAvailableGlobalPro(Request $request)
   {
-
-
+    
+    
     $proExGlob = Mst_GlobalProducts::where('product_code', $request->product_code);
     if (isset($request->global_product_id))
       $proExGlob = $proExGlob->where('global_product_id', '!=', $request->global_product_id);
     $proExGlob = $proExGlob->count();
 
     $totalCount =  $proExGlob;
-
+    
        // dd($request->all(),$proEx,$proExGlob,$totalCount);
 
 
@@ -77,7 +77,7 @@ class PublicController extends Controller
       return $a;
     }
   }
-
+  
 
 
   public function pgtest()
@@ -98,13 +98,13 @@ class PublicController extends Controller
       CURLOPT_POSTFIELDS => '{
             "email": "binupb39@outlook.com",
             "status": "ACTIVE",
-            "bank":
+            "bank": 
               {
                 "accountNumber": "91901001378660",
                 "accountHolder": "Binu P Benny",
                 "ifsc": "UTIB0003377"
               },
-
+             
             "phone": "7510569328",
             "name": "VendorName",
             "id": "merchantVendorId1",
@@ -140,13 +140,13 @@ class PublicController extends Controller
     //     "data-row" => {
     //         "email": "name@cashfree.com",
     //         "status": "ACTIVE/BLOCKED",
-    //         "bank":
+    //         "bank": 
     //           {
     //             "accountNumber": "12345678890",
     //             "accountHolder": "John Doe",
     //             "ifsc": "HDFC019345"
     //           },
-    //          "upi":
+    //          "upi": 
     //           {
     //             "vpa": "upi@vpa",
     //             "accountHolder": "Account Holder Name"
@@ -187,13 +187,13 @@ class PublicController extends Controller
     //       'data-raw' => {
     //         "email": "name@cashfree.com",
     //         "status": "ACTIVE/BLOCKED",
-    //         "bank":
+    //         "bank": 
     //           {
     //             "accountNumber": "12345678890",
     //             "accountHolder": "John Doe",
     //             "ifsc": "HDFC019345"
     //           },
-    //          "upi":
+    //          "upi": 
     //           {
     //             "vpa": "upi@vpa",
     //             "accountHolder": "Account Holder Name"

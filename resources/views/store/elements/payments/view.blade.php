@@ -80,22 +80,22 @@
                <!--</div>-->
 
 
-
+               
          <div class="col-md-6">
             <div class="form-group">
                 <label class="form-label">From Date</label>
-                 <input type="date" class="form-control" name="date_from"  value="{{ request()->input('date_from') }}" placeholder="From Date" required>
+                 <input type="date" class="form-control" name="date_from"  value="{{ request()->input('date_from') }}" placeholder="From Date">
 
               </div>
            </div>
              <div class="col-md-6">
             <div class="form-group">
                 <label class="form-label">To Date</label>
-                 <input type="date" class="form-control" name="date_to" value="{{ request()->input('date_to') }}" placeholder="To Date" required>
+                 <input type="date" class="form-control" name="date_to" value="{{ request()->input('date_to') }}" placeholder="To Date">
 
               </div>
            </div>
-
+          
 
                      <div class="col-md-12">
                      <div class="form-group">
@@ -109,9 +109,9 @@
     </div>
        </form>
     </div>
+    
 
-
-
+         
                      <div class="card-body">
 
 
@@ -126,7 +126,7 @@
                                     <th class="wd-15p">{{ __('Total Order Amount') }}</th>
                                     <th class="wd-15p">{{ __('Admin Commission Amount') }}</th>
                                     <th class="wd-15p">{{ __('Store Commission Amount') }}</th>
-
+                                 
                                  </tr>
                               </thead>
                               <tbody>
@@ -144,13 +144,13 @@
                                     <td>{{ @$store_payment->orderAmount }}</td>
                                     <td>{{ @$store_payment->orderAmount - @$store_payment->settlementAmount }}</td>
                                     <td>{{ @$store_payment->settlementAmount }}</td>
-
+                                    
 
                                  </tr>
                                  @php
                                     $total_store_amount += $store_payment->settlementAmount;
                                     $total_admin_amount += (@$store_payment->orderAmount - @$store_payment->settlementAmount);
-                                    $total_amount += $store_payment->orderAmount;
+                                    $total_amount += $store_payment->orderAmount; 
                                  @endphp
                                  @endforeach
                               </tbody>
@@ -162,7 +162,7 @@
                               <table class="table table-bordered text-nowrap">
                                  <tr>
                                     <td>
-                                       Total Order Amount :
+                                       Total Order Amount : 
                                     </td>
                                     <td>
                                         <b>{{ @$total_amount }}</b>
@@ -171,7 +171,7 @@
 
                                  <tr>
                                     <td>
-                                       Admin Commission Amount :
+                                       Admin Commission Amount : 
                                     </td>
                                     <td>
                                        <b>{{ @$total_admin_amount }}</b>
@@ -180,7 +180,7 @@
 
                                  <tr>
                                     <td>
-                                       Store Commission Amount :
+                                       Store Commission Amount : 
                                     </td>
                                     <td>
                                        <b>{{ @$total_store_amount }}</b>
@@ -189,7 +189,7 @@
 
                                  <tr>
                                     <td>
-                                       Total Order Amount Paid to Store :
+                                       Total Order Amount Paid to Store : 
                                     </td>
                                     <td>
                                         <b>{{ @$paidAmount }}</b>
@@ -199,18 +199,18 @@
 
                                  <tr>
                                     <td>
-                                       Total Order Amount Balance :
+                                       Total Order Amount Balance : 
                                     </td>
                                     <td>
                                         <b>{{ @$total_store_amount - @$paidAmount }}</b>
                                     </td>
                                  </tr>
-
+                                 
                               </table>
                            </div>
                         </div>
 
-
+                            
                             <div class="row">
                               <div class="col-4" >
                                     {{-- <a data-toggle="modal" data-target="#StockModal{{$store_id}}" class="btn btn-small btn-success">
@@ -314,7 +314,7 @@
                 extend: 'pdf',
                 title: 'payments',
                 footer: true,
-
+                
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
             },
@@ -322,7 +322,7 @@
                 extend: 'excel',
                 title: 'payments',
                 footer: true,
-
+               
             }
          ]
     } );

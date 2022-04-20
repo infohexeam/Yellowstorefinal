@@ -53,19 +53,20 @@ class ProductController extends Controller
         try {
 
 
-            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->where('is_removed', 0)->get();
-            // if (isset($request->product_id))
-            //     $proEx = $proEx->where('product_id', '!=', $request->product_id);
-            // $proEx = $proEx->count();
+            $proEx = Mst_store_product::where('product_code', $request->product_code);
+            if (isset($request->product_id))
+                $proEx = $proEx->where('product_id', '!=', $request->product_id);
+            $proEx = $proEx->count();
 
 
-            if ($proEx->isEmpty()) {
+            if ($proEx > 0) {
+                $data['status'] = 0;
+                $data['message'] = "Not avilable";
+            } else {
                 $data['status'] = 1;
                 $data['message'] = "Avilable";
-            } else {
-                $data['status'] = 0;
-                $data['message'] = "Not Avilable";
             }
+
 
             return response($data);
         } catch (\Exception $e) {
@@ -1133,22 +1134,16 @@ class ProductController extends Controller
 
                         if (isset($request->regular_price) || isset($request->sale_price)) {
                             $provarUp = Mst_store_product_varient::where('product_id', $product_id)->where('is_base_variant', 1);
-                            $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
                             $provarUp->product_varient_price = $request->regular_price;
                             $provarUp->product_varient_offer_price = $request->sale_price;
-                            $provarUp->product_varient_base_image = $image_id->product_image;
-
                             $provarUp->update();
                         }
-                        $image_id=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_base_varient->product_varient_id)->first();
-
 
                         $product['stock_count']         = $request->min_stock; // stock count
                         $product['product_code']        = $request->product_code;
                         $product['product_type']       = $request->product_type; // product type
                         $product['service_type']       = $request->service_type; // new type
 
-                        $product['product_base_image']            = $image_id->product_image;
 
 
                         $product['product_cat_id']         = $request->product_cat_id;
@@ -1409,19 +1404,13 @@ class ProductController extends Controller
     {
         $data = array();
         try {
-            if (isset($request->product_image_id) && Mst_product_image::find($request->product_image_id) && isset($request->product_id)) {
+            if (isset($request->product_image_id) && Mst_product_image::find($request->product_image_id)) {
 
                 if (1) {
-                    // $product_id=isset($request->product_id) ? $request->product_id : '';
                     $proImageData = Mst_product_image::find($request->product_image_id);
                     Mst_product_image::where('product_image_id', $request->product_image_id)->delete();
-                     $image_id = Mst_product_image::where('product_id', '=', $request->product_id)->first();
-                     $image_id->update(['image_flag'=>1]);
 
                     if ($proImageData->product_varient_id == 0) {
-
-                         $image_id = Mst_product_image::where('product_id', '=', $request->product_id)->first();
-                        $image_id->update(['image_flag'=>1]);
                         $secImg = Mst_product_image::where('product_id', $proImageData->product_id)->where('product_varient_id', 0)->first();
                         $thirdImg = Mst_product_image::where('product_id', $proImageData->product_id)->first();
                         if ($secImg) {
@@ -1432,9 +1421,6 @@ class ProductController extends Controller
                             Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => null]);
                         }
                     } else {
-
-                         $image_id = Mst_product_image::where('product_id', '=', $request->product_id)->first();
-                         $image_id->update(['image_flag'=>1]);
                         $secImg = Mst_product_image::where('product_id', $proImageData->product_id)
                             ->where('product_varient_id', $proImageData->product_varient_id)->first();
                         if ($secImg) {

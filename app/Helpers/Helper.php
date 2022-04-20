@@ -61,23 +61,15 @@ class Helper
     public static function findCustomerName($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
-        if(isset($cusData->customer_first_name) && isset($cusData->customer_last_name))
-        {
-            return $cusData->customer_first_name . " " . $cusData->customer_last_name;
-        }
-        // return $cusData->customer_first_name;
-        
+
+        return $cusData->customer_first_name . " " . $cusData->customer_last_name;
     }
 
     public static function findCustomerPhone($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
 
-        if(isset($cusData))
-        {
-            return $cusData->customer_mobile_number;
-        }
-        //return $cusData->customer_mobile_number;
+        return $cusData->customer_mobile_number;
     }
 
     public static function findRewardPoints($cusId)

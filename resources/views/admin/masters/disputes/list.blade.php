@@ -308,7 +308,7 @@ $date = Carbon\Carbon::now();
                                  @foreach($orderItemsDataz as $key)
                                  
                                  @php
-                                   $product_varientD = \DB::table('mst_store_product_varients')->where('product_varient_id',@$key->product_id)->first();
+                                   $product_varientD = \DB::table('mst_store_product_varients')->where('product_varient_id',@$key->product_varient_id)->first();
                                     $productdataD = \DB::table('mst_store_products')->where('product_id',@$key->product_id)->first();
                                  @endphp
                                  <tr>

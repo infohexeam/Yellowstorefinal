@@ -40,7 +40,7 @@
                                 <input type="number" step="0.01" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt',$coupon->min_purchase_amt)}}" placeholder="Minimum Purchase Amount">
                             </div>
                         </div>
-
+                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Coupon Type *</label>
@@ -68,19 +68,19 @@
                                 <input type="number" oninput="disChange(this.value)" required class="form-control" id="discountAmt" name="discount" value="{{old('discount',$coupon->discount)}}" placeholder="Discount (%)">
                             </div>
                         </div>
-
-
+                     
+                    
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Valid From *</label>
-                                <input type="date" required class="form-control" name="valid_from" value="{{old('valid_from',$coupon->valid_from)}}" placeholder="" min="<?php echo date("Y-m-d"); ?>">
+                                <input type="date" required class="form-control" name="valid_from" value="{{old('valid_from',$coupon->valid_from)}}" placeholder="">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Valid To *</label>
-                                <input type="date" required class="form-control" name="valid_to" value="{{old('valid_to',$coupon->valid_to)}}" placeholder="" min="<?php echo date("Y-m-d"); ?>">
+                                <input type="date" required class="form-control" name="valid_to" value="{{old('valid_to',$coupon->valid_to)}}" placeholder="">
                             </div>
                         </div>
 
@@ -95,8 +95,8 @@
                             </div>
                         </div>
 
-
-
+        
+                                
                   </div>
                     <div class="form-group">
                            <center>
@@ -129,7 +129,7 @@
     }
       $(document).ready(function() {
         var val = $('#discount_type').val();
-
+        
         if(val == 1){
             $('#loseend').text('Amount');
         }
@@ -142,7 +142,7 @@
             $('#loseend').text('');
         }
     });
-
+    
     function disChange(dis)
 {
    var discountType =  $('#discount_type').val();
@@ -153,7 +153,7 @@
  $('#discountAmt').val(0);
        }
    }
-
+   
     if(dis < 0)
        {
             $('#discountAmt').val(0);

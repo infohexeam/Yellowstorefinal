@@ -133,7 +133,7 @@
                            Create Product
                         </a> <br/>
                 <div class="table-responsive">
-                  <table id="StoreTable" class="table table-striped table-bordered text-nowrap w-100">
+                  <table id="example" class="table table-striped table-bordered text-nowrap w-100">
                     <thead>
                       <tr>
                         <th class="wd-15p">SL.No</th>
@@ -298,32 +298,7 @@
                </div>
             </div>
             @endforeach
-<script type="text/javascript">
-    $(function(e) {
-     $('#StoreTable').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'pdf',
-                title: 'Store Products',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,5,6]
-                 }
-            },
-            {
-                extend: 'excel',
-                title: 'Store Products',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,5,6]
-                 }
-            }
-         ]
-    } );
 
-} );
-</script>
             
   @endsection
  

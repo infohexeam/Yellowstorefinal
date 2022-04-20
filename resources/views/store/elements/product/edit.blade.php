@@ -514,12 +514,11 @@
                                     </td>
 
                                     <td>
-                                        <form action="{{url('store/product/destroy/image/').'/'.$product_image->product_image_id.'/'.$product_base_varient->product_varient_id}}" method="POST">
+                                        <form action="{{route('store.destroy_product_image',$product_image->product_image_id)}}" method="POST">
                                             @csrf
                                             @method('POST')
 
                                             <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
-                                            
                                         </form>
                                     </td>
                                  </tr>
