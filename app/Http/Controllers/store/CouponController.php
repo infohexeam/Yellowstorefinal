@@ -533,7 +533,7 @@ class CouponController extends Controller
           ->join('mst_towns', 'mst_towns.town_id', '=', 'trn_store_customers.town_id');
 
         $data = $data->where('mst_stores.store_id', Auth::guard('store')->user()->store_id);
-        dd($data);
+        
 
 
         if (isset($request->date_from)) {
@@ -555,6 +555,8 @@ class CouponController extends Controller
         $data = $data->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
           ->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
           ->get();
+
+          dd($data);
 
 
         return view('store.elements.reports.store_visit_report', compact('dateto', 'datefrom', 'customers', 'data', 'pageTitle'));
