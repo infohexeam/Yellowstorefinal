@@ -65,14 +65,13 @@ class Helper
         {
             return $cusData->customer_first_name . " " . $cusData->customer_last_name;
         }
-        return $cusData->customer_first_name;
+        // return $cusData->customer_first_name;
         
     }
 
     public static function findCustomerPhone($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
-
         return $cusData->customer_mobile_number;
     }
 
