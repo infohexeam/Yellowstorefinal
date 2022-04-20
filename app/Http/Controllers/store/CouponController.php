@@ -533,7 +533,7 @@ class CouponController extends Controller
           ->join('mst_towns', 'mst_towns.town_id', '=', 'trn_store_customers.town_id');
 
         $data = $data->where('mst_stores.store_id', Auth::guard('store')->user()->store_id);
-        
+        dd($data);
 
 
         if (isset($request->date_from)) {
