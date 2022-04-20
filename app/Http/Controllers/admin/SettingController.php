@@ -3486,7 +3486,7 @@ class SettingController extends Controller
 			->join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
 			->where('trn__order_split_payments.paymentRole', '!=', 1)
 			->get();
-		//dd($payments);
+		dd($payments);
 
 		if ($_GET) {
 

@@ -121,10 +121,10 @@ $date = Carbon\Carbon::now();
                         <td>{{ ++$i }}</td>
                         <td>{{ @$row->order_number }}</td>
                         <td>
-                           {{ (new App\Helpers\Helper)->findCustomerName(@$row->customer_id) }}
+                           {{ (new App\Helpers\Helper)->findCustomerName($row->customer_id) }}
                         </td>
-                        <td>{{ (new App\Helpers\Helper)->findStoreName(@$row->store_id) }}</td>
-                        <td>{{ (new App\Helpers\Helper)->findSubAdminName(@$row->store_id) }} </td>
+                        <td>{{ (new App\Helpers\Helper)->findStoreName($row->store_id) }}</td>
+                        <td>{{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }} </td>
                       
                         <td>{{ @$row->orderAmount }}</td>
                         <td>{{ @$row->splitAmount }}</td>

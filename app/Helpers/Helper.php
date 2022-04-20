@@ -61,8 +61,6 @@ class Helper
     public static function findCustomerName($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
-        dd($cusData);
-
         return $cusData->customer_first_name . " " . $cusData->customer_last_name;
     }
 
