@@ -72,10 +72,10 @@ class Helper
     public static function findCustomerPhone($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
+        dd($cusData);
         if(isset($cusData))
         {
             return $cusData->customer_mobile_number;
-
         }
         //return $cusData->customer_mobile_number;
     }
