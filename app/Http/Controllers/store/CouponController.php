@@ -475,6 +475,7 @@ class CouponController extends Controller
 
   public function showStoreVisitReport(Request $request)
   {
+    dd("string");
     try {
 
       $pageTitle = "Store Visit Reports";
