@@ -557,8 +557,6 @@ class CouponController extends Controller
           ->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
           ->get();
 
-          dd($data);
-
 
         return view('store.elements.reports.store_visit_report', compact('dateto', 'datefrom', 'customers', 'data', 'pageTitle'));
       }
