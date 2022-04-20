@@ -72,7 +72,12 @@ class Helper
     public static function findCustomerPhone($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
-        return $cusData->customer_mobile_number;
+        if(isset($cusData))
+        {
+            return $cusData->customer_mobile_number;
+
+        }
+        //return $cusData->customer_mobile_number;
     }
 
     public static function findRewardPoints($cusId)
