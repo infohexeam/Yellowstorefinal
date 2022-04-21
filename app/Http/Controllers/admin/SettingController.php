@@ -3354,7 +3354,10 @@ class SettingController extends Controller
 
 			DB::enableQueryLog();
 
+			if (auth()->user()->user_role_id  != 0) {
 			$query = Trn_store_order::where('subadmin_id', auth()->user()->id)->select("*");
+			}
+			$query = Trn_store_order::select("*");
 
 			if ($status_id) {
 				$query = $query->where('status_id', $status_id);
