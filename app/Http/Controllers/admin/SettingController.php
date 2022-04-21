@@ -3289,7 +3289,10 @@ class SettingController extends Controller
 		$a1 = Carbon::parse($datefrom)->startOfDay();
 		$a2 = Carbon::parse($dateto)->endOfDay();
 
-		$orders = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select("*");
+		$orders = Trn_store_order::leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select(
+			
+			"*"
+		);
 		
 
 		if (auth()->user()->user_role_id  != 0) {
