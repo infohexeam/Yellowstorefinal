@@ -3289,19 +3289,15 @@ class SettingController extends Controller
 		$a1 = Carbon::parse($datefrom)->startOfDay();
 		$a2 = Carbon::parse($dateto)->endOfDay();
 
-		$orders = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select(
-			"mst_stores.store_id",
-			"mst_stores.subadmin_id",
-
-			
-		);
+		$orders = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select("*");
+		
 
 		if (auth()->user()->user_role_id  != 0) {
 			$orders = $orders->where('mst_stores.subadmin_id', auth()->user()->id);
 		}
 		$orders = $orders->whereDate('trn_store_orders.created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
 		$orders = $orders->whereDate('trn_store_orders.created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
-		$orders = $orders->orderBy('trn_store_orders.order_id', 'DESC')->get();
+		$orders = $orders->orderBy('trn_store_orders.order_id', 'DESC')->get()->makeHidden(['mst_stores.created_at','mst_stores.updated_at' ]);
 		$count = $orders->count();
 
 		if ($_GET) {
