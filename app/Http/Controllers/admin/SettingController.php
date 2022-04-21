@@ -3363,7 +3363,7 @@ class SettingController extends Controller
 
 
 			$quries = DB::getQueryLog();
-			//dd($quries);
+			dd($quries);
 
 
 
