@@ -3361,18 +3361,14 @@ class SettingController extends Controller
 
 			$orders = $query->orderBy('order_id', 'DESC')->get();
 
-			dd($orders);
+			
 			$quries = DB::getQueryLog();
 			//dd($quries);
 
-
-
-
-
-
-
 			return view('admin.masters.order.list', compact('datefrom', 'dateto', 'subadmins', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'count'));
 		}
+
+		dd($datefrom,$dateto,$orders);
 
 		return view('admin.masters.order.list', compact('datefrom', 'dateto', 'orders', 'subadmins', 'pageTitle',  'store', 'status', 'product', 'count'));
 	}
