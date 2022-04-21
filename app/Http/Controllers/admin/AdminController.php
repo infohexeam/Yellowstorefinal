@@ -66,7 +66,7 @@ use App\Models\admin\Mst_Issues;
 use App\Models\admin\Sys_IssueType;
 use App\Models\admin\Trn_TaxSplitUp;
 use App\Models\admin\Mst_SubCategory;
-
+use Auth;
 use App\Models\admin\Mst_GlobalProducts;
 use App\Models\admin\Trn_ReviewsAndRating;
 
@@ -569,10 +569,15 @@ class AdminController extends Controller
 
     public function listVehicleTypes(Request $request)
     {
-        $pageTitle = "List Vehicle Types";
-        $vehicle_types = Sys_vehicle_type::orderBy('vehicle_type_id', 'DESC')->get();
-
-        return view('admin.masters.vehicle_types.list', compact('pageTitle', 'vehicle_types'));
+        if(Auth::user()->user_role_id != 0 )
+	    {
+	        return redirect('home');
+	    }else{
+            $pageTitle = "List Vehicle Types";
+            $vehicle_types = Sys_vehicle_type::orderBy('vehicle_type_id', 'DESC')->get();
+            return view('admin.masters.vehicle_types.list', compact('pageTitle', 'vehicle_types'));
+        }
+        
     }
 
     public function listTaxes(Request $request)

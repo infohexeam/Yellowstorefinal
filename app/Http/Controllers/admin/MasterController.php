@@ -26,7 +26,7 @@ use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_FeedbackQuestion;
 use App\Models\admin\Trn_customer_reward;
 
-
+use Auth;
 use App\Models\admin\Country;
 use App\Models\admin\State;
 use App\Models\admin\District;
@@ -372,10 +372,16 @@ class MasterController extends Controller
 //
     public function listSubCategory()
     {
-        $pageTitle = "List Product Sub Category";
+        if(Auth::user()->user_role_id != 0 )
+	    {
+	        return redirect('home');
+	    }else{
+            $pageTitle = "List Product Sub Category";
         $sub_category = Mst_SubCategory::orderBy('sub_category_id','DESC')->get();
       //  dd($sub_category);
         return view('admin.masters.sub_category.list',compact('sub_category','pageTitle'));
+        }
+        
     }
 
     public function createSubCategory()

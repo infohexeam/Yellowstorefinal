@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
+use Auth;
 use App\Models\admin\Mst_categories;
 use App\Models\admin\Mst_business_types;
 use App\Models\admin\Mst_store;
@@ -79,19 +80,17 @@ class SettingController extends Controller
 
 	public function listCategory(Request $request)
 	{
-
-		$pageTitle = "Product Categories";
-		$categories = Mst_categories::orderBy('category_id', 'DESC')->get();
-		$business_types = Mst_business_types::where('business_type_status', 1)->get();
-
-
+		if(Auth::user()->user_role_id != 0 )
+	    {
+	        return redirect('home');
+	    }else{
+			$pageTitle = "Product Categories";
+			$categories = Mst_categories::orderBy('category_id', 'DESC')->get();
+			$business_types = Mst_business_types::where('business_type_status', 1)->get();
 
 		if ($_GET) {
 
-
 			$business_type_id = $request->business_type_id;
-
-
 			$categories = Mst_categories::join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')
 				->where('trn__category_business_types.business_type_id',  $request->business_type_id)
 				->get();
@@ -101,6 +100,10 @@ class SettingController extends Controller
 			return view('admin.masters.categories.list', compact('categories', 'pageTitle', 'business_types'));
 		}
 		return view('admin.masters.categories.list', compact('categories', 'pageTitle', 'business_types'));
+
+		}
+
+		
 	}
 
 	public function createCategory()
@@ -5921,11 +5924,17 @@ class SettingController extends Controller
 	public function listAttributeGroup()
 	{
 
-		$pageHeading = "attribute_group";
+		if(Auth::user()->user_role_id != 0 )
+	    {
+	        return redirect('home');
+	    }else{
+			$pageHeading = "attribute_group";
 		$pageTitle = "List Attribute Group";
 		$attributegroups = Mst_attribute_group::orderBy('attr_group_id', 'DESC')->get();
 
 		return view('admin.masters.attribute_group.list', compact('attributegroups', 'pageTitle', 'pageHeading'));
+		}
+
 	}
 
 
@@ -6013,13 +6022,18 @@ class SettingController extends Controller
 
 	public function listAttr_Value()
 	{
+		if(Auth::user()->user_role_id != 0 )
+	    {
+	        return redirect('home');
+	    }else{
+			
+			$pageTitle = "List Attribute Value";
+			$attributevalues = Mst_attribute_value::orderBy('attr_value_id', 'DESC')->get();
+			$attributegroups = Mst_attribute_group::orderBy('attr_group_id', 'DESC')->get();
+			return view('admin.masters.attribute_value.list', compact('attributevalues', 'pageTitle', 'attributegroups'));
+		}
 
-		$pageTitle = "List Attribute Value";
-		$attributevalues = Mst_attribute_value::orderBy('attr_value_id', 'DESC')->get();
-		$attributegroups = Mst_attribute_group::orderBy('attr_group_id', 'DESC')->get();
-
-
-		return view('admin.masters.attribute_value.list', compact('attributevalues', 'pageTitle', 'attributegroups'));
+		
 	}
 
 	public function createAttr_Value(Request $request, Mst_attribute_value $attribute_value)
