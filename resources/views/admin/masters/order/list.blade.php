@@ -82,7 +82,7 @@ $date = Carbon\Carbon::now();
                           <select class="form-control" name="store_id" >
                               <option value=""> Select Store </option>
                             @foreach($store as $row)
-                              <option value="{{$row->store_id}}"> {{$row->store_name}} </option>
+                              <option {{request()->input('store_id') == $row->store_id ? 'selected':''}} value="{{$row->store_id}}"> {{$row->store_name}} </option>
                             @endforeach
                           </select>
                       </div>
