@@ -267,7 +267,7 @@ $(document).ready(function() {
                 title: 'Out of stock report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10]
                  },
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
@@ -277,7 +277,7 @@ $(document).ready(function() {
                 title: 'Out of stock report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10]
                  }
             }
          ]
