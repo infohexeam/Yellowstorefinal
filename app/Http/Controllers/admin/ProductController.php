@@ -2237,9 +2237,10 @@ class ProductController extends Controller
       ->where('mst_store_product_varients.stock_count', '<=', 0)
       ->where('mst_store_products.product_type', 1)
       // ->orderBy('mst_store_products.product_name','ASC')
-      ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+      //->orderBy('mst_store_product_varients.stock_count', 'ASC')
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_product_varients.is_removed', 0)
+      ->orderBy('mst__stock_details.created_at', 'DESC')
 
       ->select(
         'mst_store_products.product_id',
@@ -2258,7 +2259,8 @@ class ProductController extends Controller
         'mst_store_product_varients.product_varient_offer_price',
         'mst_store_product_varients.product_varient_base_image',
         'mst_store_product_varients.stock_count',
-        'mst_store_product_varients.created_at',
+        // 'mst_store_product_varients.created_at',
+        'mst__stock_details.created_at',
         'mst_store_categories.category_id',
         'mst_store_categories.category_name',
         'mst__stock_details.stock',
