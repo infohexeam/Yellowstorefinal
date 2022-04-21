@@ -3291,7 +3291,8 @@ class SettingController extends Controller
 
 		$orders = Trn_store_order::leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select(
 			
-			"*"
+			"mst_stores.store_id",
+			"mst_stores.subadmin_id"
 		);
 		
 
@@ -3372,7 +3373,7 @@ class SettingController extends Controller
 			return view('admin.masters.order.list', compact('datefrom', 'dateto', 'subadmins', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'count'));
 		}
 
-		dd($datefrom,$dateto,$orders);
+		//dd($datefrom,$dateto,$orders);
 
 		return view('admin.masters.order.list', compact('datefrom', 'dateto', 'orders', 'subadmins', 'pageTitle',  'store', 'status', 'product', 'count'));
 	}
