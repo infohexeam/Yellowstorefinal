@@ -312,7 +312,7 @@ function validatePassLength() {
             $('#city').prop("diabled",false);
             $('#city').empty();
 
-            $('#city').append('<option value="">Select City</option>');
+            $('#city').append('<option value="">Select District</option>');
             $.each(res,function(district_id,district_name)
             {
               $('#city').append('<option value="'+district_id+'">'+district_name+'</option>');
