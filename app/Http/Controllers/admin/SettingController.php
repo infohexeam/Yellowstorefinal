@@ -3383,10 +3383,11 @@ class SettingController extends Controller
 				}
 				$query = $query->whereIn('store_id', $store_array);
 			} else {
+				dd($store_id);
 				$store_array[] = $store_id;
 				$query = $query->whereIn('store_id', $store_array);
 			}
-			dd($query);
+			
 
 			if (isset($request->date_from) && isset($request->date_to)) {
 				// $query = $query->whereBetween('created_at',[$a1->format('Y-m-d')." 00:00:00",$a2->format('Y-m-d')." 00:00:00"]);
