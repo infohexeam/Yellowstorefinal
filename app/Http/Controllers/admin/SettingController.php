@@ -3289,7 +3289,45 @@ class SettingController extends Controller
 		$a1 = Carbon::parse($datefrom)->startOfDay();
 		$a2 = Carbon::parse($dateto)->endOfDay();
 
-		$orders = Trn_store_order::innerjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select("*");
+		$orders = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select(
+			"mst_stores.store_id",
+			"mst_stores.store_name", 
+			"mst_stores.store_mobile", 
+			"mst_stores.store_name_slug", 
+			"mst_stores.store_contact_person_name", 
+			"mst_stores.store_contact_person_phone_number", 
+			"mst_stores.store_contact_number_2", 
+			"mst_stores.store_website_link", 
+			"mst_stores.store_pincode", 
+			"mst_stores.store_primary_address", 
+			"mst_stores.email", 
+			"mst_stores.remember_token", 
+			"mst_stores.store_country_id", 
+			"mst_stores.store_state_id", 
+			"mst_stores.store_district_id", 
+			"mst_stores.business_type_id", 
+			"mst_stores.store_commision_percentage", 
+			"mst_stores.store_added_by", 
+			"mst_stores.store_username", 
+			"mst_stores.password", 
+			"mst_stores.store_account_status", 
+			"mst_stores.store_otp_verify_status",  
+			"mst_stores.place", 
+			"mst_stores.town_id", 
+			"mst_stores.store_commision_amount", 
+			"mst_stores.subadmin_id", 
+			"mst_stores.store_qrcode", 
+			"mst_stores.service_area", 
+			"mst_stores.order_number_prefix", 
+			"mst_stores.online_status", 
+			"mst_stores.profile_image", 
+			"mst_stores.upi_id", 
+			"mst_stores.latitude", 
+			"mst_stores.longitude", 
+			"mst_stores.place_id", 
+			"mst_stores.is_pgActivated", 
+			"mst_stores.gst"
+		);
 		
 
 		if (auth()->user()->user_role_id  != 0) {
