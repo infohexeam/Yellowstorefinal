@@ -3356,8 +3356,10 @@ class SettingController extends Controller
 
 			if (auth()->user()->user_role_id  != 0) {
 			$query = Trn_store_order::where('subadmin_id', auth()->user()->id)->select("*");
-			}
+			}else{
 			$query = Trn_store_order::select("*");
+			}
+			
 
 			if ($status_id) {
 				$query = $query->where('status_id', $status_id);
@@ -3384,7 +3386,7 @@ class SettingController extends Controller
 				}
 				$query = $query->whereIn('store_id', $store_array);
 			} else {
-				dd($store_id);
+				
 				$store_array[] = $store_id;
 				$query = $query->whereIn('store_id', $store_array);
 			}
@@ -3406,7 +3408,7 @@ class SettingController extends Controller
 
 
 			$orders = $query->orderBy('order_id', 'DESC')->get();
-
+			dd($orders);
 			
 			$quries = DB::getQueryLog();
 			//dd($quries);
