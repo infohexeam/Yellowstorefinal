@@ -3332,7 +3332,7 @@ class SettingController extends Controller
 		
 
 		if (auth()->user()->user_role_id  != 0) {
-			$orders = $orders->where('mst_stores.subadmin_id', auth()->user()->id);
+			$orders = $orders->where('trn_store_orders.subadmin_id', auth()->user()->id);
 		}
 		$orders = $orders->whereDate('trn_store_orders.created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
 		$orders = $orders->whereDate('trn_store_orders.created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
