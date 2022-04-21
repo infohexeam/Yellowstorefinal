@@ -62,18 +62,24 @@
                                            </div>
                                         @endif
                                          
-                                         <div class="col-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                               <label class="form-label">Store </label>
                                                <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
                                                      <option value="">Store</option>
-                                                    @if(request()->input('subadmin_id'))
-                                                      @php
-                                                        $storesData = \DB::table('mst_stores')->where('subadmin_id',request()->input('subadmin_id'))->get();
-                                                      @endphp
-                                                      @foreach($storesData as $key)
-                                                      <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
-                                                      @endforeach
+                                                     @if(auth()->user()->user_role_id  == 0)
+                                                            @if(request()->input('subadmin_id'))
+                                                                @php
+                                                                    $storesData = \DB::table('mst_stores')->where('subadmin_id',request()->input('subadmin_id'))->get();
+                                                                @endphp
+                                                                @foreach($storesData as $key)
+                                                                <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
+                                                                @endforeach
+                                                            @endif
+                                                    @else
+                                                    @foreach($stores as $key)
+                                                    <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
+                                                    @endforeach
                                                     @endif
                                                   </select>
                                             </div>
