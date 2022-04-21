@@ -2861,7 +2861,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'delivery_boy_name'       			=> 'required',
-				'delivery_boy_mobile'           	=> 'required',
+				'delivery_boy_mobile'           	=> 'required|unique:mst_delivery_boys,delivery_boy_mobile,' . $delivery_boy_id . ',delivery_boy_id',
 				//'delivery_boy_email'=> 'required',
 				'delivery_boy_address'          	=> 'required',
 				'vehicle_number'        	    	=> 'required',
