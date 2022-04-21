@@ -1312,7 +1312,8 @@ class ProductController extends Controller
           'mst_stores.store_id',
           'mst_stores.store_name',
           'mst_stores.store_mobile',
-          'mst_towns.town_name'
+          'mst_towns.town_name',
+          'trn_store_customers.town_id'
 
         )
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_stores.customer_id')
@@ -1341,6 +1342,10 @@ class ProductController extends Controller
 
         if (isset($request->customer_id)) {
           $data = $data->where('trn__recently_visited_stores.customer_id', $request->customer_id);
+        }
+
+        if (isset($request->town_id)) {
+          $data = $data->where('trn_store_customers.town_id', $request->town_id);
         }
 
 
@@ -1395,6 +1400,10 @@ class ProductController extends Controller
 
         if (isset($request->customer_id)) {
           $data = $data->where('trn__recently_visited_stores.customer_id', $request->customer_id);
+        }
+
+        if (isset($request->town_id)) {
+          $data = $data->where('trn_store_customers.town_id', $request->town_id);
         }
 
         $data = $data->where('mst_stores.subadmin_id', auth()->user()->id)
