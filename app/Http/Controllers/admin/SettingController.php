@@ -3408,7 +3408,7 @@ class SettingController extends Controller
 
 
 			$orders = $query->orderBy('order_id', 'DESC')->get();
-			dd($orders);
+			
 			
 			$quries = DB::getQueryLog();
 			//dd($quries);
