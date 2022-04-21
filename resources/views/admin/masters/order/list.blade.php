@@ -214,42 +214,7 @@ $date = Carbon\Carbon::now();
       </div>
    </div>
 </div>
-@foreach($orders as $order)
-            <div class="modal fade" id="StockModal{{$order->order_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
-               <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                        <h5 class="modal-title" id="example-Modal3">Update Payment Status</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                     </div>
 
-                 <form action=" {{ route('admin.pay_status_order',$order->order_id ) }} " method="POST" enctype="multipart/form-data" >
-                 @csrf
-                  <div class="modal-body">
-
-                    <label class="form-label">Payment Status</label>
-                    <input type="hidden" class="form-control" name="order_id" value="{{$order->order_id}}" >
-
-                   <select class="form-control" name="payment_status" id="payment_status">
-                     <option value=""> Select Status</option>
-                              <option {{$order->payment_status == 0 ? 'selected':''}} value="0"> Pending     </option>
-                              <option {{$order->payment_status == 1 ? 'selected':''}} value="1"> Completed     </option>
-                              <option {{$order->payment_status == 2 ? 'selected':''}} value="2"> Cancelled     </option>
-                           </select>
-                  </div>
-
-                     <div class="modal-footer">
-                       <button type="submit" class="btn btn-raised btn-primary">
-                    <i class="fa fa-check-square-o"></i> Update</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                     </div>
-                      </form>
-                  </div>
-               </div>
-            </div>
-            @endforeach
 <!-- MESSAGE MODAL CLOSED -->
 
 

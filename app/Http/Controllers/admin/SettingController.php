@@ -3290,6 +3290,7 @@ class SettingController extends Controller
 		$a2 = Carbon::parse($dateto)->endOfDay();
 
 		$orders = Trn_store_order::join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->select(
+			"trn_store_orders.*",
 			"mst_stores.store_id",
 			"mst_stores.store_name", 
 			"mst_stores.store_mobile", 
