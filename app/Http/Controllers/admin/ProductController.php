@@ -1608,6 +1608,7 @@ class ProductController extends Controller
 
       if (auth()->user()->user_role_id  != 0) {
         $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+        $data = $data->where('trn_store_orders.subadmin_id', '=', auth()->user()->id);
       }
 
 
@@ -1736,7 +1737,8 @@ class ProductController extends Controller
         ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 
       if (auth()->user()->user_role_id  != 0) {
-        $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+        // $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+        $data = $data->where('trn_store_orders.subadmin_id', '=', auth()->user()->id);
       }
 
 
