@@ -389,10 +389,11 @@ class DeliveryBoyController extends Controller
     {
         $data = array();
         try {
-            $delivery_boy_id = $request->delivery_boy_id;
+            // $delivery_boy_id = $request->delivery_boy_id; // inorder to solve the space issue in apk side
             $mobNumber = $request->delivery_boy_mobile;
-            $mobCheck = Mst_delivery_boy::where('delivery_boy_id', '=', $delivery_boy_id)->first();
+            $mobCheck = Mst_delivery_boy::where('delivery_boy_mobile', '=', $mobNumber)->first();
             if ($mobCheck) {
+                $delivery_boy_id = $mobCheck->delivery_boy_id;
                 $validator = Validator::make($request->all(), [
                     'password' => 'required|string|min:8|confirmed'
                 ]);
