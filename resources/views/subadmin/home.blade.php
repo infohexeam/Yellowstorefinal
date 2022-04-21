@@ -10,7 +10,7 @@ use App\Models\admin\Trn_subadmin_payments_tracker;
 use App\Models\admin\Trn_sub_admin_payment_settlment;
 
 
-    $orders_count = Trn_store_order::where('subadmin_id',auth()->user()->id)->count();
+    $orders_count = Mst_store::where('subadmin_id',auth()->user()->id)->count();
 
 
 
