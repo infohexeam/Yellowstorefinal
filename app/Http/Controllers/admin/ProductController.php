@@ -1048,7 +1048,7 @@ class ProductController extends Controller
             'mst_stores.store_name',
             'mst_stores.store_mobile',
             'mst_stores.subadmin_id',
-            // 'mst_store_products.product_id',
+            'mst_store_products.product_id',
             // 'mst_store_products.product_code',
             // 'mst_store_products.product_name',
             // 'mst_store_products.product_brand',
@@ -1062,8 +1062,8 @@ class ProductController extends Controller
             // 'mst__sub_categories.sub_category_name'
           )
             // ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
-            ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id');
-            // ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
+            ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
+            ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id');
             // ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
             // ->join('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
             // ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
@@ -1085,9 +1085,9 @@ class ProductController extends Controller
             $data = $data->where('mst_stores.subadmin_id', $request->subadmin_id);
           }
 
-          // if (isset($request->product_id)) {
-          //   $data = $data->where('mst_store_products.product_id', $request->product_id);
-          // }
+          if (isset($request->product_id)) {
+            $data = $data->where('mst_store_products.product_id', $request->product_id);
+          }
 
           // if (isset($request->vendor_id)) {
           //   $data = $data->where('mst_store_products.vendor_id', $request->vendor_id);
