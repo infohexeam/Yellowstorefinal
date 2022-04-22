@@ -1195,7 +1195,7 @@ class StoreOrderController extends Controller
                     ]
                 );
 
-                if (!$validator->fails() && Trn_store_order::withTrashed()->find($request->order_id)) {
+                if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
                     $order_id = $request->order_id;
                     $customer_id = $request->customer_id;
                     // dd(Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
@@ -1278,7 +1278,7 @@ class StoreOrderController extends Controller
                             $data['orderDetails']->customer_pincode = '';
                         }
 
-                        $storeData = Mst_store::find($data['orderDetails']->store_id);
+                        $storeData = Mst_store::withTrashed()->find($data['orderDetails']->store_id);
                         $data['orderDetails']->store_name = @$storeData->store_name;
                         if (isset($storeData->gst))
                             $data['orderDetails']->gst = @$storeData->gst;
