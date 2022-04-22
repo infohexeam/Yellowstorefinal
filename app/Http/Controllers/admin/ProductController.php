@@ -1066,7 +1066,6 @@ class ProductController extends Controller
             ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
             ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
 
-            dd($request->customer_id,$request->store_id,$request->subadmin_id,$data);
           if (isset($request->date_from)) {
             $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
           }
@@ -1107,6 +1106,8 @@ class ProductController extends Controller
 
           $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
             ->get();
+
+        dd($request->customer_id,$request->store_id,$request->subadmin_id,$data);
 
           
 
