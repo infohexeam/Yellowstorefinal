@@ -1039,6 +1039,7 @@ class ProductController extends Controller
             'trn__recently_visited_products.created_at',
             'trn__recently_visited_products.updated_at',
             'trn__recently_visited_products.store_id',
+            'trn__recently_visited_products.customer_id',
             // 'trn_store_customers.customer_id',
             // 'trn_store_customers.customer_first_name',
             // 'trn_store_customers.customer_last_name',
