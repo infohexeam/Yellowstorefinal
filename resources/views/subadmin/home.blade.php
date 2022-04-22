@@ -12,10 +12,11 @@ use App\Models\admin\Trn_sub_admin_payment_settlment;
 
     $orders_count = Trn_store_order::where('subadmin_id',auth()->user()->id)->count();
 
+    $storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->pluck('store_id');
 
-
-$boys_count = $delivery_boys = \DB::table('mst_delivery_boys')
-            ->where('subadmin_id',auth()->user()->id)
+$boys_count = $delivery_boys = \DB::table('mst_store_link_delivery_boys')
+               ->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
+            <!-- ->where('subadmin_id',auth()->user()->id) -->
             ->count();
 
 
