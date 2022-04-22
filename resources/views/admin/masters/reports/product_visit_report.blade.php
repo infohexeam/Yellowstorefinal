@@ -310,7 +310,7 @@ $(function(e) {
      var _token= $('input[name="_token"]').val();
         $.ajax({
           type:"GET",
-          url:"{{ url('admin/product-name-list') }}?subadmin_id="+subadminId+'&store_id'+storeId,
+          url:"{{ url('admin/product-name-list') }}?subadmin_id="+subadminId+'&store_id='+storeId,
 
           success:function(res){
                 if(res){
