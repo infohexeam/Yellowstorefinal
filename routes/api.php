@@ -426,12 +426,14 @@ Route::get('test-api', 'Customer_Api\ProductController@testApi');
 
 
 //============================ Delivery =============================
-//Route::group(['middleware' => 'auth:api-delivery'], function () {
-// });
 // Delivery_Api
+
+Route::group(['middleware' => 'auth:api-delivery'], function () {
+
 Route::post('delivery-boy/login', 'Delivery_Api\DeliveryBoyController@loginDelivery');
 Route::get('delivery-boy/logout', 'Delivery_Api\DeliveryBoyController@logout');
 
+});
 
 //Forgot Password - dboy
 Route::get('delivery-boy/forgot-password/verify_mobile', 'Delivery_Api\DeliveryBoyController@FpverifyMobile');
@@ -461,3 +463,4 @@ Route::post('delivery-boy/order/status-update', 'Delivery_Api\DeliveryBoyOrderCo
 Route::get('delivery-boy/location-update', 'Delivery_Api\DeliveryBoyController@updateLoc');
 
 Route::get('delivery-boy/delivery-report', 'Delivery_Api\DeliveryBoyController@deliveryReport');
+
