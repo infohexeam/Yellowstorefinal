@@ -1136,8 +1136,8 @@ class StoreOrderController extends Controller
                     'refundId'
                 )->where('customer_id', $request->customer_id)->orderBy('order_id', 'DESC')->get()) {
                     foreach ($data['orderHistory'] as $order) {
-                        $storeData = Mst_store::find($order->store_id);
-                        // dd($storeData);
+                        $storeData = Mst_store::withTrashed()->find($order->store_id);
+                       
                         $order->store_name = $storeData->store_name;
                         if (isset($order->customer_id)) {
                             $customerData = Trn_store_customer::find($order->customer_id);
