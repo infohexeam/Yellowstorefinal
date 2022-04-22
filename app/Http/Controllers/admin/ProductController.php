@@ -1060,7 +1060,7 @@ class ProductController extends Controller
             // 'mst_store_product_varients.product_varient_id',
             'mst_store_product_varients.variant_name',
             // 'mst_store_agencies.agency_id',
-            // 'mst_store_agencies.agency_name',
+             'mst_store_agencies.agency_name',
             // 'mst_store_categories.category_id',
             'mst_store_categories.category_name',
             // 'mst__sub_categories.sub_category_id',
@@ -1070,7 +1070,7 @@ class ProductController extends Controller
             ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
             ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
             ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
-            // ->join('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+            ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
             ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'trn__recently_visited_products.category_id')
             ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'trn__recently_visited_products.sub_category_id');
 
