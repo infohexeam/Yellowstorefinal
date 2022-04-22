@@ -1040,10 +1040,10 @@ class ProductController extends Controller
             'trn__recently_visited_products.updated_at',
             'trn__recently_visited_products.store_id',
             'trn__recently_visited_products.customer_id',
-            // 'trn_store_customers.customer_id',
-            // 'trn_store_customers.customer_first_name',
-            // 'trn_store_customers.customer_last_name',
-            // 'trn_store_customers.customer_mobile_number',
+            'trn_store_customers.customer_id',
+            'trn_store_customers.customer_first_name',
+            'trn_store_customers.customer_last_name',
+            'trn_store_customers.customer_mobile_number',
             'mst_stores.store_id',
             'mst_stores.store_name',
             'mst_stores.store_mobile',
@@ -1064,7 +1064,7 @@ class ProductController extends Controller
             // 'mst__sub_categories.sub_category_id',
             // 'mst__sub_categories.sub_category_name'
           )
-            // ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
+             ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
             ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
             ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id');
             // ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
