@@ -1137,7 +1137,7 @@ class StoreOrderController extends Controller
                 )->where('customer_id', $request->customer_id)->orderBy('order_id', 'DESC')->get()) {
                     foreach ($data['orderHistory'] as $order) {
                         $storeData = Mst_store::find($order->store_id);
-                        dd($storeData);
+                        // dd($storeData);
                         $order->store_name = $storeData->store_name;
                         if (isset($order->customer_id)) {
                             $customerData = Trn_store_customer::find($order->customer_id);
