@@ -1038,33 +1038,34 @@ class ProductController extends Controller
             'trn__recently_visited_products.visit_count',
             'trn__recently_visited_products.created_at',
             'trn__recently_visited_products.updated_at',
-            'trn_store_customers.customer_id',
-            'trn_store_customers.customer_first_name',
-            'trn_store_customers.customer_last_name',
-            'trn_store_customers.customer_mobile_number',
-            'mst_stores.store_id',
+            'trn__recently_visited_products.store_id',
+            // 'trn_store_customers.customer_id',
+            // 'trn_store_customers.customer_first_name',
+            // 'trn_store_customers.customer_last_name',
+            // 'trn_store_customers.customer_mobile_number',
+            // 'mst_stores.store_id',
             'mst_stores.store_name',
             'mst_stores.store_mobile',
-            'mst_store_products.product_id',
-            'mst_store_products.product_code',
-            'mst_store_products.product_name',
-            'mst_store_products.product_brand',
-            'mst_store_product_varients.product_varient_id',
-            'mst_store_product_varients.variant_name',
-            'mst_store_agencies.agency_id',
-            'mst_store_agencies.agency_name',
-            'mst_store_categories.category_id',
-            'mst_store_categories.category_name',
-            'mst__sub_categories.sub_category_id',
-            'mst__sub_categories.sub_category_name'
+            // 'mst_store_products.product_id',
+            // 'mst_store_products.product_code',
+            // 'mst_store_products.product_name',
+            // 'mst_store_products.product_brand',
+            // 'mst_store_product_varients.product_varient_id',
+            // 'mst_store_product_varients.variant_name',
+            // 'mst_store_agencies.agency_id',
+            // 'mst_store_agencies.agency_name',
+            // 'mst_store_categories.category_id',
+            // 'mst_store_categories.category_name',
+            // 'mst__sub_categories.sub_category_id',
+            // 'mst__sub_categories.sub_category_name'
           )
-            ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
+            // ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
             ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
-            ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
-            ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
-            ->join('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-            ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-            ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
+            // ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
+            // ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
+            // ->join('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+            // ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+            // ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
 
           // if (isset($request->date_from)) {
           //   $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
