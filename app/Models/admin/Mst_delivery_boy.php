@@ -23,7 +23,7 @@ class Mst_delivery_boy extends Authenticatable
 
     public function AauthAcessToken()
     {
-      return $this->hasMany('\App\Models\OauthAccessToken','user_id','store_id');
+      return $this->hasMany('\App\Models\OauthAccessToken','user_id','delivery_boy_id');
     }
 
 	public function store()
