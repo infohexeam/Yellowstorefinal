@@ -1062,17 +1062,17 @@ class ProductController extends Controller
             // 'mst_store_agencies.agency_id',
             // 'mst_store_agencies.agency_name',
             // 'mst_store_categories.category_id',
-            'mst_store_categories.category_name',
+            // 'mst_store_categories.category_name',
             // 'mst__sub_categories.sub_category_id',
-            'mst__sub_categories.sub_category_name'
+            // 'mst__sub_categories.sub_category_name'
           )
              ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
             ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
             ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
-            ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id')
+            ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id');
             // ->join('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-            ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'trn__recently_visited_products.category_id')
-            ->join('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'trn__recently_visited_products.sub_category_id');
+            // ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'trn__recently_visited_products.category_id')
+            // ->join('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'trn__recently_visited_products.sub_category_id');
 
           if (isset($request->date_from)) {
             $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
