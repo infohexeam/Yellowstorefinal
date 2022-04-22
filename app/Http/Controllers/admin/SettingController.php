@@ -568,7 +568,7 @@ class SettingController extends Controller
 			$query = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
 				->leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
 				->where('trn__store_admins.role_id', 0)
-				->select('users.id','mst_stores.*','trn__store_admins.store_id','trn__store_admins.role_id','trn__store_admins.store_mobile','trn__store_admins.store_account_status')
+				->select('users.id','mst_stores.*','trn__store_admins.store_id','trn__store_admins.role_id','trn__store_admins.store_mobile','trn__store_admins.store_account_status');
 
 			if (auth()->user()->user_role_id  != 0) {
 				$query = $query->where('mst_stores.subadmin_id', auth()->user()->id);
