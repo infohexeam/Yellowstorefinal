@@ -1047,6 +1047,7 @@ class ProductController extends Controller
             // 'mst_stores.store_id',
             'mst_stores.store_name',
             'mst_stores.store_mobile',
+            'mst_stores.subadmin_id',
             // 'mst_store_products.product_id',
             // 'mst_store_products.product_code',
             // 'mst_store_products.product_name',
@@ -1080,9 +1081,9 @@ class ProductController extends Controller
             $data = $data->where('trn__recently_visited_products.store_id', $request->store_id);
           }
 
-          // if (isset($request->subadmin_id)) {
-          //   $data = $data->where('mst_stores.subadmin_id', $request->subadmin_id);
-          // }
+          if (isset($request->subadmin_id)) {
+            $data = $data->where('mst_stores.subadmin_id', $request->subadmin_id);
+          }
 
           // if (isset($request->product_id)) {
           //   $data = $data->where('mst_store_products.product_id', $request->product_id);
