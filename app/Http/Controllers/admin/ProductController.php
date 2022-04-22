@@ -1108,7 +1108,7 @@ class ProductController extends Controller
           $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
             ->get();
 
-
+          dd($request->customer_id,$data);
 
 
           return view('admin.masters.reports.product_visit_report', compact(
