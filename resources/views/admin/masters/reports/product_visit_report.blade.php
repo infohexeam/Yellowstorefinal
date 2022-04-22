@@ -288,6 +288,16 @@ $(function(e) {
                         {
                           $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
                         });
+
+                        let storeId = getUrlParameter('store_id');
+                    if ( typeof storeId !== "undefined" && storeId) {
+                        $("#storeId option").each(function(){
+                            if($(this).val()==storeId){ 
+                                $(this).attr("selected","selected");    
+                            }
+                        });
+                    } 
+
                     }else
                     {
                       $('#storeId').empty();
