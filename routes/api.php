@@ -430,10 +430,12 @@ Route::get('test-api', 'Customer_Api\ProductController@testApi');
 
 Route::group(['middleware' => 'auth:api-delivery'], function () {
 
-Route::post('delivery-boy/login', 'Delivery_Api\DeliveryBoyController@loginDelivery');
+
 Route::get('delivery-boy/logout', 'Delivery_Api\DeliveryBoyController@logout');
 
 });
+
+Route::post('delivery-boy/login', 'Delivery_Api\DeliveryBoyController@loginDelivery');
 
 //Forgot Password - dboy
 Route::get('delivery-boy/forgot-password/verify_mobile', 'Delivery_Api\DeliveryBoyController@FpverifyMobile');
