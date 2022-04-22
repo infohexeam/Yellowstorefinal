@@ -1115,7 +1115,7 @@ class ProductController extends Controller
           $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
             ->get();
 
-       dd($request->category_id,$request->sub_category_id,$data);
+      // dd($request->category_id,$request->sub_category_id,$data);
 
           
 
