@@ -1044,11 +1044,14 @@ class ProductController extends Controller
             // 'trn_store_customers.customer_first_name',
             // 'trn_store_customers.customer_last_name',
             // 'trn_store_customers.customer_mobile_number',
-            // 'mst_stores.store_id',
+            'mst_stores.store_id',
             'mst_stores.store_name',
             'mst_stores.store_mobile',
             'mst_stores.subadmin_id',
             'mst_store_products.product_id',
+            'mst_store_products.vendor_id',
+            'mst_store_products.product_cat_id',
+            'mst_store_products.sub_category_id',
             // 'mst_store_products.product_code',
             // 'mst_store_products.product_name',
             // 'mst_store_products.product_brand',
@@ -1069,13 +1072,13 @@ class ProductController extends Controller
             // ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
             // ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
 
-          // if (isset($request->date_from)) {
-          //   $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
-          // }
+          if (isset($request->date_from)) {
+            $data = $data->whereDate('trn__recently_visited_products.created_at', '>=', $a1);
+          }
 
-          // if (isset($request->date_to)) {
-          //   $data = $data->whereDate('trn__recently_visited_products.created_at', '<=', $a2);
-          // }
+          if (isset($request->date_to)) {
+            $data = $data->whereDate('trn__recently_visited_products.created_at', '<=', $a2);
+          }
 
           if (isset($request->store_id)) {
             $data = $data->where('trn__recently_visited_products.store_id', $request->store_id);
@@ -1089,17 +1092,17 @@ class ProductController extends Controller
             $data = $data->where('mst_store_products.product_id', $request->product_id);
           }
 
-          // if (isset($request->vendor_id)) {
-          //   $data = $data->where('mst_store_products.vendor_id', $request->vendor_id);
-          // }
+          if (isset($request->vendor_id)) {
+            $data = $data->where('mst_store_products.vendor_id', $request->vendor_id);
+          }
 
-          // if (isset($request->category_id)) {
-          //   $data = $data->where('mst_store_products.product_cat_id', $request->category_id);
-          // }
+          if (isset($request->category_id)) {
+            $data = $data->where('mst_store_products.product_cat_id', $request->category_id);
+          }
 
-          // if (isset($request->sub_category_id)) {
-          //   $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
-          // }
+          if (isset($request->sub_category_id)) {
+            $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
+          }
 
           if (isset($request->customer_id)) {
             $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
@@ -1110,7 +1113,7 @@ class ProductController extends Controller
           $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
             ->get();
 
-        dd($request->customer_id,$request->store_id,$request->subadmin_id,$data);
+       // dd($request->customer_id,$request->store_id,$request->subadmin_id,$data);
 
           
 
