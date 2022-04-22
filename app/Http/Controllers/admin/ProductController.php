@@ -1100,9 +1100,9 @@ class ProductController extends Controller
           //   $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
           // }
 
-          // if (isset($request->customer_id)) {
-          //   $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
-          // }
+          if (isset($request->customer_id)) {
+            $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
+          }
 
 
 
