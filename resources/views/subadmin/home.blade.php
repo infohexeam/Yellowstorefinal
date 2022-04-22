@@ -16,8 +16,7 @@ use App\Models\admin\Trn_sub_admin_payment_settlment;
 
 $boys_count = $delivery_boys = \DB::table('mst_store_link_delivery_boys')
                ->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
-            <!-- ->where('subadmin_id',auth()->user()->id) -->
-            ->count();
+               ->count();
 
 
 
