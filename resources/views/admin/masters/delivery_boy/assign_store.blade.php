@@ -52,7 +52,7 @@
                                 ->pluck('store_id')->toArray();
                                 $thisStore = $data->store_id;
                                @endphp
-                              <a class="btn btn-small btn-danger     href="{{ url('admin/link/destroy/delivery_boy_store/'.$data->store_link_delivery_boy_id) }}">Delete</a>
+                              <a class="btn btn-small btn-danger"     href="{{ url('admin/link/destroy/delivery_boy_store/'.$data->store_link_delivery_boy_id) }}">Delete</a>
                               <!--<a class="btn btn-small btn-danger @if(!in_array( $thisStore ,$stores__ids)) disabled @endif"     href="{{ url('admin/link/destroy/delivery_boy_store/'.$data->store_link_delivery_boy_id) }}">Delete</a>-->
                            
                            </td>
