@@ -537,6 +537,7 @@ class SettingController extends Controller
 
 			$stores = Mst_store::leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
 				->where('mst_stores.subadmin_id', auth()->user()->id)
+				->select('users.id','mst_stores.*')
 				->orderBy('mst_stores.store_id', 'desc')->get();
 
 			// 			$stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
