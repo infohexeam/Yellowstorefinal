@@ -232,9 +232,9 @@
                       <!--</div>-->
                       <div class="col-md-4">
                         <div class="form-group">
-                           <label class="form-label">GSTIN</label>
+                           <label class="form-label">Registered GSTIN</label>
 
-                           <input type="text" class="form-control" name="gst" value="{{old('gst',$store->gst)}}"  placeholder="GSTIN">
+                           <input type="text" class="form-control" name="gst" value="{{old('gst',$store->gst)}}"  placeholder="Registered GSTIN">
                         </div>
                       </div>
 

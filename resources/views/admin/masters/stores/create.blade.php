@@ -238,9 +238,9 @@
                      <div class="col-md-4">
                         <div class="form-group">
 
-                           <label class="form-label"> Store GSTIN </label>
+                           <label class="form-label"> Registered GSTIN </label>
                            <input type="text" class="form-control" 
-                           name="store_document_gstin" value="{{old('store_document_gstin')}}" placeholder="Store GSTIN">
+                           name="store_document_gstin" value="{{old('store_document_gstin')}}" placeholder="Registered GSTIN">
                         </div>
                      </div>
 

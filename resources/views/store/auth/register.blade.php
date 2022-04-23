@@ -187,7 +187,7 @@
                         <div class="row">
                         <div class="col-md-6">
                       <div class="wrap-input100 validate-input">
-                             <input class="input100" id="store_gst_number" type="text" name="store_gst_number" placeholder="GST Number" value="{{ old('store_gst_number') }}"   >
+                             <input class="input100" id="store_gst_number" type="text" name="store_gst_number" placeholder="Registered GSTIN" value="{{ old('store_gst_number') }}"   >
                                     @error('store_gst_number')
                                     <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
