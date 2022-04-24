@@ -1362,7 +1362,7 @@ class ProductController extends Controller
         $data = $data->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
           ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
           ->get();
-      } else {
+      } else { //subadmin
 
 
         $a1 = Carbon::parse($request->date_from)->startOfDay();
@@ -1389,7 +1389,7 @@ class ProductController extends Controller
         )
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_stores.customer_id')
           ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id')
-          ->join('mst_towns', 'mst_towns.town_id', '=', 'mst_stores.town_id');
+          ->join('mst_towns', 'mst_towns.town_id', '=', 'trn_store_customers.town_id');
 
         if (isset($request->date_from)) {
           $data = $data->whereDate('trn__recently_visited_stores.created_at', '>=', $a1);
