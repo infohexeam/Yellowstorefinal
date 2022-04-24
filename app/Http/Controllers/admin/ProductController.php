@@ -1327,7 +1327,7 @@ class ProductController extends Controller
         )
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_stores.customer_id')
           ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id')
-          ->join('mst_towns', 'mst_towns.town_id', '=', 'mst_stores.town_id');
+          ->join('mst_towns', 'mst_towns.town_id', '=', 'trn_store_customers.town_id');
 
 
 
