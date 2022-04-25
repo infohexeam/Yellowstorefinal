@@ -91,7 +91,7 @@ li .active{
 											                 $revLink = strrev($v->video_code);
                                                              $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
                                                              $linkCode = strrev($revLinkCode);
-                                                             dd($linkCode);
+                                                             
 											            @endphp
         												<div class="tab_content @if($loop->iteration == 1) active @endif">
                                                           <div class="responsive-iframe">
