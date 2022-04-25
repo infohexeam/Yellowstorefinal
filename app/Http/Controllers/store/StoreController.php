@@ -4125,16 +4125,16 @@ class StoreController extends Controller
 
 
 
-    $payments_datas = Trn_store_payment_settlment::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')->where('trn_store_payment_settlments.store_id', $store_id);
+    // $payments_datas = Trn_store_payment_settlment::where('store_id', $store_id);
 
-    if (isset($request->date_from)) {
-      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
-    }
-    if (isset($request->date_to)) {
-      $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
-    }
+    // if (isset($request->date_from)) {
+    //   $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+    // }
+    // if (isset($request->date_to)) {
+    //   $payments_datas = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+    // }
 
-    $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
+    // $payments_datas = $payments_datas->orderBy('settlment_id', 'DESC')->get();
 
     $store_payments = Trn_OrderPaymentTransaction::join('trn_store_orders', 'trn_store_orders.order_id', '=', 'trn__order_payment_transactions.order_id')
       ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
