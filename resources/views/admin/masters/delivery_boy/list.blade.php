@@ -162,10 +162,13 @@
                     @csrf
                       @method('POST')
                        <a class="btn btn-sm btn-info" href="{{url('admin/delivery_boy/assign_store/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">Assign Store</a>
+                       @if(auth()->user()->user_role_id == 0)
                        <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/edit/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">Edit</a>
+                       @endif
                        <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/view/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">View</a>
-
+                       @if(auth()->user()->user_role_id == 0)
                         <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                        @endif
                          </form>
 
                         </td>
