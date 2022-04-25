@@ -81,7 +81,7 @@ li .active{
         												<div class="tab_content @if($loop->iteration == 1) active @endif">
         													<!--<iframe src="http://player.vimeo.com/video/{{@$linkCode}}" width="500px" height="500px" frameborder="0" allowfullscreen></iframe>-->
         											<div class="responsive-iframe">
-        											<iframe src="http://player.vimeo.com/video/{{@$linkCode}}" width="500px" height="360px"  frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        											<iframe src="http://player.vimeo.com/video/{{@$linkCode}}" width="500px" height="360px"  frameborder="0" allow="autoplay" allowfullscreen></iframe>
 
         											</div>	</div>
                                                     @endif
