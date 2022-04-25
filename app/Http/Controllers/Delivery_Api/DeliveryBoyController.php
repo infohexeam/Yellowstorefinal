@@ -50,11 +50,13 @@ class DeliveryBoyController extends Controller
     public function logout(Request $request)
     {
 
-        if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
+        if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id) && 
+        Trn_DeliveryBoyDeviceToken::find($request->delivery_boy_id)) {
 
             $divTok = DB::table('oauth_access_tokens')
                 ->where('id', auth()->user()->token())
                 ->update(['revoked' => 1]);
+            Trn_DeliveryBoyDeviceToken::where('delivery_boy_id',$$request->delivery_boy_id)->delete();
 
             $data['status'] = 1;
             $data['message'] = "Success";
