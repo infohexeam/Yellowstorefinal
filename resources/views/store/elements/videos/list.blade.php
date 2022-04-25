@@ -91,10 +91,11 @@ li .active{
 											                 $revLink = strrev($v->video_code);
                                                              $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
                                                              $linkCode = strrev($revLinkCode);
+                                                             echo $linkCode;
 											            @endphp
         												<div class="tab_content @if($loop->iteration == 1) active @endif">
                                                           <div class="responsive-iframe">
-                                                                <iframe  src="{!! @$v->video_code !!}" width="500px" height="360px" frameborder="0" allow="autoplay; fullscreen" allowfullscreen ></iframe>
+                                                                <iframe  src="//www.youtube.com/embed/{!!$linkCode!!}" width="500px" height="360px" frameborder="0" allow="autoplay; fullscreen" allowfullscreen ></iframe>
         												</div>
         												</div>
                                                     @endif
