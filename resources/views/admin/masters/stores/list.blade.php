@@ -274,9 +274,12 @@ use App\User;
                                     </td>
                                     <td>
                                        <form action="{{route('admin.destroy_store',$store->store_id)}}" method="POST">
+                                       @if(auth()->user()->user_role_id == 0)
                                         <a class="btn btn-sm btn-cyan"
                                              href="{{url('admin/store/edit/'.
                                           $store->store_name_slug)}}">Edit</a>
+                                       @endif
+
                                            <a class="btn btn-sm btn-info"
                                              href="{{url('admin/store/assign_agency/'.
                                           $store->store_name_slug)}}"> Agency</a> 
