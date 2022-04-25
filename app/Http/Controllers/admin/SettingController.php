@@ -530,17 +530,18 @@ class SettingController extends Controller
 		$pageTitle = "Stores";
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
-		if (auth()->user()->user_role_id  == 0) {
+		if (auth()->user()->user_role_id  == 0) { // superadmin
 			$stores = Mst_store::leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
+				->select('users.id','mst_stores.*')
 				->orderBy('mst_stores.store_id', 'desc')->get();
-		} else {
+		} else { //subadmin
 
 			$stores = Mst_store::leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
 				->where('mst_stores.subadmin_id', auth()->user()->id)
 				->select('users.id','mst_stores.*')
 				->orderBy('mst_stores.store_id', 'desc')->get();
 
-			// 			$stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+			// $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
 			//  dd($store);
 		}
 
