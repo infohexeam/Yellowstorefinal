@@ -80,7 +80,7 @@ $date = Carbon\Carbon::now();
 
                         <th class="wd-20p">Total<br>amount</th>
                         <th class="wd-20p">Split<br>Amount</th>
-                        <th class="wd-20p">Delivery<br>Charge</th>
+                        <!-- <th class="wd-20p">Delivery<br>Charge</th> -->
                         <th class="wd-20p">Transaction<br>Status</th>
                      </tr>
                      
@@ -102,7 +102,7 @@ $date = Carbon\Carbon::now();
 
                         <td>{{ @$row->orderAmount }}</td>
                         <td>{{ @$row->settlementAmount }}</td>
-                        <td>{{ @$row->delivery_charge }}</td>
+                        <!-- <td>{{ @$row->delivery_charge }}</td> -->
                         <td>{{ @$row->txStatus }}</td>
                        
 
@@ -188,9 +188,9 @@ $date = Carbon\Carbon::now();
                                  <!--   <td><h6>Subadmin Name  : {{ (new App\Helpers\Helper)->findSubAdminName($row->store_id) }}</h6></td>-->
                                  <!--</tr>-->
                                  
-                                 <tr>
+                                 <!-- <tr>
                                     <td><h6>Delivery Charge :{{ @$row->delivery_charge }}</h6></td>
-                                 </tr>
+                                 </tr> -->
                                  
                                  <tr>
                                     <td><h6>Payment Mode :{{ @$row->paymentMode }}</h6></td>

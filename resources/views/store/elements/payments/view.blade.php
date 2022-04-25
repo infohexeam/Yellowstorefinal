@@ -123,9 +123,9 @@
                                     <th class="wd-15p">SL.No</th>
                                     <th class="wd-15p">{{ __('Order Number') }}</th>
                                     <th class="wd-15p">{{ __('Order Date') }}</th>
-                                    <th class="wd-15p">{{ __('Total Order Amount') }}</th>
-                                    <th class="wd-15p">{{ __('Admin Commission Amount') }}</th>
-                                    <th class="wd-15p">{{ __('Store Commission Amount') }}</th>
+                                    <th class="wd-15p">{{ __('Total Order') }} <br> {{ __('Amount')}}</th>
+                                    <th class="wd-15p">{{ __('Payment Gateway') }} <br> {{ __('Amount')}}</th>
+                                    <th class="wd-15p">{{ __('Store Amount') }} <br> {{ __('Received')}}</th>
                                  
                                  </tr>
                               </thead>
@@ -171,7 +171,7 @@
 
                                  <tr>
                                     <td>
-                                       Admin Commission Amount : 
+                                       Payment Gateway Amount : 
                                     </td>
                                     <td>
                                        <b>{{ @$total_admin_amount }}</b>
@@ -180,7 +180,7 @@
 
                                  <tr>
                                     <td>
-                                       Store Commission Amount : 
+                                       Store Amount Received : 
                                     </td>
                                     <td>
                                        <b>{{ @$total_store_amount }}</b>
