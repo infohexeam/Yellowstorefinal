@@ -408,7 +408,7 @@ class DeliveryBoyOrderController extends Controller
                         }
 
                         $storeData = Mst_store::find($data['orderDetails']->store_id);
-                        if ($storeData->exists()) {
+                        
                             $data['orderDetails']->store_name = @$storeData->store_name;
                                 if (isset($storeData->gst))
                                     $data['orderDetails']->gst = @$storeData->gst;
@@ -422,10 +422,7 @@ class DeliveryBoyOrderController extends Controller
                                 $data['orderDetails']->store_latitude = @$storeData->latitude;
                                 $data['orderDetails']->store_longitude = @$storeData->longitude;
                                 $data['orderDetails']->store_place = @$storeData->place;
-                         }else{
-                            $data['status'] = 0;
-                            $data['message'] = "Store not found "; 
-                         }
+                        
 
                         
 
