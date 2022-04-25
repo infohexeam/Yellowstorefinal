@@ -177,7 +177,7 @@ $date = Carbon\Carbon::now();
 
                         {{-- <td>{{$order->product->product_name->product_name}}</td> --}}
                         <td>{{ @$order->store['store_name']}}</td>
-                        <td>{{ @$order->store['store_contact_person_phone_number']}}</td>
+                        <td>{{ @$order->store['store_mobile']}}</td>
                         <td>
                            @if(isset($order->subadmin->name))
                            {{ @$order->subadmin->name}}
