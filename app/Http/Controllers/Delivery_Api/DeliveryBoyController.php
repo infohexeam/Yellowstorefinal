@@ -56,7 +56,7 @@ class DeliveryBoyController extends Controller
             $divTok = DB::table('oauth_access_tokens')
                 ->where('id', auth()->user()->token())
                 ->update(['revoked' => 1]);
-            Trn_DeliveryBoyDeviceToken::where('delivery_boy_id',$$request->delivery_boy_id)->delete();
+            Trn_DeliveryBoyDeviceToken::where('delivery_boy_id',$request->delivery_boy_id)->delete();
 
             $data['status'] = 1;
             $data['message'] = "Success";
