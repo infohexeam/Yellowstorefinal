@@ -94,7 +94,7 @@ li .active{
 											            @endphp
         												<div class="tab_content @if($loop->iteration == 1) active @endif">
                                                           <div class="responsive-iframe">
-                                                                <iframe  src="http://www.youtube.com/embed/{{@$linkCode}}" width="500px" height="360px" frameborder="0" allow="autoplay; fullscreen" allowfullscreen ></iframe>
+                                                                <iframe  src="{{@revLink}}" width="500px" height="360px" frameborder="0" allow="autoplay; fullscreen" allowfullscreen ></iframe>
         												</div>
         												</div>
                                                     @endif
