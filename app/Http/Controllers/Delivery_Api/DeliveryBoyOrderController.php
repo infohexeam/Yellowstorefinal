@@ -407,7 +407,7 @@ class DeliveryBoyOrderController extends Controller
                             $data['orderDetails']->customer_pincode = null;
                         }
 
-                        $storeData = Mst_store::find($data['orderDetails']->store_id);
+                        $storeData = Mst_store::withTrashed()->find($data['orderDetails']->store_id);
                         $data['orderDetails']->store_name = @$storeData->store_name;
                         if (isset($storeData->gst))
                             $data['orderDetails']->gst = @$storeData->gst;
