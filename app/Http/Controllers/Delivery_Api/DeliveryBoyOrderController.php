@@ -76,7 +76,7 @@ class DeliveryBoyOrderController extends Controller
 
 
 
-                            $storeInfo = Mst_store::find($order->store_id);
+                            $storeInfo = Mst_store::withTrashed()->find($order->store_id);
                             $order->store_name = $storeInfo->store_name;
 
                             $ordersList[] = $order;
@@ -127,7 +127,7 @@ class DeliveryBoyOrderController extends Controller
                                 $order->customer_name = @$customerInfo->customer_first_name;
                         }
 
-                        $storeInfo = Mst_store::find($order->store_id);
+                        $storeInfo = Mst_store::withTrashed()->find($order->store_id);
                         $order->store_name = $storeInfo->store_name;
                     }
                     $data['status'] = 1;
