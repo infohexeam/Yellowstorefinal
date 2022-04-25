@@ -4140,11 +4140,11 @@ class StoreController extends Controller
       ->join('trn__order_split_payments', 'trn__order_split_payments.opt_id', '=', 'trn__order_payment_transactions.opt_id');
 
     if (isset($request->date_from)) {
-      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '>=', $a1);
+      $store_payments = $store_payments->whereDate('trn_store_orders.created_at', '>=', $a1);
     }
 
     if (isset($request->date_to)) {
-      $store_payments = $payments_datas->whereDate('trn_store_orders.created_at', '<=', $a2);
+      $store_payments = $store_payments->whereDate('trn_store_orders.created_at', '<=', $a2);
     }
 
     $store_payments = $store_payments->where('trn_store_orders.store_id', $store_id)
@@ -4152,7 +4152,7 @@ class StoreController extends Controller
       ->where('trn__order_split_payments.paymentRole', 1)
       ->get();
 
-    return view('store.elements.payments.view', compact('paid_details', 'paidAmount', 'store_id', 'payments_datas', 'store_payments', 'pageTitle'));
+    return view('store.elements.payments.view', compact('paid_details', 'paidAmount', 'store_id', 'store_payments', 'pageTitle'));
 
     //dd($payments_datas);
 
