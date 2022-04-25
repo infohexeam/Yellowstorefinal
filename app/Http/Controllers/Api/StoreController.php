@@ -2120,7 +2120,7 @@ class StoreController extends Controller
                         $sd->payment_type = 'Online';
 
 
-                    if (($sd->payment_type_id == 2) && ($sd->status_id == 4 || $sd->status_id > 5))
+                    if (($sd->payment_type_id == 2) || ($sd->status_id == 4 || $sd->status_id > 5))
                         $sd->payment_status = 'Success';
                     else
                         $sd->payment_status = 'Pending';
