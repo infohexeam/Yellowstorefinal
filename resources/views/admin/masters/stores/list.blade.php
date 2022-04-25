@@ -288,7 +288,7 @@ use App\User;
                                           $store->store_name_slug)}}">View</a>
                                           @csrf
                                           @method('POST')
-                                          <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                          <!-- <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button> -->
                                        </form>
                                     </td>
                                  </tr>
