@@ -76,7 +76,7 @@ class DeliveryBoyOrderController extends Controller
 
 
 
-                            $storeInfo = Mst_store::find($order->store_id);
+                            $storeInfo = Mst_store::withTrashed()->find($order->store_id);
                             $order->store_name = $storeInfo->store_name;
 
                             $ordersList[] = $order;
