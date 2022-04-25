@@ -121,7 +121,8 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if(($d->payment_type_id == 2) || ($d->status_id == 4 || $d->status_id > 5))
+                                                <!-- @if(($d->payment_type_id == 2) || ($d->status_id == 4 || $d->status_id > 5)) -->
+                                                @if(($d->payment_type_id == 2) || ($d->status_id == 9))
                                                 Success
                                                 @else
                                                 Pending
