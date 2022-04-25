@@ -170,7 +170,7 @@ use App\User;
                            Create Store
                         </a>
                         @if(auth()->user()->user_role_id == 0)
-                         <a href=" {{ url('admin/store/restore-list') }}" class=" text-white btn btn-block btn-danger">
+                         <a href=" {{ url('admin/store/restore-list') }}" class=" text-white btn btn-block btn-danger" style="display:none;">
                            <i class="fa fa-recycle"></i>
                           Restore Store
                         </a>
