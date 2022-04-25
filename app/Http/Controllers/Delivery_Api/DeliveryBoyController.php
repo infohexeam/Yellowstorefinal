@@ -124,6 +124,7 @@ class DeliveryBoyController extends Controller
                                 $data['delivery_boy_id'] = $user->delivery_boy_id;
                                 $data['delivery_boy_name'] = $user->delivery_boy_name;
                                 $data['delivery_boy_mobile'] = $user->delivery_boy_mobile;
+                                $data['availability_status'] = $user->availability_status;
                             }
                         } else {
                             $data['status'] = 4;
