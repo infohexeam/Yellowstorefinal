@@ -564,7 +564,6 @@ class SettingController extends Controller
 			$districts = District::where('state_id', $request->store_state_id)->get();
 			$town = Town::where('district_id', $request->store_district_id)->get();
 
-
 			$query = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
 				->leftjoin('users', 'users.id', '=', 'mst_stores.subadmin_id')
 				->where('trn__store_admins.role_id', 0)

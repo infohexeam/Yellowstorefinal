@@ -49,13 +49,27 @@ class DeliveryBoyController extends Controller
 
     public function logout(Request $request)
     {
-        
-        $accessToken = auth()->user()->token();
-        $token = $request->user()->tokens->find($accessToken);
-        $token->revoke();
-        $data['status'] = 1;
-        $data['message'] = "Success";
+
+        if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
+
+            $divTok = DB::table('oauth_access_tokens')
+                ->where('id', auth()->user()->token())
+                ->update(['revoked' => 1]);
+
+            $data['status'] = 1;
+            $data['message'] = "Success";
+        } else {
+            $data['status'] = 0;
+            $data['message'] = "Failed";
+        }
         return response($data);
+
+        // $accessToken = auth()->user()->token();
+        // $token = $request->user()->tokens->find($accessToken);
+        // $token->revoke();
+        // $data['status'] = 1;
+        // $data['message'] = "Success";
+        // return response($data);
     }
 
     public function loginDelivery(Request $request)
