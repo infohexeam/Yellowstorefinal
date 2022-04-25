@@ -846,7 +846,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         // store payments
 
-        Route::get('store/payment_settlments', 'StoreController@storePayments');
+        Route::get('store/payment_settlments', 'StoreController@storePayments')->name('store.payment-settlement-list');
 
         Route::get('store/incoming-payments', 'StoreController@storeIncomingPayments');
 
