@@ -89,9 +89,9 @@ li .active{
                                                      @if($v->platform == 'Youtube' )
 											            @php
 											                 $revLink = strrev($v->video_code);
-                                                             $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                                                             $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
                                                              $linkCode = strrev($revLinkCode);
-                                                             echo $linkCode;
+                                                             dd($linkCode);
 											            @endphp
         												<div class="tab_content @if($loop->iteration == 1) active @endif">
                                                           <div class="responsive-iframe">
