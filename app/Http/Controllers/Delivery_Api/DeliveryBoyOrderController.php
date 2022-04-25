@@ -76,7 +76,7 @@ class DeliveryBoyOrderController extends Controller
 
 
 
-                            $storeInfo = Mst_store::withTrashed()->find($order->store_id);
+                            $storeInfo = Mst_store::find($order->store_id);
                             $order->store_name = $storeInfo->store_name;
 
                             $ordersList[] = $order;
@@ -407,20 +407,29 @@ class DeliveryBoyOrderController extends Controller
                             $data['orderDetails']->customer_pincode = null;
                         }
 
-                        $storeData = Mst_store::withTrashed()->find($data['orderDetails']->store_id);
-                        $data['orderDetails']->store_name = @$storeData->store_name;
-                        if (isset($storeData->gst))
-                            $data['orderDetails']->gst = @$storeData->gst;
-                        else
-                            $data['orderDetails']->gst = "";
+                        $storeData = Mst_store::find($data['orderDetails']->store_id);
+                        if ($storeData->exists()) {
+                            $data['orderDetails']->store_name = @$storeData->store_name;
+                                if (isset($storeData->gst))
+                                    $data['orderDetails']->gst = @$storeData->gst;
+                                else
+                                    $data['orderDetails']->gst = "";
 
-                        $data['orderDetails']->store_primary_address = @$storeData->store_primary_address;
-                        $data['orderDetails']->store_mobile = @$storeData->store_mobile;
+                                $data['orderDetails']->store_primary_address = @$storeData->store_primary_address;
+                                $data['orderDetails']->store_mobile = @$storeData->store_mobile;
 
 
-                        $data['orderDetails']->store_latitude = @$storeData->latitude;
-                        $data['orderDetails']->store_longitude = @$storeData->longitude;
-                        $data['orderDetails']->store_place = @$storeData->place;
+                                $data['orderDetails']->store_latitude = @$storeData->latitude;
+                                $data['orderDetails']->store_longitude = @$storeData->longitude;
+                                $data['orderDetails']->store_place = @$storeData->place;
+                         }else{
+                            $data['status'] = 0;
+                            $data['message'] = "Store not found "; 
+                         }
+
+                        
+
+                        
 
                         if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
                             $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
