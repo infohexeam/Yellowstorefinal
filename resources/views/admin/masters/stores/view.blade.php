@@ -57,7 +57,8 @@
                                     <td><strong>Website Link:</strong> <a target="_balnk" href="{{ @$store->store_website_link}}" >{{ $store->store_website_link}}</a></td>
                                  </tr>
                                     <tr>
-                                    <td><strong> Pincode:</strong> {{ @$store->store_pincode}}</td>
+                                    <!-- <td><strong> Pincode:</strong> {{ @$store->store_pincode}}</td> -->
+                                    <td><strong> Registered GSTIN:</strong> {{ @$store->store_doc['store_document_gstin'] }}</td>
                                  </tr>
                                  </tr>
                                 <tr>
