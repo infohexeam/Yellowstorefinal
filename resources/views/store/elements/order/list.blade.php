@@ -105,7 +105,7 @@ use App\Models\admin\Mst_store_product;
  <div class="card-body">
 
             <div class="table-responsive">
-               <table  class="table table-striped table-bordered text-nowrap w-100">
+               <table id="exampletable"  class="table table-striped table-bordered text-nowrap w-100">
                   <thead>
                      <tr>
                         <th class="wd-15p">SL.No</th>
@@ -362,6 +362,35 @@ use App\Models\admin\Mst_store_product;
    </div>
 </div>
 @endforeach
+
+<script>
+    $(document).ready(function() {
+$(function(e) {
+	 $('#exampletable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Store Orders',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,4,5]
+                 }
+            },
+            {
+                extend: 'excel',
+                title: 'Store Orders',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,4,5]
+                 }
+            }
+         ]
+    } );
+
+} );
+} );
+</script>
 
 <script>
 
