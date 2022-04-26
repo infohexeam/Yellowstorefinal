@@ -3142,9 +3142,16 @@ class StoreController extends Controller
     $product_varient_id = $request->product_varient_id;
 
     $usData = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->first();
+    
 
     if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->update(['stock_count' => 0])) {
       $s = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->pluck("stock_count");
+
+      // $prodctCnt = DB::table('mst_store_product_varients')->where('product_id', $usData->product_id)->count();
+      // if($prodctCnt > 0)
+      // {
+            //insert a product status column in varient table
+      // }
 
       $productData2['product_status'] = 0;
       Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
