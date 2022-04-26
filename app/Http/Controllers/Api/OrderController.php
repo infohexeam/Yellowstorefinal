@@ -517,7 +517,6 @@ class OrderController extends Controller
                                 $ospCount = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->count();
                                 if ($ospCount > 0) {
                                     $osp = Trn_OrderSplitPayments::where('opt_id', $row->opt_id)->get();
-                                    $osp['splitServiceCharge'] = "67";
                                     $row->orderSplitPayments = $osp;
                                 } else {
                                     $row->orderSplitPayments = [];
