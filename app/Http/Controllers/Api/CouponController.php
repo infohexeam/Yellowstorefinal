@@ -100,9 +100,9 @@ class CouponController extends Controller
  
                                     if($request->coupon_status == 0)
                                     {
-                                        dd("string");
+                                        
                                         $today = Carbon::now()->toDateTimeString();
-
+                                        dd($today);
                                         $couponDetail = $couponDetail->whereDate('valid_from' ,'<=' ,$today)->whereDate('valid_to','>=',$today);
                                         // $couponDetail = $couponDetail->whereDate('valid_to' ,'>=' ,$today);
                                     }         
