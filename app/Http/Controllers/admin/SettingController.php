@@ -1030,7 +1030,7 @@ class SettingController extends Controller
 			$store->store_primary_address        = $request->store_primary_address;
 			$store->email          				= $request->email;
 
-
+			$store->gst 					= $request->store_document_gstin;
 			$store->store_country_id             = $request->store_country_id;
 			$store->store_state_id  		     = $request->store_state_id;
 			$store->store_district_id   	     = $request->store_district_id;
@@ -1091,7 +1091,7 @@ class SettingController extends Controller
 						[
 							'store_id'               => $store_Id,
 							'store_document_license'  => $request->store_document_license,
-							'store_document_gstin'     => $request->store_document_gstin,
+							//'store_document_gstin'     => $request->store_document_gstin,
 							'store_document_file_head' => $files_head[$k],
 							'store_document_other_file' => $filename,
 							'created_at'         		=> $date,

@@ -227,7 +227,7 @@
 
                            <label class="form-label">Registered GSTIN</label>
                            <input type="text" class="form-control"
-                           name="store_document_gstin" value="{{old('store_document_gstin',@$store->store_doc->store_document_gstin)}}" placeholder="Registered GSTIN">
+                           name="store_document_gstin" value="{{old('gst',@$store->gst)}}" placeholder="Registered GSTIN">
                         </div>
                      </div>
 
