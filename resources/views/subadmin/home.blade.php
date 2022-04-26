@@ -20,9 +20,6 @@ use App\Models\admin\Trn_sub_admin_payment_settlment;
 				->count();
 
 
-
-
-
      @$payments_datas = Trn_subadmin_payments_tracker::where('subadmin_id',auth()->user()->id)->get();
      @$payments = Trn_sub_admin_payment_settlment::where('subadmin_id',auth()->user()->id)->get();
  foreach (@$payments as $payment)
