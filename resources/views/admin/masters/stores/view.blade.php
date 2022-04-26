@@ -58,7 +58,7 @@
                                  </tr>
                                     <tr>
                                     <!-- <td><strong> Pincode:</strong> {{ @$store->store_pincode}}</td> -->
-                                    <td><strong> Registered GSTIN:</strong> {{ @$store->store_doc['store_document_gstin'] }}</td>
+                                    <td><strong> Registered GSTIN:</strong> {{ @$store->gst }}</td>
                                  </tr>
                                  </tr>
                                 <tr>
