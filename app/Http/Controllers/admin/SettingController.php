@@ -2728,11 +2728,9 @@ class SettingController extends Controller
 		} else {
 
 			$storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->pluck('store_id');
-
-
+			
 			$delivery_boys = \DB::table('mst_delivery_boys')
 				->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
-
 				->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
 				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
 				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
