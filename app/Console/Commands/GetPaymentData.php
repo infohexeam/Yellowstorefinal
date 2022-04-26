@@ -102,8 +102,10 @@ class GetPaymentData extends Command
                 $osp->splitAmount = $responseFinal["settlementAmount"];
                 $osp->serviceCharge = $responseFinal["serviceCharge"];
                 $osp->serviceTax = $responseFinal["serviceTax"];
-                $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
-                $osp->splitServiceTax = $responseFinal["splitServiceTax"];
+                $osp->splitServiceCharge = $responseFinal["serviceCharge"];
+                $osp->splitServiceTax = $responseFinal["serviceTax"];
+                // $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
+                // $osp->splitServiceTax = $responseFinal["splitServiceTax"];
                 $osp->settlementAmount = $responseFinal["settlementAmount"];
                 $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
 
@@ -119,8 +121,10 @@ class GetPaymentData extends Command
                             $osp->splitAmount = $key["settlementAmount"];
                             $osp->serviceCharge = @$key["serviceCharge"];
                             $osp->serviceTax = @$key["serviceTax"];
-                            $osp->splitServiceCharge = @$key["splitServiceCharge"];
-                            $osp->splitServiceTax = @$key["splitServiceTax"];
+                            $osp->splitServiceCharge = @$key["serviceCharge"]; //new update
+                            $osp->splitServiceTax = @$key["serviceTax"];
+                            // $osp->splitServiceCharge = @$key["splitServiceCharge"];
+                            // $osp->splitServiceTax = @$key["splitServiceTax"];
                             $osp->settlementAmount = @$key["settlementAmount"];
                             $osp->settlementEligibilityDate = @$key["settlementEligibilityDate"];
                             $osp->paymentRole = 0;
