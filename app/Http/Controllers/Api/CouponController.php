@@ -102,8 +102,8 @@ class CouponController extends Controller
                                     {
                                         $today = Carbon::now()->toDateTimeString();
 
-                                        // $couponDetail = $couponDetail->whereDate('valid_from' ,'<=' ,$today)->whereDate('valid_to','>=',$today);
-                                        $couponDetail = $couponDetail->whereDate('valid_to' ,'>=' ,$today);
+                                        $couponDetail = $couponDetail->whereDate('valid_from' ,'<=' ,$today)->whereDate('valid_to','>=',$today);
+                                        // $couponDetail = $couponDetail->whereDate('valid_to' ,'>=' ,$today);
                                     }         
                                     
                                     $data['couponDetails'] = $couponDetail->orderBy('coupon_id','DESC')->get();
