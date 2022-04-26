@@ -323,7 +323,7 @@ $date = Carbon\Carbon::now();
 
 
                       <script>
-
+ $(document).ready(function() {
 $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
@@ -333,7 +333,7 @@ $(function(e) {
                 title: 'Disputes',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4]
+                     columns: [0,1,2,3,4,5,6]
                  }
             },
             {
@@ -341,13 +341,15 @@ $(function(e) {
                 title: 'Disputes',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4]
+                     columns: [0,1,2,3,4,5,6]
                  }
             }
          ]
     } );
 
 } );
+} );
+</script>
 
 
 
