@@ -17,8 +17,6 @@ use App\Models\admin\Trn_sub_admin_payment_settlment;
    $boys_count =  $delivery_boys = \DB::table('mst_delivery_boys')
 				->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
 				->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
-				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
-				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
 				->count();
 
 
