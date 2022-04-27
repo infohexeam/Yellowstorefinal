@@ -658,27 +658,27 @@ class Helper
     }
 
 
-    public static function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
-    {
+    // public static function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
+    // {
         
-        // convert from degrees to radians
-        $latFrom = deg2rad($latitudeFrom); //store  lat
-        $lonFrom = deg2rad($longitudeFrom); //stor long
-        $latTo = deg2rad($latitudeTo); //customer lat
-        $lonTo = deg2rad($longitudeTo); // customer long
+    //     // convert from degrees to radians
+    //     $latFrom = deg2rad($latitudeFrom); //store  lat
+    //     $lonFrom = deg2rad($longitudeFrom); //stor long
+    //     $latTo = deg2rad($latitudeTo); //customer lat
+    //     $lonTo = deg2rad($longitudeTo); // customer long
         
 
-        $latDelta = $latTo - $latFrom;
-        $lonDelta = $lonTo - $lonFrom;
+    //     $latDelta = $latTo - $latFrom;
+    //     $lonDelta = $lonTo - $lonFrom;
 
-        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
-        $dist = $angle * $earthRadius;
+    //     $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+    //         cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+    //     $dist = $angle * $earthRadius;
 
-        dd($latDelta,$lonDelta,$angle,$dist);
+    //     dd($latDelta,$lonDelta,$angle,$dist);
 
-        return number_format((float)$dist, 2, '.', '');
-    }
+    //     return number_format((float)$dist, 2, '.', '');
+    // }
 
     public static function vincentyGreatCircleDistance(
         $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
