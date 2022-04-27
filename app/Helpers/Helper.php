@@ -675,7 +675,7 @@ class Helper
             cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
         $dist = $angle * $earthRadius;
 
-        dd($latDelta,$lonDelta,$angle,$dist);
+        //dd($latDelta,$lonDelta,$angle,$dist);
 
         return number_format((float)$dist, 2, '.', '');
     }
@@ -684,10 +684,10 @@ class Helper
     public static function haversineGreatCircleDistance2($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
     {
         //convert from degrees to radians
-        $latFrom = $latitudeFrom;
-        $lonFrom = $longitudeFrom;
-        $latTo = $latitudeTo;
-        $lonTo = $longitudeTo;
+        $latFrom = deg2rad($latitudeFrom);
+        $lonFrom = deg2rad($longitudeFrom);
+        $latTo = deg2rad($latitudeTo);
+        $lonTo = deg2rad($longitudeTo);
 
 
         $latDelta = $latTo - $latFrom;
