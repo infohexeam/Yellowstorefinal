@@ -447,6 +447,7 @@ class DeliveryBoyOrderController extends Controller
                         $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
 
                         $orderAddress = Trn_customerAddress::find($data['orderDetails']->delivery_address);
+                        
 
                         $dist = Helper::getDistanceBetweenPointsNew(@$storeData->latitude, @$storeData->longitude, @$orderAddress->latitude, @$orderAddress->longitude);
 
