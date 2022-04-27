@@ -684,9 +684,9 @@ class Helper
 
     public static function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longitude2, $unit = 'kilometers') {
 
-        $latitude1 = "11.635913806519914";
+        $latitude1 = "11.2485721";
         $latitude2 = "11.060702350011647";
-        $longitude1 =  "75.60971528291702";
+        $longitude1 =  "75.799184";
         $longitude2 =  "76.54728949069977";
 
         $theta = $longitude1 - $longitude2; 
