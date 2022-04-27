@@ -674,9 +674,9 @@ class Helper
         $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
             cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
         $dist = $angle * $earthRadius;
-        $actualdist = $dist + 33;
+        $actualdist = $dist + 43;
 
-        dd(number_format((float)$actualdist, 2, '.', ''));
+        dd(round($actualdist,2));
         //dd($latDelta,$lonDelta,$angle,$dist);
 
         return number_format((float)$dist, 2, '.', '');
