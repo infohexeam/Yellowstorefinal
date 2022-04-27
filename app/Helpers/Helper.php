@@ -682,7 +682,7 @@ class Helper
         
     }
 
-    public static function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longitude2, $unit = 'miles') {
+    public static function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longitude2, $unit = 'kilometers') {
         $theta = $longitude1 - $longitude2; 
         $distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta))); 
         $distance = acos($distance); 
@@ -694,6 +694,7 @@ class Helper
           case 'kilometers' : 
             $distance = $distance * 1.609344; 
         } 
+        
         dd(round($distance,2));
         return (round($distance,2)); 
       }
