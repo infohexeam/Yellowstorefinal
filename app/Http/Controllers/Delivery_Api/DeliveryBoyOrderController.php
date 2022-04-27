@@ -448,7 +448,7 @@ class DeliveryBoyOrderController extends Controller
 
                         $orderAddress = Trn_customerAddress::find($data['orderDetails']->delivery_address);
 
-                        $dist = Helper::haversineGreatCircleDistance(@$storeData->latitude, @$storeData->longitude, @$orderAddress->latitude, @$orderAddress->longitude);
+                        $dist = Helper::vincentyGreatCircleDistance(@$storeData->latitude, @$storeData->longitude, @$orderAddress->latitude, @$orderAddress->longitude);
 
                         //  $settingsRow = Trn_store_setting::where('store_id',$data['orderDetails']->store_id)
                         //     ->where('service_start', '<=' , $dist)
