@@ -678,7 +678,25 @@ class Helper
         //dd($latDelta,$lonDelta,$angle,$dist);
 
         return number_format((float)$dist, 2, '.', '');
+
+        
     }
+
+    public static function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longitude2, $unit = 'miles') {
+        $theta = $longitude1 - $longitude2; 
+        $distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta))); 
+        $distance = acos($distance); 
+        $distance = rad2deg($distance); 
+        $distance = $distance * 60 * 1.1515; 
+        switch($unit) { 
+          case 'miles': 
+            break; 
+          case 'kilometers' : 
+            $distance = $distance * 1.609344; 
+        } 
+        dd(round($distance,2));
+        return (round($distance,2)); 
+      }
     
 
     public static function haversineGreatCircleDistance2($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
