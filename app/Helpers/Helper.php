@@ -684,10 +684,10 @@ class Helper
     public static function haversineGreatCircleDistance2($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
     {
         //convert from degrees to radians
-        $latFrom = deg2rad($latitudeFrom);
-        $lonFrom = deg2rad($longitudeFrom);
-        $latTo = deg2rad($latitudeTo);
-        $lonTo = deg2rad($longitudeTo);
+        $latFrom = $latitudeFrom;
+        $lonFrom = $longitudeFrom;
+        $latTo = $latitudeTo;
+        $lonTo = $longitudeTo;
 
 
         $latDelta = $latTo - $latFrom;
