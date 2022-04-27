@@ -658,48 +658,30 @@ class Helper
     }
 
 
-    // public static function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
-    // {
+    public static function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
+    {
         
-    //     // convert from degrees to radians
-    //     $latFrom = deg2rad($latitudeFrom); //store  lat
-    //     $lonFrom = deg2rad($longitudeFrom); //stor long
-    //     $latTo = deg2rad($latitudeTo); //customer lat
-    //     $lonTo = deg2rad($longitudeTo); // customer long
-        
-
-    //     $latDelta = $latTo - $latFrom;
-    //     $lonDelta = $lonTo - $lonFrom;
-
-    //     $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-    //         cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
-    //     $dist = $angle * $earthRadius;
-
-    //     dd($latDelta,$lonDelta,$angle,$dist);
-
-    //     return number_format((float)$dist, 2, '.', '');
-    // }
-
-    public static function vincentyGreatCircleDistance(
-        $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
-      {
         // convert from degrees to radians
-        $latFrom = deg2rad($latitudeFrom);
-        $lonFrom = deg2rad($longitudeFrom);
-        $latTo = deg2rad($latitudeTo);
-        $lonTo = deg2rad($longitudeTo);
-      
-        $lonDelta = $lonTo - $lonFrom;
-        $a = pow(cos($latTo) * sin($lonDelta), 2) +
-          pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);
-        $b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($lonDelta);
-      
-        $angle = atan2(sqrt($a), $b);
-        dd($angle * $earthRadius);
-        return $angle * $earthRadius;
-      }
+        $latFrom = deg2rad($latitudeFrom); //store  lat
+        $lonFrom = deg2rad($longitudeFrom); //stor long
+        $latTo = deg2rad($latitudeTo); //customer lat
+        $lonTo = deg2rad($longitudeTo); // customer long
+        
 
-    public static function haversineGreatCircleDistance2($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+        $dist = $angle * $earthRadius;
+
+        dd($latDelta,$lonDelta,$angle,$dist);
+
+        return number_format((float)$dist, 2, '.', '');
+    }
+    
+
+    public static function haversineGreatCircleDistance2($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
     {
         //convert from degrees to radians
         $latFrom = deg2rad($latitudeFrom);
