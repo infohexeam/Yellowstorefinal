@@ -160,7 +160,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                            <table class="table row table-borderless">
                               <tbody class="col-lg-12 col-xl-6 p-0">
                                  <tr>
-                                    <td><strong>Delivery Name :</strong> {{@$order->delivery_boy['delivery_boy_name']}}</td>
+                                    <td><strong>Delivery Boy Name :</strong> {{@$order->delivery_boy['delivery_boy_name']}}</td>
                                  </tr>
 
                                  <tr>

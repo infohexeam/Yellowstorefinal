@@ -2341,7 +2341,7 @@ class ProductController extends Controller
       }
     }
 
-    $data = $data->get();
+    $data = $data->orderBy('updated_time', 'DESC')->get();
 
     //   dd($data);
 
