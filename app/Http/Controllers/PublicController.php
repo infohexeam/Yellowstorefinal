@@ -45,7 +45,8 @@ class PublicController extends Controller
        // dd($request->all(),$proEx,$proExGlob,$totalCount);
 
 
-    if ($proEx > 0) {
+    // if ($proEx > 0) { //old
+    if ($proEx > 1) { 
       $a = 1;
       return $a;
     } else {
