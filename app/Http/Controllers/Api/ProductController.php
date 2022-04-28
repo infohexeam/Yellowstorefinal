@@ -52,8 +52,8 @@ class ProductController extends Controller
         $data = array();
         try {
 
-
-            $proEx = Mst_store_product::where('product_code', $request->product_code);
+            $storeId = $request->store_id;
+            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id','=',$storeId);
             if (isset($request->product_id))
                 $proEx = $proEx->where('product_id', '!=', $request->product_id);
             $proEx = $proEx->count();
