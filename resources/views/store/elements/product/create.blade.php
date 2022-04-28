@@ -59,6 +59,8 @@ input[type="file"] {
                <form action="{{route('store.store_product')}}" method="POST"
                   enctype="multipart/form-data">
                   @csrf
+                  @php $user_id = Auth::guard('store')->user()->store_id; @endphp
+                  <input type = "hidden" id="store_id" name="store_id" value="{{$user_id}}">
                   <div class="row">
                      <div class="col-md-12">
                         <div class="form-group">
@@ -427,9 +429,11 @@ function submitForm(){
 function isCodeAvailable(value)
 {
             var _token= $('input[name="_token"]').val();
+            var store_id = $('#store_id').val();
         $.ajax({
           type:"GET",
           url:"{{ url('product/ajax/is-code-available') }}?product_code="+value,
+          data: {store_id: store_id},
 
 
           success:function(res){
