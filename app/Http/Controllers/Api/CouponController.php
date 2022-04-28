@@ -106,7 +106,19 @@ class CouponController extends Controller
                                         //dd($today);
                                         // $couponDetail = $couponDetail->whereDate('valid_from' ,'<=' ,$today)->whereDate('valid_to','>=',$today);
                                         $couponDetail = $couponDetail->whereDate('valid_to' ,'>=' ,$today);
-                                    }      
+                                    }  
+                                    $today = Carbon::now()->toDateString();
+                                    foreach($couponDetail as $cpnDet)
+                                    {
+                                        $cpnId = $cpnDet->coupon_id;
+                                        $ValidFrom = $cpnDet->valid_from;
+                                        $VlidTo = $cpnDet->valid_to;
+                                        if($ValidFrom <= $today && $VlidTo >= $today)
+                                        {
+                                            $data['expiry_status'] = "expired";
+                                        }
+                                        
+                                    }
                                     
                                     $data['couponDetails'] = $couponDetail->orderBy('coupon_id','DESC')->get();
                                     $data['status'] = 1;
