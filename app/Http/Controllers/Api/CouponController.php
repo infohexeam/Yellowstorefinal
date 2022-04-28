@@ -113,7 +113,7 @@ class CouponController extends Controller
                                         $cpnId = $cpnDet->coupon_id;
                                         $ValidFrom = $cpnDet->valid_from;
                                         $VlidTo = $cpnDet->valid_to;
-                                        if($ValidFrom <= $today && $VlidTo >= $today)
+                                        if($ValidFrom < $today && $VlidTo >= $today)
                                         {
                                             $data['expiry_status'] = "expired";
                                         }
