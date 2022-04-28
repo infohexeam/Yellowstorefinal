@@ -166,7 +166,7 @@
                                             <th class="wd-15p">Store</th>
                                             <th class="wd-15p">Subadmin</th>
                                             <th class="wd-15p">Stock</th>
-                                            <th class="wd-15p">Date</th>
+                                            <th class="wd-15p">Updated Date <br> and Time</th>
                                             <th class="wd-15p">Variant Price</th>
                                             <th class="wd-15p">Vendor</th>
                                             <th class="wd-15p">Category</th>
@@ -193,7 +193,7 @@
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
 
                                             <td>{{ $d->stock_count }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($d->updated_at)->format('d-m-Y')}} {{ \Carbon\Carbon::parse($d->updated_at)->format('H:i')}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}} {{ \Carbon\Carbon::parse($d->updated_time)->format('H:i:s')}}</td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
                                             <td>
                                                 @if(isset($d->agency_name))
