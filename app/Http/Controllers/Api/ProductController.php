@@ -61,10 +61,10 @@ class ProductController extends Controller
 
             if ($proEx > 0) {
                 $data['status'] = 0;
-                $data['message'] = "Not avilable";
+                $data['message'] = "Not available";
             } else {
                 $data['status'] = 1;
-                $data['message'] = "Avilable";
+                $data['message'] = "Available";
             }
 
 
