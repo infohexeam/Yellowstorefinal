@@ -147,7 +147,7 @@
                            },
                            {
                                extend: 'excel',
-                               title: 'Delivery Boys',
+                               title: 'Global Product',
                                footer: true,
                                exportOptions: {
                                     columns: [0,1,2,3,5]
