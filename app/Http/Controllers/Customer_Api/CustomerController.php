@@ -377,6 +377,7 @@ class CustomerController extends Controller
                     foreach ($customerDevice as $cd) {
                         $title = 'Registration points credited';
                         $body = $configPoint->registraion_points . ' points credited to your wallet..! Verify your account and Login now';
+                        $notification_type = "wallet";
                         //   $body = 'Registration points credited successully..';
                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
                     }

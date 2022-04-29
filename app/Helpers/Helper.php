@@ -534,13 +534,13 @@ class Helper
 
 
 
-    public static function customerNotification($device_id, $title, $body)
+    public static function customerNotification($device_id, $title, $body, $notification_type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'notification_type' => $notification_type),
         );
         $headers = array(
             'Content-Type:application/json',
