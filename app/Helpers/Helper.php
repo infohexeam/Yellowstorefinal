@@ -660,25 +660,38 @@ class Helper
 
     public static function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
     {
+        $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$latitudeFrom.",".$longitudeFrom."&destinations=".$latitudeTo.",".$longitudeTo."&mode=driving&language=en-EN&key=AIzaSyAKYUXBDwnBHpAW7OWVEfqp4L-ZCxmTJjw";
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_PROXYPORT, 3128);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                $data = json_decode($response, true);
+                $dist = $data['rows'][0]['elements'][0]['distance']['text'];
+                $time = $data['rows'][0]['elements'][0]['duration']['text'];
+                return $dist;
         
-        // convert from degrees to radians
-        $latFrom = deg2rad($latitudeFrom); //store  lat
-        $lonFrom = deg2rad($longitudeFrom); //stor long
-        $latTo = deg2rad($latitudeTo); //customer lat
-        $lonTo = deg2rad($longitudeTo); // customer long
+        // // convert from degrees to radians
+        // $latFrom = deg2rad($latitudeFrom); //store  lat
+        // $lonFrom = deg2rad($longitudeFrom); //stor long
+        // $latTo = deg2rad($latitudeTo); //customer lat
+        // $lonTo = deg2rad($longitudeTo); // customer long
         
 
-        $latDelta = $latTo - $latFrom;
-        $lonDelta = $lonTo - $lonFrom;
+        // $latDelta = $latTo - $latFrom;
+        // $lonDelta = $lonTo - $lonFrom;
 
-        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
-        $dist = $angle * $earthRadius;
-        //$actualdist = $dist + 43;
+        // $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+        //     cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+        // $dist = $angle * $earthRadius;
+        // //$actualdist = $dist + 43;
 
-        //dd(round($actualdist,2));
+        // //dd(round($actualdist,2));
     
-        return number_format((float)$dist, 2, '.', '');
+        // return number_format((float)$dist, 2, '.', '');
 
         
     }
