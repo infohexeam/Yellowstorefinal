@@ -323,7 +323,8 @@ class DisputeController extends Controller
                                 $title = 'Dispute closed';
                                 //  $body = 'First order points credited successully..';
                                 $body =  'Your dispute with order number' . $orderData->order_number . ' is closed by store..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="dispute";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
                         }
 
@@ -335,7 +336,8 @@ class DisputeController extends Controller
                                 $title = 'Dispute in progress';
                                 //  $body = 'First order points credited successully..';
                                 $body =  'Your dispute with order number' . $orderData->order_number . ' is in progress..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="dispute";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
                         }
 
@@ -347,7 +349,8 @@ class DisputeController extends Controller
                                 $title = 'Dispute is returned';
                                 //  $body = 'First order points credited successully..';
                                 $body =  'Your dispute with order number' . $orderData->order_number . ' is returned..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="dispute";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$notification_type);
                             }
                         }
 

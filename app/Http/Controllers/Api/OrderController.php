@@ -759,10 +759,11 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'First order points creadited';
+                                        $title = 'First order points credited';
                                         //  $body = 'First order points credited successully..';
                                         $body = $configPoint->first_order_points . ' points credited to your wallet..';
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        $notification_type="wallet";
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                                     }
                                 }
 
@@ -786,7 +787,8 @@ class OrderController extends Controller
                                     foreach ($customerDevice as $cd) {
                                         $title = 'Referal points credited';
                                         $body = $configPoint->referal_points . ' points credited to your wallet..';
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        $notification_type="wallet";
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                                     }
 
 
@@ -807,7 +809,8 @@ class OrderController extends Controller
                                             $title = 'Referal joiner points credited';
                                             //  $body = 'Referal joiner points credited successully..';
                                             $body = $configPoint->joiner_points . ' points credited to your wallet..';
-                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                            $notification_type="wallet";
+                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                                         }
                                     }
                                 }
@@ -833,7 +836,8 @@ class OrderController extends Controller
                                     foreach ($customerDevice as $cd) {
                                         $title = 'Order points credited';
                                         $body = $orderPointAmount . ' points credited to your wallet..';
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        $notification_type="wallet";
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                                     }
                                 }
                             }
@@ -849,7 +853,8 @@ class OrderController extends Controller
                             foreach ($customerDevice as $cd) {
                                 $title = 'Order confirmed';
                                 $body = "Your order " . $od->order_number . ' is confirmed..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
                         }
 
@@ -859,7 +864,8 @@ class OrderController extends Controller
                             foreach ($customerDevice as $cd) {
                                 $title = 'Order picking completed';
                                 $body = "Your order " . $od->order_number . ' picking completed..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
                         }
                         if ($request->status_id == 7) { //ready for delivery
@@ -868,7 +874,8 @@ class OrderController extends Controller
                             foreach ($customerDevice as $cd) {
                                 $title = 'Order ready for delivery';
                                 $body = "Your order " . $od->order_number . ' is ready for delivery..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
                         }
 
@@ -878,7 +885,8 @@ class OrderController extends Controller
                             foreach ($customerDevice as $cd) {
                                 $title = 'Order out for delivery';
                                 $body = "Your order " . $od->order_number . ' is out for delivery..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
                         }
 
@@ -888,7 +896,8 @@ class OrderController extends Controller
                             foreach ($customerDevice as $cd) {
                                 $title = 'Order deliverd';
                                 $body = "Your order " . $od->order_number . ' is deliverd..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
                         }
 
@@ -904,7 +913,8 @@ class OrderController extends Controller
                                 foreach ($dBoyDevices as $cd) {
                                     $title = 'Order Assigned';
                                     $body = 'New order(' . $od->order_number . ') arrived';
-                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body);
+                                    $notification_type="order";
+                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body, $notification_type);
                                 }
                             }
                             $orderdata2['delivery_accept'] = null;

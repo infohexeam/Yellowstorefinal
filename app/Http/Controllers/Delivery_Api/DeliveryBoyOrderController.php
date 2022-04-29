@@ -172,7 +172,8 @@ class DeliveryBoyOrderController extends Controller
                             foreach ($storeDevice as $sd) {
                                 $title = 'Delivery Boy Accepted Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been accepted by ' . $dBoy->delivery_boy_name;
-                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                                $notification_type="order";
+                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $notification_type);
                             }
 
 
@@ -203,7 +204,8 @@ class DeliveryBoyOrderController extends Controller
                             foreach ($storeDevice as $sd) {
                                 $title = 'Delivery Boy Rejected Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been rejected by ' . $dBoy->delivery_boy_name;
-                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                                $notification_type="order";
+                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $notification_type);
                             }
 
 
@@ -246,13 +248,13 @@ class DeliveryBoyOrderController extends Controller
 
 
 
-    private function storeNotification($device_id, $title, $body)
+    private function storeNotification($device_id, $title, $body, $notification_type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'notification_type' => $notification_type),
         );
         $headers = array(
             'Content-Type:application/json',
@@ -707,7 +709,8 @@ class DeliveryBoyOrderController extends Controller
                         $title = 'Order delivered';
                         // $body = 'First order points credited successully..';
                         $body = 'Order delivered with order id ' . $order->order_number;
-                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                        $notification_type="order";
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                     }
 
 
@@ -730,7 +733,8 @@ class DeliveryBoyOrderController extends Controller
                             $title = 'First order points credited';
                             // $body = 'First order points credited successully..';
                             $body = $configPoint->first_order_points . ' points credited to your wallet..';
-                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                            $notification_type="wallet";
+                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                         }
 
 
@@ -754,7 +758,8 @@ class DeliveryBoyOrderController extends Controller
                                 $title = 'Referal points credited';
                                 // $body = 'Referal points credited successully..';
                                 $body = $configPoint->referal_points . ' points credited to your wallet..';
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $notification_type="wallet";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                             }
 
 
@@ -774,7 +779,8 @@ class DeliveryBoyOrderController extends Controller
                                     $title = 'Referal joiner points credited';
                                     // $body = 'Referal joiner points credited successully..';
                                     $body = $configPoint->joiner_points . ' points credited to your wallet..';
-                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                    $notification_type="wallet";
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body, $notification_type);
                                 }
                             }
                         }
