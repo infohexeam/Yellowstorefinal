@@ -1873,7 +1873,6 @@ class ProductController extends Controller
 
                     $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
                     $data['addressList']  = $addressList;
-                    dd($data);
 
                     foreach ($data['addressList'] as $a) {
                         if (isset($a->longitude) && isset($a->latitude)) {
@@ -1889,7 +1888,6 @@ class ProductController extends Controller
                                 $serVdata = 0;
 
                             if (isset($latitude) && ($longitude)) {
-                                dd($latitude,$longitude);
                                 $storesData          =       DB::table("mst_stores")->join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id');
                                 $storesData         = $storesData->where('trn__store_admins.role_id', 0);
                                 $storesData         = $storesData->where('mst_stores.online_status', 1);
