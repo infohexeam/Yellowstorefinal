@@ -749,7 +749,8 @@ class StoreOrderController extends Controller
                     foreach ($storeDevice as $sd) {
                         $title = 'New order arrived';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                        $notification_type="order";
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $notification_type);
                     }
 
 
