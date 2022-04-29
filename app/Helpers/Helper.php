@@ -564,13 +564,13 @@ class Helper
 
 
 
-    public static function deliveryBoyNotification($device_id, $title, $body)
+    public static function deliveryBoyNotification($device_id, $title, $body,$notification_type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAARrd44xk:APA91bFzEarq0xuLOOD2nnkMrB102CHEPSZXV6LZZnQsMwUSVeJPSXrQ9Vxg_3wP-eXrypj5Kq8GpXn6Kig3Rq84C4q63J4LV-dtDEHRdLiv5saU7ZPBrnw-rGoQc3buW93r9xqpoyJv';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default','notification_type' => $notification_type),
         );
         $headers = array(
             'Content-Type:application/json',
@@ -593,13 +593,13 @@ class Helper
     }
 
 
-    public static function storeNotification($device_id, $title, $body)
+    public static function storeNotification($device_id, $title, $body, $notification_type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default' 'notification_type' => $notification_type),
         );
         $headers = array(
             'Content-Type:application/json',
