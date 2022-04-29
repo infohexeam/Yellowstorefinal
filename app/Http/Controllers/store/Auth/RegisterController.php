@@ -180,7 +180,8 @@ class RegisterController extends Controller
             $store->place            = $request->store_place;
             $store->business_type_id            = $request->business_type_id;
             $store->store_username            = $request->store_mobile;
-            $store->subadmin_id            = 2; // default subadmin
+            $store->store_commision_percentage   = "2.00"; // default commision percentage - client update
+            $store->subadmin_id            = 2; // default subadmin - client update
 
             $timestamp = time();
             $qrco = Str::of($request->store_name)->slug('-') . "-" . rand(10, 99) . "-" . @$request->store_mobile;

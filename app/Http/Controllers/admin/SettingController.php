@@ -729,7 +729,6 @@ class SettingController extends Controller
 			$data = $request->except('_token');
 
 			$store_added_by = Auth()->user()->user_role_id;
-			//	dd($data);
 			$store->store_name 					= $request->store_name;
 			$store->store_name_slug   		    = Str::of($request->store_name)->slug('-');
 			$store->store_contact_person_name   = $request->store_contact_person_name;
@@ -749,6 +748,7 @@ class SettingController extends Controller
 			$store->store_commision_percentage   = $request->store_commision_percentage;
 			$store->store_district_id   	     = $request->store_district_id;
 			$store->store_username               = $request->store_username;
+			$store->store_commision_percentage   = "2.00"; //new update
 			$store->password                     = Hash::make($request->password);
 			$store->store_otp_verify_status       = 0;
 			if ($store_added_by == 0) {
