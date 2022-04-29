@@ -1873,6 +1873,7 @@ class ProductController extends Controller
 
                     $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
                     $data['addressList']  = $addressList;
+                    dd($data);
 
                     foreach ($data['addressList'] as $a) {
                         if (isset($a->longitude) && isset($a->latitude)) {
