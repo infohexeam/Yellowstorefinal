@@ -221,11 +221,12 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                dd($request->store_id);
+                
 
                 foreach ($request->product_id as $product_id) {
 
-                    if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
+                    if (isset($product_id) && $productData = Mst_store_product::find($product_id)) {
+                        dd("string");
                         $removeProduct = array();
                         $removeProduct['is_removed'] = 0; //restore 
                         $removeProduct['product_status'] = 0; //inactive
