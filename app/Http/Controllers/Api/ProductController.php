@@ -221,6 +221,7 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                dd($request->store_id);
 
                 foreach ($request->product_id as $product_id) {
 
