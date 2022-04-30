@@ -227,6 +227,7 @@ Route::group(['prefix' => 'store'], function () {
 
      //RESTORE PRODUCTS
      Route::get('restore-product/list', 'Api\ProductController@restoreDeletedProduct');
+     Route::get('restore-product/save', 'Api\ProductController@updaterestoreDeletedProduct');
 
     //REPORTS 
     Route::get('product-wise-report', 'Api\ProductController@showReport');

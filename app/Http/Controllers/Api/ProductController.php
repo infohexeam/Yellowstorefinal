@@ -215,6 +215,51 @@ class ProductController extends Controller
          }
      }
 
+
+    public function updaterestoreDeletedProduct(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+
+                foreach ($request->product_id as $product_id) {
+
+                    if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
+                        $removeProduct = array();
+                        $removeProduct['is_removed'] = 0; //restore 
+                        $removeProduct['product_status'] = 0; //inactive
+    
+                        $removeProductVar = array();
+                        $removeProductVar['is_removed'] = 0; 
+                        $removeProductVar['stock_count'] = 0;
+    
+                        
+    
+                        if (Mst_store_product::where('product_id', $request->product_id)->update($removeProduct)) {
+                        Mst_store_product_varient::where('product_id', $request->product_id)->update($removeProductVar);
+                            
+                        }
+                    }
+
+                }
+                $data['status'] = 1;
+                $data['message'] = "Product Restored ";
+                return response($data);
+                    
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
     // public function listByCategory(Request $request)
     // {
     //     $data = array();
