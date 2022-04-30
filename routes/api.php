@@ -225,6 +225,9 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('global-product/view', 'Api\ProductController@viewGlobalProduct');
     Route::post('global-product/convert', 'Api\ProductController@convertGlobalProduct');
 
+     //RESTORE PRODUCTS
+     Route::get('restore-product/list', 'Api\ProductController@restoreDeletedProduct');
+
     //REPORTS 
     Route::get('product-wise-report', 'Api\ProductController@showReport');
     Route::get('store-visit-report', 'Api\ProductController@showStoreVisitReport');
