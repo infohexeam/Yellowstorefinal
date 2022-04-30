@@ -178,10 +178,10 @@ class ProductController extends Controller
                  $store_id = $request->store_id;
                  if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                      ->where('mst_store_products.store_id', $store_id)
-                     ->where('mst_store_products.is_removed','!=',0)
+                     ->where('mst_store_products.is_removed','=',1) //deleted items
                      ->orderBy('mst_store_products.product_id', 'DESC')
                      ->select('*')
-                     ->where('is_removed', 0)->get()
+                     ->get()
                  ) {
                      foreach ($data['productDetails'] as $product) {
                          $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
