@@ -1462,8 +1462,8 @@ class ProductController extends Controller
                     $removeProductVar['is_removed'] = 1;
                     $removeProductVar['stock_count'] = 0;
 
-                    if (isset($productData->global_product_id))
-                        $removeProduct['global_product_id'] = 0;
+                    // if (isset($productData->global_product_id)) //restore back to global listing. feature removed due to latest client update of providing restore option for store
+                    //     $removeProduct['global_product_id'] = 0;
 
                     if (Mst_store_product::where('product_id', $request->product_id)->update($removeProduct)) {
                         Mst_store_product_varient::where('product_id', $request->product_id)->update($removeProductVar);
