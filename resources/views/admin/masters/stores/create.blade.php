@@ -190,7 +190,7 @@
                      <div class="col-md-6">
                            <div class="form-group">
                           <label class="form-label">Store Commission Percentage (Per Order) *</label>
-                          <input type="number" step="0.1" id="exclude"  required name="store_commision_percentage" class="form-control" placeholder="Store Commission Percentage (Per Order)" value="{{old('store_commision_percentage')}}">
+                          <input type="number" step="0.1" value="2.00" id="exclude"  required name="store_commision_percentage" class="form-control" placeholder="Store Commission Percentage (Per Order)" value="{{old('store_commision_percentage')}}">
                         </div>
                     </div>
 
