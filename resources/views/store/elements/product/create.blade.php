@@ -55,6 +55,14 @@ input[type="file"] {
                   </ul>
                </div>
                @endif
+               
+               
+               @if ($messageq = Session::get('status-error'))
+               <div class="alert alert-danger">
+                  <p>{{ $messageq }}</p>
+               </div>
+               @endif
+
 
                <form action="{{route('store.store_product')}}" method="POST"
                   enctype="multipart/form-data">

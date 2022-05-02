@@ -922,10 +922,18 @@ class StoreController extends Controller
       ]
     );
 
+   
+
     if (!$validator->fails()) {
 
+      $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$request->product_code)->count();
+        
+      if($ChkCodeExstnce > 0)
+      {
+          return redirect()->back()->with('status-error', 'Product code already used by the store.')->withInput();
+      }else{
 
-      $product->product_name           = $request->product_name;
+        $product->product_name           = $request->product_name;
       $product->product_description    = $request->product_description;
       $product->product_price          = $request->regular_price;
       $product->product_price_offer    = $request->sale_price;
@@ -1262,6 +1270,11 @@ class StoreController extends Controller
 
 
       return redirect('store/product/list')->with('status', 'Product added successfully.');
+        
+      }
+
+
+      
     } else {
 
       return redirect()->back()->withErrors($validator)->withInput();
