@@ -53,7 +53,9 @@ class ProductController extends Controller
         try {
 
             $storeId = $request->store_id;
-            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id','=',$storeId);
+            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->where('is_removed', 0)->get();
+            
+            // $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id','=',$storeId);
             if (isset($request->product_id))
                 $proEx = $proEx->where('product_id', '!=', $request->product_id);
             $proEx = $proEx->count();
