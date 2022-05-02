@@ -53,7 +53,8 @@ class ProductController extends Controller
         try {
 
             $storeId = $request->store_id;
-            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->where('is_removed', 0)->get();
+            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->where('is_removed', 0)->count();
+            dd($proEx);
             
             // $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id','=',$storeId);
             // if (isset($request->product_id))
@@ -61,7 +62,7 @@ class ProductController extends Controller
             // $proEx = $proEx->count();
 
 
-            if ($proEx->isEmpty()) {
+            if ($proEx > 0) {
                 $data['status'] = 0;
                 $data['message'] = "Not available";
             } else {
