@@ -56,12 +56,12 @@ class ProductController extends Controller
             $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->where('is_removed', 0)->get();
             
             // $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id','=',$storeId);
-            if (isset($request->product_id))
-                $proEx = $proEx->where('product_id', '!=', $request->product_id);
-            $proEx = $proEx->count();
+            // if (isset($request->product_id))
+            //     $proEx = $proEx->where('product_id', '!=', $request->product_id);
+            // $proEx = $proEx->count();
 
 
-            if ($proEx > 0) {
+            if ($proEx->isEmpty()) {
                 $data['status'] = 0;
                 $data['message'] = "Not available";
             } else {
