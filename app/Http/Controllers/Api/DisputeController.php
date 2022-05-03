@@ -320,7 +320,7 @@ class DisputeController extends Controller
                             $orderData = Trn_store_order::find($dispData->order_id);
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Dispute closed';
+                                $title = 'Dispute closed:dispute';
                                 //  $body = 'First order points credited successully..';
                                 $body =  'Your dispute with order number' . $orderData->order_number . ' is closed by store..';
                                
@@ -333,7 +333,7 @@ class DisputeController extends Controller
                             $orderData = Trn_store_order::find($dispData->order_id);
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Dispute in progress';
+                                $title = 'Dispute in progress:dispute';
                                 //  $body = 'First order points credited successully..';
                                 $body =  'Your dispute with order number' . $orderData->order_number . ' is in progress..';
                                 
@@ -346,7 +346,7 @@ class DisputeController extends Controller
                             $orderData = Trn_store_order::find($dispData->order_id);
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Dispute is returned';
+                                $title = 'Dispute is returned:dispute';
                                 //  $body = 'First order points credited successully..';
                                 $body =  'Your dispute with order number' . $orderData->order_number . ' is returned..';
                                 

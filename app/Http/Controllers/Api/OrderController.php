@@ -759,7 +759,7 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'First order points credited';
+                                        $title = 'First order points credited:wallet';
                                         //  $body = 'First order points credited successully..';
                                         $body = $configPoint->first_order_points . ' points credited to your wallet..';
                                         
@@ -785,7 +785,7 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'Referal points credited';
+                                        $title = 'Referal points credited:wallet';
                                         $body = $configPoint->referal_points . ' points credited to your wallet..';
                                         
                                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -806,7 +806,7 @@ class OrderController extends Controller
                                         $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->referred_by)->get();
 
                                         foreach ($customerDevice as $cd) {
-                                            $title = 'Referal joiner points credited';
+                                            $title = 'Referal joiner points credited:wallet';
                                             //  $body = 'Referal joiner points credited successully..';
                                             $body = $configPoint->joiner_points . ' points credited to your wallet..';
                                             
@@ -834,7 +834,7 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'Order points credited';
+                                        $title = 'Order points credited:wallet';
                                         $body = $orderPointAmount . ' points credited to your wallet..';
                                         
                                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -851,7 +851,7 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order confirmed';
+                                $title = 'Order confirmed:order';
                                 $body = "Your order " . $od->order_number . ' is confirmed..';
                                 
                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -862,7 +862,7 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order picking completed';
+                                $title = 'Order picking completed:order';
                                 $body = "Your order " . $od->order_number . ' picking completed..';
                                 
                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -872,7 +872,7 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order ready for delivery';
+                                $title = 'Order ready for delivery:order';
                                 $body = "Your order " . $od->order_number . ' is ready for delivery..';
                                 
                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -883,7 +883,7 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order out for delivery';
+                                $title = 'Order out for delivery:order';
                                 $body = "Your order " . $od->order_number . ' is out for delivery..';
                                 
                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -894,7 +894,7 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order deliverd';
+                                $title = 'Order deliverd:order';
                                 $body = "Your order " . $od->order_number . ' is deliverd..';
                                 
                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
@@ -911,7 +911,7 @@ class OrderController extends Controller
                                 $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
 
                                 foreach ($dBoyDevices as $cd) {
-                                    $title = 'Order Assigned';
+                                    $title = 'Order Assigned:assigned-orders';
                                     $body = 'New order(' . $od->order_number . ') arrived';
                                     
                                     $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body);

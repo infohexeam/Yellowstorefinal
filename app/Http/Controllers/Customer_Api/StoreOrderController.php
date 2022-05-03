@@ -259,7 +259,7 @@ class StoreOrderController extends Controller
                     $orderdatas = Trn_store_order::find($order_id);
 
                     foreach ($storeDevice as $sd) {
-                        $title = 'New service order arrived';
+                        $title = 'New service order arrived:order';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                         
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
@@ -268,13 +268,13 @@ class StoreOrderController extends Controller
 
                     $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
                     foreach ($storeWeb as $sw) {
-                        $title = 'New service order arrived';
+                        $title = 'New service order arrived:order';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                         $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
                     }
 
                     foreach ($customerDevice as $cd) {
-                        $title = 'Order Placed';
+                        $title = 'Order Placed:order';
                         $body = 'Your order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                         
 
@@ -747,7 +747,7 @@ class StoreOrderController extends Controller
                     $orderdatas = Trn_store_order::find($order_id);
 
                     foreach ($storeDevice as $sd) {
-                        $title = 'New order arrived';
+                        $title = 'New order arrived:order';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                        
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
@@ -756,7 +756,7 @@ class StoreOrderController extends Controller
 
                     $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
                     foreach ($storeWeb as $sw) {
-                        $title = 'New order arrived';
+                        $title = 'New order arrived:order';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                         $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
                     }
@@ -765,7 +765,7 @@ class StoreOrderController extends Controller
 
 
                     foreach ($customerDevice as $cd) {
-                        $title = 'Order Placed';
+                        $title = 'Order Placed:order';
                         $body = 'Order placed with order id ' . $orderdatas->order_number;
                         
                         $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
@@ -777,7 +777,7 @@ class StoreOrderController extends Controller
 
                             foreach ($customerDevice as $cd) {
 
-                                $title = 'Points Deducted';
+                                $title = 'Points Deducted:wallet';
                                 $body = $request->reward_points_used . ' points deducted from your wallet';
                                 
                                 $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
@@ -1070,20 +1070,20 @@ class StoreOrderController extends Controller
                     $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderdatas->store_id)->get();
 
                     foreach ($storeDevice as $sd) {
-                        $title = 'Dispute raised';
+                        $title = 'Dispute raised:dispute';
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
                         
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
                     }
 
                     foreach ($storeWeb as $sw) {
-                        $title = 'Dispute raised';
+                        $title = 'Dispute raised:dispute';
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
                         $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
                     }
 
                     foreach ($customerDevice as $cd) {
-                        $title = 'Dispute raised';
+                        $title = 'Dispute raised:dispute';
                         $body = 'Your dispute raised with order id ' . $orderdatas->order_number;
                        
                         $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
