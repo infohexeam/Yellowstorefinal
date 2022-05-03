@@ -79,7 +79,7 @@ class ProductController extends Controller
                         $data['status'] = 1;
                         $data['message'] = "Available";   
 
-                    }elseif{
+                    }else{
 
                         $data['status'] = 0;
                         $data['message'] = "Not available";
