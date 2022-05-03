@@ -68,7 +68,10 @@ class ProductController extends Controller
 
                 
             }else{
-                $checkproductId = Mst_store_product::where('product_id','=',$request->product_id)->orwhere('product_code',$request->product_code)->where('store_id', $request->store_id)->first();
+                // return [
+                //     'email' => 'required|email|unique:users,email,'.$this->user()->id,
+                // ];
+                $checkproductId = Mst_store_product::where('product_id','=',$request->product_id)->where('product_code',$request->product_code)->where('store_id', $request->store_id)->first();
                 $getdbProductCode = $checkproductId->product_code;
                 $getdbProdctId = $checkproductId->product_id;
 
