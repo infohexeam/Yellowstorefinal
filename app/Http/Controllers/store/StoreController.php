@@ -1437,7 +1437,7 @@ class StoreController extends Controller
 
     if($proImgCount >  1)
     {
-      if($proImg->imgae_flag == 1)
+      if($proImg->image_flag == 1)
       {
 
       
