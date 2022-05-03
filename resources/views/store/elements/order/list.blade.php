@@ -119,7 +119,7 @@ use App\Models\admin\Mst_store_product;
                   </thead>
                   <tbody>
                      @php
-                     if(isset(request()->input('page'))){
+                     if($_GET){
                         $i = request()->input('page') * 10;
                      }else{
                         $i = 0;
