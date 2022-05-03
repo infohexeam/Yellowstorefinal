@@ -119,7 +119,11 @@ use App\Models\admin\Mst_store_product;
                   </thead>
                   <tbody>
                      @php
-                     $i = 0;
+                     if(isset(request()->input('page'))){
+                        $i = request()->input('page') * 10;
+                     }else{
+                        $i = 0;
+                     }
                      @endphp
                      @foreach ($orders as $order)
                      <tr>
