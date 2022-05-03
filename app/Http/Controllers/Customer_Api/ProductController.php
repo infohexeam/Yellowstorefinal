@@ -1366,7 +1366,7 @@ class ProductController extends Controller
 
                 
                 $dist = Helper::haversineGreatCircleDistance($storeData->latitude, $storeData->longitude, $request->latitude, $request->longitude);
-                dd($dist);
+                
 
                 $storeData = $storeData( $dist."  AS distance");
 
