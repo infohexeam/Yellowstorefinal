@@ -69,7 +69,7 @@ class ProductController extends Controller
                 
             }else{
                 $checkproductId = Mst_store_product::where('product_id','=',$request->product_id)->where('product_code', $request->product_code)->where('store_id', $request->store_id)->first();
-                dd($checkproductId);
+                
                 if($checkproductId)
                 {
                     $getdbProductCode = $checkproductId->product_code;
@@ -85,9 +85,18 @@ class ProductController extends Controller
                         $data['message'] = "Not available";
 
                     }
-                }else{
+                }else{ //not exist
+
+                    $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id', $request->store_id)->count();
+
+                    if($proEx > 0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Not available";
+                    }else{
                         $data['status'] = 1;
-                        $data['message'] = "Available";  
+                        $data['message'] = "Available";   
+                    }
                 }
                
 
