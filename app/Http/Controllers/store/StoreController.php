@@ -1433,38 +1433,26 @@ class StoreController extends Controller
     //check if base image
     $proImg = Mst_product_image::where('product_image_id', '=', $product_image_id)->first();
 
-    $varData = Mst_store_product_varient::find($proImg->product_varient_id);
-    $proImgCount = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->count();
+    $proImgCount = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->count(); 
 
-    if($varData->product_varient_base_image == $proImg->product_image && $proImg->image_flag == 1){
-
-      return redirect()->back()->with('status', 'Base image cannot be deleted.');
-
-    }else{
-      if($proImgCount >= 1){
-
-        
-        $pro_image = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->where('image_flag','=',1)->first();
-        
+    if($proImgCount >  1)
+    {
         $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
         $pro_image->delete();
-        
-        if(isset($pro_image)){
-          // use next image as base image
-          $pro_imageTwo = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->where('image_flag','=',0)->first();
+        $pro_imageTwo = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->where('image_flag','=',0)->first();
 
-          Mst_product_image::where('product_image_id', '=', $pro_imageTwo->product_image_id)
-          ->update(['image_flag' => 1]);
+        Mst_product_image::where('product_image_id', '=', $pro_imageTwo->product_image_id)
+        ->update(['image_flag' => 1]);
 
-          Mst_store_product_varient::where('product_varient_id', '=', $pro_imageTwo->product_varient_id)
-          ->update(['product_varient_base_image' => $pro_imageTwo->product_image]);
-        }
-        // $pro_image->delete();
-      }
-     
+        Mst_store_product_varient::where('product_varient_id', '=', $pro_imageTwo->product_varient_id)
+        ->update(['product_varient_base_image' => $pro_imageTwo->product_image]);
+
+
+    }else{
+      return redirect()->back()->with('status', 'Base image cannot be deleted.');
     }
 
-  
+
     return redirect()->back()->with('status', 'Product Image Deleted Successfully.');
 
   }
