@@ -2009,7 +2009,7 @@ class ProductController extends Controller
 
                 if (!$validator->fails()) {
 
-                    $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$request->product_code)->count();
+                    $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$request->store_id)->where('product_code',$request->product_code)->count();
         
                     if($ChkCodeExstnce > 0)
                     {
