@@ -1443,7 +1443,7 @@ class StoreController extends Controller
       
         $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
         $pro_image->delete();
-        $pro_imageTwo = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->where('image_flag','=',0)->first();
+        $pro_imageTwo = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->first();
 
         Mst_product_image::where('product_image_id', '=', $pro_imageTwo->product_image_id)
         ->update(['image_flag' => 1]);
