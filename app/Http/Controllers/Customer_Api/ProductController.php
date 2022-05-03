@@ -1363,7 +1363,7 @@ class ProductController extends Controller
             $storeData  = $storeData->where('trn__store_admins.store_account_status', 1);
 
             if (($request->customer_id == 0) && (isset($request->latitude)) && (isset($request->longitude))) {
-
+                dd("string");
                 
                 $dist = Helper::haversineGreatCircleDistance($storeData->latitude, $storeData->longitude, $request->latitude, $request->longitude);
                 
