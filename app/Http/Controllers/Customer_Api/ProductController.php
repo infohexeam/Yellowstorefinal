@@ -1363,15 +1363,9 @@ class ProductController extends Controller
             $storeData  = $storeData->where('trn__store_admins.store_account_status', 1);
 
             if (($request->customer_id == 0) && (isset($request->latitude)) && (isset($request->longitude))) {
-                
-                
-                $dist = Helper::haversineGreatCircleDistance($storeData->latitude, $storeData->longitude, $request->latitude, $request->longitude);
-                dd($dist);
-
-                $storeData = $storeData( $dist."  AS distance");
-
-             
-                                    
+                $storeData = $storeData->select("*", DB::raw("6371 * acos(cos(radians(" . $request->latitude . "))
+                                    * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $request->longitude . "))
+                                    + sin(radians(" . $request->latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                 $storeData = $storeData->orderBy('distance', 'ASC');
             }
 
