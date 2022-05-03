@@ -132,6 +132,10 @@
                            <i class="fa fa-plus"></i>
                            Create Product
                         </a> <br/>
+                        <a href="{{route('store.restore-products')}}" class=" text-white btn btn-block btn-danger">
+                           <i class="fa fa-recycle"></i>
+                          Restore Products
+                        </a><br/>
                 <div class="table-responsive">
                   <table id="example" class="table table-striped table-bordered text-nowrap w-100">
                     <thead>

@@ -1790,6 +1790,59 @@ class StoreController extends Controller
     return redirect('store/product/list')->with('status', 'Product deleted Successfully');
   }
 
+  public function restoreProduct(Request $request)
+  {
+         try {
+
+
+      $pageTitle = "Restore Products";
+      $store_id =  Auth::guard('store')->user()->store_id;
+      $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->where('mst_store_products.store_id', $store_id)
+        ->where('is_removed', 1)
+        ->orderBy('mst_store_products.product_id', 'DESC')->get();
+      //dd($products);
+      $store = Mst_store::all();
+
+      return view('store.elements.product.restore', compact('products', 'pageTitle', 'store'));
+    } catch (\Exception $e) {
+
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+      
+    }
+
+
+
+
+ public function restoreProductSave(Request $request, $product)
+  {
+     
+
+    $removeProduct = array();
+    $removeProduct['is_removed'] = 0;
+    $removeProduct['product_status'] = 0;
+
+    $removeProductVar = array();
+    $removeProductVar['is_removed'] = 0;
+    $removeProductVar['stock_count'] = 0;
+
+    // $productData  = Mst_store_product::find($product);
+
+    // if (isset($productData->global_product_id))
+    //   $removeProduct['global_product_id'] = 0;
+
+    Mst_store_product::where('product_id', $product)->update($removeProduct);
+
+    Mst_store_product_varient::where('product_id', $product)->update($removeProductVar);
+
+
+
+    return redirect('store/product/restore')->with('status', 'Product Restored Successfully');
+  }
+  
+  
+
   public function statusProduct(Request $request, Mst_store_product $product, $product_id)
   {
 
