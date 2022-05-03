@@ -98,9 +98,7 @@ class ProductController extends Controller
                         $data['message'] = "Available";   
                     }
                 }
-               
-
-                
+  
 
                 // $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->count();
             }
@@ -2038,19 +2036,7 @@ class ProductController extends Controller
                 if (!$validator->fails()) {
 
                         
-                        if($request->product_id == 0)
-                        {
-                            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id', $request->store_id)->count();
-                            
-                        }else{
-                            $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->count();
-                        }
-            
-                        if ($proEx > 0) {
-                            $data['status'] = 2;
-                            $data['message'] = "Product code already used";
                         
-                        }else{
 
                         if ($request->product_id == 0) {
                             $product = new Mst_store_product;
@@ -2348,7 +2334,7 @@ class ProductController extends Controller
                             }
                         }
 
-                    }
+                   
 
                     
                 } else {
