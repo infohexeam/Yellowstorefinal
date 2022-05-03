@@ -379,9 +379,6 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::post('admin/product/attribute/store', 'SettingController@storeAttribute')->name('admin.store_attribute');
 
-        Route::get('store/product/restore', 'StoreController@restoreProduct')->name('store.restore-products');
-        
-        Route::get('store/restore-product/{id}','StoreController@restoreProductSave')->name('store.restore-products-save');
 
         //product image
         Route::post('admin/product_image/store/{product_id}', 'SettingController@store_product_image')->name('admin.store_product_image');
@@ -777,6 +774,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/product/variant/edit/{product_varient_id}', 'StoreController@editProductVariant');
         Route::post('store/product/variant/update/{product_varient_id}', 'StoreController@updateProductVariant')->name('store.update_product_variant');
 
+        Route::get('store/product/restore', 'StoreController@restoreProduct')->name('store.restore-products');
+        
+        Route::get('store/restore-product/{id}','StoreController@restoreProductSave')->name('store.restore-products-save');
 
         // get parent cat and sub cat by ajax
 
