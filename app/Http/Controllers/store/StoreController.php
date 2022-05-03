@@ -1437,6 +1437,10 @@ class StoreController extends Controller
 
     if($proImgCount >  1)
     {
+      if($proImg->imgae_flag == 1)
+      {
+
+      
         $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
         $pro_image->delete();
         $pro_imageTwo = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->where('image_flag','=',0)->first();
@@ -1446,6 +1450,11 @@ class StoreController extends Controller
 
         Mst_store_product_varient::where('product_varient_id', '=', $pro_imageTwo->product_varient_id)
         ->update(['product_varient_base_image' => $pro_imageTwo->product_image]);
+
+      }else{
+        $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
+        $pro_image->delete();
+      }
 
 
     }else{
