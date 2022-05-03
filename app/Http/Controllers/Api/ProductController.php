@@ -68,35 +68,23 @@ class ProductController extends Controller
 
                 
             }else{
-                // return [
-                //     'email' => 'required|email|unique:users,email,'.$this->user()->id,
-                // ];
-                $checkproductId = Mst_store_product::where('product_id','=',$request->product_id)->where('product_code',$request->product_code)->where('store_id', $request->store_id)->first();
-               if($checkproductId)
-               {
+                $checkproductId = Mst_store_product::where('product_id','=',$request->product_id)->where('store_id', $request->store_id)->first();
+                
                 $getdbProductCode = $checkproductId->product_code;
                 $getdbProdctId = $checkproductId->product_id;
-                $data['status'] = 1;
-                $data['message'] = "Available"; 
 
-               }else{
-                $data['status'] = 0;
-                $data['message'] = "Not Available"; 
-               }
-                
+                if($getdbProductCode == $request->product_code)
+                {
 
-                // if($getdbProductCode == $request->product_code)
-                // {
+                    $data['status'] = 1;
+                    $data['message'] = "Available";   
 
-                //     $data['status'] = 1;
-                //     $data['message'] = "Available";   
+                }else{
 
-                // }else{
+                    $data['status'] = 0;
+                    $data['message'] = "Not available";
 
-                //     $data['status'] = 0;
-                //     $data['message'] = "Not available";
-
-                // }
+                }
 
                 // $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->count();
             }
