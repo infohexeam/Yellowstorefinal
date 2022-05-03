@@ -2008,301 +2008,317 @@ class ProductController extends Controller
                 );
 
                 if (!$validator->fails()) {
-                    if ($request->product_id == 0) {
-                        $product = new Mst_store_product;
 
-                        $product->product_name           = $request->product_name;
-                        $product->product_description    = $request->product_description;
-                        $product->product_price          = $request->regular_price;
-                        $product->product_price_offer    = $request->sale_price;
-                        $product->tax_id                 = $request->tax_id; // new
+                    $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$request->product_code)->count();
+        
+                    if($ChkCodeExstnce > 0)
+                    {
+              
+                        $data['status'] = 2;
+                        $data['message'] = "Product code already used";
+                        return response($data);
 
-                        $product->stock_count                 = $request->min_stock; // stock count
-                        $product->product_code           = $request->product_code;
-                        $product->product_type       = $request->product_type; // product type
-                        $product->service_type       = $request->service_type; // new type
+                    }else{
 
-                        $product->color_id               = 0; // removed
-                        $product->attr_group_id          = 0; // removed
-                        $product->attr_value_id          = 0; // removed
-                        $product->stock_status          = 0; // removed
-                        $product->business_type_id = 0; // removed
-
-                        $product->product_cat_id         = $request->product_cat_id;
-                        $product->sub_category_id         = $request->sub_category_id;
-                        $product->vendor_id              = $request->vendor_id; // new
-                        $product->product_brand              = $request->product_brand; // new
-
-                        $product->product_name_slug      = Str::of($request->product_name)->slug('-');
-                        $product->store_id               = $request->store_id;
-                        $product->global_product_id      =  @$request->global_product_id; // new
-
-                        if ($request->product_type == 2) {
-                            $product->product_status         = 1;
-                        } else {
-                            $product->product_status         = 0;
-                        }
-
-
-                        if ($product->save()) {
-                            $id = DB::getPdo()->lastInsertId();
-                            $c = 1;
-                            $filename = "";
-                            if ($files = $request->file('product_images')) {
-                                // dd($files);
-                                foreach ($files as $file) {
-                                    $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-                                    $file->move('assets/uploads/products/base_product/base_image', $filename);
-                                    $imageData = [
-                                        'product_image'      => $filename,
-                                        'product_id' => $id,
-                                        'product_varient_id' => 0,
-                                        'image_flag'         => 0,
-                                        'created_at'         => Carbon::now(),
-                                        'updated_at'         => Carbon::now(),
-                                    ];
-
-                                    Mst_product_image::insert($imageData);
-                                    $proImg_Id = DB::getPdo()->lastInsertId();
-
-                                    if ($c == 1) {
-                                        DB::table('mst_store_products')->where('product_id', $id)
-                                            ->update(['product_base_image' => $filename]);
-                                        $c++;
-                                        DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-                                    }
-                                }
-                            }
-
-                            // if ($request->c == 'zero') {
-
-                            $productVar = new Mst_store_product_varient;
-
-                            $productData = Mst_store_product::find($id);
-
-                            $productVar->product_id           = $id;
-                            $productVar->store_id    = @$productData->store_id;
-                            $productVar->variant_name          = $request->product_name;
-                            $productVar->product_varient_price    = $request->regular_price;
-                            $productVar->product_varient_offer_price    = $request->sale_price;
-                            $productVar->product_varient_base_image = null;
-                            $productVar->is_base_variant = 1;
-
+                        if ($request->product_id == 0) {
+                            $product = new Mst_store_product;
+    
+                            $product->product_name           = $request->product_name;
+                            $product->product_description    = $request->product_description;
+                            $product->product_price          = $request->regular_price;
+                            $product->product_price_offer    = $request->sale_price;
+                            $product->tax_id                 = $request->tax_id; // new
+    
+                            $product->stock_count                 = $request->min_stock; // stock count
+                            $product->product_code           = $request->product_code;
+                            $product->product_type       = $request->product_type; // product type
+                            $product->service_type       = $request->service_type; // new type
+    
+                            $product->color_id               = 0; // removed
+                            $product->attr_group_id          = 0; // removed
+                            $product->attr_value_id          = 0; // removed
+                            $product->stock_status          = 0; // removed
+                            $product->business_type_id = 0; // removed
+    
+                            $product->product_cat_id         = $request->product_cat_id;
+                            $product->sub_category_id         = $request->sub_category_id;
+                            $product->vendor_id              = $request->vendor_id; // new
+                            $product->product_brand              = $request->product_brand; // new
+    
+                            $product->product_name_slug      = Str::of($request->product_name)->slug('-');
+                            $product->store_id               = $request->store_id;
+                            $product->global_product_id      =  @$request->global_product_id; // new
+    
                             if ($request->product_type == 2) {
-                                $productVar->stock_count                 = 1;
+                                $product->product_status         = 1;
                             } else {
-                                $productVar->stock_count                 = 0;
+                                $product->product_status         = 0;
                             }
-
-
-                            if ($productVar->save()) {
-                                $Varid = DB::getPdo()->lastInsertId();
-
-
-                                $sd = new Mst_StockDetail;
-                                $sd->store_id = @$productData->store_id;
-                                $sd->product_id = $id;
-                                $sd->stock = 0;
-                                $sd->product_varient_id = $Varid;
-                                $sd->prev_stock = 0;
-                                $sd->save();
-
-
-                                $data['product_variant_id'] = $Varid;
-
-                                $c = 1;
-
-                                $product_images = Mst_product_image::where('product_id', $id)->get();
-
-                                foreach ($product_images as $file) {
-
-                                    $date = Carbon::now();
-                                    $data1 = [
-                                        [
-                                            'product_image'      => $file->product_image,
-                                            'product_id' => $id,
-                                            'product_varient_id' => $Varid,
-                                            'image_flag'         => 0,
-                                            'created_at'         => Carbon::now(),
-                                            'updated_at'         => Carbon::now(),
-                                        ],
-                                    ];
-                                    Mst_product_image::insert($data1);
-                                    $proImg_Id = DB::getPdo()->lastInsertId();
-
-                                    if ($c == 1) {
-                                        DB::table('mst_store_product_varients')
-                                            ->where('product_varient_id', $Varid)
-                                            ->update(['product_varient_base_image' => $file->product_image]);
-                                        $c++;
-                                        DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-                                    }
-                                }
-
-                                $vac = 0;
-
-                                $VarArrts = html_entity_decode($request->variant_attributes);
-                                $myArray = json_decode($VarArrts, true);
-
-                                foreach ($myArray as $varAttr) {
-                                    $data4 = [];
-                                    if (($varAttr['attr_group_id'] != 0) && ($varAttr['attr_value_id'] != 0)) {
-                                        $data4 = [
-                                            'product_varient_id' => $Varid,
-                                            'attr_group_id' => $varAttr['attr_group_id'],
-                                            'attr_value_id' => $varAttr['attr_value_id']
-                                        ];
-                                        Trn_ProductVariantAttribute::create($data4);
-                                    }
-                                    $vac++;
-                                }
-                            }
-                            // }
-
-                            $data['status'] = 1;
-                            $data['product_id'] = $id;
-                            $data['message'] = "Success.";
-                            return response($data);
-                        } else {
-                            $data['status'] = 0;
-                            $data['message'] = "Product insertion failed.";
-                            return response($data);
-                        }
-                    } else {
-                        if (Mst_store_product::find($request->product_id)) {
-                            // $data['status'] = 0;
-                            //     $data['message'] = "Someting happened.";
-                            //     return response($data);
-                            $productData['product_name'] = $request->product_name;
-                            $productData['product_description'] = $request->product_description;
-                            $productData['product_price'] = $request->regular_price;
-                            $productData['product_price_offer'] = $request->sale_price;
-
-                            // if (isset($request->regular_price) || isset($request->sale_price)) {
-
-
-                            // $data['status'] = 0;
-                            // $data['message'] = "reg price" + $request->regular_price . " - " . "sale price" + $request->sale_price;
-                            // return response($data);
-
-                            //     $data['status'] = 2;
-                            //     $data['message'] = "Someting happened.";
-                            //     return response($data);
-                            // }
-
-                            $productData['tax_id'] = $request->tax_id;
-
-                            $productData['stock_count'] = $request->min_stock;
-                            $productData['product_code'] = $request->product_code;
-                            $productData['product_type'] = $request->product_type;
-                            $productData['service_type'] = $request->service_type;
-
-                            $productData['product_cat_id'] = $request->product_cat_id;
-                            $productData['sub_category_id'] = $request->sub_category_id;
-                            $productData['vendor_id'] = $request->vendor_id;
-                            $productData['product_brand'] = $request->product_brand;
-                            $productData['product_status'] = $request->product_status;
-
-                            $varCount = Mst_store_product_varient::where('product_id', $request->product_id)->count();
-
-                            if ($request->c != 'other') {
-                                if (($varCount < 1) && ($request->product_status == 1)) {
-                                    $data['status'] = 2;
-                                    $data['message'] = "No variant exists.";
-                                    return response($data);
-                                }
-                            }
-
-                            if (Mst_store_product::where('product_id', $request->product_id)->update($productData)) {
-
-                                Mst_store_product_varient::where('product_id', $request->product_id)
-                                    ->where('is_base_variant', 1)
-                                    ->update([
-                                        'product_varient_price' => $request->regular_price,
-                                        'product_varient_offer_price' => $request->sale_price
-                                    ]);
-
-
+    
+    
+                            if ($product->save()) {
+                                $id = DB::getPdo()->lastInsertId();
                                 $c = 1;
                                 $filename = "";
-
-                                $baseVari =  Mst_store_product_varient::where('product_id', $request->product_id)->where('is_base_variant', 1)->first();
-
                                 if ($files = $request->file('product_images')) {
                                     // dd($files);
-                                    //    Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',0)->delete();
-
                                     foreach ($files as $file) {
                                         $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
                                         $file->move('assets/uploads/products/base_product/base_image', $filename);
                                         $imageData = [
                                             'product_image'      => $filename,
-                                            'product_id' => $request->product_id,
-                                            'product_varient_id' => $baseVari->product_varient_id,
+                                            'product_id' => $id,
+                                            'product_varient_id' => 0,
                                             'image_flag'         => 0,
                                             'created_at'         => Carbon::now(),
                                             'updated_at'         => Carbon::now(),
                                         ];
-
+    
                                         Mst_product_image::insert($imageData);
                                         $proImg_Id = DB::getPdo()->lastInsertId();
-                                        $proData = Mst_store_product::where('product_id', $request->product_id)->first();
-                                        if (!isset($proData->product_base_image)) {
-                                            if ($c == 1) {
-                                                DB::table('mst_store_products')->where('product_id', $request->product_id)
-                                                    ->update(['product_base_image' => $filename]);
-                                                $c++;
-                                                DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-                                            }
+    
+                                        if ($c == 1) {
+                                            DB::table('mst_store_products')->where('product_id', $id)
+                                                ->update(['product_base_image' => $filename]);
+                                            $c++;
+                                            DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                         }
                                     }
                                 }
-
-                                Trn_ProductVariantAttribute::where('product_varient_id', $baseVari->product_varient_id)->delete();
-
-                                Mst_store_product_varient::where('product_id', $request->product_id)
-                                    ->where('is_base_variant', 1)
-                                    ->update([
-                                        'variant_name' => $request->product_name,
-                                        'product_varient_price' => $request->regular_price,
-                                        'product_varient_offer_price' => $request->sale_price
-                                    ]);
-
-                                $vac = 0;
-
-
-
-                                $VarArrts = html_entity_decode($request->variant_attributes);
-                                $myArray = json_decode($VarArrts, true);
-
-                                foreach ($myArray as $varAttr) {
-                                    $data4 = [];
-                                    if (($varAttr['attr_group_id'] != 0) && ($varAttr['attr_value_id'] != 0)) {
-                                        $data4 = [
-                                            'product_varient_id' => @$baseVari->product_varient_id,
-                                            'attr_group_id' => $varAttr['attr_group_id'],
-                                            'attr_value_id' => $varAttr['attr_value_id']
-                                        ];
-                                        Trn_ProductVariantAttribute::create($data4);
-                                    }
-                                    $vac++;
+    
+                                // if ($request->c == 'zero') {
+    
+                                $productVar = new Mst_store_product_varient;
+    
+                                $productData = Mst_store_product::find($id);
+    
+                                $productVar->product_id           = $id;
+                                $productVar->store_id    = @$productData->store_id;
+                                $productVar->variant_name          = $request->product_name;
+                                $productVar->product_varient_price    = $request->regular_price;
+                                $productVar->product_varient_offer_price    = $request->sale_price;
+                                $productVar->product_varient_base_image = null;
+                                $productVar->is_base_variant = 1;
+    
+                                if ($request->product_type == 2) {
+                                    $productVar->stock_count                 = 1;
+                                } else {
+                                    $productVar->stock_count                 = 0;
                                 }
-
-                                // $data['status'] = 0;
-                                // $data['message'] = "product_varient_price :" . $request->regular_price . "product_varient_offer_price" . $request->sale_price;
-                                // return response($data);
-
+    
+    
+                                if ($productVar->save()) {
+                                    $Varid = DB::getPdo()->lastInsertId();
+    
+    
+                                    $sd = new Mst_StockDetail;
+                                    $sd->store_id = @$productData->store_id;
+                                    $sd->product_id = $id;
+                                    $sd->stock = 0;
+                                    $sd->product_varient_id = $Varid;
+                                    $sd->prev_stock = 0;
+                                    $sd->save();
+    
+    
+                                    $data['product_variant_id'] = $Varid;
+    
+                                    $c = 1;
+    
+                                    $product_images = Mst_product_image::where('product_id', $id)->get();
+    
+                                    foreach ($product_images as $file) {
+    
+                                        $date = Carbon::now();
+                                        $data1 = [
+                                            [
+                                                'product_image'      => $file->product_image,
+                                                'product_id' => $id,
+                                                'product_varient_id' => $Varid,
+                                                'image_flag'         => 0,
+                                                'created_at'         => Carbon::now(),
+                                                'updated_at'         => Carbon::now(),
+                                            ],
+                                        ];
+                                        Mst_product_image::insert($data1);
+                                        $proImg_Id = DB::getPdo()->lastInsertId();
+    
+                                        if ($c == 1) {
+                                            DB::table('mst_store_product_varients')
+                                                ->where('product_varient_id', $Varid)
+                                                ->update(['product_varient_base_image' => $file->product_image]);
+                                            $c++;
+                                            DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+                                        }
+                                    }
+    
+                                    $vac = 0;
+    
+                                    $VarArrts = html_entity_decode($request->variant_attributes);
+                                    $myArray = json_decode($VarArrts, true);
+    
+                                    foreach ($myArray as $varAttr) {
+                                        $data4 = [];
+                                        if (($varAttr['attr_group_id'] != 0) && ($varAttr['attr_value_id'] != 0)) {
+                                            $data4 = [
+                                                'product_varient_id' => $Varid,
+                                                'attr_group_id' => $varAttr['attr_group_id'],
+                                                'attr_value_id' => $varAttr['attr_value_id']
+                                            ];
+                                            Trn_ProductVariantAttribute::create($data4);
+                                        }
+                                        $vac++;
+                                    }
+                                }
+                                // }
+    
                                 $data['status'] = 1;
-                                $data['product_id'] = $request->product_id;
+                                $data['product_id'] = $id;
                                 $data['message'] = "Success.";
+                                return response($data);
+                            } else {
+                                $data['status'] = 0;
+                                $data['message'] = "Product insertion failed.";
                                 return response($data);
                             }
                         } else {
-                            $data['status'] = 0;
-                            $data['message'] = "Product not found ";
-                            return response($data);
+                            if (Mst_store_product::find($request->product_id)) {
+                                // $data['status'] = 0;
+                                //     $data['message'] = "Someting happened.";
+                                //     return response($data);
+                                $productData['product_name'] = $request->product_name;
+                                $productData['product_description'] = $request->product_description;
+                                $productData['product_price'] = $request->regular_price;
+                                $productData['product_price_offer'] = $request->sale_price;
+    
+                                // if (isset($request->regular_price) || isset($request->sale_price)) {
+    
+    
+                                // $data['status'] = 0;
+                                // $data['message'] = "reg price" + $request->regular_price . " - " . "sale price" + $request->sale_price;
+                                // return response($data);
+    
+                                //     $data['status'] = 2;
+                                //     $data['message'] = "Someting happened.";
+                                //     return response($data);
+                                // }
+    
+                                $productData['tax_id'] = $request->tax_id;
+    
+                                $productData['stock_count'] = $request->min_stock;
+                                $productData['product_code'] = $request->product_code;
+                                $productData['product_type'] = $request->product_type;
+                                $productData['service_type'] = $request->service_type;
+    
+                                $productData['product_cat_id'] = $request->product_cat_id;
+                                $productData['sub_category_id'] = $request->sub_category_id;
+                                $productData['vendor_id'] = $request->vendor_id;
+                                $productData['product_brand'] = $request->product_brand;
+                                $productData['product_status'] = $request->product_status;
+    
+                                $varCount = Mst_store_product_varient::where('product_id', $request->product_id)->count();
+    
+                                if ($request->c != 'other') {
+                                    if (($varCount < 1) && ($request->product_status == 1)) {
+                                        $data['status'] = 2;
+                                        $data['message'] = "No variant exists.";
+                                        return response($data);
+                                    }
+                                }
+    
+                                if (Mst_store_product::where('product_id', $request->product_id)->update($productData)) {
+    
+                                    Mst_store_product_varient::where('product_id', $request->product_id)
+                                        ->where('is_base_variant', 1)
+                                        ->update([
+                                            'product_varient_price' => $request->regular_price,
+                                            'product_varient_offer_price' => $request->sale_price
+                                        ]);
+    
+    
+                                    $c = 1;
+                                    $filename = "";
+    
+                                    $baseVari =  Mst_store_product_varient::where('product_id', $request->product_id)->where('is_base_variant', 1)->first();
+    
+                                    if ($files = $request->file('product_images')) {
+                                        // dd($files);
+                                        //    Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',0)->delete();
+    
+                                        foreach ($files as $file) {
+                                            $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+                                            $file->move('assets/uploads/products/base_product/base_image', $filename);
+                                            $imageData = [
+                                                'product_image'      => $filename,
+                                                'product_id' => $request->product_id,
+                                                'product_varient_id' => $baseVari->product_varient_id,
+                                                'image_flag'         => 0,
+                                                'created_at'         => Carbon::now(),
+                                                'updated_at'         => Carbon::now(),
+                                            ];
+    
+                                            Mst_product_image::insert($imageData);
+                                            $proImg_Id = DB::getPdo()->lastInsertId();
+                                            $proData = Mst_store_product::where('product_id', $request->product_id)->first();
+                                            if (!isset($proData->product_base_image)) {
+                                                if ($c == 1) {
+                                                    DB::table('mst_store_products')->where('product_id', $request->product_id)
+                                                        ->update(['product_base_image' => $filename]);
+                                                    $c++;
+                                                    DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+                                                }
+                                            }
+                                        }
+                                    }
+    
+                                    Trn_ProductVariantAttribute::where('product_varient_id', $baseVari->product_varient_id)->delete();
+    
+                                    Mst_store_product_varient::where('product_id', $request->product_id)
+                                        ->where('is_base_variant', 1)
+                                        ->update([
+                                            'variant_name' => $request->product_name,
+                                            'product_varient_price' => $request->regular_price,
+                                            'product_varient_offer_price' => $request->sale_price
+                                        ]);
+    
+                                    $vac = 0;
+    
+    
+    
+                                    $VarArrts = html_entity_decode($request->variant_attributes);
+                                    $myArray = json_decode($VarArrts, true);
+    
+                                    foreach ($myArray as $varAttr) {
+                                        $data4 = [];
+                                        if (($varAttr['attr_group_id'] != 0) && ($varAttr['attr_value_id'] != 0)) {
+                                            $data4 = [
+                                                'product_varient_id' => @$baseVari->product_varient_id,
+                                                'attr_group_id' => $varAttr['attr_group_id'],
+                                                'attr_value_id' => $varAttr['attr_value_id']
+                                            ];
+                                            Trn_ProductVariantAttribute::create($data4);
+                                        }
+                                        $vac++;
+                                    }
+    
+                                    // $data['status'] = 0;
+                                    // $data['message'] = "product_varient_price :" . $request->regular_price . "product_varient_offer_price" . $request->sale_price;
+                                    // return response($data);
+    
+                                    $data['status'] = 1;
+                                    $data['product_id'] = $request->product_id;
+                                    $data['message'] = "Success.";
+                                    return response($data);
+                                }
+                            } else {
+                                $data['status'] = 0;
+                                $data['message'] = "Product not found ";
+                                return response($data);
+                            }
                         }
+
                     }
+
+                    
                 } else {
                     $data['status'] = 0;
                     $data['message'] = "failed";
