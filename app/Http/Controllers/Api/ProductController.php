@@ -55,28 +55,38 @@ class ProductController extends Controller
             $storeId = $request->store_id;
             if($request->product_id == 0)
             {
-                $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id', $request->store_id)->where('is_removed', 0)->count();
+                $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id', $request->store_id)->count();
+
+                if($proEx > 0)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Not available";
+                }else{
+                    $data['status'] = 1;
+                    $data['message'] = "Available";   
+                }
+
                 
             }else{
-                $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->where('is_removed', 0)->count();
+                $checkproductId = Mst_store_product::where('product_id','=',$request->product_id)->where('store_id', $request->store_id)->first();
+                $getdbProductCode = $checkproductId->product_code;
+
+                if($getdbProductCode == $request->product_code)
+                {
+
+                    $data['status'] = 1;
+                    $data['message'] = "Available";   
+
+                }else{
+
+                    $data['status'] = 0;
+                    $data['message'] = "Not available";
+
+                }
+
+                // $proEx = Mst_store_product::where('product_code', $request->product_code)->where('product_id',$request->product_id)->where('store_id', $request->store_id)->count();
             }
             
-           
-            
-            // $proEx = Mst_store_product::where('product_code', $request->product_code)->where('store_id','=',$storeId);
-            // if (isset($request->product_id))
-            //     $proEx = $proEx->where('product_id', '!=', $request->product_id);
-            // $proEx = $proEx->count();
-
-
-            if ($proEx > 0) {
-                $data['status'] = 0;
-                $data['message'] = "Not available";
-            } else {
-                $data['status'] = 1;
-                $data['message'] = "Available";
-            }
-
 
             return response($data);
         } catch (\Exception $e) {
