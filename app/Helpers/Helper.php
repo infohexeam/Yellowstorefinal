@@ -541,7 +541,7 @@ class Helper
         $fields = array(
             'to' => $device_id,
             'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
-            'data' => array('type' => 'order')
+            'data' => array('title' => $title, 'body' => $body,'type' => 'order'),
         );
         $headers = array(
             'Content-Type:application/json',
