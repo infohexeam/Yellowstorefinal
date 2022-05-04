@@ -207,7 +207,7 @@ use App\Models\admin\Trn_StoreBankData;
                                     <td>
                                        {{ $store->store_name}} <br>
                                        @php
-                                       $sBankDAta = Trn_StoreBankData::where('store_id', $request->store_id)->count();
+                                       $sBankDAta = Trn_StoreBankData::where('store_id', $store->store_id)->count();
                                        @endphp
                                        @if ( $sBankDAta == 0)
                                           <p style="color:red;">No Bank Info</p>
