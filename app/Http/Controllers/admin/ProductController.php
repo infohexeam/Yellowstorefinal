@@ -198,8 +198,19 @@ class ProductController extends Controller
     );
     if (!$validator->fails()) {
       try {
+        //check store code
+        $ChkCodeExstnce = DB::table('mst_store_products')->where('product_code',$request->product_code)->count();
 
-        $global_product->product_name = $request->product_name;
+        //check global code
+        $chkGlobalExistence = DB::table('mst__global_products')->where('product_code',$request->product_code)->count();
+        
+
+        if($ChkCodeExstnce > 0 || $chkGlobalExistence > 0)
+        {
+            return redirect()->back()->with('status-error', 'Product code already used.')->withInput();
+        }else{
+
+          $global_product->product_name = $request->product_name;
         $global_product->product_name_slug = Str::of($request->product_name)->slug('-');
         $global_product->product_description = $request->product_description;
         $global_product->regular_price = $request->regular_price;
@@ -282,6 +293,10 @@ class ProductController extends Controller
           }
         }
         return redirect('/admin/global/products/list')->with('status', 'Global product added successfully.');
+
+        }
+
+        
       } catch (\Exception $e) {
 
         return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -365,7 +380,19 @@ class ProductController extends Controller
     if (!$validator->fails()) {
       try {
 
-        $data['product_name'] = $request->product_name;
+        //check store code
+        $ChkCodeExstnce = DB::table('mst_store_products')->where('product_code',$request->product_code)->count();
+
+        //check global code
+        $chkGlobalExistence = DB::table('mst__global_products')->where('product_code',$request->product_code)->count();
+        
+
+        if($ChkCodeExstnce > 0 || $chkGlobalExistence > 0)
+        {
+            return redirect()->back()->with('status-error', 'Product code already used.')->withInput();
+        }else{
+
+          $data['product_name'] = $request->product_name;
         $data['product_name_slug'] = Str::of($request->product_name)->slug('-');
         $data['product_description'] = $request->product_description;
         $data['sale_price'] = $request->sale_price;
@@ -443,6 +470,10 @@ class ProductController extends Controller
             }
           }
         }
+
+        }
+
+        
       } catch (\Exception $e) {
 
         return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
