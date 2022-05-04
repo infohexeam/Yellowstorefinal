@@ -276,8 +276,7 @@ use App\Models\admin\Trn_StoreBankData;
                         
                                                 }
                                         @endphp
-                                    {{-- @if((@$storeAdmData->store_account_status == 0) && ($today > @$storeAdmData->expiry_date) ) --}}
-                                    @if((@$storeAdmData->store_account_status == 0) || ($today > @$storeAdmData->expiry_date) )
+                                    @if((@$storeAdmData->store_account_status == 0) && ($today > @$storeAdmData->expiry_date) )
                                        <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}</p>
                                     @endif
                                        
