@@ -540,8 +540,8 @@ class Helper
         $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default','click_action' => 'MainActivity2'),
-            'data' => array('title' => $title, 'body' => $body,'type' => 'order'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'data' => array('title' => $title, 'body' => $body,'type' => 'order','click_action' => 'MainActivity2'),
         );
         $headers = array(
             'Content-Type:application/json',
