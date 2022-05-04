@@ -2,6 +2,7 @@
 @section('content')
 @php
 use App\User;
+use App\Models\admin\Trn_StoreBankData;
 
 @endphp
 <div class="container">
@@ -203,7 +204,16 @@ use App\User;
                                  @foreach ($stores as $store)
                                  <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $store->store_name}}</td>
+                                    <td>
+                                       {{ $store->store_name}} <br>
+                                       @php
+                                       $sBankDAta = Trn_StoreBankData::where('store_id', $request->store_id)->count();
+                                       @endphp
+                                       @if ( $sBankDAta == 0)
+                                          <p style="color:red;">No Bank Info</p>
+                                       @endif
+                                       
+                                    </td>
                                    
                                     <td>{{$store->store_mobile}} </td>
                                     <td>{{ $store->email}} </td>

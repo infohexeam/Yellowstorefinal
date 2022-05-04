@@ -50,6 +50,7 @@ use DB;
 use Carbon\Carbon;
 use Crypt;
 
+
 use App\Models\admin\Mst_Subadmin_Detail;
 use App\Models\admin\Trn_delivery_boy_payment;
 use App\Models\admin\Trn_store_payments_tracker;
@@ -549,6 +550,7 @@ class SettingController extends Controller
 		$count = $stores->count();
 		$agencies = Mst_store_agencies::all();
 
+
 		if ($_GET) {
 
 			$subadmin_id = $request->subadmin_id;
@@ -616,7 +618,7 @@ class SettingController extends Controller
 			// 	->where('store_account_status','like', '%'.$store_account_status.'%')
 			//     ->get();
 
-
+			
 
 
 
