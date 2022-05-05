@@ -853,8 +853,8 @@ class OrderController extends Controller
                             foreach ($customerDevice as $cd) {
                                 $title = 'Order confirmed:order';
                                 $body = "Your order " . $od->order_number . ' is confirmed..';
-                                
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction);
                             }
                         }
 
