@@ -844,8 +844,7 @@ class StoreSettingsController extends Controller
                 //$todayDate = Carbon::now()->addDays(3);
                 $now = Carbon::now();
                 $dateExp = Carbon::parse($storeAdmData->expiry_date);
-                // $diff = $dateExp->diffInDays($now) + 1;
-                $diff = $dateExp->diffInDays($now);
+                $diff = $dateExp->diffInDays($now) + 1;
 
                 if (@$diff == 1) {
                     $dayString = 'day';
@@ -855,7 +854,7 @@ class StoreSettingsController extends Controller
 
                 dd($now, $storeAdmData->expiry_date, $diff);
 
-                if (($storeAdmData->store_account_status == 0) || ($now > $storeAdmData->expiry_date)) {
+                if (($storeAdmData->store_account_status == 0) || ($diff <= 3)) {
                     $expireMsgString = 'This account expires in ' . @$diff . " " . @$dayString;
                     $expiredDays = @$diff;
                 } else {
