@@ -852,6 +852,8 @@ class StoreSettingsController extends Controller
                     $dayString = 'days';
                 }
 
+                dd($now, $storeAdmData->expiry_date);
+
                 if (($storeAdmData->store_account_status == 0) || ($now > $storeAdmData->expiry_date)) {
                     $expireMsgString = 'This account expires in ' . @$diff . " " . @$dayString;
                     $expiredDays = @$diff;
