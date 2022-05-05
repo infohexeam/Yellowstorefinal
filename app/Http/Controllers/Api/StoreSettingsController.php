@@ -844,7 +844,8 @@ class StoreSettingsController extends Controller
                 //$todayDate = Carbon::now()->addDays(3);
                 $now = Carbon::now();
                 $dateExp = Carbon::parse($storeAdmData->expiry_date);
-                $diff = $dateExp->diffInDays($now) + 1;
+                // $diff = $dateExp->diffInDays($now) + 1;
+                $diff = $dateExp->diffInDays($now);
 
                 if (@$diff == 1) {
                     $dayString = 'day';
