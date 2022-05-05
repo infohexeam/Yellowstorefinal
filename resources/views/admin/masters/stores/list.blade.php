@@ -212,7 +212,6 @@ use App\Models\admin\Trn_StoreBankData;
                                        @if ( $sBankDAta == 0)
                                           <p style="color:red;">No Bank Info</p>
                                        @endif
-                                       
                                     </td>
                                    
                                     <td>{{$store->store_mobile}} </td>
@@ -273,7 +272,6 @@ use App\Models\admin\Trn_StoreBankData;
                                                     $dayString = 'day';
                                                 }else{
                                                     $dayString = 'days';
-                        
                                                 }
                                         @endphp
                                     @if((@$storeAdmData->store_account_status == 0) && ($today > @$storeAdmData->expiry_date) )
