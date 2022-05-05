@@ -170,19 +170,22 @@ class DeliveryBoyOrderController extends Controller
                                 ->where('store_id', @$orderdatas->store_id)->get();
 
                             foreach ($storeDevice as $sd) {
-                                $title = 'Delivery Boy Accepted Order:order';
+                                $title = 'Delivery Boy Accepted Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been accepted by ' . $dBoy->delivery_boy_name;
-                                
-                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $clickAction, $type);
                             }
 
 
                             $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)
                                 ->where('store_id', @$orderdatas->store_id)->get();
                             foreach ($storeWeb as $sw) {
-                                $title = 'Delivery Boy Accepted Order:order';
+                                $title = 'Delivery Boy Accepted Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been accepted by ' . $dBoy->delivery_boy_name;
-                                $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                             }
 
 
@@ -202,19 +205,22 @@ class DeliveryBoyOrderController extends Controller
                                 ->where('store_id', $orderdatas->store_id)->get();
 
                             foreach ($storeDevice as $sd) {
-                                $title = 'Delivery Boy Rejected Order:order';
+                                $title = 'Delivery Boy Rejected Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been rejected by ' . $dBoy->delivery_boy_name;
-                                
-                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                             }
 
 
                             $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)
                                 ->where('store_id', $orderdatas->store_id)->get();
                             foreach ($storeWeb as $sw) {
-                                $title = 'Delivery Boy Rejected Order:order';
+                                $title = 'Delivery Boy Rejected Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been rejected by ' . $dBoy->delivery_boy_name;
-                                $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                             }
 
                             $data['status'] = 1;
@@ -248,13 +254,14 @@ class DeliveryBoyOrderController extends Controller
 
 
 
-    private function storeNotification($device_id, $title, $body)
+    private function storeNotification($device_id, $title, $body,$clickAction,$type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
         );
         $headers = array(
             'Content-Type:application/json',
@@ -706,11 +713,12 @@ class DeliveryBoyOrderController extends Controller
 
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                     foreach ($customerDevice as $cd) {
-                        $title = 'Order delivered:order';
+                        $title = 'Order delivered';
                         // $body = 'First order points credited successully..';
                         $body = 'Order delivered with order id ' . $order->order_number;
-                        
-                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
 
 
@@ -730,11 +738,12 @@ class DeliveryBoyOrderController extends Controller
 
                         $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                         foreach ($customerDevice as $cd) {
-                            $title = 'First order points credited:wallet';
+                            $title = 'First order points credited';
                             // $body = 'First order points credited successully..';
                             $body = $configPoint->first_order_points . ' points credited to your wallet..';
-                            
-                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                            $clickAction = "MyWalletFragment";
+                            $type = "wallet";
+                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                         }
 
 
@@ -755,11 +764,12 @@ class DeliveryBoyOrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Referal points credited:wallet';
+                                $title = 'Referal points credited';
                                 // $body = 'Referal points credited successully..';
                                 $body = $configPoint->referal_points . ' points credited to your wallet..';
-                                
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $clickAction = "MyWalletFragment";
+                                $type = "wallet";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
 
 
@@ -776,11 +786,12 @@ class DeliveryBoyOrderController extends Controller
                             if ($crJoin->save()) {
                                 $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
                                 foreach ($customerDevice as $cd) {
-                                    $title = 'Referal joiner points credited:order';
+                                    $title = 'Referal joiner points credited';
                                     // $body = 'Referal joiner points credited successully..';
                                     $body = $configPoint->joiner_points . ' points credited to your wallet..';
-                                    
-                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                    $clickAction = "MyWalletFragment";
+                                    $type = "wallet";
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                 }
                             }
                         }

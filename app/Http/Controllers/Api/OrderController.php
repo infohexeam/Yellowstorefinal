@@ -759,11 +759,12 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'First order points credited:wallet';
+                                        $title = 'First order points credited';
                                         //  $body = 'First order points credited successully..';
                                         $body = $configPoint->first_order_points . ' points credited to your wallet..';
-                                        
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        $clickAction = "MyWalletFragment";
+                                        $type = "wallet";
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
                                 }
 
@@ -785,10 +786,11 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'Referal points credited:wallet';
+                                        $title = 'Referal points credited';
                                         $body = $configPoint->referal_points . ' points credited to your wallet..';
-                                        
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        $clickAction = "MyWalletFragment";
+                                        $type = "wallet";
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
 
 
@@ -806,11 +808,12 @@ class OrderController extends Controller
                                         $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->referred_by)->get();
 
                                         foreach ($customerDevice as $cd) {
-                                            $title = 'Referal joiner points credited:wallet';
+                                            $title = 'Referal joiner points credited';
                                             //  $body = 'Referal joiner points credited successully..';
                                             $body = $configPoint->joiner_points . ' points credited to your wallet..';
-                                            
-                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                            $clickAction = "MyWalletFragment";
+                                            $type = "wallet";
+                                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                         }
                                     }
                                 }
@@ -834,10 +837,11 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
 
                                     foreach ($customerDevice as $cd) {
-                                        $title = 'Order points credited:wallet';
+                                        $title = 'Order points credited';
                                         $body = $orderPointAmount . ' points credited to your wallet..';
-                                        
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                        $clickAction = "MyWalletFragment";
+                                        $type = "wallet";
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
                                 }
                             }
@@ -851,7 +855,7 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order confirmed:order';
+                                $title = 'Order confirmed';
                                 $body = "Your order " . $od->order_number . ' is confirmed..';
                                 $clickAction = "OrderListFragment";
                                 $type = "order";
@@ -863,20 +867,22 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order picking completed:order';
+                                $title = 'Order picking completed';
                                 $body = "Your order " . $od->order_number . ' picking completed..';
-                                
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
                         if ($request->status_id == 7) { //ready for delivery
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order ready for delivery:order';
+                                $title = 'Order ready for delivery';
                                 $body = "Your order " . $od->order_number . ' is ready for delivery..';
-                                
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
 
@@ -884,10 +890,11 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order out for delivery:order';
+                                $title = 'Order out for delivery';
                                 $body = "Your order " . $od->order_number . ' is out for delivery..';
-                                
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
 
@@ -895,10 +902,11 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order deliverd:order';
+                                $title = 'Order deliverd';
                                 $body = "Your order " . $od->order_number . ' is deliverd..';
-                                
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
 
@@ -912,10 +920,11 @@ class OrderController extends Controller
                                 $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
 
                                 foreach ($dBoyDevices as $cd) {
-                                    $title = 'Order Assigned:assigned-orders';
+                                    $title = 'Order Assigned';
                                     $body = 'New order(' . $od->order_number . ') arrived';
-                                    
-                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body);
+                                    $clickAction = "OrderListFragment";
+                                    $type = "order";
+                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
                                 }
                             }
                             $orderdata2['delivery_accept'] = null;

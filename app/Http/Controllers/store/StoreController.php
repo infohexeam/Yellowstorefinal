@@ -2473,8 +2473,9 @@ class StoreController extends Controller
             $title = 'First order points credited';
             //  $body = 'First order points credited successully..';
             $body = $configPoint->first_order_points . ' points credited to your wallet..';
-           
-            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+            $clickAction = "OrderListFragment";
+            $type = "order";
+            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
           }
 
 
@@ -2498,7 +2499,9 @@ class StoreController extends Controller
               $title = 'Referal points credited';
               //$body = 'Referal points credited successully..';
               $body = $configPoint->referal_points . ' points credited to your wallet..';
-              $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+              $clickAction = "OrderListFragment";
+              $type = "order";
+              $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
             }
 
 
@@ -2520,8 +2523,9 @@ class StoreController extends Controller
                 $title = 'Referal joiner points credited';
                 //$body = 'Referal joiner points credited successully..';
                 $body = $configPoint->joiner_points . ' points credited to your wallet..';
-                
-                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                $clickAction = "OrderListFragment";
+                $type = "order";
+                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
               }
             }
           }
@@ -2546,8 +2550,9 @@ class StoreController extends Controller
             foreach ($customerDevice as $cd) {
               $title = 'Order points credited';
               $body = $orderPointAmount . ' points credited to your wallet..';
-              
-              $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+              $clickAction = "OrderListFragment";
+              $type = "order";
+              $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
             }
           }
         }
@@ -2577,8 +2582,9 @@ class StoreController extends Controller
         foreach ($customerDevice as $cd) {
           $title = 'Order Pending';
           $body = 'Your order with order id ' . $order_number . ' is pending..';
-          
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $clickAction = "OrderListFragment";
+          $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } elseif ($status_id == 2) {
         $order_status = "PaymentSuccess";
@@ -2594,8 +2600,9 @@ class StoreController extends Controller
         foreach ($customerDevice as $cd) {
           $title = 'Order confirmed';
           $body = 'Your order with order id ' . $order_number . ' is confirmerd..';
-          
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $clickAction = "OrderListFragment";
+          $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } elseif ($status_id == 5) {
         $order_status = "Cancelled";
@@ -2618,8 +2625,9 @@ class StoreController extends Controller
         foreach ($customerDevice as $cd) {
           $title = 'Order Confirmed';
           $body = 'Your order with order id ' . $order_number . ' is Confirmed..';
-          
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $clickAction = "OrderListFragment";
+          $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } elseif ($status_id == 6) {
         $order_status = "Completed";
@@ -2630,8 +2638,9 @@ class StoreController extends Controller
         foreach ($customerDevice as $cd) {
           $title = 'Order completed';
           $body = 'Your order with order id ' . $order_number . ' is completed..';
-          
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $clickAction = "OrderListFragment";
+                        $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } elseif ($status_id == 7) {
         $order_status = "Ready for Delivery";
@@ -2642,8 +2651,9 @@ class StoreController extends Controller
         foreach ($customerDevice as $cd) {
           $title = 'Order ready for delivery';
           $body = 'Your order with order id ' . $order_number . ' is packed and ready for delivery..';
-          
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $clickAction = "OrderListFragment";
+                        $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } elseif ($status_id == 8) {
         $order_status = "Out for Delivery";
@@ -2654,8 +2664,9 @@ class StoreController extends Controller
         foreach ($customerDevice as $cd) {
           $title = 'Order out for delivery';
           $body = 'Your order with order id ' . $order_number . ' is out for delivery..';
-          
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $clickAction = "OrderListFragment";
+                        $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } else {
         if ($order->status_id != 9) {
@@ -2668,8 +2679,9 @@ class StoreController extends Controller
           foreach ($customerDevice as $cd) {
             $title = 'Order deliverd';
             $body = 'Your order with order id ' . $order_number . ' is deliverd..';
-            
-            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+            $clickAction = "OrderListFragment";
+                        $type = "order";
+            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
           }
         }
       }
@@ -2774,13 +2786,14 @@ class StoreController extends Controller
   }
 
 
-  private function customerNotification($device_id, $title, $body)
+  private function customerNotification($device_id, $title, $body,$clickAction,$type)
   {
     $url = 'https://fcm.googleapis.com/fcm/send';
     $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
     $fields = array(
       'to' => $device_id,
-      'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+      'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
     );
     $headers = array(
       'Content-Type:application/json',
@@ -2851,7 +2864,9 @@ class StoreController extends Controller
       foreach ($dBoyDevices as $cd) {
         $title = 'Order Assigned';
         $body = 'New order(' . $order->order_number . ') arrived';
-        $data =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body);
+        $clickAction = "OrderListFragment";
+                        $type = "order";
+        $data =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
       }
 
 
@@ -4556,8 +4571,9 @@ class StoreController extends Controller
         $title = 'Dispute closed';
         //  $body = 'First order points credited successully..';
         $body =  'Your dispute with order number' . $orderData->order_number . ' is closed by store..';
-        
-        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+        $clickAction = "OrderListFragment";
+                        $type = "order";
+        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
       }
     }
 
@@ -4569,8 +4585,9 @@ class StoreController extends Controller
         $title = 'Dispute in progress';
         //  $body = 'First order points credited successully..';
         $body =  'Your dispute with order number' . $orderData->order_number . ' is in progress..';
-        
-        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body);
+        $clickAction = "OrderListFragment";
+                        $type = "order";
+        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
       }
     }
 

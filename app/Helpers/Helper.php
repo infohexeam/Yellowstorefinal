@@ -565,13 +565,14 @@ class Helper
 
 
 
-    public static function deliveryBoyNotification($device_id, $title, $body)
+    public static function deliveryBoyNotification($device_id, $title, $body, $clickAction,$type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAARrd44xk:APA91bFzEarq0xuLOOD2nnkMrB102CHEPSZXV6LZZnQsMwUSVeJPSXrQ9Vxg_3wP-eXrypj5Kq8GpXn6Kig3Rq84C4q63J4LV-dtDEHRdLiv5saU7ZPBrnw-rGoQc3buW93r9xqpoyJv';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default',''),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
         );
         $headers = array(
             'Content-Type:application/json',
@@ -594,13 +595,14 @@ class Helper
     }
 
 
-    public static function storeNotification($device_id, $title, $body)
+    public static function storeNotification($device_id, $title, $body,$clickAction,$type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
         );
         $headers = array(
             'Content-Type:application/json',
@@ -623,17 +625,15 @@ class Helper
     }
 
 
-    public static function storeNotifyWeb($device_id, $title, $body)
+    public static function storeNotifyWeb($device_id, $title, $body,$clickAction,$type)
     {
 
         $SERVER_API_KEY = 'AAAAZ5VSsVE:APA91bEmc0gaD9tE94DJOaFpQHA0NTZtGMlR-Fx_Tz9wJcwn3rIQKG5YPgxHkbiu-3SrcsHG-IWDWfNhes0krQr4L8jazCQCACFn_nKXMVByZgzeYTMKFKl-1xwC43Wg_g0KHbYWNbjG';
 
         $data = [
             "to" => $device_id,
-            'notification' => array(
-                'title' => $title, 'body' => $body, 'sound' => "default",
-                'icon' => "https://yellowstore.in/assets/uploads/favicon.png"
-            ),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
 
         ];
         $dataString = json_encode($data);

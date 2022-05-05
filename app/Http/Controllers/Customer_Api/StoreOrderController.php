@@ -259,29 +259,33 @@ class StoreOrderController extends Controller
                     $orderdatas = Trn_store_order::find($order_id);
 
                     foreach ($storeDevice as $sd) {
-                        $title = 'New service order arrived:order';
+                        $title = 'New service order arrived';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        
-                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
 
 
                     $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
                     foreach ($storeWeb as $sw) {
-                        $title = 'New service order arrived:order';
+                        $title = 'New service order arrived';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                     }
 
                     foreach ($customerDevice as $cd) {
-                        $title = 'Order Placed:order';
+                        $title = 'Order Placed';
                         $body = 'Your order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                         
-
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
                         //   $title = 'Title';
                         //  $body = 'Body';
 
-                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
 
 
@@ -747,28 +751,32 @@ class StoreOrderController extends Controller
                     $orderdatas = Trn_store_order::find($order_id);
 
                     foreach ($storeDevice as $sd) {
-                        $title = 'New order arrived:order';
+                        $title = 'New order arrived';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                       
-                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
 
 
                     $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
                     foreach ($storeWeb as $sw) {
-                        $title = 'New order arrived:order';
+                        $title = 'New order arrived';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                     }
 
 
 
 
                     foreach ($customerDevice as $cd) {
-                        $title = 'Order Placed:order';
+                        $title = 'Order Placed';
                         $body = 'Order placed with order id ' . $orderdatas->order_number;
-                        
-                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
 
 
@@ -777,10 +785,11 @@ class StoreOrderController extends Controller
 
                             foreach ($customerDevice as $cd) {
 
-                                $title = 'Points Deducted:wallet';
+                                $title = 'Points Deducted';
                                 $body = $request->reward_points_used . ' points deducted from your wallet';
-                                
-                                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                                $clickAction = "MyWalletFragment";
+                                $type = "wallet";
+                                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
                     }
@@ -813,13 +822,14 @@ class StoreOrderController extends Controller
         }
     }
 
-    private function customerNotification($device_id, $title, $body)
+    private function customerNotification($device_id, $title, $body,$clickAction,$type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
         );
         $headers = array(
 
@@ -844,13 +854,14 @@ class StoreOrderController extends Controller
     }
 
 
-    private function storeNotification($device_id, $title, $body)
+    private function storeNotification($device_id, $title, $body,$clickAction,$type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default'),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
         );
         $headers = array(
             'Content-Type:application/json',
@@ -1070,23 +1081,27 @@ class StoreOrderController extends Controller
                     $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderdatas->store_id)->get();
 
                     foreach ($storeDevice as $sd) {
-                        $title = 'Dispute raised:dispute';
+                        $title = 'Dispute raised';
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
-                        
-                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
 
                     foreach ($storeWeb as $sw) {
-                        $title = 'Dispute raised:dispute';
+                        $title = 'Dispute raised';
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
-                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                     }
 
                     foreach ($customerDevice as $cd) {
-                        $title = 'Dispute raised:dispute';
+                        $title = 'Dispute raised';
                         $body = 'Your dispute raised with order id ' . $orderdatas->order_number;
-                       
-                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
                 }
 
@@ -1680,15 +1695,18 @@ class StoreOrderController extends Controller
                         foreach ($storeDevice as $sd) {
                             $title = 'Order cancelled';
                             $body = 'Order cancelled by customer! Order Id: ' . $orderData->order_number;
-                            
-                            $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body);
+                            $clickAction = "OrderListFragment";
+                            $type = "order";
+                            $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                         }
 
                         foreach ($storeWeb as $sw) {
                             
                             $title = 'Order cancelled';
                             $body = 'Order cancelled by customer! Order Id: ' . $orderData->order_number;
-                            $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body);
+                            $clickAction = "OrderListFragment";
+                            $type = "order";
+                            $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$type,$clickAction);
                         }
 
 
