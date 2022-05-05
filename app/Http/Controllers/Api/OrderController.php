@@ -854,7 +854,8 @@ class OrderController extends Controller
                                 $title = 'Order confirmed:order';
                                 $body = "Your order " . $od->order_number . ' is confirmed..';
                                 $clickAction = "OrderListFragment";
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction);
+                                $type = "order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
 
