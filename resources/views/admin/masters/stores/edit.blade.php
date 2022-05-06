@@ -235,7 +235,7 @@
 
                              <div class="form-group">
                            <label class="form-label"> User Name *</label>
-                          <input type="text" id="username" required name="store_username" class="form-control" placeholder="Store UserName" value="{{old('store_username',$store->store_username)}}">
+                          <input type="text" id="username" readonly="" required name="store_username" class="form-control" placeholder="Store UserName" value="{{old('store_username',$store->store_username)}}">
                           <span id="error_username"></span>
                        </div>
 
