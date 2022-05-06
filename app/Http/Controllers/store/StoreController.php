@@ -1452,6 +1452,8 @@ class StoreController extends Controller
         Mst_store_product_varient::where('product_varient_id', '=', $pro_imageTwo->product_varient_id)
         ->update(['product_varient_base_image' => $pro_imageTwo->product_image]);
 
+        
+
       }else{
         $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
         $pro_image->delete();
@@ -2864,8 +2866,8 @@ class StoreController extends Controller
       foreach ($dBoyDevices as $cd) {
         $title = 'Order Assigned';
         $body = 'New order(' . $order->order_number . ') arrived';
-        $clickAction = "OrderListFragment";
-                        $type = "order";
+        $clickAction = "AssignedOrderFragment";
+                        $type = "order-assigned";
         $data =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
       }
 

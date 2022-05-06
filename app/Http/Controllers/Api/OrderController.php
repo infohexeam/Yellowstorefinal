@@ -902,7 +902,7 @@ class OrderController extends Controller
                             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
 
                             foreach ($customerDevice as $cd) {
-                                $title = 'Order deliverd';
+                                $title = 'Order delivered';
                                 $body = "Your order " . $od->order_number . ' is deliverd..';
                                 $clickAction = "OrderListFragment";
                                 $type = "order";
@@ -922,8 +922,8 @@ class OrderController extends Controller
                                 foreach ($dBoyDevices as $cd) {
                                     $title = 'Order Assigned';
                                     $body = 'New order(' . $od->order_number . ') arrived';
-                                    $clickAction = "OrderListFragment";
-                                    $type = "order";
+                                    $clickAction = "AssignedOrderFragment";
+                                    $type = "order-assigned";
                                     $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
                                 }
                             }

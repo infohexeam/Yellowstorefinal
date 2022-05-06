@@ -172,7 +172,7 @@ class DeliveryBoyOrderController extends Controller
                             foreach ($storeDevice as $sd) {
                                 $title = 'Delivery Boy Accepted Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been accepted by ' . $dBoy->delivery_boy_name;
-                                $clickAction = "OrderListFragment";
+                                $clickAction = "OrdersFragment";
                                 $type = "order";
                                 $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $clickAction, $type);
                             }
@@ -207,7 +207,7 @@ class DeliveryBoyOrderController extends Controller
                             foreach ($storeDevice as $sd) {
                                 $title = 'Delivery Boy Rejected Order';
                                 $body = 'New order with order id ' . $orderdatas->order_number . ' has been rejected by ' . $dBoy->delivery_boy_name;
-                                $clickAction = "OrderListFragment";
+                                $clickAction = "OrdersFragment";
                                 $type = "order";
                                 $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                             }

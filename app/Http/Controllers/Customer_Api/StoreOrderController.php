@@ -261,7 +261,7 @@ class StoreOrderController extends Controller
                     foreach ($storeDevice as $sd) {
                         $title = 'New service order arrived';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        $clickAction = "OrderListFragment";
+                        $clickAction = "OrdersFragment";
                         $type = "order";
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
@@ -753,7 +753,7 @@ class StoreOrderController extends Controller
                     foreach ($storeDevice as $sd) {
                         $title = 'New order arrived';
                         $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        $clickAction = "OrderListFragment";
+                        $clickAction = "OrdersFragment";
                         $type = "order";
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
@@ -1083,7 +1083,7 @@ class StoreOrderController extends Controller
                     foreach ($storeDevice as $sd) {
                         $title = 'Dispute raised';
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
-                        $clickAction = "OrderListFragment";
+                        $clickAction = "OrdersFragment";
                         $type = "order";
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
@@ -1695,7 +1695,7 @@ class StoreOrderController extends Controller
                         foreach ($storeDevice as $sd) {
                             $title = 'Order cancelled';
                             $body = 'Order cancelled by customer! Order Id: ' . $orderData->order_number;
-                            $clickAction = "OrderListFragment";
+                            $clickAction = "OrdersFragment";
                             $type = "order";
                             $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                         }
@@ -1704,7 +1704,7 @@ class StoreOrderController extends Controller
                             
                             $title = 'Order cancelled';
                             $body = 'Order cancelled by customer! Order Id: ' . $orderData->order_number;
-                            $clickAction = "OrderListFragment";
+                            $clickAction = "OrdersFragment";
                             $type = "order";
                             $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$type,$clickAction);
                         }
