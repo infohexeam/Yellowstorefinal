@@ -2594,6 +2594,7 @@ class StoreController extends Controller
                     'trn_store_orders.amount_reduced_by_coupon',
                     'trn_store_orders.order_type',
                     'trn_store_orders.isRefunded',
+                    'trn_store_orders.refundId',
                     'trn_store_orders.refundStatus',
                     'trn_store_orders.refundNote',
                     'trn_store_orders.refundProcessStatus',
