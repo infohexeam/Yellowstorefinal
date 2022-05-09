@@ -2595,12 +2595,11 @@ class StoreController extends Controller
                     'trn_store_orders.order_type',
                     'trn_store_orders.isRefunded',
                     'trn_store_orders.refundId',
-                    // 'trn_store_orders.refundStatus',
+                    //'trn_store_orders.refundStatus',
                     'trn_store_orders.refundNote',
                     'trn_store_orders.refundProcessStatus',
                     'trn_store_orders.refundProcessDate',
                     'trn_store_orders.refundStartDate',
-                    
 
                     'trn_store_customers.customer_id',
                     'trn_store_customers.customer_first_name',
