@@ -2607,7 +2607,7 @@ class StoreController extends Controller
                     'trn_store_customers.customer_mobile_number',
                     'trn_store_customers.place',
 
-                    'mst_stores.store_id',
+                    //'mst_stores.store_id',
                     'mst_stores.store_name',
                     'mst_stores.store_mobile',
 
