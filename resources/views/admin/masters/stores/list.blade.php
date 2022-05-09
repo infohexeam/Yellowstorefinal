@@ -266,7 +266,7 @@ use App\Models\admin\Trn_StoreBankData;
                                                 $today = Carbon\Carbon::now()->addDays(3);
                                                 $now = Carbon\Carbon::now();
                                                 $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
-                                                $diff = $dateExp->diffInDays($now) + 1;
+                                                $diff = $dateExp->diffInDays($now);
                                                 
                                                 if(@$diff == 1){
                                                     $dayString = 'day';
