@@ -278,11 +278,12 @@ use App\Models\admin\Trn_StoreBankData;
                                        <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}</p>
                                     @endif --}}
                            @php
-                              $remDays =  Carbon\Carbon::now()->diffInDays($storeAdmData->expiry_date, false);
+                              $threeDysBack = Carbon\Carbon::now()->subDays(3);
+                              $remDays =  $threeDysBack->diffInDays($storeAdmData->expiry_date, false);
                            @endphp
-                                    @if($remDays <= 0 || $remDays == 3)
+                                    
                                     <p style="font-size:9px">This account expires in <b style="font-size:11px"> {{ @$remDays }}</b> Days</p>
-                                    @endif
+                                    
                                     </td>
                                     <td>
                                        <form action="{{route('admin.destroy_store',$store->store_id)}}" method="POST">
