@@ -1586,7 +1586,7 @@ class StoreController extends Controller
     if (!$validator->fails()) {
       $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$request->product_code)->count();
         
-      if($ChkCodeExstnce > 0)
+      if($ChkCodeExstnce > 1)
       {
 
         return redirect()->back()->with('status-error', 'Product code already used by the store.')->withInput();
