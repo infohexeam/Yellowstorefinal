@@ -39,7 +39,7 @@ class getRefundData extends Command
     public function handle()
     {
         $RefundOrderDatas = Trn_store_order::where('isRefunded', 1)
-            ->get();
+            ->get(); //status 1 = initiated refund
 
         foreach ($RefundOrderDatas as $row) {
             $curl = curl_init();
@@ -64,6 +64,10 @@ class getRefundData extends Command
                 Trn_store_order::where('order_id', $row->order_id)->update([
                     "isRefunded" => 2,
                     "refundStatus" => "Success",
+                    "refundNote" => $refundResponseFinal['refund'][0]['note'],
+                    "refundProcessStatus" => "YES",
+                    "refundStartDate" => $refundResponseFinal['refund'][0]['initiatedOn'],
+                    "refundProcessDate" => $refundResponseFinal['refund'][0]['processedOn']
                 ]);
             }
         }

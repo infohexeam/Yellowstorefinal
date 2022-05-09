@@ -2565,6 +2565,180 @@ class StoreController extends Controller
         }
     }
 
+    public function refundReport(Request $request)
+    {
+        try {
+
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $salesData = Trn_store_order::where('isRefunded','=',1)->select(
+
+                    'trn_store_orders.order_id',
+                    'trn_store_orders.order_number',
+                    'trn_store_orders.customer_id',
+                    'trn_store_orders.store_id',
+                    'trn_store_orders.subadmin_id',
+                    'trn_store_orders.product_total_amount',
+                    'trn_store_orders.delivery_charge',
+                    'trn_store_orders.packing_charge',
+                    'trn_store_orders.payment_type_id',
+                    'trn_store_orders.status_id',
+                    'trn_store_orders.payment_status',
+                    'trn_store_orders.delivery_status_id',
+                    'trn_store_orders.delivery_boy_id',
+                    'trn_store_orders.coupon_id',
+                    'trn_store_orders.coupon_code',
+                    'trn_store_orders.reward_points_used',
+                    'trn_store_orders.amount_before_applying_rp',
+                    'trn_store_orders.trn_id',
+                    'trn_store_orders.created_at',
+                    'trn_store_orders.amount_reduced_by_coupon',
+                    'trn_store_orders.order_type',
+                    'trn_store_orders.isRefunded',
+                    'trn_store_orders.refundStatus',
+                    'trn_store_orders.refundNote',
+                    'trn_store_orders.refundProcessStatus',
+                    'trn_store_orders.refundProcessDate',
+                    'trn_store_orders.refundStartDate',
+                    
+
+                    'trn_store_customers.customer_id',
+                    'trn_store_customers.customer_first_name',
+                    'trn_store_customers.customer_last_name',
+                    'trn_store_customers.customer_mobile_number',
+                    'trn_store_customers.place',
+
+                    'mst_stores.store_id',
+                    'mst_stores.store_name',
+                    'mst_stores.store_mobile',
+
+                    'mst_delivery_boys.delivery_boy_name',
+                    'mst_delivery_boys.delivery_boy_mobile'
+
+
+
+                )
+                    ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+                    ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+                    ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+
+
+                $a1 = Carbon::parse($request->date_from)->startOfDay();
+                $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+                if (isset($request->date_from)) {
+                    $salesData = $salesData->whereDate('trn_store_orders.created_at', '>=', $a1);
+                }
+
+                if (isset($request->date_to)) {
+                    $salesData = $salesData->whereDate('trn_store_orders.created_at', '<=', $a2);
+                }
+
+                if (isset($request->customer_id)) {
+                    $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                }
+
+                if (isset($request->delivery_boy_id)) {
+                    $salesData = $salesData->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
+                }
+
+                if (isset($request->status_id)) {
+                    $salesData = $salesData->where('trn_store_orders.status_id', '=', $request->status_id);
+                }
+
+                if (isset($request->order_type)) {
+                    $salesData = $salesData->where('trn_store_orders.order_type', '=', $request->order_type);
+                }
+
+
+                $salesData = $salesData->where('trn_store_orders.store_id', $request->store_id)
+                    ->where('isRefunded','=',1)
+                    ->orderBy('trn_store_orders.order_id', 'DESC');
+
+                if (isset($request->page)) {
+                    $salesData = $salesData->paginate(10, ['data'], 'page', $request->page);
+                } else {
+                    $salesData = $salesData->paginate(10);
+                }
+
+
+                foreach ($salesData as $sd) {
+                    $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
+                    $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
+
+                    if ($sd->delivery_status_id == 1)
+                        $sd->delivery_status =  'Assigned';
+                    elseif ($sd->delivery_status_id == 2)
+                        $sd->delivery_status =  'Inprogress';
+                    elseif ($sd->delivery_status_id == 3)
+                        $sd->delivery_status =  'Completed';
+                    else
+                        $sd->delivery_status =  '';
+                        
+                    if ($sd->isRefunded == 1)
+                        $sd->refund_status =  'Pending';
+                    elseif ($sd->isRefunded == 2)
+                        $sd->refund_status =  'Success';
+                    else
+                        $sd->delivery_status =  ''; 
+
+                    @$sd->status->status;
+
+                    $sd->date = \Carbon\Carbon::parse($sd->created_at)->format('d-m-Y');
+
+                    if (!isset($sd->customer_last_name))
+                        $sd->customer_last_name = '';
+
+                    if (!isset($sd->delivery_charge))
+                        $sd->delivery_charge = '';
+
+                    if (!isset($sd->coupon_code))
+                        $sd->coupon_code = '';
+
+                    if (!isset($sd->packing_charge))
+                        $sd->packing_charge = '';
+
+                    if (!isset($sd->payment_type_id))
+                        $sd->payment_type_id = '';
+
+                    if (!isset($sd->reward_points_used))
+                        $sd->reward_points_used = '';
+
+                    if (!isset($sd->amount_before_applying_rp))
+                        $sd->amount_before_applying_rp = '';
+
+                    if (!isset($sd->trn_id))
+                        $sd->trn_id = '';
+
+                    if (!isset($sd->amount_reduced_by_coupon))
+                        $sd->amount_reduced_by_coupon = '';
+
+                    if (!isset($sd->order_type))
+                        $sd->order_type = '';
+
+                    if (!isset($sd->customer_mobile_number))
+                        $sd->customer_mobile_number = '';
+
+                    if (!isset($sd->place))
+                        $sd->place = '';
+                }
+
+                $data['refundData'] = $salesData;
+                $data['status'] = 1;
+                $data['message'] = "Success";
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store does not exist";
+            }
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
 
     public function listProducts(Request $request)
     {
