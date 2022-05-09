@@ -2737,6 +2737,7 @@ class SettingController extends Controller
 				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
 				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
 				->get();
+			dd($delivery_boys);
 		}
 
 		$countries = Country::all();
