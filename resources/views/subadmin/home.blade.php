@@ -21,14 +21,14 @@ use App\Models\admin\Trn_sub_admin_payment_settlment;
 
    $storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->pluck('store_id');
 			
-	$boys_count = \DB::table('mst_delivery_boys')
+	$deliveryBoys = \DB::table('mst_delivery_boys')
 				->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
 				->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
 				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
 				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
 				->get();
-            $total2 = count($boys_count);
-            dd($storesSubadmins,$total2);
+      $boys_count = count($deliveryBoys);
+           
 
      @$payments_datas = Trn_subadmin_payments_tracker::where('subadmin_id',auth()->user()->id)->get();
      @$payments = Trn_sub_admin_payment_settlment::where('subadmin_id',auth()->user()->id)->get();
