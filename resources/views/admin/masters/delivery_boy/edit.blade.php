@@ -37,7 +37,7 @@
                         </div>
                          <div class="form-group">
                            <label class="form-label">Mobile Number</label>
-                            <input type="text" required=""  name="delivery_boy_mobile" class="form-control"  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  value="{{old('delivery_boy_mobile',$delivery_boy->delivery_boy_mobile)}}" placeholder="Mobile Number">
+                            <input type="text" required=""  name="delivery_boy_mobile" class="form-control" readonly=""  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  value="{{old('delivery_boy_mobile',$delivery_boy->delivery_boy_mobile)}}" placeholder="Mobile Number">
                            </div>
                         </div>
                            <div class="col-md-6">
@@ -109,7 +109,7 @@
                          <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label"> Username</label>
-                          <input type="text"  required id="username" name="delivery_boy_username" class="form-control" placeholder="Username" value="{{old('delivery_boy_username',@$delivery_boy->delivery_boy_username)}}">
+                          <input type="text" readonly=""  required id="username" name="delivery_boy_username" class="form-control" placeholder="Username" value="{{old('delivery_boy_username',@$delivery_boy->delivery_boy_username)}}">
                            <span id="error_username"></span>
                        </div>
                         </div>
