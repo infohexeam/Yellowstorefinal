@@ -1570,7 +1570,8 @@ class ProductController extends Controller
                             $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
                             $pro_image->delete();
 
-                            
+
+
                         }
 
 
@@ -1579,7 +1580,9 @@ class ProductController extends Controller
                             $data['message'] = "Base image cannot be deleted.";
                             return response($data);
                         }
-
+                        $data['status'] = 1;
+                        $data['message'] = "Product image deleted ";
+                        return response($data);
                     
 
                     //old method
