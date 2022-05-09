@@ -2628,11 +2628,11 @@ class StoreController extends Controller
                 
 
                 if (isset($request->date_from)) {
-                    $salesData = $salesData->whereDate('trn_store_orders.created_at', '>=', $a1);
+                    $salesData = $salesData->where('trn_store_orders.created_at', '>=', $a1);
                 }
 
                 if (isset($request->date_to)) {
-                    $salesData = $salesData->whereDate('trn_store_orders.created_at', '<=', $a2);
+                    $salesData = $salesData->where('trn_store_orders.created_at', '<=', $a2);
                 }
 
                 if (isset($request->customer_id)) {
