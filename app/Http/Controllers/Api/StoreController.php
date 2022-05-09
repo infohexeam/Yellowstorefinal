@@ -2570,7 +2570,7 @@ class StoreController extends Controller
         try {
 
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                $salesData = Trn_store_order::where('trn_store_orders.store_id','=',$request->store_id)->where('isRefunded','=',1)->orWhere('isRefunded','=',2)->select(
+                $salesData = Trn_store_order::where('isRefunded','=',1)->orWhere('isRefunded','=',2)->where('trn_store_orders.store_id','=',$request->store_id)->select(
 
                     'trn_store_orders.order_id',
                     'trn_store_orders.order_number',
@@ -2652,8 +2652,9 @@ class StoreController extends Controller
                 }
 
 
-                $salesData = $salesData->where('trn_store_orders.store_id', $request->store_id)
+                $salesData = $salesData
                     ->where('isRefunded','=',1)->orWhere('isRefunded','=',2)
+                    ->where('trn_store_orders.store_id','=',$request->store_id)
                     ->orderBy('trn_store_orders.order_id', 'DESC');
 
                 if (isset($request->page)) {
