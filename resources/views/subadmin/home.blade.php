@@ -26,7 +26,7 @@ use App\Models\admin\Trn_sub_admin_payment_settlment;
 				->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
 				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
 				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
-				->count();
+				->get();
             dd($storesSubadmins,$boys_count);
 
      @$payments_datas = Trn_subadmin_payments_tracker::where('subadmin_id',auth()->user()->id)->get();
