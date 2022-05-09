@@ -2570,7 +2570,7 @@ class StoreController extends Controller
         try {
 
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                $salesData = Trn_store_order::where('isRefunded','=',1)->orWhere('isRefunded','=',2)->select(
+                $salesData = Trn_store_order::where('store_id','=',$request->store_id)->where('isRefunded','=',1)->orWhere('isRefunded','=',2)->select(
 
                     'trn_store_orders.order_id',
                     'trn_store_orders.order_number',
@@ -2598,8 +2598,8 @@ class StoreController extends Controller
                     //'trn_store_orders.refundStatus',
                     'trn_store_orders.refundNote',
                     'trn_store_orders.refundProcessStatus',
-                    'trn_store_orders.refundProcessDate',
-                    'trn_store_orders.refundStartDate',
+                    // 'trn_store_orders.refundProcessDate',
+                    // 'trn_store_orders.refundStartDate',
 
                     'trn_store_customers.customer_id',
                     'trn_store_customers.customer_first_name',
@@ -2625,7 +2625,7 @@ class StoreController extends Controller
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
                 $a2  = Carbon::parse($request->date_to)->endOfDay();
 
-                dd($a1,$a2,$request->store_id);
+                
 
                 if (isset($request->date_from)) {
                     $salesData = $salesData->whereDate('trn_store_orders.created_at', '>=', $a1);
@@ -2685,43 +2685,7 @@ class StoreController extends Controller
 
                     @$sd->status->status;
 
-                    $sd->date = \Carbon\Carbon::parse($sd->created_at)->format('d-m-Y');
-
-                    if (!isset($sd->customer_last_name))
-                        $sd->customer_last_name = '';
-
-                    if (!isset($sd->delivery_charge))
-                        $sd->delivery_charge = '';
-
-                    if (!isset($sd->coupon_code))
-                        $sd->coupon_code = '';
-
-                    if (!isset($sd->packing_charge))
-                        $sd->packing_charge = '';
-
-                    if (!isset($sd->payment_type_id))
-                        $sd->payment_type_id = '';
-
-                    if (!isset($sd->reward_points_used))
-                        $sd->reward_points_used = '';
-
-                    if (!isset($sd->amount_before_applying_rp))
-                        $sd->amount_before_applying_rp = '';
-
-                    if (!isset($sd->trn_id))
-                        $sd->trn_id = '';
-
-                    if (!isset($sd->amount_reduced_by_coupon))
-                        $sd->amount_reduced_by_coupon = '';
-
-                    if (!isset($sd->order_type))
-                        $sd->order_type = '';
-
-                    if (!isset($sd->customer_mobile_number))
-                        $sd->customer_mobile_number = '';
-
-                    if (!isset($sd->place))
-                        $sd->place = '';
+                   
                 }
 
                 $data['refundData'] = $salesData;
