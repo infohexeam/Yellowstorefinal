@@ -2625,7 +2625,7 @@ class StoreController extends Controller
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
                 $a2  = Carbon::parse($request->date_to)->endOfDay();
 
-                dd($a1,$a2);
+                dd($a1,$a2,$request->store_id);
 
                 if (isset($request->date_from)) {
                     $salesData = $salesData->whereDate('trn_store_orders.created_at', '>=', $a1);
