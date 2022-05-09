@@ -2625,6 +2625,8 @@ class StoreController extends Controller
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
                 $a2  = Carbon::parse($request->date_to)->endOfDay();
 
+                dd($a1,$a2);
+
                 if (isset($request->date_from)) {
                     $salesData = $salesData->whereDate('trn_store_orders.created_at', '>=', $a1);
                 }
@@ -2675,7 +2677,7 @@ class StoreController extends Controller
                         $sd->delivery_status =  '';
                         
                     if ($sd->isRefunded == 1)
-                        $sd->refund_status =  'Pending';
+                        $sd->refund_status =  'In progress';
                     elseif ($sd->isRefunded == 2)
                         $sd->refund_status =  'Success';
                     else

@@ -1537,38 +1537,85 @@ class ProductController extends Controller
             if (isset($request->product_image_id) && Mst_product_image::find($request->product_image_id)) {
 
                 if (1) {
-                    $proImageData = Mst_product_image::find($request->product_image_id);
-                    Mst_product_image::where('product_image_id', $request->product_image_id)->delete();
 
-                    if ($proImageData->product_varient_id == 0) {
-                        $secImg = Mst_product_image::where('product_id', $proImageData->product_id)->where('product_varient_id', 0)->first();
-                        $thirdImg = Mst_product_image::where('product_id', $proImageData->product_id)->first();
-                        if ($secImg) {
-                            Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => $secImg->product_image]);
-                        } elseif ($thirdImg) {
-                            Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => $thirdImg->product_image]);
-                        } else {
-                            Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => null]);
-                        }
-                    } else {
-                        $secImg = Mst_product_image::where('product_id', $proImageData->product_id)
-                            ->where('product_varient_id', $proImageData->product_varient_id)->first();
-                        if ($secImg) {
-                            Mst_store_product_varient::where('product_varient_id', $proImageData->product_varient_id)
-                                ->update(['product_varient_base_image' => $secImg->product_image]);
+                    // echo $product_image_id;die;
+                    //check if base image
+                   $product_image_id =  $request->product_image_id;
+                    $proImg = Mst_product_image::where('product_image_id', '=', $product_image_id)->first();
 
-                            Mst_product_image::where('product_image_id', $secImg->product_image_id)
+                    $proImgCount = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->count(); 
+
+                    if($proImgCount >  1)
+                    {
+                        if($proImg->image_flag == 1)
+                            {
+
+                                $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
+                                $pro_image->delete();
+                                $pro_imageTwo = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->first();
+                                //dd($pro_imageTwo);
+
+                                Mst_product_image::where('product_image_id', '=', $pro_imageTwo->product_image_id)
                                 ->update(['image_flag' => 1]);
-                        } else {
-                            Mst_store_product_varient::where('product_varient_id', $proImageData->product_varient_id)
-                                ->update(['product_varient_base_image' => null]);
+
+                                Mst_store_product_varient::where('product_varient_id', '=', $pro_imageTwo->product_varient_id)
+                                ->update(['product_varient_base_image' => $pro_imageTwo->product_image]);
+
+                                Mst_store_product::where('product_id','=',$pro_imageTwo->product_id)->update([
+                                'product_base_image' => $pro_imageTwo->product_image]);
+
+                            
+
+                        }else{
+                            $pro_image = Mst_product_image::where('product_image_id', '=', $product_image_id);
+                            $pro_image->delete();
+
+                            
                         }
-                    }
+
+
+                        }else{
+                            $data['status'] = 0;
+                            $data['message'] = "Base image cannot be deleted.";
+                            return response($data);
+                        }
+
+                    
+
+                    //old method
+
+                    // $proImageData = Mst_product_image::find($request->product_image_id);
+
+
+                    // Mst_product_image::where('product_image_id', $request->product_image_id)->delete();
+
+                    // if ($proImageData->product_varient_id == 0) {
+                    //     $secImg = Mst_product_image::where('product_id', $proImageData->product_id)->where('product_varient_id', 0)->first();
+                    //     $thirdImg = Mst_product_image::where('product_id', $proImageData->product_id)->first();
+                    //     if ($secImg) {
+                    //         Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => $secImg->product_image]);
+                    //     } elseif ($thirdImg) {
+                    //         Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => $thirdImg->product_image]);
+                    //     } else {
+                    //         Mst_store_product::where('product_id', $proImageData->product_id)->update(['product_base_image' => null]);
+                    //     }
+                    // } else {
+                    //     $secImg = Mst_product_image::where('product_id', $proImageData->product_id)
+                    //         ->where('product_varient_id', $proImageData->product_varient_id)->first();
+                    //     if ($secImg) {
+                    //         Mst_store_product_varient::where('product_varient_id', $proImageData->product_varient_id)
+                    //             ->update(['product_varient_base_image' => $secImg->product_image]);
+
+                    //         Mst_product_image::where('product_image_id', $secImg->product_image_id)
+                    //             ->update(['image_flag' => 1]);
+                    //     } else {
+                    //         Mst_store_product_varient::where('product_varient_id', $proImageData->product_varient_id)
+                    //             ->update(['product_varient_base_image' => null]);
+                    //     }
+                    //}
                     //  dd($proImageData);
 
-                    $data['status'] = 1;
-                    $data['message'] = "Product image deleted ";
-                    return response($data);
+                    
                 } else {
                     $data['status'] = 0;
                     $data['message'] = "failed";
