@@ -2570,7 +2570,7 @@ class StoreController extends Controller
         try {
 
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                $salesData = Trn_store_order::where('isRefunded','=',1)->select(
+                $salesData = Trn_store_order::where('isRefunded',[1,2])->select(
 
                     'trn_store_orders.order_id',
                     'trn_store_orders.order_number',
@@ -2651,7 +2651,7 @@ class StoreController extends Controller
 
 
                 $salesData = $salesData->where('trn_store_orders.store_id', $request->store_id)
-                    ->where('isRefunded','=',1)
+                    ->where('isRefunded',[1,2])
                     ->orderBy('trn_store_orders.order_id', 'DESC');
 
                 if (isset($request->page)) {
