@@ -280,7 +280,7 @@ use App\Models\admin\Trn_StoreBankData;
                            @php
                               $remDays =  Carbon\Carbon::now()->diffInDays($storeAdmData->expiry_date, false);
                            @endphp
-                                    @if($remDays >= 0 && $remDays == 3)
+                                    @if($remDays >= 0 || $remDays == 3)
                                     <p style="font-size:9px">This account expires in <b style="font-size:11px"> {{ @$remDays }}</b> Days</p>
                                     @endif
                                     </td>
