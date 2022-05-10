@@ -202,6 +202,12 @@ use App\Models\admin\Trn_StoreBankData;
                                  $i = 0;
                                  @endphp
                                  @foreach ($stores as $store)
+
+                                 @php
+                                            $adminData = \DB::table('trn__store_admins')->where('store_id',$store->store_id)
+                                            ->where('role_id',0)->first();
+                                           @endphp
+
                                  <tr>
                                     <td>{{ ++$i }}</td>
                                     <td>
@@ -216,7 +222,7 @@ use App\Models\admin\Trn_StoreBankData;
                                    
                                     <td>{{$store->store_mobile}} </td>
                                     <td>{{ $store->email}} </td>
-                        <td>{{ \Carbon\Carbon::parse($store->created_at)->format('d-m-Y')}}</td>
+                        <td>{{ \Carbon\Carbon::parse($adminData->created_at)->format('d-m-Y')}}</td>
 
                                     @if(auth()->user()->user_role_id  == 0)
                                     <td>
@@ -245,10 +251,7 @@ use App\Models\admin\Trn_StoreBankData;
                                  <td>
 
                                        <form action="{{route('admin.status_store',$store->store_id)}}" method="POST">
-                                           @php
-                                            $adminData = \DB::table('trn__store_admins')->where('store_id',$store->store_id)
-                                            ->where('role_id',0)->first();
-                                           @endphp
+                                           
 
                                           @csrf
                                           @method('POST')
@@ -263,7 +266,7 @@ use App\Models\admin\Trn_StoreBankData;
                                         @php
                                             $storeData = App\Models\admin\Mst_store::find($store->store_id);
                                             $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
-                                                $today = Carbon\Carbon::now()->addDays(3)->toDateString();
+                                             $today = Carbon\Carbon::now()->addDays(3)->toDateString();
                                                 $now = Carbon\Carbon::now();
                                                 $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
                                                 $diff = $dateExp->diffInDays($now) + 1;
