@@ -4384,7 +4384,7 @@ class StoreController extends Controller
       ->where('is_base_variant', '!=', 1)
       ->where('is_removed', '!=', 1)->count();
 
-    if ($productVarCount < 1) {
+    if ($productVarCount <= 1) {
       Mst_store_product::where('product_id', $pro_variant->product_id)->update($removeProduct);
     }
 
