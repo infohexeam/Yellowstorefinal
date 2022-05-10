@@ -841,26 +841,48 @@ class StoreSettingsController extends Controller
                 $store  =    Mst_store::find($request->store_id);
 
                 $storeAdmData = Trn_StoreAdmin::where('store_id', $store->store_id)->where('role_id', 0)->first();
-                //$todayDate = Carbon::now()->addDays(3);
-                $now = Carbon::now();
-                $dateExp = Carbon::parse($storeAdmData->expiry_date);
-                $diff = $dateExp->diffInDays($now) + 1;
+                $today = Carbon::now()->addDays(3);
+                $now =Carbon::now();
+                $dateExp = Carbon::parse(@$storeAdmData->expiry_date);
+                $diff = $dateExp->diffInDays($now) + 1; //14
+                                                
+                $todayDate =  Carbon::now()->toDateString();
 
-                if (@$diff == 1) {
+                if(@$diff == 1){
                     $dayString = 'day';
-                } else {
+                }else{
                     $dayString = 'days';
                 }
 
-                
+            if(@$storeAdmData->expiry_date == $todayDate)
+            {
+                $expireMsgString = "Store expires today";
+                $expiredDays = @$diff;
+            
+            }elseif($todayDate > @$storeAdmData->expiry_date)
+            {
+                $expireMsgString = 'Store expired on ' . @$storeAdmData->expiry_date . " - " . @$diff .'days before';
+                $expiredDays = @$diff;
 
-                if (($storeAdmData->store_account_status == 0) || ($diff <= 3)) {
-                    $expireMsgString = 'This account expires in ' . @$diff . " " . @$dayString;
-                    $expiredDays = @$diff;
-                } else {
-                    $expireMsgString = '';
-                    $expiredDays = 1;
-                }
+            }else{
+                    if (@$diff <= 3)
+                    {
+                        $expireMsgString = 'This account expires in ' . @$diff . " " . @$dayString;
+                        $expiredDays = @$diff;
+                    }
+        
+            }
+
+                // if (($storeAdmData->store_account_status == 0) || ($diff <= 3)) {
+                //     $expireMsgString = 'This account expires in ' . @$diff . " " . @$dayString;
+                //     $expiredDays = @$diff;
+                // } else {
+                //     $expireMsgString = '';
+                //     $expiredDays = 1;
+                // }
+
+
+
                 $data['expireMsgString'] = $expireMsgString;
 
                 if ($expiredDays == 0) {
