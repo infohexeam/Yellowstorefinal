@@ -186,7 +186,7 @@ class CouponController extends Controller
                         'valid_to.required'             => 'Valid to required',
                         'valid_from.required'             => 'Valid from required',
                         'coupon_status.required'             => 'Status required',
-                        'min_purchase_amt.required'             => 'Minimum purchase ampunt required',
+                        'min_purchase_amt.required'             => 'Minimum purchase amount required',
 
                     ]);
 

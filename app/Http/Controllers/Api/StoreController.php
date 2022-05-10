@@ -596,7 +596,7 @@ class StoreController extends Controller
 
 
                                 if (($divTok > 0) && ($devTokenC == 0)) {
-                                    $data['login_status '] = 1;
+                                    $data['login_status '] = 1; // device
                                 } else {
                                     $data['login_status '] = 0;
                                 }
