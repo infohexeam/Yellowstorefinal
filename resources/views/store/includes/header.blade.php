@@ -79,11 +79,11 @@
          
 
         @if (Auth::guard('store')->user()->role_id == 0)
-          
 
          @php
-         $storeData = App\Models\admin\Mst_store::find($store->store_id);
-         $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
+         $store_id =   Auth::guard('store')->user()->store_id;
+         $storeData = App\Models\admin\Mst_store::find($store_id);
+         $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store_id)->where('role_id',0)->first();
          $today = Carbon\Carbon::now()->addDays(3);
             $now = Carbon\Carbon::now();
             $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
