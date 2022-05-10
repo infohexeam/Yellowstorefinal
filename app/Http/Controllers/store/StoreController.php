@@ -4378,15 +4378,29 @@ class StoreController extends Controller
     $removeProductVar = array();
     $removeProductVar['is_removed'] = 1;
     $removeProductVar['stock_count'] = 0;
-    Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->update($removeProductVar);
+    $productVar = Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->first();
+    $productVarCount = Mst_store_product_varient::where('product_id', $productVar->product_id)
+          ->where('is_base_variant', '!=', 1)
+          ->where('is_removed', '!=', 1)->count();
 
-    $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)
-      ->where('is_base_variant', '!=', 1)
-      ->where('is_removed', '!=', 1)->count();
+      if ($productVarCount <= 1) {
+          Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
+          //  Mst_store_product::where('product_id', $productVar->product_id)->update($removeProduct);
+          // update(['product_status' => 0]);
 
-    if ($productVarCount <= 1) {
-      Mst_store_product::where('product_id', $pro_variant->product_id)->update($removeProduct);
-    }
+      } else {
+          Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
+      }
+
+    // Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->update($removeProductVar);
+
+    // $productVarCount = Mst_store_product_varient::where('product_id', $pro_variant->product_id)
+    //   ->where('is_base_variant', '!=', 1)
+    //   ->where('is_removed', '!=', 1)->count();
+
+    // if ($productVarCount <= 1) {
+    //   Mst_store_product::where('product_id', $pro_variant->product_id)->update($removeProduct);
+    // }
 
     return redirect()->back()->with('status', 'Product variant deleted successfully.');
   }

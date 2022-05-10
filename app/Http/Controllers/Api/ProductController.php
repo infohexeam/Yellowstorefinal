@@ -1704,8 +1704,6 @@ class ProductController extends Controller
                 $removeProductVar['is_removed'] = 1;
                 $removeProductVar['stock_count'] = 0;
 
-                //new
-                Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->update($removeProductVar);
 
 
                 if ($productVar = Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->first()) {
@@ -1714,11 +1712,7 @@ class ProductController extends Controller
                         ->where('is_removed', '!=', 1)->count();
 
                     if ($productVarCount <= 1) {
-                        //new
-                        Mst_store_product::where('product_id', $pro_variant->product_id)->update($removeProduct);
-                        //old-1
-                        // Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
-                        //old-2
+                        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($removeProductVar);
                         //  Mst_store_product::where('product_id', $productVar->product_id)->update($removeProduct);
                         // update(['product_status' => 0]);
 
