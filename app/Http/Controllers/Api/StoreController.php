@@ -2124,17 +2124,19 @@ class StoreController extends Controller
                     //     $sd->payment_status = 'Success';
                     // else
                     //     $sd->payment_status = 'Pending';
-                    if($d->status_id != 5 )
-                        if($d->payment_type_id == 1 && $d->status_id == 9) 
-                        $sd->payment_status = 'Success';
-                        elseif($d->payment_type_id == 2  || $d->payment_type_id == 0)
-                        $sd->payment_status = 'Success';
-                        else
-                        $sd->payment_status = 'Pending';
-                        endif
-                    else
+                    if($sd->status_id != 5 )
+                    {
+                        if($sd->payment_type_id == 1 && $sd->status_id == 9) 
+                        {
+                            $sd->payment_status = 'Success';
+                        }elseif($sd->payment_type_id == 2  || $sd->payment_type_id == 0){
+                            $sd->payment_status = 'Success';
+                        }else{
+                            $sd->payment_status = 'Pending';
+                        }
+                    }else{
                     $sd->payment_status = 'Pending';
-                    endif
+                    }
 
 
 
