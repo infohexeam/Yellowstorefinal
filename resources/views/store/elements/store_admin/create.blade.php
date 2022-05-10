@@ -37,7 +37,7 @@
                          <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Phone *</label>
-                                <input type="text" required class="form-control"  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" name="phone" value="{{old('phone')}}" placeholder="Name">
+                                <input type="text" required class="form-control"  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" name="phone" value="{{old('phone')}}" placeholder="Phone">
                             </div>
                         </div>
                          <div class="col-md-6">
