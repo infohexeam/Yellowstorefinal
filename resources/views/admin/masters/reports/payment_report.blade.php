@@ -157,7 +157,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($d->status_id == 4 || $d->status_id > 5)
+                                                @if($d->status_id == 4 || $d->status_id > 5 || $d->status_id == 1)
                                                     @if($d->payment_type_id == 1 && $d->status_id == 9) 
                                                     Success
                                                     @elseif($d->payment_type_id == 2)
