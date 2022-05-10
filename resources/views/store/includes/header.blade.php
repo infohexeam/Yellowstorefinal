@@ -79,26 +79,47 @@
          
 
         @if (Auth::guard('store')->user()->role_id == 0)
-            @php
-                $storeData = App\Models\admin\Mst_store::find(Auth::guard('store')->user()->store_id);
-                $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',Auth::guard('store')->user()->store_id)->where('role_id',0)->first();
-                        $today = Carbon\Carbon::now()->addDays(3);
-                        $now = Carbon\Carbon::now();
-                        
-                        $dateExp = Carbon\Carbon::parse($storeAdmData->expiry_date);
+          
 
+         @php
+         $storeData = App\Models\admin\Mst_store::find($store->store_id);
+         $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
+         $today = Carbon\Carbon::now()->addDays(3);
+            $now = Carbon\Carbon::now();
+            $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
+            $diff = $dateExp->diffInDays($now) + 1; //14
+            
+            $todayDate =  Carbon\Carbon::now()->toDateString();
 
-                        $diff = $dateExp->diffInDays($now) + 1;
-                        
-                        if(@$diff == 1){
-                            $dayString = 'day';
-                        }else{
-                            $dayString = 'days';
+            if(@$diff == 1){
+               $dayString = 'day';
+            }else{
+               $dayString = 'days';
+            }
+         @endphp
 
-                        }
-
-
-            @endphp
+      @if(@$storeAdmData->expiry_date == $todayDate)
+      <li class="nav-item" >
+         <a class=" text-center m-2" >
+            Store expires today
+         </a> 
+      </li>
+      @elseif($todayDate > @$storeAdmData->expiry_date)
+      <li class="nav-item" >
+         <a class=" text-center m-2" >
+            Store expired on <br> <b style="font-size:11px"> {{ @$storeAdmData->expiry_date}} </b><br> ({{@$diff}} days before)
+         </a> 
+      </li>
+      @else
+         @if (@$diff <= 3)
+         <li class="nav-item" >
+            <a class=" text-center m-2" >
+               This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}
+            </a> 
+         </li>
+            
+         @endif
+      @endif
             
             
             @if(($storeAdmData->store_account_status == 0) && ($today > $storeAdmData->expiry_date) )
