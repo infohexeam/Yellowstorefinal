@@ -263,14 +263,16 @@ use App\Models\admin\Trn_StoreBankData;
                                           @endif</button>
                                        </form>
                                        
-                                        @php
+                                       @php
                                             $storeData = App\Models\admin\Mst_store::find($store->store_id);
                                             $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
-                                             $today = Carbon\Carbon::now()->addDays(3)->toDateString();
+                                             $today = Carbon\Carbon::now()->addDays(3);
                                                 $now = Carbon\Carbon::now();
                                                 $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
-                                                $diff = $dateExp->diffInDays($now) + 1;
+                                                $diff = $dateExp->diffInDays($now) + 1; //14
                                                 
+                                                $todayDate =  Carbon\Carbon::now()->toDateString();
+
                                                 if(@$diff == 1){
                                                     $dayString = 'day';
                                                 }else{
@@ -278,9 +280,18 @@ use App\Models\admin\Trn_StoreBankData;
                                                 }
                                         @endphp
                                     {{-- @if((@$storeAdmData->store_account_status == 0) && ($today > @$storeAdmData->expiry_date) ) --}}
-                                    @if($today > @$storeAdmData->expiry_date)
-                                       <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}</p>
+                                    
+                                    @if(@$storeAdmData->expiry_date == $todayDate)
+                                <p>Store expires today</p>
+                                    @elseif($todayDate > @$storeAdmData->expiry_date)
+                                <p>Store expired on  {{ @$storeAdmData->expiry_date}} ({{@$diff}} days before)</p>
+                                    @else
+                                    <p>---</p>
                                     @endif
+                                    {{-- @if((@$storeAdmData->store_account_status == 0) && ($today > @$storeAdmData->expiry_date) ) --}}
+                                    {{-- @if($today > @$storeAdmData->expiry_date)
+                                       <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}</p>
+                                    @endif --}}
                            {{-- @php
                               $threeDysBack = Carbon\Carbon::now()->subDays(3);
                               $remDays =  $threeDysBack->diffInDays($storeAdmData->expiry_date, false);
