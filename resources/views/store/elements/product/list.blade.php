@@ -221,7 +221,7 @@
                        href="{{url('store/product/view/'.$product->product_id)}}">View</a> 
                         <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
                       @php
-                                                      $varCount = \DB::table('mst_store_product_varients')->where('product_id',$product->product_id)->count();
+                        $varCount = \DB::table('mst_store_product_varients')->where('product_id',$product->product_id)->where('is_removed','!=',1)->count();
 
                       @endphp
                        @if($varCount >= 2)
