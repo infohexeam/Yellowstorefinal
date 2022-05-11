@@ -873,8 +873,7 @@ class StoreSettingsController extends Controller
                         $expireMsgString = '';
                         $expiredDays = '';
                     }
-                $expireMsgString = '';
-                $expiredDays = '';
+                
             }
 
 
