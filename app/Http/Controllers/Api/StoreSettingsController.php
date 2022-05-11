@@ -869,8 +869,11 @@ class StoreSettingsController extends Controller
                     {
                         $expireMsgString = 'This account expires in ' . @$diff . " " . @$dayString;
                         $expiredDays = @$diff;
+                    }else{
+                        $expireMsgString = '';
+                        $expiredDays = '1';
                     }
-                    
+
                 $expireMsgString = '';
                 $expiredDays = '1';
             }
