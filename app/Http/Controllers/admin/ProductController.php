@@ -2372,7 +2372,10 @@ class ProductController extends Controller
       }
     }
 
-    $data = $data->orderBy('updated_time', 'DESC')->get();
+    //old
+    // $data = $data->orderBy('updated_time', 'DESC')->get();
+    $data = $data->groupBy('mst_store_product_varients.product_varient_id')->get();
+    
 
     //   dd($data);
 
