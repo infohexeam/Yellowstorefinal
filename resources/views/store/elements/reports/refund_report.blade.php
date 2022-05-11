@@ -35,7 +35,7 @@
                              </div>
                              
                               <div class="card-body border">
-                                <form action="{{route('store.online_sales_reports')}}" method="GET" enctype="multipart/form-data">
+                                <form action="{{route('store.refund-reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6">

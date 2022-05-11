@@ -854,7 +854,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('store/incoming-payments', 'StoreController@storeIncomingPayments');
 
-        Route::get('store/refund-reports', 'StoreController@storeRefundReports');
+        Route::get('store/refund-reports', 'StoreController@storeRefundReports')->name('store.refund-reports');
 
         // time_slots
         Route::get('store/time/slot', 'StoreController@time_slot')->name('store.time_slots');
