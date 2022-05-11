@@ -863,6 +863,7 @@ class StoreSettingsController extends Controller
             {
                 $expireMsgString = 'Store expired on ' . @$storeAdmData->expiry_date . " - " . @$diff .'days before';
                 $expiredDays = @$diff;
+                
 
             }else{
                     if (@$diff <= 3) //2
@@ -880,7 +881,7 @@ class StoreSettingsController extends Controller
 
                 $data['expireMsgString'] = $expireMsgString;
 
-                if ($expiredDays == 0) {
+                if ($expiredDays <= 0) {
                     $data['isExpired'] = 1;
                 } else {
                     $data['isExpired'] = 0;
