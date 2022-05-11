@@ -679,7 +679,7 @@ class StoreController extends Controller
                     if (Hash::check($passChk, $custCheck->password)) {
                         //old
                     // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
-                    if (($custCheck->store_account_status != 0) || ($today <= $custCheck->expiry_date)) {
+                    if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
                             if ($custCheck->store_otp_verify_status != 0) {
                                 $data['status'] = 1;
                                 $data['message'] = "Login Success";
