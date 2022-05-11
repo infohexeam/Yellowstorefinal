@@ -1859,6 +1859,7 @@ class ProductController extends Controller
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
                     $today = Carbon::now()->toDateTimeString();
+                    $today11 = Carbon::now();
                     $usedCoupinIds = Trn_store_order::join('mst__coupons', 'mst__coupons.coupon_id', '=', 'trn_store_orders.coupon_id')
                         ->where('mst__coupons.coupon_type', 1)
                         ->where('trn_store_orders.customer_id', $request->customer_id)
@@ -1870,7 +1871,7 @@ class ProductController extends Controller
 
                     $couponDetail = $couponDetail->whereDate('valid_from', '<=', $today)->whereDate('valid_to', '>=', $today);
 
-                    dd($today);
+                    dd($today,$today11);
 
                     $data['couponDetails'] = $couponDetail->orderBy('coupon_id', 'DESC')->get();
 
