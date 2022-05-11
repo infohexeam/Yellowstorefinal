@@ -687,7 +687,7 @@ class StoreController extends Controller
 
 
                                 Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
-                                    ->orwhere('store_device_id', $custCheck->device_id)
+                                    ->orwhere('store_device_id', $request->device_id)
                                     ->delete();
                                 if (isset($request->device_token) && isset($request->device_type)) {
 
