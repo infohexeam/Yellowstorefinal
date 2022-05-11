@@ -2618,7 +2618,8 @@ class StoreController extends Controller
         foreach ($customerDevice as $cd) {
           $title = 'Order cancelled';
           $body = 'Your order with order id ' . $order_number . ' is cancelled..';
-          
+          $clickAction = "OrderListFragment";
+          $type = "order";
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title,$body,$clickAction,$type);
         }
       } elseif ($status_id == 4) {
