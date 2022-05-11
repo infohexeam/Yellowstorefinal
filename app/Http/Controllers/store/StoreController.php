@@ -4432,7 +4432,7 @@ class StoreController extends Controller
 
 
     )
-      ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+      ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
       ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
       ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 
