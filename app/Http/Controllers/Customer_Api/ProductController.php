@@ -1869,6 +1869,9 @@ class ProductController extends Controller
                     $couponDetail = $couponDetail->whereNotIn('coupon_id', $usedCoupinIds);
 
                     $couponDetail = $couponDetail->whereDate('valid_from', '<=', $today)->whereDate('valid_to', '>=', $today);
+
+                    dd($today);
+
                     $data['couponDetails'] = $couponDetail->orderBy('coupon_id', 'DESC')->get();
 
                     $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
