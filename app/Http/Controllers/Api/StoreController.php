@@ -763,7 +763,7 @@ class StoreController extends Controller
                                 $data['message'] = "Store is inactive. Please contact Super admin";
                             } else {
                                 $data['status'] = 4;
-                                $data['message'] = "Profile not Activated";
+                                $data['message'] = "Profile not Activated/Profile Expired";
                             }
                         }
                     } else {
