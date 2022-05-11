@@ -2630,7 +2630,7 @@ class StoreController extends Controller
 
 
                 )
-                    ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+                    ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
                     ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
                     ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 
@@ -2666,7 +2666,7 @@ class StoreController extends Controller
 
 
                 $salesData = $salesData
-                    ->where('isRefunded','=',1)->orWhere('isRefunded','=',2)
+                    ->whereIn('isRefunded', ['1', '2'])
                     ->where('trn_store_orders.store_id','=',$request->store_id)
                     ->orderBy('trn_store_orders.order_id', 'DESC');
 
