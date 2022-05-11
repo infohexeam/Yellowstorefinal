@@ -277,6 +277,7 @@ class StoreController extends Controller
         $token = $request->user()->tokens->find($accessToken);
         //echo $token;die;
         $token->revoke();
+        
         $data['status'] = 1;
         $data['message'] = "Success";
         return response($data);
@@ -596,9 +597,9 @@ class StoreController extends Controller
 
 
                                 if (($divTok > 0) && ($devTokenC == 0)) {
-                                    $data['login_status '] = 1; // device
+                                    $data['login_status '] = 1; // logged in another device (otp)
                                 } else {
-                                    $data['login_status '] = 0;
+                                    $data['login_status '] = 0; // success 
                                 }
 
                                 //  $data['login_status '] = $divTok;
@@ -686,7 +687,7 @@ class StoreController extends Controller
 
 
                                 Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
-                                    //   ->where('store_admin_id', $custCheck->store_admin_id)
+                                    ->orwhere('store_device_id', $custCheck->device_id)
                                     ->delete();
                                 if (isset($request->device_token) && isset($request->device_type)) {
 
