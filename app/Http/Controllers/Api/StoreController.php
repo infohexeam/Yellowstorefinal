@@ -2691,11 +2691,11 @@ class StoreController extends Controller
                         $sd->delivery_status =  '';
                         
                     if ($sd->isRefunded == 1)
-                        $sd->refund_status =  'In progress';
+                        $sd->refund_status =  'Pending'; // to be changed to inprogress
                     elseif ($sd->isRefunded == 2)
                         $sd->refund_status =  'Success';
                     else
-                        $sd->delivery_status =  ''; 
+                        $sd->refund_status =  ''; 
 
                     @$sd->status->status;
 

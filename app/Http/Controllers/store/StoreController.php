@@ -2619,7 +2619,7 @@ class StoreController extends Controller
           $title = 'Order cancelled';
           $body = 'Your order with order id ' . $order_number . ' is cancelled..';
           
-          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body);
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title,$body,$clickAction,$type);
         }
       } elseif ($status_id == 4) {
         $order_status = "Confirmed";
