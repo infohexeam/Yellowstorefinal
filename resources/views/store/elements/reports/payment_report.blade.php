@@ -121,10 +121,16 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if(($d->payment_type_id == 2) || $d->status_id == 9)
-                                                Success
+                                                @if($d->status_id != 5 )
+                                                    @if($d->payment_type_id == 1 && $d->status_id == 9) 
+                                                        Success
+                                                    @elseif($d->payment_type_id == 2  || $d->payment_type_id == 0)
+                                                        Success
+                                                    @else
+                                                        Pending
+                                                    @endif
                                                 @else
-                                                Pending
+                                                    Pending
                                                 @endif
                                             </td>
                                             <td>
