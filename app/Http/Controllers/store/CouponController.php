@@ -503,8 +503,8 @@ class CouponController extends Controller
         ->join('mst_towns', 'mst_towns.town_id', '=', 'trn_store_customers.town_id')
         ->where('mst_stores.store_id', Auth::guard('store')->user()->store_id)
         // ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"))
-        ->groupBy('trn__recently_visited_stores.customer_id')
-        ->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
+        //->groupBy('trn__recently_visited_stores.customer_id')
+        //->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
         ->get();
 
 
