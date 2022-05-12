@@ -3094,6 +3094,7 @@ class ProductController extends Controller
                     'trn_store_customers.customer_last_name',
                     'trn_store_customers.customer_mobile_number',
                     'trn_store_customers.place',
+                    'trn_store_customers.town_id',
                     'mst_stores.store_id',
                     'mst_stores.store_name',
                     'mst_stores.store_mobile',
@@ -3102,7 +3103,7 @@ class ProductController extends Controller
                 );
                 $dataRVS =  $dataRVS->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_stores.customer_id');
                 $dataRVS =  $dataRVS->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id');
-                $dataRVS = $dataRVS->join('mst_towns', 'mst_towns.town_id', '=', 'trn_store_customers.town_id');
+                $dataRVS = $dataRVS->join('mst_towns', 'mst_towns.town_id', '=', 'mst_stores.town_id');
 
                 $dataRVS = $dataRVS->where('mst_stores.store_id', $request->store_id);
 
@@ -3124,7 +3125,7 @@ class ProductController extends Controller
 
 
                 $dataRVS = $dataRVS->orderBy('trn__recently_visited_stores.rvs_id', 'DESC')
-                    ->groupBy('trn__recently_visited_stores.store_id', 'trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"));
+                    ->groupBy('trn__recently_visited_stores.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_stores.created_at, '%d-%m-%Y')"));
 
 
 
