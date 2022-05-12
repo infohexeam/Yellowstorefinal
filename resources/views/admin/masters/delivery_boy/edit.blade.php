@@ -129,7 +129,7 @@
 
                        <div class="col-md-6">
                    <label class="form-label"> Password </label>
-                            <input class="form-control" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="delivery_boy_password" value="{{old('delivery_boy_password')}}" placeholder="Password" id="password" type="password"  autocomplete="current-password">
+                            <input class="form-control" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="password" value="{{old('password')}}" placeholder="Password" id="password" type="password"  autocomplete="current-password">
                             <p id="showpassmessage"><p>
                             <p id="showpassmessage2"><p>
                        </div>

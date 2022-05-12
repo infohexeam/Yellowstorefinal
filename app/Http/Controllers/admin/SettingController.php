@@ -2881,7 +2881,7 @@ class SettingController extends Controller
 				'delivery_boy_commision'            => 'required',
 				'delivery_boy_commision_amount'            => 'required',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
-				'password'  => 'same:password_confirmation',
+				'password'  => 'sometimes|same:password_confirmation',
 
 			],
 			[
