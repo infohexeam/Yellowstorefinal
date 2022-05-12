@@ -120,7 +120,7 @@
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
                                             {{-- <td>{{ \Carbon\Carbon::parse($d->created_at)->format('H:i:s')}}</td> --}}
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
-                                            <td>{{ $d->town_name }}</td>
+                                            <td>{{ $d->town['town_name'] }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>
                                             @php
                                             

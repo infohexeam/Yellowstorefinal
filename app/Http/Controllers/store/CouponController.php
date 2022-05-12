@@ -492,10 +492,11 @@ class CouponController extends Controller
         'trn_store_customers.customer_last_name',
         'trn_store_customers.customer_mobile_number',
         'trn_store_customers.place',
+        'trn_store_customers.town_id',
         'mst_stores.store_id',
         'mst_stores.store_name',
         'mst_stores.store_mobile',
-        'trn_store_customers.town_name'
+        'mst_towns.town_name'
 
       )
         ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_stores.customer_id')
@@ -525,10 +526,11 @@ class CouponController extends Controller
           'trn_store_customers.customer_last_name',
           'trn_store_customers.customer_mobile_number',
           'trn_store_customers.place',
+          'trn_store_customers.town_id',
           'mst_stores.store_id',
           'mst_stores.store_name',
           'mst_stores.store_mobile',
-          'trn_store_customers.town_name'
+          'mst_towns.town_name'
         )
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_stores.customer_id')
           ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id')
