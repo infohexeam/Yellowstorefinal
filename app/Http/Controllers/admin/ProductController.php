@@ -387,7 +387,7 @@ class ProductController extends Controller
         $chkGlobalExistence = DB::table('mst__global_products')->where('product_code',$request->product_code)->count();
         
 
-        if($ChkCodeExstnce > 1 || $chkGlobalExistence > 1)
+        if($chkGlobalExistence > 1)
         {
             return redirect()->back()->with('status-error', 'Product code already used.')->withInput();
         }else{
