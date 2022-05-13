@@ -177,61 +177,111 @@ class PurchaseController extends Controller
                         $request->all(),
                         [
                             'quantity' => 'required|numeric',
+                            'product_variant_id' => 'required',
+                            'customer_id' => 'required',
                         ],
                         [
                             'quantity.required' => "Quantity required",
+                            'product_variant_id.required'                => 'Product required',
+                            'customer_id.required'                => 'Customer required',
                         ]
                     );
                     if (!$validator->fails()) {
-
-                        if (isset($request->attributes)) {
-                            foreach ($request->attributes as $row) {
-                                $attr_group_id =  $row->attr_group_id;
-                                $attr_value_id =  $row->attr_value_id;
-
-                                $varAttrCount = Trn_ProductVariantAttribute::where('product_varient_id', $request->product_varient_id)
-                                    ->where('attr_group_id', $attr_group_id)
-                                    ->where('attr_value_id', $attr_value_id)->count();
-                                if ($varAttrCount <= 0) {
-                                    $data['status'] = 0;
-                                    $data['message'] = "Product unavilable";
-                                    return $data;
-                                }
+                        
+                            $varProdu = Mst_store_product_varient::find($request->product_variant_id);
+                
+                            $proData = Mst_store_product::find($varProdu->product_id);
+                            
+                    if ($proData->service_type != 2) {
+                        
+                        if (isset($varProdu)) {
+                            
+                            if ($request->quantity <= $varProdu->stock_count) {
+                                
+                                 if (Trn_Cart::where('product_variant_id', $request->product_variant_id)->where('customer_id', $request->customer_id)->exists()) {
+            
+                                    $cart = Trn_Cart::where('product_variant_id', $request->product_variant_id)->where('customer_id', $request->customer_id)->first();
+                                    $cart->quantity = $request->quantity;
+                                    $cart->update();
+                                    
+                                    } else {
+                
+                                        $cart->quantity = $request->quantity;
+                                        $cart->product_variant_id = $request->product_variant_id;
+                                        $cart->customer_id = $request->customer_id;
+                                        $cart->save();
+                                    }
+                                
+                                    $data['status'] = 1;
+                                    $data['message'] = "Product added to cart";
+                            } else {
+                                $data['message'] = 'Stock unavailable';
+                                $data['status'] = 2;
+                                return response($data);
                             }
-                        }
-
-
-
-                        if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
-                            $cartItem = Trn_Cart::where('customer_id', $request->customer_id)
-                                ->where('remove_status', 0)
-                                ->where('product_varient_id', $request->product_varient_id);
-                            // $cartItem->quantity = $request->quantity;
-                            $cartItem->update(['quantity' => $request->quantity]);
-
-                            $data['status'] = 1;
-                            $data['message'] = "Product added to cart";
-                            return response($data);
-                        } else {
-
-                            $proVarData = Mst_store_product_varient::find($request->product_varient_id);
-
-                            $cartItem = new Trn_Cart;
-                            $cartItem->store_id = $proVarData->store_id;
-                            $cartItem->customer_id = $request->customer_id;
-                            $cartItem->product_varient_id = $request->product_varient_id;
-                            $cartItem->product_id = $proVarData->product_id;
-                            $cartItem->quantity = $request->quantity;
-                            $cartItem->remove_status = 0;
-                            $cartItem->save();
-
-                            $data['status'] = 1;
-                            $data['message'] = "Product added to cart";
-                            return response($data);
-                        }
+                    
                     } else {
+                        $data['message'] = 'Product not found';
                         $data['status'] = 2;
-                        $data['message'] = "Quantity invalid";
+                        return response($data);
+                    }
+                        
+                    }else{
+                        $data['status'] = 2;
+                        $data['message'] = "Cannot add service product to cart";
+                    }
+
+                    //old code
+
+                        // if (isset($request->attributes)) {
+                        //     foreach ($request->attributes as $row) {
+                        //         $attr_group_id =  $row->attr_group_id;
+                        //         $attr_value_id =  $row->attr_value_id;
+
+                        //         $varAttrCount = Trn_ProductVariantAttribute::where('product_varient_id', $request->product_varient_id)
+                        //             ->where('attr_group_id', $attr_group_id)
+                        //             ->where('attr_value_id', $attr_value_id)->count();
+                        //         if ($varAttrCount <= 0) {
+                        //             $data['status'] = 0;
+                        //             $data['message'] = "Product unavilable";
+                        //             return $data;
+                        //         }
+                        //     }
+                        // }
+
+
+
+                        // if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
+                        //     $cartItem = Trn_Cart::where('customer_id', $request->customer_id)
+                        //         ->where('remove_status', 0)
+                        //         ->where('product_varient_id', $request->product_varient_id);
+                        //     // $cartItem->quantity = $request->quantity;
+                        //     $cartItem->update(['quantity' => $request->quantity]);
+
+                        //     $data['status'] = 1;
+                        //     $data['message'] = "Product added to cart";
+                        //     return response($data);
+                        // } else {
+
+                        //     $proVarData = Mst_store_product_varient::find($request->product_varient_id);
+
+                        //     $cartItem = new Trn_Cart;
+                        //     $cartItem->store_id = $proVarData->store_id;
+                        //     $cartItem->customer_id = $request->customer_id;
+                        //     $cartItem->product_varient_id = $request->product_varient_id;
+                        //     $cartItem->product_id = $proVarData->product_id;
+                        //     $cartItem->quantity = $request->quantity;
+                        //     $cartItem->remove_status = 0;
+                        //     $cartItem->save();
+
+                        //     $data['status'] = 1;
+                        //     $data['message'] = "Product added to cart";
+                        //     return response($data);
+                        // }
+                    } else {
+                         $data['status'] = 0;
+                        $data['message'] = "failed";
+                        $data['errors'] = $validator->errors();
                         return response($data);
                     }
                 } else {
