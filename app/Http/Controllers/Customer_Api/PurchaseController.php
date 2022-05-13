@@ -198,9 +198,9 @@ class PurchaseController extends Controller
                             
                             if ($request->quantity <= $varProdu->stock_count) {
                                 
-                                 if (Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id)->exists()) {
+                                 if (Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('remove_status', 0)->where('customer_id', $request->customer_id)->exists()) {
             
-                                    $cart = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id)->first();
+                                    $cart = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
                                     $cart->quantity = $request->quantity;
                                     $cart->update();
                                     
