@@ -172,23 +172,23 @@ class PurchaseController extends Controller
         $data = array();
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                if (isset($request->product_variant_id) && Mst_store_product_varient::find($request->product_variant_id)) {
+                if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
                     $validator = Validator::make(
                         $request->all(),
                         [
                             'quantity' => 'required|numeric',
-                            'product_variant_id' => 'required',
+                            'product_varient_id' => 'required',
                             'customer_id' => 'required',
                         ],
                         [
                             'quantity.required' => "Quantity required",
-                            'product_variant_id.required'                => 'Product required',
+                            'product_varient_id.required'                => 'Product required',
                             'customer_id.required'                => 'Customer required',
                         ]
                     );
                     if (!$validator->fails()) {
                         
-                            $varProdu = Mst_store_product_varient::find($request->product_variant_id);
+                            $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
                             $proData = Mst_store_product::find($varProdu->product_id);
                             
@@ -198,16 +198,16 @@ class PurchaseController extends Controller
                             
                             if ($request->quantity <= $varProdu->stock_count) {
                                 
-                                 if (Trn_Cart::where('product_variant_id', $request->product_variant_id)->where('customer_id', $request->customer_id)->exists()) {
+                                 if (Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id)->exists()) {
             
-                                    $cart = Trn_Cart::where('product_variant_id', $request->product_variant_id)->where('customer_id', $request->customer_id)->first();
+                                    $cart = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id)->first();
                                     $cart->quantity = $request->quantity;
                                     $cart->update();
                                     
                                     } else {
                 
                                         $cart->quantity = $request->quantity;
-                                        $cart->product_variant_id = $request->product_variant_id;
+                                        $cart->product_varient_id = $request->product_varient_id;
                                         $cart->customer_id = $request->customer_id;
                                         $cart->save();
                                     }
