@@ -198,22 +198,31 @@ class PurchaseController extends Controller
                             
                             if ($request->quantity <= $varProdu->stock_count) {
                                 
-                                 if (Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('remove_status', 0)->where('customer_id', $request->customer_id)->exists()) {
-            
-                                    $cart = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
-                                    $cart->quantity = $request->quantity;
-                                    $cart->update();
-                                    
-                                    } else {
-                
-                                        $cart->quantity = $request->quantity;
-                                        $cart->product_varient_id = $request->product_varient_id;
-                                        $cart->customer_id = $request->customer_id;
-                                        $cart->save();
-                                    }
-                                
+                                if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
+                                    $cartItem = Trn_Cart::where('customer_id', $request->customer_id)
+                                        ->where('remove_status', 0)
+                                        ->where('product_varient_id', $request->product_varient_id);
+                                    $cartItem->update(['quantity' => $request->quantity]);
+        
                                     $data['status'] = 1;
                                     $data['message'] = "Product added to cart";
+                                    return response($data);
+                                } else {
+        
+                                    $proVarData = Mst_store_product_varient::find($request->product_varient_id);
+                                    $cartItem = new Trn_Cart;
+                                    $cartItem->store_id = $proVarData->store_id;
+                                    $cartItem->customer_id = $request->customer_id;
+                                    $cartItem->product_varient_id = $request->product_varient_id;
+                                    $cartItem->product_id = $proVarData->product_id;
+                                    $cartItem->quantity = $request->quantity;
+                                    $cartItem->remove_status = 0;
+                                    $cartItem->save();
+        
+                                    $data['status'] = 1;
+                                    $data['message'] = "Product added to cart";
+                                    return response($data);
+                                }
                             } else {
                                 $data['message'] = 'Stock unavailable';
                                 $data['status'] = 2;
