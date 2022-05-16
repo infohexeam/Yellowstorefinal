@@ -229,6 +229,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                     <tr>
                                        <td>Item</td>
                                        <td>Qty</td>
+                                       <td>MRP</td>
                                        <td>Sale<br>Price</td>
                                        <td>Discount<br>Amount</td>
                                        <td>Tax<br>Amount</td>
@@ -272,6 +273,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                            @endif --}}
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
+                                          <td>{{ @$order_item->product_varient->product_varient_price }}</td>
                                           <td>{{ @$order_item->product_varient->product_varient_offer_price}} </td>
                                  
                                            <td>
