@@ -340,7 +340,8 @@ class PurchaseController extends Controller
                                 'mst_store_product_varients.product_varient_offer_price',
                                 'mst_store_product_varients.product_varient_base_image',
                                 'mst_store_product_varients.stock_count',
-                                'mst_store_product_varients.store_id'
+                                'mst_store_product_varients.store_id',
+                                
                             )
                             ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)
                             ->where('mst_store_products.product_status', 1)->first();
@@ -348,6 +349,26 @@ class PurchaseController extends Controller
                         @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_varient_base_image;
                         $storeData = Mst_store::find(@$cartData->productData->store_id);
                         @$cartData->productData->store_name = @$storeData->store_name;
+
+                        //attributes
+                        $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $cartData->product_varient_id)->get();
+                        foreach ($attributesData as $j) {
+                            $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
+                            if (isset($datas->group_name))
+                                $j->attr_group = @$datas->group_name;
+                            else
+                                $j->attr_group = '';
+
+                            $datasvalue = Mst_attribute_value::where('attr_value_id', $j->attr_value_id)->first();
+                            if (isset($datasvalue->group_value))
+                                $j->attr_value = @$datasvalue->group_value;
+                            else
+                                $j->attr_value = '';
+                        }
+                        $cartData->attributesData = $attributesData;
+
+
+
                     }
                     // $product->quantity = Trn_Cart::where('product_varient_id',@$cartData->product_varient_id)->where('customer_id',$request->customer_id)->sum('quantity');
 
