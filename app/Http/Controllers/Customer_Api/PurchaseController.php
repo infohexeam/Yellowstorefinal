@@ -330,6 +330,8 @@ class PurchaseController extends Controller
                             ->select(
                                 'mst_store_products.product_id',
                                 'mst_store_products.product_name',
+                                'mst_store_products.product_type',
+                                'mst_store_products.service_type',
                                 'mst_store_products.product_code',
                                 'mst_store_products.product_base_image',
                                 'mst_store_products.show_in_home_screen',
