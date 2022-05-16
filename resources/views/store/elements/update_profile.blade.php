@@ -74,7 +74,7 @@
                         <div class="form-group">
                            <label class="form-label">Store Name</label>
 
-                           <input type="text" class="form-control" name="store_name" value="{{old('store_name',$store->store_name)}}"  placeholder="Store Name">
+                           <input type="text" readonly="" class="form-control" name="store_name" value="{{old('store_name',$store->store_name)}}"  placeholder="Store Name">
                         </div>
                       </div>
 
