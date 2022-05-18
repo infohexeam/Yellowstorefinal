@@ -256,7 +256,7 @@ class PurchaseController extends Controller
                                 
                             } else {
                                 $data['message'] = 'Stock unavailable';
-                                $data['status'] = 2;
+                                $data['status'] = 3;
                                 return response($data);
                             }
                     
