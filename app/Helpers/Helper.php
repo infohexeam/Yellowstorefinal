@@ -671,6 +671,7 @@ class Helper
                 $response = curl_exec($ch);
                 curl_close($ch);
                 $data = json_decode($response, true);
+                dd($data);
                 $dist = $data['rows'][0]['elements'][0]['distance']['text'];
                 $time = $data['rows'][0]['elements'][0]['duration']['text'];
                 return $dist;
