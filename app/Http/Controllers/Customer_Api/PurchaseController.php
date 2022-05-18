@@ -179,7 +179,7 @@ class PurchaseController extends Controller
                             'quantity' => 'required|numeric',
                             'product_varient_id' => 'required',
                             'customer_id' => 'required',
-                            'store_id' => 'required'
+                            // 'store_id' => 'required' //to be added
                         ],
                         [
                             'quantity.required' => "Quantity required",
