@@ -179,6 +179,7 @@ class PurchaseController extends Controller
                             'quantity' => 'required|numeric',
                             'product_varient_id' => 'required',
                             'customer_id' => 'required',
+                            'store_id' => 'required'
                         ],
                         [
                             'quantity.required' => "Quantity required",
@@ -196,9 +197,27 @@ class PurchaseController extends Controller
                         
                         if (isset($varProdu)) {
                             
-                            if ($request->quantity <= $varProdu->stock_count) {
-                                
+                            if ($request->quantity <= $varProdu->stock_count) {  //quantity shud be less dan current stock
+                                //s1 p1
+                            $totcountInCart = Trn_Cart::where('customer_id', $customer_id)->where('remove_status','=',0)->count();
+                            if ($totcountInCart == 0)
+                            {
+                                        $proVarData = Mst_store_product_varient::find($request->product_varient_id);
+                                        $cartItem = new Trn_Cart;
+                                        $cartItem->store_id = $proVarData->store_id;
+                                        $cartItem->customer_id = $request->customer_id;
+                                        $cartItem->product_varient_id = $request->product_varient_id;
+                                        $cartItem->product_id = $proVarData->product_id;
+                                        $cartItem->quantity = $request->quantity;
+                                        $cartItem->remove_status = 0;
+                                        $cartItem->save();
+        
+                                        $data['status'] = 1;
+                                        $data['message'] = "Product added to cart";
+                                        return response($data);
+                            }else{
                                 if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
+
                                     $cartItem = Trn_Cart::where('customer_id', $request->customer_id)
                                         ->where('remove_status', 0)
                                         ->where('product_varient_id', $request->product_varient_id);
@@ -208,21 +227,31 @@ class PurchaseController extends Controller
                                     $data['message'] = "Product added to cart";
                                     return response($data);
                                 } else {
+
+                                    if (Trn_Cart::where('customer_id', $customer_id)->where('store_id', '=', $request->store_id)->where('remove_status', 0)->get()->exists()) {  // to change 
+
+                                        $proVarData = Mst_store_product_varient::find($request->product_varient_id);
+                                        $cartItem = new Trn_Cart;
+                                        $cartItem->store_id = $proVarData->store_id;
+                                        $cartItem->customer_id = $request->customer_id;
+                                        $cartItem->product_varient_id = $request->product_varient_id;
+                                        $cartItem->product_id = $proVarData->product_id;
+                                        $cartItem->quantity = $request->quantity;
+                                        $cartItem->remove_status = 0;
+                                        $cartItem->save();
         
-                                    $proVarData = Mst_store_product_varient::find($request->product_varient_id);
-                                    $cartItem = new Trn_Cart;
-                                    $cartItem->store_id = $proVarData->store_id;
-                                    $cartItem->customer_id = $request->customer_id;
-                                    $cartItem->product_varient_id = $request->product_varient_id;
-                                    $cartItem->product_id = $proVarData->product_id;
-                                    $cartItem->quantity = $request->quantity;
-                                    $cartItem->remove_status = 0;
-                                    $cartItem->save();
-        
-                                    $data['status'] = 1;
-                                    $data['message'] = "Product added to cart";
-                                    return response($data);
+                                        $data['status'] = 1;
+                                        $data['message'] = "Product added to cart";
+                                        return response($data);
+                                    }else{
+                                        $data['status'] = 2;
+                                        $data['message'] = "Product of another store in cart. do you want to remove?"; 
+                                    }
                                 }
+
+                            }
+
+                                
                             } else {
                                 $data['message'] = 'Stock unavailable';
                                 $data['status'] = 2;
@@ -240,6 +269,7 @@ class PurchaseController extends Controller
                         $data['message'] = "Cannot add service product to cart";
                     }
 
+                    
                     //old code
 
                         // if (isset($request->attributes)) {
