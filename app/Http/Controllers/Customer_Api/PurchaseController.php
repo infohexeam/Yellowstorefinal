@@ -228,7 +228,7 @@ class PurchaseController extends Controller
                                     return response($data);
                                 } else {
 
-                                    if (Trn_Cart::where('customer_id', $request->customer_id)->where('store_id', '=', $request->store_id)->where('remove_status', 0)->exists()) {  // to change 
+                                    if (Trn_Cart::where('customer_id', $request->customer_id)->where('store_id', '=', $request->store_id)->exists()) {  // to change 
 
                                         $proVarData = Mst_store_product_varient::find($request->product_varient_id);
                                         $cartItem = new Trn_Cart;
