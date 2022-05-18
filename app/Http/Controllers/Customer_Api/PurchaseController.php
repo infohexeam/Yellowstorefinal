@@ -229,7 +229,7 @@ class PurchaseController extends Controller
                                 } else {
 
                                     if (Trn_Cart::where('customer_id', $request->customer_id)->where('store_id', '=', $request->store_id)->where('remove_status',0)->count() > 0 ) {  // to change 
-                                        dd("row exist");
+                                        
                                         $proVarData = Mst_store_product_varient::find($request->product_varient_id);
                                         $cartItem = new Trn_Cart;
                                         $cartItem->store_id = $proVarData->store_id;
@@ -244,7 +244,7 @@ class PurchaseController extends Controller
                                         $data['message'] = "Product added to cart";
                                         return response($data);
                                     }else{
-                                        dd("row doesnt exist");
+                                        
                                         $data['status'] = 2;
                                         $data['message'] = "Product of another store in cart. do you want to remove?"; 
                                     }
