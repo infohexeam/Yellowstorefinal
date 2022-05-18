@@ -199,7 +199,7 @@ class PurchaseController extends Controller
                             
                             if ($request->quantity <= $varProdu->stock_count) {  //quantity shud be less dan current stock
                                 //s1 p1
-                            $totcountInCart = Trn_Cart::where('customer_id', $customer_id)->where('remove_status','=',0)->count();
+                            $totcountInCart = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
                             if ($totcountInCart == 0)
                             {
                                         $proVarData = Mst_store_product_varient::find($request->product_varient_id);
