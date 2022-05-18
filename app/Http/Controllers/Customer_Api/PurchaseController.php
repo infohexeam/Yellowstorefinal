@@ -247,6 +247,7 @@ class PurchaseController extends Controller
                                         
                                         $data['status'] = 2;
                                         $data['message'] = "Product of another store in cart. do you want to remove?"; 
+                                        return response($data);
                                     }
                                 }
 
