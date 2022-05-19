@@ -5002,7 +5002,7 @@ class StoreController extends Controller
 
   public function videoGallery(Request $request)
   {
-    try {
+    // try {
 
       $pageTitle = 'Videos';
       $store_id  = Auth::guard('store')->user()->store_id;
@@ -5012,6 +5012,7 @@ class StoreController extends Controller
         //check if town/pincode exist
         if(Mst_Video::where('status', 1)->where('visibility', 1)->where('town_id','=',NULL)->count() > 0)
         {
+          dd("global present");
           $videos = Mst_Video::where('town_id', $storeTownData->town_id)->where('town_id','=',NULL)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
         }
         $videos = Mst_Video::where('town_id', $storeTownData->town_id)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
@@ -5055,10 +5056,10 @@ class StoreController extends Controller
 
       //  dd($videos);
       return view('store.elements.videos.list', compact('pageTitle', 'videos'));
-    } catch (\Exception $e) {
-      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
-    } catch (\Throwable $e) {
-      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
-    }
+    // } catch (\Exception $e) {
+    //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    // } catch (\Throwable $e) {
+    //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    // }
   }
 }
