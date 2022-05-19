@@ -3228,10 +3228,10 @@ class StoreController extends Controller
         'mst_store_products.product_status',
         'mst_store_products.product_brand',
         'mst_store_product_varients.product_varient_id',
-        // 'mst_store_product_varients.variant_name',
-        // 'mst_store_product_varients.product_varient_price',
-        // 'mst_store_product_varients.product_varient_offer_price',
-        // 'mst_store_product_varients.product_varient_base_image',
+        'mst_store_product_varients.variant_name',
+        'mst_store_product_varients.product_varient_price',
+        'mst_store_product_varients.product_varient_offer_price',
+        'mst_store_product_varients.product_varient_base_image',
         'mst_store_product_varients.stock_count'
       )
       ->paginate(10);
