@@ -5006,11 +5006,13 @@ class StoreController extends Controller
 
       $pageTitle = 'Videos';
       $store_id  = Auth::guard('store')->user()->store_id;
-
+      if (isset($request->store_id)) {
+        $storeTownData = Mst_store::find($store_id);
+        $videos = $storeVids->where('town_id', $storeTownData->town_id);
+      }
       // echo "Working page..";die;
      
-      $videos = Mst_Video::where('store_id','=',$store_id)
-      ->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+      $videos = Mst_Video::where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
       //dd($videos);
 
       // foreach( $videos as $v)
