@@ -38,6 +38,7 @@ class CustomerController extends Controller
     public function logout(Request $request)
     {
         try {
+            dd("working");
 
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
 
@@ -61,9 +62,11 @@ class CustomerController extends Controller
             // $data['message'] = "Success";
             // return response($data);
         } catch (\Exception $e) {
+            dd("exception");
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         } catch (\Throwable $e) {
+            dd("throwable");
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
