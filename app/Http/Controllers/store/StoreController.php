@@ -5014,9 +5014,10 @@ class StoreController extends Controller
         {
           
           $videos = Mst_Video::whereIn('town_id', [$storeTownData->town_id,'NULL'])->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+          dd($videos);
         }
-        $videos = Mst_Video::where('town_id', $storeTownData->town_id)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
-        dd($videos);
+        //$videos = Mst_Video::where('town_id', $storeTownData->town_id)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+        
        
         
       
