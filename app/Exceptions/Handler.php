@@ -63,7 +63,8 @@ class Handler extends ExceptionHandler
             return response()->json(
                 [
                     'type' => 'error',
-                    'status' => Response::HTTP_UNAUTHORIZED,
+                    //'status' => Response::HTTP_UNAUTHORIZED,
+                    'status' => '0',
                     'message' => 'Access Token expired',
                 ],
                 Response::HTTP_UNAUTHORIZED

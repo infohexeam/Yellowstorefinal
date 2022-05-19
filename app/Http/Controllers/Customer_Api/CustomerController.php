@@ -37,40 +37,28 @@ class CustomerController extends Controller
 {
     public function logout(Request $request)
     {
-        dd("string");
-        try {
-            dd("working");
 
-            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+        if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
 
-                $accessToken = auth()->user()->token();
-                $token = $request->user()->tokens->find($accessToken);
-                $token->revoke();
-                Trn_CustomerDeviceToken::where('customer_id',$request->customer_id)->delete();
+            $accessToken = auth()->user()->token();
+            $token = $request->user()->tokens->find($accessToken);
+            $token->revoke();
+            Trn_CustomerDeviceToken::where('customer_id',$request->customer_id)->delete();
 
-                $data['status'] = 1;
-                $data['message'] = "Success";
-            } else {
-                $data['status'] = 0;
-                $data['message'] = "Failed";
-            }
-            return response($data);
-
-            // $accessToken = auth()->user()->token();
-            // $token = $request->user()->tokens->find($accessToken);
-            // $token->revoke();
-            // $data['status'] = 1;
-            // $data['message'] = "Success";
-            // return response($data);
-        } catch (\Exception $e) {
-            dd("exception");
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            dd("throwable");
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
+            $data['status'] = 1;
+            $data['message'] = "Success";
+        } else {
+            $data['status'] = 0;
+            $data['message'] = "Failed";
         }
+        return response($data);
+
+        // $accessToken = auth()->user()->token();
+        // $token = $request->user()->tokens->find($accessToken);
+        // $token->revoke();
+        // $data['status'] = 1;
+        // $data['message'] = "Success";
+        // return response($data);
     }
 
     public function loginCustomer(Request $request)
