@@ -5006,7 +5006,7 @@ class StoreController extends Controller
 
       $pageTitle = 'Videos';
       $store_id  = Auth::guard('store')->user()->store_id;
-      if (isset($request->store_id)) {
+      if ($store_id) {
         $storeTownData = Mst_store::find($store_id);
         $videos = $storeVids->where('town_id', $storeTownData->town_id);
       }
