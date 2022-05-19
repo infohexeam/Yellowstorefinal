@@ -5005,10 +5005,12 @@ class StoreController extends Controller
     try {
 
       $pageTitle = 'Videos';
+      $store_id  = Auth::guard('store')->user()->store_id;
 
       // echo "Working page..";die;
-
-      $videos = Mst_Video::where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+     
+      $videos = Mst_Video::where('store_id','=',$store_id)
+      ->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
       //dd($videos);
 
       // foreach( $videos as $v)
