@@ -34,5 +34,9 @@ class AuthServiceProvider extends ServiceProvider
                 'delivery' => 'delivery Type',
 
             ]);
+
+            Passport::tokensExpireIn(now()-&gt;addDays(30));
+            Passport::refreshTokensExpireIn(now()-&gt;addDays(30));
+            Passport::personalAccessTokensExpireIn(now()-&gt;addDays(30));
     }
 }
