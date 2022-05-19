@@ -216,12 +216,14 @@ class PurchaseController extends Controller
                                         $data['message'] = "Product added to cart";
                                         return response($data);
                             }else{
-                                if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
+                                if ($getItem = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
+
+                                    $totalQuantity = $getItem->quantity + $request->quantity;
 
                                     $cartItem = Trn_Cart::where('customer_id', $request->customer_id)
                                         ->where('remove_status', 0)
                                         ->where('product_varient_id', $request->product_varient_id);
-                                    $cartItem->update(['quantity' => $request->quantity]);
+                                    $cartItem->update(['quantity' => $totalQuantity]);
         
                                     $data['status'] = 1;
                                     $data['message'] = "Product added to cart";
