@@ -37,6 +37,7 @@ class CustomerController extends Controller
 {
     public function logout(Request $request)
     {
+        dd("string");
         try {
             dd("working");
 
