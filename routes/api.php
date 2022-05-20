@@ -315,6 +315,7 @@ Route::get('customer/store-data', 'Customer_Api\ProductController@storeData');
 
 
 Route::post('customer/add-to-cart', 'Customer_Api\PurchaseController@addToCart');
+Route::post('customer/add-to-cart/internal', 'Customer_Api\PurchaseController@addToCartInternal');
 Route::get('customer/cart-items', 'Customer_Api\PurchaseController@cartItems');
 Route::get('customer/remove-cart-item', 'Customer_Api\PurchaseController@removeCartItems');
 Route::post('customer/update-qty', 'Customer_Api\PurchaseController@updateQty');
