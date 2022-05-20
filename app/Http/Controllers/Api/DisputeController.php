@@ -97,6 +97,7 @@ class DisputeController extends Controller
 
 
                                 $issueType = Sys_IssueType::find($dispute->issue_id);
+                                dd($issueType);
 
                                 if (isset($issueType->issue_type))
                                     $dispute->issue_type = @$issueType->issue_type;
