@@ -3215,7 +3215,7 @@ class StoreController extends Controller
       $products = $products->where('mst_store_products.product_cat_id', $request->product_cat_id);
     }
     if ($request->product_name) {
-      $products = $products->where('mst_store_products.product_name', 'LIKE', '%' . $request->product_name . '%');
+      $products = $products->where('mst_store_product_varients.product_name', 'LIKE', '%' . $request->product_name . '%');
     }
 
     $products = $products->orderBy('mst_store_product_varients.updated_at', 'DESC')
