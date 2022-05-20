@@ -82,6 +82,7 @@ class DisputeController extends Controller
                             $data['disputeDetails'] = $disputesData;
                             foreach ($data['disputeDetails'] as $dispute) {
                                 $issue = Mst_Issues::find($dispute->issue_id);
+                                dd($issue);
                                 $dispute->issue = $issue->issue;
                                 $ordData = Trn_store_order::find($dispute->order_id);
 
