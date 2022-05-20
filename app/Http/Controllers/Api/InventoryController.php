@@ -136,7 +136,7 @@ class InventoryController extends Controller
                                 }
 
                                 if (isset($request->product_name)) {
-                                    $query = $query->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%");
+                                    $query = $query->where('mst_store_product_varients.variant_name', 'LIKE', "%{$request->product_name}%");
                                     //$query = $query->orWhere('mst_store_product_varients.variant_name', 'LIKE', "%{$request->product_name}%");
                                     //->orWhere('mst_store_product_varients.variant_name', 'LIKE', "%{$request->product_name}%");
 
