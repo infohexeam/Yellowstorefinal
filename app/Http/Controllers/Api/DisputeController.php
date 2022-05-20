@@ -82,7 +82,7 @@ class DisputeController extends Controller
                             $data['disputeDetails'] = $disputesData;
                             foreach ($data['disputeDetails'] as $dispute) {
                                 $issue = Mst_Issues::find($dispute->issue_id);
-                                dd($issue);
+                               
                                 $dispute->issue = $issue->issue;
                                 $ordData = Trn_store_order::find($dispute->order_id);
 
@@ -98,10 +98,15 @@ class DisputeController extends Controller
 
 
                                 $issueType = Sys_IssueType::find($dispute->issue_id);
-                                dd($issueType);
+                                
 
-                                if (isset($issueType->issue_type))
-                                    $dispute->issue_type = @$issueType->issue_type;
+                                // if (isset($issueType->issue_type))
+                                //     $dispute->issue_type = @$issueType->issue_type;
+                                // else
+                                //     $dispute->issue_type = '';
+                                
+                                if (isset($issue->issue_type_id))
+                                    $dispute->issue_type = @$issue->issue_type->issue_type;
                                 else
                                     $dispute->issue_type = '';
 
