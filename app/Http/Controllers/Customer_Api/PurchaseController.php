@@ -297,6 +297,13 @@ class PurchaseController extends Controller
                                         $cartItem->quantity = $request->quantity;
                                         $cartItem->remove_status = 0;
                                         $cartItem->save();
+
+                                        if(Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count() > 0)
+                                        {
+                                            $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
+                                        }else{
+                                            $data['CurrentCartCount'] = 0; 
+                                        }
         
                                         $data['status'] = 1;
                                         $data['message'] = "Product added to cart";
@@ -310,6 +317,13 @@ class PurchaseController extends Controller
                                         ->where('remove_status', 0)
                                         ->where('product_varient_id', $request->product_varient_id);
                                     $cartItem->update(['quantity' => $totalQuantity]);
+
+                                    if(Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count() > 0)
+                                        {
+                                            $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
+                                        }else{
+                                            $data['CurrentCartCount'] = 0; 
+                                        }
         
                                     $data['status'] = 1;
                                     $data['message'] = "Product added to cart";
