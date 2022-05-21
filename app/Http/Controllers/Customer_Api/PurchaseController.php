@@ -328,7 +328,14 @@ class PurchaseController extends Controller
                                         $cartItem->remove_status = 0;
                                         $cartItem->save();
 
-                                        $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
+                                        if(Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count() > 0)
+                                        {
+                                            $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
+                                        }else{
+                                            $data['CurrentCartCount'] = 0; 
+                                        }
+
+                                        
                                         $data['status'] = 1;
                                         $data['message'] = "Product added to cart";
                                         return response($data);
@@ -424,6 +431,74 @@ class PurchaseController extends Controller
                 $data['message'] = "Customer not found";
                 return response($data);
             }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    //internal delete all current items in cart
+    public function removeAllStoreItems(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                
+                    //check flag 
+                    if($request->remove_flag ==1) //all items related to customer has to be removed from the table and new product shoudl be added
+                    //remove all products of the previous store
+                    Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status',0)->delete();
+                    //check new product existance
+                    $varProdu = Mst_store_product_varient::find($request->product_varient_id);
+                
+                    $proData = Mst_store_product::find($varProdu->product_id);
+                    if ($proData->service_type != 2) {
+                        
+                        if (isset($varProdu)) {
+                            
+                            if ($request->quantity <= $varProdu->stock_count) {
+                                
+                                //add the product to cart
+                                $proVarData = Mst_store_product_varient::find($request->product_varient_id);
+                                $cartItem = new Trn_Cart;
+                                $cartItem->store_id = $proVarData->store_id;
+                                $cartItem->customer_id = $request->customer_id;
+                                $cartItem->product_varient_id = $request->product_varient_id;
+                                $cartItem->product_id = $proVarData->product_id;
+                                $cartItem->quantity = $request->quantity;
+                                $cartItem->remove_status = 0;
+                                $cartItem->save();
+        
+                                        $data['status'] = 1;
+                                        $data['message'] = "Product added to cart";
+                                        return response($data);
+   
+                            } else {
+                                $data['message'] = 'Stock unavailable';
+                                $data['status'] = 3;
+                                return response($data);
+                            }
+                        } else {
+                        $data['message'] = 'Product not found';
+                        $data['status'] = 2;
+                        return response($data);
+                        }
+                        
+                    }else{
+                        $data['status'] = 2;
+                        $data['message'] = "Cannot add service product to cart";
+                    }
+
+               
+            } else {
+                $data['status'] = 3;
+                $data['message'] = "Customer not found ";
+            }
+
+            return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);

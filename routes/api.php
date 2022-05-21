@@ -318,6 +318,7 @@ Route::post('customer/add-to-cart', 'Customer_Api\PurchaseController@addToCart')
 Route::post('customer/add-to-cart/internal', 'Customer_Api\PurchaseController@addToCartInternal');
 Route::get('customer/cart-items', 'Customer_Api\PurchaseController@cartItems');
 Route::get('customer/remove-cart-item', 'Customer_Api\PurchaseController@removeCartItems');
+Route::get('customer/remove-store-cart-items','Customer_Api\PurchaseController@removeAllStoreItems');
 Route::post('customer/update-qty', 'Customer_Api\PurchaseController@updateQty');
 Route::post('customer/address-edit', 'Customer_Api\PurchaseController@editAddress');
 
