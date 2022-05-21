@@ -327,7 +327,8 @@ class PurchaseController extends Controller
                                         $cartItem->quantity = $request->quantity;
                                         $cartItem->remove_status = 0;
                                         $cartItem->save();
-        
+
+                                        $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
                                         $data['status'] = 1;
                                         $data['message'] = "Product added to cart";
                                         return response($data);
