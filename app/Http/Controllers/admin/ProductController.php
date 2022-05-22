@@ -2111,6 +2111,131 @@ class ProductController extends Controller
     }
   }
 
+  //wallet redeem reports
+  public function showRedeemReports(Request $request)
+  {
+    
+    try {
+
+      $pageTitle = "Wallet Points Redeem Reports";
+      $datefrom = '';
+      $dateto = '';
+
+
+      if (auth()->user()->user_role_id  == 0) {
+        $stores = Mst_store::orderby('store_id', 'DESC')->get();
+      } else {
+        $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+      }
+
+      $subadmins = User::where('user_role_id', '!=', 0)->get();
+
+      $customers = Trn_store_customer::all();
+
+      $deliveryBoys =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+        ->get();
+
+      $orderStatus = Sys_store_order_status::all();
+
+
+
+      $data = Trn_store_order::select(
+
+        'trn_store_orders.order_id',
+        'trn_store_orders.order_number',
+        'trn_store_orders.customer_id',
+        'trn_store_orders.store_id',
+        'trn_store_orders.subadmin_id',
+        'trn_store_orders.product_total_amount',
+        'trn_store_orders.delivery_charge',
+        'trn_store_orders.packing_charge',
+        'trn_store_orders.payment_type_id',
+        'trn_store_orders.status_id',
+        'trn_store_orders.payment_status',
+        'trn_store_orders.delivery_status_id',
+        'trn_store_orders.delivery_boy_id',
+        'trn_store_orders.coupon_id',
+        'trn_store_orders.coupon_code',
+        'trn_store_orders.reward_points_used',
+        'trn_store_orders.amount_before_applying_rp',
+        'trn_store_orders.trn_id',
+        'trn_store_orders.created_at',
+        'trn_store_orders.amount_reduced_by_coupon',
+        'trn_store_orders.order_type',
+
+        'trn_store_customers.customer_id',
+        'trn_store_customers.customer_first_name',
+        'trn_store_customers.customer_last_name',
+        'trn_store_customers.customer_mobile_number',
+        'trn_store_customers.place',
+
+        'mst_stores.store_id',
+        'mst_stores.store_name',
+        'mst_stores.store_mobile',
+        'mst_stores.subadmin_id'
+
+       
+
+      )
+        ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+        ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+
+      if (auth()->user()->user_role_id  != 0) {
+        $data = $data->where('trn_store_orders.subadmin_id', '=', auth()->user()->id);
+      }
+
+      if ($_GET) {
+        $datefrom = $request->date_from;
+        $dateto = $request->date_to;
+
+        $a1 = Carbon::parse($request->date_from)->startOfDay();
+        $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+        if (isset($request->date_from)) {
+          $data = $data->whereDate('trn_store_orders.created_at', '>=', $a1);
+        }
+
+        if (isset($request->date_to)) {
+          $data = $data->whereDate('trn_store_orders.created_at', '<=', $a2);
+        }
+
+
+        if (isset($request->customer_id)) {
+          $data = $data->where('trn_store_orders.customer_id', '=', $request->customer_id);
+        }
+
+        if (isset($request->delivery_boy_id)) {
+          $data = $data->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
+        }
+
+        if (isset($request->status_id)) {
+          $data = $data->where('trn_store_orders.status_id', '=', $request->status_id);
+        }
+
+        if (isset($request->order_type)) {
+          $data = $data->where('trn_store_orders.order_type', '=', $request->order_type);
+        }
+
+        if (isset($request->subadmin_id)) {
+          $data = $data->where('trn_store_orders.subadmin_id', '=', $request->subadmin_id);
+        }
+
+        if (isset($request->store_id)) {
+          $data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
+        }
+      }
+
+      $data = $data->where('reward_points_used','!=',NULL)->where('reward_points_used','>', '0.00')->orderBy('trn_store_orders.order_id', 'DESC')
+        ->get();
+//DD($request->store_id,$request->subadmin_id,$data);
+
+      return view('admin.masters.reports.redeem_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
+    } catch (\Exception $e) {
+      return redirect()->back()->withErrors([$e->getMessage()])->withInput();
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+  }
+
 
 
 
