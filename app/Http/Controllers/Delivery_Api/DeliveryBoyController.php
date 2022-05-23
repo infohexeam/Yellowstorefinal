@@ -53,8 +53,8 @@ class DeliveryBoyController extends Controller
         if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
 
             $accessToken = auth()->user()->token();
-            dd($accessToken);
-            auth()->guard('delivery')->user()->delivery_boy_id;
+         //   dd($accessToken);
+            auth()->guard('api-delivery')->user()->delivery_boy_id;
             $token = $request->user()->tokens->find($accessToken);
             $token->revoke();
             Trn_DeliveryBoyDeviceToken::where('delivery_boy_id',$request->delivery_boy_id)->delete();
