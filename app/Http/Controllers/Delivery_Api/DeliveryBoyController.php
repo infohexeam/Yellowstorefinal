@@ -65,7 +65,7 @@ class DeliveryBoyController extends Controller
         }
         return response($data);
 
-        // $accessToken = auth()->user()->token();
+        // $accessToken = auth()->guard('delivery')->user()->token();
         // $token = $request->user()->tokens->find($accessToken);
         // $token->revoke();
         // $data['status'] = 1;
