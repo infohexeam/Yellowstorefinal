@@ -49,7 +49,7 @@ class DeliveryBoyController extends Controller
 
     public function logout(Request $request)
     {
-
+        dd($request->delivery_boy_id);
         if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
 
             $accessToken = auth()->user()->token();
