@@ -431,6 +431,7 @@ class DeliveryBoyOrderController extends Controller
                                 $data['orderDetails']->store_latitude = @$storeData->latitude;
                                 $data['orderDetails']->store_longitude = @$storeData->longitude;
                                 $data['orderDetails']->store_place = @$storeData->place;
+                               $data['orderDetails']->store_pincode = @$storeData->store_pincode;
                         
 
                         
