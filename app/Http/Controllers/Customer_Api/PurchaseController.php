@@ -274,20 +274,26 @@ class PurchaseController extends Controller
                         ]
                     );
                     if (!$validator->fails()) {
+                        dd("validation success");
                         
                             $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
                             $proData = Mst_store_product::find($varProdu->product_id);
                             
                     if ($proData->service_type != 2) {
+                        dd("service type not equal to 2 success");
                         
                         if (isset($varProdu)) {
+                            dd("product varient success");
                             
                             if ($request->quantity <= $varProdu->stock_count) {  //quantity shud be less dan current stock
                                 //s1 p1
+
+                                dd("quantity success");
                             $totcountInCart = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
                             if ($totcountInCart == 0)
                             {
+                                dd("count equals 0 success");
                                         $proVarData = Mst_store_product_varient::find($request->product_varient_id);
                                         $cartItem = new Trn_Cart;
                                         $cartItem->store_id = $proVarData->store_id;
