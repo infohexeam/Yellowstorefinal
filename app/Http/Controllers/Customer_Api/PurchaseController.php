@@ -279,7 +279,7 @@ class PurchaseController extends Controller
                             $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
                             $proData = Mst_store_product::find($varProdu->product_id);
-                            
+                           dd($proData->service_type);
                     if ($proData->service_type != 2) {
                         dd("service type not equal to 2 success");
                         
