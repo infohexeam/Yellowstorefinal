@@ -274,7 +274,7 @@ class PurchaseController extends Controller
                         ]
                     );
                     if (!$validator->fails()) {
-                        dd("validation success");
+                        
                         
                             $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
