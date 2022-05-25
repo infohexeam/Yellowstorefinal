@@ -1144,7 +1144,7 @@ class StoreController extends Controller
           Mst_store_product_varient::create($data3);
           $vari_id = DB::getPdo()->lastInsertId();
 
-          $vac = 0;
+          $vac = 0; //varient_name0
 
           foreach ($request->attr_group_id[$vc] as $attrGrp) {
             $data4 = [
@@ -3284,7 +3284,8 @@ class StoreController extends Controller
     $usData = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->first();
     
 
-    if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->update(['stock_count' => 0])) {
+    if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->update(['stock_count' => 0, 'updated_at' => Carbon::now()])) {
+      DB::table('mst__stock_details')->where('product_varient_id', $product_varient_id)->update(['created_at' => Carbon::now()]);
       $s = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->pluck("stock_count");
 
       // $prodctCnt = DB::table('mst_store_product_varients')->where('product_id', $usData->product_id)->count();
