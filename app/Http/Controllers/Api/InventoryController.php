@@ -111,7 +111,7 @@ class InventoryController extends Controller
                                     'mst_store_products.product_name',
                                     'mst_store_products.product_code',
                                     'mst_store_products.product_cat_id',
-                                    'mst_store_products.tax_id',
+                                    //'mst_store_products.tax_id',
                                     'mst_store_products.product_base_image',
                                     'mst_store_products.product_status',
                                     'mst_store_products.product_brand',
@@ -149,7 +149,7 @@ class InventoryController extends Controller
 
 
 
-                                $data['productDetails'] = $query->orderBy('mst_store_product_varients.stock_count', 'ASC')->get();
+                                $data['productDetails'] = $query->orderBy('mst_store_product_varients.updated_at', 'DESC')->get();
 
                                 foreach ($data['productDetails'] as $product) {
                                     $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
