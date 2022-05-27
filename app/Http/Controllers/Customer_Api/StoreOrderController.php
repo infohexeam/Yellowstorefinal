@@ -900,7 +900,7 @@ class StoreOrderController extends Controller
 
                     if (isset($varProdu)) {
                        // || $proData->product_status == 1
-                        if ($value['quantity'] > $varProdu->stock_count ) {
+                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status == 0) {
 
 
                             $data['product_name'] = @$varProdu->variant_name;
@@ -908,7 +908,7 @@ class StoreOrderController extends Controller
                             $noStockProducts[] = $varProdu->product_varient_id;
 
                             $data['noStockProducts'] = $noStockProducts;
-                            $data['message'] = 'Stock unavailable';
+                            $data['message'] = 'Stock/Product unavailable';
                             $data['status'] = 2;
                         }
 
