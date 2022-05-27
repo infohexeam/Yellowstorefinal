@@ -198,6 +198,17 @@ class PurchaseController extends Controller
                             }
                         }
 
+                        $varProdu = Mst_store_product_varient::find($request->product_varient_id);
+                
+                        $proData = Mst_store_product::find($varProdu->product_id);
+
+                        if ($request->quantity > $varProdu->stock_count || $proData->product_status == 1) {  
+                            $data['message'] = 'Stock/Product unavailable';
+                            $data['status'] = 3;
+                            return response($data);
+                        
+                        }
+
 
 
                         if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
