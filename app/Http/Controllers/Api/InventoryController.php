@@ -56,6 +56,7 @@ class InventoryController extends Controller
 
                 if (!$validator->fails()) {
                     if ($request->category_id == 0  ||   Mst_categories::find($request->category_id)) {
+                        dd("without cat");
                         if ($request->category_id == 0) {
                             if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                                 ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
@@ -99,6 +100,7 @@ class InventoryController extends Controller
                                 return response($data);
                             }
                         } else {
+                            dd("cat exist");
                             if ($query  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                                 ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                                 ->where('mst_store_products.product_type', 1)
