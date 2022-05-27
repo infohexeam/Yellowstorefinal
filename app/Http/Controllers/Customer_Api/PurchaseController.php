@@ -289,7 +289,7 @@ class PurchaseController extends Controller
                 
                             $proData = Mst_store_product::find($varProdu->product_id);
 
-                            if ($request->quantity > $varProdu->stock_count || $proData->product_status == 1) {  
+                            if ($request->quantity > $varProdu->stock_count || $proData->product_status == 0) {  
                             $data['message'] = 'Stock/Product unavailable';
                             $data['status'] = 3;
                             return response($data);
@@ -298,7 +298,6 @@ class PurchaseController extends Controller
                     if ($proData->service_type != 2) {    
                         if (isset($varProdu)) { 
                             if ($request->quantity <= $varProdu->stock_count) {  //quantity shud be less dan current stock
-                                //s1 p1
                
                             $totcountInCart = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
                             if ($totcountInCart == 0)
