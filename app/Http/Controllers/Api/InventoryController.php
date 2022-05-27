@@ -65,7 +65,8 @@ class InventoryController extends Controller
                                 ->where('mst_store_categories.category_status', 1)
                                 ->where('mst_store_product_varients.is_removed', 0)
                                 ->where('mst_store_products.product_type', 1)
-                                ->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")
+                                ->where('mst_store_product_varients.variant_name', 'LIKE', '%' . $request->product_name . '%')
+                                //->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")
                                 // ->orhere('mst_store_product_varients.variant_name', 'LIKE', "%{$request->product_name}%")
                                 ->orderBy('mst_store_product_varients.stock_count', 'ASC')
                                 ->select(
@@ -99,8 +100,9 @@ class InventoryController extends Controller
                                 $data['message'] = "failed";
                                 return response($data);
                             }
+
                         } else {
-                            dd("cat exist");
+                            
                             if ($query  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                                 ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                                 ->where('mst_store_products.product_type', 1)
