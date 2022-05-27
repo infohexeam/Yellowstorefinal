@@ -340,7 +340,7 @@ class AdminController extends Controller
     public function restoreTown(Request $request, $town_id)
     {
         $town = Town::onlyTrashed()->find($town_id)->restore();
-        return redirect('admin/towns/list')->with('status', 'Town restores successfully');
+        return redirect('admin/pincode/list')->with('status', 'Town restored successfully');
     }
 
 
