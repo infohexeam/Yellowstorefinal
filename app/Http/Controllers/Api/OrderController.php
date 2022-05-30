@@ -613,7 +613,7 @@ class OrderController extends Controller
                         'mst_delivery_boys.delivery_boy_mobile'
                     )
                     ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
-                    ->where('mst_delivery_boys.delivery_boy_status', 1)
+                    //->where('mst_delivery_boys.delivery_boy_status', 1)
                     ->get()
                 ) {
 
