@@ -475,7 +475,7 @@ class PurchaseController extends Controller
         $data = array();
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                
+                dd($request->customer_id,$request->remove_flag);
                     //check flag 
                     if($request->remove_flag == 1){
 
