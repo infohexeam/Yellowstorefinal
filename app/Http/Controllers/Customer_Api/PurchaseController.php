@@ -480,6 +480,7 @@ class PurchaseController extends Controller
                     if($request->remove_flag ==1) //all items related to customer has to be removed from the table and new product shoudl be added
                     //remove all products of the previous store
                     Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status',0)->delete();
+                    dd("deleted");
                     //check new product existance
                     $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
