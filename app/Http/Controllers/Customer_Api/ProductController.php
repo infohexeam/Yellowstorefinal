@@ -3751,7 +3751,7 @@ class ProductController extends Controller
     {
         $data = array();
         try {
-            if ($request->customer_id == 0) {
+            if ($request->customer_id == 0) {   // if the customer is not logged in 
                 $data['sliderImages'] =  Mst_CustomerAppBanner::select('banner_id', 'image', 'town_id', 'status', 'default_status')->where('default_status', 1)->where('store_id', 0)->where('status', 1)->get();
 
                 foreach ($data['sliderImages'] as $img) {
@@ -4380,7 +4380,12 @@ class ProductController extends Controller
                     }
 
 
-
+                    if(Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count() > 0)
+                        {
+                            $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
+                        }else{
+                            $data['CurrentCartCount'] = 0; 
+                        }
 
 
                     $data['message'] = 'success';
