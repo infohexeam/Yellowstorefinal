@@ -483,7 +483,7 @@ class PurchaseController extends Controller
                     //remove all products of the previous store
                     Trn_Cart::where('customer_id', $request->customer_id)->delete();
                    $getlatestCartCount =  Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status',0)->count();
-                    dd("deleted", $getlatestCartCount,$request->customer_id);
+                   
                     //check new product existance
                     $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
