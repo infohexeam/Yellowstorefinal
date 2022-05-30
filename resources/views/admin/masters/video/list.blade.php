@@ -180,7 +180,7 @@ iframe{
                                  @endif
                                 @if(@$value->town->town_name)
                                 <tr>
-                                    <td><h6>Town: </td><td>  {{ @$value->town->town_name }} </h6></td>
+                                    <td><h6>Pincode: </td><td>  {{ @$value->town->town_name }} </h6></td>
                                 </tr>
                                 @endif
                                 
