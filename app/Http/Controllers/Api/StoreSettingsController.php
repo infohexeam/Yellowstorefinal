@@ -839,7 +839,6 @@ class StoreSettingsController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
                 $store  =    Mst_store::find($request->store_id);
-
                 $storeAdmData = Trn_StoreAdmin::where('store_id', $store->store_id)->where('role_id', 0)->first();
                 $today = Carbon::now()->addDays(3);
                 $now =Carbon::now();
@@ -939,7 +938,7 @@ class StoreSettingsController extends Controller
                 $data['todaysSale'] = Trn_store_order::where('store_id', '=', $store_id)->where('status_id', '!=', 5)->whereDate('created_at', Carbon::today())->sum('product_total_amount');
                 $data['dailySalesCount'] = Trn_store_order::where('store_id', '=', $store_id)->whereDate('created_at', Carbon::today())->count();
                 $data['deliveryBoys'] =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
-                    ->where('mst_delivery_boys.delivery_boy_status', 1)
+                    //->where('mst_delivery_boys.delivery_boy_status', 1)
                     ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
                     ->count();
                 $data['totalIssues'] =  \DB::table("mst_disputes")->where('store_id', '=', $store_id)->count();
