@@ -475,13 +475,13 @@ class PurchaseController extends Controller
         $data = array();
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                dd($request->customer_id,$request->remove_flag);
+               
                     //check flag 
                     if($request->remove_flag == 1){
 
                     //all items related to customer has to be removed from the table and new product shoudl be added
                     //remove all products of the previous store
-                    Trn_Cart::where('customer_id', $request->customer_id)->update(['remove_status' => 1]);
+                    Trn_Cart::where('customer_id', $request->customer_id)->delete();
                    $getlatestCartCount =  Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status',0)->count();
                     dd("deleted", $getlatestCartCount,$request->customer_id);
                     //check new product existance
