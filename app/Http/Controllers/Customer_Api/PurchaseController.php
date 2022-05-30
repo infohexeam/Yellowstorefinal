@@ -479,8 +479,8 @@ class PurchaseController extends Controller
                     //check flag 
                     if($request->remove_flag ==1) //all items related to customer has to be removed from the table and new product shoudl be added
                     //remove all products of the previous store
-                    Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status',0)->delete();
-                   $getlatestCartCount =  Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status',0)->count();
+                Trn_Cart::where('customer_id', $request->customer_id)->delete();
+                $getlatestCartCount =  Trn_Cart::where('customer_id', $request->customer_id)->count();
                     dd("deleted", $getlatestCartCount);
                     //check new product existance
                     $varProdu = Mst_store_product_varient::find($request->product_varient_id);
@@ -640,7 +640,7 @@ class PurchaseController extends Controller
                     if ($request->quantity == 0) {
                         Trn_Cart::where('product_varient_id', $request->product_varient_id)
                             ->where('customer_id', $request->customer_id)
-                            ->update(['remove_status' =>  1]);
+                            ->update(['remove_status' =>  1]); //1=deleted
                     } else {
                         $cart = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id);
                         $cart->update(['quantity' =>  $request->quantity]);
