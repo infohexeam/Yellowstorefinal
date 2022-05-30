@@ -53,6 +53,12 @@
               <p>{{ $message1 }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
             </div>
             @endif
+            @if ($message22 = Session::get('status-empty-field'))
+            <div class="alert alert-danger">
+              <p>{{ $message22 }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+            </div>
+            @endif
+            
             <div class="col-lg-12">
               @if ($errors->any())
               <div class="alert alert-danger">

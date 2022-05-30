@@ -1714,6 +1714,10 @@ class StoreController extends Controller
 
         if (isset($varName)) {
 
+          if(isset($request->var_regular_price[$vc]) && isset($request->var_sale_price[$vc]) && $request->attr_group_id[$vc] && isset($request->file('var_images')[$vc]))
+            
+                {
+
           $sCount = 0;
           if (($request->product_type == 2) || ($request->service_type == 1)) {
             $sCount = 1;
@@ -1792,6 +1796,9 @@ class StoreController extends Controller
             }
           }
           $vc++;
+        }else{
+          return redirect()->back()->with('status-empty-field', 'Unable to add varient. One or more varient fields are empty');
+        }
         }
       }
 
