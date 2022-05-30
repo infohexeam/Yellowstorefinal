@@ -2723,8 +2723,8 @@ class StoreController extends Controller
     }
 
 
-    public function listProducts(Request $request)
-    {
+    public function listProducts(Request $request) 
+    {  //will show all products regradless of stock and product status
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
@@ -2732,7 +2732,53 @@ class StoreController extends Controller
                 if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                     // ->join('mst__taxes','mst_store_products.tax_id','=','mst__taxes.tax_id')
                     ->where('mst_store_products.store_id', $request->store_id)
-                    ->where('mst_store_products.product_status', 1)
+                    //->where('mst_store_products.product_status', 1)
+                    //->where('mst_store_product_varients.stock_count', '>', 0)
+                    ->orderBy('mst_store_products.product_id', 'DESC')
+                    ->select(
+                        'mst_store_products.product_id',
+                        'mst_store_products.product_name',
+                        'mst_store_products.product_code',
+
+                        'mst_store_product_varients.product_varient_id',
+                        'mst_store_product_varients.variant_name',
+
+                        'mst_store_product_varients.stock_count'
+                    )->get()
+                ) {
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    
+    public function inventoryListProducts(Request $request)
+    { //will show products with stock >0  and product status = active and inactive
+        $data = array();
+        try {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+
+                if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                    // ->join('mst__taxes','mst_store_products.tax_id','=','mst__taxes.tax_id')
+                    ->where('mst_store_products.store_id', $request->store_id)
+                    //->where('mst_store_products.product_status', 1)
                     ->where('mst_store_product_varients.stock_count', '>', 0)
                     ->orderBy('mst_store_products.product_id', 'DESC')
                     ->select(
@@ -2767,4 +2813,51 @@ class StoreController extends Controller
             return response($response);
         }
     }
+
+    
+    public function outOfStockListProducts(Request $request)
+    { //will show out of stock products stock = 0  and product status = active and inactive
+        $data = array();
+        try {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+
+                if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                    // ->join('mst__taxes','mst_store_products.tax_id','=','mst__taxes.tax_id')
+                    ->where('mst_store_products.store_id', $request->store_id)
+                    //->where('mst_store_products.product_status', 1)
+                    ->where('mst_store_product_varients.stock_count', '<=', 0)
+                    ->orderBy('mst_store_products.product_id', 'DESC')
+                    ->select(
+                        'mst_store_products.product_id',
+                        'mst_store_products.product_name',
+                        'mst_store_products.product_code',
+
+                        'mst_store_product_varients.product_varient_id',
+                        'mst_store_product_varients.variant_name',
+
+                        'mst_store_product_varients.stock_count'
+                    )->get()
+                ) {
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
 }
