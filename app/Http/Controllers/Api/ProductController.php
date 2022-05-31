@@ -2997,7 +2997,7 @@ class ProductController extends Controller
 
                 if (isset($request->product_id)) {
                     // $dataRV = $dataRV->where('trn__recently_visited_products.product_id', '=', $request->product_id);
-                    $dataRV = $dataRV->where('mst_store_product_varients.product_varient_id', $request->product_id);
+                    $dataRV = $dataRV->where('mst_store_products.product_id', $request->product_id);
                 }
 
                 if (isset($request->category_id)) {
