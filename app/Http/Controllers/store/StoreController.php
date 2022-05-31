@@ -3225,7 +3225,7 @@ class StoreController extends Controller
       $products = $products->where('mst_store_product_varients.variant_name', 'LIKE', '%' . $request->product_name . '%');
     }
 
-    $products = $products->orderBy('mst_store_product_varients.updated_at', 'DESC')
+    $products = $products->orderBy('mst_store_product_varients.stock_count', 'ASC')
       ->select(
         'mst_store_products.product_id',
         'mst_store_products.product_name',
