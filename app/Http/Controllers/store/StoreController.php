@@ -3728,6 +3728,8 @@ class StoreController extends Controller
       ]
     );
     if (!$validator->fails()) {
+      $getParentExpiry = Trn_StoreAdmin::where('store_id','=',Auth::guard('store')->user()->store_id)->where('role_id','=',0)->first();
+      $parentExpiryDate = $getParentExpiry->expiry_date;
       $store_admin->store_id =  Auth::guard('store')->user()->store_id;
       $store_admin->admin_name = $request->admin_name;
       $store_admin->store_mobile = $request->phone;
@@ -3735,6 +3737,7 @@ class StoreController extends Controller
       $store_admin->password = Hash::make($request->password);
       $store_admin->username = $request->username;
       $store_admin->role_id = $request->role_id;
+      $store_admin->expiry_date = $parentExpiryDate;
       //$store_admin->subadmin_id = Auth::guard('store')->user()->subadmin_id;
 
       $store_admin->store_account_status = $request->status;
