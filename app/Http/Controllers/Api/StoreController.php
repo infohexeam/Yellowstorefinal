@@ -20,6 +20,7 @@ use App\Models\admin\Mst_Video;
 use App\Models\admin\Trn_StoreDeviceToken;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Mst_store_product_varient;
+use App\Models\admin\Mst_store_product;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
 use App\Models\admin\Mst_StockDetail;
