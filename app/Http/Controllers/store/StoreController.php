@@ -1914,8 +1914,8 @@ class StoreController extends Controller
         $product->product_status  = 0;
       }
       $product->update();
-      $updt = Mst_store_product::Find($pro_id);
-      dd($product,$updt);
+      
+      
       return redirect()->back()->with('status', 'Product Status Changed Successfully');
     } else {
       return redirect()->back()->with('err_status', 'No variant exists.');
