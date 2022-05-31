@@ -78,21 +78,18 @@
                                            </div>
                                           </div>
                                          
+                                         
                                          <div class="col-md-4">
                                             <div class="form-group">
-                                              <label class="form-label">Product </label>
-                                                    <div id="product_id1"></div>
-
-                                               <select  name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Product"  >
-                                                    
-                                                    <option value="">Product</option>
-                                                    @foreach($productVAriants as $row)
-                                                    <option value="{{$row->product_varient_id}}" {{request()->input('product_id') == $row->product_varient_id ? 'selected':''}} >{{$row->variant_name}}</option>
-
-                                                    @endforeach
-                                                  </select>
-                                            </div>
-                                         </div>
+                                                <label class="form-label">Products</label>
+                                                    <select name="product_id" id="product_id" class="form-control select2-show-search" data-placeholder="Products" >
+                                                         <option value="" >Products</option>
+                                                         @foreach ($products as $key)
+                                                              <option value="{{ $key->product_id }}" {{request()->input('product_id') == $key->product_id ? 'selected':''}} > {{ $key->product_name }} </option>
+                                                         @endforeach
+                                                    </select>
+                                             </div>
+                                        </div>
                                          
                                           <div class="col-md-4">
                                             <div class="form-group">

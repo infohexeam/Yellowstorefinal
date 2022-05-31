@@ -437,7 +437,9 @@ class CouponController extends Controller
         }
 
         if (isset($request->product_id)) {
-          $data = $data->where('mst_store_product_varients.product_varient_id', $request->product_id);
+          // $data = $data->where('mst_store_product_varients.product_varient_id', $request->product_id);
+          $data = $data->where('mst_store_products.product_id', $request->product_id);
+          
         }
 
         if (isset($request->vendor_id)) {
