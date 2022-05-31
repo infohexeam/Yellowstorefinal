@@ -1914,7 +1914,7 @@ class StoreController extends Controller
         $product->product_status  = 0;
       }
       $product->update();
-      dd($product,$status);
+      
       return redirect()->back()->with('status', 'Product Status Changed Successfully');
     } else {
       return redirect()->back()->with('err_status', 'No variant exists.');
