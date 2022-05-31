@@ -2729,6 +2729,7 @@ class StoreController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                //old
 
                 // if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                 //     // ->join('mst__taxes','mst_store_products.tax_id','=','mst__taxes.tax_id')
@@ -2747,7 +2748,10 @@ class StoreController extends Controller
                 //         'mst_store_product_varients.stock_count'
                 //     )->get()
                 // ) {
-                    if (Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+
+                    //new
+
+                    if ($data['productDetails']  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                     ->select('mst_store_products.product_id', 'mst_store_products.product_name')
                     ->where('mst_store_products.store_id', $request->store_id)->orderBy('mst_store_products.product_id', 'DESC')->get())
                     
