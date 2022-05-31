@@ -1903,9 +1903,10 @@ class StoreController extends Controller
     $pro_id = $request->product_id;
     $product = Mst_store_product::Find($pro_id);
     $status = $product->product_status;
-
+    dd($status);
     $varCount = Mst_store_product_varient::where('product_id', $product_id)->count();
     if ($varCount > 0) {
+      
       if ($status == 0) {
         $product->product_status  = 1;
       } else {
