@@ -210,7 +210,7 @@ use App\Models\admin\Mst_store_product;
                   </tbody>
                </table>
             </div>
-            <div class="float-right"> {!! $orders->links() !!} </div>
+            {{-- <div class="float-right"> {!! $orders->links() !!} </div> --}}
            @if (count($orders) == 0)
               <p style="text-align:center" > No data found.. </p>
            @endif
