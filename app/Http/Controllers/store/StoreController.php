@@ -1453,8 +1453,8 @@ class StoreController extends Controller
         ->update(['product_varient_base_image' => $pro_imageTwo->product_image]);
 
         $checkIfbase = Mst_store_product_varient::where('product_id','=',$proImg->product_id)->count();
-        dd($checkIfbase);
-        if(!$checkIfbase >  1)  // no varients
+        
+        if($checkIfbase ==  1)  // no varients
           {
             Mst_store_product::where('product_id','=',$pro_imageTwo->product_id)->update([
           'product_base_image' => $pro_imageTwo->product_image]);
