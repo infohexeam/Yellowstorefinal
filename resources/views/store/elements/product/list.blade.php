@@ -170,19 +170,12 @@
                           @endphp
                        
                         <td>
-                            {{-- @if($stock_count_sum == 0)
-                               @php
-                                \DB::table('mst_store_products')->where('product_id',$product->product_id)->update(['product_status' => 0]);
-                                $productStatus = 0;
-                                @endphp
+                            
 
-                            @else --}}
-                               @php
+                              @php
 
                                 $productStatus = $product->product_status;
-                          @endphp
-
-                            {{-- @endif --}}
+                              @endphp
                         <form action="{{route('store.status_product',$product->product_id)}}" method="POST">
                                           
                            @csrf
