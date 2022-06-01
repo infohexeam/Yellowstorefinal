@@ -119,19 +119,22 @@ use App\Models\admin\Mst_store_product;
                   </thead>
                   <tbody>
                      @php
-                     if($_GET){
-                        if(request()->input('page') == 1){
-                           $i = 0;
-                        }else{
-                           $i = (request()->input('page') - 1) * 10;
-                        }
-                     }else{
-                        $i = 0;
-                     }
+                     // if($_GET){
+                     //    if(request()->input('page') == 1){
+                     //       $i = 0;
+                     //    }else{
+                     //       $i = (request()->input('page') - 1) * 10;
+                     //    }
+                     // }else{
+                     //    $i = 0;
+                     // }
+                     
+                     $i = ($orders->perPage() * ($orders->currentPage() - 1)) + 1;
+                     
                      @endphp
                      @foreach ($orders as $order)
                      <tr>
-                        <td>{{ ++$i }}</td>
+                        <td>{{ $i++ }}</td>
                         <td>{{ $order->order_number}}</td>
                         <td>
                            @if(!isset($order->customerAddress['name']))
