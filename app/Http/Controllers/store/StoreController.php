@@ -1435,9 +1435,9 @@ class StoreController extends Controller
 
     $proImgCount = Mst_product_image::where('product_varient_id', '=', $proImg->product_varient_id)->count(); 
 
-    if($proImgCount >  1)
+    if($proImgCount >  1) //has subimages
     {
-      if($proImg->image_flag == 1)
+      if($proImg->image_flag == 1)  //base imge
       {
 
       
@@ -1452,8 +1452,13 @@ class StoreController extends Controller
         Mst_store_product_varient::where('product_varient_id', '=', $pro_imageTwo->product_varient_id)
         ->update(['product_varient_base_image' => $pro_imageTwo->product_image]);
 
-        Mst_store_product::where('product_id','=',$pro_imageTwo->product_id)->update([
+        $checkIfbase = Mst_store_product_varient::where('product_id','=',$proImg->product_id)->count();
+
+        if(!$checkIfbase >  1)  // no varients
+          {
+            Mst_store_product::where('product_id','=',$pro_imageTwo->product_id)->update([
           'product_base_image' => $pro_imageTwo->product_image]);
+          }
 
         
 
