@@ -1454,8 +1454,9 @@ class StoreController extends Controller
 
         $checkIfbase = Mst_store_product_varient::where('product_id','=',$proImg->product_id)->count();
         
-        if($checkIfbase ==  1)  // no varients
+        if($checkIfbase ==  1)  // no varients 
           {
+            dd("function exec");
             Mst_store_product::where('product_id','=',$pro_imageTwo->product_id)->update([
           'product_base_image' => $pro_imageTwo->product_image]);
           }
