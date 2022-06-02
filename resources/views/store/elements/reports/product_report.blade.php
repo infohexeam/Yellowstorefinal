@@ -286,9 +286,9 @@
                                             else
                                             {   
                                                 $countInCart = Trn_Cart::join('mst_stores','mst_stores.store_id','=','trn__carts.store_id');
-                                                $countInCart = $countInCart->where('mst_stores.subadmin_id', auth()->user()->id);
-                                                $countInCart = $countInCart->where('trn__carts.customer_id', $d->customer_id);
-                                                $countInCart = $countInCart->where('trn__carts.product_varient_id', $d->product_varient_id);
+                                                $countInCart = $countInCart->where('mst_stores.subadmin_id', auth()->user()->id)->where('trn__carts.remove_status',0);
+                                                $countInCart = $countInCart->where('trn__carts.customer_id', $d->customer_id)->where('trn__carts.remove_status',0);
+                                                $countInCart = $countInCart->where('trn__carts.product_varient_id', $d->product_varient_id)->where('trn__carts.remove_status',0);
                                                 $countInCart = $countInCart->sum('trn__carts.quantity'); 
                                             }
 
