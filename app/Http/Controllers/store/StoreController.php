@@ -669,9 +669,6 @@ class StoreController extends Controller
 
   public function listProduct(Request $request)
   {
-
-
-
     try {
 
 
