@@ -55,12 +55,13 @@
                         </div>
                      </div>
 
+                     
                        <div class="col-md-6">
                         <div class="form-group">
 
                            <label class="form-label">Phone *</label>
-                           <input type="number" class="form-control" required
-                           name="phone" value="{{old('phone')}}" placeholder="Phone">
+                           <input type="text" maxlength="10" class="form-control" required
+                           name="phone" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" value="{{old('phone')}}" placeholder="Phone">
                         </div>
                      </div>
 

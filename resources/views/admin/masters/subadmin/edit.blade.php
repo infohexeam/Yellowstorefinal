@@ -53,10 +53,9 @@
                      </div>
                         <div class="col-md-6">
                         <div class="form-group">
-
                            <label class="form-label">Phone *</label>
-                           <input type="number" class="form-control"
-                           name="phone" value="{{old('phone',@$subadmin->subadmins['phone'])}}" required placeholder="Phone">
+                           <input type="text" maxlength="10" class="form-control"
+                           name="phone" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" value="{{old('phone',@$subadmin->subadmins['phone'])}}" required placeholder="Phone">
                         </div>
                      </div>
 
