@@ -59,13 +59,8 @@
                                              </div>
                                           </div>
               
-              
-                                       
-                                      
 
-                                         
-                                         
-                                          <div class="col-md-4">
+                                          {{-- <div class="col-md-4">
                                           <div class="form-group">
                                               <label class="form-label">Customer</label>
                                                     <div id="customer_id1"></div>
@@ -76,7 +71,14 @@
                                                        @endforeach
                                                   </select>
                                            </div>
-                                          </div>
+                                          </div> --}}
+                                          <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">Customer Mobile</label>
+                                                      {{-- <div id="customer_id1"></div> --}}
+                                                      <input type="text"  maxlength="10" name="customer_mobile_number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="form-control" value=""  placeholder="Customer mobile Number">
+                                             </div>
+                                            </div>
                                          
                                          
                                          <div class="col-md-4">
