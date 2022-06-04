@@ -387,7 +387,6 @@ class CouponController extends Controller
       if ($_GET) {
 
         $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
-        ;
 
         $datefrom = $request->date_from;
         $dateto = $request->date_to;

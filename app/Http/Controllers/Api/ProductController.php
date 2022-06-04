@@ -3122,8 +3122,15 @@ class ProductController extends Controller
                     $dataRVS = $dataRVS->whereDate('trn__recently_visited_stores.created_at', '<=', $request->date_to);
                 }
 
+
                 if (isset($request->customer_id)) {
-                    $dataRVS = $dataRVS->where('trn_store_customers.customer_id', '=', $request->customer_id);
+                    $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
+        
+                    if($fetchCustomerData != NULL)
+                    {
+                        $dataRVS = $dataRVS->where('trn_store_customers.customer_id', '=', $fetchCustomerData->customer_id);
+                    }
+                    
                 }
 
                 if (isset($request->town_id)) {
