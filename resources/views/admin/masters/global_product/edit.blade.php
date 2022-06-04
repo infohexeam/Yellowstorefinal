@@ -171,7 +171,7 @@ iframe{
                         </div>
                     </div>
 
-                     <div class="col-md-6">
+                     {{-- <div class="col-md-6">
                      <div class="form-group">
                         <label class="form-label">Attribute </label>
                        <select name="attr_group_id"  class="attr_group form-control" >
@@ -181,9 +181,9 @@ iframe{
                                 @endforeach
                               </select>
                      </div>
-                     </div>
+                     </div> --}}
 
-                     <div class="col-md-6">
+                     {{-- <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Value </label>
                             <select name="attr_value_id"   class="attr_value form-control" >
@@ -194,7 +194,7 @@ iframe{
                             @endif
                             </select>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="col-md-6">
                      <div class="form-group">
