@@ -3020,9 +3020,19 @@ class ProductController extends Controller
                     $dataRV = $dataRV->where('mst_store_products.vendor_id', '=', $request->agency_id);
                 }
 
-                if (isset($request->customer_id)) {
-                    $dataRV = $dataRV->where('trn__recently_visited_products.customer_id', $request->customer_id);
+                if (isset($request->customer_mobile_number)) {
+                    $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
+        
+                    if($fetchCustomerData != NULL)
+                    {
+                        $dataRVS = $dataRVS->where('trn_store_customers.customer_id', '=', $fetchCustomerData->customer_id);
+                    }
+                    
                 }
+
+                // if (isset($request->customer_id)) {
+                //     $dataRV = $dataRV->where('trn__recently_visited_products.customer_id', $request->customer_id);
+                // }
 
 
                 // $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->groupBy('trn__recently_visited_products.product_varient_id', 'trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
