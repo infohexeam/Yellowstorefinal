@@ -43,6 +43,8 @@ use App\Models\admin\Trn_Cart;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_GlobalProductVideo;
 use App\Models\admin\Trn_ProductVideo;
+use App\Models\admin\Trn_store_customer;
+
 
 class ProductController extends Controller
 {
