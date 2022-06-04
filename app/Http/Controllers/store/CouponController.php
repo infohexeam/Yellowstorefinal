@@ -386,6 +386,9 @@ class CouponController extends Controller
       // dd($data);
       if ($_GET) {
 
+        $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
+        ;
+
         $datefrom = $request->date_from;
         $dateto = $request->date_to;
 
@@ -457,11 +460,9 @@ class CouponController extends Controller
         // if (isset($request->customer_id)) {
         //   $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
         // }
-        if (isset($request->customer_mobile_number)) {
-          $fetchCustomerData = Trn_store_customer::where('customer_mobile_number','=',$request->customer_mobile_number)->first();
-          $customerId = $fetchCustomerData->customer_id;
-          $data = $data->where('trn__recently_visited_products.customer_id', $customerId);
-      }
+        if (isset($request->customer_mobile_number) && $fetchCustomerData != NULL) {
+          $data = $data->where('trn__recently_visited_products.customer_id', $fetchCustomerData->customer_id);
+        }
 
 
 
