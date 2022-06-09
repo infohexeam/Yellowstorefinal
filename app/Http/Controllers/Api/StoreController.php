@@ -1481,7 +1481,7 @@ class StoreController extends Controller
 
 
                 if (isset($request->customer_mobile_number)) {
-                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                    $salesData = $salesData->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
                  
               }
 
@@ -1644,7 +1644,7 @@ class StoreController extends Controller
                     $salesData = $salesData->whereDate('trn_store_orders.created_at', '<=', $a2);
                 }
                 if (isset($request->customer_mobile_number)) {
-                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                    $salesData = $salesData->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
                  
                 }
 
