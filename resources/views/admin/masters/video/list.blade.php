@@ -65,6 +65,9 @@ iframe{
                                     <th class="wd-15p">SL.No</th>
                                     <th class="wd-15p">{{ __('Platform') }}</th>
                                     <th class="wd-15p">{{ __('Video Link') }}</th>
+                                    <th class="wd-15p">{{ __('Visibility') }}</th>
+                                    <th class="wd-15p">{{ __('Pincode') }}</th>
+                                    <th class="wd-15p">{{ __('Description') }}</th>
                                     <th class="wd-15p">{{ __('Status') }}</th>
                                     <th class="wd-15p">{{__('Action')}}</th>
                                  </tr>
@@ -86,6 +89,17 @@ iframe{
                                     <a target="_blank" href="{!!$value->video_code!!}">{!!$value->video_code!!} </a>
                                     </div>
                                     </td>
+                                    <td>@if($value->visibility == 1)
+                                       Store
+                                   @elseif($value->visibility == 2)
+                                       Customer
+                                   @elseif($value->visibility == 3)
+                                       Delivery Boy
+                                   @else
+                                       --
+                                   @endif</td>
+                                   <td>{{ @$value->town->town_name }} </td>
+                                   <td>{{ $value->video_discription }} </td>
                                       <td> 
                                        @if ($value->status == 1)
                                           Active
