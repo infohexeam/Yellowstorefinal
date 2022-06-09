@@ -1316,7 +1316,7 @@ class StoreController extends Controller
                 if (isset($request->customer_mobile_number)) {
 
 
-                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                    $salesData = $salesData->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
                  
               }
 
