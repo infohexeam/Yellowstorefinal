@@ -3021,7 +3021,7 @@ class ProductController extends Controller
                 }
 
                 if (isset($request->customer_mobile_number)) {
-                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                    $dataRV = $dataRV->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
   
                 }
 
@@ -3132,7 +3132,7 @@ class ProductController extends Controller
 
                 if (isset($request->customer_mobile_number)) {
 
-                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                    $dataRVS = $dataRVS->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
                  
               }
 
