@@ -558,7 +558,9 @@ class StoreOrderController extends Controller
                     $store_order->save();
                     $order_id = DB::getPdo()->lastInsertId();
 
-
+                    //delete cart items
+                    Trn_Cart::where('customer_id', $request->customer_id)
+                            ->update(['remove_status' =>  1]); //deleted
 
 
                     $invoice_info['order_id'] = $order_id;
