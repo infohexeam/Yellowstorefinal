@@ -3021,13 +3021,8 @@ class ProductController extends Controller
                 }
 
                 if (isset($request->customer_mobile_number)) {
-                    $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
-        
-                    if($fetchCustomerData != NULL)
-                    {
-                        $dataRV = $dataRV->where('trn_store_customers.customer_id', '=', $fetchCustomerData->customer_id);
-                    }
-                    
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+  
                 }
 
                 // if (isset($request->customer_id)) {
@@ -3136,14 +3131,10 @@ class ProductController extends Controller
 
 
                 if (isset($request->customer_mobile_number)) {
-                    $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
-        
-                    if($fetchCustomerData != NULL)
-                    {
-                        $dataRVS = $dataRVS->where('trn_store_customers.customer_id', '=', $fetchCustomerData->customer_id);
-                    }
-                    
-                }
+
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
+              }
 
                 if (isset($request->town_id)) {
                     $dataRVS = $dataRVS->where('trn_store_customers.town_id', '=', $request->town_id);

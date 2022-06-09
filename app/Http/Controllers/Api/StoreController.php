@@ -1313,9 +1313,16 @@ class StoreController extends Controller
                     $salesData = $salesData->whereDate('trn_store_orders.created_at', '<=', $a2);
                 }
 
-                if (isset($request->customer_id)) {
-                    $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
-                }
+                if (isset($request->customer_mobile_number)) {
+
+
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
+              }
+
+                // if (isset($request->customer_id)) {
+                //     $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                // }
 
                 if (isset($request->delivery_boy_id)) {
                     $salesData = $salesData->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
@@ -1473,9 +1480,14 @@ class StoreController extends Controller
                 }
 
 
-                if (isset($request->customer_id)) {
-                    $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
-                }
+                if (isset($request->customer_mobile_number)) {
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
+              }
+
+                // if (isset($request->customer_id)) {
+                //     $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                // }
 
                 if (isset($request->delivery_boy_id)) {
                     $salesData = $salesData->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
@@ -1631,11 +1643,14 @@ class StoreController extends Controller
                 if (isset($request->date_to)) {
                     $salesData = $salesData->whereDate('trn_store_orders.created_at', '<=', $a2);
                 }
-
-
-                if (isset($request->customer_id)) {
-                    $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                if (isset($request->customer_mobile_number)) {
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
                 }
+
+                // if (isset($request->customer_id)) {
+                //     $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                // }
 
                 if (isset($request->delivery_boy_id)) {
                     $salesData = $salesData->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
@@ -2072,10 +2087,15 @@ class StoreController extends Controller
                     $paymentReport = $paymentReport->whereDate('trn_store_orders.created_at', '<=', $a2);
                 }
 
-
-                if (isset($request->customer_id)) {
-                    $paymentReport = $paymentReport->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                if (isset($request->customer_mobile_number)) {
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
                 }
+
+
+                // if (isset($request->customer_id)) {
+                //     $paymentReport = $paymentReport->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                // }
 
                 if (isset($request->delivery_boy_id)) {
                     $paymentReport = $paymentReport->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
@@ -2277,10 +2297,15 @@ class StoreController extends Controller
                     $paymentReport = $paymentReport->whereDate('trn_store_orders.created_at', '<=', $a2);
                 }
 
+                if (isset($request->customer_mobile_number)) {
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
+              }
 
-                if (isset($request->customer_id)) {
-                    $paymentReport = $paymentReport->where('trn_store_orders.customer_id', '=', $request->customer_id);
-                }
+
+                // if (isset($request->customer_id)) {
+                //     $paymentReport = $paymentReport->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                // }
 
                 if (isset($request->delivery_boy_id)) {
                     $paymentReport = $paymentReport->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
@@ -2481,10 +2506,15 @@ class StoreController extends Controller
                     $deliveryReport = $deliveryReport->whereDate('trn_store_orders.created_at', '<=', $a2);
                 }
 
+                if (isset($request->customer_mobile_number)) {
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
+              }
 
-                if (isset($request->customer_id)) {
-                    $deliveryReport = $deliveryReport->where('trn_store_orders.customer_id', '=', $request->customer_id);
-                }
+
+                // if (isset($request->customer_id)) {
+                //     $deliveryReport = $deliveryReport->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                // }
 
                 if (isset($request->delivery_boy_id)) {
                     $deliveryReport = $deliveryReport->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
@@ -2652,9 +2682,14 @@ class StoreController extends Controller
                     $salesData = $salesData->where('trn_store_orders.created_at', '<=', $a2);
                 }
 
-                if (isset($request->customer_id)) {
-                    $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
-                }
+                if (isset($request->customer_mobile_number)) {
+                    $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+                 
+              }
+
+                // if (isset($request->customer_id)) {
+                //     $salesData = $salesData->where('trn_store_orders.customer_id', '=', $request->customer_id);
+                // }
 
                 if (isset($request->delivery_boy_id)) {
                     $salesData = $salesData->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
