@@ -52,7 +52,7 @@
                                             </div>
                                          </div>
                                          
-                                          <div class="col-md-6">
+                                          {{-- <div class="col-md-6">
                                               <div class="form-group">
                                                   <label class="form-label">Customer</label>
                                                       <select name="customer_id" id="customer_id" class="form-control select2-show-search" data-placeholder="Customer" >
@@ -62,7 +62,14 @@
                                                            @endforeach
                                                       </select>
                                                </div>
-                                          </div>
+                                          </div> --}}
+                                          <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Customer Mobile</label>
+                                                      {{-- <div id="customer_id1"></div> --}}
+                                                      <input type="text"  maxlength="10" name="customer_mobile_number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="form-control" value="{{ request()->input('customer_mobile_number') }}"  placeholder="Customer mobile Number">
+                                             </div>
+                                            </div>
                                           
                                         <div class="col-md-6">
                                           <div class="form-group">
