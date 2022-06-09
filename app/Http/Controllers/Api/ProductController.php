@@ -3025,7 +3025,7 @@ class ProductController extends Controller
         
                     if($fetchCustomerData != NULL)
                     {
-                        $dataRVS = $dataRVS->where('trn_store_customers.customer_id', '=', $fetchCustomerData->customer_id);
+                        $dataRV = $dataRV->where('trn_store_customers.customer_id', '=', $fetchCustomerData->customer_id);
                     }
                     
                 }
