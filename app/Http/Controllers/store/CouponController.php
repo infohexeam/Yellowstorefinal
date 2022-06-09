@@ -1041,8 +1041,9 @@ class CouponController extends Controller
         // $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', '=',$request->customer_mobile_number)->first();
 
         if (isset($request->customer_mobile_number)) {
+          // $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
 
-              $data = $data->where('trn_store_customers.customer_mobile_number', '=', $request->customer_mobile_number);
+              $data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
            
         }
 
