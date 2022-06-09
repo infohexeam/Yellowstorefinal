@@ -458,7 +458,7 @@ class CouponController extends Controller
 
        
         if (isset($request->customer_mobile_number)) {
-          $data = $data->where('trn__recently_visited_products.customer_mobile_number', $request->customer_mobile_number);
+          $data = $data->where('trn_store_customers.customer_mobile_number', $request->customer_mobile_number);
         }
 
 
