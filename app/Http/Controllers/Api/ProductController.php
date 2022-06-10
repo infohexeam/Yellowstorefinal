@@ -3055,7 +3055,7 @@ class ProductController extends Controller
 
                     $d->visit_count = $visitCount;
 
-                    $countInCart = Trn_Cart::where('customer_id', $d->customer_id);
+                    $countInCart = Trn_Cart::where('remove_status','=',0)->where('customer_id', $d->customer_id);
                     $countInCart = $countInCart->where('product_varient_id', $d->product_varient_id);
                     $countInCart = $countInCart->sum('quantity');
 
