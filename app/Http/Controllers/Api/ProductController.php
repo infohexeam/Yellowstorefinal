@@ -1986,7 +1986,11 @@ class ProductController extends Controller
                         $data['prouctDetails']->productImages = Mst_product_image::where('product_id', $request->product_id)->where('product_varient_id', 0)->get();
                         foreach ($data['prouctDetails']->productImages as $val) {
                             @$val->product_image = '/assets/uploads/products/base_product/base_image/' . @$val->product_image;
+                            
                         }
+                        $data['prouctDetails']->productVideos = Trn_ProductVideo::where('product_id', '=', $request->product_id)->get();
+
+
                         foreach ($data['prouctDetails']->prouctVariantDetails as $key) {
                             @$key->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$key->product_varient_base_image;
                             @$key->variantAttributes = Trn_ProductVariantAttribute::where('product_varient_id', $key->product_varient_id)->get();
