@@ -509,11 +509,11 @@ class StoreOrderController extends Controller
                         }
                     }
 
-                    $store_order->referenceId = $request->referenceId;
-                    $store_order->txTime = $request->txTime;
-                    $store_order->orderAmount = $request->orderAmount;
-                    $store_order->txMsg = $request->txMsg;
-                    $store_order->txStatus = $request->txStatus;
+                    // $store_order->referenceId = $request->referenceId;
+                    // $store_order->txTime = $request->txTime;
+                    // $store_order->orderAmount = $request->orderAmount;
+                    // $store_order->txMsg = $request->txMsg;
+                    // $store_order->txStatus = $request->txStatus;
 
 
                     if (isset($request->amount_reduced_by_coupon))
@@ -535,70 +535,7 @@ class StoreOrderController extends Controller
 
                     Trn_order_invoice::insert($invoice_info);
 
-
-
-
-                    if ($request->payment_type_id == 2) { //online
-
-                        if (Helper::isBankDataFilled($request->store_id) == 0) {
-                            $opt = new Trn_OrderPaymentTransaction;
-                            $opt->order_id = $order_id;
-                            $opt->paymentMode = $request->paymentMode;
-                            $opt->PGOrderId = $request->orderId;
-                            $opt->txTime = $request->txTime;
-                            $opt->referenceId = $request->referenceId;
-                            $opt->txMsg = $request->txMsg;
-                            $opt->orderAmount = $request->orderAmount;
-                            $opt->txStatus = $request->txStatus;
-                            $opt->isFullPaymentToAdmin = 1;
-
-                            if ($opt->save()) {
-                                $opt_id = DB::getPdo()->lastInsertId();
-
-                                $adminCommission = $orderStoreData->store_commision_percentage;
-                                $orderTotalAmount = $request->orderAmount;
-
-                                $adminAmount = ($adminCommission / 100) * $orderTotalAmount;
-                                $storeBalanceAmount = $orderTotalAmount - $adminAmount;
-
-                                $osp = new Trn_OrderSplitPayments;
-                                $osp->opt_id = $opt_id;
-                                $osp->order_id = $order_id;
-                                $osp->splitAmount = $storeBalanceAmount;
-                                $osp->serviceCharge = 0;
-                                $osp->serviceTax = 0;
-                                $osp->splitServiceCharge = 0;
-                                $osp->splitServiceTax = 0;
-                                $osp->settlementAmount = $storeBalanceAmount;
-                                $osp->settlementEligibilityDate = Carbon::now()->format('Y-m-d H:i:s');
-
-                                $osp->paymentRole = 1; // 1 == store's split
-                                if ($osp->save()) {
-
-                                    $osp = new Trn_OrderSplitPayments;
-                                    $osp->opt_id = $opt_id;
-                                    $osp->order_id = $order_id;
-                                    $osp->vendorId = null;
-                                    $osp->settlementId = null;
-                                    $osp->splitAmount = $adminAmount;
-
-                                    $osp->serviceCharge = 0;
-                                    $osp->serviceTax = 0;;
-                                    $osp->splitServiceCharge = 0;
-                                    $osp->splitServiceTax = 0;
-                                    $osp->settlementAmount = $adminAmount;
-                                    $osp->settlementEligibilityDate =  Carbon::now()->format('Y-m-d H:i:s');
-
-                                    $osp->paymentRole = 0;
-                                    $osp->save();
-                                }
-                            }
-                        }
-
-                        
-                    }
-
-
+                        //add products to order item table
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
 
@@ -647,57 +584,6 @@ class StoreOrderController extends Controller
                             'updated_at'         => Carbon::now(),
                         ];
                         Trn_store_order_item::insert($data2);
-                    }
-
-
-
-                    $storeDatas = Trn_StoreAdmin::where('store_id', $request->store_id)->where('role_id', 0)->first();
-                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
-                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
-                    $orderdatas = Trn_store_order::find($order_id);
-
-                    foreach ($storeDevice as $sd) {
-                        $title = 'New order arrived';
-                        $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        $clickAction = "OrdersFragment";
-                        $type = "order";
-                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
-                    }
-
-
-                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
-                    foreach ($storeWeb as $sw) {
-                        $title = 'New order arrived';
-                        $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                        $clickAction = "OrderListFragment";
-                        $type = "order";
-                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
-                    }
-
-
-
-
-                    foreach ($customerDevice as $cd) {
-                        $title = 'Order Placed';
-                        $body = 'Order placed with order id ' . $orderdatas->order_number;
-                        $clickAction = "OrderListFragment";
-                        $type = "order";
-                        $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                    }
-
-
-                    if ($request->status_id != 5) {
-                        if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
-
-                            foreach ($customerDevice as $cd) {
-
-                                $title = 'Points Deducted';
-                                $body = $request->reward_points_used . ' points deducted from your wallet';
-                                $clickAction = "MyWalletFragment";
-                                $type = "wallet";
-                                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                            }
-                        }
                     }
 
                     $orderdatas = Trn_store_order::find($order_id)->delete();
@@ -765,21 +651,7 @@ class StoreOrderController extends Controller
             }
 
 
-            if(isset($request->lock_order_id)) //if the order is locked release lock
-            {
-                Trn_store_order::withTrashed()->where('order_id','=',$request->lock_order_id)->update([
-                    'deleted_at' => NULL,
-                    'is_locked' => 0
-                ]);
-                
-                $fetchOrder = Trn_store_order::where('order_id','=',$request->lock_order_id)->first();
-                $data['status'] = 1;
-                    $data['lock_order_id'] = $fetchOrder->order_id;
-                    $data['message'] = "Order Saved.";
-                    return response($data);
-
-
-            }else{ //place a new order
+           
                 if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id)) {
                     $validator = Validator::make(
                         $request->all(),
@@ -839,8 +711,31 @@ class StoreOrderController extends Controller
                             $orderNumberPrefix = 'ORDRYSTR';
                         }
     
-    
-                        $store_order = new Trn_store_order;
+                        //check for any locked orders
+                        if(isset($request->lock_order_id)) //if the order is locked release lock
+                        {
+                            Trn_store_order::withTrashed()->where('order_id','=',$request->lock_order_id)->update([
+                                'deleted_at' => NULL,
+                                'is_locked' => 0
+                            ]);
+                            
+                            $fetchOrder = Trn_store_order::where('order_id','=',$request->lock_order_id)->first();
+                           
+                            $order_id = $fetchOrder->order_id;
+
+                            $update_order =  Trn_store_order::find($order_id);
+                            $update_order->referenceId = $request->referenceId;
+                            $update_order->txTime = $request->txTime;
+                            $update_order->orderAmount = $request->orderAmount;
+                            $update_order->txMsg = $request->txMsg;
+                            $update_order->txStatus = $request->txStatus;
+                            $update_order->save();
+                            
+            
+            
+                        }else{ //place a new order
+
+                            $store_order = new Trn_store_order;
     
                         if (isset($request->service_order))
                             $store_order->service_order =  $request->service_order; // service order - booking order
@@ -905,8 +800,9 @@ class StoreOrderController extends Controller
                             $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
     
                         $store_order->save();
+
                         $order_id = DB::getPdo()->lastInsertId();
-    
+
                         //delete cart items
                         Trn_Cart::where('customer_id', $request->customer_id)
                                 ->update(['remove_status' =>  1]); //deleted
@@ -919,6 +815,62 @@ class StoreOrderController extends Controller
                         $invoice_info['updated_at'] = Carbon::now();
     
                         Trn_order_invoice::insert($invoice_info);
+
+                        foreach ($request->product_variants as $value) {
+                            $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
+    
+                            if ($proData->service_type != 2) {
+                                Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+                            }
+    
+                            if (!isset($value['discount_amount'])) {
+                                $value['discount_amount'] = 0;
+                            }
+    
+                            if ($proData->service_type != 2) {
+                                $negStock = -1 * abs($value['quantity']);
+    
+                                $sd = new Mst_StockDetail;
+                                $sd->store_id = $request->store_id;
+                                $sd->product_id = $value['product_id'];
+                                $sd->stock = $negStock;
+                                $sd->product_varient_id = $value['product_varient_id'];
+                                $sd->prev_stock = $productVarOlddata->stock_count;
+                                $sd->save();
+                            }
+    
+                            $proDataZ = Mst_store_product::find($productVarOlddata->product_id);
+    
+                            $taxData = Mst_Tax::find($proDataZ->tax_id);
+    
+                            $total_amount = $value['quantity'] * $value['unit_price'];
+    
+                            // $iTax = @$productVarOlddata->product_varient_offer_price * 100 / (100 + @$taxData->tax_value);
+                            $iTax = @$productVarOlddata->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value);
+                            $iDis = @$productVarOlddata->product_varient_price - @$productVarOlddata->product_varient_offer_price;
+    
+                            $data2 = [
+                                'order_id' => $order_id,
+                                'product_id' => $value['product_id'],
+                                'product_varient_id' => $value['product_varient_id'],
+                                'customer_id' => $request['customer_id'],
+                                'store_id' => $request['store_id'],
+                                'quantity' => $value['quantity'],
+                                'unit_price' =>  $value['unit_price'],
+                                'tax_amount' => $iTax,
+                                'total_amount' => $total_amount,
+                                'discount_amount' => $iDis,
+                                'created_at'         => Carbon::now(),
+                                'updated_at'         => Carbon::now(),
+                            ];
+                            Trn_store_order_item::insert($data2);
+                        }
+
+                        }
+    
+                        
+    
+                        
     
     
     
@@ -1044,55 +996,7 @@ class StoreOrderController extends Controller
                         }
     
     
-                        foreach ($request->product_variants as $value) {
-                            $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
-    
-                            if ($proData->service_type != 2) {
-                                Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
-                            }
-    
-                            if (!isset($value['discount_amount'])) {
-                                $value['discount_amount'] = 0;
-                            }
-    
-                            if ($proData->service_type != 2) {
-                                $negStock = -1 * abs($value['quantity']);
-    
-                                $sd = new Mst_StockDetail;
-                                $sd->store_id = $request->store_id;
-                                $sd->product_id = $value['product_id'];
-                                $sd->stock = $negStock;
-                                $sd->product_varient_id = $value['product_varient_id'];
-                                $sd->prev_stock = $productVarOlddata->stock_count;
-                                $sd->save();
-                            }
-    
-                            $proDataZ = Mst_store_product::find($productVarOlddata->product_id);
-    
-                            $taxData = Mst_Tax::find($proDataZ->tax_id);
-    
-                            $total_amount = $value['quantity'] * $value['unit_price'];
-    
-                            // $iTax = @$productVarOlddata->product_varient_offer_price * 100 / (100 + @$taxData->tax_value);
-                            $iTax = @$productVarOlddata->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value);
-                            $iDis = @$productVarOlddata->product_varient_price - @$productVarOlddata->product_varient_offer_price;
-    
-                            $data2 = [
-                                'order_id' => $order_id,
-                                'product_id' => $value['product_id'],
-                                'product_varient_id' => $value['product_varient_id'],
-                                'customer_id' => $request['customer_id'],
-                                'store_id' => $request['store_id'],
-                                'quantity' => $value['quantity'],
-                                'unit_price' =>  $value['unit_price'],
-                                'tax_amount' => $iTax,
-                                'total_amount' => $total_amount,
-                                'discount_amount' => $iDis,
-                                'created_at'         => Carbon::now(),
-                                'updated_at'         => Carbon::now(),
-                            ];
-                            Trn_store_order_item::insert($data2);
-                        }
+                       
     
     
     
@@ -1160,7 +1064,7 @@ class StoreOrderController extends Controller
                     return response($data);
                 }
 
-            }
+            
 
            
         } catch (\Exception $e) {
