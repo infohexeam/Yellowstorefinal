@@ -3,9 +3,11 @@
 namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trn_store_order extends Model
 {
+  use SoftDeletes;
   protected $primaryKey = "order_id"; // trn_store_orders
 
   protected $fillable = [

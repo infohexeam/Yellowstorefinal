@@ -393,44 +393,10 @@ class StoreOrderController extends Controller
         return  $responseData = $response->getBody()->getContents();
     }
 
-    public function saveOrder(Request $request)
+    
+    public function saveOrderLock(Request $request)
     {
-        //dd($request->all());
-
         try {
-
-            if ($request->payment_type_id == 2) {
-                //  $client = new \GuzzleHttp\Client();
-
-                // $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/16817139', [
-                //     'headers' => [
-                //       'Accept' => 'application/json',
-                //       'x-api-version' => '2021-05-21',
-                //       'x-client-id' => '165253d13ce80549d879dba25b352561',
-                //       'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-                //     ],
-                //   ]);
-
-                // $order_ID = intval($request->orderId);
-
-                // $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $order_ID, [
-                //     'headers' => [
-                //         'Accept' => 'application/json',
-                //         'x-api-version' => '2021-05-21',
-                //         'x-client-id' => '165253d13ce80549d879dba25b352561',
-                //         'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-                //     ],
-                // ]);
-
-                // 'x-client-id' => '1159124beeb38480c16b093237219511',
-                // 'x-client-secret' => 'f4201506d616394eebf87fa82e0b12385cd6c730'
-
-                //   $responseData = $response->getBody()->getContents();
-            }
-
-
-
-
             if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id)) {
                 $validator = Validator::make(
                     $request->all(),
@@ -466,8 +432,6 @@ class StoreOrderController extends Controller
 
                 if (!$validator->fails()) {
                     $noStockProducts = array();
-
-
                     foreach ($request->product_variants as $value) {
                         $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                         $proData = Mst_store_product::find($varProdu->product_id);
@@ -554,7 +518,7 @@ class StoreOrderController extends Controller
 
                     if (isset($request->amount_reduced_by_coupon))
                         $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
-
+                    $store_order->is_locked = 1; //transaction is locked
                     $store_order->save();
                     $order_id = DB::getPdo()->lastInsertId();
 
@@ -574,7 +538,7 @@ class StoreOrderController extends Controller
 
 
 
-                    if ($request->payment_type_id == 2) {
+                    if ($request->payment_type_id == 2) { //online
 
                         if (Helper::isBankDataFilled($request->store_id) == 0) {
                             $opt = new Trn_OrderPaymentTransaction;
@@ -631,67 +595,7 @@ class StoreOrderController extends Controller
                             }
                         }
 
-                        //     $opt = new Trn_OrderPaymentTransaction;
-                        //     $opt->order_id = $order_id;
-                        //     $opt->paymentMode = $request->paymentMode;
-                        //     $opt->PGOrderId = $request->orderId;
-                        //     $opt->txTime = $request->txTime;
-                        //     $opt->referenceId = $request->referenceId;
-                        //     $opt->txMsg = $request->txMsg;
-                        //     $opt->orderAmount = $request->orderAmount;
-                        //     $opt->txStatus = $request->txStatus;
-                        //     if ($opt->save()) {
-                        //         $opt_id = DB::getPdo()->lastInsertId();
-
-                        //         $client = new \GuzzleHttp\Client();
-                        //         $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->orderId, [
-                        //             'headers' => [
-                        //                 'Accept' => 'application/json',
-                        //                 'x-api-version' => '2021-05-21',
-                        //                 'x-client-id' => '165253d13ce80549d879dba25b352561',
-                        //                 'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
-                        //             ],
-                        //         ]);
-
-                        //         $responseData = $response->getBody()->getContents();
-
-                        //         $responseFinal = json_decode($responseData, true);
-
-                        //         $osp = new Trn_OrderSplitPayments;
-                        //         $osp->opt_id = $opt_id;
-                        //         $osp->order_id = $order_id;
-                        //         $osp->splitAmount = $responseFinal["settlementAmount"];
-                        //         $osp->serviceCharge = $responseFinal["serviceCharge"];
-                        //         $osp->serviceTax = $responseFinal["serviceTax"];
-                        //         $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
-                        //         $osp->splitServiceTax = $responseFinal["splitServiceTax"];
-                        //         $osp->settlementAmount = $responseFinal["settlementAmount"];
-                        //         $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
-
-                        //         $osp->paymentRole = 1; // 1 == store's split
-                        //         if ($osp->save()) {
-                        //             if (count($responseFinal['vendors']) > 0) {
-                        //                 foreach ($responseFinal['vendors'] as $row) {
-                        //                     $osp = new Trn_OrderSplitPayments;
-                        //                     $osp->opt_id = $opt_id;
-                        //                     $osp->order_id = $order_id;
-                        //                     $osp->vendorId = $row["id"];
-                        //                     $osp->settlementId = $row["settlementId"];
-                        //                     $osp->splitAmount = $row["settlementAmount"];
-
-                        //                     $osp->serviceCharge = @$row["serviceCharge"];
-                        //                     $osp->serviceTax = @$row["serviceTax"];
-                        //                     $osp->splitServiceCharge = @$row["splitServiceCharge"];
-                        //                     $osp->splitServiceTax = @$row["splitServiceTax"];
-                        //                     $osp->settlementAmount = @$row["settlementAmount"];
-                        //                     $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
-
-                        //                     $osp->paymentRole = 0;
-                        //                     $osp->save();
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
+                        
                     }
 
 
@@ -796,13 +700,13 @@ class StoreOrderController extends Controller
                         }
                     }
 
-
-
+                    $orderdatas = Trn_store_order::find($order_id)->delete();
+                    $getlockedOrder = Trn_store_order::withTrashed()->find($order_id);
 
 
                     $data['status'] = 1;
-                    $data['order_id'] = $order_id;
-                    $data['message'] = "Order saved.";
+                    $data['lock_order_id'] = $getlockedOrder->order_id;
+                    $data['message'] = "Order Locked.";
                     return response($data);
                 } else {
                     $data['status'] = 0;
@@ -815,6 +719,450 @@ class StoreOrderController extends Controller
                 $data['message'] = "Store not found ";
                 return response($data);
             }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+
+    public function saveOrder(Request $request)
+    {
+        //dd($request->all());
+
+        try {
+
+            if ($request->payment_type_id == 2) { //online
+                //  $client = new \GuzzleHttp\Client();
+
+                // $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/16817139', [
+                //     'headers' => [
+                //       'Accept' => 'application/json',
+                //       'x-api-version' => '2021-05-21',
+                //       'x-client-id' => '165253d13ce80549d879dba25b352561',
+                //       'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+                //     ],
+                //   ]);
+
+                // $order_ID = intval($request->orderId);
+
+                // $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $order_ID, [
+                //     'headers' => [
+                //         'Accept' => 'application/json',
+                //         'x-api-version' => '2021-05-21',
+                //         'x-client-id' => '165253d13ce80549d879dba25b352561',
+                //         'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+                //     ],
+                // ]);
+
+                // 'x-client-id' => '1159124beeb38480c16b093237219511',
+                // 'x-client-secret' => 'f4201506d616394eebf87fa82e0b12385cd6c730'
+
+                //   $responseData = $response->getBody()->getContents();
+            }
+
+
+            if(isset($request->lock_order_id)) //if the order is locked release lock
+            {
+                Trn_store_order::withTrashed()->where('order_id','=',$request->lock_order_id)->update([
+                    'deleted_at' => NULL,
+                    'is_locked' => 0
+                ]);
+                
+                $fetchOrder = Trn_store_order::where('order_id','=',$request->lock_order_id)->first();
+                $data['status'] = 1;
+                    $data['lock_order_id'] = $fetchOrder->order_id;
+                    $data['message'] = "Order Saved.";
+                    return response($data);
+
+
+            }else{ //place a new order
+                if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id)) {
+                    $validator = Validator::make(
+                        $request->all(),
+                        [
+                            'customer_id'   => 'required',
+                            'order_total_amount'  => 'required',
+                            'payment_type_id'   => 'required',
+                            'status_id' => 'required',
+                            'product_variants.*.product_id'    => 'required',
+                            'product_variants.*.product_varient_id'    => 'required',
+                            'product_variants.*.quantity'    => 'required',
+                            'product_variants.*.unit_price'    => 'required',
+                            'product_variants.*.total_amount'    => 'required',
+                            'product_variants.*.tax_amount'    => 'required',
+                            'product_variants.*.discount_amount'    => 'required',
+                            //  'product_variants.*.discount_percentage'    =>'required',
+                        ],
+                        [
+                            'customer_id.required'  => 'Customer required',
+                            'total_amount.required' => 'Total order amount required',
+                            'payment_type_id.required'  => 'Payment type required',
+                            'status_id.required'    => 'Status required',
+                            'product_variants.*.product_id.required'    => 'Product required',
+                            'product_variants.*.product_varient_id.required'    => 'Product variant required',
+                            'product_variants.*.quantity.required'    => 'Product quantity required',
+                            'product_variants.*.unit_price.required'    => 'Product quantity required',
+                            'product_variants.*.total_amount.required'    => 'Total amount required',
+                            'product_variants.*.tax_amount.required'    => 'Tax amount required',
+                            'product_variants.*.discount_amount.required'    => 'Discount amount required',
+                            // 'product_variants.*.discount_percentage.required'    =>'Discount percentage required',
+                        ]
+                    );
+    
+                    if (!$validator->fails()) {
+                        $noStockProducts = array();
+    
+    
+                        foreach ($request->product_variants as $value) {
+                            $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                            $proData = Mst_store_product::find($varProdu->product_id);
+                        }
+    
+    
+                        if (count($noStockProducts) > 0) {
+                            $data['noStockProducts'] = $noStockProducts;
+                            return response($data);
+                        }
+                        $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+    
+                        $orderNumber = @$storeOrderCount + 1;
+    
+                        $store_data = Mst_store::find($request->store_id);
+    
+                        if (isset($store_data->order_number_prefix)) {
+                            $orderNumberPrefix = $store_data->order_number_prefix;
+                        } else {
+                            $orderNumberPrefix = 'ORDRYSTR';
+                        }
+    
+    
+                        $store_order = new Trn_store_order;
+    
+                        if (isset($request->service_order))
+                            $store_order->service_order =  $request->service_order; // service order - booking order
+    
+    
+                        $store_order->order_number = $orderNumberPrefix . @$orderNumber;
+                        // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
+                        $store_order->customer_id = $request->customer_id;
+                        $store_order->store_id =  $request->store_id;
+    
+    
+                        $store_order->subadmin_id =  $store_data->subadmin_id;
+                        $store_order->product_total_amount =  $request->order_total_amount;
+                        $store_order->payment_status = 1;
+                        $store_order->status_id = $request->status_id;
+    
+                        // online
+                        $store_order->payment_type_id = $request->payment_type_id;
+                        $store_order->delivery_charge =  $request->delivery_charge;
+                        $store_order->packing_charge =  $request->packing_charge;
+    
+                        $store_order->time_slot =  $request->time_slot;
+    
+    
+    
+                        $store_order->delivery_address =  $request->delivery_address;
+    
+                        $store_order->coupon_id =  $request->coupon_id;
+                        $store_order->coupon_code =  $request->coupon_code;
+    
+                        if ($request->status_id != 5) {
+                            $store_order->reward_points_used =  $request->reward_points_used;
+                            $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
+                            $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+                        } else {
+                            $store_order->reward_points_used =  0;
+                            $store_order->amount_before_applying_rp =  0;
+                            $store_order->amount_reduced_by_rp =  0;
+                        }
+    
+    
+                        $store_order->order_type = 'APP';
+                        $store_order->trn_id = $request->orderId;
+    
+                        if ($request->payment_type_id == 2) {
+    
+                            if (Helper::isBankDataFilled($request->store_id) == 1) {
+                                $store_order->is_split_data_saved = 0;
+                            } else {
+                                $store_order->is_split_data_saved = 1;
+                            }
+                        }
+    
+                        $store_order->referenceId = $request->referenceId;
+                        $store_order->txTime = $request->txTime;
+                        $store_order->orderAmount = $request->orderAmount;
+                        $store_order->txMsg = $request->txMsg;
+                        $store_order->txStatus = $request->txStatus;
+    
+    
+                        if (isset($request->amount_reduced_by_coupon))
+                            $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
+    
+                        $store_order->save();
+                        $order_id = DB::getPdo()->lastInsertId();
+    
+                        //delete cart items
+                        Trn_Cart::where('customer_id', $request->customer_id)
+                                ->update(['remove_status' =>  1]); //deleted
+    
+    
+                        $invoice_info['order_id'] = $order_id;
+                        $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+                        $invoice_info['invoice_id'] = "INV0" . $order_id;
+                        $invoice_info['created_at'] = Carbon::now();
+                        $invoice_info['updated_at'] = Carbon::now();
+    
+                        Trn_order_invoice::insert($invoice_info);
+    
+    
+    
+    
+                        if ($request->payment_type_id == 2) { //online
+    
+                            if (Helper::isBankDataFilled($request->store_id) == 0) {
+                                $opt = new Trn_OrderPaymentTransaction;
+                                $opt->order_id = $order_id;
+                                $opt->paymentMode = $request->paymentMode;
+                                $opt->PGOrderId = $request->orderId;
+                                $opt->txTime = $request->txTime;
+                                $opt->referenceId = $request->referenceId;
+                                $opt->txMsg = $request->txMsg;
+                                $opt->orderAmount = $request->orderAmount;
+                                $opt->txStatus = $request->txStatus;
+                                $opt->isFullPaymentToAdmin = 1;
+    
+                                if ($opt->save()) {
+                                    $opt_id = DB::getPdo()->lastInsertId();
+    
+                                    $adminCommission = $orderStoreData->store_commision_percentage;
+                                    $orderTotalAmount = $request->orderAmount;
+    
+                                    $adminAmount = ($adminCommission / 100) * $orderTotalAmount;
+                                    $storeBalanceAmount = $orderTotalAmount - $adminAmount;
+    
+                                    $osp = new Trn_OrderSplitPayments;
+                                    $osp->opt_id = $opt_id;
+                                    $osp->order_id = $order_id;
+                                    $osp->splitAmount = $storeBalanceAmount;
+                                    $osp->serviceCharge = 0;
+                                    $osp->serviceTax = 0;
+                                    $osp->splitServiceCharge = 0;
+                                    $osp->splitServiceTax = 0;
+                                    $osp->settlementAmount = $storeBalanceAmount;
+                                    $osp->settlementEligibilityDate = Carbon::now()->format('Y-m-d H:i:s');
+    
+                                    $osp->paymentRole = 1; // 1 == store's split
+                                    if ($osp->save()) {
+    
+                                        $osp = new Trn_OrderSplitPayments;
+                                        $osp->opt_id = $opt_id;
+                                        $osp->order_id = $order_id;
+                                        $osp->vendorId = null;
+                                        $osp->settlementId = null;
+                                        $osp->splitAmount = $adminAmount;
+    
+                                        $osp->serviceCharge = 0;
+                                        $osp->serviceTax = 0;;
+                                        $osp->splitServiceCharge = 0;
+                                        $osp->splitServiceTax = 0;
+                                        $osp->settlementAmount = $adminAmount;
+                                        $osp->settlementEligibilityDate =  Carbon::now()->format('Y-m-d H:i:s');
+    
+                                        $osp->paymentRole = 0;
+                                        $osp->save();
+                                    }
+                                }
+                            }
+    
+                            //     $opt = new Trn_OrderPaymentTransaction;
+                            //     $opt->order_id = $order_id;
+                            //     $opt->paymentMode = $request->paymentMode;
+                            //     $opt->PGOrderId = $request->orderId;
+                            //     $opt->txTime = $request->txTime;
+                            //     $opt->referenceId = $request->referenceId;
+                            //     $opt->txMsg = $request->txMsg;
+                            //     $opt->orderAmount = $request->orderAmount;
+                            //     $opt->txStatus = $request->txStatus;
+                            //     if ($opt->save()) {
+                            //         $opt_id = DB::getPdo()->lastInsertId();
+    
+                            //         $client = new \GuzzleHttp\Client();
+                            //         $response = $client->request('GET', 'https://api.cashfree.com/api/v2/easy-split/orders/' . $request->orderId, [
+                            //             'headers' => [
+                            //                 'Accept' => 'application/json',
+                            //                 'x-api-version' => '2021-05-21',
+                            //                 'x-client-id' => '165253d13ce80549d879dba25b352561',
+                            //                 'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+                            //             ],
+                            //         ]);
+    
+                            //         $responseData = $response->getBody()->getContents();
+    
+                            //         $responseFinal = json_decode($responseData, true);
+    
+                            //         $osp = new Trn_OrderSplitPayments;
+                            //         $osp->opt_id = $opt_id;
+                            //         $osp->order_id = $order_id;
+                            //         $osp->splitAmount = $responseFinal["settlementAmount"];
+                            //         $osp->serviceCharge = $responseFinal["serviceCharge"];
+                            //         $osp->serviceTax = $responseFinal["serviceTax"];
+                            //         $osp->splitServiceCharge = $responseFinal["splitServiceCharge"];
+                            //         $osp->splitServiceTax = $responseFinal["splitServiceTax"];
+                            //         $osp->settlementAmount = $responseFinal["settlementAmount"];
+                            //         $osp->settlementEligibilityDate = $responseFinal["settlementEligibilityDate"];
+    
+                            //         $osp->paymentRole = 1; // 1 == store's split
+                            //         if ($osp->save()) {
+                            //             if (count($responseFinal['vendors']) > 0) {
+                            //                 foreach ($responseFinal['vendors'] as $row) {
+                            //                     $osp = new Trn_OrderSplitPayments;
+                            //                     $osp->opt_id = $opt_id;
+                            //                     $osp->order_id = $order_id;
+                            //                     $osp->vendorId = $row["id"];
+                            //                     $osp->settlementId = $row["settlementId"];
+                            //                     $osp->splitAmount = $row["settlementAmount"];
+    
+                            //                     $osp->serviceCharge = @$row["serviceCharge"];
+                            //                     $osp->serviceTax = @$row["serviceTax"];
+                            //                     $osp->splitServiceCharge = @$row["splitServiceCharge"];
+                            //                     $osp->splitServiceTax = @$row["splitServiceTax"];
+                            //                     $osp->settlementAmount = @$row["settlementAmount"];
+                            //                     $osp->settlementEligibilityDate = @$row["settlementEligibilityDate"];
+    
+                            //                     $osp->paymentRole = 0;
+                            //                     $osp->save();
+                            //                 }
+                            //             }
+                            //         }
+                            //     }
+                        }
+    
+    
+                        foreach ($request->product_variants as $value) {
+                            $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
+    
+                            if ($proData->service_type != 2) {
+                                Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+                            }
+    
+                            if (!isset($value['discount_amount'])) {
+                                $value['discount_amount'] = 0;
+                            }
+    
+                            if ($proData->service_type != 2) {
+                                $negStock = -1 * abs($value['quantity']);
+    
+                                $sd = new Mst_StockDetail;
+                                $sd->store_id = $request->store_id;
+                                $sd->product_id = $value['product_id'];
+                                $sd->stock = $negStock;
+                                $sd->product_varient_id = $value['product_varient_id'];
+                                $sd->prev_stock = $productVarOlddata->stock_count;
+                                $sd->save();
+                            }
+    
+                            $proDataZ = Mst_store_product::find($productVarOlddata->product_id);
+    
+                            $taxData = Mst_Tax::find($proDataZ->tax_id);
+    
+                            $total_amount = $value['quantity'] * $value['unit_price'];
+    
+                            // $iTax = @$productVarOlddata->product_varient_offer_price * 100 / (100 + @$taxData->tax_value);
+                            $iTax = @$productVarOlddata->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value);
+                            $iDis = @$productVarOlddata->product_varient_price - @$productVarOlddata->product_varient_offer_price;
+    
+                            $data2 = [
+                                'order_id' => $order_id,
+                                'product_id' => $value['product_id'],
+                                'product_varient_id' => $value['product_varient_id'],
+                                'customer_id' => $request['customer_id'],
+                                'store_id' => $request['store_id'],
+                                'quantity' => $value['quantity'],
+                                'unit_price' =>  $value['unit_price'],
+                                'tax_amount' => $iTax,
+                                'total_amount' => $total_amount,
+                                'discount_amount' => $iDis,
+                                'created_at'         => Carbon::now(),
+                                'updated_at'         => Carbon::now(),
+                            ];
+                            Trn_store_order_item::insert($data2);
+                        }
+    
+    
+    
+                        $storeDatas = Trn_StoreAdmin::where('store_id', $request->store_id)->where('role_id', 0)->first();
+                        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
+                        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
+                        $orderdatas = Trn_store_order::find($order_id);
+    
+                        foreach ($storeDevice as $sd) {
+                            $title = 'New order arrived';
+                            $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+                            $clickAction = "OrdersFragment";
+                            $type = "order";
+                            $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                        }
+    
+    
+                        $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
+                        foreach ($storeWeb as $sw) {
+                            $title = 'New order arrived';
+                            $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
+                            $clickAction = "OrderListFragment";
+                            $type = "order";
+                            $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+                        }
+    
+    
+    
+    
+                        foreach ($customerDevice as $cd) {
+                            $title = 'Order Placed';
+                            $body = 'Order placed with order id ' . $orderdatas->order_number;
+                            $clickAction = "OrderListFragment";
+                            $type = "order";
+                            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                        }
+    
+    
+                        if ($request->status_id != 5) {
+                            if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
+    
+                                foreach ($customerDevice as $cd) {
+    
+                                    $title = 'Points Deducted';
+                                    $body = $request->reward_points_used . ' points deducted from your wallet';
+                                    $clickAction = "MyWalletFragment";
+                                    $type = "wallet";
+                                    $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                }
+                            }
+                        }
+                        $data['status'] = 1;
+                        $data['order_id'] = $order_id;
+                        $data['message'] = "Order saved.";
+                        return response($data);
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        $data['errors'] = $validator->errors();
+                        return response($data);
+                    }
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "Store not found ";
+                    return response($data);
+                }
+
+            }
+
+           
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
@@ -894,7 +1242,7 @@ class StoreOrderController extends Controller
             $noStockProducts = array();
 
             foreach ($request->product_variants as $value) {
-                $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
+                $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
                 $proData = Mst_store_product::find($varProdu->product_id);
 
                 if ($proData->service_type != 2) {
@@ -937,7 +1285,7 @@ class StoreOrderController extends Controller
             }
 
             if (count($noStockProducts) <= 0) {
-                $data['message'] = 'Stock avilable';
+                $data['message'] = 'Stock available';
                 $data['status'] = 1;
             }
             return response($data);
