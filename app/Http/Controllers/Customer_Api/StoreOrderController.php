@@ -803,7 +803,7 @@ class StoreOrderController extends Controller
                         $store_order->save();
 
                         $order_id = DB::getPdo()->lastInsertId();
-                        dd($order_id);
+                        
                         //delete cart items
                         Trn_Cart::where('customer_id', $request->customer_id)
                                 ->update(['remove_status' =>  1]); //deleted
