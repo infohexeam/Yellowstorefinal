@@ -714,7 +714,7 @@ class StoreOrderController extends Controller
                         //check for any locked orders
                         if(isset($request->lock_order_id) && $request->lock_order_id != 0) //if the order is locked release lock
                         {
-                            dd("online locked");
+                            
                             Trn_store_order::withTrashed()->where('order_id','=',$request->lock_order_id)->update([
                                 'deleted_at' => NULL,
                                 'is_locked' => 0
@@ -735,7 +735,7 @@ class StoreOrderController extends Controller
             
             
                         }else{ //place a new order
-                            dd("cod");
+                            
                             $store_order = new Trn_store_order;
     
                         if (isset($request->service_order))
