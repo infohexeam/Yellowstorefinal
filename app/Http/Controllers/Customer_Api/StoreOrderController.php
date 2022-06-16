@@ -712,7 +712,7 @@ class StoreOrderController extends Controller
                         }
     
                         //check for any locked orders
-                        if(isset($request->lock_order_id)) //if the order is locked release lock
+                        if(isset($request->lock_order_id) && $request->lock_order_id != 0) //if the order is locked release lock
                         {
                             dd("online locked");
                             Trn_store_order::withTrashed()->where('order_id','=',$request->lock_order_id)->update([
