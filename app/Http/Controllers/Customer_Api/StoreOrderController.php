@@ -405,6 +405,7 @@ class StoreOrderController extends Controller
                         'order_total_amount'  => 'required',
                         'payment_type_id'   => 'required',
                         'status_id' => 'required',
+                        'product_variants.*.cart_id'    => 'required',
                         'product_variants.*.product_id'    => 'required',
                         'product_variants.*.product_varient_id'    => 'required',
                         'product_variants.*.quantity'    => 'required',
@@ -419,6 +420,7 @@ class StoreOrderController extends Controller
                         'total_amount.required' => 'Total order amount required',
                         'payment_type_id.required'  => 'Payment type required',
                         'status_id.required'    => 'Status required',
+                        'product_variants.*.cart_id.required'    => 'Cart ID required',
                         'product_variants.*.product_id.required'    => 'Product required',
                         'product_variants.*.product_varient_id.required'    => 'Product variant required',
                         'product_variants.*.quantity.required'    => 'Product quantity required',
@@ -527,13 +529,13 @@ class StoreOrderController extends Controller
                             ->update(['remove_status' =>  1]); //deleted
 
 
-                    $invoice_info['order_id'] = $order_id;
-                    $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
-                    $invoice_info['invoice_id'] = "INV0" . $order_id;
-                    $invoice_info['created_at'] = Carbon::now();
-                    $invoice_info['updated_at'] = Carbon::now();
+                    // $invoice_info['order_id'] = $order_id;
+                    // $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+                    // $invoice_info['invoice_id'] = "INV0" . $order_id;
+                    // $invoice_info['created_at'] = Carbon::now();
+                    // $invoice_info['updated_at'] = Carbon::now();
 
-                    Trn_order_invoice::insert($invoice_info);
+                    // Trn_order_invoice::insert($invoice_info);
 
                         //add products to order item table
                     foreach ($request->product_variants as $value) {
@@ -571,6 +573,7 @@ class StoreOrderController extends Controller
 
                         $data2 = [
                             'order_id' => $order_id,
+                            'cart_id' => $value['cart_id'],
                             'product_id' => $value['product_id'],
                             'product_varient_id' => $value['product_varient_id'],
                             'customer_id' => $request['customer_id'],
@@ -605,6 +608,71 @@ class StoreOrderController extends Controller
                 $data['message'] = "Store not found ";
                 return response($data);
             }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    public function releaseLock(Request $request)
+    {
+        try {
+        if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id)) {
+
+            if (isset($request->lock_order_id) && $orderStoreData = Trn_store_order::withTrashed()->find($request->lock_order_id)) {
+
+                //get locked items and quantity from item table
+                $getItems = Trn_store_order_item::where('order_id','=',$request->lock_order_id)->get();
+                foreach($getItems as $items)
+                {
+                    $cartId = $items->cart_id;
+                    $proVarient = $items->product_varient_id;
+                    $proId = $items->product_id;
+                    $orderQty = $items->quantity;
+                    //restock in product stock in varient table 
+                    Mst_store_product_varient::where('product_varient_id', '=', $proVarient)->increment('stock_count', $orderQty);
+                    $proData = Mst_store_product::find($proId);
+                    //restock stock table
+                    $productVarOlddata = Mst_store_product_varient::find($proVarient);
+                    if ($proData->service_type != 2) {
+                        $negStock = -1 * abs($orderQty);
+
+                        $sd = new Mst_StockDetail;
+                        $sd->store_id = $request->store_id;
+                        $sd->product_id = $proId;
+                        $sd->stock = $negStock;
+                        $sd->product_varient_id = $proVarient;
+                        $sd->prev_stock = $productVarOlddata->stock_count;
+                        $sd->save();
+                    }
+                    //restore cart items from cart table 
+                    Trn_Cart::where('cart_id', $cartId)
+                    ->update(['remove_status' =>  0]);
+                }
+                //delete data from item table
+                $getItems = Trn_store_order_item::where('order_id','=',$request->lock_order_id)->delete();
+                //delete locked order
+                Trn_store_order::withTrashed()->find($request->lock_order_id)->delete();
+
+                $data['status'] = 1;
+                $data['message'] = "Order deleted and Item Restocked";
+                return response($data);
+
+
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Locked Order not found ";
+                return response($data);
+            }
+
+        } else {
+            $data['status'] = 0;
+            $data['message'] = "Store not found ";
+            return response($data);
+        }
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
@@ -660,6 +728,7 @@ class StoreOrderController extends Controller
                             'order_total_amount'  => 'required',
                             'payment_type_id'   => 'required',
                             'status_id' => 'required',
+                            'product_variants.*.cart_id'    => 'required',
                             'product_variants.*.product_id'    => 'required',
                             'product_variants.*.product_varient_id'    => 'required',
                             'product_variants.*.quantity'    => 'required',
@@ -674,6 +743,7 @@ class StoreOrderController extends Controller
                             'total_amount.required' => 'Total order amount required',
                             'payment_type_id.required'  => 'Payment type required',
                             'status_id.required'    => 'Status required',
+                            'product_variants.*.cart_id.required'    => 'Cart ID required',
                             'product_variants.*.product_id.required'    => 'Product required',
                             'product_variants.*.product_varient_id.required'    => 'Product variant required',
                             'product_variants.*.quantity.required'    => 'Product quantity required',
@@ -731,6 +801,14 @@ class StoreOrderController extends Controller
                             $update_order->txMsg = $request->txMsg;
                             $update_order->txStatus = $request->txStatus;
                             $update_order->save();
+
+                            $invoice_info['order_id'] = $order_id;
+                            $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+                            $invoice_info['invoice_id'] = "INV0" . $order_id;
+                            $invoice_info['created_at'] = Carbon::now();
+                            $invoice_info['updated_at'] = Carbon::now();
+        
+                            Trn_order_invoice::insert($invoice_info);
                             
             
             
@@ -852,6 +930,7 @@ class StoreOrderController extends Controller
     
                             $data2 = [
                                 'order_id' => $order_id,
+                                'cart_id' => $value['cart_id'],
                                 'product_id' => $value['product_id'],
                                 'product_varient_id' => $value['product_varient_id'],
                                 'customer_id' => $request['customer_id'],

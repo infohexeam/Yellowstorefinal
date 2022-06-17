@@ -334,8 +334,11 @@ Route::get('customer/time-slots', 'Customer_Api\StoreOrderController@storeTimeSl
 Route::get('customer/payment-types', 'Customer_Api\StoreOrderController@listPaymentType');
 Route::post('customer/save-order', 'Customer_Api\StoreOrderController@saveOrder');
 Route::post('customer/save-order-service', 'Customer_Api\StoreOrderController@saveOrderService');
-//lock oreder 
+//lock order 
 Route::post('customer/save-order/lock', 'Customer_Api\StoreOrderController@saveOrderLock');
+//release order
+Route::post('customer/save-order/release-lock', 'Customer_Api\StoreOrderController@releaseLock');
+
 
 //raise an issue
 //ALTER TABLE `mst__issues` ADD `issue_type_id` BIGINT NULL DEFAULT '0' AFTER `issue_id`;

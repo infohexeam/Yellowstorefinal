@@ -121,7 +121,7 @@ class LoginController extends Controller
             {
                 if(Hash::check($request->password, $store->password))
                 {
-                    if(($store->store_account_status == 0) && ($today <= $store->expiry_date))
+                    if(($store->store_account_status != 0) && ($today <= $store->expiry_date))
                     {
                         return ['store_mobile'=>$request->store_username,'password'=>$request->password];
                     }
