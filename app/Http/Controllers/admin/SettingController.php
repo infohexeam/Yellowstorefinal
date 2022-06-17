@@ -1198,6 +1198,12 @@ class SettingController extends Controller
 		if ($status == 0) {
 			$store->store_account_status  = 1;
 			$storeAdmin['store_account_status'] = 1;
+			$today = Carbon::now()->toDateString();
+			$getDate = Trn_StoreAdmin::where('store_id', $store_id)->first();
+			if($today >= $getDate->expiry_date)
+			{
+				$storeAdmin['expiry_date'] = Carbon::now()->addYears(5)->toDateString();
+			}
 		} else {
 			$storeAdmin['store_account_status'] = 0;
 
