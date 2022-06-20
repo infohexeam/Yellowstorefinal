@@ -3385,7 +3385,8 @@ class SettingController extends Controller
 				$subadmin_id = auth()->user()->id;
 			}
 
-			if ($store_id != 0 || isset($subadmin_id)) {
+			if ($store_id != 0 && isset($subadmin_id)) {
+				dd("true");
 				$store_data = DB::table('mst_stores')->select("store_id")->where('subadmin_id', '=',$subadmin_id)->where('subadmin_id', '!=',NULL)->get();
 				$store_array[] = 0;
 				foreach ($store_data as $val) {
