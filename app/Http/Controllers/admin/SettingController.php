@@ -3281,7 +3281,7 @@ class SettingController extends Controller
 	public function listOrder(Request $request)
 	{
 
-		dd($store_id,$subadmin_id);
+		
 
 		$pageTitle = "Store Orders";
 		//$orders = Trn_store_order::all();
@@ -3384,6 +3384,8 @@ class SettingController extends Controller
 				//$store_id = 0;
 				$subadmin_id = auth()->user()->id;
 			}
+
+			dd($store_id,$subadmin_id);
 
 			if ($store_id != 0 && isset($subadmin_id)) {
 
