@@ -3391,8 +3391,8 @@ class SettingController extends Controller
 				foreach ($store_data as $val) {
 					$store_array[] = $val->store_id;
 				}
-				//$query = $query->whereIn('store_id', $store_array);
-				$query = $query->where('store_id', $store_id);
+				$query = $query->whereIn('store_id', $store_array);
+				//$query = $query->where('store_id', $store_id);
 			} elseif ($store_id == 0) {
 
 				$store_data = \DB::table('mst_stores')->select("store_id")->get();
