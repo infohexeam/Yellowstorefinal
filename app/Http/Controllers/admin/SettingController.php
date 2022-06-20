@@ -3281,7 +3281,7 @@ class SettingController extends Controller
 	public function listOrder(Request $request)
 	{
 
-
+		dd($store_id,$subadmin_id);
 
 		$pageTitle = "Store Orders";
 		//$orders = Trn_store_order::all();
@@ -3386,7 +3386,7 @@ class SettingController extends Controller
 			}
 
 			if ($store_id != 0 && isset($subadmin_id)) {
-				dd("true");
+
 				$store_data = DB::table('mst_stores')->select("store_id")->where('subadmin_id', '=',$subadmin_id)->where('subadmin_id', '!=',NULL)->get();
 				$store_array[] = 0;
 				foreach ($store_data as $val) {
