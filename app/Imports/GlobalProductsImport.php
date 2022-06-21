@@ -71,7 +71,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
                     'product_name' => $row['product_name'],
                     'product_name_slug' => Str::of($row['product_name'])->slug('-'),
                     'product_description' => $row['product_description'],
-                    'regular_price' => $row['mrp'],
+                    'regular_price' => $row['regular_price'],
                     'sale_price' => $row['sale_price'],
                     'tax_id' => @$tax_data->tax_id ,
                     'min_stock' => $row['minstock'] ,
@@ -102,7 +102,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
         return [
             '*.product_name' => ['required'],
             '*.product_description' => ['required'],
-            '*.mrp' => ['required','numeric'],
+            '*.regular_price' => ['required','numeric'],
             '*.sale_price' => ['required','numeric'],
             '*.product_code' => ['required'],
         ];
