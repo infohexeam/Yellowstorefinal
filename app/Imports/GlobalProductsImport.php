@@ -12,7 +12,7 @@ use App\Models\admin\Mst_attribute_group;
 use App\Models\admin\Mst_categories;
 use App\Models\admin\Mst_store_agencies;
 use App\Models\admin\Mst_SubCategory;
-
+use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -104,7 +104,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
             '*.product_description' => ['required'],
             '*.regular_price' => ['required','numeric'],
             '*.sale_price' => ['required','numeric'],
-            '*.product_code' => ['required'],
+            '*.product_code' => ['required',Rule::unique('mst__global_products')],
         ];
     }
         
