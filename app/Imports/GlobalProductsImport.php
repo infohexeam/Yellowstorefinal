@@ -35,6 +35,8 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
     public function collection(Collection $rows)
     {
     //dd($rows);
+    try{
+
         foreach($rows as $row) {
 
             
@@ -96,6 +98,12 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
             $global_products = Mst_GlobalProducts::create($dataz);
         }
 
+        }catch (\Exception $e) {
+            return redirect()->back()->with('status', 'There where some errors with your input.');
+        }catch (\Throwable $e) {
+            return redirect()->back()->with('status', 'There where some errors with your input.');
+        }
+
     }
     public function rules(): array
     {
@@ -111,6 +119,6 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
 
     public function onError(Throwable $e)
     {
-        
+        return redirect()->back()->with('status', 'There where some errors with your input.');
     }
 }
