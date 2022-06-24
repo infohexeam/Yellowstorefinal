@@ -158,7 +158,7 @@ class StoreController extends Controller
     $recentvisitCountToday = Trn_RecentlyVisitedStore::whereDate('created_at', Carbon::today())
       ->where('store_id', $user_id)->count();
 
-    $recentvisitCountWeek = Trn_RecentlyVisitedStore::where('created_at', '>', Carbon::now()->subDays(2))
+    $recentvisitCountWeek = Trn_RecentlyVisitedStore::where('created_at', '>', Carbon::now()->subDays(6))
       ->where('store_id', $user_id)->count();
 
     $recentvisitCountMonth = Trn_RecentlyVisitedStore::where('created_at', '>', Carbon::now()->subDays(30))
