@@ -1418,8 +1418,8 @@ class StoreOrderController extends Controller
                     foreach ($storeDevice as $sd) {
                         $title = 'Dispute raised';
                         $body = 'New dispute raised with order id ' . $orderdatas->order_number;
-                        $clickAction = "OrdersFragment";
-                        $type = "order";
+                        $clickAction = "DisputeTabFragment";
+                        $type = "dispute";
                         $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
 
