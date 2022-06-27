@@ -87,7 +87,7 @@
                       // $i = 0;
                       // if($_GET)
                       // $i = (request()->input('page') - 1) * 10;
-                      $i = ($orders->perPage() * ($orders->currentPage() - 1)) + 1;
+                      $i = ($products->perPage() * ($products->currentPage() - 1)) + 1;
                       @endphp
                       @foreach ($products as $product)
                       <tr>
