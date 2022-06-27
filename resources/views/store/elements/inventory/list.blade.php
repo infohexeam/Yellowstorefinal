@@ -84,13 +84,14 @@
                     </thead>
                     <tbody>
                       @php
-                      $i = 0;
-                      if($_GET)
-                      $i = (request()->input('page') - 1) * 10;
+                      // $i = 0;
+                      // if($_GET)
+                      // $i = (request()->input('page') - 1) * 10;
+                      $i = ($orders->perPage() * ($orders->currentPage() - 1)) + 1;
                       @endphp
                       @foreach ($products as $product)
                       <tr>
-                        <td>{{ ++$i }}</td>
+                        <td>{{ $i++ }}</td>
                         
                         <td>
                                                       {!! wordwrap($product->variant_name, 20, "<br />\n") !!}
