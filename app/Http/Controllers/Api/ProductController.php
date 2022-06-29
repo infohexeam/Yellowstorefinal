@@ -2740,7 +2740,28 @@ class ProductController extends Controller
                             @$val->image_name = '/assets/uploads/products/base_product/base_image/' . @$val->image_name;
                         }
 
-                        $data['prouctDetails']->globalProductVideos = Trn_GlobalProductVideo::where('global_product_id', $request->global_product_id)->get();
+
+                        $globalProductVideos = Trn_GlobalProductVideo::where('global_product_id', $request->global_product_id)->get();
+                    foreach ($globalProductVideos as $v) {
+                        if ($v->platform == 'Youtube') {
+                            $revLink = strrev($v->link);
+
+                            $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                            $linkCode = strrev($revLinkCode);
+
+                            if ($linkCode == "") {
+                                $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                                $linkCode = strrev($revLinkCode);
+                            }
+                        }
+                        if ($v->platform == 'Vimeo') {
+                            $revLink = strrev($v->link);
+                            $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                            $linkCode = strrev($revLinkCode);
+                        }
+                        $v->link_code = @$linkCode;
+                    }
+                    $data['globalProductVideos'] = $globalProductVideos;
 
 
 
