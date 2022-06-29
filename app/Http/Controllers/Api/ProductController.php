@@ -2740,6 +2740,8 @@ class ProductController extends Controller
                             @$val->image_name = '/assets/uploads/products/base_product/base_image/' . @$val->image_name;
                         }
 
+                        $data['prouctDetails']->globalProductVideos = Trn_GlobalProductVideo::where('global_product_id', $request->global_product_id)->get();
+
 
 
                         $data['status'] = 1;
