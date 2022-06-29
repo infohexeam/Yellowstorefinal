@@ -2662,7 +2662,6 @@ class ProductController extends Controller
                     return response($data);
                 } else {
 
-
                     $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
 
                     $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id);
@@ -2810,7 +2809,7 @@ class ProductController extends Controller
                     if($ChkCodeExstnce >= 1)
                     {
                         $data['status'] = 0;
-                        $data['message'] = "Product code duplication error.";
+                        $data['message'] = "Product code already exist in store product list.";
                         return response($data);
                         
                     }else{
