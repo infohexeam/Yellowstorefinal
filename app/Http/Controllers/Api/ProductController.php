@@ -2783,7 +2783,15 @@ class ProductController extends Controller
                     $global_product = Mst_GlobalProducts::find($global_product_id);
                     $store_id =  $request->store_id;
 
-
+                    $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
+        
+                    if($ChkCodeExstnce >= 1)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Product code duplication error.";
+                        return response($data);
+                        
+                    }else{
 
                     $product['product_name'] = $global_product->product_name;
                     $product['product_name_slug'] = Str::of($global_product->product_name)->slug('-');
@@ -2932,6 +2940,7 @@ class ProductController extends Controller
                         if ($global_product->product_base_image == $file->image_name) {
                             DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                         }
+                    }
                     }
                 }
 

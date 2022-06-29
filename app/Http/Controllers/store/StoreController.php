@@ -3899,6 +3899,14 @@ class StoreController extends Controller
 
       // $product = Mst_store_product::where('store_id','=',$user_id)->get()->count();
 
+      //check if product code exist in store table
+      $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
+        
+      if($ChkCodeExstnce > 0)
+      {
+          return redirect()->back()->with('status-error', 'Product code duplication error.')->withInput();
+      }else{
+
       $product->product_name = $global_product->product_name;
       $product->product_name_slug = Str::of($global_product->product_name)->slug('-');
       $product->product_code = $global_product->product_code;
@@ -4067,6 +4075,9 @@ class StoreController extends Controller
 
 
       return redirect('/store/global/products/list')->with('status', 'Global product added to store successfully');
+
+    }
+
     } catch (\Exception $e) {
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
@@ -4086,7 +4097,14 @@ class StoreController extends Controller
         $global_product = Mst_GlobalProducts::find($global_product_id);
         // dd($global_product);
         $store_id =  Auth::guard('store')->user()->store_id;
+        
 
+        $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
+        
+        if($ChkCodeExstnce > 0)
+        {
+            return redirect()->back()->with('status-error', 'Product code duplication error.')->withInput();
+        }else{
 
         // $product = Mst_store_product::where('store_id','=',$user_id)->get()->count();
 
@@ -4265,6 +4283,7 @@ class StoreController extends Controller
 
 
       }
+    }
 
 
 
