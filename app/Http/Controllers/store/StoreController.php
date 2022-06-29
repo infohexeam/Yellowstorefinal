@@ -3902,7 +3902,7 @@ class StoreController extends Controller
       //check if product code exist in store table
       $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
         
-      if($ChkCodeExstnce > 0)
+      if($ChkCodeExstnce >= 1)
       {
           return redirect()->back()->with('status-error', 'Product code duplication error.')->withInput();
       }else{
@@ -4101,7 +4101,7 @@ class StoreController extends Controller
 
         $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
         
-        if($ChkCodeExstnce > 0)
+        if($ChkCodeExstnce >= 1)
         {
             return redirect()->back()->with('status-error', 'Product code duplication error.')->withInput();
         }else{

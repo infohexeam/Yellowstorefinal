@@ -2810,8 +2810,7 @@ class ProductController extends Controller
                     {
                         $data['status'] = 0;
                         $data['message'] = "Product code already exist in store product list.";
-                        return response($data);
-                        
+                        return response($data);    
                     }else{
 
                     $product['product_name'] = $global_product->product_name;
