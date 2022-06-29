@@ -2744,7 +2744,7 @@ class ProductController extends Controller
                         $globalProductVideos = Trn_GlobalProductVideo::where('global_product_id', $request->global_product_id)->get();
                     foreach ($globalProductVideos as $v) {
                         if ($v->platform == 'Youtube') {
-                            $revLink = strrev($v->link);
+                            $revLink = strrev($v->video_code);
 
                             $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
                             $linkCode = strrev($revLinkCode);
@@ -2755,7 +2755,7 @@ class ProductController extends Controller
                             }
                         }
                         if ($v->platform == 'Vimeo') {
-                            $revLink = strrev($v->link);
+                            $revLink = strrev($v->video_code);
                             $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
                             $linkCode = strrev($revLinkCode);
                         }
