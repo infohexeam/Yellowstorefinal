@@ -2664,7 +2664,7 @@ class ProductController extends Controller
 
 
                     $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
-
+                    dd($products_global_products_id);
 
                     $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id);
 
