@@ -21,7 +21,7 @@ use App\Models\admin\Trn_store_order;
                      <ul class="nav">
                         <li class=""><a href="#tab-51" class="active show" data-toggle="tab">Customer Information</a></li>
                         <li class=""><a href="#tab-53" class=" show" data-toggle="tab">Wallet Points</a></li>
-                        <li class=""><a href="#tab-52" class=" show" data-toggle="tab">Customer Address</a></li>
+                        <li class=""><a href="#tab-52" class=" show" data-toggle="tab">Delivery Address</a></li>
                        
                      </ul>
                   </div>
