@@ -655,7 +655,7 @@ class StoreController extends Controller
             $phone = $request->input('store_mobile');
             $passChk = $request->input('password');
             // $devType = $request->input('device_type');
-            //    $devToken = $request->input('device_token');
+            // $devToken = $request->input('device_token');
 
             $validator = Validator::make(
                 $request->all(),
@@ -715,6 +715,7 @@ class StoreController extends Controller
                                 $dataName = '';
                                 if ($custCheck->role_id != 0)
                                     $dataName =   Trn_StoreAdmin::find($custCheck->store_admin_id)->admin_name;
+                                    $dataMobile =   Trn_StoreAdmin::find($custCheck->store_admin_id)->store_mobile;
 
                                 if (($storeData->service_area != null) && ($storeData->service_area != 0)) {
                                     $data['serviceAreaData'] = 1;
@@ -724,10 +725,10 @@ class StoreController extends Controller
 
                                 $profileData = Helper::findStoreDataFilled($custCheck->store_id);
                                 $data['profileData'] = $profileData;
-
                                 $data['store_name'] = $storeData->store_name;
                                 $data['store_admin_name'] = $dataName;
                                 $data['store_username'] = $storeData->store_username;
+                                $data['store_mobile_number'] = $dataMobile;
                                 $data['access_token'] = $custCheck->createToken('authToken')->accessToken;
 
                                 $divTok = DB::table('oauth_access_tokens')

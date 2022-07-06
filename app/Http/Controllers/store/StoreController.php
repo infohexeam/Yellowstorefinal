@@ -365,9 +365,6 @@ class StoreController extends Controller
       }
     }
 
-
-
-
     if ($request->hasFile('store_image')) {
 
       $img_validate = Validator::make(
