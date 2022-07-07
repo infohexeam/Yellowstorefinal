@@ -2011,7 +2011,7 @@ class ProductController extends Controller
                             }
                             $v1->link_code = @$linkCode;
                         }
-                        $data['prouctDetails']->productVideos = $productVideos;
+                        $data['prouctDetails']->productVideos = $productVideos1;
                         
 
 
