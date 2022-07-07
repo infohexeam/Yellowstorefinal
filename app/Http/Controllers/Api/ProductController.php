@@ -1989,10 +1989,10 @@ class ProductController extends Controller
                             
                         }
                         // $data['prouctDetails']->productVideos = Trn_ProductVideo::where('product_id', '=', $request->product_id)->get();
-                        $productVideos = Trn_ProductVideo::where('product_id', '=', $request->product_id)->get();
+                        $productVideos1 = Trn_ProductVideo::where('product_id', '=', $request->product_id)->get();
 
 
-                        foreach ($productVideos as $v1) {
+                        foreach ($productVideos1 as $v1) {
                             if ($v1->platform == 'Youtube') {
                                 $revLink = strrev($v1->link);
     
@@ -2011,7 +2011,7 @@ class ProductController extends Controller
                             }
                             $v1->link_code = @$linkCode;
                         }
-                        $data['productVideos'] = $productVideos;
+                        $data['prouctDetails']->productVideos = $productVideos;
                         
 
 
