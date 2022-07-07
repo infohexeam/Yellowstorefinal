@@ -1988,7 +1988,31 @@ class ProductController extends Controller
                             @$val->product_image = '/assets/uploads/products/base_product/base_image/' . @$val->product_image;
                             
                         }
-                        $data['prouctDetails']->productVideos = Trn_ProductVideo::where('product_id', '=', $request->product_id)->get();
+                        // $data['prouctDetails']->productVideos = Trn_ProductVideo::where('product_id', '=', $request->product_id)->get();
+                        $productVideos = Trn_ProductVideo::where('product_id', '=', $request->product_id)->get();
+
+
+                        foreach ($productVideos as $v1) {
+                            if ($v1->platform == 'Youtube') {
+                                $revLink = strrev($v1->link);
+    
+                                $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                                $linkCode = strrev($revLinkCode);
+    
+                                if ($linkCode == "") {
+                                    $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                                    $linkCode = strrev($revLinkCode);
+                                }
+                            }
+                            if ($v1->platform == 'Vimeo') {
+                                $revLink = strrev($v1->link);
+                                $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                                $linkCode = strrev($revLinkCode);
+                            }
+                            $v1->link_code = @$linkCode;
+                        }
+                        $data['productVideos'] = $productVideos;
+                        
 
 
                         foreach ($data['prouctDetails']->prouctVariantDetails as $key) {
