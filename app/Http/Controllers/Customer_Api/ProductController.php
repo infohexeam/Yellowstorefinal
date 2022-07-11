@@ -3957,8 +3957,10 @@ class ProductController extends Controller
                         $otherStores->ratingCount = Helper::storeRatingCount($otherStores->store_id);
 
                         $otherStoresFinal[] = $otherStores;
+                       
                     }
                 }
+                $data['CurrentCartCount'] = 0;
                 $data['otherStores']  = $otherStoresFinal;
                 $data['purchasedProducts']  = [];
 
