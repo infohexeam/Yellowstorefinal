@@ -92,7 +92,7 @@
                            href="{{route('admin.list_subadmin_payment_settlments')}}"
 
                            @else
-                            href=""
+                            href="{{route('admin.list_subadmin_payment_settlments')}}"
                            @endif
 
                             class="btn btn-info">Cancel</a>
