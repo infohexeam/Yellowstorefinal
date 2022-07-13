@@ -86,16 +86,9 @@
                            <button type="submit" class="btn btn-raised btn-primary">
                            <i class="fa fa-check-square-o"></i> Filter</button>
                            <button type="reset"  id="reset" class="btn btn-raised btn-success">Reset</button>
-                          <a
                            @if(auth()->user()->user_role_id == 0 )
-
-                           href="{{route('admin.list_subadmin_payment_settlments')}}"
-
-                           @else
-                            href="{{route('admin.list_subadmin_payment_settlments')}}"
-                           @endif
-
-                            class="btn btn-info">Cancel</a>
+                           <a href="{{route('admin.list_subadmin_payment_settlments')}}" class="btn btn-info">Cancel</a>
+                            @endif
                            </center>
                         </div>
                   </div>
