@@ -132,7 +132,9 @@
                                     @enderror --}}
                                 </div>
                             </div>
+                            
                              <div class="col-md-6">
+                                 
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_mobile" onchange="mobileValidation()" type="text" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  name="store_mobile" placeholder="Store Mobile Number *" value="{{ old('store_mobile') }}" required autocomplete="store_mobile" >
                         <span id="error_smob" style="color:red;" ></span>
@@ -187,12 +189,12 @@
                         <div class="row">
                         <div class="col-md-6">
                       <div class="wrap-input100 validate-input">
-                             <input class="input100" id="store_gst_number" type="text" name="store_gst_number" placeholder="Registered GSTIN" value="{{ old('store_gst_number') }}"   >
-                                    @error('store_gst_number')
-                                    <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                        <input class="input100" id="store_gst_number" type="text" name="store_gst_number" placeholder="Registered GSTIN" value="{{ old('store_gst_number') }}"   >
+                        @error('store_gst_number')
+                        <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                         </div>
                         </div>
                         <div class="col-md-6">
@@ -420,6 +422,7 @@
                         <p id="sentSuccessMsg"></p> <br>
 
                     <div class="row">
+                        <input class="input100" type="hidden" id="otpSessionId" name="otp_session_id" value="">
                         <div class="col-md-12">
                             <div class="wrap-input100 validate-input">
                                 <input class="input100" id="otp" type="text" name="otp" placeholder="OTP" value="{{ old('otp') }}" >
@@ -573,23 +576,43 @@
         $('#secDiv').show();
            
         var number = '+91'+$("#store_mobile").val();
+        var _token= $('input[name="_token"]').val();
         
         console.log(number);
         console.log(window.recaptchaVerifier) 
           
-        firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+       /* firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
               
             window.confirmationResult=confirmationResult;
             coderesult=confirmationResult;
-            console.log(coderesult);
-  
-            $("#sentSuccessMsg").text("OTP sent successfully.");
-            $("#sentSuccessMsg").show();
-              
-        }).catch(function (error) {
-            $("#error").text(error.message);
-            $("#error").show();
-        });
+            console.log(coderesult);*/
+             $.ajax({
+    url:"{{ route('store.sendotp') }}",
+    method:"POST",
+    data:{phone:number, _token:_token},
+    success:function(result)
+    {
+      //alert("dszczs");
+      console.log(result.session_id);
+     if(result.status == 'success')
+     {
+      $('#firstDiv').hide();
+      $('#secDiv').show();
+      $('#otpSessionId').val(result.session_id);
+      $('#sentSuccessMsg').html('<label class="text-success">Otp Has been Sent to'+number+'</label>');
+      
+     }
+     else
+     {
+      $('#firstDiv').show();
+      $('#secDiv').hide();
+      $('#sentSuccessMsg').html('<label class="text-danger">Error! </label>');
+      
+       $('#submit').attr('disabled', 'disabled');
+
+     }
+    }
+   });
   
     }
     
@@ -599,10 +622,12 @@
   
 
         var code = $("#otp").val();
+        var otp_session_id=$("#otpSessionId").val();
+        var _token= $('input[name="_token"]').val();
 
   
 
-        coderesult.confirm(code).then(function (result) {
+        /*coderesult.confirm(code).then(function (result) {
 
             var user=result.user;
 
@@ -625,7 +650,33 @@
 
             $("#sentSuccessMsg").show();
 
-        });
+        });*/
+         $.ajax({
+    url:"{{ route('store.verifyotp') }}",
+    method:"POST",
+    data:{otp_session_id:otp_session_id,otp:code, _token:_token},
+    success:function(result)
+    {
+      //alert("dszczs");
+      console.log(result.session_id);
+     if(result.status == 'success')
+     {
+            $("#sentSuccessMsg").text("OTP verified successfully.");
+
+            $("#sentSuccessMsg").show();
+            
+            $('#myForm').submit();
+      
+     }
+     else
+     {
+            $("#sentSuccessMsg").html('<label class="text-danger">Otp Invalid! </label>');
+
+            $("#sentSuccessMsg").show();
+
+     }
+    }
+   });
 
     }
 

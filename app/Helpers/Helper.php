@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Crypt;
 use  Carbon\Carbon;
 use Validator;
+use GuzzleHttp\Client as HttpClient;
 
 use App\Models\admin\Mst_store;
 use App\Models\admin\Trn_StoreAdmin;
@@ -839,4 +840,47 @@ class Helper
         );
         return $validate;
     }
+
+    //sms gateway
+
+    public static function sendOtp($phone,$otp,$type=NULL)
+    {
+        $client = new HttpClient(); //GuzzleHttp\Client
+        $url = "https://2factor.in/API/V1/3f464ec3-da73-11ec-9c12-0200cd936042/SMS/+91".$phone."/".$otp;
+        
+
+        $response = $client->request('GET', $url,[
+            'headers' => ['Accept' => 'application/json'],
+            ]);
+        if($response->getStatusCode()==200)
+        {
+            $resp=json_decode($response->getBody());
+            $resArray=['status'=>'success','session_id'=>$resp->Details,'message'=>"OTP MATCHED"];
+        }
+        else
+        {
+             $resArray=['status'=>'error','session_id'=>NULL,'message'=>"OTP MISMATCH"];
+        }
+          return $resArray;
+    }
+     
+    public static function verifyOtp($session_id,$otp,$type=NULL)
+    {
+        $client = new HttpClient(); //GuzzleHttp\Client
+        $url = "https://2factor.in/API/V1/3f464ec3-da73-11ec-9c12-0200cd936042/SMS/VERIFY/".$session_id."/".$otp;
+        $response = $client->request('GET', $url,[
+            'headers' => ['Accept' => 'application/json'],
+            ]);
+        if($response->getStatusCode()==200)
+        {
+            $resArray=['status'=>'success','message'=>"OTP MATCHED"];
+        }
+        else
+        {
+             $resArray=['status'=>'error','message'=>"OTP MISMATCH"];
+        }
+
+         return $resArray;
+    }
+
 }

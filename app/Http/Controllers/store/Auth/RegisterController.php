@@ -67,6 +67,27 @@ class RegisterController extends Controller
         $business_types = Mst_business_types::where('business_type_status', '=', 1)->get();
         return view('store.auth.register', compact('countries', 'business_types'));
     }
+    public function sendRegisterOtp(Request $request)
+    {
+       $store_otp=rand(100000,999999);
+       $res=Helper::sendOtp($request->phone,$store_otp,2);
+       return $res;
+    }
+    public function verifyRegisterOtp(Request $request)
+    {
+    try {
+       $otp=$request->otp;
+       $session_id=$request->otp_session_id;
+       $res=Helper::verifyOtp($session_id,$otp,1);
+       return $res;
+    } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
 
 
     public function GetState(Request $request)

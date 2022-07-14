@@ -694,6 +694,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         // registration & otp verification
 
         Route::get('store-registration', 'Auth\RegisterController@showRegistrationForm')->name('show_register.store');
+        Route::post('send-registration-otp', 'Auth\RegisterController@sendRegisterOtp')->name('store.sendotp');
+        
+        Route::post('verify-registration-otp', 'Auth\RegisterController@verifyRegisterOtp')->name('store.verifyotp');
 
         Route::post('store/registration', 'Auth\RegisterController@storeRegistration')->name('register.store');
 
