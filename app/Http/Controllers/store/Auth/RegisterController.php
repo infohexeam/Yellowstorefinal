@@ -69,6 +69,7 @@ class RegisterController extends Controller
     }
     public function sendRegisterOtp(Request $request)
     {
+        dd("string");
        $store_otp=rand(100000,999999);
        $res=Helper::sendOtp($request->phone,$store_otp,2);
        return $res;
