@@ -243,7 +243,7 @@ class RegisterController extends Controller
             // $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
             // $otp_verify->store_otp                 = $store_otp;
             // $otp_verify->save();
-            return redirect('store-login');
+            return redirect('store-login')->with('status','OTP verified succesfully.Please Login!');
 
             //  return redirect('store/registration/otp_verify/view/' . Crypt::encryptString($store_id));
         } else {
