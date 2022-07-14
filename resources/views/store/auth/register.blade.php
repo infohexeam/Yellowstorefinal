@@ -456,233 +456,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
-<script>
-
-    $(document).ready(function() {
-      $(".password-show__toggle").on("click", function(e) {
-        console.log("click");
-        if (
-          !$(this)
-            .parent()
-            .hasClass("show")
-        ) {
-          $(this)
-            .parent()
-            .addClass("show");
-          $(this)
-            .prev()
-            .attr("type", "text");
-        } else {
-          $(this)
-            .parent()
-            .removeClass("show");
-          $(this)
-            .prev()
-            .attr("type", "password");
-        }
-      });
-    });
-       </script>
-       
-
-<script>
-
-
-
-  
-
-
-
-
-  var firebaseConfig = {
-     apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
-    authDomain: "yellowstore-web-application.firebaseapp.com",
-    projectId: "yellowstore-web-application",
-    storageBucket: "yellowstore-web-application.appspot.com",
-    messagingSenderId: "444886856017",
-    appId: "1:444886856017:web:935481722416346323e370",
-    measurementId: "G-VX5SKTNN3F"
-  };
-  
-    firebase.initializeApp(firebaseConfig);
-//sentSuccess
-//store_mobile
-//
-
-    window.onload=function () {
-                $('#secDiv').hide();
-
-      render();
-    };
-  
-    function render() {
-        window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
-        recaptchaVerifier.render();
-    }
-    
-    
-    function phoneSendAuth() {
-        
-        var sName = $('#store_name').val();
-        var sPhone = $('#store_mobile').val();
-        var sBusinessType = $('#business_type_id').val();
-        var sPass = $('#password').val();
-        var sConfPass = $('#confirm_password').val();
-        var sTC = $('#tc').val();
-        
-        if(sName == ''){
-            $('#error_sname').text('Store name reqired');
-        }else{
-            $('#error_sname').text('');
-        }
-        
-         if(sPhone == ''){
-            $('#error_smob').text('Store mobile reqired');
-        }else{
-            $('#error_smob').text('');
-        }
-        
-        if(sBusinessType == ''){
-            $('#error_bti').text('Business type reqired');
-        }else{
-            $('#error_bti').text('');
-        }
-        
-        if(sPass == ''){
-            $('#error_pass').text('Password reqired');
-        }else{
-            $('#error_pass').text('');
-        }
-        
-       
-        if ($('#tc').is(':checked')) {
-            $('#error_tc').text('');
-        }else{
-           $('#error_tc').text('Please confirm terms and condition.');
-        }
-
-        
-        
-        
-         
-            if(sName != '' && sPhone != '' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){
-            }
-            else{
-                  return false;
-            }
-            
-        
-        $('#firstDiv').hide();
-        $('#secDiv').show();
-           
-        var number = '+91'+$("#store_mobile").val();
-        var _token= $('input[name="_token"]').val();
-        
-        console.log(number);
-        console.log(window.recaptchaVerifier) 
-          
-       /* firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
-              
-            window.confirmationResult=confirmationResult;
-            coderesult=confirmationResult;
-            console.log(coderesult);*/
-             $.ajax({
-    url:"{{ route('store.sendotp') }}",
-    method:"POST",
-    data:{phone:number, _token:_token},
-    success:function(result)
-    {
-      //alert("dszczs");
-      console.log(result.session_id);
-     if(result.status == 'success')
-     {
-      $('#firstDiv').hide();
-      $('#secDiv').show();
-      $('#otpSessionId').val(result.session_id);
-      $('#sentSuccessMsg').html('<label class="text-success">Otp Has been Sent to'+number+'</label>');
-      
-     }
-     else
-     {
-      $('#firstDiv').show();
-      $('#secDiv').hide();
-      $('#sentSuccessMsg').html('<label class="text-danger">Error! </label>');
-      
-       $('#submit').attr('disabled', 'disabled');
-
-     }
-    }
-   });
-  
-    }
-    
-    
-        function codeverify() {
-
-  
-
-        var code = $("#otp").val();
-        var otp_session_id=$("#otpSessionId").val();
-        var _token= $('input[name="_token"]').val();
-
-  
-
-        /*coderesult.confirm(code).then(function (result) {
-
-            var user=result.user;
-
-            console.log(user);
-
-  
-
-            $("#sentSuccessMsg").text("OTP verified successfully.");
-
-            $("#sentSuccessMsg").show();
-            
-            $('#myForm').submit();
-
-
-  
-
-        }).catch(function (error) {
-
-            $("#sentSuccessMsg").text("OTP invalid");
-
-            $("#sentSuccessMsg").show();
-
-        });*/
-         $.ajax({
-    url:"{{ route('store.verifyotp') }}",
-    method:"POST",
-    data:{otp_session_id:otp_session_id,otp:code, _token:_token},
-    success:function(result)
-    {
-      //alert("dszczs");
-      console.log(result.session_id);
-     if(result.status == 'success')
-     {
-            $("#sentSuccessMsg").text("OTP verified successfully.");
-
-            $("#sentSuccessMsg").show();
-            
-            $('#myForm').submit();
-      
-     }
-     else
-     {
-            $("#sentSuccessMsg").html('<label class="text-danger">Otp Invalid! </label>');
-
-            $("#sentSuccessMsg").show();
-
-     }
-    }
-   });
-
-    }
-
-  
-
-</script>
       
       <!-- BACKGROUND-IMAGE CLOSED -->
       <!-- JQUERY JS -->
@@ -704,6 +477,240 @@
       <script src="{{URL::to('/assets/js/custom.js')}}"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+ <script>
+
+  $(document).ready(function() {
+    $(".password-show__toggle").on("click", function(e) {
+      console.log("click");
+      if (
+        !$(this)
+          .parent()
+          .hasClass("show")
+      ) {
+        $(this)
+          .parent()
+          .addClass("show");
+        $(this)
+          .prev()
+          .attr("type", "text");
+      } else {
+        $(this)
+          .parent()
+          .removeClass("show");
+        $(this)
+          .prev()
+          .attr("type", "password");
+      }
+    });
+  });
+     </script>
+     
+
+<script>
+
+
+
+
+
+
+
+
+var firebaseConfig = {
+   apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
+  authDomain: "yellowstore-web-application.firebaseapp.com",
+  projectId: "yellowstore-web-application",
+  storageBucket: "yellowstore-web-application.appspot.com",
+  messagingSenderId: "444886856017",
+  appId: "1:444886856017:web:935481722416346323e370",
+  measurementId: "G-VX5SKTNN3F"
+};
+
+  firebase.initializeApp(firebaseConfig);
+//sentSuccess
+//store_mobile
+//
+
+  window.onload=function () {
+              $('#secDiv').hide();
+
+    render();
+  };
+
+  function render() {
+      window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
+      recaptchaVerifier.render();
+  }
+  
+  
+  function phoneSendAuth() {
+      
+      var sName = $('#store_name').val();
+      var sPhone = $('#store_mobile').val();
+      var sBusinessType = $('#business_type_id').val();
+      var sPass = $('#password').val();
+      var sConfPass = $('#confirm_password').val();
+      var sTC = $('#tc').val();
+      
+      if(sName == ''){
+          $('#error_sname').text('Store name reqired');
+      }else{
+          $('#error_sname').text('');
+      }
+      
+       if(sPhone == ''){
+          $('#error_smob').text('Store mobile reqired');
+      }else{
+          $('#error_smob').text('');
+      }
+      
+      if(sBusinessType == ''){
+          $('#error_bti').text('Business type reqired');
+      }else{
+          $('#error_bti').text('');
+      }
+      
+      if(sPass == ''){
+          $('#error_pass').text('Password reqired');
+      }else{
+          $('#error_pass').text('');
+      }
+      
+     
+      if ($('#tc').is(':checked')) {
+          $('#error_tc').text('');
+      }else{
+         $('#error_tc').text('Please confirm terms and condition.');
+      }
+
+      
+      
+      
+       
+          if(sName != '' && sPhone != '' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){
+          }
+          else{
+                return false;
+          }
+          
+      
+      $('#firstDiv').hide();
+      $('#secDiv').show();
+         
+      var number = '+91'+$("#store_mobile").val();
+      var _token= $('input[name="_token"]').val();
+      
+      console.log(number);
+      console.log(window.recaptchaVerifier) 
+        
+     /* firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+            
+          window.confirmationResult=confirmationResult;
+          coderesult=confirmationResult;
+          console.log(coderesult);*/
+           $.ajax({
+  url:"{{ route('store.sendotp') }}",
+  method:"POST",
+  data:{phone:number, _token:_token},
+  success:function(result)
+  {
+    //alert("dszczs");
+    console.log(result.session_id);
+   if(result.status == 'success')
+   {
+    $('#firstDiv').hide();
+    $('#secDiv').show();
+    $('#otpSessionId').val(result.session_id);
+    $('#sentSuccessMsg').html('<label class="text-success">Otp Has been Sent to'+number+'</label>');
+    
+   }
+   else
+   {
+    $('#firstDiv').show();
+    $('#secDiv').hide();
+    $('#sentSuccessMsg').html('<label class="text-danger">Error! </label>');
+    
+     $('#submit').attr('disabled', 'disabled');
+
+   }
+  }
+ });
+
+  }
+  
+  
+      function codeverify() {
+
+
+
+      var code = $("#otp").val();
+      var otp_session_id=$("#otpSessionId").val();
+      var _token= $('input[name="_token"]').val();
+
+
+
+      /*coderesult.confirm(code).then(function (result) {
+
+          var user=result.user;
+
+          console.log(user);
+
+
+
+          $("#sentSuccessMsg").text("OTP verified successfully.");
+
+          $("#sentSuccessMsg").show();
+          
+          $('#myForm').submit();
+
+
+
+
+      }).catch(function (error) {
+
+          $("#sentSuccessMsg").text("OTP invalid");
+
+          $("#sentSuccessMsg").show();
+
+      });*/
+       $.ajax({
+  url:"{{ route('store.verifyotp') }}",
+  method:"POST",
+  data:{otp_session_id:otp_session_id,otp:code, _token:_token},
+  success:function(result)
+  {
+    //alert("dszczs");
+    console.log(result.session_id);
+   if(result.status == 'success')
+   {
+          $("#sentSuccessMsg").text("OTP verified successfully.");
+
+          $("#sentSuccessMsg").show();
+          
+          $('#myForm').submit();
+    
+   }
+   else
+   {
+          $("#sentSuccessMsg").html('<label class="text-danger">Otp Invalid! </label>');
+
+          $("#sentSuccessMsg").show();
+
+   }
+  }
+ });
+
+  }
+
+
+
+</script>
+
+
+
+
+
 
 <script type = "text/javascript" >  
     function preventBack() { window.history.forward(); }  
