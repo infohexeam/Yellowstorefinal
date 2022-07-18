@@ -289,9 +289,9 @@
                                    <thead>
                                  <tr>
                                    <th class="wd-15p">S.No</th>
-                                   <th class="wd-15p">{{ __('Product Code') }}</th>
+                                   <th class="wd-15p">{{ __('Name') }}</th>
                                     <th class="wd-15p">{{ __('Category') }}</th>
-                                    <th class="wd-15p">{{ __('Name') }}</th>
+                                    <th class="wd-15p">{{ __('Product Code') }}</th>
                                     <th class="wd-15p">{{ __('Price') }}</th>
                                     <th class="wd-15p">{{ __('Image') }}</th>
 
@@ -308,9 +308,9 @@
                                  @endphp
                                  <tr>
                                     <td>{{$i}}</td>
-                                    <td>{{$product->product_code}}</td>
+                                    <td>{{$product->product_name}}</td>  
                                     <td>{{@$product->categories->category_name}}</td>
-                                    <td>{{$product->product_name}}</td>
+                                    <td>{{$product->product_code}}</td>
                                     <td>{{$product->product_price}}</td>
 
                                     <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" ></td>
