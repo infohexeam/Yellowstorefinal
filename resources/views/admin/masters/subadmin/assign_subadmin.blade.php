@@ -70,7 +70,7 @@
                            <i class="fa fa-check-square-o"></i> Submit</button>
                            <button type="reset" class="btn btn-raised btn-success">
                            Reset</button>
-                           <a class="btn btn-danger" href="{{ route('admin.list_store') }}">Cancel</a>
+                           <a class="btn btn-danger" href="{{ route('admin.list_subadmin') }}">Cancel</a>
                            </center>
                         </div>
                   </form>
