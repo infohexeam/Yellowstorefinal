@@ -429,7 +429,7 @@ class CustomerController extends Controller
             $customer_id = $request->customer_id;
 
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                $otp = $request->otp_status;
+                //$otp = $request->otp_status;
                 $session_id=$request->otp_session_id;
                 $res=Helper::verifyOtp($session_id,$otp,1);
                 if($res['status']=="success")
