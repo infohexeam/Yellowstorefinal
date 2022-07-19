@@ -511,8 +511,7 @@ class StoreController extends Controller
 
 
 
-                $store_otp =  5555;
-                //$store_otp =  rand ( 1000 , 9999 );
+                $store_otp =  rand (100000,999999);
                 $store_otp_expirytime = Carbon::now()->addMinute(10);
 
                 $otp_verify->store_id                 = $store_id;
@@ -524,6 +523,8 @@ class StoreController extends Controller
                 $data['otp'] = $store_otp;
                 $data['status'] = 1;
                 $data['message'] = "Store Registration Success";
+                $res=Helper::sendOtp($request->store_mobile,$store_otp,2);
+                $data['otp_session_id']=$res['session_id'];
             } else {
                 $data['errors'] = $validator->errors();
                 $data['status'] = 2;
@@ -752,11 +753,21 @@ class StoreController extends Controller
 
 
                             } else {
+                                $store_otp=rand(100000,999999);
                                 $storeData = Mst_store::find($custCheck->store_id);
+                                $otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
+                                $store_otp_expirytime = Carbon::now()->addMinute(10);
+                                $otp_verify->store_id                 = $custCheck->store_id;
+                                $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
+                                $otp_verify->store_otp                 = $store_otp;
+                                $otp_verify->update();
+                                $res=Helper::sendOtp($storeData->store_mobile,$store_otp,1);
+                                $data['otp_session_id']=$res['session_id'];
                                 $data['store_id'] = $custCheck->store_id;
                                 $data['store_admin_id'] = $custCheck->store_admin_id;
                                 $data['store_name'] = $storeData->store_name;
                                 $data['status'] = 2;
+                                $data['otp']=$store_otp;
                                 $data['message'] = "OTP not verified";
                             }
                         } else {
@@ -799,9 +810,13 @@ class StoreController extends Controller
         try {
 
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                $otp = $request->otp_status;
-                //	$otp = $request->store_otp; //old
-                if ($otp == 'accepted') {
+                //$otp = $request->otp_status;
+                $otp = $request->store_otp; //old
+                //if ($otp == 'accepted') {
+                $session_id=$request->otp_session_id;
+               $res=Helper::verifyOtp($session_id,$otp,1);
+               if($res['status']=="success")
+               {
                     $storeId = $request->store_id;
 
                     $store['store_account_status'] = 1;
@@ -879,15 +894,20 @@ class StoreController extends Controller
             if ($otp_verify) {
 
                 if ($otp_verify !== null) {
+                    $store_otp = rand(100000,999999);
+                    $storeData = Mst_store::find($store_id);
                     $store_otp_verify_id = $otp_verify->store_otp_verify_id;
                     $otp_verify = Trn_store_otp_verify::Find($store_otp_verify_id);
                     $extented_time = Carbon::now()->addMinute(10);
                     $otp_verify->store_otp_expirytime = $extented_time;
+                    $otp_verify->store_otp=$store_otp;
                     $otp_verify->update();
+                    $res=Helper::sendOtp($storeData->store_mobile,$store_otp,1);
+                    $data['otp_session_id']=$res['session_id'];
                     $data['status'] = 1;
-                    $data['otp'] = $otp_verify->store_otp;
+                    $data['otp'] = $store_otp;
                     $data['message'] = "OTP resent Success.";
-                } else {
+                }/* else {
                     $otp_verify = new Trn_store_otp_verify;
                     $store_otp =  5555;
                     //$store_otp =  rand ( 1000 , 9999 );
@@ -898,7 +918,7 @@ class StoreController extends Controller
                     $otp_verify->save();
                     $data['status'] = 2;
                     $data['message'] = "OTP registerd successfully. Please verify OTP.";
-                }
+                }*/
             } else {
                 $data['status'] = 0;
                 $data['message'] = "Store Doesn't Exist.";
@@ -947,8 +967,8 @@ class StoreController extends Controller
                 );
 
                 if (!$validator->fails()) {
-                    // $store_otp =  rand ( 1000 , 9999 );
-                    $store_otp =  5555;
+                    $store_otp =  rand (100000,999999);
+                    //$store_otp =  5555;
                     $store_otp_expirytime = Carbon::now()->addMinute(10);
 
                     $otp_verify->store_id                 = $store_id;
@@ -960,6 +980,8 @@ class StoreController extends Controller
                     $data['store_id'] = $store_id;
                     $data['store_mobile'] = $store_mob;
                     $data['store_otp'] = $store_otp;
+                    $res=Helper::sendOtp($mobNumber,$store_otp,1);
+                    $data['otp_session_id']=$res['session_id'];
                     $data['message'] = "Mobile Verification Success. OTP Sent to registered mobile number";
                 } else {
 
@@ -988,6 +1010,7 @@ class StoreController extends Controller
             $otp = $request->store_otp;
             // $mobCode = $request->country_code;
             $mobNumber = $request->store_mobile;
+            $otp_session_id=$request->otp_session_id;
 
             $mobCheck = Trn_StoreAdmin::where("store_mobile", '=', $mobNumber)->latest()->first();
             if ($mobCheck) {
@@ -1004,10 +1027,19 @@ class StoreController extends Controller
 
                     if ($current_time < $store_otp_exp_time) {
 
-                        $data['status'] = 1;
-                        $data['store_id'] = $store_id;
-                        $data['store_mobile'] = $store_mob;
-                        $data['message'] = "OTP verification success. Enter a new password.";
+                        $res=Helper::verifyOtp($otp_session_id,$otp,1);
+                        if($res['status']=="success")
+                        {
+                         $data['status'] = 1;
+                         $data['store_id'] = $store_id;
+                         $data['store_mobile'] = $store_mob;
+                         $data['message'] = "OTP verification success. Enter a new password.";
+                        }
+                        else
+                        {
+                          $data['status'] = 3;
+                         $data['message'] = "OTP Mismatched";  
+                        }
                     } else {
                         $data['status'] = 2;
                         $data['message'] = "OTP expired.click on resend OTP";
