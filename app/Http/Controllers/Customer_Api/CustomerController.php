@@ -167,8 +167,18 @@ class CustomerController extends Controller
                                     }
                                 }
                             } else {
+                                $customer_otp=rand(100000,999999);
+                                $otp_verify=Trn_store_customer_otp_verify::where('customer_id','=',$custCheck->customer_id)->first();
+                                $customer_otp_expirytime = Carbon::now()->addMinute(10);
+                                $otp_verify->customer_id                 = $custCheck->customer_id;
+                                $otp_verify->customer_otp_expirytime     = $customer_otp_expirytime;
+                                $otp_verify->customer_otp                 = $customer_otp;
+                                $otp_verify->save();
+                                $res=Helper::sendOtp($phone,$customer_otp,1);
+                                $data['otp_session_id']=$res['session_id'];
                                 $data['status'] = 2;
                                 $data['message'] = "OTP not verified";
+                                $data['otp']=$customer_otp;
                                 $data['customer_id'] = $custCheck->customer_id;
                             }
                         } else {
@@ -315,7 +325,7 @@ class CustomerController extends Controller
                 if($request->customer_mobile_number )
 
 
-                $customer_otp =  rand(1000, 9999);
+                $customer_otp =  rand(100000, 999999);
                 $st = Str::of($request->customer_name)->slug('-');
                 $st4 = substr($st, 0, 4);
                 $stringRefer = $customer_id . $st4 . $customer_otp;
@@ -390,6 +400,8 @@ class CustomerController extends Controller
                 $data['otp'] = $customer_otp;
                 $data['status'] = 1;
                 $data['message'] = "Customer Registration Success";
+                $res=Helper::sendOtp($request->customer_mobile_number,$customer_otp,1);
+                $data['otp_session_id']=$res['session_id'];
             } else {
                 $data['errors'] = $validator->errors();
                 $data['status'] = 2;
@@ -412,13 +424,16 @@ class CustomerController extends Controller
     {
         $data = array();
         try {
-            // $otp = $request->customer_otp;
+            $otp = $request->customer_otp;
 
             $customer_id = $request->customer_id;
 
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $otp = $request->otp_status;
-                if ($otp == 'accepted') {
+                $session_id=$request->otp_session_id;
+                $res=Helper::verifyOtp($session_id,$otp,1);
+                if($res['status']=="success")
+               {
 
                     $customer_id = $request->customer_id;
                     $customer = Trn_store_customer::Find($customer_id);
@@ -431,7 +446,8 @@ class CustomerController extends Controller
                         $data['status'] = 0;
                         $data['message'] = "failed";
                     }
-                } else {
+                }
+                else {
                     $data['status'] = 0;
                     $data['message'] = "failed";
                 }
@@ -487,30 +503,38 @@ class CustomerController extends Controller
 
 
 
-    public function resendOtp(Request $request, Trn_store_customer $customer, Trn_store_customer_otp_verify $otp_verify)
+    public function resendOtp(Request $request, Trn_store_customer_otp_verify $otp_verify)
     {
         $data = array();
         try {
             $customer_id = $request->customer_id;
             if ($customer_id) {
+                $customer=Trn_store_customer::findorFail($customer_id);
                 $otp_verify = Trn_store_customer_otp_verify::where('customer_id', '=', $customer_id)->latest()->first();
                 if ($otp_verify !== null) {
+                    $customer_otp_verify_id = $otp_verify->customer_otp_verify_id;
+                    $customer_otp = rand(100000,999999);
                     $customer_otp_verify_id = $otp_verify->customer_otp_verify_id;
                     $otp_verify = Trn_store_customer_otp_verify::Find($customer_otp_verify_id);
                     $extented_time = Carbon::now()->addMinute(10);
                     $otp_verify->customer_otp_expirytime = $extented_time;
+                    $otp_verify->customer_otp=$customer_otp;
                     $otp_verify->update();
+                    $res=Helper::sendOtp($customer->customer_mobile_number,$customer_otp,1);
+                    $data['otp_session_id']=$res['session_id'];
                     $data['status'] = 1;
-                    $data['otp'] = $otp_verify->customer_otp;
+                    $data['otp'] = $customer_otp;
                     $data['message'] = "OTP resent Success.";
                 } else {
                     $otp_verify = new Trn_store_customer_otp_verify;
-                    $customer_otp =  rand(1000, 9999);
+                    $customer_otp = rand(100000,999999);
                     $customer_otp_expirytime = Carbon::now()->addMinute(10);
                     $otp_verify->customer_id                 = $customer_id;
                     $otp_verify->customer_otp_expirytime     = $customer_otp_expirytime;
                     $otp_verify->customer_otp                 = $customer_otp;
                     $otp_verify->save();
+                    $res=Helper::sendOtp($customer->customer_mobile_number,$customer_otp,1);
+                    $data['otp_session_id']=$res['session_id'];
                     $data['status'] = 2;
                     $data['otp'] = $customer_otp;
                     $data['message'] = "OTP registerd successfully. Please verify OTP.";
@@ -560,7 +584,7 @@ class CustomerController extends Controller
                 );
 
                 if (!$validator->fails()) {
-                    $customer_otp =  rand(1000, 9999);
+                    $customer_otp =  rand(100000,999999);
                     $customer_otp_expirytime = Carbon::now()->addMinute(10);
 
                     $otp_verify->customer_id                 = $customer_id;
@@ -572,6 +596,8 @@ class CustomerController extends Controller
                     $data['customer_id'] = $customer_id;
                     $data['customer_mobile_number'] = $customer_mobile_number;
                     $data['customer_otp'] = $customer_otp;
+                    $res=Helper::sendOtp($customer_mobile_number,$customer_otp,1);
+                    $data['otp_session_id']=$res['session_id'];
                     $data['message'] = "Mobile Verification Success. OTP Sent to registered mobile number";
                 } else {
 
@@ -601,6 +627,7 @@ class CustomerController extends Controller
             $otp = $request->customer_otp;
             // $mobCode = $request->country_code;
             $mobNumber = $request->customer_mobile_number;
+            $otp_session_id=$request->otp_session_id;
 
             $mobCheck = Trn_store_customer::where("customer_mobile_number", '=', $mobNumber)->latest()->first();
             if ($mobCheck) {
@@ -617,10 +644,21 @@ class CustomerController extends Controller
 
                     if ($current_time < $customer_otp_expirytime) {
 
-                        $data['status'] = 1;
-                        $data['customer_id'] = $customer_id;
-                        $data['customer_mobile_number'] = $customer_mobile_number;
-                        $data['message'] = "OTP verification success. Enter a new password.";
+                        $res=Helper::verifyOtp($otp_session_id,$otp,1);
+                        if($res['status']=="success")
+                        {
+ 
+                         $data['status'] = 1;
+                         $data['customer_id'] = $customer_id;
+                         $data['customer_mobile_number'] = $customer_mobile_number;
+                         $data['message'] = "OTP verification success. Enter a new password.";
+                        }
+                        else
+                        {
+                         $data['status'] = 3;
+                         $data['message'] = "OTP Mismatched";  
+                            
+                        }
                     } else {
                         $data['status'] = 2;
                         $data['message'] = "OTP expired.click on resend OTP";

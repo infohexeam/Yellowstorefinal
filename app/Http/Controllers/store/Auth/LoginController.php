@@ -180,6 +180,15 @@ class LoginController extends Controller
 
         return redirect('store-login');
     }
+    public function redirectStoreLogin(Request $request)
+    {
+        $mobile=$request->phone_no;
+        $sadmin=Trn_StoreAdmin::where('store_mobile',$mobile)->where('role_id',0)->first();
+        $sadmin->store_account_status=1;
+        $sadmin->store_otp_verify_status=1;
+        $sadmin->update();
+        return redirect()->route('store.login')->with('status','Otp has been verified.Login Now');
+    }
 
 
 }

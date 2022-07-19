@@ -49,8 +49,12 @@
                </div>
                <div class="container-login100">
                   <div class="wrap-login100 p-6" style="width:400px;">
-                     <!--<form method="POST" action="{{ route('otp_verify.store',$stores->store_id) }} ">-->
-                        @csrf
+                      
+                     <form method="POST" id="toLogin" action="{{ route('store.tologin') }} ">
+                         @csrf
+                         
+                        
+                        
                         <span class="login100-form-title">
                         {{ __('OTP Verification') }}
                         </span>
@@ -76,11 +80,13 @@
                          <div class="form-group">
                                 <!--<label for="phone_no">Phone Number</label>-->
                                  <a href="#" class="mb-2" style="color:blue" onclick="phoneSendAuth()"  id="getcode" >Click here to get code! </a>
+                                 <p id="sentSuccessMsg"></p> <br>
 
                                 <input readonly type="hidden" class="form-control" value="{{$stores->store_mobile}}" name="phone_no" id="store_mobile" >
                             </div>
                             <div id="recaptcha-container"></div>
                              <div class="form-group mt-4">
+                                 <input class="input100" type="hidden" id="otpSessionId" name="otp_session_id" value="">
                                 <input type="text" name="" id="codeToVerify" name="getcode" class="form-control" placeholder="Enter Code">
                             </div>
 
@@ -114,7 +120,7 @@
                         <!--   {{ __('Clear') }}-->
                         <!--   </button><br>-->
                         <!--</div>-->
-                     <!--</form>-->
+                     </form>
                   </div>
                </div>
                <!-- CONTAINER CLOSED -->
@@ -156,10 +162,11 @@
 
         function phoneSendAuth() {
             var number = '+91'+$("#store_mobile").val();
+            var _token= $('input[name="_token"]').val();
             console.log(number);
             console.log(window.recaptchaVerifier) 
             
-            firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+          /*  firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
                 
                 window.confirmationResult=confirmationResult;
                 coderesult=confirmationResult;
@@ -169,7 +176,32 @@
                 
             }).catch(function (error) {
                 console.log(error.message);
-            });
+            });*/
+              $.ajax({
+    url:"{{ route('store.sendotp') }}",
+    method:"POST",
+    data:{phone:number, _token:_token},
+    success:function(result)
+    {
+      //alert("dszczs");
+      console.log(result.session_id);
+     if(result.status == 'success')
+     {
+      
+      $('#otpSessionId').val(result.session_id);
+      $('#sentSuccessMsg').html('<label class="text-success">Otp Has been Sent to'+number+'</label>');
+      
+     }
+     else
+     {
+     
+      $('#sentSuccessMsg').html('<label class="text-danger">Error! </label>');
+      
+       $('#submit').attr('disabled', 'disabled');
+
+     }
+    }
+   });
         }
 
 
@@ -178,10 +210,37 @@
   
 
 var code = $("#codeToVerify").val();
+var otp_session_id=$("#otpSessionId").val();
+var _token= $('input[name="_token"]').val();
+$.ajax({
+    url:"{{ route('store.verifyotp') }}",
+    method:"POST",
+    data:{otp_session_id:otp_session_id,otp:code, _token:_token},
+    success:function(result)
+    {
+      //alert("dszczs");
+      console.log(result.session_id);
+     if(result.status == 'success')
+     {
+            $("#sentSuccessMsg").text("OTP verified successfully.");
+
+            $("#sentSuccessMsg").show();
+            
+            $('#toLogin').submit();
+      
+     }
+     else
+     {
+            $("#sentSuccessMsg").html('<label class="text-danger">Otp Invalid! </label>');
+
+            $("#sentSuccessMsg").show();
+
+     }
+    }
+   });
 
 
-
-    coderesult.confirm(code).then(function (result) {
+    /*coderesult.confirm(code).then(function (result) {
 
         var user=result.user;
 
@@ -193,7 +252,7 @@ var code = $("#codeToVerify").val();
 
         }).catch(function (error) {
             console.log("otp invalid");
-        });
+        });*/
 
     }
 

@@ -76,9 +76,9 @@
                             <div id="recaptcha-container"></div>
     
                             <div class="container-login100-form-btn">
-                               <button id="SendOTPBtn" onclick="sendOTP()" class="login100-form-btn btn-primary">
+                               <a id="SendOTPBtn" onclick="sendOTP()" class="login100-form-btn btn-primary">
                                {{ __('Send OTP') }}
-                               </button>
+                               </a>
                             </div>
                         </section>
                         
@@ -96,9 +96,10 @@
                             </div>
                             
                             <div class="container-login100-form-btn">
-                               <button type="submit" onclick="codeverify()" class="login100-form-btn btn-primary">
+                                <input class="input100" type="hidden" id="otpSessionId" name="otp_session_id" value="">
+                               <a  onclick="codeverify()" class="login100-form-btn btn-primary">
                                {{ __('Confirm OTP') }}
-                               </button>
+                               </a>
                             </div>
                             <div class="container-login100-form-btn">
                                <a  onclick="goBack()"  class="login100-form-btn btn-secondary">
@@ -162,8 +163,9 @@ function goBack(){
              $('#error_store_mobile').empty();
 
             var number = '+91'+$("#store_mobile").val();
+            var _token= $('input[name="_token"]').val();
             
-             firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+             /*firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
                   
                 window.confirmationResult=confirmationResult;
                 coderesult=confirmationResult;
@@ -175,14 +177,40 @@ function goBack(){
             }).catch(function (error) {
                 $("#sentSuccessMsg").text(error.message);
                 $("#sentSuccessMsg").show();
-            });
+            });*/
+             $.ajax({
+    url:"{{ route('store.sendotp') }}",
+    method:"POST",
+    data:{phone:number, _token:_token},
+    success:function(result)
+    {
+      //alert("dszczs");
+      console.log(result.session_id);
+     if(result.status == 'success')
+     {
+       $("#sentSuccessMsg").show();
+      $('#otpSessionId').val(result.session_id);
+      $('#sentSuccessMsg').html('<label class="text-success">Otp Has been Sent to'+number+'</label>');
+      $("#sentSuccessMsg").text("OTP send successfully.");
+     
+       $('#confirmOTPSec').show();
+     $('#sendOTPSec').hide();
+      
+     }
+     else
+     {
+     
+       $('#error_store_mobile').html('<label class="text-danger">Mobile number invalid </label>');
             
-             $('#confirmOTPSec').show();
-            $('#sendOTPSec').hide();
-    
             $("form").submit(function(e){
                 e.preventDefault(e);
-            });    
+            }); 
+
+     }
+    }
+   });
+            
+            
             
         }else{
             $('#error_store_mobile').html('<label class="text-danger">Mobile number invalid </label>');
@@ -196,8 +224,10 @@ function goBack(){
    function codeverify() {
         var code = $("#otp").val();
         var number= $("#store_mobile").val();
+        var _token= $('input[name="_token"]').val();
+        var otp_session_id=$("#otpSessionId").val();
 
-        coderesult.confirm(code).then(function (result) {
+       /* coderesult.confirm(code).then(function (result) {
             var user=result.user;
             //console.log(user);
             $("#sentSuccessMsg").text("OTP verified successfully.");
@@ -206,7 +236,7 @@ function goBack(){
         
         
         
-               var _token= $('input[name="_token"]').val();
+              
 
                
                $.ajax({
@@ -241,7 +271,52 @@ function goBack(){
              $("form").submit(function(e){
                 e.preventDefault(e);
             }); 
-        });
+        });*/
+        $.ajax({
+    url:"{{ route('store.verifyotp') }}",
+    method:"POST",
+    data:{otp_session_id:otp_session_id,otp:code, _token:_token},
+    success:function(result)
+    {
+      //alert("dszczs");
+      console.log(result.session_id);
+     if(result.status == 'success')
+     {
+            $("#sentSuccessMsg").text("OTP verified successfully.");
+
+            $("#sentSuccessMsg").show();
+            
+             $.ajax({
+                url:"{{ route('store.store_hashcode') }}",
+                method:"POST",
+                data:{number:number, _token:_token},
+                success:function(result)
+                {
+                    if(result != false){
+                                      var curUrl = $("#curUrl").val();
+                            window.location.replace(curUrl+"/user?user_id="+result);
+
+                        // console.log(curUrl+"/user?user_id="+result);
+
+                    }
+                    else
+                        alert("error! Please reload page...");
+
+                }
+            });  
+      
+     }
+     else
+     {
+            $("#sentSuccessMsg").text("OTP invalid");
+            $("#sentSuccessMsg").show();
+             $("form").submit(function(e){
+                e.preventDefault(e);
+            }); 
+
+     }
+    }
+   });
         
         // $("form").submit(function(e){
         //     e.preventDefault(e);

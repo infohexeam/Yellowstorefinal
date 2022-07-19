@@ -43,6 +43,7 @@ class ForgotPasswordController extends Controller
 
     public function showLinkRequestForm()
     {
+        //dd(url()->full());
         return view('store.auth.passwords.forgotpassword');
     }
 
