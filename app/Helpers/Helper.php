@@ -846,7 +846,7 @@ class Helper
     public static function sendOtp($phone,$otp,$type=NULL)
     {
         $client = new HttpClient(); //GuzzleHttp\Client
-        $url = "https://2factor.in/API/V1/3f464ec3-da73-11ec-9c12-0200cd936042/SMS/+91".$phone."/".$otp;
+        $url = "https://2factor.in/API/V1/3f464ec3-da73-11ec-9c12-0200cd936042/SMS/+91".$phone."/".$otp."/OTPverify";
         
 
         $response = $client->request('GET', $url,[
