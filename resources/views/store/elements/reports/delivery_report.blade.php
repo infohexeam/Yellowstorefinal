@@ -79,6 +79,8 @@
                                             <th class="wd-15p">Order Number</th>
                                             <th class="wd-15p">Order Status</th>
                                             <th class="wd-15p">Total Amount</th>
+                                            <th class="wd-15p">Delivery charge</th>
+                                             <th class="wd-15p">Packing Chargee</th>
                                             <th class="wd-15p">Payment type</th>
                                             
                                             <th class="wd-15p">Deivery Boy</th>
@@ -103,6 +105,8 @@
                                             <td>{{ $d->order_number }}</td>
                                             <td>{{ @$d->status->status }}</td>
                                             <td>{{ $d->product_total_amount }}</td>
+                                             <td>{{ @$d->delivery_charge }}</td>
+                                             <td>{{ @$d->packing_charge }}</td>
                                             <td> 
                                                 @if($d->payment_type_id == 1)
                                                     COD
