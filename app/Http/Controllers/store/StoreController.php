@@ -4712,13 +4712,18 @@ class StoreController extends Controller
       if (isset($order_number)) {
         $query = $query->where('order_number', $order_number);
       }
+      if (isset($request->date_from)) {
+        if(!isset($request->date_to))
+        {
+          $query = $query->whereDate('dispute_date', $request->date_from);
+        }
+        
+      }
 
       if (isset($request->date_from) && isset($request->date_to)) {
         $query = $query->whereBetween('dispute_date', [$a1, $a2]);
       }
-      if (isset($request->date_from)) {
-        $query = $query->whereDate('dispute_date', $request->date_from);
-      }
+      
       $query->orderBy('dispute_id', 'DESC');
       $disputes = $query->get();
       return view('store.elements.disputes.list', compact('dateto', 'datefrom', 'disputes', 'pageTitle'));
