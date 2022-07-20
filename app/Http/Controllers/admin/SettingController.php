@@ -645,8 +645,7 @@ class SettingController extends Controller
 		return view('admin.masters.stores.create', compact('pageTitle', 'subadmins', 'stores', 'countries', 'business_types'));
 	}
 
-	public function addStore(Request $request, Mst_store $store, Mst_store_documents
-	$document)
+	public function addStore(Request $request, Mst_store $store, Mst_store_documents $document)
 	{
 
 		$validator = Validator::make(
@@ -760,7 +759,7 @@ class SettingController extends Controller
 				$store->store_account_status         = 1;
 			}
 			if (auth()->user()->user_role_id == 0) {
-				$store->subadmin_id          = $request->subadmin_id;
+				$store->subadmin_id          = $request->subadmin_id??2;
 			} else {
 				$store->subadmin_id          = auth()->user()->id;
 			}
