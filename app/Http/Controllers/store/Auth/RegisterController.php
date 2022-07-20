@@ -226,7 +226,7 @@ class RegisterController extends Controller
             $insert['expiry_date'] = Carbon::now()->addDays(30)->toDateString();
 
             $insert['password'] = Hash::make($request->password);
-            $insert['subadmin_id'] = 0;
+            $insert['subadmin_id'] = 2;
 
             Trn_StoreAdmin::create($insert);
             if ($request->store_gst_number != "") {

@@ -668,6 +668,7 @@ class SettingController extends Controller
 				'store_username' 				   => 'required|unique:mst_stores',
 				'store_mobile' 				   => 'required|unique:mst_stores',
 				'password'       			   => 'required|min:5|same:password_confirmation',
+				
 
 
 
@@ -689,7 +690,7 @@ class SettingController extends Controller
 				'store_commision_amount.required'                => 'Store commision amount required',
 
 				'store_commision_percentage.required'	=> 'Store commision percentage requird',
-
+				
 
 			]
 		);
@@ -806,9 +807,8 @@ class SettingController extends Controller
 			$insert['store_account_status'] = 1;
 			$insert['expiry_date'] = Carbon::now()->addDays(30)->toDateString();
 			$insert['password'] = Hash::make($request->password);
-
 			if (auth()->user()->user_role_id == 0) {
-				$insert['subadmin_id']         = $request->subadmin_id;
+				$insert['subadmin_id']         = $request->subadmin_id??2;
 			} else {
 				$insert['subadmin_id']          = auth()->user()->id;
 			}
@@ -1041,7 +1041,7 @@ class SettingController extends Controller
 			$store->store_username               = $request->store_username;
 
 			if (auth()->user()->user_role_id == 0) {
-				$store->subadmin_id          = $request->subadmin_id;
+				$store->subadmin_id          = $request->subadmin_id??2;
 				$store->store_commision_percentage   = $request->store_commision_percentage;
 				$store->store_commision_amount          = $request->store_commision_amount;
 			} else {
@@ -2451,7 +2451,7 @@ class SettingController extends Controller
 	public function RemoveSubadminLink($store_id, Mst_store $store)
 	{
 		$store = Mst_store::where('store_id', $store_id)->first();
-		$store->subadmin_id = 0;
+		$store->subadmin_id = 2;
 		$store->update();
 		return redirect()->back()->with('status', 'Store removed');
 	}
