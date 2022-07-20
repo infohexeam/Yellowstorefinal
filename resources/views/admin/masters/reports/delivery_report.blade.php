@@ -138,8 +138,8 @@
                                             
                                             <td>{{ @$d->status->status }}</td>
                                             <td>{{ $d->product_total_amount }}</td>
-                                            <td>{{ $d->delivery_charge??0.00 }}</td>
-                                            <td>{{ $d->packing_charge??0.00 }}</td>
+                                            <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
+                                            <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
                                             
                                             <td> 
                                                 @if($d->payment_type_id == 1)
