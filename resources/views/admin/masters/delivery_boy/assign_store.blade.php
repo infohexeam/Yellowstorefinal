@@ -95,13 +95,13 @@
                      </div>
                      </div>
 
-                     <!--<div class="col-md-2">-->
-                     <!--   <div class="form-group">-->
-                     <!--      <label class="form-label">Add more</label>-->
-                     <!--       <button type="button" id="addStore" class="btn btn-raised btn-success"> Add More</button>-->
-                     <!--   </div>-->
-                     <!--   </div>-->
-                      </div>
+                     <div class="col-md-2">
+                        <div class="form-group">
+                           <label class="form-label">Add more</label>
+                            <button type="button" id="addstore" class="btn btn-raised btn-success"> Add More</button>
+                        </div>
+                        </div>
+                        </div>
 
 
                      <div class="form-group">
@@ -130,7 +130,7 @@
 
 $(document).ready(function() {
    var wrapper      = $("#store"); //Fields wrapper
-  var add_button      = $("#addStore"); //Add button ID
+  var add_button      = $("#addstore"); //Add button ID
 
   var x = 1; //initlal text box count
 
@@ -139,7 +139,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div> <br> <label class="form-label">Stores </label> <select name="store_id[]" required="" class="form-control"  ><option value=""> Select Store</option> @foreach($store as $key) @if (!in_array($key->store_id, $all_assigned_store)) <option {{old('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }} </option> @endif @endforeach </select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div> <br> <label class="form-label">Stores </label> <select name="store_id[]" required="" class="form-control"  ><option value=""> Select store</option> @foreach($store as $key) @if(!in_array($key->store_id,$all_assigned_store)) <option {{old('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }} </option> @endif @endforeach </select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
 
   });
 
