@@ -3270,7 +3270,7 @@ class StoreController extends Controller
       $usProData =  DB::table('mst_store_products')->where('product_id', $usData->product_id)->first();
 
       $productData2['product_status'] = 1;
-      Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
+      //Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
 
       $sd = new Mst_StockDetail;
       $sd->store_id = $usProData->store_id;
@@ -3307,8 +3307,8 @@ class StoreController extends Controller
             //insert a product status column in varient table
       // }
 
-      $productData2['product_status'] = 0;
-      Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
+      //$productData2['product_status'] = 1;
+     // Mst_store_product::where('product_id', $usData->product_id)->update($productData2);
 
       return response()->json($s);
     } else {
