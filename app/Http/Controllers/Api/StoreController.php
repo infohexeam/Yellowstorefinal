@@ -493,7 +493,7 @@ class StoreController extends Controller
                 $insert['username'] = $request->store_mobile;
                 $insert['store_mobile'] = $request->store_mobile;
                 $insert['role_id'] = 0;
-                $insert['store_account_status'] = 0;
+                $insert['store_account_status'] = 1;
                 $insert['expiry_date'] = Carbon::now()->addDays(30)->toDateString();
 
                 $insert['password'] = Hash::make($request->password);
