@@ -124,6 +124,7 @@
        <li class="slide">
  <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon ti ti-file"></i><span class="side-menu__label">{{ __('Reports') }}</span><i class="angle fa fa-angle-right"></i></a>
         <ul class="slide-menu">
+              <li><a class="slide-item" href="{{route('store.overall_product_reports')}}">{{ __('Overall Product Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.show_reports')}}">{{ __('Product Wise Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.store_visit_reports')}}">{{ __('Store Visit Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.sales_reports')}}">{{ __('Sales Reports') }}</a></li>

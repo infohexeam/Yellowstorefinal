@@ -960,7 +960,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         // store Report
-
+        Route::get('store/overall-product-report', 'CouponController@showOverallProductReport')->name('store.overall_product_reports');
         Route::get('store/product-wise-report', 'CouponController@showReport')->name('store.show_reports');
         Route::get('store/store-visit-report', 'CouponController@showStoreVisitReport')->name('store.store_visit_reports');
         Route::get('store/town-name-list', 'CouponController@listTownNames');

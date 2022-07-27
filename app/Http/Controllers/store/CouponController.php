@@ -477,6 +477,135 @@ class CouponController extends Controller
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
   }
+  public function showOverallProductReport(Request $request)
+  {
+    try {
+
+    $pageTitle = "Overall Product Reports";
+    $store_id  = Auth::guard('store')->user()->store_id;
+    $datefrom = '';
+    $dateto = '';
+
+
+    $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+      ->select('mst_store_products.product_id', 'mst_store_products.product_name')
+      ->where('mst_store_products.store_id', Auth::guard('store')->user()->store_id)->orderBy('mst_store_products.product_id', 'DESC')->get();
+
+    $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
+    $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
+
+
+
+
+
+
+    $inventoryData =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+      ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+    
+      ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+      ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+
+      ->where('mst_store_products.store_id', $store_id)
+      
+
+      ->where('mst_store_products.product_type', 1)
+      // ->orderBy('mst_store_products.product_name','ASC')
+      //   ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+
+
+      ->select(
+        'mst_store_products.product_id',
+        'mst_store_products.product_name',
+        'mst_store_products.product_code',
+        'mst_store_products.product_cat_id',
+        'mst_store_products.product_base_image',
+        'mst_store_products.product_status',
+        'mst_store_products.product_brand',
+        'mst_store_products.min_stock',
+
+        'mst_store_products.tax_id',
+        'mst_store_product_varients.product_varient_id',
+        'mst_store_product_varients.variant_name',
+        'mst_store_product_varients.product_varient_price',
+        'mst_store_product_varients.product_varient_offer_price',
+        'mst_store_product_varients.product_varient_base_image',
+        'mst_store_product_varients.stock_count',
+        'mst_store_product_varients.created_at',
+        'mst_store_product_varients.is_base_variant',
+        'mst_store_categories.category_id',
+        'mst_store_categories.category_name',
+        'mst__sub_categories.sub_category_name',
+
+      );
+
+
+    if ($_GET) {
+      $datefrom = $request->date_from;
+      $dateto = $request->date_to;
+
+      $a1 = Carbon::parse($request->date_from)->startOfDay();
+      $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+      // if(isset($request->date_from))
+      // {
+      //   $data = $data->whereDate('trn_store_orders.created_at','>=',$a1);
+      // }
+
+      // if(isset($request->date_to))
+      // {
+      //   $data = $data->whereDate('trn_store_orders.created_at','<=',$a2);
+      // }
+
+      if (isset($request->product_id)) {
+        $inventoryData = $inventoryData->where('mst_store_products.product_id', $request->product_id);
+      }
+      if (isset($request->type_id)) {
+        if($request->type_id==2)
+        {
+          $type_id=0;
+        }
+        else{
+          $type_id=1;
+        }
+        $inventoryData = $inventoryData->where('mst_store_product_varients.is_base_variant',$type_id);
+      }
+
+     
+
+      if (isset($request->category_id)) {
+        $inventoryData = $inventoryData->where('mst_store_categories.category_id', $request->category_id);
+      }
+
+      if (isset($request->sub_category_id)) {
+        $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+      }
+    }
+
+
+    $inventoryData = $inventoryData->get();
+
+    //  dd($inventoryData);
+
+    $inventoryData = collect($inventoryData);
+    $inventoryDatas = $inventoryData->unique('product_varient_id');
+    $data =   $inventoryDatas->values()->all();
+
+
+
+
+    //   $datasz = collect($data->get());
+    //                     $datasz = $datasz->unique('store_id');
+    //                       $data =   $datasz->values()->all();
+
+
+
+    return view('store.elements.reports.overall_product_report', compact('subCategories', 'categories', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
+  }
+  catch (\Exception $e) {
+    return redirect()->back()->withErrors([$e->getMessage()])->withInput();
+    return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+  }
+  }
 
 
   public function showStoreVisitReport(Request $request)

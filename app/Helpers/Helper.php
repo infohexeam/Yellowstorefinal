@@ -882,5 +882,20 @@ class Helper
 
          return $resArray;
     }
+    public function getProductCode($variant_id)
+    {
+        $variant=Mst_store_product_varient::findorFail($variant_id);
+        $product=Mst_store_product::where('product_id',$variant->product_id)->first();
+        if($product){
+            return $product->product_code;
+
+        }
+        else{
+            return '-----';
+
+        }
+        
+
+    }
 
 }
