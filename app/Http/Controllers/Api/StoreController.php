@@ -1785,6 +1785,168 @@ class StoreController extends Controller
         }
     }
 
+    public function overallProductReport(Request $request)
+    {
+        try {
+
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+
+                $inventoryData =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                    ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                    
+                    ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+                    ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+
+                    ->where('mst_store_products.store_id', $store_id)
+
+                    ->where('mst_store_products.product_type', 1)
+                    // ->where('mst_store_products.is_removed', 0)
+                    // ->where('mst_store_product_varients.is_removed', 0)
+                    // ->orderBy('mst_store_products.product_name','ASC')
+                    //  ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+
+                    ->select(
+                        'mst_store_products.product_id',
+                        'mst_store_products.product_name',
+                        'mst_store_products.product_code',
+                        'mst_store_products.product_cat_id',
+                        'mst_store_products.product_base_image',
+                        'mst_store_products.product_status',
+                        'mst_store_products.product_brand',
+                        'mst_store_products.min_stock',
+
+                        'mst_store_products.tax_id',
+                        'mst_store_product_varients.product_varient_id',
+                        'mst_store_product_varients.variant_name',
+                        'mst_store_product_varients.product_varient_price',
+                        'mst_store_product_varients.product_varient_offer_price',
+                        'mst_store_product_varients.product_varient_base_image',
+                        'mst_store_product_varients.stock_count',
+                        'mst_store_product_varients.created_at',
+                        'mst_store_product_varients.is_base_variant',
+                        'mst_store_categories.category_id',
+                        'mst_store_categories.category_name',
+                        'mst_store_agencies.agency_name',
+                        'mst__sub_categories.sub_category_name',
+
+                    );
+                // $inventoryData = $inventoryData->get();
+                // dd($inventoryData);
+
+
+
+                $a1 = Carbon::parse($request->date_from)->startOfDay();
+                $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+                // if(isset($request->date_from))
+                // {
+                //   $inventoryData = $inventoryData->whereDate('trn_store_orders.created_at','>=',$a1);
+                // }
+
+                // if(isset($request->date_to))
+                // {
+                //   $inventoryData = $inventoryData->whereDate('trn_store_orders.created_at','<=',$a2);
+                // }
+
+                if (isset($request->product_id)) {
+                    $inventoryData = $inventoryData->where('mst_store_products.product_id', $request->product_id);
+                }
+
+                if (isset($request->type_id)) {
+                    if($request->type_id==2)
+                    {
+                      $type_id=0;
+                    }
+                    else{
+                      $type_id=1;
+                    }
+                    $inventoryData = $inventoryData->where('mst_store_product_varients.is_base_variant',$type_id);
+                  }
+
+                if (isset($request->category_id)) {
+                    $inventoryData = $inventoryData->where('mst_store_categories.category_id', $request->category_id);
+                }
+
+                if (isset($request->sub_category_id)) {
+                    $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+                }
+
+
+
+                $inventoryData = $inventoryData->orderBy('updated_time', 'DESC');
+
+
+                $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
+
+                $roWc = 0;
+                if ($roWc == 0) {
+                    $inventoryData22 =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                        ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                      
+                        ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+                        ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+                        ->where('mst_store_products.store_id', $store_id)
+                       
+                        ->where('mst_store_products.product_type', 1);
+                      
+
+                    if (isset($request->product_id)) {
+                        $inventoryData22 = $inventoryData22->where('mst_store_products.product_id', $request->product_id);
+                    }
+
+                    if (isset($request->type_id)) {
+                        if($request->type_id==2)
+                        {
+                          $type_id=0;
+                        }
+                        else{
+                          $type_id=1;
+                        }
+                        $inventoryData = $inventoryData->where('mst_store_product_varients.is_base_variant',$type_id);
+                      }
+
+                    if (isset($request->category_id)) {
+                        $inventoryData22 = $inventoryData22->where('mst_store_categories.category_id', $request->category_id);
+                    }
+
+                    if (isset($request->sub_category_id)) {
+                        $inventoryData22 = $inventoryData22->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+                    }
+                    $roWz = $inventoryData22->get();
+                    $roWc = count($roWz);
+                }
+
+
+
+
+                $inventoryDatasss = collect($inventoryDataa);
+                $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
+                $dataReViStoreSS =   $inventoryDatas->values()->all();
+
+
+
+                $data['inventoryData'] = $dataReViStoreSS;
+                if ($roWc > 19) {
+                    $data['pageCount'] = floor(@$roWc / 20);
+                } else {
+                    $data['pageCount'] = 1;
+                }
+                $data['status'] = 1;
+                $data['message'] = "Success";
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store does not exist";
+            }
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
 
 
     public function inventoryReport(Request $request)
