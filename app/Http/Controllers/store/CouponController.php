@@ -582,7 +582,7 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->get();
+    $inventoryData = $inventoryData->orderBy('product_varient_id','DESC')->get();
 
     //  dd($inventoryData);
 
