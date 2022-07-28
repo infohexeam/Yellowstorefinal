@@ -139,6 +139,7 @@
                                             <th class="wd-15p">Category</th>
                                             <th class="wd-15p">Sub Category</th>
                                             <th class="wd-15p">Brand</th>
+                                            <th class="wd-15p">Bae/Variant Product</th>
                                             {{-- <th class="wd-15p">Minimum Stock</th> --}}
                                             <th class="wd-15p">Product Status</th>
                                           
@@ -191,7 +192,13 @@
                                                 
                                                 
                                                 </td>
-                                            {{-- <td>{{ $d->min_stock }}</td> --}}
+                                             <td>
+                                             @if($d->is_base_variant==1)
+                                             Base Product
+                                             @else
+                                             Varient Product
+                                             @endif
+                                             </td>
                                             <td> 
                                                 @if($d->product_status == 1)
                                                     Active
