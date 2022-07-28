@@ -144,14 +144,14 @@
                    <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-label">Commission Amount (Monthly)</label>
-                      <input type="decimal" step="0.1" required="" name="delivery_boy_commision" class="form-control" placeholder="Commision Amount (Monthly)" value="{{old('delivery_boy_commision',@$delivery_boy->delivery_boy_commision)}}">
+                      <input type="decimal" step="0.1"  name="delivery_boy_commision" class="form-control" placeholder="Commision Amount (Monthly)" value="{{old('delivery_boy_commision',@$delivery_boy->delivery_boy_commision)}}">
                     </div>
 
                   </div>
                      <div class="col-md-6">
                       <div class="form-group">
                        <label class="form-label">Commission Amount (Per Order)</label>
-                         <input type="number" step="0.1" required="" name="delivery_boy_commision_amount" class="form-control" placeholder="Commission Amount (Per Order)" value="{{old('delivery_boy_commision_amount',@$delivery_boy->delivery_boy_commision_amount)}}">
+                         <input type="number" step="0.1"  name="delivery_boy_commision_amount" class="form-control" placeholder="Commission Amount (Per Order)" value="{{old('delivery_boy_commision_amount',@$delivery_boy->delivery_boy_commision_amount)}}">
                        </div>
                      </div>
                      </div>

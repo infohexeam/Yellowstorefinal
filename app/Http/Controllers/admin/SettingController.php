@@ -2906,8 +2906,7 @@ class SettingController extends Controller
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
 				'password.required'	   => 'Password required',
-				'delivery_boy_commision.required'	   => 'Delivery boy commision percentage required',
-				'delivery_boy_commision_amount.required'	=> 'Delivery boy commision percentage required',
+				
 
 
 			]
@@ -2932,8 +2931,8 @@ class SettingController extends Controller
 			$delivery_boy->district_id   	      = $request->district_id;
 			$delivery_boy->town_id   	      = $request->town_id;
 
-			$delivery_boy->delivery_boy_commision = $request->delivery_boy_commision;
-			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount;
+			$delivery_boy->delivery_boy_commision = $request->delivery_boy_commision??0;
+			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount??0;
 
 			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
 			//	$delivery_boy->delivery_boy_status   = 0;
@@ -2994,8 +2993,6 @@ class SettingController extends Controller
 				'state_id'       		    		=> 'required',
 				'town_id'       		    		=> 'required',
 				'district_id'               		=> 'required',
-				'delivery_boy_commision'            => 'required',
-				'delivery_boy_commision_amount'            => 'required',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys',
 				'delivery_boy_password'  => 'required|min:5|same:password_confirmation',
 				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=1000,min_height=800'
@@ -3052,8 +3049,8 @@ class SettingController extends Controller
 				$delivery_boy->subadmin_id = auth()->user()->id;
 			}
 
-			$delivery_boy->delivery_boy_commision = $request->delivery_boy_commision;
-			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount;
+			$delivery_boy->delivery_boy_commision = $request->delivery_boy_commision??0;
+			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount??0;
 
 			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
 			$delivery_boy->password  = Hash::make($request->delivery_boy_password);

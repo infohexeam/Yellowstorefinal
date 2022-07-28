@@ -139,7 +139,7 @@
                                             <th class="wd-15p">Category</th>
                                             <th class="wd-15p">Sub Category</th>
                                             <th class="wd-15p">Brand</th>
-                                            <th class="wd-15p">Bae/Variant Product</th>
+                                            <th class="wd-15p">Base/Variant Product</th>
                                             {{-- <th class="wd-15p">Minimum Stock</th> --}}
                                             <th class="wd-15p">Product Status</th>
                                           
