@@ -1804,7 +1804,7 @@ class StoreController extends Controller
                     // ->where('mst_store_products.is_removed', 0)
                     // ->where('mst_store_product_varients.is_removed', 0)
                     // ->orderBy('mst_store_products.product_name','ASC')
-                    //  ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+                    ->orderBy('mst_store_product_varients.product_varient_id', 'DESC')
 
                     ->select(
                         'mst_store_products.product_id',
@@ -1888,7 +1888,8 @@ class StoreController extends Controller
                         ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
                         ->where('mst_store_products.store_id', $store_id)
                        
-                        ->where('mst_store_products.product_type', 1);
+                        ->where('mst_store_products.product_type', 1)
+                        ->orderBy('mst_store_product_varients.product_varient_id', 'DESC');
                       
 
                     if (isset($request->product_id)) {
