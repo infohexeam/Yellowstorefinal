@@ -338,7 +338,7 @@
         
        // console.log(categoryId);
 
-        var _token= $('input[name="_token"]').val();
+        //var _token= $('input[name="_token"]').val();
         
             $.ajax({
               type:"GET",
