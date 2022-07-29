@@ -227,7 +227,7 @@ use App\Models\admin\Trn_StoreBankData;
                                     @if(auth()->user()->user_role_id  == 0)
                                     <td>
                                         
-                                        {{ @$store->name}} 
+                                        {{ @$store->subadmin['name']}} 
                                         
                                         </td>
                                     {{-- <td>
