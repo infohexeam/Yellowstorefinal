@@ -322,7 +322,7 @@ class CouponController extends Controller
 
   public function showReport(Request $request)
   {
-    try {
+    // try {
 
       $pageTitle = "Product Wise Reports";
 
@@ -384,7 +384,7 @@ class CouponController extends Controller
         //   ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
         ->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
-      // dd($data);
+      //dd($data);
       if ($_GET) {
 
         $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
@@ -473,10 +473,10 @@ class CouponController extends Controller
       }
 
       return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'data', 'pageTitle'));
-    } catch (\Exception $e) {
-      return redirect()->back()->withErrors([$e->getMessage()])->withInput();
-      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
-    }
+    // } catch (\Exception $e) {
+    //   return redirect()->back()->withErrors([$e->getMessage()])->withInput();
+    //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    // }
   }
   public function showOverallProductReport(Request $request)
   {
