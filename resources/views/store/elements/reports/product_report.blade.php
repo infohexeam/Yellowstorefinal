@@ -259,7 +259,7 @@
 
                                             }
                                             @endphp
-                                            <td>{{ @$d->visit_count }}</td>
+                                            <td>{{ @$d->sum}}</td>
                                             
                                             @php
                                             
