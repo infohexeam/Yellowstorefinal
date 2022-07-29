@@ -52,7 +52,7 @@
                                         <!--    </div>-->
                                         <!-- </div>-->
                                          
-                                            @if(auth()->user()->user_role_id  == 0) 
+                                            @if(auth()->user()->user_role_id  == 0)  
                                             <div class="col-md-6">
                                               <div class="form-group">
                                                  <label class="form-label">Sub Admin</label>
@@ -74,12 +74,23 @@
                                                      <option value="">Store</option>
                                                       @if(request()->input('subadmin_id'))
                                                       @php
+                                                      
+                            
                                                         $storesData = \DB::table('mst_stores')->where('subadmin_id',request()->input('subadmin_id'))->get();
                                                       @endphp
+                                                    @else
+                                                    @php
+                                                      $subadminId = auth()->user()->id;
+                            
+                                                      $storesData = \DB::table('mst_stores')->where('subadmin_id',$subadminId) ->get();
+                                                    @endphp
+
+                                                      @endif
+
                                                       @foreach($storesData as $key)
                                                       <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
                                                       @endforeach
-                                                    @endif
+                                                   
                                                   </select>
                                             </div>
                                          </div>
