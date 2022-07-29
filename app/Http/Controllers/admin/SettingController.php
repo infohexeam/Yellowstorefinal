@@ -1308,7 +1308,10 @@ class SettingController extends Controller
 		$delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
 		$countries = Country::all();
 		$store_documents  = Mst_store_documents::where('store_id', '=', $store_id)->get();
-		$store_products  = Mst_store_product::where('store_id', '=', $store_id)->get();
+		$store_products  = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->where('mst_store_products.store_id', $store_id)
+        ->where('mst_store_products.is_removed', 0)
+        ->orderBy('mst_store_products.product_id', 'DESC')->get();
 		$store_images = Mst_store_images::where('store_id', '=', $store_id)->get();
 		//dd($store_documents);
 		return view('admin.masters.stores.view', compact('delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'store_products'));
