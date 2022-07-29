@@ -3209,14 +3209,19 @@ class SettingController extends Controller
 		$date =  Carbon::now();
 		$values = $request->store_id;
 		foreach ($delivery_boy_id as $value) {
+			if(!Mst_store_link_delivery_boy::where(['store_id'=>$store_id,'delivery_boy_id'=>$value])->exists())
+			{
+				$data = [
+					'store_id' => $store_id,
+					'delivery_boy_id' => $value,
+	
+				];
+	
+				Mst_store_link_delivery_boy::insert($data); 
 
-			$data = [
-				'store_id' => $store_id,
-				'delivery_boy_id' => $value,
+			}
 
-			];
-
-			Mst_store_link_delivery_boy::firstOrCreate($data);
+		
 		}
 		$store_info = Mst_store::where('store_id', $store_id)->first();
 
