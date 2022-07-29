@@ -280,7 +280,7 @@
                                                 $visitCount =   $visitCount->count();
                                                 
                                             @endphp
-                                            <td>{{ @$visitCount }}</td>
+                                            <td>{{ @$d->sum }}</td>
                                             
                                             @php
                                             
