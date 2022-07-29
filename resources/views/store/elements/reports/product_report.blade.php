@@ -233,7 +233,7 @@
                                             <td>{{ $d->customer_mobile_number }}</td>
                                             @php
                                             
-                                            if(($d->product_varient_id != 0) && isset($d->product_varient_id)){
+                                            if(($d->product_varient_id != 0) && isset($d->product_varient_id)){ // check base /variants
                                                 $visitCount = Trn_RecentlyVisitedProducts::join('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn__recently_visited_products.product_varient_id');
                                                 
                                                 if(auth()->user()->user_role_id  != 0)
@@ -259,7 +259,7 @@
 
                                             }
                                             @endphp
-                                            <td>{{ @$visitCount }}</td>
+                                            <td>{{ @$d->visit_count }}</td>
                                             
                                             @php
                                             
