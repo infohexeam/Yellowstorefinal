@@ -3218,7 +3218,7 @@ class SettingController extends Controller
 
 			];
 
-			Mst_store_link_delivery_boy::insert($data);
+			Mst_store_link_delivery_boy::firstOrCreate($data);
 		}
 		$store_info = Mst_store::where('store_id', $store_id)->first();
 
