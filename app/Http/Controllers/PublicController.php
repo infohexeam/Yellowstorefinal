@@ -32,6 +32,14 @@ use Twilio\Rest\Client;
 class PublicController extends Controller
 {
 
+  public function GetSubCategory(Request $request)
+  {
+    $category_id = $request->category_id;
+
+    $subcategory  = Mst_SubCategory::where("category_id", '=', $category_id)->where('sub_category_status', 1)->pluck("sub_category_name", "sub_category_id");
+    return response()->json($subcategory);
+  }
+
 
   public function isPCodeAvailable(Request $request)
   {

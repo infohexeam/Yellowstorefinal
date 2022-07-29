@@ -786,7 +786,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('store/product/ajax/get_category', 'StoreController@GetCategory');
 
-        Route::get('store/product/ajax/get_subcategory', 'StoreController@GetSubCategory');
+        // Route::get('store/product/ajax/get_subcategory', 'StoreController@GetSubCategory');
         Route::get('store/product/ajax/get_attr_value', 'StoreController@GetAttr_Value');
         Route::get('store/ajax/find-availble-dboys', 'StoreController@GetAvailableDBoy');
 
@@ -981,4 +981,5 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
     Route::get('product/ajax/is-code-available', 'PublicController@isPCodeAvailable');
     Route::get('g-product/ajax/is-code-available', 'PublicController@isPCodeAvailableGlobalPro');
+    Route::get('store/product/ajax/get_subcategory', 'PublicController@GetSubCategory');
 });
