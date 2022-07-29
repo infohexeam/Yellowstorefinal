@@ -3255,15 +3255,13 @@ class SettingController extends Controller
 			//dd($values);
 			foreach ($values as $value) {
 
-				$data = [
-					[
-						'store_id' => $value,
-						'delivery_boy_id' => $request->delivery_boy_id,
+				
 
-					],
-				];
+				Mst_store_link_delivery_boy::firstorcreate([
+					'store_id' => $value,
+					'delivery_boy_id' => $request->delivery_boy_id,
 
-				Mst_store_link_delivery_boy::firstorcreate($data);
+				]);
 			}
 
 			return redirect('admin/delivery_boy/list')->with('status', 'Store assigned successfully.');
