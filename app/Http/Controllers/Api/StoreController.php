@@ -1874,7 +1874,7 @@ class StoreController extends Controller
 
 
 
-                $inventoryData = $inventoryData->orderBy('updated_time', 'DESC');
+                $inventoryData = $inventoryData->orderBy('mst_store_product_varients.created_at', 'DESC');
 
 
                 $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
