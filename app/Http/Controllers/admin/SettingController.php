@@ -3210,15 +3210,16 @@ class SettingController extends Controller
 		$values = $request->store_id;
 		foreach ($delivery_boy_id as $value) {
 
-			$data = [
-				'store_id' => $store_id,
-				'delivery_boy_id' => $value,
-				'created_at' => $date,
-				'updated_at' => $date,
-
-			];
-
-			Mst_store_link_delivery_boy::firstOrCreate($data);
+			Mst_store_link_delivery_boy::firstOrCreate(
+				[
+					'store_id' => $store_id,
+					'delivery_boy_id' => $value,
+				],
+				[
+					'created_at' => $date,
+					'updated_at' => $date,
+				]
+			);
 		}
 		$store_info = Mst_store::where('store_id', $store_id)->first();
 
