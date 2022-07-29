@@ -582,7 +582,7 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->orderBy('product_varient_id','DESC')->get();
+    $inventoryData = $inventoryData->orderBy('product_varient_id','DESC')->whereBetween('mst_store_product_varients.created_at',[@$a1,@$a2])->get();
 
     //  dd($inventoryData);
 
