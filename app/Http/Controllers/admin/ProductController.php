@@ -773,7 +773,7 @@ class ProductController extends Controller
         'mst_store_categories.category_name',
         'mst__sub_categories.sub_category_id',
         'mst__sub_categories.sub_category_name'
-      )
+      )->selectRaw('SUM(trn__recently_visited_products.visit_count) as sum')
         ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
         ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
         ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
@@ -820,7 +820,7 @@ class ProductController extends Controller
           'mst_store_categories.category_name',
           'mst__sub_categories.sub_category_id',
           'mst__sub_categories.sub_category_name'
-        )
+        )->selectRaw('SUM(trn__recently_visited_products.visit_count) as sum')
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
           ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_products.store_id')
           ->join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__recently_visited_products.product_id')
