@@ -3209,19 +3209,16 @@ class SettingController extends Controller
 		$date =  Carbon::now();
 		$values = $request->store_id;
 		foreach ($delivery_boy_id as $value) {
-			if(!Mst_store_link_delivery_boy::where(['store_id'=>$store_id,'delivery_boy_id'=>$value])->exists())
-			{
-				$data = [
-					'store_id' => $store_id,
-					'delivery_boy_id' => $value,
-	
-				];
-	
-				Mst_store_link_delivery_boy::insert($data); 
 
-			}
+			$data = [
+				'store_id' => $store_id,
+				'delivery_boy_id' => $value,
+				'created_at' => $date,
+				'updated_at' => $date,
 
-		
+			];
+
+			Mst_store_link_delivery_boy::insert($data);
 		}
 		$store_info = Mst_store::where('store_id', $store_id)->first();
 
@@ -3262,14 +3259,11 @@ class SettingController extends Controller
 					[
 						'store_id' => $value,
 						'delivery_boy_id' => $request->delivery_boy_id,
-						'created_at' => $date,
-						'updated_at' => $date,
-
 
 					],
 				];
 
-				Mst_store_link_delivery_boy::insert($data);
+				Mst_store_link_delivery_boy::firstorcreate($data);
 			}
 
 			return redirect('admin/delivery_boy/list')->with('status', 'Store assigned successfully.');
