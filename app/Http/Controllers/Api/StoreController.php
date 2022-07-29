@@ -1839,15 +1839,15 @@ class StoreController extends Controller
                 $a1 = Carbon::parse($request->date_from)->startOfDay();
                 $a2  = Carbon::parse($request->date_to)->endOfDay();
 
-                // if(isset($request->date_from))
-                // {
-                //   $inventoryData = $inventoryData->whereDate('trn_store_orders.created_at','>=',$a1);
-                // }
+                if(isset($request->date_from))
+                 {
+                  $inventoryData = $inventoryData->whereDate('mst_store_product_varients.created_at','>=',$a1);
+                 }
 
-                // if(isset($request->date_to))
-                // {
-                //   $inventoryData = $inventoryData->whereDate('trn_store_orders.created_at','<=',$a2);
-                // }
+                 if(isset($request->date_to))
+                 {
+                   $inventoryData = $inventoryData->whereDate('mst_store_product_varients.created_at','<=',$a2);
+                 }
 
                 if (isset($request->product_id)) {
                     $inventoryData = $inventoryData->where('mst_store_products.product_id', $request->product_id);
@@ -1889,8 +1889,8 @@ class StoreController extends Controller
                         ->where('mst_store_products.store_id', $store_id)
                        
                         ->where('mst_store_products.product_type', 1)
-                        ->orderBy('mst_store_product_varients.product_varient_id', 'DESC')
-                        ->whereBetween('mst_store_product_varients.created_at',[@$a1,@$a2]);
+                        ->orderBy('mst_store_product_varients.product_varient_id', 'DESC');
+                       
                       
 
                     if (isset($request->product_id)) {
