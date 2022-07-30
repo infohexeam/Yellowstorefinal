@@ -153,6 +153,8 @@
         <ul class="slide-menu">
               <li><a class="slide-item" href="{{route('admin.show_reports')}}">{{ __('Product Wise Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('admin.product_visit_reports')}}">{{ __('Product Visit Reports') }}</a></li>
+               <li><a class="slide-item" href="{{route('admin.delivery_boy_payout_reports')}}">{{ __('Delivery Boy Payout Reports') }}</a></li>
+              
               <li><a class="slide-item" href="{{route('admin.store_visit_reports')}}">{{ __('Store Visit Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('admin.sales_reports')}}">{{ __('Sales Reports') }}</a></li>
 

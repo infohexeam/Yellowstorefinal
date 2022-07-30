@@ -112,6 +112,9 @@
                         @if (session()->has('message'))
                         <p class="alert alert-success">{{ session('message') }}</p>
                         @endif
+                         @if (session()->has('danger'))
+                        <p class="alert alert-danger">{{ session('danger') }}</p>
+                        @endif
                         <div class="wrap-input100 validate-input">
                            {{-- <input class="input100" id="store_username" type="store_username" name="store_username" placeholder="Username" value="{{ old('store_username') }}" required autocomplete="store_username" >
                            @error('store_username')

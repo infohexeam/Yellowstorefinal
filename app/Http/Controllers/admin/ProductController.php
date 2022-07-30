@@ -94,25 +94,47 @@ class ProductController extends Controller
     $subadmin_id = $request->subadmin_id;
     $stores  = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
       ->where("trn__store_admins.role_id", '=', 0)
-      ->where("mst_stores.subadmin_id", '=', $subadmin_id)
-      ->pluck("mst_stores.store_name", "mst_stores.store_id");
+      ->where("mst_stores.subadmin_id", '=', $subadmin_id);
+      if(isset($subadmin_id))
+      {
+        if ($subadmin_id!='')
+        {
+          $stores = $stores->where("mst_stores.subadmin_id", '=', $subadmin_id);
+  
+        }
+       
+      }
+      $stores=$stores->pluck("mst_stores.store_name", "mst_stores.store_id");
 
     return response()->json($stores);
   }
 
   public function listProductNames(Request $request)
   {
-    $subadmin_id = $request->subadmin_id;
+    //$subadmin_id = $request->subadmin_id;
     $store_id = $request->store_id;
 
 
     $products  = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
     if (isset($store_id))
-      $products = $products->where("mst_store_products.store_id", '=', $store_id);
+    {
+      if ($store_id!='')
+      {
+         $products = $products->where("mst_store_products.store_id", '=', $store_id);
+
+      }
+     
+
+    }
+      
 
     if (isset($subadmin_id))
+    {
       $products = $products->where("mst_stores.subadmin_id", '=', $subadmin_id);
+
+    }
+     
 
     $products = $products->pluck("mst_store_products.product_name", "mst_store_products.product_id");
 
@@ -2105,6 +2127,139 @@ class ProductController extends Controller
 
 
       return view('admin.masters.reports.delivery_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
+    } catch (\Exception $e) {
+      return redirect()->back()->withErrors([$e->getMessage()])->withInput();
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+  }
+  public function deliveryBoyPayoutReport(Request $request)
+  {
+    // echo "working...";die;
+    try {
+
+      $pageTitle = "Delivery Boy Payout Reports";
+      $datefrom = '';
+      $dateto = '';
+
+
+      if (auth()->user()->user_role_id  == 0) {
+        $stores = Mst_store::orderby('store_id', 'DESC')->get();
+      } else {
+        $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+      }
+
+      $subadmins = User::where('user_role_id', '!=', 0)->get();
+
+      $customers = Trn_store_customer::all();
+
+      $deliveryBoys =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+        ->get();
+
+      $orderStatus = Sys_store_order_status::all();
+
+
+
+      $data = Trn_store_order::select(
+
+        'trn_store_orders.order_id',
+        'trn_store_orders.order_number',
+        'trn_store_orders.customer_id',
+        'trn_store_orders.store_id',
+        'trn_store_orders.subadmin_id',
+        'trn_store_orders.product_total_amount',
+        'trn_store_orders.delivery_charge',
+        'trn_store_orders.packing_charge',
+        'trn_store_orders.payment_type_id',
+        'trn_store_orders.status_id',
+        'trn_store_orders.payment_status',
+        'trn_store_orders.delivery_status_id',
+        'trn_store_orders.delivery_boy_id',
+        'trn_store_orders.coupon_id',
+        'trn_store_orders.coupon_code',
+        'trn_store_orders.reward_points_used',
+        'trn_store_orders.amount_before_applying_rp',
+        'trn_store_orders.trn_id',
+        'trn_store_orders.created_at',
+        'trn_store_orders.amount_reduced_by_coupon',
+        'trn_store_orders.order_type',
+
+        'trn_store_customers.customer_id',
+        'trn_store_customers.customer_first_name',
+        'trn_store_customers.customer_last_name',
+        'trn_store_customers.customer_mobile_number',
+        'trn_store_customers.place',
+
+        'mst_stores.store_id',
+        'mst_stores.store_name',
+        'mst_stores.store_mobile',
+        'mst_stores.subadmin_id',
+
+        'mst_delivery_boys.delivery_boy_name',
+        'mst_delivery_boys.delivery_boy_mobile',
+        'mst_delivery_boys.delivery_boy_commision',
+        'mst_delivery_boys.delivery_boy_commision_amount'
+
+
+
+
+      )
+        ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+        ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+        ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+
+      if (auth()->user()->user_role_id  != 0) {
+        // $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+        $data = $data->where('trn_store_orders.subadmin_id', '=', auth()->user()->id);
+      }
+      $data = $data->where('trn_store_orders.delivery_status_id', '=', 3)
+                    ->whereNotNull('mst_delivery_boys.delivery_boy_name');
+
+      if ($_GET) {
+        $datefrom = $request->date_from;
+        $dateto = $request->date_to;
+
+        $a1 = Carbon::parse($request->date_from)->startOfDay();
+        $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+        if (isset($request->date_from)) {
+          $data = $data->whereDate('trn_store_orders.created_at', '>=', $a1);
+        }
+
+        if (isset($request->date_to)) {
+          $data = $data->whereDate('trn_store_orders.created_at', '<=', $a2);
+        }
+
+
+        if (isset($request->customer_id)) {
+          $data = $data->where('trn_store_orders.customer_id', '=', $request->customer_id);
+        }
+
+        if (isset($request->delivery_boy_id)) {
+          $data = $data->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
+        }
+
+        if (isset($request->status_id)) {
+          $data = $data->where('trn_store_orders.status_id', '=', $request->status_id);
+        }
+
+        if (isset($request->order_type)) {
+          $data = $data->where('trn_store_orders.order_type', '=', $request->order_type);
+        }
+
+        if (isset($request->subadmin_id)) {
+          $data = $data->where('trn_store_orders.subadmin_id', '=', $request->subadmin_id);
+        }
+
+        if (isset($request->store_id)) {
+          $data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
+        }
+      }
+
+      $data = $data->orderBy('trn_store_orders.order_id', 'DESC')
+        ->get();
+
+
+      return view('admin.masters.reports.deliveryboy_payout_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
     } catch (\Exception $e) {
       return redirect()->back()->withErrors([$e->getMessage()])->withInput();
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();

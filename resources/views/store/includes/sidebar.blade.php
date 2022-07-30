@@ -126,6 +126,7 @@
         <ul class="slide-menu">
               <li><a class="slide-item" href="{{route('store.overall_product_reports')}}">{{ __('Overall Product Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.show_reports')}}">{{ __('Product Wise Reports') }}</a></li>
+              <li><a class="slide-item" href="{{route('store.delivery_boy_payout_reports')}}">{{ __('Delivery Boy Payout Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.store_visit_reports')}}">{{ __('Store Visit Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.sales_reports')}}">{{ __('Sales Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('store.inventory_reports')}}">{{ __('Inventory Reports') }}</a></li>

@@ -28,6 +28,11 @@ class Trn_store_order extends Model
   {
     return $this->belongsTo('App\User', 'subadmin_id', 'id');
   }
+  public function subadmindetail()
+  {
+    return $this->belongsTo('App\Models\admin\Mst_Subadmin_Detail','subadmin_id', 'subadmin_id');
+  }
+  
   
    public function storeadmin()
   {

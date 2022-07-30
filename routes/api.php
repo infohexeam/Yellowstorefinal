@@ -246,6 +246,7 @@ Route::group(['prefix' => 'store'], function () {
 
     Route::get('payment-report', 'Api\StoreController@paymentReport');
     Route::get('delivery-report', 'Api\StoreController@deliveryReport');
+    Route::get('deliveryboy-payout-report', 'Api\StoreController@deliveryBoyPayoutReport');
 
     Route::get('product-name-list', 'Api\StoreController@listProducts');
     Route::get('product-name-inventory', 'Api\StoreController@inventoryListProducts');

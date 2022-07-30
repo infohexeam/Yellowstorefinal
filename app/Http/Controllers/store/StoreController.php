@@ -800,6 +800,7 @@ class StoreController extends Controller
 
   public function createProduct()
   {
+    //dd(Auth::guard('store')->user()->store_id);
     $pageTitle = "Create Products";
 
     $products = Mst_store_product::all();
@@ -874,7 +875,7 @@ class StoreController extends Controller
     $validator = Validator::make(
       $request->all(),
       [
-        // 'product_name'          => 'required|unique:mst_store_products,product_name,'.$store_id.',store_id',
+        //'product_name'          => 'required|unique:mst_store_products,product_name,'.$store_id.',store_id',
         'product_name'          => 'required',
         'product_description'   => 'required',
         'regular_price'   => 'required',
@@ -922,6 +923,11 @@ class StoreController extends Controller
     if (!$validator->fails()) {
 
       $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$request->product_code)->count();
+      $ChkNameExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_name',$request->product_name)->count();
+      if($ChkNameExstnce > 0)
+      {
+          return redirect()->back()->with('status-error', 'Product Name already used by the store.')->withInput();
+      }
         
       if($ChkCodeExstnce > 0)
       {

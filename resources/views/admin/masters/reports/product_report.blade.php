@@ -378,9 +378,13 @@ $(document).ready(function() {
 <script>
     $(document).ready(function() {
         
+        
         $("#subadminId").on('change', function(){    
             
          let subadminId = $('#subadminId').val();
+      if ( typeof subadminId === "undefined") {
+          subadminId = '';
+      }
          
          var _token= $('input[name="_token"]').val();
             $.ajax({
@@ -414,12 +418,18 @@ $(document).ready(function() {
       if ( typeof subadminId === "undefined") {
           subadminId = '';
       }
+      
+    $("#storeId").on('change', function(){   
+    // alert(storeId);
      let storeId = $('#storeId').val();
+      if ( typeof storeId === "undefined") {
+          storeId = '';
+      }
      
      var _token= $('input[name="_token"]').val();
         $.ajax({
           type:"GET",
-          url:"{{ url('admin/product-name-list') }}?subadmin_id="+subadminId+'&store_id'+storeId,
+          url:"{{ url('admin/product-name-list') }}?store_id="+storeId,
 
           success:function(res){
                 if(res){
@@ -448,6 +458,7 @@ $(document).ready(function() {
             }
 
         });
+    });
 
     });
     

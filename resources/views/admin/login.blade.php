@@ -29,9 +29,9 @@
          <!-- COLOR SKIN CSS -->
          <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{URL::to('/assets/colors/color1.css')}}" />
          
-         <script src='https://www.google.com/recaptcha/api.js'></script>    
+        <!-- <script src='https://www.google.com/recaptcha/api.js'></script>    
          
-         <script src="https://www.google.com/recaptcha/api.js?render=6LdaDPgdAAAAAB82l56R-aueMZstr_Xe3iowacF8"></script>
+         <script src="https://www.google.com/recaptcha/api.js?render=6LdaDPgdAAAAAB82l56R-aueMZstr_Xe3iowacF8"></script>-->
 
 <style>
 

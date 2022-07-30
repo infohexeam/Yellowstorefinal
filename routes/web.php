@@ -93,6 +93,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/online-sales-report', 'ProductController@showOnlineSalesReport')->name('admin.online_sales_reports');
         Route::get('admin/offline-sales-report', 'ProductController@showOfflineSalesReport')->name('admin.offline_sales_reports');
         Route::get('admin/delivery-report', 'ProductController@deliveryReport')->name('admin.delivery_reports');
+        Route::get('admin/deliveryboy-payout-report', 'ProductController@deliveryBoyPayoutReport')->name('admin.delivery_boy_payout_reports');
         Route::get('admin/payment-report', 'ProductController@paymentReport')->name('admin.payment_reports');
 
         Route::get('admin/inventory-report', 'ProductController@showInventoryReport')->name('admin.inventory_reports');
@@ -969,6 +970,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/out-of-stock-report', 'CouponController@showOutofStockReport')->name('store.out_of_stock_reports');
 
         Route::get('store/delivery-report', 'CouponController@deliveryReport')->name('store.delivery_reports');
+        Route::get('store/deliveryboy-payout-report', 'CouponController@deliveryBoyPayoutReport')->name('store.delivery_boy_payout_reports');
         Route::get('store/payment-report', 'CouponController@paymentReport')->name('store.payment_reports');
 
 

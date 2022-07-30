@@ -61,15 +61,33 @@ class LoginController extends Controller
         if ($this->attemptLogin($request)) {
             
             $admin = Trn_StoreAdmin::where('store_mobile',$request->store_username)->first();
+            $today = Carbon::now()->toDateString();
                      
                       if ($admin) {
                           $cId = $admin->store_id;
+                          if($admin->store_account_status == 0)
+                          {
+                            Auth::guard('store')->logout();
+                           return redirect()->back()->with('danger','Profile is inactive ,Contact admin');
 
+                          }
+                          if($today>=$admin->expiry_date)
+                          {
+                        
+                            Auth::guard('store')->logout();
+                           return redirect()->back()->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($admin->expiry_date)).' Contact admin');
+                            
+                          }
+                        
                         if ($admin->store_otp_verify_status==0) {
                             Auth::guard('store')->logout();
                            return redirect('store/registration/otp_verify/view/'.Crypt::encryptString($cId));
                           
                       }
+                    
+                        
+
+                   
                 }
             return $this->sendLoginResponse($request);
         }
@@ -111,6 +129,7 @@ class LoginController extends Controller
     
     protected function credentials(Request $request)
     {
+       
         
         $today = Carbon::now()->toDateString();
         $store = Trn_StoreAdmin::where('store_mobile',$request->store_username)->first();
