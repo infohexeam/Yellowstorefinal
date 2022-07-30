@@ -404,6 +404,7 @@ var countPro = 0;
            product_id = $('#product_id').val();
            quantity = $('#quantity').val();
            rate = $('#rate').val();
+           mrp=$('#mrp').val();
        //    discount = $('#discount').val();
            total_discount = $('#total_discount').val();
            tax_value = $('#tax_value').val();
@@ -420,6 +421,7 @@ var countPro = 0;
                $('#customer_id').attr("disabled", true); 
                $('#total_amount').val(0);
                $('#total_discount').val(0);
+               product_res[0]=0;
                var _token = $('input[name="_token"]').val();
                $.ajax({
                     url:"{{ route('store.find_customer') }}",
@@ -440,6 +442,7 @@ var countPro = 0;
                               var total_sum = 0;
                               $(".price").each(function(){
                               total_sum += parseFloat($(this).text());
+                              $('.classProductId').val(0);
                               $('.total_sum').remove(); 
 
                          });
@@ -453,9 +456,12 @@ var countPro = 0;
                     }
                })
 
-                     $('#product_id').val('');
+                    
+                     $("#product_id option:eq(0)").attr('selected','selected');
+                      $("#product_id").val('');
                      $('#quantity').val('');
                      $('#rate').val('');
+                    $('#mrp').val('');
                    //  $('#discount').val('');
                      $('#total_discount').val('');
                      $('#tax_value').val(0);
