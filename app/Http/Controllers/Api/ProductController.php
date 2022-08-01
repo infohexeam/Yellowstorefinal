@@ -2156,7 +2156,7 @@ class ProductController extends Controller
                             if ($request->product_type == 2) {
                                 $product->product_status         = 1;
                             } else {
-                                $product->product_status         = 0;
+                                $product->product_status         = 1;
                             }
     
     
