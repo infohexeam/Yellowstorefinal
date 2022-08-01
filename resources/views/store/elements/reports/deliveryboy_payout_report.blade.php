@@ -30,7 +30,7 @@
                              </div>
                              
                               <div class="card-body border">
-                                <form action="{{route('admin.delivery_reports')}}" method="GET" enctype="multipart/form-data">
+                                <form action="{{route('store.delivery_boy_payout_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6">

@@ -2924,6 +2924,9 @@ class StoreController extends Controller
                 foreach ($deliveryReport as $sd) {
                     $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
                     $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
+                    $sd->subadmin_name=Helper::subAdminName($sd->subadmin_id)??'';
+                    $sd->subadmin_phone=$sd->subadmindetail->phone??'';
+                    
 
                    
 

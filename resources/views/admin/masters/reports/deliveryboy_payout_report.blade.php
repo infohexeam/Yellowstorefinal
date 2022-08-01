@@ -30,7 +30,7 @@
                              </div>
                              
                               <div class="card-body border">
-                                <form action="{{route('admin.delivery_reports')}}" method="GET" enctype="multipart/form-data">
+                                <form action="{{route('admin.delivery_boy_payout_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6">
@@ -112,6 +112,9 @@
                                             <th class="wd-15p">Delivery Charge</th>
                                             <th class="wd-15p">Commision/Month</th>
                                             <th class="wd-15p">Commision/Order</th>
+                                             <th class="wd-15p">Previous Commision</th>
+                                            <th class="wd-15p">Commisiion After order</th>
+
                                            
                                             
                                            
@@ -125,8 +128,25 @@
                                           
                                         @php
                                         $i = 0;
+                                        $tot_pre=0;
+                                        $tot_now=0;
+                                         $tot_pre_count=0;
+                                        $tot_now_count=0;
+                                       
+
                                         @endphp
                                         @foreach ($data as $d)
+                                        @php
+                                       
+                                    
+                                        
+                                        
+                                        $tot_now_count=App\Models\admin\Trn_store_order::where('delivery_boy_id',$d->delivery_boy_id)->whereIn('order_id',$check_array)->orderBy('order_id', 'DESC')->get()->count();
+                                        $tot_prev_count=$tot_now-1;
+                                        $tot_pre=$d->delivery_boy_commision+($tot_pre_count*@$d->delivery_boy_commision_amount);
+                                        $tot_now=$d->delivery_boy_commision+($tot_now_count*@$d->delivery_boy_commision_amount);
+
+                                        @endphp
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
@@ -147,6 +167,8 @@
                                             <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision_amount,2)??0.00 }}</td>
+                                            <td>{{ number_format(@$tot_pre)??0.00 }}</td>
+                                            <td>{{ number_format(@$tot_now)??0.00 }}</td>
 
                                           
                                             
@@ -158,7 +180,7 @@
 
                                         </tr>
                                         @endforeach
-                               
+                              
                                     
                                       </tbody>
                                    </table>

@@ -2254,12 +2254,19 @@ class ProductController extends Controller
           $data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
         }
       }
-
+      $total_count_now=$data->count();
+      $total_count_prev=$total_count_now-1;
       $data = $data->orderBy('trn_store_orders.order_id', 'DESC')
         ->get();
+      $check_array=[];
+      foreach($data as $d)
+      {
+        
+        array_push($check_array,$d->order_id);
+        
+      }
 
-
-      return view('admin.masters.reports.deliveryboy_payout_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
+      return view('admin.masters.reports.deliveryboy_payout_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','total_count_now','total_count_prev','check_array'));
     } catch (\Exception $e) {
       return redirect()->back()->withErrors([$e->getMessage()])->withInput();
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
