@@ -2934,18 +2934,32 @@ class StoreController extends Controller
                 } else {
                     $deliveryReport = $deliveryReport->paginate(10);
                 }
+                $check_array=[];
+        $i = 0;
+        $tot_pre=[];
+        $tot_now=[];
+        $tot_prev_count=[];
+        $tot_now_count=[];
+        
+        
 
 
 
-                foreach ($deliveryReport as $sd) {
+                foreach ($deliveryReport->reverse() as $sd) {
+                    $i++;
+          
+                    array_push($check_array,$sd->order_id);
+                    $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$sd->delivery_boy_id)->orderBy('order_id','DESC')->count();
+                    $tot_now_count[$i]=$total_count;
+                    $tot_prev_count[$i]=$tot_now_count[$i]-1;
                     $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
                     $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
                     $sd->subadmin_name=Helper::subAdminName($sd->subadmin_id)??'';
                     $sd->subadmin_phone=$sd->subadmindetail->phone??'';
                     $sd->commission_month='';
                     $sd->commission_order='';
-                    $sd->previous_commission='';
-                    $sd->commission_after_order='';
+                    $sd->previous_commission=$sd->delivery_boy_commision+($tot_prev_count[$i]*@$sd->delivery_boy_commision_amount);
+                    $sd->commission_after_order=$sd->delivery_boy_commision+($tot_now_count[$i]*@$sd->delivery_boy_commision_amount);
                     
 
                    

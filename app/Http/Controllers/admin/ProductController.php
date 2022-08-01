@@ -2254,19 +2254,33 @@ class ProductController extends Controller
           $data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
         }
       }
-      $total_count_now=$data->count();
-      $total_count_prev=$total_count_now-1;
-      $data = $data->orderBy('trn_store_orders.order_id', 'DESC')
-        ->get();
+    
+      $data = $data->get();
       $check_array=[];
+      $i = 0;
+      $tot_pre=[];
+      $tot_now=[];
+      $tot_prev_count=[];
+      $tot_now_count=[];
+      
       foreach($data as $d)
       {
+        $i++;
         
         array_push($check_array,$d->order_id);
+        $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
+        $tot_now_count[$i]=$total_count;
+        $tot_prev_count[$i]=$tot_now_count[$i]-1;
+        $d->previous_amount=$d->delivery_boy_commision+($tot_prev_count[$i]*@$d->delivery_boy_commision_amount);
+        $d->new_amount=$d->delivery_boy_commision+($tot_now_count[$i]*@$d->delivery_boy_commision_amount);
+  
         
       }
+    
 
-      return view('admin.masters.reports.deliveryboy_payout_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','total_count_now','total_count_prev','check_array'));
+
+     
+      return view('admin.masters.reports.deliveryboy_payout_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','tot_now_count','tot_prev_count','check_array','tot_pre','tot_now','total_count'));
     } catch (\Exception $e) {
       return redirect()->back()->withErrors([$e->getMessage()])->withInput();
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();

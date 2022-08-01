@@ -89,6 +89,8 @@
                                             <th class="wd-15p">Delivery Charge</th>
                                             <th class="wd-15p">Commision/Month</th>
                                             <th class="wd-15p">Commision/Order</th>
+                                             <th class="wd-15p">Previous Commision</th>
+                                            <th class="wd-15p">Commisiion After order</th>
                                            
                                             
                                            
@@ -103,7 +105,7 @@
                                         @php
                                         $i = 0;
                                         @endphp
-                                        @foreach ($data as $d)
+                                        @foreach ($data->reverse() as $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
@@ -124,6 +126,9 @@
                                             <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision_amount,2)??0.00 }}</td>
+                                            <td>{{ number_format(@$d->previous_amount)??0.00 }}</td>
+                                            <td>{{ number_format(@$d->new_amount)??0.00 }}</td>
+
 
                                           
                                             

@@ -1648,11 +1648,30 @@ class CouponController extends Controller
         }
       }
 
-      $data = $data->where('trn_store_orders.store_id',$store_id)->orderBy('trn_store_orders.order_id', 'DESC')
-        ->get();
+      $data = $data->where('trn_store_orders.store_id',$store_id) ->get();
+        $check_array=[];
+        $i = 0;
+        $tot_pre=[];
+        $tot_now=[];
+        $tot_prev_count=[];
+        $tot_now_count=[];
+        
+        foreach($data as $d)
+        {
+          $i++;
+          
+          array_push($check_array,$d->order_id);
+          $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
+          $tot_now_count[$i]=$total_count;
+          $tot_prev_count[$i]=$tot_now_count[$i]-1;
+          $d->previous_amount=$d->delivery_boy_commision+($tot_prev_count[$i]*@$d->delivery_boy_commision_amount);
+          $d->new_amount=$d->delivery_boy_commision+($tot_now_count[$i]*@$d->delivery_boy_commision_amount);
+    
+          
+        }
 
 
-      return view('store.elements.reports.deliveryboy_payout_report', compact('subadmins','orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
+      return view('store.elements.reports.deliveryboy_payout_report', compact('subadmins','orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','tot_now_count','tot_prev_count','check_array','tot_pre','tot_now','total_count'));
   
   }
 }
