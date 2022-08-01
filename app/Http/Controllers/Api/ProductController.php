@@ -2559,10 +2559,12 @@ class ProductController extends Controller
                         }
                     } else {
                         $product_varient_id = $request->product_varient_id;
-
+                        $variant_status=$request->variant_status;
+            
                         $productVar['variant_name'] = $request->variant_name;
                         $productVar['product_varient_price'] = $request->var_regular_price;
                         $productVar['product_varient_offer_price'] = $request->var_sale_price;
+                        $productVar['variant_status'] = $request->variant_status;
                         if (Mst_store_product_varient::where('product_varient_id', $product_varient_id)->update($productVar)) {
 
                             $prodata = Mst_store_product::find($request->product_id);
@@ -2628,6 +2630,7 @@ class ProductController extends Controller
                             $data['status'] = 1;
                             $data['product_id'] = $request->product_id;
                             $data['product_varient_id'] = $product_varient_id;
+                            $data['variant_status']=$request->variant_status;
                             $data['message'] = "Success.";
                             return response($data);
                         }
