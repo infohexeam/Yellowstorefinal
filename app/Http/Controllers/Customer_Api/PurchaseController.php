@@ -488,7 +488,7 @@ class PurchaseController extends Controller
                     $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
                     $proData = Mst_store_product::find($varProdu->product_id);
-                    if ($proData->service_type != 2) {
+                    //if ($proData->service_type != 2) {
                         
                         if (isset($varProdu)) {
                             
@@ -521,10 +521,10 @@ class PurchaseController extends Controller
                         return response($data);
                         }
                         
-                    }else{
+                   /* }else{
                         $data['status'] = 2;
                         $data['message'] = "Cannot add service product to cart";
-                    }
+                    }*/
                 }
                
             } else {
