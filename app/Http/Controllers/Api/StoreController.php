@@ -2956,8 +2956,8 @@ class StoreController extends Controller
                     $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
                     $sd->subadmin_name=Helper::subAdminName($sd->subadmin_id)??'';
                     $sd->subadmin_phone=$sd->subadmindetail->phone??'';
-                    $sd->commission_month='';
-                    $sd->commission_order='';
+                    $sd->commission_month=@$sd->delivery_boy_commision;
+                    $sd->commission_order=@$sd->delivery_boy_commision_amount;
                     $sd->previous_commission=$sd->delivery_boy_commision+($tot_prev_count[$i]*@$sd->delivery_boy_commision_amount);
                     $sd->commission_after_order=$sd->delivery_boy_commision+($tot_now_count[$i]*@$sd->delivery_boy_commision_amount);
                     
