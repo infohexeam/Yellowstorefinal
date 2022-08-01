@@ -167,7 +167,7 @@
                                             <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision_amount,2)??0.00 }}</td>
-                                            <td>{{ number_format(@$tot_pre)??0.00 }}</td>
+                                            <td>{{ number_format(@$tot_now-@$d->delivery_boy_commision_amount)??0.00 }}</td>
                                             <td>{{ number_format(@$tot_now)??0.00 }}</td>
 
                                           
