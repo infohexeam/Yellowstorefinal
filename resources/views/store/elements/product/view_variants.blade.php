@@ -42,7 +42,9 @@
                               <th class="wd-15p">{{ __('MRP') }}</th>
                               <th class="wd-15p">{{ __('Sale Price') }}</th>
                               <th class="wd-15p">{{ __('Image') }}</th>
+                             
                               <th class="wd-15p">{{ __('Stock Count') }}</th>
+                               <th class="wd-15p">{{ __('status') }}</th>
                               <th  class="wd-20p">{{__('Action')}}</th>
                            </tr>
                         </thead>
@@ -62,6 +64,25 @@
                               <td>{{$value->product_varient_offer_price}}</td>
                               <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$value->product_varient_base_image)}}"  width="50" ></td>
                               <td>{{$value->stock_count}}</td>
+                               <td>
+                            
+
+                              @php
+
+                                $productStatus = $value->variant_status;
+                              @endphp
+                        <form action="{{route('store.status_product_variant',$value->product_varient_id)}}" method="POST">
+                                          
+                           @csrf
+                              @method('POST')
+                            <button type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
+                            @if($productStatus == 0) btn-danger @else btn-success @endif"> @if($productStatus == 0)
+                            Inactive
+                            @else
+                            Active
+                            @endif</button>
+                        </form>
+                        </td>
 
                               <td>
                                  <form action="{{route('store.destroy_product_variant',$value->product_varient_id)}}" method="POST">

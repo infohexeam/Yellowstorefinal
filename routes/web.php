@@ -761,7 +761,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::post('store/product/status/{product_id}', 'StoreController@statusProduct')->name('store.status_product');
         Route::post('store/product/stock/update/{product_id}', 'StoreController@stockUpdate')->name('store.stock_update_product');
-
+        Route::post('store/product-variant/status/{varient_id}', 'StoreController@statusProductVarient')->name('store.status_product_variant');
         Route::post('store/product/attribute/destroy/{attr_groups}', 'StoreController@destroyAttribute')->name('store.destroy_attribute');
         Route::post('store/product/attribute/store', 'StoreController@storeAttribute')->name('store.store_attribute');
 

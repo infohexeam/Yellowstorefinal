@@ -1905,6 +1905,27 @@ class StoreController extends Controller
   
   
 
+  public function statusProductVarient(Request $request,  Mst_store_product_varient $product, $product_id)
+  {
+
+    $pro_id = $request->varient_id;
+    $product = Mst_store_product_varient::Find($pro_id);
+    $status = $product->variant_status;
+    
+    
+      
+      if ($status == 0) {
+        
+        $product->variant_status  = 1;
+      } else {
+        $product->variant_status  = 0;
+      }
+      $product->update();
+      
+      
+      return redirect()->back()->with('status', 'Product varient Status Changed Successfully');
+    
+  }
   public function statusProduct(Request $request, Mst_store_product $product, $product_id)
   {
 
