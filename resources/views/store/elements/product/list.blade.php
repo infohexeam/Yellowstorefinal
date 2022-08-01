@@ -181,14 +181,10 @@
                            @csrf
                               @method('POST')
                             <button type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
-                            @if($productStatus == 0) btn-danger @else  @if(@$stock_count_sum != 0) btn-success @else btn-danger @endif @endif"> @if($productStatus == 0)
+                            @if($productStatus == 0) btn-danger @else btn-success @endif"> @if($productStatus == 0)
                             Inactive
                             @else
-                            @if(@$stock_count_sum != 0)
                             Active
-                            @else
-                            Inactive
-                            @endif
                             @endif</button>
                         </form>
                         </td>
