@@ -342,15 +342,15 @@ class CustomerController extends Controller
 
                 // customer reward
                 
-                //  if (isset($request->device_token) && isset($request->device_type)) {
-                //         Trn_CustomerDeviceToken::where('customer_id', $customer_id)->delete();
+                 if (isset($request->device_token) && isset($request->device_type)) {
+                        Trn_CustomerDeviceToken::where('customer_id', $customer_id)->delete();
 
-                //         $cdt = new Trn_CustomerDeviceToken;
-                //         $cdt->customer_id =$customer_id;
-                //         $cdt->customer_device_token = $request->device_token;
-                //         $cdt->customer_device_type = $request->device_type;
-                //         $cdt->save();
-                //     }
+                        $cdt = new Trn_CustomerDeviceToken;
+                        $cdt->customer_id =$customer_id;
+                        $cdt->customer_device_token = $request->device_token;
+                        $cdt->customer_device_type = $request->device_type;
+                        $cdt->save();
+                    }
                                     
 
                         $rewards = Mst_RewardToCustomer::where('customer_mobile_number',  $request->customer_mobile_number)->get();
@@ -384,6 +384,7 @@ class CustomerController extends Controller
                 $cr->discription = 'Registration points';
                 if ($cr->save()) {
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+
                     foreach ($customerDevice as $cd) {
                         $title = 'Registration points credited';
                         $body = $configPoint->registraion_points . ' points credited to your wallet..! Verify your account and Login now';
