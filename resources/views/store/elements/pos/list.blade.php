@@ -457,8 +457,9 @@ var countPro = 0;
                })
 
                     
-                     $("#product_id option:eq(0)").attr('selected','selected');
-                      $("#product_id").val('');
+                    
+     
+                      $("#product_id").val('').trigger('change');;
                      $('#quantity').val('');
                      $('#rate').val('');
                     $('#mrp').val('');
