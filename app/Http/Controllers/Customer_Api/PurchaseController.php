@@ -295,7 +295,7 @@ class PurchaseController extends Controller
                             return response($data);
                         }
                            
-                    if ($proData->service_type != 2) {    
+                    //if ($proData->service_type != 2) {    
                         if (isset($varProdu)) { 
                             if ($request->quantity <= $varProdu->stock_count) {  //quantity shud be less dan current stock
                
@@ -391,10 +391,10 @@ class PurchaseController extends Controller
                         return response($data);
                     }
                         
-                    }else{
+                    /*}else{
                         $data['status'] = 2;
                         $data['message'] = "Cannot add service product to cart";
-                    }
+                    }*/
 
                     
                     //old code
