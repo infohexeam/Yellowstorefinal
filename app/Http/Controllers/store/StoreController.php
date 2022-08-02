@@ -923,11 +923,11 @@ class StoreController extends Controller
     if (!$validator->fails()) {
 
       $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$request->product_code)->count();
-      $ChkNameExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_name',$request->product_name)->count();
-      if($ChkNameExstnce > 0)
-      {
-          return redirect()->back()->with('status-error', 'Product Name already used by the store.')->withInput();
-      }
+      // $ChkNameExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_name',$request->product_name)->count();
+      // if($ChkNameExstnce > 0)
+      // {
+      //     return redirect()->back()->with('status-error', 'Product Name already used by the store.')->withInput();
+      // }
         
       if($ChkCodeExstnce > 0)
       {
