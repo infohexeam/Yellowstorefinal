@@ -409,7 +409,7 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
               
                             <li><a class="slide-item" href="{{route('admin.sales_reports')}}">{{ __('Sales Reports') }}</a></li>
 
-              
+               <li><a class="slide-item" href="{{route('admin.delivery_boy_payout_reports')}}">{{ __('Delivery Boy Payout Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('admin.online_sales_reports')}}">{{ __('Online Sales Reports') }}</a></li>
               <li><a class="slide-item" href="{{route('admin.offline_sales_reports')}}">{{ __('Offline Sales Reports') }}</a></li>
 
