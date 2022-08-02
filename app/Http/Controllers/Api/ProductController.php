@@ -2076,6 +2076,7 @@ class ProductController extends Controller
     public function addProductn(Request $request)
     {  // echo "here";die;
         // dd($request->all());
+        DB::beginTransaction();
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
@@ -2278,10 +2279,12 @@ class ProductController extends Controller
                                 $data['status'] = 1;
                                 $data['product_id'] = $id;
                                 $data['message'] = "Success.";
+                                DB::commit();
                                 return response($data);
                             } else {
                                 $data['status'] = 0;
                                 $data['message'] = "Product insertion failed.";
+                                DB::commit();
                                 return response($data);
                             }
                         } else {
@@ -2410,12 +2413,14 @@ class ProductController extends Controller
     
                                     $data['status'] = 1;
                                     $data['product_id'] = $request->product_id;
+                                    DB::commit();
                                     $data['message'] = "Success.";
                                     return response($data);
                                 }
                             } else {
                                 $data['status'] = 0;
                                 $data['message'] = "Product not found ";
+                                DB::commit();
                                 return response($data);
                             }
                         }
@@ -2427,17 +2432,21 @@ class ProductController extends Controller
                     $data['status'] = 0;
                     $data['message'] = "failed";
                     $data['errors'] = $validator->errors();
+                    DB::commit();
                     return response($data);
                 }
             } else {
                 $data['status'] = 0;
                 $data['message'] = "Store not found ";
+                DB::commit();
                 return response($data);
             }
         } catch (\Exception $e) {
+            DB::rollback();
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         } catch (\Throwable $e) {
+            DB::rollback();
             $response = ['status' => '0', 'message' => $e->getMessage()];
         }
     }
@@ -3034,6 +3043,8 @@ class ProductController extends Controller
                     'mst_store_products.product_name',
                     'mst_store_products.product_brand',
                     'mst_store_product_varients.product_varient_id',
+                    'mst_store_product_varients.is_base_variant',
+                    'mst_store_product_varients.variant_status',
                     'mst_store_product_varients.variant_name',
                     'mst_store_agencies.agency_id',
                     'mst_store_agencies.agency_name',

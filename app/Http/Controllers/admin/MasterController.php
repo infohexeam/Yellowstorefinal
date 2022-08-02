@@ -110,7 +110,7 @@ class MasterController extends Controller
                
         $response = curl_exec($ch);
   
-        dd($response);
+        return back();
     }
 
 
