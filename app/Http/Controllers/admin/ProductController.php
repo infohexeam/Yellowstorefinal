@@ -2473,6 +2473,8 @@ class ProductController extends Controller
         'mst_store_product_varients.product_varient_price',
         'mst_store_product_varients.product_varient_offer_price',
         'mst_store_product_varients.product_varient_base_image',
+        'mst_store_product_varients.is_base_variant',
+        'mst_store_product_varients.variant_status',
         'mst_store_product_varients.stock_count',
         'mst_store_product_varients.created_at',
         'mst_store_categories.category_id',

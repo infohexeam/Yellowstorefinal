@@ -908,6 +908,8 @@ class CouponController extends Controller
         'mst_store_product_varients.product_varient_base_image',
         'mst_store_product_varients.stock_count',
         'mst_store_product_varients.created_at',
+        'mst_store_product_varients.is_base_variant',
+        'mst_store_product_varients.variant_status',
         'mst_store_categories.category_id',
         'mst_store_categories.category_name',
         'mst__stock_details.stock',
@@ -915,6 +917,7 @@ class CouponController extends Controller
         'mst__stock_details.created_at AS updated_time',
         'mst_store_agencies.agency_name',
         'mst__sub_categories.sub_category_name',
+        
 
       );
 

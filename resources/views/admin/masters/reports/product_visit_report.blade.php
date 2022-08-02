@@ -267,11 +267,15 @@ $(function(e) {
 } );
 
 
-    $(document).ready(function() {
+      $(document).ready(function() {
+        
         
         $("#subadminId").on('change', function(){    
             
          let subadminId = $('#subadminId').val();
+      if ( typeof subadminId === "undefined") {
+          subadminId = '';
+      }
          
          var _token= $('input[name="_token"]').val();
             $.ajax({
@@ -288,16 +292,6 @@ $(function(e) {
                         {
                           $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
                         });
-
-                        let storeId = getUrlParameter('store_id');
-                    if ( typeof storeId !== "undefined" && storeId) {
-                        $("#storeId option").each(function(){
-                            if($(this).val()==storeId){ 
-                                $(this).attr("selected","selected");    
-                            }
-                        });
-                    } 
-
                     }else
                     {
                       $('#storeId').empty();
@@ -315,12 +309,18 @@ $(function(e) {
       if ( typeof subadminId === "undefined") {
           subadminId = '';
       }
+      
+    $("#storeId").on('change', function(){   
+    // alert(storeId);
      let storeId = $('#storeId').val();
+      if ( typeof storeId === "undefined") {
+          storeId = '';
+      }
      
      var _token= $('input[name="_token"]').val();
         $.ajax({
           type:"GET",
-          url:"{{ url('admin/product-name-list') }}?subadmin_id="+subadminId+'&store_id='+storeId,
+          url:"{{ url('admin/product-name-list') }}?store_id="+storeId,
 
           success:function(res){
                 if(res){
@@ -349,9 +349,9 @@ $(function(e) {
             }
 
         });
+    });
 
     });
-    
     
     $(document).ready(function() {
         

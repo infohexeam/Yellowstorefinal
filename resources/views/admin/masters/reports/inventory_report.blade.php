@@ -100,7 +100,7 @@
                                            <div class="col-md-6">
                                               <div class="form-group">
                                                   <label class="form-label">Products</label>
-                                                      <select name="product_id" id="product_id" class="form-control select2-show-search" data-placeholder="Products" >
+                                                      <select name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Products" >
                                                            <option value="" >Products</option>
                                                            @foreach ($products as $key)
                                                                 <option value="{{ $key->product_id }}" {{request()->input('product_id') == $key->product_id ? 'selected':''}} > {{ $key->product_name }} </option>
@@ -225,11 +225,19 @@
                                                 </td>
                                             {{-- <td>{{ $d->min_stock }}</td> --}}
                                             <td> 
+                                            @if($d->is_base_variant == 1)
                                                 @if($d->product_status == 1)
                                                     Active
                                                 @else
                                                     Inactive
                                                 @endif
+                                            @else
+                                             @if($d->variant_status == 1)
+                                                    Active
+                                             @else
+                                                    Inactive
+                                             @endif
+                                            @endif
                                             </td>
                                             <td>{{ $d->prev_stock }}</td>
                                             <td>{{ $d->stock }}</td>
@@ -282,14 +290,15 @@
 
 <script>
   $(document).ready(function() {
-        var cc = 0;
-       $('#subadminId').change(function(){
-                    let storeIdc = $('#storeId').val();
-
-           if((cc != 0) || (storeIdc == ''))
-           {
-               
+        
+        
+        
+        $("#subadminId").on('change', function(){    
+            
          let subadminId = $('#subadminId').val();
+      if ( typeof subadminId === "undefined") {
+          subadminId = '';
+      }
          
          var _token= $('input[name="_token"]').val();
             $.ajax({
@@ -298,24 +307,13 @@
     
               success:function(res){
                     if(res){
-                        console.log(res);
+                       // console.log(res);
                         $('#storeId').prop("diabled",false);
                         $('#storeId').empty();
                         $('#storeId').append('<option value="">Store</option>');
                         $.each(res,function(store_id,store_name)
                         {
                           $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
-                          
-                          let storeId = getUrlParameter('storeId');
-                            if ( typeof storeId !== "undefined" && storeId) {
-                                $("#storeId option").each(function(){
-                                    if($(this).val()==storeId){ 
-                                        $(this).attr("selected","selected");    
-                                    }
-                                });
-                            } 
-                    
-                    
                         });
                     }else
                     {
@@ -324,12 +322,59 @@
                 }
     
             });
-        }else{
-            cc++;
-        }
         });
     });
     
+    
+    $(document).ready(function() {
+ 
+     let subadminId = $('#subadminId').val();
+      if ( typeof subadminId === "undefined") {
+          subadminId = '';
+      }
+      
+    $("#storeId").on('change', function(){   
+    // alert(storeId);
+     let storeId = $('#storeId').val();
+      if ( typeof storeId === "undefined") {
+          storeId = '';
+      }
+     
+     var _token= $('input[name="_token"]').val();
+        $.ajax({
+          type:"GET",
+          url:"{{ url('admin/product-name-list') }}?store_id="+storeId,
+
+          success:function(res){
+                if(res){
+                   // console.log(res);
+                    $('#productId').prop("diabled",false);
+                    $('#productId').empty();
+                    $('#productId').append('<option value="">Product</option>');
+                    $.each(res,function(product_id,product_name)
+                    {
+                      $('#productId').append('<option value="'+product_id+'">'+product_name+'</option>');
+                    });
+                    
+                    let productId = getUrlParameter('product_id');
+                    if ( typeof productId !== "undefined" && productId) {
+                        $("#productId option").each(function(){
+                            if($(this).val()==productId){ 
+                                $(this).attr("selected","selected");    
+                            }
+                        });
+                    } 
+    
+                }else
+                {
+                  $('#storeId').empty();
+                }
+            }
+
+        });
+    });
+
+    });
        $(document).ready(function() {
         
         $("#categoryId").on('change', function(){    

@@ -189,11 +189,19 @@
                                                 </td>
                                             {{-- <td>{{ $d->min_stock }}</td> --}}
                                             <td> 
+                                                 @if($d->is_base_variant == 1)
                                                 @if($d->product_status == 1)
                                                     Active
                                                 @else
                                                     Inactive
                                                 @endif
+                                            @else
+                                             @if($d->variant_status == 1)
+                                                    Active
+                                             @else
+                                                    Inactive
+                                             @endif
+                                            @endif
                                             </td>
                                             <td>{{ $d->prev_stock }}</td>
                                             <td>{{ $d->stock }}</td>

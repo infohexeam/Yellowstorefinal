@@ -90,7 +90,7 @@
                                            <div class="col-md-6">
                                               <div class="form-group">
                                                   <label class="form-label">Products</label>
-                                                      <select name="product_id" id="product_id" class="form-control select2-show-search" data-placeholder="Products" >
+                                                      <select name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Products" >
                                                            <option value="" >Products</option>
                                                            @foreach ($products as $key)
                                                                 <option value="{{ $key->product_id }}" {{request()->input('product_id') == $key->product_id ? 'selected':''}} > {{ $key->product_name }} </option>
@@ -294,17 +294,15 @@ $(document).ready(function() {
 
 <script>
 
-$(document).ready(function() {
-        var cc = 0;
-       $('#subadminId').change(function(){
-                    let storeIdc = $('#storeId').val();
-
-           if((cc != 0) || (storeIdc == ''))
-           {
-               
-    
-
+   $(document).ready(function() {
+        
+        
+        $("#subadminId").on('change', function(){    
+            
          let subadminId = $('#subadminId').val();
+      if ( typeof subadminId === "undefined") {
+          subadminId = '';
+      }
          
          var _token= $('input[name="_token"]').val();
             $.ajax({
@@ -313,24 +311,13 @@ $(document).ready(function() {
     
               success:function(res){
                     if(res){
-                        console.log(res);
+                       // console.log(res);
                         $('#storeId').prop("diabled",false);
                         $('#storeId').empty();
                         $('#storeId').append('<option value="">Store</option>');
                         $.each(res,function(store_id,store_name)
                         {
                           $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
-                          
-                          let storeId = getUrlParameter('storeId');
-                            if ( typeof storeId !== "undefined" && storeId) {
-                                $("#storeId option").each(function(){
-                                    if($(this).val()==storeId){ 
-                                        $(this).attr("selected","selected");    
-                                    }
-                                });
-                            } 
-                    
-                    
                         });
                     }else
                     {
@@ -339,10 +326,6 @@ $(document).ready(function() {
                 }
     
             });
-           }
-           else{
-               cc++;
-           }
         });
     });
     
@@ -353,12 +336,18 @@ $(document).ready(function() {
       if ( typeof subadminId === "undefined") {
           subadminId = '';
       }
+      
+    $("#storeId").on('change', function(){   
+    // alert(storeId);
      let storeId = $('#storeId').val();
+      if ( typeof storeId === "undefined") {
+          storeId = '';
+      }
      
      var _token= $('input[name="_token"]').val();
         $.ajax({
           type:"GET",
-          url:"{{ url('admin/product-name-list') }}?subadmin_id="+subadminId+'&store_id'+storeId,
+          url:"{{ url('admin/product-name-list') }}?store_id="+storeId,
 
           success:function(res){
                 if(res){
@@ -387,6 +376,7 @@ $(document).ready(function() {
             }
 
         });
+    });
 
     });
     
