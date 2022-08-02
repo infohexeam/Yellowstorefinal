@@ -337,6 +337,7 @@ class Helper
         $proCoubt = Mst_store_product_varient::where('product_id', $product_id)
             ->where('is_removed', 0)
             ->where('stock_count', '>', 0)
+            ->where('variant_status',1)
             ->count();
         if ($proCoubt)
             return $proCoubt;
