@@ -177,7 +177,7 @@ class ProductController extends Controller
     $validator = Validator::make(
       $request->all(),
       [
-        'product_name' => ['required', 'unique:mst__global_products'],
+        'product_name' => ['required'],
         'product_description' => ['required'],
         'regular_price' => ['required'],
         'sale_price' => ['required'],

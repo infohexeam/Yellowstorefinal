@@ -80,6 +80,7 @@ class ProductController extends Controller
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
                     ->where('stock_count', '>', 0)
+                    ->where('variant_status',1)
                     ->get();
                 foreach ($productVartiantdata as $row) {
 
@@ -165,6 +166,7 @@ class ProductController extends Controller
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
                     ->where('stock_count', '>', 0)
+                    ->where('variant_status',1)
                     ->get();
                 $productVarientIds = array();
                 foreach ($productVartiantdata as $row) {
@@ -263,7 +265,7 @@ class ProductController extends Controller
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
                     ->where('stock_count', '>', 0)
-
+                    ->where('variant_status',1)
                     ->get();
                 foreach ($productVartiantdata as $row) {
 
@@ -993,6 +995,7 @@ class ProductController extends Controller
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $vardata->product_id)
                     ->where('stock_count', '>', 0)
                     ->where('is_removed', 0)
+                    ->where('variant_status',1)
                     ->get();
                 foreach ($productVartiantdata as $row) {
 
@@ -1531,6 +1534,8 @@ class ProductController extends Controller
                         'mst_store_product_varients.product_varient_price',
                         'mst_store_product_varients.product_varient_offer_price',
                         'mst_store_product_varients.product_varient_base_image',
+                        'mst_store_product_varients.is_base_variant',
+                        'mst_store_product_varients.variant_status',
                         'mst_store_product_varients.stock_count',
                         'mst_store_product_varients.store_id'
                     );
@@ -1622,7 +1627,9 @@ class ProductController extends Controller
                             'mst_store_product_varients.product_varient_offer_price',
                             'mst_store_product_varients.product_varient_base_image',
                             'mst_store_product_varients.stock_count',
-                            'mst_store_product_varients.store_id'
+                            'mst_store_product_varients.store_id',
+                            'mst_store_product_varients.is_base_variant',
+                            'mst_store_product_varients.variant_status',
                         );
 
                     $productData = $productData->where('mst_store_products.product_status', 1)
