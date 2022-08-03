@@ -170,16 +170,38 @@
                                     <td>{{ @$store->store['email']}} </td>
 
                                  <td>
+                                    @php
+                                            $storeData = App\Models\admin\Mst_store::find($store->store_id);
+                                            $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store->store_id)->where('role_id',0)->first();
+                                             $today = Carbon\Carbon::now()->addDays(3);
+                                                $now = Carbon\Carbon::now();
+                                                $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
+                                                $diff = $dateExp->diffInDays($now) + 1; //14
+                                                
+                                                $todayDate =  Carbon\Carbon::now()->toDateString();
 
-                                    <form action="{{route('admin.status_store_subadmin',$store->store_link_subadmin_id)}}" method="POST">
+                                                if(@$diff == 1){
+                                                    $dayString = 'day';
+                                                }else{
+                                                    $dayString = 'days';
+                                                }
+                                        @endphp
+
+                                    
+                                       <form action="{{route('admin.status_store_subadmin',$store->store_id)}}" method="POST">
+                                           
 
                                           @csrf
                                           @method('POST')
                                           <button type="submit"  onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
-                                          @if(@$store->store['store_account_status'] == 0) btn-danger @else btn-success @endif"> @if(@$store->store['store_account_status'] == 0)
+                                          @if(@$adminData->store_account_status == 0) btn-danger @else @if($todayDate > @$storeAdmData->expiry_date) btn-danger @else  btn-success @endif  @endif"> @if(@$adminData->store_account_status == 0)
                                           InActive
                                           @else
+                                           @if($todayDate > @$storeAdmData->expiry_date)
+                                           Expired
+                                          @else
                                           Active
+                                          @endif
                                           @endif</button>
                                        </form>
 

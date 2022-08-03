@@ -903,6 +903,7 @@ class SettingController extends Controller
 		$store = Mst_store::where('store_name_slug', '=', $id)->first();
 		$store_id = $store->store_id;
 		$countries = Country::all();
+		$store_admin=Trn_StoreAdmin::where('store_id',$store_id)->first();
 		$store_documents  = Mst_store_documents::where('store_id', '=', $store_id)->get();
 		$store_images = Mst_store_images::where('store_id', '=', $store_id)->get();
 		$agencies = Mst_store_link_agency::where('store_id', '=', $store_id)->get();
@@ -926,13 +927,14 @@ class SettingController extends Controller
 			->where('is_removed', 0)
 			->get();
 
-		return view('admin.masters.stores.edit', compact('products', 'subadmins', 'all_delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'delivery_boys', 'business_types'));
+		return view('admin.masters.stores.edit', compact('products', 'subadmins', 'all_delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'delivery_boys', 'business_types','store_admin'));
 	}
 	public function updateStore(Request $request, Mst_store $store, $store_id)
 	{
 
 		$store_Id = $request->store_id;
 		$store = Mst_store::Find($store_Id);
+        $store_admin = Trn_StoreAdmin::where('store_id',$store_Id)->first();
 
 		$password = $store->password;
 		$newpassword = $request->password;
@@ -1137,6 +1139,9 @@ class SettingController extends Controller
 					Mst_store_images::insert($data2);
 				}
 			}
+			$store_admin = Trn_StoreAdmin::where('store_id',$store_Id)->first();
+			$store_admin->expiry_date=$request->expiry_date;
+			$store_admin->update();
 
 			return redirect('admin/store/list')->with('status', 'Store updated successfully.');
 		} else {
