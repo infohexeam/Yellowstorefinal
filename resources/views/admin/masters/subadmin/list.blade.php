@@ -183,7 +183,9 @@
 
                                           @csrf
                                           @method('POST')
+                                          @if(@$subadmin->id!=2)
                                           <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                          @endif
                                        </form>
                                     </td>
                                  </tr>

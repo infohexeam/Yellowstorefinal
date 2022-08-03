@@ -263,7 +263,7 @@
                      </div>
                        <div class="col-md-12">
                         <div class="form-group">
-                           <label class="form-label"> Expiration Date</label>
+                           <label class="form-label">Expiration Date</label>
                           <input type="date" id="expdate"  required name="expiry_date" class="form-control" placeholder="Expiration Date" value="{{old('expiry_date',@$store_admin->expiry_date)}}">
                         </div>
 
