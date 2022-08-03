@@ -231,7 +231,7 @@
         buttons: [
             {
                 extend: 'pdf',
-                title: 'Inventory Report',
+                title: 'Overall Product Report',
                 footer: true,
               
                  orientation : 'landscape',
@@ -239,7 +239,7 @@
             },
             {
                 extend: 'excel',
-                title: 'Inventory Report',
+                title: 'Overall Product Report',
                 footer: true,
                
             }
