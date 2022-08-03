@@ -255,14 +255,17 @@ use App\Models\admin\Trn_StoreBankData;
                                              $today = Carbon\Carbon::now()->addDays(3);
                                                 $now = Carbon\Carbon::now();
                                                 $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
-                                                $diff = $dateExp->diffInDays($now) + 1; //14
+                                                $diff = $dateExp->diffInDays($now); //14
                                                 
                                                 $todayDate =  Carbon\Carbon::now()->toDateString();
 
-                                                if(@$diff == 1){
+                                                if(@$diff ==0){
                                                     $dayString = 'day';
                                                 }else{
                                                     $dayString = 'days';
+                                                     if(@$diff ==1){
+                                                       $dayString = 'day';
+                                                     }
                                                 }
                                         @endphp
 
@@ -276,7 +279,7 @@ use App\Models\admin\Trn_StoreBankData;
                                           InActive
                                           @else
                                            @if($todayDate > @$storeAdmData->expiry_date)
-                                           Expired
+                                           InActive
                                           @else
                                           Active
                                           @endif
@@ -289,7 +292,7 @@ use App\Models\admin\Trn_StoreBankData;
                                     @if(@$storeAdmData->expiry_date == $todayDate)
                                 <p style="font-size:9px">Store expires today</p>
                                     @elseif($todayDate > @$storeAdmData->expiry_date)
-                                    <p style="font-size:9px">Store expired on <br> <b style="font-size:11px"> {{ @$storeAdmData->expiry_date}} </b><br> ({{@$diff}} days before)</p>
+                                    <p style="font-size:9px">Store expired on <br> <b style="font-size:11px"> {{ @$storeAdmData->expiry_date}} </b><br> ({{@$diff}} {{@$dayString}} before)</p>
                                     @else
                                     @if (@$diff <= 3)
                                     <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}</p>

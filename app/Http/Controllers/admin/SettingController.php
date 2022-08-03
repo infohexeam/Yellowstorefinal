@@ -1198,12 +1198,13 @@ class SettingController extends Controller
 		$store = Mst_store::Find($cat_id);
 
 		$status = $store->store_account_status;
+		$today = Carbon::now()->toDateString();
+		$getDate = Trn_StoreAdmin::where('store_id', $store_id)->first();
 
-		if ($status == 0) {
+		if ($status == 0 ) {
 			$store->store_account_status  = 1;
 			$storeAdmin['store_account_status'] = 1;
-			$today = Carbon::now()->toDateString();
-			$getDate = Trn_StoreAdmin::where('store_id', $store_id)->first();
+			
 			if($today >= $getDate->expiry_date)
 			{
 				$storeAdmin['expiry_date'] = Carbon::now()->addYears(5)->toDateString();
@@ -1212,6 +1213,13 @@ class SettingController extends Controller
 			$storeAdmin['store_account_status'] = 0;
 
 			$store->store_account_status  = 0;
+			if($today > $getDate->expiry_date)
+			{
+				$storeAdmin['store_account_status'] =1;
+				$store->store_account_status  = 1;
+				$storeAdmin['expiry_date'] = Carbon::now()->addYears(5)->toDateString();
+			}
+
 		}
 		$store->update();
 
@@ -5145,7 +5153,7 @@ class SettingController extends Controller
 				$query = $query->where('store_account_status', 'like', '%' . $store_account_status . '%');
 			}
 
-			dd($query->get());
+			//dd($query->get());
 
 			return view('admin.masters.subadmin_store.list', compact('subadmins', 'town', 'districts', 'states', 'stores', 'pageTitle', 'countries', 'agencies'));
 		}
