@@ -91,7 +91,7 @@
                                             <!--<th class="wd-15p">Order Status</th>-->
                                             
                                             <th class="wd-15p">Total Amount</th> 
-                                            <th class="wd-15p">Transaction ID</th>
+                                            <th class="wd-15p">Reference ID</th>
                                             <th class="wd-15p">Refund ID</th>
                                             <th class="wd-15p">Refund Details</th>
                                             
@@ -120,7 +120,7 @@
 
                                             
                                             <td>{{ $d->product_total_amount }}</td>
-                                            <td>{{ $d->trn_id }}</td>
+                                            <td>{{ $d->referenceId }}</td>
                                             
                                             <td>{{ $d->refundId }}</td>
                                             

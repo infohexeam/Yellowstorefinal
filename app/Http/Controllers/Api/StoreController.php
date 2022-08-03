@@ -3052,7 +3052,7 @@ class StoreController extends Controller
                     'trn_store_orders.coupon_code',
                     'trn_store_orders.reward_points_used',
                     'trn_store_orders.amount_before_applying_rp',
-                    'trn_store_orders.trn_id',
+                    'trn_store_orders.referenceId',
                     'trn_store_orders.created_at',
                     'trn_store_orders.amount_reduced_by_coupon',
                     'trn_store_orders.order_type',
