@@ -275,7 +275,8 @@ use App\Models\admin\Trn_StoreBankData;
                                           @csrf
                                           @method('POST')
                                           <button type="submit"  onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
-                                          @if(@$adminData->store_account_status == 0) btn-danger @else @if($todayDate > @$storeAdmData->expiry_date) btn-danger @else  btn-success @endif  @endif"> @if(@$adminData->store_account_status == 0)
+                                          @if(@$adminData->store_account_status == 0) btn-danger @else @if($todayDate > @$storeAdmData->expiry_date) btn-danger @else  btn-success @endif  @endif">
+                                           @if(@$adminData->store_account_status == 0)
                                           InActive
                                           @else
                                            @if($todayDate > @$storeAdmData->expiry_date)
