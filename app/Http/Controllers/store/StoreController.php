@@ -488,6 +488,7 @@ class StoreController extends Controller
           $filename = rand(1, 5000) . time() . '.' . $image->getClientOriginalExtension();
           // dd($filename);
           $destination_path = 'assets/uploads/store_images/images';
+          //$destination_path = public_path('/assets/uploads/store_images/images');
 
           $store_img = Image::make($image->getRealPath());
           $store_img->save($destination_path . '/' . $filename, 80);

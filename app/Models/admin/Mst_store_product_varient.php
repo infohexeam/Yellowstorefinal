@@ -2,6 +2,7 @@
 
 namespace App\Models\admin;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,6 +18,10 @@ class Mst_store_product_varient extends Model
     'product_varient_base_image', 'product_id', 'store_id', 'stock_count', 'attr_group_id', 'attr_value_id', 'is_removed', 'is_base_variant','variant_status'
 
   ];
+  public function getCreatedAtAttribute($value)
+  {
+      return Carbon::parse($value)->format('Y-m-d H:i:s');
+  }
 
   public function store()
   {
