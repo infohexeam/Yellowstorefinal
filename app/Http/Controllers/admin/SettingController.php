@@ -6104,7 +6104,7 @@ class SettingController extends Controller
 			$status = 1;
 			$date =  Carbon::now();
 			// dd($date);
-			if ($attr_grp_value == 2) {
+			/*if ($attr_grp_value == 2) {
 				if ($Hexvalue) {
 					$count = count($Hexvalue);
 					//dd($count);
@@ -6123,7 +6123,7 @@ class SettingController extends Controller
 						$attribute_value->save();
 					}
 				}
-			} else {
+			} else {*/
 
 				foreach ($values as $value) {
 
@@ -6142,7 +6142,7 @@ class SettingController extends Controller
 
 					Mst_attribute_value::insert($data);
 				}
-			}
+			//}
 
 			return redirect('admin/attribute_value/list')->with('status', 'Attribute added successfully.');
 		} else {

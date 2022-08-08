@@ -1246,7 +1246,7 @@ let prAttrValue = $('#attr_value'+attid_2).val();
 
           var id_number = parseInt(att_id_val. replace(/[^0-9. ]/g, ""));
         
-        $(wrapper).append('<div  class="row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute *</label><select required name="attr_group_id['+id_number+'][]" onchange="findValue(\''+attid+'\')"id="attr_group'+attid+'" class="attr_group attrGroup'+id_number+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option  value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value *</label><select required name="attr_value_id['+id_number+'][]"   id="attr_value'+attid+'" class="attr_value form-control" ><option value="">Value</option></select></div></div><a href="#" onclick="removeAttrRow('+mainKey+','+xx+')" class="remove_field ml-5 btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+        $(wrapper).append('<div class="row  attrRow'+mainKey+'"><div class="col-md-12"><div class="row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute *</label><select required name="attr_group_id['+id_number+'][]" onchange="findValue(\''+attid+'\')"id="attr_group'+attid+'" class="attr_group attrGroup'+id_number+' form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)<option  value="{{$key->attr_group_id}}"> {{$key->group_name}} </option>@endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value *</label><select required name="attr_value_id['+id_number+'][]"   id="attr_value'+attid+'" class="attr_value form-control" ><option value="">Value</option></select></div></div><a  onclick="removeAttrRow('+mainKey+','+xx+')" class="remove_field ml-5 btn btn-info btn btn-sm">Remove</a></div></div></div>'); //add input box
          ++xx;
 
     for(let i=0;i< ek.length; i++){
@@ -1259,20 +1259,26 @@ let prAttrValue = $('#attr_value'+attid_2).val();
       alert("Previous attribute empty");
   }
     
-    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+    /*$(wrapper).on("click",".remove_field", function(e){ //user click on remove text
       e.preventDefault(); $(this).parent('div').remove(); 
-    });
+    });*/
 
 }
 
 function removeAttrRow(x,y){
-    console.log(x,y);
+  
+     
+    $(".attrRow"+x).remove();
+
+   /* console.log(x,y);
+     on("click",".remove_field", function(e){ //user click on remove text
+      e.preventDefault(); $(this).parent('div').remove(); 
+    });*/
   //   console.log(".attrGroup"+x+"a"+(y-1));
-            $("#attr_group"+x+"a"+(y-1)).attr('readonly', false);
+            //$("#attr_group"+x+"a"+(y-1)).attr('readonly', false);
+            //$("#attr_group"+x+"a"+(y-1)).parent('div').remove();
 
 }
-
-
 
 $(document).ready(function() {
    var wrapper      = $("#attRow"); //Fields wrapper
