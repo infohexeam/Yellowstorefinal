@@ -105,13 +105,13 @@
                           @endphp
                           {{@$cat->category_name}}</td>
                         <td id="td{{$product->product_varient_id}}">
-
-                          @if($product->stock_count == 0)
-
+                         
+                          @if($product->stock_count <= 0 )
+                      
                             Empty
                             
                             @else
-
+                           
                             {{$product->stock_count}}
 
                           @endif

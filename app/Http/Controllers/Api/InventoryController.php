@@ -110,6 +110,7 @@ class InventoryController extends Controller
                                 ->where('mst_store_products.is_removed', 0)
                                 ->where('mst_store_categories.category_status', 1)
                                 ->where('mst_store_product_varients.is_removed', 0)
+                                ->where('mst_store_product_varients.store_id',$request->store_id)
                                 ->select(
                                     'mst_store_products.product_id',
                                     'mst_store_products.product_name',
@@ -130,9 +131,7 @@ class InventoryController extends Controller
                                 )
                             ) {
 
-                                if (isset($request->store_id)) {
-                                    $query = $query->where('mst_store_products.store_id', $request->store_id);
-                                }
+                                
 
 
                                 if (isset($request->category_id)) {

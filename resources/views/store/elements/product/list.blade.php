@@ -164,9 +164,34 @@
                         <td><img data-toggle="modal" data-target="#viewModal{{$product->product_id}}"  src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" >&nbsp;</td>
                        
                         @php
-                            $stock_count_sum = \DB::table('mst_store_product_varients')->where('is_removed', 0)->
-                            where('product_id',$product->product_id)->
-                            sum('stock_count');
+                            $stock_count_sum = \DB::table('mst_store_product_varients')
+                          ->join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                          ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+
+                          ->where('mst_store_products.store_id', $product->store_id)
+                          ->where('mst_store_products.product_type', 1)
+                          ->where('mst_store_products.is_removed', 0)
+                          ->where('mst_store_categories.category_status', 1)
+                          ->where('mst_store_product_varients.is_removed', 0)
+                          ->where('mst_store_product_varients.product_id',$product->product_id)
+                          ->where('mst_store_product_varients.stock_count','>=',0)
+                          ->sum('mst_store_product_varients.stock_count');
+                          $stock_count_base_sum=\DB::table('mst_store_product_varients')
+                          ->join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                          ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+
+                          ->where('mst_store_products.store_id', $product->store_id)
+                          ->where('mst_store_products.product_type', 1)
+                          ->where('mst_store_products.is_removed', 0)
+                          ->where('mst_store_categories.category_status', 1)
+                          ->where('mst_store_product_varients.is_removed', 0)
+                          ->where('mst_store_product_varients.product_id',$product->product_id)
+                          ->where('mst_store_product_varients.stock_count','>=',0)
+                          ->where('mst_store_product_varients.is_base_variant','=',1)
+                          ->sum('mst_store_product_varients.stock_count');
+                          $stock_count_varient=$stock_count_sum-$stock_count_base_sum;
+
+                            
                           @endphp
                        
                         <td>
@@ -191,13 +216,19 @@
                         <td>
                          
                             <button type="button"  data-toggle="modal" data-target="#___StockModal{{$product->product_id}}"  class="btn btn-sm @if(@$stock_count_sum == 0) btn-danger @else btn-success @endif"> 
+                           {{@$stock_count_sum}} / {{@$stock_count_base_sum}}
                            
-                          
-                            @if(  @$stock_count_sum == 0)
+                            @if(  @$stock_count_sum <= 0)
                             Out of stock
                             @else
                             In stock
-                            @endif </button>
+                            @endif 
+                            
+                            </button>
+                             @if(@$stock_count_base_sum <= 0)
+                             <br>
+                             <button type="button" class="btn btn-sm  btn-danger"><small>Base Product(Out Of Stock)</small> </button>
+                             @endif
                           
                           </form>
 
