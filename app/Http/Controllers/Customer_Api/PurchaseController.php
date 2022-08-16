@@ -267,7 +267,7 @@ class PurchaseController extends Controller
         $data = array();
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
+                if (isset($request->product_varient_id) && Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->first()) {
                     $validator = Validator::make(
                         $request->all(),
                         [
@@ -579,7 +579,8 @@ class PurchaseController extends Controller
                                 
                             )
                             ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)
-                            //->where('mst_store_products.product_status', 1)
+                            ->where('mst_store_products.product_status',1)
+                            ->where('mst_store_product_varients.variant_status',1)
                             ->first();
                         @$cartData->productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_base_image;
                         @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_varient_base_image;

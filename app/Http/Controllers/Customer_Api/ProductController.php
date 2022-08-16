@@ -2062,7 +2062,7 @@ class ProductController extends Controller
     {
         $data = array();
         try {
-            if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
+            if (isset($request->product_varient_id) && Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('variant_status','=',1)->first()) {
                 if ($request->customer_id == 0) {
                     $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')

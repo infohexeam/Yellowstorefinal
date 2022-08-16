@@ -1651,7 +1651,7 @@ class ProductController extends Controller
     {
         $data = array();
         try {
-            if (isset($request->product_varient_id) && Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('variant_status','=',1)->first()) {
+            if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
                 if ($data['productVariantsDetails']  = Mst_store_product_varient::where('product_varient_id', '=', $request->product_varient_id)
                     ->select(
                         'product_varient_id',
@@ -1763,7 +1763,7 @@ class ProductController extends Controller
         $data = array();
         try {
 
-            if (isset($request->product_varient_id) && Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('variant_status','=',1)->first()) {
+            if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
 
                 if ($data['variantAttributesDetails']  = Trn_ProductVariantAttribute::where('product_varient_id', '=', $request->product_varient_id)
                     ->select('product_varient_id', 'variant_attribute_id', 'attr_group_id', 'attr_value_id')
