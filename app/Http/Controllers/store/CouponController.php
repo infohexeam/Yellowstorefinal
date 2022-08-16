@@ -223,6 +223,26 @@ class CouponController extends Controller
           'min_purchase_amt.required'             => 'Minimum purchase amount required',
         ]
       );
+      if($request->discount_type==1)
+      {
+        $validator = Validator::make(
+          $request->all(),[  
+              'discount' => 'required|numeric|lt:min_purchase_amt',  
+          ]);
+
+      }
+      if($request->discount_type==2)
+      {
+        $validator = Validator::make(
+          $request->all(),[  
+              'discount' => 'required|numeric|lt:100',  
+          ],
+          [
+            'discount.lt' => 'Discount percentage must be less than 100',
+
+          ]);
+
+      }
 
       if (!$validator->fails()) {
         $coupon->store_id = $store_id;
