@@ -800,6 +800,7 @@ class BusinessTypeController extends Controller
                         ->where('trn__recently_visited_products.customer_id', $customer_id)
                         ->where('mst_stores.business_type_id', $business_type_id)
                         ->where('mst_store_products.product_status', 1)
+                        ->where('mst_store_product_varients.variant_status', 1)
                         ->take(3)->get()
                     ) {
 

@@ -170,7 +170,7 @@ class PurchaseController extends Controller
         $data = array();
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
+                if (isset($request->product_varient_id) && Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('variant_status','=',1)->first()) {
                     $validator = Validator::make(
                         $request->all(),
                         [

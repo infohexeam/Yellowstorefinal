@@ -1994,13 +1994,17 @@ class ProductController extends Controller
                             'mst_store_product_varients.product_varient_offer_price',
                             'mst_store_product_varients.product_varient_base_image',
                             'mst_store_product_varients.stock_count',
+                            'mst_store_product_varients.is_base_variant',
+                            'mst_store_product_varients.variant_status',
                             'mst_stores.store_name',
                             'mst_stores.store_id',
                             'trn__carts.quantity',
                             'trn__carts.remove_status'
                         )
                         ->where('trn__carts.customer_id', $customer_id)
-                        ->where('trn__carts.remove_status', 0)->get()
+                        ->where('trn__carts.remove_status', 0)
+                        ->where('mst_store_product_varients.variant_status','=',1)
+                        ->get()
                     ) {
                         $storeId = 0;
                         foreach ($cartDatas as $cartData) {
