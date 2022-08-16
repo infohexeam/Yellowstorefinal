@@ -112,7 +112,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 
         <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
          <div class="card">
-            <a href="{{ url('store/today-order/list') }}">
+            <a href="{{ url('store/sales-report') }}">
                <div class="card-body text-center statistics-info">
                   <div class="counter-icon bg-warning mb-0 box-info-shadow">
                                     <i class="fe fe-trending-up text-white"></i>
@@ -222,7 +222,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 
       <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
          <div class="card">
-            <a href="{{ url('store/today-order/list') }}">
+            <a href="{{ url('store/sales-report') }}">
                <div class="card-body text-center statistics-info">
                   <div class="counter-icon bg-cyan mb-0 box-info-shadow">
                                     <i class="fa fa-calendar text-white"></i>
@@ -240,7 +240,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 
   <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
             <div class="card">
-               <a href="{{ route('store.list_order') }}">
+               <a href="{{ url('store/sales-report') }}">
                   <div class="card-body text-center statistics-info">
                      <div class="counter-icon bg-info mb-0 box-info-shadow">
 													<i class="fe fe-trending-up text-white"></i>
