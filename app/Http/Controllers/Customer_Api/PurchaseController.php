@@ -574,6 +574,8 @@ class PurchaseController extends Controller
                                 'mst_store_product_varients.product_varient_base_image',
                                 'mst_store_product_varients.stock_count',
                                 'mst_store_product_varients.store_id',
+                                'mst_store_product_varients.is_base_variant',
+                                'mst_store_product_varients.variant_status',
                                 
                             )
                             ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)

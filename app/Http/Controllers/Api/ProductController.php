@@ -1662,6 +1662,8 @@ class ProductController extends Controller
                         'product_varient_offer_price',
                         'product_varient_base_image',
                         'stock_count',
+                        'is_base_variant',
+                        'variant_status',
                         'created_at'
                     )
                     ->first()
