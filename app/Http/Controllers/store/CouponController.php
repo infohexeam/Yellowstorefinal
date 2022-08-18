@@ -1569,6 +1569,7 @@ class CouponController extends Controller
       $pageTitle = "Delivery Boy Payout Reports";
       $datefrom = '';
       $dateto = '';
+      $total_count=0;
       $store_id  = Auth::guard('store')->user()->store_id;
 
 
