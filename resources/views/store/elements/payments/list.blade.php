@@ -80,7 +80,8 @@ $date = Carbon\Carbon::now();
 
                         <th class="wd-20p">Total<br>amount</th>
                         <th class="wd-20p">Split<br>Amount</th>
-                        <!-- <th class="wd-20p">Delivery<br>Charge</th> -->
+                        <th class="wd-20p">Delivery<br>Charge</th>
+                        <th class="wd-20p">Packing<br>Charge</th>
                         <th class="wd-20p">Transaction<br>Status</th>
                      </tr>
                      
@@ -102,7 +103,8 @@ $date = Carbon\Carbon::now();
 
                         <td>{{ @$row->orderAmount }}</td>
                         <td>{{ @$row->settlementAmount }}</td>
-                        <!-- <td>{{ @$row->delivery_charge }}</td> -->
+                        <td>{{ @$row->delivery_charge }}</td>
+                        <td>{{ @$row->packing_charge }}</td>
                         <td>{{ @$row->txStatus }}</td>
                        
 

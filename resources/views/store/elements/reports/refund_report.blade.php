@@ -91,6 +91,9 @@
                                             <!--<th class="wd-15p">Order Status</th>-->
                                             
                                             <th class="wd-15p">Total Amount</th> 
+                                            <th class="wd-15p">Total Amount</th>
+                                            <th class="wd-15p">Delivery Charge</th>
+                                            <th class="wd-15p">Packing Charge</th>
                                             <th class="wd-15p">Reference ID</th>
                                             <th class="wd-15p">Refund ID</th>
                                             <th class="wd-15p">Refund Details</th>
@@ -120,6 +123,8 @@
 
                                             
                                             <td>{{ $d->product_total_amount }}</td>
+                                             <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
+                                              <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
                                             <td>{{ $d->referenceId }}</td>
                                             
                                             <td>{{ $d->refundId }}</td>

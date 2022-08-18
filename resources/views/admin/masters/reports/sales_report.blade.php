@@ -161,6 +161,8 @@
                                             <th class="wd-15p">Customer Phone</th>
                                             
                                             <th class="wd-15p">Price</th>
+                                            <th class="wd-15p">Delivery Charge</th>
+                                            <th class="wd-15p">Packing Charge</th>
                                             <th class="wd-15p">Discount</th>
                                             <th class="wd-15p">Tax Amount</th>
                                             <th class="wd-15p">Coupon<br>Redeemed Value</th>
@@ -196,6 +198,8 @@
 
                                             
                                             <td>{{ $d->product_total_amount }}</td>
+                                            <td>{{ @$d->delivery_charge }}</td>
+                                            <td>{{ @$d->packing_charge }}</td>
                                             <td>
                                                 {{ (new \App\Helpers\Helper)->orderTotalDiscount($d->order_id) }}
                                             </td>

@@ -110,6 +110,7 @@
                                            
                                             <th class="wd-15p">Total Amount</th>
                                             <th class="wd-15p">Delivery Charge</th>
+                                            <th class="wd-15p">Packing Charge</th>
                                             <th class="wd-15p">Commision/Month</th>
                                             <th class="wd-15p">Commision/Order</th>
                                              <th class="wd-15p">Previous Commision</th>
@@ -159,6 +160,7 @@
                                             <td>{{$d->subadmindetail->phone??'---'}}
                                             <td>{{ $d->product_total_amount }}</td>
                                             <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
+                                             <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->delivery_boy_commision_amount,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->previous_amount)??0.00 }}</td>

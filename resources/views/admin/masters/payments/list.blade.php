@@ -106,6 +106,7 @@ $date = Carbon\Carbon::now();
                         <th class="wd-20p">Commission<br>Amount</th>
                         <th class="wd-20p">Reference Id</th>
                         <th class="wd-20p">Delivery<br>Charge</th>
+                        <th class="wd-20p">Packing<br>Charge</th>
                         <th class="wd-15p">{{__('Action')}}</th>
                      </tr>
                      
@@ -131,6 +132,7 @@ $date = Carbon\Carbon::now();
                         <td>{{ @$row->referenceId }}</td>
 
                         <td>{{ @$row->delivery_charge }}</td>
+                        <td>{{ @$row->packing_charge }}</td>
                         <td>
                                 <button data-toggle="modal" data-target="#viewModal{{$row->opt_id}}"  class="btn btn-sm btn-cyan">View</button>
                         </td>
