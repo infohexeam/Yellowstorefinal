@@ -9,9 +9,7 @@ class Trn_store_otp_verify extends Model
      protected $table ="trn_store_otp_verify";
 	 protected $primaryKey = "store_otp_verify_id";
 
-    protected $fillable = [
-    					    'store_otp_verify_id','store_id','store_otp_expirytime','store_otp',
-    						  ];
+    protected $fillable = ['store_otp_verify_id','store_id','store_otp_expirytime','store_otp',];
 
     public function store()
    {

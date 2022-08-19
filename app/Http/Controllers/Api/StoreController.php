@@ -602,12 +602,12 @@ class StoreController extends Controller
                                     $data['login_status '] = 1; // logged in another device (otp)
                                     $store_otp=rand(100000,999999);
                                     $storeData = Mst_store::find($custCheck->store_id);
-                                    $otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
+                                    //$otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
                                     $store_otp_expirytime = Carbon::now()->addMinute(10);
-                                    $otp_verify->store_id                 = $custCheck->store_id;
+                                    /*$otp_verify->store_id                 = $custCheck->store_id;
                                     $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
                                     $otp_verify->store_otp                 = $store_otp;
-                                    $otp_verify->update();
+                                    $otp_verify->update();*/
                                     $res=Helper::sendOtp($storeData->store_mobile,$store_otp,1);
                                     $data['otp_session_id']=$res['session_id'];
                                     $data['store_id'] = $custCheck->store_id;
