@@ -347,7 +347,8 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                @php
                $c = 0;
                @endphp
-               @foreach ($payments as $payment)
+               @if($payments!=NULL)
+               @forelse($payments as $payment)
                @if($c == 0)
                @php
                $c = 1;
@@ -441,7 +442,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                 </div>
                 @endif
 
-               @endforeach
+               @empty
+               @endforelse
+               @endif
 
                 @endif
 
