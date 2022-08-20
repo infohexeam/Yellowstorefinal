@@ -31,11 +31,12 @@
                      $all_assigned_store[]  = 0;
                       @endphp
                       @foreach ($dboy_linked_stores as $data)
-                        <tr>
-                           <td>{{ ++$i }}</td>
-                            @php
+                       @php
                                 $store_data = \DB::table('mst_stores')->where('store_id',$data->store_id)->first();
                             @endphp
+                     @if($store_data)
+                        <tr>
+                           <td>{{ ++$i }}</td>
                            <td>{{$store_data->store_name}}</td>
                            <td>{{$store_data->store_contact_person_phone_number}}</td>
                            @php
@@ -57,6 +58,7 @@
                            
                            </td>
                         </tr>
+                     @endif
                       @endforeach
                   </tbody>
                </table>
