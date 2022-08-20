@@ -2154,6 +2154,7 @@ class ProductController extends Controller
       $pageTitle = "Delivery Boy Payout Reports";
       $datefrom = '';
       $dateto = '';
+      $total_count=0;
 
 
       if (auth()->user()->user_role_id  == 0) {
