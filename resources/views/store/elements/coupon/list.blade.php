@@ -125,7 +125,11 @@
 
                                     <td>
                                         @if (@$value->coupon_status == 0)
+                                       @if(date('Y-m-d')<=$value->valid_to)
                                         Active
+                                       @else
+                                       Expired
+                                       @endif
                                         @else
                                         InActive
                                             
