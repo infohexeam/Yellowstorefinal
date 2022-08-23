@@ -113,6 +113,17 @@ class StoreOrderController extends Controller
                 );
 
                 if (!$validator->fails()) {
+                    $cust=Trn_store_customer::where('customer_id',$request->customer_id)->first();
+                    if($cust)
+                    {
+                        if($cust->customer_profile_status==0)
+                        {
+                            $data['status'] = 0;
+                            $data['message'] = "Profile is not active";
+                            return response($data);
+                        }
+
+                    }
                     $noStockProducts = array();
                     foreach ($request->product_variants as $value) {
                         $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
@@ -433,6 +444,17 @@ class StoreOrderController extends Controller
                 );
 
                 if (!$validator->fails()) {
+                    $cust=Trn_store_customer::where('customer_id',$request->customer_id)->first();
+                    if($cust)
+                    {
+                        if($cust->customer_profile_status==0)
+                        {
+                            $data['status'] = 0;
+                            $data['message'] = "Profile is not active";
+                            return response($data);
+                        }
+
+                    }
                     $noStockProducts = array();
                     foreach ($request->product_variants as $value) {
                         $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
@@ -757,6 +779,17 @@ class StoreOrderController extends Controller
     
                     if (!$validator->fails()) {
                         $noStockProducts = array();
+                        $cust=Trn_store_customer::where('customer_id',$request->customer_id)->first();
+                        if($cust)
+                        {
+                            if($cust->customer_profile_status==0)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Profile is not active";
+                                return response($data);
+                            }
+    
+                        }
     
     
                         foreach ($request->product_variants as $value) {
