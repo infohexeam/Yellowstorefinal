@@ -261,7 +261,7 @@
 
                                             }
                                             @endphp
-                                            <td>{{ @$d->sum}}</td>
+                                            <td>{{$visitCount}}</td>
                                             
                                             @php
                                             
