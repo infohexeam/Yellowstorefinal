@@ -208,30 +208,7 @@ class PurchaseController extends Controller
                         //     $data['status'] = 3;
                         //     return response($data);
                         // }
-                        if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                            // recently visited products
-                            //  $recVisStrRowCount = Trn_RecentlyVisitedProducts::where('customer_id',$request->customer_id)->count();
-                            // if($recVisStrRowCount < 1)
-                            // {
-                            // Trn_RecentlyVisitedProducts::where('customer_id',$request->customer_id)->where('product_varient_id',$request->product_varient_id)->delete();
-                    
-                          
-                                $rvs = new Trn_RecentlyVisitedProducts;
-                                $rvs->customer_id = $request->customer_id;
-                                $gData = Mst_store_product_varient::find($request->product_varient_id);
-                                $rvs->store_id = $gData->store_id;
-                                $rvs->product_id = $gData->product_id;
-                                $rvs->product_varient_id = $request->product_varient_id;
-                                $prData = Mst_store_product::find($gData->product_id);
-                                $rvs->vendor_id = $prData->vendor_id;
-                                $rvs->category_id = $prData->product_cat_id;
-                                $rvs->sub_category_id = $prData->sub_category_id;
-        
-                                $rvs->visit_count = 1;
-                                $rvs->save();
-    
-                           
-                        }
+                       
 
 
                         if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
@@ -308,6 +285,7 @@ class PurchaseController extends Controller
                         ]
                     );
                     if (!$validator->fails()) {
+
                         
                         
                             $varProdu = Mst_store_product_varient::find($request->product_varient_id);
@@ -320,7 +298,35 @@ class PurchaseController extends Controller
                             return response($data);
                         }
                            
-                    //if ($proData->service_type != 2) {    
+                    //if ($proData->service_type != 2) {  
+                   
+                            // recently visited products
+                            //  $recVisStrRowCount = Trn_RecentlyVisitedProducts::where('customer_id',$request->customer_id)->count();
+                            // if($recVisStrRowCount < 1)
+                            // {
+                            // Trn_RecentlyVisitedProducts::where('customer_id',$request->customer_id)->where('product_varient_id',$request->product_varient_id)->delete();
+                    if($request->cart_type)
+                    {
+                        if($request->cart_type=='quick')
+                        {
+                                $rvs = new Trn_RecentlyVisitedProducts;
+                                $rvs->customer_id = $request->customer_id;
+                                $gData = Mst_store_product_varient::find($request->product_varient_id);
+                                $rvs->store_id = $gData->store_id;
+                                $rvs->product_id = $gData->product_id;
+                                $rvs->product_varient_id = $request->product_varient_id;
+                                $prData = Mst_store_product::find($gData->product_id);
+                                $rvs->vendor_id = $prData->vendor_id;
+                                $rvs->category_id = $prData->product_cat_id;
+                                $rvs->sub_category_id = $prData->sub_category_id;
+        
+                                $rvs->visit_count = 1;
+                                $rvs->save();
+                        }
+                    }
+    
+                           
+                        
                         if (isset($varProdu)) { 
                             if ($request->quantity <= $varProdu->stock_count) {  //quantity shud be less dan current stock
                
@@ -501,7 +507,25 @@ class PurchaseController extends Controller
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                
-                    //check flag 
+                if($request->cart_type)
+                {
+                    if($request->cart_type=='quick')
+                    {
+                            $rvs = new Trn_RecentlyVisitedProducts;
+                            $rvs->customer_id = $request->customer_id;
+                            $gData = Mst_store_product_varient::find($request->product_varient_id);
+                            $rvs->store_id = $gData->store_id;
+                            $rvs->product_id = $gData->product_id;
+                            $rvs->product_varient_id = $request->product_varient_id;
+                            $prData = Mst_store_product::find($gData->product_id);
+                            $rvs->vendor_id = $prData->vendor_id;
+                            $rvs->category_id = $prData->product_cat_id;
+                            $rvs->sub_category_id = $prData->sub_category_id;
+    
+                            $rvs->visit_count = 1;
+                            $rvs->save();
+                    }
+                }
                     if($request->remove_flag == 1){
 
                     //all items related to customer has to be removed from the table and new product shoudl be added
