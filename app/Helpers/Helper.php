@@ -827,7 +827,7 @@ class Helper
                 'customer_name' => 'required',
                 //  'customer_email'    => 'email',
                 'customer_mobile_number'    => 'required|unique:trn_store_customers|numeric',
-                'password'  => 'required|min:5|same:password_confirmation',
+                'password'  => 'required|min:6|same:password_confirmation',
 
 
             ],

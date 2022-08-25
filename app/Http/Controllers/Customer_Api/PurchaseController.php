@@ -46,6 +46,7 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_points_redeemed;
+use App\Models\admin\Trn_RecentlyVisitedProducts;
 
 class PurchaseController extends Controller
 {
@@ -207,6 +208,30 @@ class PurchaseController extends Controller
                         //     $data['status'] = 3;
                         //     return response($data);
                         // }
+                        if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                            // recently visited products
+                            //  $recVisStrRowCount = Trn_RecentlyVisitedProducts::where('customer_id',$request->customer_id)->count();
+                            // if($recVisStrRowCount < 1)
+                            // {
+                            // Trn_RecentlyVisitedProducts::where('customer_id',$request->customer_id)->where('product_varient_id',$request->product_varient_id)->delete();
+                    
+                          
+                                $rvs = new Trn_RecentlyVisitedProducts;
+                                $rvs->customer_id = $request->customer_id;
+                                $gData = Mst_store_product_varient::find($request->product_varient_id);
+                                $rvs->store_id = $gData->store_id;
+                                $rvs->product_id = $gData->product_id;
+                                $rvs->product_varient_id = $request->product_varient_id;
+                                $prData = Mst_store_product::find($gData->product_id);
+                                $rvs->vendor_id = $prData->vendor_id;
+                                $rvs->category_id = $prData->product_cat_id;
+                                $rvs->sub_category_id = $prData->sub_category_id;
+        
+                                $rvs->visit_count = 1;
+                                $rvs->save();
+    
+                           
+                        }
 
 
                         if (Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {

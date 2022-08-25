@@ -2197,20 +2197,23 @@ class ProductController extends Controller
                         // if($recVisStrRowCount < 1)
                         // {
                         // Trn_RecentlyVisitedProducts::where('customer_id',$request->customer_id)->where('product_varient_id',$request->product_varient_id)->delete();
+                      
+                            $rvs = new Trn_RecentlyVisitedProducts;
+                            $rvs->customer_id = $request->customer_id;
+                            $gData = Mst_store_product_varient::find($request->product_varient_id);
+                            $rvs->store_id = $gData->store_id;
+                            $rvs->product_id = $gData->product_id;
+                            $rvs->product_varient_id = $request->product_varient_id;
+                            $prData = Mst_store_product::find($gData->product_id);
+                            $rvs->vendor_id = $prData->vendor_id;
+                            $rvs->category_id = $prData->product_cat_id;
+                            $rvs->sub_category_id = $prData->sub_category_id;
+    
+                            $rvs->visit_count = 1;
+                            $rvs->save();
 
-                        $rvs = new Trn_RecentlyVisitedProducts;
-                        $rvs->customer_id = $request->customer_id;
-                        $gData = Mst_store_product_varient::find($request->product_varient_id);
-                        $rvs->store_id = $gData->store_id;
-                        $rvs->product_id = $gData->product_id;
-                        $rvs->product_varient_id = $request->product_varient_id;
-                        $prData = Mst_store_product::find($gData->product_id);
-                        $rvs->vendor_id = $prData->vendor_id;
-                        $rvs->category_id = $prData->product_cat_id;
-                        $rvs->sub_category_id = $prData->sub_category_id;
-
-                        $rvs->visit_count = 1;
-                        $rvs->save();
+                        
+                       
 
 
                         // }

@@ -693,7 +693,7 @@ class CustomerController extends Controller
             $mobCheck = Trn_store_customer::where("customer_mobile_number", '=', $mobNumber)->where('customer_id', '=', $customer_id)->first();
             if ($mobCheck) {
                 $validator = Validator::make($request->all(), [
-                    'password' => 'required|string|min:8|confirmed'
+                    'password' => 'required|string|min:6|confirmed'
                 ]);
                 if (!$validator->fails()) {
                     $encPass = Hash::make($request->input('password'));
@@ -1085,7 +1085,7 @@ class CustomerController extends Controller
                     $request->all(),
                     [
                         'old_password'          => 'required',
-                        'password' => 'required|confirmed',
+                        'password' => 'required|min:6|confirmed',
 
                     ],
                     [
