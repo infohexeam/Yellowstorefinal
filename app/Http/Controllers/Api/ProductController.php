@@ -3124,6 +3124,7 @@ class ProductController extends Controller
                     $visitCount = Trn_RecentlyVisitedProducts::join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__recently_visited_products.product_varient_id');
                     $visitCount =   $visitCount->where('trn__recently_visited_products.product_varient_id', $d->product_varient_id);
                     $visitCount =   $visitCount->where('trn__recently_visited_products.customer_id', $d->customer_id);
+                    $visitCount =   $visitCount->where('trn__recently_visited_products.created_at', $d->created_at);
                     $visitCount =   $visitCount->count();
 
                     $d->visit_count = $visitCount;
@@ -3138,6 +3139,7 @@ class ProductController extends Controller
 
                     $puchasedCount = $puchasedCount->where('trn_store_orders.customer_id', $d->customer_id);
                     $puchasedCount = $puchasedCount->where('trn_order_items.product_varient_id', $d->product_varient_id);
+                    $puchasedCount = $puchasedCount->where('trn_store_orders.created_at', $d->created_at);
                     $puchasedCount = $puchasedCount->sum('trn_order_items.quantity');
 
                     $d->purchased_count = $puchasedCount;
