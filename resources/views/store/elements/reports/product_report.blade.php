@@ -242,6 +242,7 @@
                                                     $visitCount = $visitCount->where('mst_stores.subadmin_id', auth()->user()->id);
                                                 }
                                                 $visitCount =   $visitCount->where('trn__recently_visited_products.product_varient_id', $d->product_varient_id);
+                                                $visitCount =   $visitCount->where('trn__recently_visited_products.created_at', $d->created_at);
                                                 $visitCount =   $visitCount->where('trn__recently_visited_products.customer_id', $d->customer_id);
                                                 $visitCount =   $visitCount->count();
                                             }else{
@@ -254,6 +255,7 @@
                                                     $visitCount = $visitCount->where('mst_stores.subadmin_id', auth()->user()->id);
                                                 }
                                                 $visitCount =   $visitCount->where('trn__recently_visited_products.product_id', $d->product_id);
+                                                $visitCount =   $visitCount->where('trn__recently_visited_products.created_at', $d->created_at);
                                                 $visitCount =   $visitCount->where('trn__recently_visited_products.customer_id', $d->customer_id);
                                                 $visitCount =   $visitCount->count();
 
@@ -272,7 +274,7 @@
                                                 }
                                                 
                                                 $puchasedCount = $puchasedCount->where('trn_store_orders.customer_id', $d->customer_id);
-                                                // $puchasedCount = $puchasedCount->where('trn_store_orders.created_at', $d->created_at);
+                                                $puchasedCount = $puchasedCount->where('trn_order_items.created_at', $d->created_at);
                                                 $puchasedCount = $puchasedCount->where('trn_order_items.product_varient_id', $d->product_varient_id);
                                                 $puchasedCount = $puchasedCount->sum('trn_order_items.quantity');
                                                 
