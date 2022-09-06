@@ -296,7 +296,7 @@ use App\Models\admin\Trn_StoreBankData;
                                     <p style="font-size:9px">Store expired on <br> <b style="font-size:11px"> {{ @$storeAdmData->expiry_date}} </b><br> ({{@$diff}} {{@$dayString}} before)</p>
                                     @else
                                     @if (@$diff <= 3)
-                                    <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff}}</b> {{@$dayString}}</p>
+                                    <p style="font-size:9px">This account expires in <b style="font-size:11px">{{@$diff+1}}</b> {{@$dayString}}</p>
                                     @endif
                                     
                                     @endif
