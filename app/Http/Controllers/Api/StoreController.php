@@ -1817,45 +1817,46 @@ class StoreController extends Controller
                 $store_id = $request->store_id;
 
                 $inventoryData =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-                    ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-                    
-                    ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-                    ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-
-                    ->where('mst_store_products.store_id', $store_id)
-
-                    ->where('mst_store_products.product_type', 1)
-                    // ->where('mst_store_products.is_removed', 0)
-                    // ->where('mst_store_product_varients.is_removed', 0)
-                    // ->orderBy('mst_store_products.product_name','ASC')
-                    ->orderBy('mst_store_product_varients.product_varient_id', 'DESC')
-
-                    ->select(
-                        'mst_store_products.product_id',
-                        'mst_store_products.product_name',
-                        'mst_store_products.product_code',
-                        'mst_store_products.product_cat_id',
-                        'mst_store_products.product_base_image',
-                        'mst_store_products.product_status',
-                        'mst_store_products.product_brand',
-                        'mst_store_products.min_stock',
-
-                        'mst_store_products.tax_id',
-                        'mst_store_product_varients.product_varient_id',
-                        'mst_store_product_varients.variant_name',
-                        'mst_store_product_varients.product_varient_price',
-                        'mst_store_product_varients.product_varient_offer_price',
-                        'mst_store_product_varients.product_varient_base_image',
-                        'mst_store_product_varients.stock_count',
-                        'mst_store_product_varients.created_at',
-                        'mst_store_product_varients.is_base_variant',
-                        'mst_store_product_varients.variant_status',
-                        'mst_store_categories.category_id',
-                        'mst_store_categories.category_name',
-                        'mst_store_agencies.agency_name',
-                        'mst__sub_categories.sub_category_name',
-
-                    );
+                ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+              
+                ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+                ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+          
+                ->where('mst_store_products.store_id', $store_id)
+                
+          
+                ->where('mst_store_products.product_type', 1)
+                ->where('mst_store_products.is_removed',0)
+                // ->orderBy('mst_store_products.product_name','ASC')
+                //   ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+          
+          
+                ->select(
+                  'mst_store_products.product_id',
+                  'mst_store_products.product_name',
+                  'mst_store_products.product_code',
+                  'mst_store_products.product_cat_id',
+                  'mst_store_products.product_base_image',
+                  'mst_store_products.product_status',
+                  'mst_store_products.product_brand',
+                  'mst_store_products.min_stock',
+                  'mst_store_products.is_removed',
+          
+                  'mst_store_products.tax_id',
+                  'mst_store_product_varients.product_varient_id',
+                  'mst_store_product_varients.variant_name',
+                  'mst_store_product_varients.product_varient_price',
+                  'mst_store_product_varients.product_varient_offer_price',
+                  'mst_store_product_varients.product_varient_base_image',
+                  'mst_store_product_varients.stock_count',
+                  'mst_store_product_varients.created_at',
+                  'mst_store_product_varients.is_base_variant',
+                  'mst_store_product_varients.variant_status',
+                  'mst_store_categories.category_id',
+                  'mst_store_categories.category_name',
+                  'mst__sub_categories.sub_category_name',
+          
+                );
                 // $inventoryData = $inventoryData->get();
                 // dd($inventoryData);
 
@@ -1948,12 +1949,13 @@ class StoreController extends Controller
 
 
                 $inventoryDatasss = collect($inventoryDataa);
-                $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
-                $dataReViStoreSS =   $inventoryDatas->values()->all();
+                
+                $dataReViStoreSS =   $inventoryDatasss->values()->all();
 
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
+                //return count($data['inventoryData']);
                 if ($roWc > 19) {
                     $data['pageCount'] = floor(@$roWc / 20);
                 } else {
@@ -2103,8 +2105,8 @@ class StoreController extends Controller
 
 
                 $inventoryDatasss = collect($inventoryDataa);
-                $inventoryDatas = $inventoryDatasss->unique('product_varient_id');
-                $dataReViStoreSS =   $inventoryDatas->values()->all();
+                
+                $dataReViStoreSS =   $inventoryDatasss->values()->all();
 
 
 
