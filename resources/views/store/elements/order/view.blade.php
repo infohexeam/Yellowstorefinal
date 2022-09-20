@@ -299,7 +299,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           @php
                                             
                                              @$t_val = ($tax_info->tax_value * $tval) * 0.01 ;
-                                             $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',$tax_info->tax_id)->get();
+                                             $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',@$tax_info->tax_id)->get();
                                                // dd($splitdata);
                                           @endphp
                                     
