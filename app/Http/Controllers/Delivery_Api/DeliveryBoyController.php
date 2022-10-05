@@ -338,7 +338,9 @@ class DeliveryBoyController extends Controller
                     $otp_verify->otp_expirytime     = $otp_expirytime;
                     $otp_verify->otp                = $otp;
                     $otp_verify->save();
-
+                    $res=Helper::sendOtp($delivery_boy_mobile,$otp,1);
+                    //return $dboy->delivery_boy_mobile;
+                    $data['otp_session_id']=$res['session_id'];
                     $data['status'] = 1;
                     $data['delivery_boy_id'] = $delivery_boy_id;
                     $data['delivery_boy_mobile'] = $delivery_boy_mobile;
@@ -371,6 +373,7 @@ class DeliveryBoyController extends Controller
         try {
             $otp = $request->otp;
             $mobNumber = $request->delivery_boy_mobile;
+            $otp_session_id=$request->otp_session_id;
 
             $mobCheck = Mst_delivery_boy::where("delivery_boy_mobile", '=', $mobNumber)->latest()->first();
             if ($mobCheck) {
@@ -386,11 +389,22 @@ class DeliveryBoyController extends Controller
                     // $expParse = $expTime->format('Y-m-d H:i:s');
 
                     if ($current_time < $otp_expirytime) {
+                        $res=Helper::verifyOtp($otp_session_id,$new_otp,1);
+                        if($res['status']=="success")
+                        {
+                            $data['status'] = 1;
+                            $data['delivery_boy_id'] = $delivery_boy_id;
+                            $data['delivery_boy_mobile'] = $mobile_number;
+                            $data['message'] = "OTP verification success. Enter a new password.";
 
-                        $data['status'] = 1;
-                        $data['delivery_boy_id'] = $delivery_boy_id;
-                        $data['delivery_boy_mobile'] = $mobile_number;
-                        $data['message'] = "OTP verification success. Enter a new password.";
+                        }
+                        else
+                        {
+                            $data['status'] = 3;
+                            $data['message'] = "OTP Mismatched";
+
+                        }
+                       
                     } else {
                         $data['status'] = 2;
                         $data['message'] = "OTP expired.click on resend OTP";
@@ -454,6 +468,7 @@ class DeliveryBoyController extends Controller
         $data = array();
         try {
             $delivery_boy_id = $request->delivery_boy_id;
+            $delivery_boy=Mst_delivery_boy::find($delivery_boy_id);
             $otp_verify = Trn_StoreDeliveryBoyOtpVerify::where('delivery_boy_id', '=', $delivery_boy_id)->latest()->first();
             if ($otp_verify) {
 
@@ -463,6 +478,10 @@ class DeliveryBoyController extends Controller
                     $extented_time = Carbon::now()->addMinute(10);
                     $otp_verify->otp_expirytime = $extented_time;
                     $otp_verify->update();
+                    //return $request->delivery_boy_id;
+                    $res=Helper::sendOtp($delivery_boy->delivery_boy_mobile,$otp_verify->otp,1);
+                    //return $dboy->delivery_boy_mobile;
+                    $data['otp_session_id']=$res['session_id'];
                     $data['status'] = 1;
                     $data['otp'] = $otp_verify->otp;
                     $data['message'] = "OTP resent Success.";
@@ -474,6 +493,8 @@ class DeliveryBoyController extends Controller
                     $otp_verify->otp_expirytime     = $otp_expirytime;
                     $otp_verify->otp                 = $otp;
                     $otp_verify->save();
+                    $res=Helper::sendOtp($delivery_boy->delivery_boy_mobile,$otp,1);
+                    $data['otp_session_id']=$res['session_id'];
                     $data['status'] = 2;
                     $data['message'] = "OTP registerd successfully. Please verify OTP.";
                 }
