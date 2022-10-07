@@ -958,8 +958,13 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         // video gallery
         Route::get('store/video-gallery', 'StoreController@videoGallery')->name('store.video_gallery');
-
-
+       //configure points
+       Route::get('store/configure_points/list', 'WalletController@createConfigurePoints')->name('store.create_configure_points');
+       Route::post('store/configure_points/save', 'WalletController@storeConfigurePoints')->name('store.save_configure_points');
+       //customer rewards
+        Route::get('store/customer-rewards/list', 'WalletController@listCustomerReward')->name('store.customer_reward.list');
+        Route::get('store/customer-rewards/add', 'WalletController@addReward')->name('store.customer_reward.add');
+        Route::post('store/customer-rewards/save', 'WalletController@storeReward')->name('store.customer_reward.save');
         // store Report
         Route::get('store/overall-product-report', 'CouponController@showOverallProductReport')->name('store.overall_product_reports');
         Route::get('store/product-wise-report', 'CouponController@showReport')->name('store.show_reports');

@@ -166,6 +166,14 @@
           <span class="side-menu__label"> {{ __('Coupon') }}</span>
         </a>
       </li>
+      <li class="slide">
+        <a class="side-menu__item"  data-toggle="slide" href="#"><i class="side-menu__icon fa fa-heart"></i><span class="side-menu__label">{{ __('Loyalty Programs') }}</span><i class="angle fa fa-angle-right"></i></a>
+        <ul class="slide-menu">
+          <li><a class="slide-item" href="{{route('store.create_configure_points')}}">{{ __('Configure Points') }}</a></li>
+         <li><a class="slide-item" href="{{route('store.customer_reward.list')}}">{{ __('Customer Rewards') }}</a></li>
+          {{--<li><a class="slide-item" href="{{route('admin.list_points_to_customer')}}">Reward Points of<br> Non-existing Customer</a></li>--}}
+        </ul>
+      </li>
 
     
 

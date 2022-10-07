@@ -4637,7 +4637,7 @@ class SettingController extends Controller
 	{
 
 		$pageTitle = "Configure Points";
-		$configure_points = Trn_configure_points::first();
+		$configure_points = Trn_configure_points::WhereNull('store_id')->first();
 		if (isset($configure_points)) {
 			$configure_points_id = $configure_points->configure_points_id;
 		} else {

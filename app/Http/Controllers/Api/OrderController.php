@@ -58,8 +58,7 @@ use App\Models\admin\Trn_DeliveryBoyLocation;
 
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
-
-
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -739,6 +738,16 @@ class OrderController extends Controller
                             $orderAmounttoPointPercentage =  $orderPoint / $orderAmount;
                             $orderPointAmount =  $orderDataz->product_total_amount * $orderAmounttoPointPercentage;
                             //echo $orderPointAmount;die;
+                            ///////////////////////////////////////////////////////
+                            $store_id=Auth::guard('store')->user()->store_id;
+                            $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
+                            $storeOrderAmount  = $storeConfigPoint->order_amount;
+                            $storeOrderPoint  = $storeConfigPoint->order_points;
+
+                            $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
+                            $storeOrderPointAmount =  $orderDataz->product_total_amount * $storeOrderAmounttoPointPercentage;
+                            ///////////////////////////////////////////////////////
+
 
                             if (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() == 1) {
                                 $configPoint = Trn_configure_points::find(1);
@@ -833,6 +842,18 @@ class OrderController extends Controller
                                     $cr->reward_point_status = 1;
                                     $cr->discription = null;
                                     $cr->save();
+
+                                    $scr = new Trn_customer_reward;
+                                    $scr->transaction_type_id = 0;
+                                    $scr->store_id=$store_id;
+                                    $scr->reward_points_earned = $storeOrderPointAmount;
+                                    $scr->customer_id = $orderDataz->customer_id;
+                                    $scr->order_id = $orderDataz->order_id;
+                                    $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                                    $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                                    $scr->reward_point_status = 1;
+                                    $scr->discription = null;
+                                    $scr->save();
 
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
 
