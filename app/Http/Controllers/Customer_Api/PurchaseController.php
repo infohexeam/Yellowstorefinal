@@ -59,7 +59,7 @@ class PurchaseController extends Controller
         $data = array();
         $store_id=$request->store_id;
         try {
-            if (isset($request->order_amount)) {
+            if (isset($request->order_amount) && isset($store_id) ) {
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                     $customer_id = $request->customer_id;
                     if($request->admin_points)

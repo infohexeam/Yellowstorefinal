@@ -64,7 +64,7 @@ use App\Models\admin\Trn_DeliveryBoyLocation;
 
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
-
+use App\Trn_wallet_log;
 
 class StoreOrderController extends Controller
 {
@@ -884,12 +884,17 @@ class StoreOrderController extends Controller
     
                         if ($request->status_id != 5) {
                             $store_order->reward_points_used =  $request->reward_points_used;
+                            $store_order->reward_points_used_store =  $request->reward_points_used_store;
                             $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
                             $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+                            $store_order->amount_reduced_by_rp_store =  $request->amount_reduced_by_rp_store;
+                            
                         } else {
                             $store_order->reward_points_used =  0;
+                            $store_order->reward_points_used_store = 0;
                             $store_order->amount_before_applying_rp =  0;
                             $store_order->amount_reduced_by_rp =  0;
+                            $store_order->amount_reduced_by_rp_store =  0;
                         }
     
     
@@ -1121,6 +1126,12 @@ class StoreOrderController extends Controller
                         $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
                         $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $request->store_id)->get();
                         $orderdatas = Trn_store_order::find($order_id);
+                        if($request->wallet_id)
+                        {
+                            $w_log=Trn_wallet_log::find($request->wallet_id);
+                            $w_log->order_id=$order_id;
+                            $w_log->update();
+                        }
     
                         foreach ($storeDevice as $sd) {
                             $title = 'New order arrived';
