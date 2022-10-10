@@ -58,11 +58,11 @@ class PurchaseController extends Controller
     {
         $data = array();
         $store_id=$request->store_id;
-        try {
+       
             if (isset($request->order_amount) && isset($store_id) ) {
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                     $customer_id = $request->customer_id;
-                    if($request->admin_points)
+                    if($request->admin_points==1)
                     {
                         $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
                         $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
@@ -71,10 +71,11 @@ class PurchaseController extends Controller
                         $customerRewardPoint = ($totalCustomerRewardsCount - $totalusedPoints) - $redeemedPoints;
 
                     }
-                    if($request->store_points)
+                    if($request->store_points==1)
                     {
                         $totalCustomerStoreRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
                         $totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
+                        $totalusedStorePoints=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->sum('points_debited');
                         $redeemedStorePoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
     
                         $customerRewardStorePoint = ($totalCustomerStoreRewardsCount - $totalusedStorePoints) - $redeemedStorePoints;
@@ -84,10 +85,21 @@ class PurchaseController extends Controller
 
                     //echo $customerRewardPoint;die;
 
-                    if ($customerRewardPoint > 0 || $customerRewardStorePoint > 0 ) {
-
+                    if (isset($customerRewardPoint) || isset($customerRewardStorePoint) ) {
+                if(isset($customerRewardPoint))
+                {
                     if($customerRewardPoint > 0)
                     {
+                        if($request->store_points==0)
+                        {
+                            $totalCustomerStoreRewardsCount = 0;
+                            $totalusedStorePoints = 0;
+                            $totalusedStorePoints=0;
+                            $redeemedStorePoints = 0;
+        
+                            $customerRewardStorePoint = 0;
+
+                        }
                         $ConfigPoints = Trn_configure_points::first();
                         $pointToRupeeRatio =   $ConfigPoints->rupee / $ConfigPoints->rupee_points; // points to rupee ratio
 
@@ -96,7 +108,7 @@ class PurchaseController extends Controller
                         $totalReducableAmount = ($avilableRewardAmount * $ConfigPoints->redeem_percentage) / 100; // 10% of order amount
 
                         if ($totalReducableAmount > $maxRedeemAmountPerOrder) {
-
+                        
                             $orderAmount = $request->order_amount;
                             $reducedOrderAmount = $orderAmount - $maxRedeemAmountPerOrder;
                             $customerUsedRewardPoint = $maxRedeemAmountPerOrder / $pointToRupeeRatio;
@@ -130,9 +142,25 @@ class PurchaseController extends Controller
                             $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
                         }
                     }
+                }
+                if(isset($customerRewardStorePoint))
+                {
                     if($customerRewardStorePoint > 0)
                     {
-                        
+                        if($request->store_points==1)
+                        {
+                            if($request->admin_points==0)
+                            {
+                                $totalCustomerRewardsCount =0;
+                                $totalusedPoints = 0;
+                                $redeemedPoints = 0;
+            
+                                $customerRewardPoint = 0;
+    
+                            }
+
+                        }
+                       
                         $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
                         $storePointToRupeeRatio =   $storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio
 
@@ -168,11 +196,16 @@ class PurchaseController extends Controller
                         $data['wallet_id']=$wallet_log->wallet_log_id;
 
                         } else {
+                            if($request->admin_points==0)
+                            {
+                                //$$reducedOrderAmount=0;
+    
+                            }
 
                             $orderAmount = $request->order_amount;
                             $reducedOrderStoreAmount = $orderAmount - $totalReducableStoreAmount;
                             $customerUsedRewardStorePoint = $totalReducableStoreAmount / $storePointToRupeeRatio;
-                            if ($reducedOrderAmount < 0) {
+                            if ($reducedOrderStoreAmount < 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed";
                                 return response($data);
@@ -193,6 +226,7 @@ class PurchaseController extends Controller
                             $data['wallet_id']=$wallet_log->wallet_log_id;
 
                     }
+                }
                 }
 
 
@@ -238,13 +272,7 @@ class PurchaseController extends Controller
             }
 
             return response($data);
-        } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        }
+      
     }
 
     public function addToCart(Request $request)
