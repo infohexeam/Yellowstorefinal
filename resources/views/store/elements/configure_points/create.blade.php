@@ -36,7 +36,7 @@
                         </div>
                         </div>--}}
 
-                         <div class="col-md-6">
+                         <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">Order Points</label>
                            <input type="number" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points">
