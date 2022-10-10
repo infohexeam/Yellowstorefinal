@@ -47,6 +47,7 @@ use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_RecentlyVisitedProducts;
+use App\Trn_wallet_log;
 
 class PurchaseController extends Controller
 {
@@ -56,22 +57,37 @@ class PurchaseController extends Controller
     public function reduceRewardPoint(Request $request)
     {
         $data = array();
+        $store_id=$request->store_id;
         try {
             if (isset($request->order_amount)) {
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                     $customer_id = $request->customer_id;
+                    if($request->admin_points)
+                    {
+                        $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                        $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                        $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+    
+                        $customerRewardPoint = ($totalCustomerRewardsCount - $totalusedPoints) - $redeemedPoints;
 
-                    $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
-                    $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
-                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                    }
+                    if($request->store_points)
+                    {
+                        $totalCustomerStoreRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                        $totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
+                        $redeemedStorePoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+    
+                        $customerRewardStorePoint = ($totalCustomerStoreRewardsCount - $totalusedStorePoints) - $redeemedStorePoints;
 
-                    $customerRewardPoint = ($totalCustomerRewardsCount - $totalusedPoints) - $redeemedPoints;
+                    }
+                  
 
                     //echo $customerRewardPoint;die;
 
-                    if ($customerRewardPoint > 0) {
+                    if ($customerRewardPoint > 0 || $customerRewardStorePoint > 0 ) {
 
-
+                    if($customerRewardPoint > 0)
+                    {
                         $ConfigPoints = Trn_configure_points::first();
                         $pointToRupeeRatio =   $ConfigPoints->rupee / $ConfigPoints->rupee_points; // points to rupee ratio
 
@@ -86,7 +102,7 @@ class PurchaseController extends Controller
                             $customerUsedRewardPoint = $maxRedeemAmountPerOrder / $pointToRupeeRatio;
                             if ($reducedOrderAmount < 0) {
                                 $data['status'] = 0;
-                                $data['message'] = "Reward points can't be redeemed";
+                                $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
                             }
 
@@ -113,6 +129,71 @@ class PurchaseController extends Controller
                             $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
                             $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
                         }
+                    }
+                    if($customerRewardStorePoint > 0)
+                    {
+                        
+                        $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
+                        $storePointToRupeeRatio =   $storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio
+
+                        $avilableStoreRewardAmount = $storePointToRupeeRatio * $customerRewardStorePoint;
+                        $storeMaxRedeemAmountPerOrder = $storeConfigPoints->max_redeem_amount;
+                        $totalReducableStoreAmount = ($avilableStoreRewardAmount * $storeConfigPoints->redeem_percentage) / 100; // 10% of order amount
+
+                        if ($totalReducableStoreAmount > $storeMaxRedeemAmountPerOrder) {
+
+                            $orderAmount = $request->order_amount;
+                            $reducedOrderStoreAmount = $orderAmount - $storeMaxRedeemAmountPerOrder;
+                            $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
+                            if ($reducedOrderStoreAmount < 0) {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed for admin";
+                                return response($data);
+                            }
+
+                            $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
+                            $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                            $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
+                            $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                            $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
+                            $data['balanceStorePoint'] = $customerRewardStorePoint - $customerUsedRewardStorePoint;
+
+                        $wallet_log=new Trn_wallet_log();
+                        $wallet_log->store_id=$store_id;
+                        $wallet_log->customer_id=$request->customer_id;
+                        $wallet_log->type='debit';
+                        $wallet_log->points_debited=$data['usedStorePoint'];
+                        $wallet_log->points_credited=null;
+                        $wallet_log->save();
+                        $data['wallet_id']=$wallet_log->wallet_log_id;
+
+                        } else {
+
+                            $orderAmount = $request->order_amount;
+                            $reducedOrderStoreAmount = $orderAmount - $totalReducableStoreAmount;
+                            $customerUsedRewardStorePoint = $totalReducableStoreAmount / $storePointToRupeeRatio;
+                            if ($reducedOrderAmount < 0) {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed";
+                                return response($data);
+                            }
+                            $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
+                            $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                            $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
+                            $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                            $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
+                            $data['balanceStorePoint'] = $customerRewardStorePoint - $customerUsedRewardStorePoint;
+                            $wallet_log=new Trn_wallet_log();
+                            $wallet_log->store_id=$store_id;
+                            $wallet_log->customer_id=$request->customer_id;
+                            $wallet_log->type='debit';
+                            $wallet_log->points_debited=$data['usedStorePoint'];
+                            $wallet_log->points_credited=null;
+                            $wallet_log->save();
+                            $data['wallet_id']=$wallet_log->wallet_log_id;
+
+                    }
+                }
 
 
 

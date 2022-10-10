@@ -512,12 +512,16 @@ class StoreOrderController extends Controller
 
                     if ($request->status_id != 5) {
                         $store_order->reward_points_used =  $request->reward_points_used;
+                        $store_order->reward_points_used_store =  $request->reward_points_used_store;
                         $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
                         $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
+                        $store_order->amount_reduced_by_rp_store =  $request->amount_reduced_by_rp_store;
                     } else {
                         $store_order->reward_points_used =  0;
+                        $store_order->reward_points_used_store = 0;
                         $store_order->amount_before_applying_rp =  0;
                         $store_order->amount_reduced_by_rp =  0;
+                        $store_order->amount_reduced_by_rp_store =  0;
                     }
 
 

@@ -58,6 +58,7 @@ use App\Models\admin\Trn_DeliveryBoyLocation;
 
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
+use App\Trn_wallet_log;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -739,7 +740,7 @@ class OrderController extends Controller
                             $orderPointAmount =  $orderDataz->product_total_amount * $orderAmounttoPointPercentage;
                             //echo $orderPointAmount;die;
                             ///////////////////////////////////////////////////////
-                            $store_id=Auth::guard('store')->user()->store_id;
+                            $store_id=$request->store_id;
                             $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
                             $storeOrderAmount  = $storeConfigPoint->order_amount;
                             $storeOrderPoint  = $storeConfigPoint->order_points;
@@ -852,8 +853,18 @@ class OrderController extends Controller
                                     $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
                                     $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
                                     $scr->reward_point_status = 1;
-                                    $scr->discription = null;
+                                    $scr->discription = 'store points';
                                     $scr->save();
+
+                                    $wallet_log=new Trn_wallet_log();
+                                    $wallet_log->store_id=$orderDataz->store_id;
+                                    $wallet_log->customer_id=$orderDataz->customer_id;
+                                    $wallet_log->order_id=$orderDataz->order_id;
+                                    $wallet_log->type='credit';
+                                    $wallet_log->points_debited=null;
+                                    $wallet_log->points_credited=$storeOrderPointAmount;
+                                    $wallet_log->save();
+                            //$data['wallet_id']=$wallet_log->wallet_log_id;
 
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
 

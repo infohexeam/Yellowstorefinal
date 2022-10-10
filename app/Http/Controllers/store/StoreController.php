@@ -78,6 +78,7 @@ use PDF;
 use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_StoreBankData;
+use App\Trn_wallet_log;
 
 class StoreController extends Controller
 {
@@ -2447,14 +2448,14 @@ class StoreController extends Controller
   {
 
     //try {
-
+  //dd("hii");
 
     $order_id = $request->order_id;
     $order = Trn_store_order::Find($order_id);
     $order_number = $order->order_number;
     $store_id = $order->store_id;
     $customer_id = $order->customer_id;
-
+    //dd($request->status_id);
     $validator = Validator::make(
       $request->all(),
       [
@@ -2477,17 +2478,17 @@ class StoreController extends Controller
 
       if ($request->status_id == 8) {
         if ($order->order_type == 'APP') {
-          if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
+         if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
             return redirect()->back()->withErrors(['delivery boy not assigned']);
           }
         }
       }
-      if (($request->status_id == 9) && ($order->status_id != 9)) {
+      if (($request->status_id == 9)) {
 
         $order->delivery_date = Carbon::now()->format('Y-m-d');
         $order->delivery_time = Carbon::now()->format('H:i');
         if ($order->order_type == 'APP') {
-          if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
+        if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
             return redirect()->back()->withErrors(['delivery boy not assigned']);
           }
         }
@@ -2499,7 +2500,16 @@ class StoreController extends Controller
         $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
         $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
 
+         ///////////////////////////////////////////////////////
+         $store_id=Auth::guard('store')->user()->store_id;
+        // dd($store_id);
+         $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
+         $storeOrderAmount  = $storeConfigPoint->order_amount;
+         $storeOrderPoint  = $storeConfigPoint->order_points;
 
+         $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
+         $storeOrderPointAmount =$order->product_total_amount * $storeOrderAmounttoPointPercentage;
+         ///////////////////////////////////////////////////////
         if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
           $configPoint = Trn_configure_points::find(1);
 
@@ -2591,6 +2601,27 @@ class StoreController extends Controller
             $cr->reward_point_status = 1;
             $cr->discription = null;
             $cr->save();
+
+            $scr = new Trn_customer_reward;
+            $scr->transaction_type_id = 0;
+            $scr->store_id=$store_id;
+            $scr->reward_points_earned = $storeOrderPointAmount;
+            $scr->customer_id = $order->customer_id;
+            $scr->order_id = $order->order_id;
+            $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $scr->reward_point_status = 1;
+            $scr->discription = 'store points';
+            $scr->save();
+
+            $wallet_log=new Trn_wallet_log();
+            $wallet_log->store_id=$order->store_id;
+            $wallet_log->customer_id=$order->customer_id;
+            $wallet_log->order_id=$order->order_id;
+            $wallet_log->type='credit';
+            $wallet_log->points_debited=null;
+            $wallet_log->points_credited=$storeOrderPointAmount;
+            $wallet_log->save();
 
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
 

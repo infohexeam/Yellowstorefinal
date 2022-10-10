@@ -29,16 +29,16 @@
                   enctype="multipart/form-data">
                   @csrf
                   <div class="row">
-                     <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Registration Points</label>
                            <input type="number" class="form-control"  name="registraion_points" value="{{old('registraion_points',@$configure_points->registraion_points)}}" placeholder="Registration Points">
                         </div>
-                        </div>
+                        </div>--}}
 
                          <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">First Order Points</label>
+                           <label class="form-label">Order Points</label>
                            <input type="number" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points">
                         </div>
                         </div>

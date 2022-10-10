@@ -427,7 +427,7 @@ Route::get('customer/cart-page', 'Customer_Api\ProductController@viewCart');
 
 Route::get('customer/wallet-page', 'Customer_Api\ProductController@walletPage');
 Route::get('customer/raise-issues', 'Customer_Api\ProductController@raiseIssuesPage');
-
+Route::get('customer/store-wallet-page', 'Customer_Api\ProductController@storeWalletPage');
 
 Route::get('customer/address-coupon-list', 'Customer_Api\ProductController@listCouponAndAddress');
 Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
