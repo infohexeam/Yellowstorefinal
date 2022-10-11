@@ -58,6 +58,7 @@ class PurchaseController extends Controller
     {
         $data = array();
         $store_id=$request->store_id;
+        $orderAmount = $request->order_amount;
        
             if (isset($request->order_amount) && isset($store_id) ) {
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
@@ -140,6 +141,7 @@ class PurchaseController extends Controller
                             $data['reducedAmountByWalletPoints'] = number_format((float)$totalReducableAmount, 2, '.', '');
                             $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
                             $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
+                            $orderAmount=$reducedOrderAmount;
                         }
                     }
                 }
@@ -170,7 +172,7 @@ class PurchaseController extends Controller
 
                         if ($totalReducableStoreAmount > $storeMaxRedeemAmountPerOrder) {
 
-                            $orderAmount = $request->order_amount;
+                            //$orderAmount = $request->order_amount;
                             $reducedOrderStoreAmount = $orderAmount - $storeMaxRedeemAmountPerOrder;
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
                             if ($reducedOrderStoreAmount < 0) {
@@ -178,22 +180,34 @@ class PurchaseController extends Controller
                                 $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
                             }
+                            $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                            $total_debit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_debited');
+                            if($total_debit_points+$customerUsedRewardStorePoint>$total_credit_points)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed";
+                                return response($data);
 
-                            $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
+                            }
+                            $wallet_log=new Trn_wallet_log();
+                            $wallet_log->store_id=$store_id;
+                            $wallet_log->customer_id=$request->customer_id;
+                            $wallet_log->type='debit';
+                            $wallet_log->points_debited= number_format((float)$customerUsedRewardStorePoint, 2, '.', '');;
+                            $wallet_log->points_credited=null;
+                            $wallet_log->save();
+                            $data['wallet_id']=$wallet_log->wallet_log_id;
+                            $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                            $total_debit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_debited');
+
+                            $data['orderAmountAfterAdminDeduction'] = number_format((float)$orderAmount, 2, '.', '');
                             $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
                             $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
                             $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
                             $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
                             $data['balanceStorePoint'] = $customerRewardStorePoint - $customerUsedRewardStorePoint;
 
-                        $wallet_log=new Trn_wallet_log();
-                        $wallet_log->store_id=$store_id;
-                        $wallet_log->customer_id=$request->customer_id;
-                        $wallet_log->type='debit';
-                        $wallet_log->points_debited=$data['usedStorePoint'];
-                        $wallet_log->points_credited=null;
-                        $wallet_log->save();
-                        $data['wallet_id']=$wallet_log->wallet_log_id;
+                     
 
                         } else {
                             if($request->admin_points==0)
@@ -202,7 +216,7 @@ class PurchaseController extends Controller
     
                             }
 
-                            $orderAmount = $request->order_amount;
+                            $orderAmount = $orderAmount;
                             $reducedOrderStoreAmount = $orderAmount - $totalReducableStoreAmount;
                             $customerUsedRewardStorePoint = $totalReducableStoreAmount / $storePointToRupeeRatio;
                             if ($reducedOrderStoreAmount < 0) {
@@ -210,20 +224,35 @@ class PurchaseController extends Controller
                                 $data['message'] = "Reward points can't be redeemed";
                                 return response($data);
                             }
-                            $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
-                            $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
-                            $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
-                            $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
-                            $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
-                            $data['balanceStorePoint'] = $customerRewardStorePoint - $customerUsedRewardStorePoint;
+                           
+                            $data['orderAmountAfterAdminDeduction'] = number_format((float)$orderAmount, 2, '.', '');
+                            $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                            $total_debit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_debited');
+                            if($total_debit_points+$customerUsedRewardStorePoint>$total_credit_points)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed";
+                                return response($data);
+
+                            }
                             $wallet_log=new Trn_wallet_log();
                             $wallet_log->store_id=$store_id;
                             $wallet_log->customer_id=$request->customer_id;
                             $wallet_log->type='debit';
-                            $wallet_log->points_debited=$data['usedStorePoint'];
+                            $wallet_log->points_debited= number_format((float)$customerUsedRewardStorePoint, 2, '.', '');;
                             $wallet_log->points_credited=null;
                             $wallet_log->save();
                             $data['wallet_id']=$wallet_log->wallet_log_id;
+                            $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                            $total_debit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_debited');
+                           
+                           
+                            $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                            $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
+                            $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                            $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
+                            $data['balanceStorePoint'] = $total_credit_points - $total_debit_points;
+                            
 
                     }
                 }
