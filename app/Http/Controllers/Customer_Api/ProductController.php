@@ -1269,6 +1269,12 @@ class ProductController extends Controller
                         $data['redeemAmt']  = Trn_configure_points::find(1)->max_redeem_amount;
                         $data['customerRewardsCount'] = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
 
+                        $data['storeRewardReducible']  = Trn_configure_points::where('store_id',$request->store_id)->first()->redeem_percentage;
+                        $data['storeRedeemAmt']  = Trn_configure_points::where('store_id',$request->store_id)->first()->max_redeem_amount;
+                        $data['storeCustomerRewardsCount'] = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->where('discription','store_points')->sum('reward_points_earned');
+
+
+
 
                         $data['status'] = 1;
                         $data['message'] = "success";
