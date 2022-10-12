@@ -83,6 +83,9 @@ Route::get('store/get-online-status', 'Api\StoreController@getOnlineStatus');
 
 Route::get('store/get-store-configure-points', 'Api\StoreWalletController@getStoreConfigurePoints');
 Route::get('store/save-store-configure-points', 'Api\StoreWalletController@storeConfigurePoints');
+Route::get('store/list-store-customer-rewards', 'Api\StoreWalletController@listStoreCustomerRewards');
+Route::get('store/get-reward-customers', 'Api\StoreWalletController@getRewardCustomers');
+Route::get('store/save-rewards', 'Api\StoreWalletController@saveRewards');
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('store/logout', 'Api\StoreController@logout');
