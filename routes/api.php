@@ -81,6 +81,8 @@ Route::get('store/switch-status', 'Api\StoreController@onlineStatus');
 //Online Status
 Route::get('store/get-online-status', 'Api\StoreController@getOnlineStatus');
 
+Route::get('store/get-store-configure-points', 'Api\StoreWalletController@getStoreConfigurePoints');
+Route::get('store/save-store-configure-points', 'Api\StoreWalletController@storeConfigurePoints');
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('store/logout', 'Api\StoreController@logout');
