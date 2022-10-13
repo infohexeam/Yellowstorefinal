@@ -647,7 +647,8 @@ class StoreController extends Controller
                                 $sadmin = User::where('id','=', 1)->first();
                                 if ($custCheck->role_id != 0)
                                 {
-                                    $phoneNumber =   Trn_StoreAdmin::find($custCheck->store_admin_id)->store_mobile;
+                                    $getStoreAdmin =   Trn_StoreAdmin::find($custCheck->store_id)->where('role_id',"=",0)->first();
+                                    $phoneNumber = $getStoreAdmin->store_mobile;
                                 }else{
                                     $phoneNumber = $sadmin->phone_number;
                                 }
@@ -810,7 +811,8 @@ class StoreController extends Controller
                                 $sadmin = User::where('id','=', 1)->first();
                                 if ($custCheck->role_id != 0)
                                 {
-                                    $phoneNumber =   Trn_StoreAdmin::find($custCheck->store_admin_id)->store_mobile;
+                                    $getStoreAdmin =   Trn_StoreAdmin::find($custCheck->store_id)->where('role_id',"=",0)->first();
+                                    $phoneNumber = $getStoreAdmin->store_mobile;
                                 }else{
                                     $phoneNumber = $sadmin->phone_number;
                                 }
