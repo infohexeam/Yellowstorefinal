@@ -28,6 +28,7 @@ use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use File;
+use App\User;
 
 
 
@@ -642,8 +643,10 @@ class StoreController extends Controller
                         } else {
 
                             if ($custCheck->store_account_status == 0) {
+                                $sadmin = User::where('id','=', 1)->first();
+                                $phoneNumber = $sadmin->phone_number;
                                 $data['status'] = 4;
-                                $data['message'] = "Store is Inactive. Please contact Super admin";
+                                $data['message'] = "Store is Inactive. Please contact Super admin" .$phoneNumber;
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated";
