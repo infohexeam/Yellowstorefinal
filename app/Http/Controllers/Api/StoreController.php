@@ -645,9 +645,15 @@ class StoreController extends Controller
 
                             if ($custCheck->store_account_status == 0) {
                                 $sadmin = User::where('id','=', 1)->first();
-                                $phoneNumber = $sadmin->phone_number;
+                                if ($custCheck->role_id != 0)
+                                {
+                                    $phoneNumber =   Trn_StoreAdmin::find($custCheck->store_admin_id)->store_mobile;
+                                }else{
+                                    $phoneNumber = $sadmin->phone_number;
+                                }
+                                
                                 $data['status'] = 4;
-                                $data['message'] = "Store is Inactive. Please contact Super admin" .$phoneNumber;
+                                $data['message'] = "Store is Inactive. Please contact Admin " .$phoneNumber;
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated";
@@ -802,9 +808,16 @@ class StoreController extends Controller
 
                             if ($custCheck->store_account_status == 0) {
                                 $sadmin = User::where('id','=', 1)->first();
-                                $phoneNumber = $sadmin->phone_number;
+                                if ($custCheck->role_id != 0)
+                                {
+                                    $phoneNumber =   Trn_StoreAdmin::find($custCheck->store_admin_id)->store_mobile;
+                                }else{
+                                    $phoneNumber = $sadmin->phone_number;
+                                }
+                                
+                                
                                 $data['status'] = 4;
-                                $data['message'] = "Store is inactive. Please contact Super admin ".$phoneNumber;
+                                $data['message'] = "Store is inactive. Please contact Admin ".$phoneNumber;
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated/Profile Expired";
