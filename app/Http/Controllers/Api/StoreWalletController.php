@@ -121,7 +121,7 @@ class StoreWalletController extends Controller
 	{
         $data=array();
         $store_id=$request->store_id;
-        if($store_id!=NULL)
+        /*if($store_id!=NULL)
         {
 		$customer_rewards = Trn_customer_reward::leftjoin('trn_store_orders','trn_customer_rewards.order_id','=','trn_store_orders.order_id')->orderBy('reward_id', 'DESC')
         ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', 'trn_customer_rewards.customer_id')
@@ -134,9 +134,9 @@ class StoreWalletController extends Controller
             $data['status']=0;
             $data['message']="Store id required";
             return response($data);
-        }
+        }*/
 
-		if ($_GET) {
+		//if ($_GET) {
 
 			$datefrom = $request->date_from;
 			$dateto = $request->date_to;
@@ -161,7 +161,12 @@ class StoreWalletController extends Controller
 				
 			}
 
-			$customer_rewards = $query->orderBy('reward_id', 'DESC')->get();
+			$customer_rewards = $query->orderBy('reward_id', 'DESC');
+            if (isset($request->page)) {
+                $customer_rewards = $customer_rewards->paginate(10, ['*'], 'page', $request->page);
+            } else {
+                $customer_rewards = $customer_rewards->paginate(10);
+            }
             if($customer_rewards!=NULL)
             {
                 $data['status']=1;
@@ -182,7 +187,7 @@ class StoreWalletController extends Controller
 
 
 			
-		}
+		//}
 
 
         if($customer_rewards!=NULL)
