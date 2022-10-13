@@ -709,7 +709,7 @@ class StoreController extends Controller
                     if (Hash::check($passChk, $custCheck->password)) {
                         //old
                     // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
-                    if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
+                        if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
                             if ($custCheck->store_otp_verify_status != 0) {
                                 $data['status'] = 1;
                                 $data['message'] = "Login Success";
@@ -803,7 +803,7 @@ class StoreController extends Controller
                                 $sadmin = User::where('id','=', 1)->first();
                                 $phoneNumber = $sadmin->phone_number;
                                 $data['status'] = 4;
-                                $data['message'] = "Store is inactive. Please contact Super admin  " .$phoneNumber;
+                                $data['message'] = "Store is inactive. Please contact Super admin " .$phoneNumber;
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated/Profile Expired";
