@@ -33,19 +33,25 @@
 		      <div class="form-body">
 		      	<div class="row">
 
-				<div class="col-md-6">
+				<div class="col-md-4">
 			<div class="form-group">
 				<label class="form-label">Name</label>
 					  <input type="text" required="" class="form-control" readonly="" name="name"  placeholder="Username" value="{{$admin->name}}">
 
                </div>
 				   </div>
-				  <div class="col-md-6">
+				  <div class="col-md-4">
 				 <div class="form-group">
 						<label class="form-label">Email</label>
 					  <input type="email" class="form-control" name="email" value="{{$admin->email}}" placeholder="Email">
 				</div>
       			</div>
+				  <div class="col-md-4">
+					<div class="form-group">
+						   <label class="form-label">Number</label>
+						 <input type="number" class="form-control" name="phone_number" value="{{$admin->phone_number}}" placeholder="Phone number">
+				   </div>
+					 </div>
 
 				</div>
 

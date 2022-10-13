@@ -184,12 +184,14 @@ class HomeController extends Controller
         [
             'name'              =>'required',
             'email'              =>'required',
+            'phone_number'      => 'required'
 
          ],
         [
 
          'name.required'      =>'Username required',
           'email.required'    =>'Email required',
+          'phone_number.required' => 'Phone Number is required',
 
 
         ]);
@@ -201,6 +203,7 @@ class HomeController extends Controller
 
             $admin->name       = $request->name;
             $admin->email       = $request->email;
+            $admin->phone_number = $request->phone_number;
 
 
 
