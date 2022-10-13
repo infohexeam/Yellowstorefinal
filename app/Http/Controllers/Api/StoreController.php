@@ -803,7 +803,7 @@ class StoreController extends Controller
                                 $sadmin = User::where('id','=', 1)->first();
                                 $phoneNumber = $sadmin->phone_number;
                                 $data['status'] = 4;
-                                $data['message'] = "Store is inactive. Please contact Super admin" .$phoneNumber;
+                                $data['message'] = "Store is inactive. Please contact Super admin  " .$phoneNumber;
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated/Profile Expired";
