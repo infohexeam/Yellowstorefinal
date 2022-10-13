@@ -153,9 +153,9 @@ class LoginController extends Controller
                     else
                     {
                         $sadmin = User::where('id','=', 1)->first();
-                                if ($custCheck->role_id != 0)
+                                if ($store->role_id != 0)
                                 {
-                                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
+                                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id',"=",0)->first();
                                     $phoneNumber = $getStoreAdmin->store_mobile;
                                 }else{
                                     $phoneNumber = $sadmin->phone_number;
