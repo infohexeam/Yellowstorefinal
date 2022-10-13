@@ -812,6 +812,7 @@ class StoreController extends Controller
                                 if ($custCheck->role_id != 0)
                                 {
                                     $getStoreAdmin =   Trn_StoreAdmin::find($custCheck->store_id)->where('role_id',"=",0)->first();
+                                    dd($getStoreAdmin);
                                     $phoneNumber = $getStoreAdmin->store_mobile;
                                 }else{
                                     $phoneNumber = $sadmin->phone_number;
