@@ -39,7 +39,7 @@ class WalletController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'registraion_points'          => 'required',
+				//'registraion_points'          => 'required',
 				'first_order_points'          => 'required',
 				'referal_points'          => 'required',
 				'rupee_points'          => 'required',
@@ -54,7 +54,7 @@ class WalletController extends Controller
 				//  'points.required'          => 'Points required',
 				'first_order_points.required'          => 'First order points required',
 				'referal_points.required'          => 'Referal required',
-				'registraion_points.required'          => 'Registration required',
+				//'registraion_points.required'          => 'Registration required',
 				'rupee_points.required'          => 'Ruppes to points required',
 				'order_amount.required'          => 'Order amount required',
 			]
