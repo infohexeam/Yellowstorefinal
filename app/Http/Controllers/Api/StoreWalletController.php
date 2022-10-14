@@ -7,6 +7,7 @@ use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order;
+use App\Trn_wallet_log;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -267,6 +268,16 @@ class StoreWalletController extends Controller
             $reward->reward_point_status  	= 1;
             $reward->discription  	= $request->reward_discription;
             $reward->save(); 
+
+            $wallet_log=new Trn_wallet_log();
+			$wallet_log->store_id=$request->store_id;
+			$wallet_log->customer_id=$request->customer_id;
+			$wallet_log->order_id=null;
+			$wallet_log->type='credit';
+			$wallet_log->points_debited=null;
+			$wallet_log->points_credited=$request->reward_points;
+			$wallet_log->save();
+            
             $data['status']=1;
             $data['message']="Customer reward added successfully";
             return response($data);
