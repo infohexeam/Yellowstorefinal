@@ -215,8 +215,17 @@ class StoreWalletController extends Controller
     }
        $customers = Trn_store_customer::select('customer_id','customer_first_name','customer_last_name','customer_mobile_number')
                     ->whereIn('customer_id',$customer_ids)
+                    ->where('customer_id','!=',3)
                     ->get();
         $data['status']=1;
+        foreach($customers as $customer)
+        {
+            if($customer->customer_last_name==null)
+            {
+                $customer->customer_last_name='';
+            }
+           
+        }
         $data['customers']=$customers;
         $data['message']="rewared eligible customers fetched";
         return response($data);
