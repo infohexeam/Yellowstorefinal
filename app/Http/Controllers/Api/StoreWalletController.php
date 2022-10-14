@@ -170,8 +170,9 @@ class StoreWalletController extends Controller
             if($customer_rewards!=NULL)
             {
                 $data['status']=1;
+                //return response($customer_rewards->customer_rewards['data']);
                 //return $customer_rewards['status'];
-             /* foreach($customer_rewards->customer_rewards->data['customer'] as $customer)
+            /* foreach($customer_rewards->customer_rewards['data'] as $customer)
                 {
                     if($customer->customer_last_name==null)
                     {
@@ -204,14 +205,14 @@ class StoreWalletController extends Controller
         if($customer_rewards!=NULL)
         {
             $data['status']=1;
-            foreach($customer_rewards->customer_rewards->data['customer'] as $customer)
+           /* foreach($customer_rewards->customer_rewards->data['customer'] as $customer)
             {
                 if($customer->customer_last_name==null)
                 {
                     $customer->customer_last_name='';
                 }
                
-            }
+            }*/
             $data['customer_rewards']=$customer_rewards;
             $data['message']="Customer rewards fetched";
 

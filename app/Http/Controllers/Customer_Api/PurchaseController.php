@@ -141,7 +141,7 @@ class PurchaseController extends Controller
                             $data['reducedAmountByWalletPoints'] = number_format((float)$totalReducableAmount, 2, '.', '');
                             $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
                             $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
-                            $orderAmount=$reducedOrderAmount;
+                           // $orderAmount=$reducedOrderAmount;
                         }
                     }
                 }
@@ -200,7 +200,7 @@ class PurchaseController extends Controller
                             $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                             $total_debit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_debited');
 
-                            $data['orderAmountAfterAdminDeduction'] = number_format((float)$orderAmount, 2, '.', '');
+                            $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
                             $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
                             $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
                             $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
@@ -225,7 +225,7 @@ class PurchaseController extends Controller
                                 return response($data);
                             }
                            
-                            $data['orderAmountAfterAdminDeduction'] = number_format((float)$orderAmount, 2, '.', '');
+                            $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
                             $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                             $total_debit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_debited');
                             if($total_debit_points+$customerUsedRewardStorePoint>$total_credit_points)

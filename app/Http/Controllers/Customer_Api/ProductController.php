@@ -1474,7 +1474,7 @@ class ProductController extends Controller
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
 
-                $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->sum('reward_points_earned');
                 $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
                 $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
 
@@ -1495,7 +1495,7 @@ class ProductController extends Controller
 
 
                 $data['customerRewards'] = Trn_customer_reward::where('customer_id', $request->customer_id)
-                    ->where('reward_point_status', 1)->orderBy('reward_id', 'DESC')->get();
+                    ->where('reward_point_status', 1)->whereNull('store_id')->orderBy('reward_id', 'DESC')->get();
                 foreach ($data['customerRewards'] as $cr) {
                     if (Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id)) {
                         $cr->rewardTransactionType = Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id);
