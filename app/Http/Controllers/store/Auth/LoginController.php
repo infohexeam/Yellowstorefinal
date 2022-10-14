@@ -15,6 +15,7 @@ use App\Models\admin\Trn_StoreWebToken;
 use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -67,8 +68,15 @@ class LoginController extends Controller
                           $cId = $admin->store_id;
                           if($admin->store_account_status == 0)
                           {
+                            if ($admin->role_id != 0)
+                                {
+                                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$admin->store_id)->where('role_id',"=",0)->first();
+                                    $phoneNumber = $getStoreAdmin->store_mobile;
+                                }else{
+                                    $phoneNumber = $sadmin->phone_number;
+                                }
                             Auth::guard('store')->logout();
-                           return redirect()->back()->with('danger','Profile is inactive ,Contact admin');
+                           return redirect()->back()->with('danger','Profile is inactive ,Contact admin '.$phoneNumber);
 
                           }
                           if($today>=$admin->expiry_date)
@@ -150,8 +158,16 @@ class LoginController extends Controller
                     }
                     else
                     {
+                        $sadmin = User::where('id','=', 1)->first();
+                                if ($store->role_id != 0)
+                                {
+                                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id',"=",0)->first();
+                                    $phoneNumber = $getStoreAdmin->store_mobile;
+                                }else{
+                                    $phoneNumber = $sadmin->phone_number;
+                                }
                         throw ValidationException::withMessages([
-                            $this->username() => 'Store is Inactive. Please contact Super admin',
+                            $this->username() => 'Store is Inactive. Please contact Admin '.$phoneNumber,
                         ]);
                     }
 

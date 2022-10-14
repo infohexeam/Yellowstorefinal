@@ -90,13 +90,13 @@ input[type="file"] {
                         <div class="form-group">
                             <label class="form-label">MRP *</label>
                             <input step="0.01" type="number" class="form-control" required 
-                             name="regular_price"   id="regular_price" value="{{old('regular_price')}}" onkeypress="preventNonNumericalInput(event)" placeholder="MRP"  oninput="regularPriceChange()" >
+                             name="regular_price"   id="regular_price" value="{{old('regular_price')}}"  placeholder="MRP"  oninput="regularPriceChange()" >
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Sale Price *</label>
-                            <input step="0.01" type="number" class="form-control" required  onkeypress="preventNonNumericalInput(event)" name="sale_price"  id="sale_price" value="{{old('sale_price')}}" oninput="salePriceChange()"  placeholder="Sale Price">
+                            <input step="0.01" type="number" class="form-control" required  name="sale_price"  id="sale_price" value="{{old('sale_price')}}" oninput="salePriceChange()"  placeholder="Sale Price">
                         <span style="color:red" id="sale_priceMsg"> </span>
                                 </div>
                     </div>
@@ -115,7 +115,7 @@ input[type="file"] {
                      <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Min Stock *</label>
-                          <input type="number" required class="form-control" onkeypress="preventNonNumericalInput(event)" name="min_stock" id="min_stock" value="{{old('min_stock' )}}" placeholder="Min Stock">               
+                          <input type="number" required class="form-control"  name="min_stock" id="min_stock" value="{{old('min_stock' )}}" placeholder="Min Stock">               
                         </div>
                     </div>
 
@@ -212,7 +212,7 @@ input[type="file"] {
                         <div class="form-group">
                           <label class="form-label">Vendor </label>
                            <select  name="vendor_id" id="vendor_id" class="form-control"  >
-                                 <option value="">Vendor</option>
+                            <option value="">Select Vendor</option>
                                 @foreach($agencies as $key)
                                 <option {{old('vendor_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id }}"> {{$key->agency_name }} </option>
                                 @endforeach
@@ -305,14 +305,14 @@ input[type="file"] {
                         <div class="col-md-6">
                           <div class="form-group">
                               <label class="form-label">MRP* </label>
-                              <input step="0.01" type="number" class="form-control proVariant " onkeypress="preventNonNumericalInput(event)"   oninput="regularPriceChangeVar(0)"  
+                              <input step="0.01" type="number" class="form-control proVariant "    oninput="regularPriceChangeVar(0)"  
                               name="var_regular_price[]"   id="var_regular_price0" value="" placeholder="MRP">
                           </div>
                       </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Sale Price* </label>
-                                <input step="0.01" type="number" class="form-control proVariant" onkeypress="preventNonNumericalInput(event)"  oninput="salePriceChangeVar(0)"
+                                <input step="0.01" type="number" class="form-control proVariant"   oninput="salePriceChangeVar(0)"
                                 name="var_sale_price[]"  id="var_sale_price0" value="" placeholder="Sale Price">
                                 <span style="color:red" id="sale_priceMsg0"> </span>
                             </div>

@@ -28,6 +28,7 @@ use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use File;
+use App\User;
 
 
 
@@ -571,7 +572,8 @@ class StoreController extends Controller
                     //here
 
                     if (Hash::check($passChk, $custCheck->password)) {
-                        if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
+                        // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
+                            if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
                             if ($custCheck->store_otp_verify_status != 0) {
                                 $data['status'] = 1;
                                 $data['message'] = "Success";
@@ -642,8 +644,17 @@ class StoreController extends Controller
                         } else {
 
                             if ($custCheck->store_account_status == 0) {
+                                $sadmin = User::where('id','=', 1)->first();
+                                if ($custCheck->role_id != 0)
+                                {
+                                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
+                                    $phoneNumber = $getStoreAdmin->store_mobile;
+                                }else{
+                                    $phoneNumber = $sadmin->phone_number;
+                                }
+                                
                                 $data['status'] = 4;
-                                $data['message'] = "Store is Inactive. Please contact Super admin";
+                                $data['message'] = "Store is Inactive. Please contact Admin " .$phoneNumber;
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated";
@@ -797,8 +808,19 @@ class StoreController extends Controller
                         } else {
 
                             if ($custCheck->store_account_status == 0) {
+                                $sadmin = User::where('id','=', 1)->first();
+                                if ($custCheck->role_id != 0)
+                                {
+                                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
+                
+                                    $phoneNumber = $getStoreAdmin->store_mobile;
+                                }else{
+                                    $phoneNumber = $sadmin->phone_number;
+                                }
+                                
+                                
                                 $data['status'] = 4;
-                                $data['message'] = "Store is inactive. Please contact Super admin";
+                                $data['message'] = "Store is inactive. Please contact Admin ".$phoneNumber;
                             } else {
                                 $data['status'] = 4;
                                 $data['message'] = "Profile not Activated/Profile Expired";
