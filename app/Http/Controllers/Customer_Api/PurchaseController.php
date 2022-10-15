@@ -59,6 +59,8 @@ class PurchaseController extends Controller
         $data = array();
         $store_id=$request->store_id;
         $orderAmount = $request->order_amount;
+        $customerRewardPoint=0;
+        $customerRewardStorePoint=0;
        
             if (isset($request->order_amount) && isset($store_id) ) {
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
@@ -74,7 +76,7 @@ class PurchaseController extends Controller
                     }
                     if($request->store_points==1)
                     {
-                        $totalCustomerStoreRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                        $totalCustomerStoreRewardsCount =Trn_wallet_log::where('type','credit')->where('customer_id', $request->customer_id)->sum('points_credited');;
                         $totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
                         $totalusedStorePoints=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->sum('points_debited');
                         $redeemedStorePoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
@@ -82,7 +84,14 @@ class PurchaseController extends Controller
                         $customerRewardStorePoint = ($totalCustomerStoreRewardsCount - $totalusedStorePoints) - $redeemedStorePoints;
 
                     }
-                  
+                 /* $data['adminPointTotal']=$totalCustomerRewardsCount;
+                  $data['adminUsedPoint']=$totalusedPoints;
+                  $data['adminPoint']=$customerRewardPoint;
+                                   
+                  $data['storePointTotal']=$totalCustomerStoreRewardsCount;
+                  $data['storeUsedPoint']=$totalusedStorePoints;
+                  $data['storePoint']=$customerRewardStorePoint;*/
+                 // return response($data);
 
                     //echo $customerRewardPoint;die;
 
@@ -95,7 +104,7 @@ class PurchaseController extends Controller
                         {
                             $totalCustomerStoreRewardsCount = 0;
                             $totalusedStorePoints = 0;
-                            $totalusedStorePoints=0;
+                           
                             $redeemedStorePoints = 0;
         
                             $customerRewardStorePoint = 0;
@@ -205,7 +214,7 @@ class PurchaseController extends Controller
                             $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
                             $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
                             $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
-                            $data['balanceStorePoint'] = $customerRewardStorePoint - $customerUsedRewardStorePoint;
+                            $data['balanceStorePoint'] =  $total_credit_points - $total_debit_points;
 
                      
 
@@ -231,7 +240,12 @@ class PurchaseController extends Controller
                             if($total_debit_points+$customerUsedRewardStorePoint>$total_credit_points)
                             {
                                 $data['status'] = 0;
-                                $data['message'] = "Reward points can't be redeemed";
+                                $data['totalReducableStoreAmount'] =0.00;
+                                $data['reducedStoreOrderAmount'] = 0.00;
+                                $data['reducedAmountByStoreWalletPoints'] =0.00;
+                                $data['usedStorePoint'] = 0.00;
+                                $data['balanceStorePoint'] = 0.00;
+                                $data['message'] = "Reward points can't be redeemed for store";
                                 return response($data);
 
                             }
