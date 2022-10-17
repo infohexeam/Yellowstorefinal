@@ -61,6 +61,7 @@ class PurchaseController extends Controller
         $orderAmount = $request->order_amount;
         $customerRewardPoint=0;
         $customerRewardStorePoint=0;
+        $remainingOrderAmount=0;
        
             if (isset($request->order_amount) && isset($store_id) ) {
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
@@ -77,9 +78,14 @@ class PurchaseController extends Controller
                     if($request->store_points==1)
                     {
                         $totalCustomerStoreRewardsCount =Trn_wallet_log::where('type','credit')->where('customer_id', $request->customer_id)->sum('points_credited');;
-                        $totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
-                        $totalusedStorePoints=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->sum('points_debited');
+                        //$totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
+                        $totalusedStorePoints=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->sum('points_debited');
                         $redeemedStorePoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                        $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id);
+                        if($wallet_log_first->first())
+                        {
+                            $wallet_log_first->first()->delete();
+                        }
     
                         $customerRewardStorePoint = ($totalCustomerStoreRewardsCount - $totalusedStorePoints) - $redeemedStorePoints;
 
@@ -122,6 +128,7 @@ class PurchaseController extends Controller
                             $orderAmount = $request->order_amount;
                             $reducedOrderAmount = $orderAmount - $maxRedeemAmountPerOrder;
                             $customerUsedRewardPoint = $maxRedeemAmountPerOrder / $pointToRupeeRatio;
+                            $remainingOrderAmount=$reducedOrderAmount;
                             if ($reducedOrderAmount < 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for admin";
@@ -183,8 +190,9 @@ class PurchaseController extends Controller
 
                             //$orderAmount = $request->order_amount;
                             $reducedOrderStoreAmount = $orderAmount - $storeMaxRedeemAmountPerOrder;
+                            $remainingOrderAmount=$remainingOrderAmount-$storeMaxRedeemAmountPerOrder;
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
-                            if ($reducedOrderStoreAmount < 0) {
+                            if ($remainingOrderAmount < 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for store";
                                 return response($data);
@@ -233,7 +241,7 @@ class PurchaseController extends Controller
                                 $data['message'] = "Reward points can't be redeemed";
                                 return response($data);
                             }
-                           
+                            $remainingOrderAmount=$remainingOrderAmount-$storeMaxRedeemAmountPerOrder;
                             $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
                             $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                             $total_debit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_debited');
@@ -313,6 +321,7 @@ class PurchaseController extends Controller
                 $data['status'] = 0;
                 $data['message'] = "Order amount required";
             }
+            $data['remainingOrderAmount'] = number_format((float)$remainingOrderAmount, 2, '.', '');
 
             return response($data);
       
