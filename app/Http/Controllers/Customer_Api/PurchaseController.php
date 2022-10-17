@@ -141,7 +141,7 @@ class PurchaseController extends Controller
                             $customerUsedRewardPoint = $totalReducableAmount / $pointToRupeeRatio;
                             if ($reducedOrderAmount < 0) {
                                 $data['status'] = 0;
-                                $data['message'] = "Reward points can't be redeemed";
+                                $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
                             }
                             $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
@@ -186,7 +186,7 @@ class PurchaseController extends Controller
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
                             if ($reducedOrderStoreAmount < 0) {
                                 $data['status'] = 0;
-                                $data['message'] = "Reward points can't be redeemed for admin";
+                                $data['message'] = "Reward points can't be redeemed for store";
                                 return response($data);
                             }
                             $total_credit_points=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
@@ -194,7 +194,7 @@ class PurchaseController extends Controller
                             if($total_debit_points+$customerUsedRewardStorePoint>$total_credit_points)
                             {
                                 $data['status'] = 0;
-                                $data['message'] = "Reward points can't be redeemed";
+                                $data['message'] = "Reward points can't be redeemed for store";
                                 return response($data);
 
                             }

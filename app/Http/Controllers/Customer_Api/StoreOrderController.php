@@ -1939,6 +1939,13 @@ class StoreOrderController extends Controller
                     $data['message'] = "Order cancelled";
                     $data['refundId'] = "";
 
+                    if($orderData->status_id!=1)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Order is already confirmed..You can not cancel order now";
+                        return response($data);
+                    }
+
 
 
 

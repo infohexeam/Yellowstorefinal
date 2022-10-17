@@ -9,6 +9,8 @@ use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order;
 use App\Trn_wallet_log;
 use Carbon\Carbon;
+use DateInterval;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +19,9 @@ class StoreWalletController extends Controller
 {
     public function getStoreConfigurePoints(Request $request)
     {
+        //date_default_timezone_set("Asia/Kolkata"); 
+       
+
         $data = array(); 
         try {
         $store_id=$request->store_id;
