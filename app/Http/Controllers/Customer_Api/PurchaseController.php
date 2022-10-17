@@ -88,6 +88,7 @@ class PurchaseController extends Controller
                         }
     
                         $customerRewardStorePoint = ($totalCustomerStoreRewardsCount - $totalusedStorePoints) - $redeemedStorePoints;
+                        
 
                     }
                  /* $data['adminPointTotal']=$totalCustomerRewardsCount;
@@ -114,6 +115,7 @@ class PurchaseController extends Controller
                             $redeemedStorePoints = 0;
         
                             $customerRewardStorePoint = 0;
+                            
 
                         }
                         $ConfigPoints = Trn_configure_points::first();
