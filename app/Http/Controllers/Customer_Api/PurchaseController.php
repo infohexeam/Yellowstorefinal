@@ -115,7 +115,11 @@ class PurchaseController extends Controller
                             $redeemedStorePoints = 0;
         
                             $customerRewardStorePoint = 0;
-                            
+                            $data['totalReducableStoreAmount'] =0.00;
+                            $data['reducedStoreOrderAmount'] = 0.00;
+                            $data['reducedAmountByStoreWalletPoints'] =0.00;
+                            $data['usedStorePoint'] = 0.00;
+                            $data['balanceStorePoint'] = 0.00;
 
                         }
                         $ConfigPoints = Trn_configure_points::first();
