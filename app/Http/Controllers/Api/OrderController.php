@@ -645,7 +645,7 @@ class OrderController extends Controller
         $data = array();
         try {
 
-            if ($data['orderStatusDetails'] = Sys_store_order_status::where('status_id','!=',5)->select('status_id', 'status')->get()) {
+            if ($data['orderStatusDetails'] = Sys_store_order_status::select('status_id', 'status')->get()) {
                 $data['status'] = 1;
                 $data['message'] = "success";
                 return response($data);
