@@ -838,6 +838,8 @@ class StoreOrderController extends Controller
                             $update_order->orderAmount = $request->orderAmount;
                             $update_order->txMsg = $request->txMsg;
                             $update_order->txStatus = $request->txStatus;
+                            $update_order->created_at = Carbon::now();
+                            $update_order->updated_at = Carbon::now();
                             $update_order->save();
 
                             $invoice_info['order_id'] = $order_id;
