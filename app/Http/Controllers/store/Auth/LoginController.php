@@ -87,7 +87,7 @@ class LoginController extends Controller
                           {
                         
                             Auth::guard('store')->logout();
-                           return redirect()->back()->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($admin->expiry_date)).' Contact admin'.$phoneNumber);
+                           return redirect()->back()->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($admin->expiry_date)).' Contact admin '.$phoneNumber);
                             
                           }
                         
