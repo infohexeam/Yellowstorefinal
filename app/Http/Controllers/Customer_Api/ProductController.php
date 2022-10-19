@@ -1494,7 +1494,7 @@ class ProductController extends Controller
                     $data['totalAdminRedeemedPoints']  = '0';
 
 
-                $data['customerRewards'] = Trn_customer_reward::where('customer_id', $request->customer_id)
+                $data['customerRewards'] = Trn_customer_reward::where('customer_id',$request->customer_id)
                     ->where('reward_point_status', 1)->whereNull('store_id')->orderBy('reward_id', 'DESC')->get();
                 foreach ($data['customerRewards'] as $cr) {
                     if (Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id)) {

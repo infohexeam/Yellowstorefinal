@@ -78,7 +78,17 @@ class DeliveryBoyOrderController extends Controller
 
 
                             $storeInfo = Mst_store::withTrashed()->find($order->store_id);
-                            $order->store_name = $storeInfo->store_name;
+                            if($storeInfo!=NULL)
+                            {
+                                $order->store_name = @$storeInfo->store_name;
+
+                            }
+                            else
+                            {
+                                $order->store_name = 'Store not exists';
+
+                            }
+                           
 
                             $ordersList[] = $order;
                         }
@@ -129,7 +139,16 @@ class DeliveryBoyOrderController extends Controller
                         }
 
                         $storeInfo = Mst_store::withTrashed()->find($order->store_id);
-                        $order->store_name = $storeInfo->store_name;
+                        if($storeInfo!=NULL)
+                        {
+                            $order->store_name = @$storeInfo->store_name;
+
+                        }
+                        else
+                        {
+                            $order->store_name = 'Store not exists(Removed)';
+
+                        }
                     }
                     $data['status'] = 1;
                     $data['message'] = "success";
