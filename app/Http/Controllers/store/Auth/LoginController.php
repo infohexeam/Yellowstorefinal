@@ -67,12 +67,13 @@ class LoginController extends Controller
                       if ($admin) {
                           $cId = $admin->store_id;
                             //get phone number
-                          if ($admin->role_id != 0)
+                            $sadmin = User::where('id','=', 1)->first();
+                          if ($admin->role_id != 0) //if its staff
                                 {
                                     $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$admin->store_id)->where('role_id',"=",0)->first();
                                     $phoneNumber = $getStoreAdmin->store_mobile;
                                 }else{
-                                    $phoneNumber = $admin->phone_number;
+                                    $phoneNumber = $sadmin->phone_number;
                                 }
 
                           if($admin->store_account_status == 0)
