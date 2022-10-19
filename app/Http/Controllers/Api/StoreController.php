@@ -642,9 +642,8 @@ class StoreController extends Controller
                                 $data['message'] = "OTP not verified";
                             }
                         } else {
-
-                            if ($custCheck->store_account_status == 0) {
-                                $sadmin = User::where('id','=', 1)->first();
+                            //get phone number
+                            $sadmin = User::where('id','=', 1)->first();
                                 if ($custCheck->role_id != 0)
                                 {
                                     $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
@@ -652,12 +651,15 @@ class StoreController extends Controller
                                 }else{
                                     $phoneNumber = $sadmin->phone_number;
                                 }
+
+                            if ($custCheck->store_account_status == 0) {
+                                
                                 
                                 $data['status'] = 4;
                                 $data['message'] = "Store is Inactive. Please contact Admin " .$phoneNumber;
                             } else {
                                 $data['status'] = 4;
-                                $data['message'] = "Profile not Activated";
+                                $data['message'] = "Profile not Activated. Please contact Admin ".$phoneNumber;
                             }
                         }
                     } else {
@@ -806,9 +808,8 @@ class StoreController extends Controller
                                 $data['message'] = "OTP not verified";
                             }
                         } else {
-
-                            if ($custCheck->store_account_status == 0) {
-                                $sadmin = User::where('id','=', 1)->first();
+                            //get phone number
+                            $sadmin = User::where('id','=', 1)->first();
                                 if ($custCheck->role_id != 0)
                                 {
                                     $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
@@ -817,13 +818,13 @@ class StoreController extends Controller
                                 }else{
                                     $phoneNumber = $sadmin->phone_number;
                                 }
-                                
-                                
+
+                            if ($custCheck->store_account_status == 0) {
                                 $data['status'] = 4;
                                 $data['message'] = "Store is inactive. Please contact Admin ".$phoneNumber;
                             } else {
                                 $data['status'] = 4;
-                                $data['message'] = "Profile not Activated/Profile Expired";
+                                $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ".$phoneNumber;
                             }
                         }
                     } else {

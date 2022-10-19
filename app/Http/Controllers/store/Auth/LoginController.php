@@ -66,15 +66,18 @@ class LoginController extends Controller
                      
                       if ($admin) {
                           $cId = $admin->store_id;
-                          if($admin->store_account_status == 0)
-                          {
-                            if ($admin->role_id != 0)
+                            //get phone number
+                          if ($admin->role_id != 0)
                                 {
                                     $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$admin->store_id)->where('role_id',"=",0)->first();
                                     $phoneNumber = $getStoreAdmin->store_mobile;
                                 }else{
-                                    $phoneNumber = $sadmin->phone_number;
+                                    $phoneNumber = $admin->phone_number;
                                 }
+
+                          if($admin->store_account_status == 0)
+                          {
+                            
                             Auth::guard('store')->logout();
                            return redirect()->back()->with('danger','Profile is inactive ,Contact admin '.$phoneNumber);
 
@@ -83,7 +86,7 @@ class LoginController extends Controller
                           {
                         
                             Auth::guard('store')->logout();
-                           return redirect()->back()->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($admin->expiry_date)).' Contact admin');
+                           return redirect()->back()->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($admin->expiry_date)).' Contact admin'.$phoneNumber);
                             
                           }
                         
