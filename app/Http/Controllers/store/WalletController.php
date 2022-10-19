@@ -185,7 +185,7 @@ class WalletController extends Controller
             $reward->save(); 
 
 			$wallet_log=new Trn_wallet_log();
-			$wallet_log->store_id=$request->store_id;
+			$wallet_log->store_id=$store_id;
 			$wallet_log->customer_id=$request->customer_id;
 			$wallet_log->order_id=null;
 			$wallet_log->type='credit';
