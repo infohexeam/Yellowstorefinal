@@ -1531,6 +1531,7 @@ class ProductController extends Controller
     {
         $data = array();
         $wallet_logs=array();
+        
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $wallet_logs=Trn_wallet_log::with('store')->where('customer_id',$request->customer_id)->orderBy('wallet_log_id','DESC')->get();
