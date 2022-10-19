@@ -433,10 +433,14 @@ class OrderController extends Controller
                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
 
                             $baseProductDetail = Mst_store_product::find($value->product_id);
+                            if(@$baseProductDetail!=NULL)
+                            {
+                                if ((@$baseProductDetail->product_type == 2) && (@$baseProductDetail->service_type == 2)) {
+                                    $isServiceOrder = 1;
+                                }
 
-                            if (($baseProductDetail->product_type == 2) && ($baseProductDetail->service_type == 2)) {
-                                $isServiceOrder = 1;
                             }
+                           
 
 
 
