@@ -81,7 +81,7 @@ class PurchaseController extends Controller
                         //$totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
                         $totalusedStorePoints=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->sum('points_debited');
                         $redeemedStorePoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
-                        $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id);
+                        $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
                         if($wallet_log_first->first())
                         {
                             $wallet_log_first->first()->delete();
