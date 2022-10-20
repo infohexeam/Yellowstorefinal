@@ -1924,11 +1924,12 @@ class StoreController extends Controller
 
 
                 $inventoryData = $inventoryData->orderBy('mst_store_product_varients.created_at', 'DESC');
-
+                $roWc = count($inventoryData->get());
+                //return $roWc;
 
                 $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
-
-                $roWc = 0;
+                
+                //$roWc = 0;
                 if ($roWc == 0) {
                     $inventoryData22 =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                         ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
@@ -1979,11 +1980,15 @@ class StoreController extends Controller
 
                 $data['inventoryData'] = $dataReViStoreSS;
                 //return count($data['inventoryData']);
+                //return $roWc;
                 if ($roWc > 19) {
-                    $data['pageCount'] = floor(@$roWc / 20);
+                    $data['pageCount'] = ceil(@$roWc / 20);
+                    //return $data['pageCount'];
+
                 } else {
                     $data['pageCount'] = 1;
                 }
+                //return $data['pageCount'];
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {

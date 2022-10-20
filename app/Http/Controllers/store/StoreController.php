@@ -1623,7 +1623,6 @@ class StoreController extends Controller
       $product['tax_id']                 = $request->tax_id; // new
       $product['stock_count']                = $request->min_stock; // stock count
       $product['product_code']          = $request->product_code;
-
       if (isset($request->business_type_id))
         $product['business_type_id']       = $request->business_type_id; // product type
       else
