@@ -328,9 +328,37 @@ class PurchaseController extends Controller
                 $data['message'] = "Order amount required";
             }
             $data['remainingOrderAmount'] = number_format((float)$remainingOrderAmount, 2, '.', '');
-
+        if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints'],$data['reducedAmountByStoreWalletPoints'])==0)
+        {
+            $data['status'] = 0;
+            $data['message'] = "Wallet reduced amount cannot be greater than order amount";
             return response($data);
+
+        }
+        else
+        {
+            return response($data);
+
+        }
+            
       
+    }
+    public function checkReducedAmount($order_amount,$reduced_admin_amount,$reduced_store_amount)
+    {
+        $orderAmt=$order_amount;
+        $reducedAdminAmount=$reduced_admin_amount??0;
+        $reducedStoreAmount=$reduced_store_amount??0;
+        $totalReduceAmount=$reducedAdminAmount+$reducedStoreAmount;
+        if($orderAmt<$totalReduceAmount)
+        {
+           return 0;
+
+        }
+        else
+        {
+            return 1;
+        }
+
     }
 
     public function addToCart(Request $request)
