@@ -96,15 +96,28 @@
 				<div class="col-md-12">
 			<div class="form-group">
 				<label class="form-label">New Password</label>
+                <div class="password-show">
 					  <input type="password" class="form-control" required oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()" name="password" id="password" value="" placeholder="New Password">
+                      <div class="password-show__toggle">
+                        <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                        <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                      </div>
+                </div> 
                         <span id="showpassmessage"></span> <br>
                         <span id="showpassmessage2"></span>
+                        
                </div>
 				   </div>
 				  <div class="col-md-12">
 				 <div class="form-group">
 						<label class="form-label">Password Confirmation</label>
+                        <div class="password-show">
 					  <input onkeyup="validatePass()" id="confirm_password" required type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
+                      <div class="password-show__toggle">
+                        <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                        <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                      </div> 
+                        </div>
 				                        <span id="showmessage"></span>
 
                 </div>
