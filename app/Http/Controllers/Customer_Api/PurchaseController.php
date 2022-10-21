@@ -152,7 +152,7 @@ class PurchaseController extends Controller
                             $orderAmount = $request->order_amount;
                             $reducedOrderAmount = $orderAmount - $totalReducableAmount;
                             $customerUsedRewardPoint = $totalReducableAmount / $pointToRupeeRatio;
-                            if ($reducedOrderAmount < 0) {
+                            if ($reducedOrderAmount <= 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
@@ -180,6 +180,11 @@ class PurchaseController extends Controller
                                 $redeemedPoints = 0;
             
                                 $customerRewardPoint = 0;
+                                $data['totalReducableAmount'] =0.00;
+                                $data['reducedOrderAmount'] = 0.00;
+                                $data['reducedAmountByWalletPoints'] =0.00;
+                                $data['usedPoint'] = 0.00;
+                                $data['balancePoint'] = 0.00;
     
                             }
 
@@ -198,7 +203,7 @@ class PurchaseController extends Controller
                             $reducedOrderStoreAmount = $orderAmount - $storeMaxRedeemAmountPerOrder;
                             $remainingOrderAmount=$remainingOrderAmount-$storeMaxRedeemAmountPerOrder;
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
-                            if ($remainingOrderAmount < 0) {
+                            if ($remainingOrderAmount <= 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for store";
                                 return response($data);
@@ -329,8 +334,37 @@ class PurchaseController extends Controller
             }
             $data['remainingOrderAmount'] = number_format((float)$remainingOrderAmount, 2, '.', '');
 
+        if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints'],$data['reducedAmountByStoreWalletPoints'])==0)
+        {
+            $data['status'] = 0;
+            $data['message'] = "Wallet reduced amount cannot be greater than order amount";
             return response($data);
+
+        }
+        else
+        {
+            return response($data);
+
+        }
+            
       
+    }
+    public function checkReducedAmount($order_amount,$reduced_admin_amount,$reduced_store_amount)
+    {
+        $orderAmt=$order_amount;
+        $reducedAdminAmount=$reduced_admin_amount??0;
+        $reducedStoreAmount=$reduced_store_amount??0;
+        $totalReduceAmount=$reducedAdminAmount+$reducedStoreAmount;
+        if($orderAmt<$totalReduceAmount)
+        {
+           return 0;
+
+        }
+        else
+        {
+            return 1;
+        }
+
     }
 
     public function addToCart(Request $request)

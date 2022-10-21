@@ -64,11 +64,31 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        </tr>
                                        
                                        <tr>
-                                          <td><strong>Delivery Charge: </strong> </td> <td>{{ @$order->delivery_charge}}</td>
+                                          <td><strong>Delivery Charge: </strong> </td> <td> @if(isset($order->delivery_charge)){{ @$order->delivery_charge}} @else 0.00 @endif</td>
                                        </tr>
                                        
                                        <tr>
-                                          <td><strong>Packing  Charge: </strong> </td> <td>{{ @$order->packing_charge}}</td>
+                                          <td><strong>Packing  Charge: </strong> </td> <td> @if(isset($order->packing_charge)){{ @$order->packing_charge}} @else 0.00 @endif</td>
+                                       </tr>
+                                        <tr>
+                                       <td>
+                                       <strong>Redeemed Admin Amount By wallet: </strong> </td> <td> @if(isset($order->amount_reduced_by_rp))
+                                                   {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )
+                                                   @else
+                                                   0.00
+                                                   @endif</td>
+                                       </tr>
+                                       <tr>
+                                       <td>
+                                       <strong>Redeemed Store Amount By Wallet: </strong> </td> <td> @if(isset($order->amount_reduced_by_rp_store))
+                                                   {{ @$order->amount_reduced_by_rp_store}} ({{ @$order->reward_points_used_store}} points )
+                                                   @else
+                                                   0.00
+                                                   @endif</td>
+                                       </tr>
+                                       <tr>
+                                       <td>
+                                       <strong>Redeemed  Amount By Coupon: </strong> </td> <td> @if(isset($order->amount_reduced_by_coupon)) {{ @$order->amount_reduced_by_coupon }} @else 0.00 @endif</td>
                                        </tr>
                                        
                                        <tr>
@@ -227,11 +247,14 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                <table class="table table-striped table-bordered text-nowrap w-100">
                                  <thead>
                                     <tr>
+                                       <td>Sl No.</td>
                                        <td>Item</td>
                                        <td>Qty</td>
                                        <td>MRP</td>
                                        <td>Sale<br>Price</td>
                                        <td>Discount<br>Amount</td>
+                                       <td>Tax %</td>
+                                       <td>Tax Detail</td>
                                        <td>Tax<br>Amount</td>
                                        <!--<td>Subtotal</td>-->
                                        <td>Total</td>
@@ -245,9 +268,11 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        $gand_total = 0;
                                        $tval = 0;
                                        $t_val = 0;
+                                       $i=1;
                                     @endphp
                                     @foreach ($order_items as $order_item)
                                        <tr>
+                                       <td>{{$i++}}
                                           <td>
                                              <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
                                              <br>
@@ -285,7 +310,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              </td>
                                  
                                              @php
-                                             $tax_info = \DB::table('mst_store_products')
+                                            $tax_info = \DB::table('mst_store_products')
                                              ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
                                              ->where('mst_store_products.product_id', $order_item->product_id)
                                              ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
@@ -303,7 +328,30 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                                // dd($splitdata);
                                           @endphp
                                     
-                                         
+                                           <td>@if(isset($tax_info->tax_value)){{@$tax_info->tax_value}} @else No tax @endif</td>
+                                         <td>
+                                          <table style="line-height: 1px; font-size: 12px;">
+                                                @foreach ($splitdata as $item)
+                                                @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))
+                                                @php
+                                              $tax_info->tax_value = 1;
+                                                  
+                                                @endphp   
+                                                @endif         
+                                                <tr>
+                                                   <td>
+                                                @php
+                                                    $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
+                                                @endphp
+                                             {{ $item->split_tax_name }} - {{ $item->split_tax_value }}%
+                                             
+                                           -  {{ number_format((float)$stax, 2, '.', '') }}  
+
+                                                   </td>
+                                                </tr>
+                                                @endforeach
+                                             </table>
+                                         </td>
                                           <td> 
                                              @if (isset($tTax))
                                             {{ number_format((float)$tTax, 2, '.', '') }}  
