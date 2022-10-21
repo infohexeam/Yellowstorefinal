@@ -254,7 +254,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        <td>Sale<br>Price</td>
                                        <td>Discount<br>Amount</td>
                                        <td>Tax %</td>
-                                       <td>Tax Detail</td>
+                                       <td>Tax Details</td>
                                        <td>Tax<br>Amount</td>
                                        <td>Subtotal</td>
                                        <td>Total</td>
