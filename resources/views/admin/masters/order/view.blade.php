@@ -262,7 +262,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        <td>Tax %</td>
                                        <td>Tax Detail</td>
                                        <td>Tax<br>Amount</td>
-                                       <!--<td>Subtotal</td>-->
+                                       <td>Subtotal</td>
                                        <td>Total</td>
                                     </tr>
                                  </thead>
@@ -362,10 +362,10 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @endif
                                           </td>
 
-                                          <!--<td>-->
-                                          <!--  {{ number_format((float)$orgCost, 2, '.', '') }}  -->
+                                          <td>
+                                           {{ number_format((float)$orgCost, 2, '.', '') }} 
                                             
-                                          <!-- </td>-->
+                                          </td>
                                            <td>
                                              {{ number_format((float)$Tot, 2, '.', '') }}  
 
@@ -378,6 +378,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           $subtotal = $subtotal + $orgCost; 
                                           $tax_amount = $tax_amount + $tTax ; 
                                        @endphp
+                                       
                                     @endforeach
                                  </tbody>
                                </table>
