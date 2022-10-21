@@ -323,10 +323,21 @@
                                         <!--   <td class=" h4"> </td>-->
                                         <!--</tr>-->
                                         <tr>
-                                           <td colspan="10" class=" text-right">Redeemed amount</td>
+                                           <td colspan="10" class=" text-right">Redeemed amount By Admin</td>
                                            <td class=" h4"> 
                                                    @if(isset($order->amount_reduced_by_rp))
                                                    {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )
+                                                   @else
+                                                   0.00
+                                                   @endif
+                                                   
+                                           </td>
+                                        </tr>
+                                         <tr>
+                                           <td colspan="10" class=" text-right">Redeemed amount By Store</td>
+                                           <td class=" h4"> 
+                                                   @if(isset($order->amount_reduced_by_rp_store))
+                                                   {{ @$order->amount_reduced_by_rp_store}} ({{ @$order->reward_points_used_store}} points )
                                                    @else
                                                    0.00
                                                    @endif
