@@ -203,7 +203,7 @@
                                           <td>
                                              {{@$tax_info->tax_value }}
                                           </td> --}}
-                                          <td> 
+                                          <td style="line-height: normal;border: none;padding: 0;font-size: medium;"> 
                                              <table style="line-height: 1px; font-size: 12px;">
                                                 @foreach ($splitdata as $item)
                                                 @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))

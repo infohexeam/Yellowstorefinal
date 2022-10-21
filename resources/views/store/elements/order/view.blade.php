@@ -329,7 +329,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           @endphp
                                     
                                            <td>@if(isset($tax_info->tax_value)){{@$tax_info->tax_value}} @else No tax @endif</td>
-                                         <td>
+                                         <td style="line-height: normal;border: none;padding: 0;font-size: medium;">
                                           <table style="line-height: 1px; font-size: 12px;">
                                                 @foreach ($splitdata as $item)
                                                 @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))
