@@ -91,8 +91,8 @@
                                 <label class="form-label"> Status *</label>
                                 <select required=""  name="coupon_status"  class="form-control"  >
                                     <option  value="">Status</option>
-                                    <option  {{old('coupon_status') == '1' ? 'selected':''}} value="1">Active</option>
-                                    <option  {{old('coupon_status') == '0' ? 'selected':''}} value="0">InActive</option>
+                                    <option  {{old('coupon_status') == '0' ? 'selected':''}} value="1">Active</option>
+                                    <option  {{old('coupon_status') == '1' ? 'selected':''}} value="0">InActive</option>
                                 </select>
                             </div>
                         </div>
