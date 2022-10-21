@@ -132,7 +132,7 @@
 
                         </div>
                         <div class="wrap-input100 validate-input form-group">
-                                                      <div class="password-show">
+                           <div class="password-show">
 
                            <input class="input100 form-control" type="password" name="password" placeholder="Password" id="exampleInputPassword1" type="password" required autocomplete="current-password">
                            <div class="password-show__toggle">
