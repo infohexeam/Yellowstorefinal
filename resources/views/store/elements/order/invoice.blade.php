@@ -203,7 +203,7 @@
                                           <td>
                                              {{@$tax_info->tax_value }}
                                           </td> --}}
-                                          <td style="line-height: normal;border: none;padding: 0;font-size: medium;"> 
+                                          <td> 
                                              <table style="line-height: 1px; font-size: 12px;">
                                                 @foreach ($splitdata as $item)
                                                 @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))
@@ -213,7 +213,7 @@
                                                 @endphp   
                                                 @endif         
                                                 <tr>
-                                                   <td>
+                                                   <td  style="line-height: normal;border: none;padding: 0;font-size: medium;">
                                                 @php
                                                     $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                                                 @endphp

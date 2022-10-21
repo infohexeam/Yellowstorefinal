@@ -333,7 +333,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           @endphp
                                     
                                          <td>@if(isset($tax_info->tax_value)){{@$tax_info->tax_value}} @else No tax @endif</td>
-                                         <td style="line-height: normal;border: none;padding: 0;font-size: medium;">
+                                         <td>
                                           <table style="line-height: 1px; font-size: 12px;">
                                                 @foreach ($splitdata as $item)
                                                 @if(@$tax_info->tax_value == 0 || !isset($tax_info->tax_value))
@@ -343,7 +343,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                                 @endphp   
                                                 @endif         
                                                 <tr>
-                                                   <td>
+                                                   <td style="line-height: normal;border: none;padding: 0;font-size: medium;">
                                                 @php
                                                     $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                                                 @endphp
