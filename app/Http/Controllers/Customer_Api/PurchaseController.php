@@ -62,6 +62,19 @@ class PurchaseController extends Controller
         $customerRewardPoint=0;
         $customerRewardStorePoint=0;
         $remainingOrderAmount=0;
+        $data['totalReducableAmount'] =0.00;
+        $data['reducedOrderAmount'] = 0.00;
+        $data['reducedAmountByWalletPoints'] =0.00;
+        $data['usedPoint'] = 0.00;
+        $data['balancePoint'] = 0.00;
+        $data['totalReducableStoreAmount'] =0.00;
+        $data['reducedStoreOrderAmount'] = 0.00;
+        $data['reducedAmountByStoreWalletPoints'] =0.00;
+        $data['usedStorePoint'] = 0.00;
+        $data['balanceStorePoint'] = 0.00;
+        
+        
+
        
             if (isset($request->order_amount) && isset($store_id) ) {
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
