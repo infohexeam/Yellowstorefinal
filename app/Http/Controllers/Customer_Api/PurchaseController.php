@@ -334,7 +334,7 @@ class PurchaseController extends Controller
             }
             $data['remainingOrderAmount'] = number_format((float)$remainingOrderAmount, 2, '.', '');
 
-        if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints'],$data['reducedAmountByStoreWalletPoints'])==0)
+        if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints']??0,$data['reducedAmountByStoreWalletPoints']??0)==0)
         {
             $data['status'] = 0;
             $data['message'] = "Wallet reduced amount cannot be greater than order amount";
