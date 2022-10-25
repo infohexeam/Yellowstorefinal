@@ -213,7 +213,7 @@
                                                 @endphp   
                                                 @endif         
                                                 <tr>
-                                                   <td>
+                                                   <td  style="line-height: normal;border: none;padding: 0;font-size: medium;">
                                                 @php
                                                     $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                                                 @endphp

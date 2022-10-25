@@ -254,9 +254,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        <td>Sale<br>Price</td>
                                        <td>Discount<br>Amount</td>
                                        <td>Tax %</td>
-                                       <td>Tax Detail</td>
+                                       <td>Tax Details</td>
                                        <td>Tax<br>Amount</td>
-                                       <!--<td>Subtotal</td>-->
+                                       <td>Subtotal</td>
                                        <td>Total</td>
                                     </tr>
                                  </thead>
@@ -339,7 +339,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                                 @endphp   
                                                 @endif         
                                                 <tr>
-                                                   <td>
+                                                   <td  style="line-height: normal;border: none;padding: 0;font-size: medium;">
                                                 @php
                                                     $stax = ($item->split_tax_value * $tTax) / $tax_info->tax_value; 
                                                 @endphp
@@ -358,10 +358,10 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @endif
                                           </td>
 
-                                          <!--<td>-->
-                                          <!--  {{ number_format((float)$orgCost, 2, '.', '') }}  -->
+                                         <td>
+                                            {{ number_format((float)$orgCost, 2, '.', '') }}  
                                             
-                                          <!-- </td>-->
+                                        </td>
                                            <td>
                                              {{ number_format((float)$Tot, 2, '.', '') }}  
 

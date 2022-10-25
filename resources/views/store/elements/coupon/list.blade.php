@@ -124,7 +124,7 @@
                         <td>{{ \Carbon\Carbon::parse($value->valid_to)->format('d-m-Y')}}</td>
 
                                     <td>
-                                        @if (@$value->coupon_status != 0)
+                                        @if (@$value->coupon_status != 1)
                                        @if(date('Y-m-d')<=$value->valid_to)
                                         Active
                                        @else

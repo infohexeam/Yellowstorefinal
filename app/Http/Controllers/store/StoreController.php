@@ -977,7 +977,7 @@ class StoreController extends Controller
       else
         $product->service_type               =  0; // new
 
-      $product->is_added_from_web               =  1;
+      $product->is_added_from_web               =  1;  
 
       // $product->product_offer_from_date = $request->product_offer_from_date;
       // $product->product_offer_to_date   = $request->product_offer_to_date;
@@ -1988,7 +1988,7 @@ class StoreController extends Controller
       } else {
         $product->stock_status = 1;
       }
-
+      dd($request->product_id,$product,$request->stock_count);
       $product->update();
 
       return redirect()->back()->with('status', 'Stock Updated successfully.');
