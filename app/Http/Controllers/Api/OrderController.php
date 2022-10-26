@@ -833,10 +833,10 @@ class OrderController extends Controller
                                 }
                             }
 
-                            if (Trn_customer_reward::where('order_id', $orderDataz->order_id)->count() < 1) {
+                            //if (Trn_customer_reward::where('order_id', $orderDataz->order_id)->count() < 1) {
 
 
-                                if ((Trn_customer_reward::where('order_id', $orderDataz->order_id)->count() < 1) || (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() >= 1)) {
+                                //if ((Trn_customer_reward::where('order_id', $orderDataz->order_id)->count() < 1) || (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() >= 1)) {
                                     $cr = new Trn_customer_reward;
                                     $cr->transaction_type_id = 0;
                                     $cr->reward_points_earned = $orderPointAmount;
@@ -879,8 +879,8 @@ class OrderController extends Controller
                                         $type = "wallet";
                                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
-                                }
-                            }
+                               // }
+                            //}
 
                             // echo $orderPointAmount;die;
 

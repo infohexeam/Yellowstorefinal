@@ -2589,9 +2589,9 @@ class StoreController extends Controller
           }
         }
 
-        if (Trn_customer_reward::where('order_id', $order_id)->count() < 1) {
+       /* if (Trn_customer_reward::where('order_id', $order_id)->count() < 1) {
 
-          if ((Trn_customer_reward::where('order_id', $order_id)->count() < 1) || (Trn_store_order::where('customer_id', $customer_id)->count() == 1)) {
+          if ((Trn_customer_reward::where('order_id', $order_id)->count() < 1) || (Trn_store_order::where('customer_id', $customer_id)->count() == 1)) {*/
             $cr = new Trn_customer_reward;
             $cr->transaction_type_id = 0;
             $cr->reward_points_earned = $orderPointAmount;
@@ -2633,8 +2633,8 @@ class StoreController extends Controller
               $type = "order";
               $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
             }
-          }
-        }
+          //}
+       // }
       }
 
       if ($request->status_id == 8) {

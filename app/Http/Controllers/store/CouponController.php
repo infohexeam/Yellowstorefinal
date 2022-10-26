@@ -199,6 +199,7 @@ class CouponController extends Controller
 
   public function storecoupon(Request $request, Mst_Coupon $coupon)
   {
+   
     try {
       $store_id  = Auth::guard('store')->user()->store_id;
 
@@ -208,9 +209,9 @@ class CouponController extends Controller
           'coupon_code'          => 'required',
           'coupon_type'          => 'required',
           'discount_type'          => 'required',
-          'discount'          => 'required', 
+          'discount'          => 'required',
+          'valid_to'          => 'required',
           'valid_from'          => 'required',
-          'valid_to'          => 'required|after_or_equal:valid_from',
           'min_purchase_amt'          => 'required',
         ],
         [
@@ -223,11 +224,14 @@ class CouponController extends Controller
           'min_purchase_amt.required'             => 'Minimum purchase amount required',
         ]
       );
+
       if($request->discount_type==1)
       {
         $validator = Validator::make(
           $request->all(),[  
               'discount' => 'required|numeric|lt:min_purchase_amt',  
+              'valid_from'          => 'required',
+              'valid_to'          => 'required|date|after_or_equal:valid_from',
           ]);
 
       }
@@ -239,6 +243,8 @@ class CouponController extends Controller
           ],
           [
             'discount.lt' => 'Discount percentage must be less than 100',
+            'valid_from'          => 'required',
+            'valid_to'          => 'required|date|after_or_equal:valid_from',
 
           ]);
 
