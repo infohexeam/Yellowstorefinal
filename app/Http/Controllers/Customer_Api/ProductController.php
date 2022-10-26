@@ -1534,12 +1534,18 @@ class ProductController extends Controller
         
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                $wallet_logs=Trn_wallet_log::with(['store','order'])->where('customer_id',$request->customer_id)->orderBy('wallet_log_id','DESC')->get();
+                $wallet_logs=Trn_wallet_log::Where('trn_wallet_logs.customer_id',$request->customer_id)
+                ->leftjoin('trn_store_orders','trn_wallet_logs.order_id', '=','trn_store_orders.order_id')
+                ->leftjoin('mst_stores','trn_wallet_logs.store_id', '=','mst_stores.store_id')
+                ->select('trn_wallet_logs.order_id','trn_wallet_logs.customer_id','trn_wallet_logs.type','trn_wallet_logs.points_credited','trn_wallet_logs.points_debited','trn_wallet_logs.created_at','trn_store_orders.order_number','mst_stores.store_id','mst_stores.store_name')
+                ->orderBy('trn_wallet_logs.wallet_log_id','DESC')->get();
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_credited');
                 $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_debited');
                 $available_points=$wallet_log_credited-$wallet_log_redeemed;
                
                 $data['logs']=$wallet_logs;
+               
+                
 
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
@@ -1551,7 +1557,16 @@ class ProductController extends Controller
                 else
                     $data['totalRedeemedPoints']  = '0';
                
-                $data['total_balance_points']=number_format($available_points,2);
+               if($available_points>=0)
+               {
+                $data['totalBalancePoints']= number_format($available_points,2);
+
+               }
+               else
+               {
+                $data['totalBalancePoints']= "0.00";
+
+               }
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {

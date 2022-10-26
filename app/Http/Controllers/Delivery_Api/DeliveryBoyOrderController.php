@@ -748,6 +748,14 @@ class DeliveryBoyOrderController extends Controller
                         $type = "order";
                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
+                    $wallet_log=new Trn_wallet_log();
+                    $wallet_log->store_id=$order->store_id;
+                    $wallet_log->customer_id=$order->customer_id;
+                    $wallet_log->order_id=$order->order_id;
+                    $wallet_log->type='credit';
+                    $wallet_log->points_debited=null;
+                    $wallet_log->points_credited=$storeOrderPointAmount;
+                    $wallet_log->save();
 
 
                     if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
@@ -764,14 +772,7 @@ class DeliveryBoyOrderController extends Controller
                         $cr->discription = "First order points";
                         $cr->save();
 
-                        $wallet_log=new Trn_wallet_log();
-                        $wallet_log->store_id=$order->store_id;
-                        $wallet_log->customer_id=$order->customer_id;
-                        $wallet_log->order_id=$order->order_id;
-                        $wallet_log->type='credit';
-                        $wallet_log->points_debited=null;
-                        $wallet_log->points_credited=$storeOrderPointAmount;
-                        $wallet_log->save();
+                        
 
                         $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                         foreach ($customerDevice as $cd) {
