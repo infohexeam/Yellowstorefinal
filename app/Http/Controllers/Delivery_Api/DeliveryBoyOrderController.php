@@ -730,7 +730,7 @@ class DeliveryBoyOrderController extends Controller
                     $customer_id = $order->customer_id;
                     $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
                     $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
-                    $store_id=$request->store_id;
+                    $store_id=$order->store_id;
                     $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
                     $storeOrderAmount  = $storeConfigPoint->order_amount;
                     $storeOrderPoint  = $storeConfigPoint->order_points;
@@ -748,6 +748,29 @@ class DeliveryBoyOrderController extends Controller
                         $type = "order";
                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
+                    $crrr = new Trn_customer_reward;
+                    $crrr->transaction_type_id = 0;
+                    $crrr->reward_points_earned = $orderPointAmount;
+                    $crrr->customer_id = $order->customer_id;
+                    $crrr->order_id = $order->order_id;
+                    $crrr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                    $crrr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                    $crrr->reward_point_status = 1;
+                    $crrr->discription = null;
+                    $crrr->save(); 
+                    
+                    $scr = new Trn_customer_reward;
+                    $scr->transaction_type_id = 0;
+                    $scr->store_id=$store_id;
+                    $scr->reward_points_earned = $storeOrderPointAmount;
+                    $scr->customer_id = $order->customer_id;
+                    $scr->order_id = $order->order_id;
+                    $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                    $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                    $scr->reward_point_status = 1;
+                    $scr->discription = 'store points';
+                    $scr->save();
+
                     $wallet_log=new Trn_wallet_log();
                     $wallet_log->store_id=$order->store_id;
                     $wallet_log->customer_id=$order->customer_id;
