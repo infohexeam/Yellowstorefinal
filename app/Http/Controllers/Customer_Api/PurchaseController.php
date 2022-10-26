@@ -215,7 +215,7 @@ class PurchaseController extends Controller
                             //$orderAmount = $request->order_amount;
                             $reducedOrderStoreAmount = $orderAmount - $storeMaxRedeemAmountPerOrder;
                             $remainingOrderAmount=$remainingOrderAmount-$storeMaxRedeemAmountPerOrder;
-                            if($remainingOrderAmount==0)
+                            if($remainingOrderAmount<=0)
                             {
                                 $remainingOrderAmount=$reducedOrderAmount;
                             }
