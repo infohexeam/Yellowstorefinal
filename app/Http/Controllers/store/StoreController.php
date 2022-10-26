@@ -2453,6 +2453,7 @@ class StoreController extends Controller
 
     $order_id = $request->order_id;
     $order = Trn_store_order::Find($order_id);
+    
     $order_number = $order->order_number;
     $store_id = $order->store_id;
     $customer_id = $order->customer_id;
@@ -2474,7 +2475,14 @@ class StoreController extends Controller
     if (!$validator->fails()) {
       $data = $request->except('_token');
 
+      if($order->status_id==1)
+    {
+      if(!in_array($request->status_id,[4,5]))
+      {
+        return redirect()->back()->withErrors(['Cannot update to this status before confirming the order']);
 
+      }
+    }
       $order->status_id = $request->status_id;
 
       if ($request->status_id == 8) {

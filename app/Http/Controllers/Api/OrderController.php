@@ -701,6 +701,16 @@ class OrderController extends Controller
                     if (!$validator->fails()) {
                         $order_id = $request->order_id;
                         $store_id = $request->store_id;
+                        if($od->status_id==1)
+                        {
+                          if(!in_array($request->status_id,[4,5]))
+                          {
+                            $data['status'] = 0;
+                            $data['message'] = "Cannot update to this status before confirming the order";
+                            return response($data);
+                    
+                          }
+                        }
 
                         if (isset($request->status_id))
                             $orderdata2['order_note'] = $request->order_note;
