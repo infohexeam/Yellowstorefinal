@@ -24,4 +24,8 @@ class Trn_wallet_log extends Model
     {
         return $this->belongsTo('App\Models\admin\Mst_store','store_id','store_id');
     } 
+    public function order()
+    {
+        return $this->belongsTo('App\Models\admin\Trn_store_order','order_id','order_id');
+    } 
 }

@@ -1534,10 +1534,11 @@ class ProductController extends Controller
         
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                $wallet_logs=Trn_wallet_log::with('store')->where('customer_id',$request->customer_id)->orderBy('wallet_log_id','DESC')->get();
+                $wallet_logs=Trn_wallet_log::with(['store','order'])->where('customer_id',$request->customer_id)->orderBy('wallet_log_id','DESC')->get();
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_credited');
                 $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_debited');
                 $available_points=$wallet_log_credited-$wallet_log_redeemed;
+               
                 $data['logs']=$wallet_logs;
 
                 if ($wallet_log_credited >= 0)
@@ -1549,7 +1550,8 @@ class ProductController extends Controller
                     $data['totalRedeemedPoints']  = number_format($wallet_log_redeemed,2);
                 else
                     $data['totalRedeemedPoints']  = '0';
-                $data['available_points']=number_format($available_points,2);
+               
+                $data['total_balance_points']=number_format($available_points,2);
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
