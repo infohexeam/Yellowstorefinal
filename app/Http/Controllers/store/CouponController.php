@@ -313,6 +313,33 @@ class CouponController extends Controller
           'min_purchase_amt.required'             => 'Minimum purchase amount required',
         ]
       );
+
+      if($request->discount_type==1)
+      {
+        $validator = Validator::make(
+          $request->all(),[  
+              'discount' => 'required|numeric|lt:min_purchase_amt',  
+              'valid_from'          => 'required',
+              'valid_to'          => 'required|date|after_or_equal:valid_from',
+          ]);
+
+      }
+      if($request->discount_type==2)
+      {
+        $validator = Validator::make(
+          $request->all(),[  
+              'discount' => 'required|numeric|lt:100',  
+              'valid_from'          => 'required',
+              'valid_to'          => 'required|date|after_or_equal:valid_from',
+          ],
+          [
+            'discount.lt' => 'Discount percentage must be less than 100',
+            
+
+          ]);
+
+      }
+      
       //   $coupon_id  = Crypt::decryptString($coupon_id);
       if (!$validator->fails()) {
         $coupon['coupon_code'] = $request->coupon_code;
