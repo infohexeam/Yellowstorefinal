@@ -240,11 +240,12 @@ class CouponController extends Controller
         $validator = Validator::make(
           $request->all(),[  
               'discount' => 'required|numeric|lt:100',  
+              'valid_from'          => 'required',
+              'valid_to'          => 'required|date|after_or_equal:valid_from',
           ],
           [
             'discount.lt' => 'Discount percentage must be less than 100',
-            'valid_from'          => 'required',
-            'valid_to'          => 'required|date|after_or_equal:valid_from',
+            
 
           ]);
 
