@@ -148,7 +148,7 @@ class PurchaseController extends Controller
                             $reducedOrderAmount = $orderAmount - $maxRedeemAmountPerOrder;
                             $customerUsedRewardPoint = $maxRedeemAmountPerOrder / $pointToRupeeRatio;
                             $remainingOrderAmount=$reducedOrderAmount;
-                            if ($reducedOrderAmount < 0) {
+                            if ($reducedOrderAmount <= 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
@@ -264,7 +264,7 @@ class PurchaseController extends Controller
                             $orderAmount = $orderAmount;
                             $reducedOrderStoreAmount = $orderAmount - $totalReducableStoreAmount;
                             $customerUsedRewardStorePoint = $totalReducableStoreAmount / $storePointToRupeeRatio;
-                            if ($reducedOrderStoreAmount < 0) {
+                            if ($reducedOrderStoreAmount <= 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed";
                                 return response($data);
