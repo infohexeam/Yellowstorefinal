@@ -16,6 +16,11 @@
                   <p>{{ $message }}</p>
                </div>
                @endif
+                @if ($message = Session::get('error'))
+               <div class="alert alert-danger">
+                  <p>{{ $message }}</p>
+               </div>
+               @endif
             </div>
             <div class="col-lg-12">
                 
@@ -153,9 +158,16 @@
                               <td>
                                 <input type="number" step="0.01" required value="{{ $data->packing_charge }}"  id="packing_charge0" class="form-control"  name="packing_charge[]">
                               </td>
+                              @if($loop->last)
                                <td>
+                               
                                  <a id="r" onclick="startKMChanged(this.id,{{$c}})" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
                               </td>
+                              @else
+                              <td>
+                               <a id="r" onclick="startKMChanged(this.id,{{$c}})" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
+                              </td>
+                              @endif
                             </tr>
                             @if ($c == count($store_settings))
                              @php

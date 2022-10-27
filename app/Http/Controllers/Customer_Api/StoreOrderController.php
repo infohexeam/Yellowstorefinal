@@ -409,7 +409,16 @@ class StoreOrderController extends Controller
     {
         
         try {
+
             if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id)) {
+                $isActiveSlot=Helper::findHoliday($request->store_id);
+                if($isActiveSlot==false)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "You cannot place an order now.store closed";
+                    return response($data);
+
+                }
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -715,6 +724,18 @@ class StoreOrderController extends Controller
         //dd($request->all());
 
         try {
+            if(isset($request->store_id))
+            {
+
+            $isActiveSlot=Helper::findHoliday($request->store_id);
+                if($isActiveSlot==false)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "You cannot place an order now.store closed";
+                    return response($data);
+
+                }
+           }
 
             if ($request->payment_type_id == 2) { //online
                 //  $client = new \GuzzleHttp\Client();

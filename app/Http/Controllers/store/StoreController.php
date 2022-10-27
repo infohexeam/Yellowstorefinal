@@ -3606,7 +3606,7 @@ class StoreController extends Controller
     //  Trn_store_setting
 
     if (isset($request->start) < 1) {
-      return redirect()->back();
+      return redirect()->back()->with('error', 'Store settings cannot be update without data.');
     }
 
     $s_count = Trn_store_setting::where('store_id', Auth::guard('store')->user()->store_id)->count();

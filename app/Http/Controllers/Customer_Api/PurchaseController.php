@@ -276,11 +276,6 @@ class PurchaseController extends Controller
                             if($total_debit_points+$customerUsedRewardStorePoint>$total_credit_points)
                             {
                                 $data['status'] = 0;
-                                $data['totalReducableStoreAmount'] =0.00;
-                                $data['reducedStoreOrderAmount'] = 0.00;
-                                $data['reducedAmountByStoreWalletPoints'] =0.00;
-                                $data['usedStorePoint'] = 0.00;
-                                $data['balanceStorePoint'] = 0.00;
                                 $data['message'] = "Reward points can't be redeemed for store";
                                 return response($data);
 

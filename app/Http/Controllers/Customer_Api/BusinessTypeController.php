@@ -878,4 +878,24 @@ class BusinessTypeController extends Controller
             return response($response);
         }
     }
+ function checkActiveTime(Request $request)
+ {
+    $data=array();
+    $isActiveSlot=Helper::findHoliday($request->store_id);
+    if($isActiveSlot==false)
+    {
+        $data['status'] = 0;
+        $data['message'] = "You cannot place an order now.store closed";
+        return response($data);
+
+    }
+    else
+    {
+        $data['status'] = 1;
+        $data['message'] = "order can be placed";
+        return response($data);
+
+    }
+
+ }
 }
