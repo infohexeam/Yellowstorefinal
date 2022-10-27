@@ -1537,8 +1537,32 @@ class ProductController extends Controller
                 $wallet_logs=Trn_wallet_log::Where('trn_wallet_logs.customer_id',$request->customer_id)
                 ->leftjoin('trn_store_orders','trn_wallet_logs.order_id', '=','trn_store_orders.order_id')
                 ->leftjoin('mst_stores','trn_wallet_logs.store_id', '=','mst_stores.store_id')
-                ->select('trn_wallet_logs.order_id','trn_wallet_logs.customer_id','trn_wallet_logs.type','trn_wallet_logs.points_credited','trn_wallet_logs.points_debited','trn_wallet_logs.created_at','trn_store_orders.order_number','mst_stores.store_id','mst_stores.store_name')
-                ->orderBy('trn_wallet_logs.wallet_log_id','DESC')->get();
+                ->leftjoin('trn_configure_points','trn_configure_points.store_id', '=','mst_stores.store_id')
+                ->select('trn_wallet_logs.order_id',
+                'trn_wallet_logs.customer_id',
+                'trn_wallet_logs.type',
+                'trn_wallet_logs.points_credited',
+                'trn_wallet_logs.points_debited',
+                'trn_wallet_logs.created_at',
+                'trn_store_orders.order_number',
+                'mst_stores.store_id',
+                'trn_wallet_logs.store_id as stid',
+                'mst_stores.store_name',
+                DB::raw("(SELECT SUM(trn_wallet_logs.points_credited) FROM trn_wallet_logs
+
+                WHERE trn_wallet_logs.store_id = mst_stores.store_id
+
+                GROUP BY stid) as store_points_credited")
+            ,
+            DB::raw("(SELECT SUM(trn_wallet_logs.points_debited) FROM trn_wallet_logs
+
+            WHERE trn_wallet_logs.store_id = mst_stores.store_id
+
+            GROUP BY stid) as store_points_debited"),
+
+            )
+                ->orderBy('trn_wallet_logs.wallet_log_id','DESC')
+                ->get();
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_credited');
                 $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_debited');
                 $available_points=$wallet_log_credited-$wallet_log_redeemed;

@@ -217,7 +217,7 @@ class PurchaseController extends Controller
                             $remainingOrderAmount=$remainingOrderAmount-$storeMaxRedeemAmountPerOrder;
                             if($remainingOrderAmount<=0)
                             {
-                                $remainingOrderAmount=$reducedOrderAmount;
+                                $remainingOrderAmount=$reducedOrderStoreAmount;
                             }
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
                             if ($remainingOrderAmount <= 0) {
