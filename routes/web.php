@@ -907,7 +907,6 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/new-issues', 'StoreController@newIssues')->name('store.new_issues');
 
         // coupon
-
         Route::get('store/coupon/list', 'CouponController@listCoupon')->name('store.list_coupon');
         Route::get('store/coupon/create', 'CouponController@createCoupon')->name('store.create_coupon');
         Route::post('store/coupon/store', 'CouponController@storecoupon')->name('store.store_coupon');
@@ -918,13 +917,11 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         // assign order to delivery boy
-
         Route::get('store/assign_order/delivery_boy/{id}', 'StoreController@AssignOrder')->name('store.assign_order');
         Route::post('store/assign_order/delivery_boy/{order_id}', 'StoreController@storeAssignedOrder')->name('store.assign_store_order');
 
 
         //attribute group
-
         Route::get('store/attribute_group/list', 'StoreController@listAttributeGroup')->name('store.list_attribute_group');
 
         Route::post('store/attribute_group/store', 'StoreController@storeAttribute')->name('store.store_attribute_group');
