@@ -492,8 +492,8 @@ class DeliveryBoyOrderController extends Controller
                         //     $deliveryCharge = '0';
 
                         $data['orderDetails']->km_covered = $dist;
-                        if (isset($data['orderDetails']->delivery_charge))
-                            $data['orderDetails']->amount_earned = $data['orderDetails']->delivery_charge;
+                        if (isset($deliveryBoy->delivery_boy_commision_amount))
+                            $data['orderDetails']->amount_earned =@$deliveryBoy->delivery_boy_commision_amount;  //$data['orderDetails']->delivery_charge;
                         else
                             $data['orderDetails']->amount_earned = '0';
 
