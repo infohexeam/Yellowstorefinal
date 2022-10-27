@@ -331,7 +331,7 @@ class DeliveryBoyController extends Controller
                 );
 
                 if (!$validator->fails()) {
-                    $otp =  rand(1000, 9999);
+                    $otp =  rand(100000, 999999);
                     $otp_expirytime = Carbon::now()->addMinute(10);
 
                     $otp_verify->delivery_boy_id                 = $delivery_boy_id;
@@ -487,7 +487,7 @@ class DeliveryBoyController extends Controller
                     $data['message'] = "OTP resent Success.";
                 } else {
                     $otp_verify = new Trn_StoreDeliveryBoyOtpVerify;
-                    $otp =  rand(1000, 9999);
+                    $otp =  rand(100000, 999999);
                     $otp_expirytime = Carbon::now()->addMinute(10);
                     $otp_verify->delivery_boy_id          = $delivery_boy_id;
                     $otp_verify->otp_expirytime     = $otp_expirytime;
