@@ -913,9 +913,6 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store/coupon/remove/{coupon_id}', 'CouponController@removecoupon')->name('store.destroy_coupon');
         Route::post('store/coupon/update/{coupon_id}', 'CouponController@updatecoupon')->name('store.update_coupon');
         Route::get('store/coupon/edit/{coupon_id}', 'CouponController@editcoupon')->name('store.edit_coupon');
-
-
-
         // assign order to delivery boy
         Route::get('store/assign_order/delivery_boy/{id}', 'StoreController@AssignOrder')->name('store.assign_order');
         Route::post('store/assign_order/delivery_boy/{order_id}', 'StoreController@storeAssignedOrder')->name('store.assign_store_order');
