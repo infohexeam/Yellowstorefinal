@@ -127,7 +127,7 @@ class PurchaseController extends Controller
                            
                             $redeemedStorePoints = 0;
         
-                            $customerRewardStorePoint = 0;
+                            //$customerRewardStorePoint = 0;
                             $data['totalReducableStoreAmount'] =0.00;
                             $data['reducedStoreOrderAmount'] = 0.00;
                             $data['reducedAmountByStoreWalletPoints'] =0.00;
@@ -220,6 +220,7 @@ class PurchaseController extends Controller
                                 $remainingOrderAmount=$reducedOrderStoreAmount;
                             }
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
+                            //return $customerUsedRewardStorePoint;
                             if ($remainingOrderAmount <= 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for store";
@@ -264,6 +265,7 @@ class PurchaseController extends Controller
                             $orderAmount = $orderAmount;
                             $reducedOrderStoreAmount = $orderAmount - $totalReducableStoreAmount;
                             $customerUsedRewardStorePoint = $totalReducableStoreAmount / $storePointToRupeeRatio;
+                            //return $customerUsedRewardStorePoint;
                             if ($reducedOrderStoreAmount <= 0) {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed";
@@ -284,7 +286,7 @@ class PurchaseController extends Controller
                             $wallet_log->store_id=$store_id;
                             $wallet_log->customer_id=$request->customer_id;
                             $wallet_log->type='debit';
-                            $wallet_log->points_debited= number_format((float)$customerUsedRewardStorePoint, 2, '.', '');;
+                            $wallet_log->points_debited=$customerUsedRewardStorePoint;
                             $wallet_log->points_credited=null;
                             $wallet_log->save();
                             $data['wallet_id']=$wallet_log->wallet_log_id;

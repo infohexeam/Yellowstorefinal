@@ -469,6 +469,17 @@ class StoreOrderController extends Controller
                     foreach ($request->product_variants as $value) {
                         $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                         $proData = Mst_store_product::find($varProdu->product_id);
+                        if($varProdu )
+                        {
+                            $stockDiffernece=$varProdu->stock_count-$value['quantity'];
+                            if($stockDiffernece<0)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Some products quantity is more than available stock..Try again";
+                                return response($data);
+
+                            }
+                        }
                     }
 
 
@@ -576,8 +587,20 @@ class StoreOrderController extends Controller
                         //add products to order item table
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
-
+                       
                         if ($proData->service_type != 2) {
+                         if($productVarOlddata)
+                        {
+                            $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
+                            if($stockDiffernece<0)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Some products quantity is more than available stock..Try again";
+                                return response($data);
+
+                            }
+                        }
+
                             Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
                         }
 
@@ -821,6 +844,18 @@ class StoreOrderController extends Controller
                         foreach ($request->product_variants as $value) {
                             $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                             $proData = Mst_store_product::find($varProdu->product_id);
+                            if($varProdu )
+                            {
+                                $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
+                                if($stockDiffernece<0)
+                                {
+                                    $data['status'] = 0;
+                                    $data['message'] = "Some products quantity is more than available stock..Try again";
+                                    return response($data);
+    
+                                }
+                            }
+                            
                         }
     
     
