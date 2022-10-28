@@ -437,7 +437,7 @@ class CouponController extends Controller
         ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
       $data =$data->where('mst_stores.store_id', Auth::guard('store')->user()->store_id);
         //         ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-        //   ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
+        //   ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')")) //old code group by with varient id - issue : unable to display set of visit data on a single date for diffrnt customers. only one is showing
        $data=$data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.customer_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
       
 
@@ -526,7 +526,8 @@ class CouponController extends Controller
 
         // $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
 
-        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        // $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        $data=$data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.customer_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
         //dd($data);
         return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
       }
