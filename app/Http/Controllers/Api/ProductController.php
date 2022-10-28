@@ -3107,7 +3107,7 @@ class ProductController extends Controller
                 // $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->groupBy('trn__recently_visited_products.product_varient_id', 'trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
                 //    $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->groupBy('trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
 
-                $dataRV = $dataRV->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
+                $dataRV = $dataRV->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.customer_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
 
                 if (isset($request->page)) {
                     $dataRV = $dataRV->paginate(10, ['data'], 'page', $request->page);
