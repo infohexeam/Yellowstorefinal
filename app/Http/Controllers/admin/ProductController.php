@@ -894,7 +894,7 @@ class ProductController extends Controller
           $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
         }
 
-        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.customer_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
 
         return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
@@ -1014,7 +1014,7 @@ class ProductController extends Controller
 
 
 
-        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.customer_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
         return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
       }
