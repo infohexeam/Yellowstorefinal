@@ -200,7 +200,7 @@
                                              @endif
                                              </td>
                                             <td> 
-                                                @if(is_base_variant == 1)
+                                                @if($d->is_base_variant == 1)
                                                 @if($d->product_status == 1)
                                                     Active
                                                 @else
