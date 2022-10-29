@@ -291,7 +291,7 @@ class ProductController extends Controller
                 }
                 $data['productVartiantdata'] = $productVartiantdata;
 
-                $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
+                $otherVariants = Mst_store_product_varient::where('variant_status',1)->select('product_varient_id', 'product_varient_base_image')
                     ->where('product_id', $productData->product_id)->get();
                 foreach ($otherVariants as $r) {
                     $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
