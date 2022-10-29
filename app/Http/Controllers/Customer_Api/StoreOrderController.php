@@ -1351,6 +1351,18 @@ class StoreOrderController extends Controller
 
                     if (isset($varProdu)) {
                        // || $proData->product_status == 1
+                       //check varient status
+                       if($varProdu->variant_status == 0)
+                       {
+                        $data['product_name'] = @$varProdu->variant_name;
+
+                        $noStockProducts[] = $varProdu->product_varient_id;
+
+                        $data['noStockProducts'] = $noStockProducts;
+                        $data['message'] = 'Product unavailable';
+                        $data['status'] = 2;
+                       }
+
                         if ($value['quantity'] > $varProdu->stock_count || $proData->product_status == 0) {
 
 
@@ -1377,6 +1389,8 @@ class StoreOrderController extends Controller
                                 return response($data);
                             }
                         }
+
+
                     } else {
                         $data['message'] = 'Product not found';
                         $data['status'] = 2;
