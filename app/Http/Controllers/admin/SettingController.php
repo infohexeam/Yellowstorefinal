@@ -32,6 +32,7 @@ use App\Models\admin\Trn_delivery_boy_order;
 use App\Models\admin\Sys_vehicle_type;
 use App\Models\admin\Sys_store_order_status;
 use App\Models\admin\Trn_store_order_item;
+use App\Models\admin\Trn_store_otp_verify;
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_customer_reward_transaction_type;
 use App\Models\admin\Trn_store_order;
@@ -645,7 +646,7 @@ class SettingController extends Controller
 		return view('admin.masters.stores.create', compact('pageTitle', 'subadmins', 'stores', 'countries', 'business_types'));
 	}
 
-	public function addStore(Request $request, Mst_store $store, Mst_store_documents $document)
+	public function addStore(Request $request, Mst_store $store, Mst_store_documents $document, Trn_store_otp_verify $otp_verify)
 	{
 
 		$validator = Validator::make(
@@ -821,6 +822,14 @@ class SettingController extends Controller
                 $document->store_document_gstin            = $request->store_document_gstin;
                 $document->save();
             }
+
+			$store_otp =  rand (100000,999999);
+                $store_otp_expirytime = Carbon::now()->addMinute(10);
+
+                $otp_verify->store_id                 = $last_id;
+                $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
+                $otp_verify->store_otp                 = $store_otp;
+                $otp_verify->save();
 
 
 			$date = Carbon::now();

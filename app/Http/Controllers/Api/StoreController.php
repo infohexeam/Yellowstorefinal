@@ -724,7 +724,7 @@ class StoreController extends Controller
                     if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
                         
                             if ($custCheck->store_otp_verify_status != 0) {
-                                dd("otp sucess");
+                                
                                 $data['status'] = 1;
                                 $data['message'] = "Login Success";
 
@@ -795,7 +795,7 @@ class StoreController extends Controller
                                 
 
                             } else {
-                                dd("new otp to create");
+                                
                                 $store_otp=rand(100000,999999);
                                 $storeData = Mst_store::find($custCheck->store_id);
                                 $otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
