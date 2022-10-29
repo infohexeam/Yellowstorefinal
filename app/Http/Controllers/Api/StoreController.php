@@ -711,10 +711,12 @@ class StoreController extends Controller
                 ]
             );
             if (!$validator->fails()) {
+                
                 $custCheck = Trn_StoreAdmin::where('store_mobile', '=', $phone)->first();
                 $today = Carbon::now()->toDateString();
 
                 if ($custCheck) {
+                    
 
                     if (Hash::check($passChk, $custCheck->password)) {
                         //old
@@ -787,7 +789,7 @@ class StoreController extends Controller
                                 // $data['isProfileFilled'] = Helper::isProfileFilled($custCheck->store_id);
                                 // $data['isServiceAreaSet'] = Helper::isServiceAreaSet($custCheck->store_id);
                                 // $data['isWorkingDaysSet'] = Helper::isWorkingDaysSet($custCheck->store_id);
-
+                                dd("string");
 
                             } else {
                                 $store_otp=rand(100000,999999);

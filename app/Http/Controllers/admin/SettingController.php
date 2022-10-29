@@ -658,6 +658,7 @@ class SettingController extends Controller
 				'store_primary_address'            => 'required',
 				'store_country_id'			       => 'required',
 				'store_state_id'       		       => 'required',
+				'business_type_id' 					=> 'required',
 				//'email'       		       => 'required',
 
 				//	'store_commision_amount'                => 'required',
@@ -665,7 +666,7 @@ class SettingController extends Controller
 				'store_district_id'                => 'required',
 				//	'store_commision_percentage'       => 'required',
 				'store_username' 				   => 'required|unique:mst_stores',
-				'store_mobile' 				   => 'required|unique:mst_stores',
+				'store_mobile' 				   => 'required|unique:trn__store_admins|numeric',
 				'password'       			   => 'required|min:5|same:password_confirmation',
 				
 
@@ -677,8 +678,8 @@ class SettingController extends Controller
 				'store_mobile.required'         				 => 'Store name required',
 				'store_mobile.unique'         				 => 'Store mobile number already exists',
 				// 'email.required'         				 => 'Email required',
-				'store_contact_person_name.required'     	 => 'Contact person name required',
-				'store_contact_person_phone_number.required' => 'Contact person number required',
+				//'store_contact_person_name.required'     	 => 'Contact person name required',
+				//'store_contact_person_phone_number.required' => 'Contact person number required',
 				'store_pincode.required'        			 => 'Pincode required',
 				'store_primary_address.required'             => 'Primary address required',
 				'store_country_id.required'         		 => 'Country required',
@@ -814,6 +815,12 @@ class SettingController extends Controller
 
 
 			Trn_StoreAdmin::create($insert);
+
+			if ($request->store_gst_number != "") {
+                $document->store_id            = $last_id;
+                $document->store_document_gstin            = $request->store_document_gstin;
+                $document->save();
+            }
 
 
 			$date = Carbon::now();
