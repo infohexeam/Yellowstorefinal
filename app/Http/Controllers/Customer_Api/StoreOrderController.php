@@ -696,7 +696,17 @@ class StoreOrderController extends Controller
                     $proData = Mst_store_product::find($proId);
                     //restock stock table
                     $productVarOlddata = Mst_store_product_varient::find($proVarient);
+                    
                     if ($proData->service_type != 2) {
+                        /*if($productVarOlddata)
+                        {
+                            $stockDiffernece=$productVarOlddata->stock_count-$orderQty;
+                            if($stockDiffernece<0)
+                            {
+                              continue;
+
+                            }
+                        }*/
                         $negStock = -1 * abs($orderQty);
 
                         $sd = new Mst_StockDetail;
