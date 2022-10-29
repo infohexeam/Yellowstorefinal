@@ -254,7 +254,7 @@ class WalletController extends Controller
 			  'trn_store_orders.reward_points_used_store',
 			  
 			  'trn_store_orders.amount_before_applying_rp',
-			  'trn_store_orders.amount_reduced_by_rp_store',
+			  'trn_store_orders.amount_reduced_by_rp',
 			  'trn_store_orders.amount_reduced_by_rp_store',
 			  'trn_store_orders.trn_id',
 			  'trn_store_orders.created_at',
