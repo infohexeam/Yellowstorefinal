@@ -139,7 +139,7 @@
               <li><a class="slide-item" href="{{route('store.delivery_reports')}}">{{ __('Delivery Reports') }}</a></li>
               <li><a class="slide-item" href="{{url('store/incoming-payments')}}">{{ __('Incoming Payments Reports') }}</a></li>
               <li><a class="slide-item" href="{{url('store/refund-reports')}}">{{ __('Refund Reports') }}</a></li>
-
+              <li><a class="slide-item" href="{{url('store/wallet-redeem-reports')}}">{{ __('Wallet Redeem Reports') }}</a></li>
             </ul>
         </li>
       @if(Auth::guard('store')->user()->role_id == 0)

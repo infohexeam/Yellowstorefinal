@@ -967,7 +967,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/sales-report', 'CouponController@showSalesReport')->name('store.sales_reports');
         Route::get('store/inventory-report', 'CouponController@showInventoryReport')->name('store.inventory_reports');
         Route::get('store/out-of-stock-report', 'CouponController@showOutofStockReport')->name('store.out_of_stock_reports');
-
+        Route::get('store/wallet-redeem-reports', 'WalletController@walletReport')->name('store.wallet_reports');
         Route::get('store/delivery-report', 'CouponController@deliveryReport')->name('store.delivery_reports');
         Route::get('store/deliveryboy-payout-report', 'CouponController@deliveryBoyPayoutReport')->name('store.delivery_boy_payout_reports');
         Route::get('store/payment-report', 'CouponController@paymentReport')->name('store.payment_reports');
