@@ -181,7 +181,7 @@ class ProductController extends Controller
                 $data['productVartiantdata'] = $productVartiantdata;
 
 
-                $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->toArray();
+                $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->where('variant_status',1)->toArray();
                 $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
                 foreach ($attributesData as $j) {
                     $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
