@@ -715,9 +715,7 @@ class StoreController extends Controller
                 $custCheck = Trn_StoreAdmin::where('store_mobile', '=', $phone)->first();
                 $today = Carbon::now()->toDateString();
 
-                if ($custCheck) {
-                    dd($custCheck);
-                    
+                if ($custCheck) {                    
 
                     if (Hash::check($passChk, $custCheck->password)) {
                         dd("password check succes");
