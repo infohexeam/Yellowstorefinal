@@ -718,7 +718,7 @@ class StoreController extends Controller
                 if ($custCheck) {                    
 
                     if (Hash::check($passChk, $custCheck->password)) {
-                        dd("password check succes");
+                        
                         //old
                     // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
                     if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
