@@ -200,10 +200,18 @@
                                              @endif
                                              </td>
                                             <td> 
+                                                @if($d->is_base_variant == 1)
                                                 @if($d->product_status == 1)
                                                     Active
                                                 @else
                                                     Inactive
+                                                @endif
+                                                @else
+                                                @if($d->variant_status == 1)
+                                                    Active
+                                                @else
+                                                    Inactive
+                                                @endif
                                                 @endif
                                             </td>
                                            

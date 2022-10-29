@@ -2478,7 +2478,7 @@ class ProductController extends Controller
                 );
 
                 if (!$validator->fails()) {
-                    if ($request->product_varient_id == 0) {
+                    if ($request->product_varient_id == 0) { //new varient 
                         $productVar = new Mst_store_product_varient;
 
                         $productData = Mst_store_product::find($request->product_id);
@@ -2488,6 +2488,7 @@ class ProductController extends Controller
                         $productVar->variant_name          = $request->variant_name;
                         $productVar->product_varient_price    = $request->var_regular_price;
                         $productVar->product_varient_offer_price    = $request->var_sale_price;
+                        $productVar->variant_status = $request->variant_status;
                         $productVar->product_varient_base_image = null;
 
                         if ($productData->product_type == 2) {

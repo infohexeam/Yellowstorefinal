@@ -289,6 +289,7 @@
                                     <th class="wd-15p">{{ __('Sale Price') }}</th>
                                     <th class="wd-15p">{{ __('Image') }}</th>
                                     <th class="wd-15p">{{ __('Stock Count') }}</th>
+                                    <th class="wd-15p">{{ __('Status') }}</th>
                                     <th  class="wd-20p">{{__('Action')}}</th>
                                  </tr>
                               </thead>
@@ -308,6 +309,17 @@
                                     <td>{{$value->product_varient_offer_price}}</td>
                                     <td><img  data-toggle="modal" data-target="#viewProductModal{{$value->product_varient_id}}" src="{{asset('/assets/uploads/products/base_product/base_image/'.@$value->product_varient_base_image)}}"  width="50" ></td>
                                     <td>{{$value->stock_count}}</td>
+                                    <td>
+                                          @php
+                                           $productStatus = $value->variant_status;
+                                          @endphp
+                                          <button class="btn btn-sm
+                                          @if($productStatus == 0) btn-danger @else btn-success @endif"> @if($productStatus == 0)
+                                          Inactive
+                                          @else
+                                          Active
+                                          @endif</button>
+                                    </td>
 
                                     <td>
                                           <a  data-toggle="modal" data-target="#AttrModal{{$value->product_varient_id}}" class="text-white btn btn-sm btn-indigo">Attributes</a>
