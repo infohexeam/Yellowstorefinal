@@ -742,7 +742,6 @@ class DeliveryBoyOrderController extends Controller
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                     foreach ($customerDevice as $cd) {
                         $title = 'Order delivered';
-                        // $body = 'First order points credited successully..';
                         $body = 'Order delivered with order id ' . $order->order_number;
                         $clickAction = "OrderListFragment";
                         $type = "order";
@@ -805,13 +804,6 @@ class DeliveryBoyOrderController extends Controller
                             $clickAction = "MyWalletFragment";
                             $type = "wallet";
                             $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-
-                            $title = 'Store order points credited';
-                            $body = @$storeOrderPointAmount . ' points credited to your store wallet..';
-                            $clickAction = "MyWalletFragment";
-                            $type = "wallet";
-                            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-
 
                         }
 
