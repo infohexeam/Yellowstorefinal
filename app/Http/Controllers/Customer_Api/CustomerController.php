@@ -432,6 +432,7 @@ class CustomerController extends Controller
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 //$otp = $request->otp_status;
                 $session_id=$request->otp_session_id;
+
                 $res=Helper::verifyOtp($session_id,$otp,1);
                 if($res['status']=="success")
                {
@@ -449,8 +450,8 @@ class CustomerController extends Controller
                     }
                 }
                 else {
-                    $data['status'] = 0;
-                    $data['message'] = "failed";
+                    $data['status'] = 3;
+                    $data['message'] = "OTP Mismatched"; 
                 }
             } else {
                 $data['status'] = 0;
