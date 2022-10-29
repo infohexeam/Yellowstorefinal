@@ -711,11 +711,12 @@ class StoreController extends Controller
                 ]
             );
             if (!$validator->fails()) {
-                dd("string");
+                
                 $custCheck = Trn_StoreAdmin::where('store_mobile', '=', $phone)->first();
                 $today = Carbon::now()->toDateString();
 
                 if ($custCheck) {
+                    dd("string");
 
                     if (Hash::check($passChk, $custCheck->password)) {
                         //old
