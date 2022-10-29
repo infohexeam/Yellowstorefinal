@@ -715,18 +715,20 @@ class StoreController extends Controller
                 $custCheck = Trn_StoreAdmin::where('store_mobile', '=', $phone)->first();
                 $today = Carbon::now()->toDateString();
 
-                if ($custCheck) {
-                    
+                if ($custCheck) {                    
 
                     if (Hash::check($passChk, $custCheck->password)) {
+                        
                         //old
                     // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
                     if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
+                        
                             if ($custCheck->store_otp_verify_status != 0) {
+                                dd("otp sucess");
                                 $data['status'] = 1;
                                 $data['message'] = "Login Success";
 
-
+                                
                                 Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
                                     ->orwhere('store_device_id', $request->device_id)
                                     ->delete();
@@ -740,7 +742,7 @@ class StoreController extends Controller
                                     $cdt->store_device_type = $request->device_type;
                                     $cdt->save();
                                 }
-                                dd("string");
+                                
 
 
                                 DB::table('oauth_access_tokens')->where('user_id', $custCheck->store_admin_id)->update(['revoked' => 1]);
@@ -793,6 +795,7 @@ class StoreController extends Controller
                                 
 
                             } else {
+                                dd("new otp to create");
                                 $store_otp=rand(100000,999999);
                                 $storeData = Mst_store::find($custCheck->store_id);
                                 $otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
