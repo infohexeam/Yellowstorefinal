@@ -1351,7 +1351,7 @@ class StoreOrderController extends Controller
 
                     if (isset($varProdu)) {
                        // || $proData->product_status == 1
-                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status == 0) {
+                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status == 0 || $varProdu->varient_status == 0) {
 
 
                             $data['product_name'] = @$varProdu->variant_name;
