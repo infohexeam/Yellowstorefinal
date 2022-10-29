@@ -701,6 +701,7 @@ class ProductController extends Controller
 
                     $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
                         ->where('is_removed', 0)
+                        ->where('variant_status',1)
                         ->where('product_id', $productData->product_id)
                         ->get();
                     foreach ($otherVariants as $r) {
