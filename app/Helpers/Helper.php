@@ -51,25 +51,53 @@ class Helper
 
     public static function findStoreName($store_id)
     {
-        return $sname =  Mst_store::find($store_id)->store_name;
+        $check_store=Mst_store::find($store_id);
+        if($check_store)
+        {
+            $sname =  $check_store->store_name;
+            return $sname;
+
+        }
+        else
+        {
+           return "Removed store";
+        }
+        
     }
 
     public static function findStorePhone($store_id)
     {
+        if(Mst_store::find($store_id))
         return $sname =  Mst_store::find($store_id)->store_mobile;
+        else
+        return "Removed store";
+
     }
 
     public static function findCustomerName($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
+        if($cusData)
         return $cusData->customer_first_name . " " . $cusData->customer_last_name;
+        else
+        return 'Non exist Customer';
+
     }
 
     public static function findCustomerPhone($cusId)
     {
         $cusData = Trn_store_customer::find($cusId);
+        if($cusData)
+        {
+            return $cusData->customer_mobile_number;
 
-        return $cusData->customer_mobile_number;
+        }
+        else
+        {
+            return "Removed customer";
+        }
+
+       ;
     }
 
     public static function findRewardPoints($cusId)
@@ -209,12 +237,22 @@ class Helper
 
     public static function findSubAdminName($store_id)
     {
-        $userId =  Mst_store::find($store_id)->subadmin_id;
-        $uData =  User::find($userId);
-        if (isset($uData->admin_name))
-            return @$uData->admin_name;
+        $check_store=Mst_store::find($store_id);
+        if($check_store)
+        {
+            $userId =  Mst_store::find($store_id)->subadmin_id;
+            $uData =  User::find($userId);
+            if (isset($uData->admin_name))
+                return @$uData->admin_name;
+            else
+                return  '---';
+
+        }
         else
-            return  '---';
+        {
+            return "Removed store";
+        }
+       
 
         // if (isset($userId)) {
         //     if (User::find($userId)->admin_name) {
