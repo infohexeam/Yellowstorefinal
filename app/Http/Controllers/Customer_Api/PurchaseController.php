@@ -93,12 +93,20 @@ class PurchaseController extends Controller
                         $totalCustomerStoreRewardsCount =Trn_wallet_log::where('type','credit')->where('customer_id', $request->customer_id)->sum('points_credited');;
                         //$totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
                         $totalusedStorePoints=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->sum('points_debited');
+                        if($totalCustomerStoreRewardsCount-$totalusedStorePoints<=0)
+                        {
+                            $data['status'] = 0;
+                            $data['message'] = "Reward points can't be redeemed for store";
+                            return response($data);
+
+                        }
                         $redeemedStorePoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
                         $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
                         if($wallet_log_first->first())
                         {
                             $wallet_log_first->first()->delete();
                         }
+
     
                         $customerRewardStorePoint = ($totalCustomerStoreRewardsCount - $totalusedStorePoints) - $redeemedStorePoints;
                         
@@ -220,6 +228,13 @@ class PurchaseController extends Controller
                                 $remainingOrderAmount=$reducedOrderStoreAmount;
                             }
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
+                            if($customerUsedRewardStorePoint==0)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed for store";
+                                return response($data);
+
+                            }
                             //return $customerUsedRewardStorePoint;
                             if ($remainingOrderAmount <= 0) {
                                 $data['status'] = 0;
@@ -265,6 +280,12 @@ class PurchaseController extends Controller
                             $orderAmount = $orderAmount;
                             $reducedOrderStoreAmount = $orderAmount - $totalReducableStoreAmount;
                             $customerUsedRewardStorePoint = $totalReducableStoreAmount / $storePointToRupeeRatio;
+                            if($customerUsedRewardStorePoint==0)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Reward points can't be redeemed for store";
+                                return response($data);
+                            }
                             //return $customerUsedRewardStorePoint;
                             if ($reducedOrderStoreAmount <= 0) {
                                 $data['status'] = 0;
