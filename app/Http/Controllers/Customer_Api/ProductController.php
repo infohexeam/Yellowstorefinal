@@ -3892,6 +3892,7 @@ class ProductController extends Controller
                     ->where('mst_store_product_varients.is_removed', 0)
                     ->where('mst_store_products.is_removed', 0)
                     ->where('mst_store_product_varients.is_base_variant', 1)
+                    ->where('mst_store_product_varients.variant_status', 1)
                     ->where('mst_store_products.show_in_home_screen', 1)->get();
                 $productDataFinal = array();
                 foreach ($productData as $offerProduct) {
@@ -4137,6 +4138,7 @@ class ProductController extends Controller
                         ->where('mst_store_products.show_in_home_screen', 1)
 
                         ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_product_varients.variant_status', 1)
                         ->where('mst_store_products.is_removed', 0)
                         ->where('mst_store_product_varients.is_base_variant', 1);
 
