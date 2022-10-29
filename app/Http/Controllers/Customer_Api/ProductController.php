@@ -795,7 +795,7 @@ class ProductController extends Controller
                         $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
                             ->where('product_id', $gData->product_id)
                             ->where('is_removed', 0)
-
+                            ->where('variant_status',1)
                             ->get();
                         foreach ($otherVariants as $r) {
                             $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
