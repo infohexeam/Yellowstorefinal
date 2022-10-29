@@ -437,9 +437,9 @@ Route::get('customer/store-wallet-page', 'Customer_Api\ProductController@storeWa
 
 Route::get('customer/address-coupon-list', 'Customer_Api\ProductController@listCouponAndAddress');
 Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
-
-Route::get('customer/reduce-reward-point-2', 'Customer_Api\ProductController@reduceRewardPoint');
+Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
 Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');
+Route::get('customer/untick-store-points', 'Customer_Api\PurchaseController@storePointUntick');
 
 Route::post('customer/share-feedback', 'Customer_Api\ProductController@shareFeedback');
 
