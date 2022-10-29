@@ -3476,7 +3476,24 @@ class StoreController extends Controller
   public function savePOS(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
   {
     // try {
+      $j=0;
+      $pro_variant = $request->get('product_varient_id');
+      $quantity = $request->get('quantity');
+     //dd($request->get('quantity'));
+    foreach ($request->get('product_varient_id') as $pro) {
+      $productVarStockCheck =  Mst_store_product_varient::find($pro_variant[$j]);
+      if($productVarStockCheck)
+      {
+          $stockDiffernece=$productVarStockCheck->stock_count-$quantity[$j];
+          if($stockDiffernece<0)
+          {
+             
+              return  redirect()->back()->with('error', 'Some products quantity is more than available stock..Try again.');
 
+          }
+      }
+      $j++;
+    }
     $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
 
     $orderNumber = @$storeOrderCount + 1;
@@ -3519,13 +3536,13 @@ class StoreController extends Controller
     Trn_order_invoice::insert($invoice_info);
 
     // dd($data);
-    $quantity = $request->get('quantity');
+    
     $single_quantity_rate = $request->get('single_quantity_rate');
     $discount_amount = $request->get('discount_amount');
     $discount_percentage = $request->get('discount_percentage');
     $total_tax = $request->get('total_tax');
     $total_amount = $request->get('total_amount');
-    $pro_variant = $request->get('product_varient_id');
+    
 
     $i = 0;
 
