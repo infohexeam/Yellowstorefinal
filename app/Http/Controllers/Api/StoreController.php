@@ -722,7 +722,7 @@ class StoreController extends Controller
                         //old
                     // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
                     if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
-                        dd("account status and expiry success");
+                        
                             if ($custCheck->store_otp_verify_status != 0) {
                                 dd("otp sucess");
                                 $data['status'] = 1;
