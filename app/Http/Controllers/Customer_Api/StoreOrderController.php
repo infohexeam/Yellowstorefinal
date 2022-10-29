@@ -1343,7 +1343,7 @@ class StoreOrderController extends Controller
             $noStockProducts = array();
 
             foreach ($request->product_variants as $value) {
-                $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
+                $varProdu = Mst_store_product_varient::where('varient_status', 1)->lockForUpdate()->find($value['product_varient_id']);
                 $proData = Mst_store_product::find($varProdu->product_id);
 
                 if ($proData->service_type != 2) {
@@ -1351,7 +1351,7 @@ class StoreOrderController extends Controller
 
                     if (isset($varProdu)) {
                        // || $proData->product_status == 1
-                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status == 0 || $varProdu->varient_status == 0) {
+                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status == 0) {
 
 
                             $data['product_name'] = @$varProdu->variant_name;
