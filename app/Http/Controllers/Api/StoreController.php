@@ -716,6 +716,7 @@ class StoreController extends Controller
                 $today = Carbon::now()->toDateString();
 
                 if ($custCheck) {
+                    dd($custCheck);
                     
 
                     if (Hash::check($passChk, $custCheck->password)) {
@@ -726,7 +727,7 @@ class StoreController extends Controller
                                 $data['status'] = 1;
                                 $data['message'] = "Login Success";
 
-                                dd($custCheck);
+                                
                                 Trn_StoreDeviceToken::where('store_id', $custCheck->store_id)
                                     ->orwhere('store_device_id', $request->device_id)
                                     ->delete();
