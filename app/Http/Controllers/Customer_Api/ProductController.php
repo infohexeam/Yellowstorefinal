@@ -181,7 +181,7 @@ class ProductController extends Controller
                 $data['productVartiantdata'] = $productVartiantdata;
 
 
-                $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->where('variant_status',1)->toArray();
+                $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)->pluck('product_varient_id')->toArray();
                 $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
                 foreach ($attributesData as $j) {
                     $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
@@ -291,7 +291,7 @@ class ProductController extends Controller
                 }
                 $data['productVartiantdata'] = $productVartiantdata;
 
-                $otherVariants = Mst_store_product_varient::where('variant_status',1)->select('product_varient_id', 'product_varient_base_image')
+                $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
                     ->where('product_id', $productData->product_id)->get();
                 foreach ($otherVariants as $r) {
                     $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
