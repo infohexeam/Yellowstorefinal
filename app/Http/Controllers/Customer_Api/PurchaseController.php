@@ -228,7 +228,7 @@ class PurchaseController extends Controller
                                 $remainingOrderAmount=$reducedOrderStoreAmount;
                             }
                             $customerUsedRewardStorePoint = $storeMaxRedeemAmountPerOrder / $storePointToRupeeRatio;
-                            if($customerUsedRewardStorePoint==0)
+                            if(number_format($customerUsedRewardStorePoint,2)==0.00)
                             {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for store";
@@ -280,7 +280,7 @@ class PurchaseController extends Controller
                             $orderAmount = $orderAmount;
                             $reducedOrderStoreAmount = $orderAmount - $totalReducableStoreAmount;
                             $customerUsedRewardStorePoint = $totalReducableStoreAmount / $storePointToRupeeRatio;
-                            if($customerUsedRewardStorePoint==0)
+                            if(number_format($customerUsedRewardStorePoint,2)==0.00)
                             {
                                 $data['status'] = 0;
                                 $data['message'] = "Reward points can't be redeemed for store";
@@ -369,7 +369,7 @@ class PurchaseController extends Controller
             }
             $data['remainingOrderAmount'] = number_format((float)$remainingOrderAmount, 2, '.', '');
 
-        if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints']??0,$data['reducedAmountByStoreWalletPoints']??0)==0)
+        if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints'],$data['reducedAmountByStoreWalletPoints'])==0)
         {
             $data['status'] = 0;
             $data['message'] = "Wallet reduced amount cannot be greater than order amount";

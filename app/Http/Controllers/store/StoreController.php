@@ -2641,6 +2641,12 @@ class StoreController extends Controller
               $clickAction = "OrderListFragment";
               $type = "order";
               $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+
+              $title = 'Store order points credited';
+              $body = @$storeOrderPointAmount . ' points credited to your store wallet..';
+              $clickAction = "MyWalletFragment";
+              $type = "wallet";
+              $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
             }
           //}
         //}
