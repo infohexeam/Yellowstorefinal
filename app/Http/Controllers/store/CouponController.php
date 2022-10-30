@@ -442,7 +442,7 @@ class CouponController extends Controller
       $data=$data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
     
 
-      dd($data);
+      //dd($data);
       if ($_GET) {
 
         $fetchCustomerData = Trn_store_customer::where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%')->first();
