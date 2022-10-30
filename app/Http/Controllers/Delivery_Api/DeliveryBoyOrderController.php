@@ -755,7 +755,7 @@ class DeliveryBoyOrderController extends Controller
                     $crrr->reward_approved_date = Carbon::now()->format('Y-m-d');
                     $crrr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
                     $crrr->reward_point_status = 1;
-                    $crrr->discription = null;
+                    $crrr->discription = 'admin points';
                     $crrr->save(); 
                     
                     $scr = new Trn_customer_reward;
