@@ -1563,17 +1563,13 @@ class ProductController extends Controller
             GROUP BY stid) as store_points_debited"),
 
             )
+                ->where('trn_wallet_logs.points_debited','!=',0.00)
                 ->orderBy('trn_wallet_logs.wallet_log_id','DESC')
                 ->get();
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_credited');
                 $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->sum('points_debited');
-                $available_points=$wallet_log_credited-$wallet_log_redeemed;
-               
-                $data['logs']=$wallet_logs;
-               
-               
-                
-
+                $available_points=$wallet_log_credited-$wallet_log_redeemed;              
+                $data['logs']=$wallet_logs;              
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
                 else
