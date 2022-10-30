@@ -1260,4 +1260,20 @@ class PurchaseController extends Controller
 
         
     }
+    public function adminPointUntick(Request $request)
+    {
+        $data=array();
+        $store_id=$request->store_id;
+        $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
+        if($wallet_log_first->first())
+        {
+            $wallet_log_first->first()->delete();
+        }
+        $data['status']=1;
+        $data['message']="Data deleted";
+        return response($data);
+
+
+        
+    }
 }
