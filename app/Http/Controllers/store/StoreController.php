@@ -2634,20 +2634,24 @@ class StoreController extends Controller
             $wallet_log->save();
 
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        if($order->payment_type_id==2)
+        {
+          foreach ($customerDevice as $cd) {
+            $title = 'Order points credited';
+            $body = $orderPointAmount . ' points credited to your wallet..';
+            $clickAction = "OrderListFragment";
+            $type = "order";
+            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
 
-            foreach ($customerDevice as $cd) {
-              $title = 'Order points credited';
-              $body = $orderPointAmount . ' points credited to your wallet..';
-              $clickAction = "OrderListFragment";
-              $type = "order";
-              $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            $title = 'Store order points credited';
+            $body = @$storeOrderPointAmount . ' points credited to your store wallet..';
+            $clickAction = "MyWalletFragment";
+            $type = "wallet";
+            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+          }
 
-              $title = 'Store order points credited';
-              $body = @$storeOrderPointAmount . ' points credited to your store wallet..';
-              $clickAction = "MyWalletFragment";
-              $type = "wallet";
-              $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-            }
+        }
+           
           //}
         //}
       }
