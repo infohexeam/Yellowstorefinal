@@ -411,7 +411,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                             Payment Mode:
                           </td>
                           <td>
-                             {{ $payment->paymentMode }}
+                             {{ @$payment->paymentMode }}
                           </td>
                        </tr>
     
@@ -420,7 +420,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                              Reference Id:
                           </td>
                           <td>
-                             {{ $payment->referenceId }}
+                             {{ @$payment->referenceId }}
                           </td>
                        </tr>
     
@@ -429,7 +429,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                              Status:
                           </td>
                           <td>
-                             {{ $payment->txStatus }}
+                             {{ @$payment->txStatus }}
                           </td>
                        </tr>
     
