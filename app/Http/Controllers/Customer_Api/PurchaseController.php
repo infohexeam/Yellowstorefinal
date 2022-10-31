@@ -159,7 +159,7 @@ class PurchaseController extends Controller
                             if(number_format($customerUsedRewardPoint,2)==0.00)
                             {
                                 $data['status'] = 0;
-                                $data['message'] = "Reward points can't be redeemed for store";
+                                $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
 
                             }
@@ -183,7 +183,7 @@ class PurchaseController extends Controller
                             if(number_format($customerUsedRewardPoint,2)==0.00)
                             {
                                 $data['status'] = 0;
-                                $data['message'] = "Reward points can't be redeemed for store";
+                                $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
 
                             }
