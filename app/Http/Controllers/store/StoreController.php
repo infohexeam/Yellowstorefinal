@@ -2342,7 +2342,7 @@ class StoreController extends Controller
         ->where('trn_store_orders.store_id', '=', $store_id)
         ->where('trn_store_orders.order_id', '=', $decrId)
         ->where('trn__order_payment_transactions.order_id', '=', $decrId)
-        ->first();
+        ->get();
      // dd($payments);
 
 
