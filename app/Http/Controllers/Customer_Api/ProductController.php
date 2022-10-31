@@ -1535,6 +1535,8 @@ class ProductController extends Controller
         $wallet_logs=array();
         
         try {
+            $type1="debit";
+            $type2="credit";
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $wallet_logs=Trn_wallet_log::Where('trn_wallet_logs.customer_id',$request->customer_id)
                 ->leftjoin('trn_store_orders','trn_wallet_logs.order_id', '=','trn_store_orders.order_id')
@@ -1564,6 +1566,12 @@ class ProductController extends Controller
 
             )
                 //->where('trn_wallet_logs.points_debited','!=',0.00)
+               /* ->when($type1, function ($query) use ($type1) {
+                    return $query->where('trn_wallet_logs.type', $type1)->whereNotNull('trn_wallet_logs.order_id');
+                })
+                ->orWhen($type2, function ($query) use ($type2) {
+                    return $query->where('trn_wallet_logs.type', $type2);
+                })*/
                 ->orderBy('trn_wallet_logs.wallet_log_id','DESC')
                 ->get();
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_credited');
