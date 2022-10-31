@@ -527,7 +527,8 @@ class CouponController extends Controller
 
         // $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
 
-        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        // $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        $data=$data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
         //dd($data);
         return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
       }

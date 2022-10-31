@@ -3064,9 +3064,6 @@ class ProductController extends Controller
                     ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                     ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
 
-
-
-
                 $dataRV = $dataRV->where('mst_stores.store_id', $request->store_id);
 
                 if (isset($request->date_from)) {
@@ -3107,7 +3104,8 @@ class ProductController extends Controller
                 // $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->groupBy('trn__recently_visited_products.product_varient_id', 'trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
                 //    $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->groupBy('trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
 
-                $dataRV = $dataRV->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
+                $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
+                
 
                 if (isset($request->page)) {
                     $dataRV = $dataRV->paginate(10, ['data'], 'page', $request->page);
