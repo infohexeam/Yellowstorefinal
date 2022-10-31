@@ -438,7 +438,9 @@ class CouponController extends Controller
       $data =$data->where('mst_stores.store_id', Auth::guard('store')->user()->store_id);
         //         ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
         //   ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
-      $data=$data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+     // $data=$data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+
+      $data=$data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
       //dd($data);
       if ($_GET) {
@@ -525,7 +527,8 @@ class CouponController extends Controller
 
         // $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
 
-        $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        // $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        $data=$data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
         //dd($data);
         return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
       }
@@ -568,7 +571,7 @@ class CouponController extends Controller
       
 
       ->where('mst_store_products.product_type', 1)
-      ->where('mst_store_products.is_removed',0)
+      // ->where('mst_store_products.is_removed',0)
       // ->orderBy('mst_store_products.product_name','ASC')
       //   ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 

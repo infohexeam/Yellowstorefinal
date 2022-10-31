@@ -424,8 +424,8 @@ class StoreController extends Controller
         'store_district_id' => $request->store_district_id,
         'business_type_id' => $request->business_type_id,
         'store_username' => $request->store_username,
-        'store_commision_percentage' => $request->store_commision_percentage,
-        'store_commision_amount' => $request->store_commision_amount,
+        // 'store_commision_percentage' => $request->store_commision_percentage,
+        // 'store_commision_amount' => $request->store_commision_amount,
         'town_id' => $request->store_town,
         'place' => $request->store_place,
         'profile_image' => $filenamePro,
@@ -434,7 +434,7 @@ class StoreController extends Controller
         'place_id' => $sendPlaceId,
         //'store_qrcode' => $request->store_qrcode,
         'upi_id' => $request->upi_id,
-        'gst' => $request->gst,
+         'gst' => $request->gst,
 
       ];
 
@@ -2342,8 +2342,8 @@ class StoreController extends Controller
         ->where('trn_store_orders.store_id', '=', $store_id)
         ->where('trn_store_orders.order_id', '=', $decrId)
         ->where('trn__order_payment_transactions.order_id', '=', $decrId)
-        ->first();
-      //dd($payments);
+        ->get();
+     // dd($payments);
 
 
       $delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
