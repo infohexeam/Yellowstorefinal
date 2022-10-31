@@ -680,7 +680,7 @@ class StoreSettingsController extends Controller
                     $data2['store_pincode'] = $request->store_pincode;
                     $data2['store_primary_address'] = $request->store_primary_address;
                     $data2['upi_id'] = $request->upi_id;
-                    $data2['store_commision_percentage'] = $request->commision_percentage;
+                    // $data2['store_commision_percentage'] = $request->commision_percentage;
 
                     $data2['latitude'] = $request->latitude;
                     $data2['longitude'] = $request->longitude;
