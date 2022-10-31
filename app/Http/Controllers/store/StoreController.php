@@ -2343,7 +2343,7 @@ class StoreController extends Controller
         ->where('trn_store_orders.order_id', '=', $decrId)
         ->where('trn__order_payment_transactions.order_id', '=', $decrId)
         ->first();
-      dd($payments);
+     // dd($payments);
 
 
       $delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
