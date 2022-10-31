@@ -883,6 +883,8 @@ class OrderController extends Controller
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
 
                                     foreach ($customerDevice as $cd) {
+                                        if($od->payment_type_id==2)
+                                    {
                                         $title = 'Order points credited';
                                         $body = $orderPointAmount . ' points credited to your wallet..';
                                         $clickAction = "MyWalletFragment";
@@ -895,6 +897,7 @@ class OrderController extends Controller
                                         $type = "wallet";
                                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
+                                }
                                // }
                             //}
 
