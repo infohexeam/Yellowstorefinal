@@ -901,6 +901,7 @@ class StoreOrderController extends Controller
                             $update_order =  Trn_store_order::find($order_id);
                             $update_order->referenceId = $request->referenceId;
                             $update_order->txTime = $request->txTime;
+                            $update_order->trn_id = $request->orderId;
                             $update_order->orderAmount = $request->orderAmount;
                             $update_order->txMsg = $request->txMsg;
                             $update_order->txStatus = $request->txStatus;
