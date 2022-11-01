@@ -77,7 +77,7 @@
                   <div class="form-group">
                      <div id="store">
                         <label class="form-label"> Business Type</label>
-                        <select name="business_type_ids[]" required="" class="form-control" >
+                        <select name="business_type_ids[]" class="form-control" >
                         <option value=""> Select Business Type</option>
                            @foreach($business_types as $key)
                            @if ( !in_array( $key->business_type_id ,$ids ))
