@@ -371,8 +371,12 @@ class OrderController extends Controller
                             $data['orderDetails']->delivery_type = 1; // immediate delivery
                             $data['orderDetails']->time_slot = '';
                         }
-
-                        $data['orderDetails']->processed_by = null;
+                        if ($data['orderDetails']->order_type == 'POS') {
+                        $data['orderDetails']->processed_by = $data['orderDetails']->storeadmin['admin_name'];
+                        }else{
+                            $data['orderDetails']->processed_by = null;
+                        }
+                        
 
                         $invoice_data = \DB::table('trn_order_invoices')->where('order_id', $order_id)->first();
                         $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
