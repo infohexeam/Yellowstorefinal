@@ -1476,7 +1476,7 @@ class ProductController extends Controller
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
 
-                $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store_points')->sum('reward_points_earned');
+                $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
                 $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->where('status_id', [5])->sum('reward_points_used');
                 $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
 
