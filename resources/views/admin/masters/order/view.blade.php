@@ -110,11 +110,11 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           </td>
                                        </tr>
 
-                                        @if(@$order->order_type == 'POS')
+                                        {{-- @if(@$order->order_type == 'POS') --}}
                                        <tr>
                                           <td><strong>Processed By: </strong> </td> <td> {{ @$order->storeadmin['admin_name'] }} </td>
                                        </tr>
-                                       @endif
+                                       {{-- @endif --}}
 
                                          <tr>
                                           <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
