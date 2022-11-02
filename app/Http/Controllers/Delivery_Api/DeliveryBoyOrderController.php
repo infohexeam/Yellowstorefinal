@@ -732,11 +732,14 @@ class DeliveryBoyOrderController extends Controller
                     $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
                     $store_id=$order->store_id;
                     $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
+                    if($storeConfigPoint)
+                    {
                     $storeOrderAmount  = $storeConfigPoint->order_amount;
                     $storeOrderPoint  = $storeConfigPoint->order_points;
 
                     $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
                     $storeOrderPointAmount =  $order->product_total_amount * $storeOrderAmounttoPointPercentage;
+                    }
 
 
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
@@ -757,7 +760,8 @@ class DeliveryBoyOrderController extends Controller
                     $crrr->reward_point_status = 1;
                     $crrr->discription = 'admin points';
                     $crrr->save(); 
-                    
+                    if($storeConfigPoint)
+                    {
                     $scr = new Trn_customer_reward;
                     $scr->transaction_type_id = 0;
                     $scr->store_id=$store_id;
@@ -778,6 +782,7 @@ class DeliveryBoyOrderController extends Controller
                     $wallet_log->points_debited=null;
                     $wallet_log->points_credited=$storeOrderPointAmount;
                     $wallet_log->save();
+                    }
 
 
                     if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {

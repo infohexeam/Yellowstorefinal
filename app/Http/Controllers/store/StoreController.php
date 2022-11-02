@@ -2513,11 +2513,14 @@ class StoreController extends Controller
          $store_id=Auth::guard('store')->user()->store_id;
         // dd($store_id);
          $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
+         if($storeConfigPoint)
+        {
          $storeOrderAmount  = $storeConfigPoint->order_amount;
          $storeOrderPoint  = $storeConfigPoint->order_points;
 
          $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
          $storeOrderPointAmount =$order->product_total_amount * $storeOrderAmounttoPointPercentage;
+        }
          ///////////////////////////////////////////////////////
         if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
           $configPoint = Trn_configure_points::find(1);
@@ -2611,7 +2614,8 @@ class StoreController extends Controller
             $cr->reward_point_status = 1;
             $cr->discription = 'admin points';
             $cr->save();
-
+            if($storeConfigPoint)
+            {
             $scr = new Trn_customer_reward;
             $scr->transaction_type_id = 0;
             $scr->store_id=$store_id;
@@ -2632,6 +2636,7 @@ class StoreController extends Controller
             $wallet_log->points_debited=null;
             $wallet_log->points_credited=$storeOrderPointAmount;
             $wallet_log->save();
+            }
 
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
         if($order->payment_type_id==2)
@@ -2642,12 +2647,14 @@ class StoreController extends Controller
             $clickAction = "OrderListFragment";
             $type = "order";
             $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-
+            if($storeConfigPoint)
+            {
             $title = 'Store order points credited';
             $body = @$storeOrderPointAmount . ' points credited to your store wallet..';
             $clickAction = "MyWalletFragment";
             $type = "wallet";
             $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
           }
 
         }
