@@ -302,7 +302,7 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->db_longitude = '';
 
-                            dd("delivery boy success");
+                            
 
                             // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
                             // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
@@ -315,7 +315,7 @@ class OrderController extends Controller
                             }
 
                         } else {
-                            dd("if no cust success");
+                           
                             $data['orderDetails']->customer_name = '';
                             $data['orderDetails']->delivery_boy = '';
                             $data['orderDetails']->customer_mobile = '';
@@ -367,7 +367,7 @@ class OrderController extends Controller
                         else
                             $data['orderDetails']->town_name = '';
 
-
+                        dd("store data succ");
 
                         if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
                             $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
