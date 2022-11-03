@@ -206,7 +206,7 @@ class OrderController extends Controller
                             } else {
                                 $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
                             }
-                            dd("pos address collect success");
+                            
 
                             if ($data['orderDetails']->order_type == 'POS') {
 
