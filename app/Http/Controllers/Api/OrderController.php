@@ -380,13 +380,12 @@ class OrderController extends Controller
                             $data['orderDetails']->time_slot = '';
                         }
                         
-                        if ($data['orderDetails']->order_type == 'POS') {
-                         $store_name = Trn_StoreAdmin::where('store_id', $store_id)->select('admin_name')->first();
-                         dd($store_name); 
+                        if ($data['orderDetails']->order_type == 'POS' && $data['orderDetails']->store_admin_id != NULL) {
+
                         $data['orderDetails']->processed_by = $data['orderDetails']->storeadmin['admin_name'];
                         
                         }else{
-                            dd("processed by data else ");
+                           
                             $data['orderDetails']->processed_by = "";
                         }
                         
@@ -464,7 +463,7 @@ class OrderController extends Controller
 
                             $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
 
-                            dd("image  success");
+                            
 
                             if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
                                 $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
@@ -487,7 +486,7 @@ class OrderController extends Controller
                             $stax = 0;
                             // dd($splitdata);
 
-                            dd("tax1 success");
+                            
 
                             $splitdata = [];
 
@@ -502,7 +501,7 @@ class OrderController extends Controller
                                     $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
                                 }
                             }
-                            dd("split tax success");
+                            
 
                             $value['taxSplitups']  = @$splitdata;
                         }
@@ -535,7 +534,6 @@ class OrderController extends Controller
                             $data['orderDetails']->serviceData = $serviceData;
                         }
 
-                        dd("service success");
 
 
                         $data['orderPaymentTransaction'] = new \stdClass();
@@ -553,7 +551,6 @@ class OrderController extends Controller
                             }
                         }
 
-                        dd("split success");
                         //Trn_OrderPaymentTransaction
                         $data['orderPaymentTransaction'] = $opt;
                         $data['status'] = 1;
