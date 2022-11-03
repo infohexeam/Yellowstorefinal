@@ -384,10 +384,12 @@ class OrderController extends Controller
                             // $store_name = Trn_StoreAdmin::where('store_id', $store_id)->first();
 
                         $data['orderDetails']->processed_by = $data['orderDetails']->storeadmin['admin_name'];
+                        dd("processed by data succ");
                         }else{
+                            dd("processed by data else ");
                             $data['orderDetails']->processed_by = "";
                         }
-                        dd("processed by data succ");
+                        
                         
 
                         $invoice_data = \DB::table('trn_order_invoices')->where('order_id', $order_id)->first();
