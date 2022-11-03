@@ -161,6 +161,7 @@ class OrderController extends Controller
 
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -172,11 +173,13 @@ class OrderController extends Controller
                 );
 
                 if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
+                    dd("validation success");
                     $order_id = $request->order_id;
                     $store_id = $request->store_id;
                     // dd(Trn_store_order::select('order_id','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
 
                     if ($data['orderDetails']  = Trn_store_order::select("*")->where('order_id', $order_id)->where('store_id', $store_id)->first()) {
+                        dd("order fetch success");
 
                         if (!isset($data['orderDetails']->order_note))
                             $data['orderDetails']->order_note = '';
@@ -204,6 +207,7 @@ class OrderController extends Controller
                             } else {
                                 $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
                             }
+                            dd("pos address collect success");
 
                             if ($data['orderDetails']->order_type == 'POS') {
 
@@ -216,6 +220,7 @@ class OrderController extends Controller
                                     $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
                                 }
                             }
+                            dd("pos customer collect success");
 
                             if (isset($customerAddressData->phone))
                                 $data['orderDetails']->customer_mobile = @$customerAddressData->phone;
@@ -273,7 +278,7 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->customer_place = ' ';
 
-
+                                
                             $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
                             if (isset($deliveryBoy->delivery_boy_name))
                                 $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
@@ -307,7 +312,9 @@ class OrderController extends Controller
                                 $data['orderDetails']->customer_pincode = '';
                                 $data['orderDetails']->customer_place = ' ';
                             }
+
                         } else {
+                            dd("if no cust success");
                             $data['orderDetails']->customer_name = '';
                             $data['orderDetails']->delivery_boy = '';
                             $data['orderDetails']->customer_mobile = '';
@@ -452,6 +459,8 @@ class OrderController extends Controller
 
                             $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
 
+                            dd("image  success");
+
                             if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
                                 $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
                             else
@@ -473,6 +482,8 @@ class OrderController extends Controller
                             $stax = 0;
                             // dd($splitdata);
 
+                            dd("tax1 success");
+
                             $splitdata = [];
 
                             if (isset($taxFullData)) {
@@ -486,6 +497,7 @@ class OrderController extends Controller
                                     $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
                                 }
                             }
+                            dd("split tax success");
 
                             $value['taxSplitups']  = @$splitdata;
                         }
@@ -518,6 +530,8 @@ class OrderController extends Controller
                             $data['orderDetails']->serviceData = $serviceData;
                         }
 
+                        dd("service success");
+
 
                         $data['orderPaymentTransaction'] = new \stdClass();
                         $opt = Trn_OrderPaymentTransaction::where('order_id', $request->order_id)->get();
@@ -533,6 +547,8 @@ class OrderController extends Controller
                                 }
                             }
                         }
+
+                        dd("split success");
                         //Trn_OrderPaymentTransaction
                         $data['orderPaymentTransaction'] = $opt;
                         $data['status'] = 1;
