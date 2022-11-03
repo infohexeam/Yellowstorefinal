@@ -173,7 +173,7 @@ class OrderController extends Controller
                 );
 
                 if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
-                    dd("validation success");
+                    
                     $order_id = $request->order_id;
                     $store_id = $request->store_id;
                     // dd(Trn_store_order::select('order_id','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
