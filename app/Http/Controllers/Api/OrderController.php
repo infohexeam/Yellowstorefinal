@@ -374,7 +374,7 @@ class OrderController extends Controller
                         if ($data['orderDetails']->order_type == 'POS') {
                             // $store_name = Trn_StoreAdmin::where('store_id', $store_id)->first();
 
-                        $data['orderDetails']->processed_by = $data['orderDetails']->storeadmin->admin_name;
+                        $data['orderDetails']->processed_by = $data['orderDetails']->storeadmin['admin_name'];
                         }else{
                             $data['orderDetails']->processed_by = null;
                         }
