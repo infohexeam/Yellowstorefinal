@@ -244,7 +244,7 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->country_name =    '';
 
-                            dd("place fetch complete");
+                            
 
 
                             if (isset($customerAddressData->address))
@@ -277,6 +277,7 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->customer_place = ' ';
 
+                                dd("place 2 fetch complete");
                                 
                             $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
                             if (isset($deliveryBoy->delivery_boy_name))
