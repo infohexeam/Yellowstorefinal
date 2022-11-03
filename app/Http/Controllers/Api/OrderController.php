@@ -219,7 +219,7 @@ class OrderController extends Controller
                                     $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
                                 }
                             }
-                            dd("pos customer collect success");
+                            
 
                             if (isset($customerAddressData->phone))
                                 $data['orderDetails']->customer_mobile = @$customerAddressData->phone;
