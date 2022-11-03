@@ -385,7 +385,7 @@ class OrderController extends Controller
 
                         $data['orderDetails']->processed_by = $data['orderDetails']->storeadmin['admin_name'];
                         }else{
-                            $data['orderDetails']->processed_by = null;
+                            $data['orderDetails']->processed_by = "";
                         }
                         dd("processed by data succ");
                         
