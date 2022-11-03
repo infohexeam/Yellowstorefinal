@@ -367,7 +367,7 @@ class OrderController extends Controller
                         else
                             $data['orderDetails']->town_name = '';
 
-                        dd("store data succ");
+                        
 
                         if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
                             $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
@@ -379,6 +379,7 @@ class OrderController extends Controller
                             $data['orderDetails']->delivery_type = 1; // immediate delivery
                             $data['orderDetails']->time_slot = '';
                         }
+                        dd("store 1 data succ");
                         if ($data['orderDetails']->order_type == 'POS') {
                             // $store_name = Trn_StoreAdmin::where('store_id', $store_id)->first();
 
