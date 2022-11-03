@@ -130,8 +130,9 @@ class PosController extends Controller
                     // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
                     $store_order->customer_id = 3;
                     $store_order->store_id =  $request->store_id;
-                    if ($accessToken = auth()->user()->user_id) {
-                        
+                    $accessToken = auth()->user()->token();
+                    if ($user_id = DB::table('oauth_access_tokens')->where('id', $accessToken)->first()) {
+                        dd($user_id);
                     $store_order->store_admin_id =  auth()->user()->user_id;
                     }
 
