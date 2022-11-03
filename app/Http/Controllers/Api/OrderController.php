@@ -244,7 +244,7 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->country_name =    '';
 
-
+                            dd("place fetch complete");
 
 
                             if (isset($customerAddressData->address))
