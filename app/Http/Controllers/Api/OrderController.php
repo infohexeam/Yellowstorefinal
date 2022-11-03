@@ -277,7 +277,6 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->customer_place = ' ';
 
-                                dd("place 2 fetch complete");
                                 
                             $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
                             if (isset($deliveryBoy->delivery_boy_name))
@@ -302,6 +301,8 @@ class OrderController extends Controller
                                 $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
                             else
                                 $data['orderDetails']->db_longitude = '';
+
+                            dd("delivery boy success");
 
                             // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
                             // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
