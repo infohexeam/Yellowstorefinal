@@ -1268,7 +1268,7 @@ class ProductController extends Controller
                         //   $data['paymentTypes']  = Sys_payment_type::all();
                         $data['rewardReducible']  = Trn_configure_points::find(1)->redeem_percentage;
                         $data['redeemAmt']  = Trn_configure_points::find(1)->max_redeem_amount;
-                        $data['customerRewardsCount'] = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                        $data['customerRewardsCount'] = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
                     if(Trn_configure_points::where('store_id',$request->store_id)->first()!=NULL)
                     {
                         $data['storeRewardReducible']  = Trn_configure_points::where('store_id',$request->store_id)->first()->redeem_percentage;
