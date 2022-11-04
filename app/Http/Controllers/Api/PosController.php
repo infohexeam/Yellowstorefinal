@@ -130,8 +130,10 @@ class PosController extends Controller
                     // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
                     $store_order->customer_id = 3;
                     $store_order->store_id =  $request->store_id;
-
-
+                    if($request->store_admin_id != 0)
+                    {
+                        $store_order->store_admin_id =  $request->store_admin_id;
+                    }
                     $store_order->subadmin_id =  $store_data->subadmin_id;
                     $store_order->product_total_amount =  $request->order_total_amount;
                     $store_order->payment_type_id = 1;

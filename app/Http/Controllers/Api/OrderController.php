@@ -28,7 +28,7 @@ use App\Models\admin\Mst_business_types;
 
 use App\Models\admin\Mst_attribute_group;
 use App\Models\admin\Mst_attribute_value;
-
+use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Mst_categories;
 use App\Models\admin\Mst_store_agencies;
 
@@ -161,6 +161,7 @@ class OrderController extends Controller
 
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -172,12 +173,13 @@ class OrderController extends Controller
                 );
 
                 if (!$validator->fails() && Trn_store_order::find($request->order_id)) {
+                    
                     $order_id = $request->order_id;
                     $store_id = $request->store_id;
                     // dd(Trn_store_order::select('order_id','time_slot','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
 
                     if ($data['orderDetails']  = Trn_store_order::select("*")->where('order_id', $order_id)->where('store_id', $store_id)->first()) {
-
+                       
                         if (!isset($data['orderDetails']->order_note))
                             $data['orderDetails']->order_note = '';
 
@@ -204,6 +206,7 @@ class OrderController extends Controller
                             } else {
                                 $customerAddressData = Trn_customerAddress::find($data['orderDetails']->delivery_address);
                             }
+                            
 
                             if ($data['orderDetails']->order_type == 'POS') {
 
@@ -216,6 +219,7 @@ class OrderController extends Controller
                                     $data['orderDetails']->customer_name = $customerData->customer_first_name . " " . $customerData->customer_last_name;
                                 }
                             }
+                            
 
                             if (isset($customerAddressData->phone))
                                 $data['orderDetails']->customer_mobile = @$customerAddressData->phone;
@@ -240,7 +244,7 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->country_name =    '';
 
-
+                            
 
 
                             if (isset($customerAddressData->address))
@@ -273,7 +277,7 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->customer_place = ' ';
 
-
+                                
                             $deliveryBoy = Mst_delivery_boy::find($data['orderDetails']->delivery_boy_id);
                             if (isset($deliveryBoy->delivery_boy_name))
                                 $data['orderDetails']->delivery_boy = @$deliveryBoy->delivery_boy_name;
@@ -298,6 +302,8 @@ class OrderController extends Controller
                             else
                                 $data['orderDetails']->db_longitude = '';
 
+                            
+
                             // $data['orderDetails']->db_latitude = @$deliveryBoyLoc->latitude;
                             // $data['orderDetails']->db_longitude = @$deliveryBoyLoc->longitude;
 
@@ -307,7 +313,9 @@ class OrderController extends Controller
                                 $data['orderDetails']->customer_pincode = '';
                                 $data['orderDetails']->customer_place = ' ';
                             }
+
                         } else {
+                           
                             $data['orderDetails']->customer_name = '';
                             $data['orderDetails']->delivery_boy = '';
                             $data['orderDetails']->customer_mobile = '';
@@ -359,7 +367,7 @@ class OrderController extends Controller
                         else
                             $data['orderDetails']->town_name = '';
 
-
+                        
 
                         if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
                             $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($data['orderDetails']->time_slot);
@@ -371,8 +379,17 @@ class OrderController extends Controller
                             $data['orderDetails']->delivery_type = 1; // immediate delivery
                             $data['orderDetails']->time_slot = '';
                         }
+                        
+                        if ($data['orderDetails']->order_type == 'POS' && $data['orderDetails']->store_admin_id != NULL) {
 
-                        $data['orderDetails']->processed_by = null;
+                        $data['orderDetails']->processed_by = $data['orderDetails']->storeadmin['admin_name'];
+                        
+                        }else{
+                           
+                            $data['orderDetails']->processed_by = "";
+                        }
+                        
+                        
 
                         $invoice_data = \DB::table('trn_order_invoices')->where('order_id', $order_id)->first();
                         $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
@@ -446,6 +463,8 @@ class OrderController extends Controller
 
                             $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
 
+                            
+
                             if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
                                 $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
                             else
@@ -467,6 +486,8 @@ class OrderController extends Controller
                             $stax = 0;
                             // dd($splitdata);
 
+                            
+
                             $splitdata = [];
 
                             if (isset($taxFullData)) {
@@ -480,6 +501,7 @@ class OrderController extends Controller
                                     $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
                                 }
                             }
+                            
 
                             $value['taxSplitups']  = @$splitdata;
                         }
@@ -513,6 +535,7 @@ class OrderController extends Controller
                         }
 
 
+
                         $data['orderPaymentTransaction'] = new \stdClass();
                         $opt = Trn_OrderPaymentTransaction::where('order_id', $request->order_id)->get();
                         $optConunt = Trn_OrderPaymentTransaction::where('order_id', $request->order_id)->count();
@@ -527,6 +550,7 @@ class OrderController extends Controller
                                 }
                             }
                         }
+
                         //Trn_OrderPaymentTransaction
                         $data['orderPaymentTransaction'] = $opt;
                         $data['status'] = 1;
