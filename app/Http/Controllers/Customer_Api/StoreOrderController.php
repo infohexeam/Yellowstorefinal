@@ -2033,6 +2033,11 @@ class StoreOrderController extends Controller
                     $order_id = $request->order_id;
                     $customer_id = $request->customer_id;
                     $orderData = Trn_store_order::find($order_id);
+                    $reward=Trn_customer_reward::where('order_id')->first();
+                    if($reward)
+                    {
+                        $reward->delete();
+                    }
                     $data['message'] = "Order cancelled";
                     $data['refundId'] = "";
 
