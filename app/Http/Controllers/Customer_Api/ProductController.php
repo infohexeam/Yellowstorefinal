@@ -1501,7 +1501,8 @@ class ProductController extends Controller
                 foreach ($data['customerRewards'] as $cr) {
                     if (Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id)) {
                         $cr->rewardTransactionType = Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id);
-                    } else {
+                    } 
+                    else {
                         $cr->rewardTransactionType = new \stdClass();
 
                         if (($cr->discription == null) && ($cr->discription == '')) {
