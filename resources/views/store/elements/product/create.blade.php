@@ -115,7 +115,7 @@ input[type="file"] {
                      <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Min Stock *</label>
-                          <input type="number" required class="form-control"  name="min_stock" id="min_stock" value="{{old('min_stock' )}}" placeholder="Min Stock">               
+                          <input type="number" required class="form-control" onkeypress="preventNonNumericalInput(event)"  name="min_stock" id="min_stock" value="{{old('min_stock' )}}" placeholder="Min Stock">               
                         </div>
                     </div>
 
