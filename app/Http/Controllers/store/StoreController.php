@@ -3353,7 +3353,6 @@ class StoreController extends Controller
     $usOld = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->first();
 
     if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->increment('stock_count', $updated_stock)) {
-      dd("string");
       $usData = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->first();
       $usProData =  DB::table('mst_store_products')->where('product_id', $usData->product_id)->first();
 
