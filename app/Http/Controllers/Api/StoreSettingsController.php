@@ -353,7 +353,8 @@ class StoreSettingsController extends Controller
                     $string4 = str_replace('-', '', $sDAta->store_name);
 
                     curl_setopt_array($curl, array(
-                        CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+                        // CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+                        CURLOPT_URL => 'https://sandbox.cashfree.com/api/v2/easy-split/vendors',
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_ENCODING => '',
                         CURLOPT_MAXREDIRS => 10,
