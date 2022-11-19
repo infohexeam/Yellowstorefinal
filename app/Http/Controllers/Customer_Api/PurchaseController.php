@@ -174,7 +174,8 @@ class PurchaseController extends Controller
                             $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
                             $data['reducedAmountByWalletPoints'] = number_format((float)$maxRedeemAmountPerOrder, 2, '.', '');
                             $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
-                            $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
+                            $data['balancePoint'] = number_format((float)$customerRewardPoint - $customerUsedRewardPoint, 2, '.', '');
+                           
                         } else {
 
                             $orderAmount = $request->order_amount;
@@ -197,7 +198,7 @@ class PurchaseController extends Controller
                             $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
                             $data['reducedAmountByWalletPoints'] = number_format((float)$totalReducableAmount, 2, '.', '');
                             $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
-                            $data['balancePoint'] = $customerRewardPoint - $customerUsedRewardPoint;
+                            $data['balancePoint'] = number_format((float)$customerRewardPoint - $customerUsedRewardPoint, 2, '.', '');
                            // $orderAmount=$reducedOrderAmount;
                         }
                     }
