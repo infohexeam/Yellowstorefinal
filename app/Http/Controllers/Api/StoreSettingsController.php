@@ -354,7 +354,7 @@ class StoreSettingsController extends Controller
 
                     curl_setopt_array($curl, array(
                         // CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
-                        CURLOPT_URL => 'https://sandbox.cashfree.com/api/v2/easy-split/vendors',
+                        CURLOPT_URL => 'https://test.cashfree.com/api/v2/easy-split/vendors',
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_ENCODING => '',
                         CURLOPT_MAXREDIRS => 10,
