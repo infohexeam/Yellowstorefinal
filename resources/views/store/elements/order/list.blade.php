@@ -184,7 +184,7 @@ use App\Models\admin\Mst_store_product;
                         @if($order->status_id == 6 || $order->status_id == 9 || $order->status_id == 4 || $order->status_id == 7 || $order->status_id == 8)
                           {{--  <a href="{{url('store/product_invoice/pdf/'.$order->order_id)}}" class="btn btn-info btn-sm">Generate Invoice</a> --}}
                        <a class="btn btn-sm btn-indigo"
-                        href="{{url('store/order/invoice/'.Crypt::encryptString($order->order_id))}}">Invocie</a>
+                        href="{{url('store/order/invoice/'.Crypt::encryptString($order->order_id))}}">Invoice</a>
                          <a id="genInvoice{{$i}}" onclick="hideInvBtn(this.id)" class="btn btn-sm btn-info" href="{{url('store/product_invoice/pdf/'.Crypt::encryptString($order->order_id))}}">Generate Invoice </a>
                     @php
                     $url = url('get/invoice/'.Crypt::encryptString($order->order_id));

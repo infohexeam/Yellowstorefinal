@@ -3009,9 +3009,9 @@ class StoreController extends Controller
 
     $content =  $pdf->download()->getOriginalContent();
 
-    Storage::put('uploads\order_invoice\Ivoice_' . $order_no . '.pdf', $content);
+    Storage::put('uploads\order_invoice\Invoice_' . $order_no . '.pdf', $content);
 
-    return $pdf->download('Ivoice_' . $order_no . '.pdf');
+    return $pdf->download('Invoice_' . $order_no . '.pdf');
   }
   public function SendInvoice(Request $request, $id)
   {

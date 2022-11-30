@@ -357,7 +357,7 @@
      
 
        <tr>
-        <td style="font-size: smaller;">Redeemed Amount &nbsp;</td>
+        <td style="font-size: smaller;">Redeemed amount By Admin &nbsp;</td>
         <td style="font-size: smaller;">
              @if(isset($order->amount_reduced_by_rp))
        {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )
@@ -367,6 +367,18 @@
                                                    
         </td>
       </tr>
+
+      <tr>
+        <td style="font-size: smaller;">Redeemed amount By Store</td>
+        <td style="font-size: smaller;"> 
+                @if(isset($order->amount_reduced_by_rp_store))
+                {{ @$order->amount_reduced_by_rp_store}} ({{ @$order->reward_points_used_store}} points )
+                @else
+                0.00
+                @endif
+                
+        </td>
+     </tr>
       
        <tr>
         <td style="font-size: smaller;">Coupon Amount &nbsp;</td>
