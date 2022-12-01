@@ -301,8 +301,8 @@ class CouponController extends Controller
           'coupon_type'          => 'required',
           'discount'          => 'required',
           'discount_type'          => 'required',
-          'valid_to'          => 'required',
           'valid_from'          => 'required',
+          'valid_to'          => 'required|date|after_or_equal:valid_from',
           'min_purchase_amt'          => 'required',
         ],
         [
