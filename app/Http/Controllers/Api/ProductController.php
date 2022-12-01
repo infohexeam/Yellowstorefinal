@@ -2679,6 +2679,7 @@ class ProductController extends Controller
                     $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
                         ->where('created_by', '!=', $request->store_id)
                         ->where('product_cat_id', $request->category_id);
+                    dd($products_global_products_id,$query);
 
                     if (isset($request->product_name)) {
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
