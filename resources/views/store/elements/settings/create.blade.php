@@ -312,13 +312,13 @@ $(document).ready(function() {
             let lastEndValuePlus = parseFloat($("#end"+x).val()) + 0.1;
             let serviceArea = $("#service_area").val();
           //  console.log(lastEndValuePlus+" <= "+serviceArea);
-            if(lastEndValuePlus <= serviceArea)
-            {
+            // if(lastEndValuePlus <= serviceArea)
+            // {
                 x++; 
                 $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" step="0.01" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]"></td><td><input type="number" step="0.01" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
-            }else{
-                alert("Service area already filled..");
-            }
+            // }else{
+            //     alert("Service area already filled..");
+            // }
         }
 
         
