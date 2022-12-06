@@ -537,8 +537,8 @@ class StoreController extends Controller
           $string4 = str_replace('-', '', $sDAta->store_name);
 
           curl_setopt_array($curl, array(
-            // CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
-            CURLOPT_URL => 'https://test.cashfree.com/api/v2/easy-split/vendors',
+            CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+           //CURLOPT_URL => 'https://test.cashfree.com/api/v2/easy-split/vendors',
 
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -599,8 +599,8 @@ class StoreController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-          // CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors/' . $sBankDAta->vendor_id,
-          CURLOPT_URL => 'https://test.cashfree.com/api/v2/easy-split/vendors/' . $sBankDAta->vendor_id,
+          CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors/' . $sBankDAta->vendor_id,
+        //  CURLOPT_URL => 'https://test.cashfree.com/api/v2/easy-split/vendors/' . $sBankDAta->vendor_id,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
