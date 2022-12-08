@@ -271,7 +271,8 @@ class ProductController extends Controller
         $global_product->vendor_id = $request->vendor_id;
         $global_product->product_base_image = $request->product_base_image; // update after image uploads
         $global_product->created_date = Carbon::now()->format('Y-m-d');
-        $global_product->created_by = auth()->user()->id;
+       // $global_product->created_by = auth()->user()->id; // since store id and admin id seems to be 1 to solve jira issue 476
+        $global_product->created_by = 0;
 
         $global_product->save();
 
