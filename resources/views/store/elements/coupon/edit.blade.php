@@ -73,7 +73,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Valid From *</label>
-                                <input type="date" id="valid_from" required class="form-control" name="valid_from" value="{{old('valid_from',$coupon->valid_from)}}" placeholder="">
+                                <input type="date" id="valid_from" required class="form-control" name="valid_from" value="{{old('valid_from',$coupon->valid_from)}}" placeholder="" min="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
 
