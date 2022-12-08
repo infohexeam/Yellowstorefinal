@@ -105,6 +105,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
             '*.product_description' => ['required'],
             '*.regular_price' => ['required','numeric'],
             '*.sale_price' => ['required','numeric'],
+            '*.product_category' => ['required'],
             '*.product_code' => ['required',Rule::unique('mst__global_products')],
         ];
     }
