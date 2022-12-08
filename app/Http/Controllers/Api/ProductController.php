@@ -2686,7 +2686,7 @@ class ProductController extends Controller
                     }
 
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->get();
-
+                    dd(count($data['globalProductDetails']));
 
                     foreach ($data['globalProductDetails'] as $product) {
                         $catData =  Mst_categories::find($product->product_cat_id);
