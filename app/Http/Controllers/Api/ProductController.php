@@ -2705,14 +2705,14 @@ class ProductController extends Controller
                     $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
                    
                     $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id);
-                    dd($query);
+                   
                     if (isset($request->product_name)) {
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
                     }
 
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')
                         ->where('created_by', '!=', $request->store_id)->get();
-                        dd(count($data['globalProductDetails']));
+                       
                     foreach ($data['globalProductDetails'] as $product) {
                         $catData =  Mst_categories::find($product->product_cat_id);
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
