@@ -44,6 +44,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
           //  $att_grp_data = Mst_attribute_group::where('group_name',$row['attribute_group'])->first();
          //   $att_val_data = Mst_attribute_value::where('group_value',$row['attribute_value'])->first();
             $pro_categ = Mst_categories::where('category_name',$row['product_category'])->first();
+            dd($pro_categ);
             $vendor_data = Mst_store_agencies::where('agency_name',$row['vendor'])->first();
     
             $pro_Subcateg = Mst_SubCategory::where('sub_category_name',$row['sub_category_name'])->first();
