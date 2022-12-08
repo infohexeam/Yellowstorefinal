@@ -2686,7 +2686,7 @@ class ProductController extends Controller
                     }
 
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->get();
-                    dd(count($data['globalProductDetails']));
+                    
 
                     foreach ($data['globalProductDetails'] as $product) {
                         $catData =  Mst_categories::find($product->product_cat_id);
@@ -2712,7 +2712,7 @@ class ProductController extends Controller
 
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')
                         ->where('created_by', '!=', $request->store_id)->get();
-
+                        dd(count($data['globalProductDetails']));
                     foreach ($data['globalProductDetails'] as $product) {
                         $catData =  Mst_categories::find($product->product_cat_id);
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
