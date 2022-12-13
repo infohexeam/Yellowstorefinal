@@ -6,11 +6,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VendorResetPasswordNotification;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Trn_StoreAdmin extends Authenticatable
 {
     use Notifiable;
     use HasApiTokens;
+    use SoftDeletes;
+
+
     
     protected $guard =  "store";
     protected $primaryKey = "store_admin_id";

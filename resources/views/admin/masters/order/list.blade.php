@@ -201,7 +201,7 @@ $date = Carbon\Carbon::now();
                         href="{{url('admin/order/view/'.Crypt::encryptString($order->order_id))}}">View</a>
                             <br>
                       <a class="btn btn-sm btn-indigo mt-2"
-                        href="{{url('admin/order/invoice/'.Crypt::encryptString($order->order_id))}}">Invocie</a>
+                        href="{{url('admin/order/invoice/'.Crypt::encryptString($order->order_id))}}">Invoice</a>
                         </td>
                      </tr>
                      @endforeach

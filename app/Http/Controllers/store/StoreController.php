@@ -538,6 +538,8 @@ class StoreController extends Controller
 
           curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors',
+           //CURLOPT_URL => 'https://test.cashfree.com/api/v2/easy-split/vendors',
+
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -598,6 +600,7 @@ class StoreController extends Controller
 
         curl_setopt_array($curl, array(
           CURLOPT_URL => 'https://api.cashfree.com/api/v2/easy-split/vendors/' . $sBankDAta->vendor_id,
+        //  CURLOPT_URL => 'https://test.cashfree.com/api/v2/easy-split/vendors/' . $sBankDAta->vendor_id,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
@@ -3006,9 +3009,9 @@ class StoreController extends Controller
 
     $content =  $pdf->download()->getOriginalContent();
 
-    Storage::put('uploads\order_invoice\Ivoice_' . $order_no . '.pdf', $content);
+    Storage::put('uploads\order_invoice\Invoice_' . $order_no . '.pdf', $content);
 
-    return $pdf->download('Ivoice_' . $order_no . '.pdf');
+    return $pdf->download('Invoice_' . $order_no . '.pdf');
   }
   public function SendInvoice(Request $request, $id)
   {
@@ -3350,7 +3353,6 @@ class StoreController extends Controller
 
     $updated_stock = $request->updated_stock;
     $product_varient_id = $request->product_varient_id;
-
     $usOld = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->first();
 
     if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->increment('stock_count', $updated_stock)) {

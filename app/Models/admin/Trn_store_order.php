@@ -34,9 +34,9 @@ class Trn_store_order extends Model
   }
   
   
-   public function storeadmin()
+  public function storeadmin()
   {
-    return $this->belongsTo('App\Models\admin\Trn_StoreAdmin', 'store_admin_id');
+    return $this->belongsTo('App\Models\admin\Trn_StoreAdmin', 'store_admin_id')->withTrashed();
   }
 
 

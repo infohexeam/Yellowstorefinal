@@ -1371,9 +1371,22 @@ class StoreOrderController extends Controller
     {
         $data = array();
         try {
+            
+        // if (isset($request->store_id) && $storestatus = Mst_store::find($request->store_id)) {
+        //     //check status of the store 
+        //     Mst_store::where('store_id','=',$request->store_id)->where('store_account_status','=',1)
+          
+
+        //     } else {
+        //                 $data['status'] = 0;
+        //                 $data['message'] = "Store Inactive ";
+        //                 return response($data);
+        //             }
+
 
             $noStockProducts = array();
 
+            if(isset($request->store_id))
             foreach ($request->product_variants as $value) {
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
                 $proData = Mst_store_product::find($varProdu->product_id);

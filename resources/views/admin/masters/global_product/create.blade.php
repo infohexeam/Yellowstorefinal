@@ -80,7 +80,7 @@
                      <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Min Stock *</label>
-                          <input type="number" required class="form-control" name="min_stock" id="min_stock" value="{{old('min_stock')}}" placeholder="Min Stock">
+                          <input type="number" required class="form-control" onkeypress="preventNonNumericalInput(event)"  name="min_stock" id="min_stock" value="{{old('min_stock')}}" placeholder="Min Stock">
                         </div>
                     </div>
 
@@ -238,6 +238,24 @@
 </div>
   <script src="{{ asset('vendor\unisharp\laravel-ckeditor/ckeditor.js')}}"></script>
    <script>CKEDITOR.replace('product_description');</script>
+
+   
+   <script>
+
+
+        
+    function preventNonNumericalInput(e) {
+      e = e || window.event;
+      var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+      var charStr = String.fromCharCode(charCode);
+    
+      if (!charStr.match(/^[0-9]+$/))
+        e.preventDefault();
+    }
+        </script>
+    
+    
+   
 
 <script>
 

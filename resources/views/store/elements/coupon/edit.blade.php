@@ -73,14 +73,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Valid From *</label>
-                                <input type="date" required class="form-control" name="valid_from" value="{{old('valid_from',$coupon->valid_from)}}" placeholder="">
+                                <input type="date" id="valid_from" required class="form-control" name="valid_from" value="{{old('valid_from',$coupon->valid_from)}}" placeholder="" min="<?php echo date('Y-m-d'); ?>">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Valid To *</label>
-                                <input type="date" required class="form-control" name="valid_to" value="{{old('valid_to',$coupon->valid_to)}}" placeholder="">
+                                <input type="date" required class="form-control" id="valid_to"  name="valid_to" value="{{old('valid_to',$coupon->valid_to)}}" placeholder="">
                             </div>
                         </div>
 
@@ -112,6 +112,16 @@
       </div>
    </div>
 </div>
+
+<script>
+    $("#valid_from").change(function(){
+    
+    var valid_date = $("#valid_from").val();
+    
+    $('#valid_to').attr('min', valid_date);
+}); 
+
+</script>
 
 <script>
     function chgDis(val){

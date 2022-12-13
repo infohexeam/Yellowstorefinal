@@ -133,6 +133,11 @@
           <td colspan="2">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
+              
+              <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center">
+                SL.<br>No
+              </td>
+
               <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center">
                 Item<br>Name
               </td>
@@ -180,9 +185,12 @@
                 $gand_total = 0;
                 $tval = 0;
                 $t_val = 0;
+                $c = 0;
             @endphp
               @foreach ($order_items as $order_item)
                 <tr>
+                  <td  style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center">{{ ++$c }}</td>
+
                   <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center"> 
                   
                     {{ @$order_item->product_varient->variant_name }}
@@ -357,7 +365,7 @@
      
 
        <tr>
-        <td style="font-size: smaller;">Redeemed Amount &nbsp;</td>
+        <td style="font-size: smaller;">Redeemed amount By Admin &nbsp;</td>
         <td style="font-size: smaller;">
              @if(isset($order->amount_reduced_by_rp))
        {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )
@@ -367,6 +375,18 @@
                                                    
         </td>
       </tr>
+
+      <tr>
+        <td style="font-size: smaller;">Redeemed amount By Store</td>
+        <td style="font-size: smaller;"> 
+                @if(isset($order->amount_reduced_by_rp_store))
+                {{ @$order->amount_reduced_by_rp_store}} ({{ @$order->reward_points_used_store}} points )
+                @else
+                0.00
+                @endif
+                
+        </td>
+     </tr>
       
        <tr>
         <td style="font-size: smaller;">Coupon Amount &nbsp;</td>
