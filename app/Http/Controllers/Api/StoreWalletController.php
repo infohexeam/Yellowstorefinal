@@ -149,9 +149,21 @@ class StoreWalletController extends Controller
 			$query = Trn_customer_reward::with('customer')->Where('trn_customer_rewards.store_id',$store_id);
             //->orWhere('trn_store_orders.store_id',$store_id);
 
-			if (isset($request->date_from) && isset($request->date_to)) {
-				$query = $query->whereBetween('trn_customer_rewards.created_at', [$a1, $a2]);
-			}
+			// if (isset($request->date_from) && isset($request->date_to)) {
+			// 	$query = $query->whereBetween('trn_customer_rewards.created_at', [$a1, $a2]);
+			// }
+            $a1 = Carbon::parse($request->date_from)->startOfDay();
+            $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+            if(isset($request->date_from))
+             {
+              $query = $query->whereDate('trn_customer_rewards.created_at','>=',$a1);
+             }
+
+             if(isset($request->date_to))
+             {
+                $query = $query->whereDate('trn_customer_rewards.created_a','<=',$a2);
+             }
 
 			if (isset($request->customer_name)) {
                 $cust_name=$request->customer_name;
