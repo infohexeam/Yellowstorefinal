@@ -419,6 +419,21 @@ class StoreOrderController extends Controller
                     return response($data);
 
                 }
+                $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$request->store_id)->where('role_id','=',0)->first();
+                if($getParentExpiry)
+                {
+                    $today = Carbon::now()->toDateString();
+                    $parentExpiryDate = $getParentExpiry->expiry_date;
+                    if($today>=$parentExpiryDate)
+                    {
+                            
+                        $data['status'] = 0;
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
+                        return response($data);          
+                    }
+                    
+    
+                }
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -768,6 +783,22 @@ class StoreOrderController extends Controller
                     return response($data);
 
                 }
+                $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$request->store_id)->where('role_id','=',0)->first();
+                if($getParentExpiry)
+                {
+                    $today = Carbon::now()->toDateString();
+                    $parentExpiryDate = $getParentExpiry->expiry_date;
+                    if($today>=$parentExpiryDate)
+                    {
+                            
+                        $data['status'] = 0;
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
+                        return response($data);          
+                    }
+                    
+    
+                }
+            
            }
 
             if ($request->payment_type_id == 2) { //online

@@ -737,7 +737,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         // product
-        Route::get('store/product/list', 'StoreController@listProduct')->name('store.list_product');
+        Route::get('store/product/list', 'StoreController@listProduct')->name('store.list_product')->middleware('expired-store-check');
 
         Route::get('store/product/create', 'StoreController@createProduct')->name('store.create_product');
 

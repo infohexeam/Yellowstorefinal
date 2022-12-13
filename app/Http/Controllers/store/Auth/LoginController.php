@@ -62,6 +62,11 @@ class LoginController extends Controller
         if ($this->attemptLogin($request)) {
             
             $admin = Trn_StoreAdmin::where('store_mobile',$request->store_username)->first();
+            if($admin)
+            {
+                $parentStore =   Trn_StoreAdmin::where('store_id','=',$admin->store_id)->where('role_id',"=",0)->first();
+            }
+            
             $today = Carbon::now()->toDateString();
                      
                       if ($admin) {
@@ -83,11 +88,11 @@ class LoginController extends Controller
                            return redirect()->back()->with('danger','Profile is inactive ,Contact admin '.$phoneNumber);
 
                           }
-                          if($today>=$admin->expiry_date)
+                          if($today>=$parentStore->expiry_date)
                           {
                         
                             Auth::guard('store')->logout();
-                           return redirect()->back()->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($admin->expiry_date)).' Contact admin '.$phoneNumber);
+                           return redirect()->back()->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($parentStore->expiry_date)).' Contact admin '.$phoneNumber);
                             
                           }
                         

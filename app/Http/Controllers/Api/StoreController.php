@@ -715,8 +715,13 @@ class StoreController extends Controller
                 $custCheck = Trn_StoreAdmin::where('store_mobile', '=', $phone)->first();
                 $today = Carbon::now()->toDateString();
 
-                if ($custCheck) {                    
-
+                if ($custCheck) {  
+                    $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
+                    if($today>=$parentStore->expiry_date)
+                    {                
+                    $data['status'] = 4;
+                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+                    }
                     if (Hash::check($passChk, $custCheck->password)) {
                         
                         //old
