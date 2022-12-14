@@ -49,7 +49,7 @@ class StoreController extends Controller
                 
             }
 
-            $storeVids = $storeVids->orderBy('video_id', 'DESC')->get();
+            $storeVids = $storeVids->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
 
 
             $data['videos'] = $storeVids;
