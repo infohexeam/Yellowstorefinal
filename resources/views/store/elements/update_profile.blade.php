@@ -176,14 +176,14 @@
                            </div>
                      </div>
 
-                       <div class="col-md-6">
+                       {{-- <div class="col-md-6">
                             <div class="form-group">
                             <label class="form-label">Store Pincode *</label>
-                            <input type="text" required class="form-control" name="store_pincode" value="{{old('store_pincode',$store->store_pincode)}}" placeholder="Store Pincode">
+                            <input type="text" class="form-control" name="store_pincode" value="{{old('store_pincode',$store->store_pincode)}}" placeholder="Store Pincode">
                             </div>
-                         </div>
+                         </div> --}}
 
-                      <div class="col-md-6">
+                      <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Website Link</label>
                                 <input type="url" class="form-control" name="store_website_link" value="{{old('store_website_link',$store->store_website_link)}}" placeholder="Website Link">

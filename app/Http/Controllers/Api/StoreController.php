@@ -44,10 +44,12 @@ class StoreController extends Controller
             $storeVids = Mst_Video::where('status', 1)->where('visibility', 1);
             if (isset($request->store_id)) {
                 $storeTownData = Mst_store::find($request->store_id);
-                $storeVids = $storeVids->where('town_id', $storeTownData->town_id);
+                $storeVids = $storeVids->where('town_id', $storeTownData->town_id)->orWhere('town_id',NULL);
+            }else{
+                
             }
 
-            $storeVids = $storeVids->orderBy('video_id', 'DESC')->get();
+            $storeVids = $storeVids->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
 
 
             $data['videos'] = $storeVids;
