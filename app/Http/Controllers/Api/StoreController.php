@@ -45,9 +45,11 @@ class StoreController extends Controller
             if (isset($request->store_id)) {
                 $storeTownData = Mst_store::find($request->store_id);
                 $storeVids = $storeVids->where('town_id', $storeTownData->town_id)->orWhere('town_id',NULL);
+            }else{
+                $storeVids = $storeVids->orderBy('video_id', 'DESC')->get();
             }
 
-            $storeVids = $storeVids->orderBy('video_id', 'DESC')->get();
+           
 
 
             $data['videos'] = $storeVids;
