@@ -5164,12 +5164,12 @@ class StoreController extends Controller
         if(Mst_Video::where('status', 1)->where('visibility', 1)->where('town_id','=',NULL)->count() > 0)
         {
           
-          $videos = Mst_Video::whereIn('town_id', [$storeTownData->town_id,NULL])->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+          // $videos = Mst_Video::whereIn('town_id', [$storeTownData->town_id,NULL])->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+          $videos = Mst_Video::where('town_id',$storeTownData->town_id)->orWhere('town_id','=',NULL)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
           //$videos = Mst_Video::where('town_id',NULL)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
           dd($videos);
         }
         $videos = Mst_Video::where('town_id', $storeTownData->town_id)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
-        dd($videos);
        
         
       
