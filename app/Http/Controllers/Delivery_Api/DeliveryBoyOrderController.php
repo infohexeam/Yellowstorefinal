@@ -526,7 +526,7 @@ class DeliveryBoyOrderController extends Controller
                         $data['orderDetails']->item_list_link = url('item/list/' . Crypt::encryptString($data['orderDetails']->order_id));
 
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
-                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
+                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount','mrp', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
                             ->get();
 
 
@@ -601,7 +601,7 @@ class DeliveryBoyOrderController extends Controller
                     if ($orderDetails  = Trn_store_order::select('order_id', 'delivery_address', 'delivery_date', 'delivery_time', 'store_id', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount')->where('order_id', $order_id)->where('delivery_boy_id', $delivery_boy_id)->first()) {
 
                         $orderItems = Trn_store_order_item::where('order_id', $orderDetails->order_id)
-                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status', 'delivery_boy_tick_status')
+                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount','mrp', 'tax_amount', 'unit_price', 'tick_status', 'delivery_boy_tick_status')
                             ->get();
 
 

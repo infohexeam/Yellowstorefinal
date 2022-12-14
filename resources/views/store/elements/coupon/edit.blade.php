@@ -65,7 +65,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Discount <span id="loseend" > </span> *</label>
-                                <input type="number" oninput="disChange(this.value)" required class="form-control" id="discountAmt" name="discount" value="{{old('discount',$coupon->discount)}}" placeholder="Discount (%)">
+                                <input type="number" step="0.01" oninput="disChange(this.value)" required class="form-control" id="discountAmt" name="discount" value="{{old('discount',$coupon->discount)}}" placeholder="Discount (%)">
                             </div>
                         </div>
                      

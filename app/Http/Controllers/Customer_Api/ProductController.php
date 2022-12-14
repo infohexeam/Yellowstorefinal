@@ -1319,7 +1319,7 @@ class ProductController extends Controller
                 $data['orderSpecificIssues']  = Mst_Issues::where('issue_type_id', 1)->get();
 
                 $data['orderDetails'] = Trn_store_order_item::where('order_id', $request->order_id)
-                    ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
+                    ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount','mrp', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price', 'tick_status')
                     ->get();
 
 

@@ -193,6 +193,7 @@ class PosController extends Controller
                             'quantity' => $value['quantity'],
                             'unit_price' =>  $value['unit_price'],
                             'total_amount' => $value['total_amount'],
+                            'mrp'=>$productVarOlddata->product_varient_price,
                             'tax_amount' => $value['tax_amount'],
                             'discount_amount' => $value['discount_amount'],
                             'discount_percentage' => $value['discount_percentage'],

@@ -2331,8 +2331,10 @@ class StoreController extends Controller
     try {
       $pageTitle = "View Order";
       $decrId  = Crypt::decryptString($id);
+      //dd($decrId);
       $order = Trn_store_order::Find($decrId);
       $order_items = Trn_store_order_item::where('order_id', $decrId)->get();
+      //dd($order_items);
 
       $product = $order->product_id;
 
@@ -3598,6 +3600,7 @@ class StoreController extends Controller
         'store_id' => Auth::guard('store')->user()->store_id,
         'quantity' => $quantity[$i],
         'unit_price' =>  $single_quantity_rate[$i],
+        'mrp'=>$productVarOlddata->product_varient_price,
         'tax_amount' => $total_tax[$i],
         'total_amount' => $total_amount[$i],
         'discount_amount' => $discount_amount[$i],
