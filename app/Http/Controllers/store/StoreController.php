@@ -310,7 +310,7 @@ class StoreController extends Controller
         'store_name'    => 'required|unique:mst_stores,store_name,' . $store_id . ',store_id',
         'store_contact_person_name'        => 'required',
         'store_contact_person_phone_number' => 'required',
-        'store_pincode'               => 'required',
+        'store_town'               => 'required',
         'store_primary_address'            => 'required',
         'store_country_id'             => 'required',
         //	'profile_image'			       => 'required',
@@ -335,7 +335,7 @@ class StoreController extends Controller
 
         //  'email.required'         				 => 'Email required',
 
-        'store_pincode.required'               => 'Pincode required',
+        'store_town.required'               => 'Pincode required',
         'store_primary_address.required'             => 'Primary address required',
         'store_country_id.required'              => 'Country required',
         'store_state_id.required'               => 'State required',
