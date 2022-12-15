@@ -140,7 +140,7 @@ class WalletController extends Controller
 
              if(isset($request->date_to))
              {
-                $query = $query->whereDate('trn_customer_rewards.created_a','<=',$a2);
+                $query = $query->whereDate('trn_customer_rewards.created_at','<=',$a2);
              }
 
 			if (isset($request->customer_name)) {
