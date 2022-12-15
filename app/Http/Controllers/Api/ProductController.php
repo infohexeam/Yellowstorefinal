@@ -2852,6 +2852,14 @@ class ProductController extends Controller
                         $data['message'] = "Product code already exist in store product list.";
                         return response($data);    
                     }else{
+                        if (!isset($global_product->product_cat_id))
+                        {
+                            $data['status'] = 0;
+                            $data['message'] = "Products without category cannot be added to store.";
+                            return response($data);    
+
+                        }
+                       
 
                     $product['product_name'] = $global_product->product_name;
                     $product['product_name_slug'] = Str::of($global_product->product_name)->slug('-');
@@ -2861,10 +2869,7 @@ class ProductController extends Controller
                     else
                         $product['business_type_id'] = 0;
 
-                    if (isset($global_product->product_cat_id))
-                        $product['product_cat_id'] = $global_product->product_cat_id;
-                    else
-                        $product['product_cat_id'] = 0;
+                    
 
                     if (isset($global_product->regular_price))
                         $product['product_price'] = $global_product->regular_price;
