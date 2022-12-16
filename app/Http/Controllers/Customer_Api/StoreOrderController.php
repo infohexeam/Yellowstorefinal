@@ -1388,8 +1388,35 @@ class StoreOrderController extends Controller
 
 
             $noStockProducts = array();
+            if($request->store_id)
+            {
+                $isActiveSlot=Helper::findHoliday($request->store_id);
+                if($isActiveSlot==false)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "You cannot place an order now.store closed";
+                    return response($data);
+
+                }
+                $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$request->store_id)->where('role_id','=',0)->first();
+                if($getParentExpiry)
+                {
+                    $today = Carbon::now()->toDateString();
+                    $parentExpiryDate = $getParentExpiry->expiry_date;
+                    if($today>=$parentExpiryDate)
+                    {
+                            
+                        $data['status'] = 0;
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
+                        return response($data);          
+                    }
+                    
+    
+                }
+            }
 
             if(isset($request->store_id))
+            
             foreach ($request->product_variants as $value) {
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
                 $proData = Mst_store_product::find($varProdu->product_id);
