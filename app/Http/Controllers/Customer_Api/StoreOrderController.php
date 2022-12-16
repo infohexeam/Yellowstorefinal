@@ -1393,7 +1393,7 @@ class StoreOrderController extends Controller
                 $isActiveSlot=Helper::findHoliday($request->store_id);
                 if($isActiveSlot==false)
                 {
-                    $data['status'] = 0;
+                    $data['status'] = 6;
                     $data['message'] = "You cannot place an order now.store closed";
                     return response($data);
 
@@ -1406,7 +1406,7 @@ class StoreOrderController extends Controller
                     if($today>=$parentExpiryDate)
                     {
                             
-                        $data['status'] = 0;
+                        $data['status'] = 6;
                         $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
                         return response($data);          
                     }
