@@ -405,7 +405,7 @@ class CouponController extends Controller
       $data = Trn_RecentlyVisitedProducts::select(
         'trn__recently_visited_products.rvp_id',
         'trn__recently_visited_products.visit_count',
-         DB::raw('SUM(rn__recently_visited_products.visit_count) AS sum_visit'),
+         DB::raw('SUM(trn__recently_visited_products.visit_count) AS sum_visit'),
         'trn__recently_visited_products.created_at',
         'trn__recently_visited_products.updated_at',
         'trn_store_customers.customer_id',
