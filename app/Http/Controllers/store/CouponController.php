@@ -460,6 +460,7 @@ class CouponController extends Controller
           'trn__recently_visited_products.visit_count',
           'trn__recently_visited_products.created_at',
           'trn__recently_visited_products.updated_at',
+          DB::raw('SUM(trn__recently_visited_products.visit_count) AS sum_visit'),
           'trn_store_customers.customer_id',
           'trn_store_customers.customer_first_name',
           'trn_store_customers.customer_last_name',
@@ -529,7 +530,9 @@ class CouponController extends Controller
         // $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
 
         // $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
-        $data=$data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+        $data =$data->where('mst_stores.store_id', Auth::guard('store')->user()->store_id)
+        ->groupBy('trn__recently_visited_products.product_varient_id','trn__recently_visited_products.store_id','trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
+        ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
         //dd($data);
         return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
       }
