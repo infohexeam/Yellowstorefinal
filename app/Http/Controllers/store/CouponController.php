@@ -405,6 +405,7 @@ class CouponController extends Controller
       $data = Trn_RecentlyVisitedProducts::select(
         'trn__recently_visited_products.rvp_id',
         'trn__recently_visited_products.visit_count',
+         DB::raw('SUM(rn__recently_visited_products.visit_count) AS sum_visit'),
         'trn__recently_visited_products.created_at',
         'trn__recently_visited_products.updated_at',
         'trn_store_customers.customer_id',
@@ -437,10 +438,10 @@ class CouponController extends Controller
         ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id');
       $data =$data->where('mst_stores.store_id', Auth::guard('store')->user()->store_id)
-          ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-          ->groupBy('trn__recently_visited_products.product_varient_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
+          ->groupBy('trn__recently_visited_products.product_varient_id','trn__recently_visited_products.store_id','trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
+          ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
-      $data=$data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
+      //$data=$data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
 
       //dd($data);
       if ($_GET) {
