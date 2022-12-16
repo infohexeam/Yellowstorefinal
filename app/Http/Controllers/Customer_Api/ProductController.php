@@ -1372,6 +1372,8 @@ class ProductController extends Controller
         $data = array();
         try {
             $store = $request->store;
+           
+       
 
 
             $storeData = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id');
@@ -1410,6 +1412,21 @@ class ProductController extends Controller
 
 
             $storeData =    $storeData->orderBy('mst_stores.store_id', 'ASC')->get();
+            // $listedStores=$storeData->get();
+            // foreach($listedStores as $store)
+            // {
+            //     $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+            //     if($getParentExpiry)
+            //     {
+            //         $parentExpiryDate = $getParentExpiry->expiry_date;
+            //         if($today>=$parentExpiryDate)
+            //         {
+            //             array_push($expiredStores,$store->store_id);
+            //         }
+                
+            //     }
+            // }
+
             // dd($storeData);
             $storesList  =  array();
 
