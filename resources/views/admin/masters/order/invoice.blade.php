@@ -249,24 +249,15 @@
                                           $subtotal = $subtotal + $orgCost; 
                                           $tax_amount = $tax_amount + $tTax ; 
                                        @endphp
-                                    @endforeach
-                                    
+                                    @endforeach   
                                     <tr>
                                        <td colspan="10" class=" text-right">Sub Total</td>
                                        <td class=" h4">   {{ number_format((float)$subtotal, 2, '.', '') }}   </td>
                                     </tr>
-                                    
-
                                     <tr>
                                        <td colspan="10" class=" text-right">Total Tax</td>
                                        <td class=" h4">   {{ number_format((float)$tax_amount, 2, '.', '') }}   </td>
-                                    </tr>
-                                    
-                                  
-                          
-
-                                   
-                                  
+                                    </tr> 
                                     @php
                                     $pCharge = 0;
                                     $dCharge = 0;
@@ -299,8 +290,6 @@
                                     </tr> 
 
                                     @endif
-
-
                                     <tr>
                                        <td colspan="10" class="font-weight-bold text-uppercase text-right">Grand Total</td>
                                        <td class="font-weight-bold  h4"><i class="fa fa-inr"></i> {{ @$order->product_total_amount }}</td>
@@ -309,15 +298,8 @@
                                     <tr>
                                        <td colspan="10" class=" text-right">Applied Discount</td>
                                        <td class=" h4"> {{ @$dis_amt }} </td>
-                                    </tr>
-
-                                   
-
-                                   
+                                    </tr> 
                                     @if(@$order->order_type == 'APP')
-
-                                    
-
                                         <!--<tr>-->
                                         <!--   <td colspan="8" class=" text-right">Reward point used</td>-->
                                         <!--   <td class=" h4"> </td>-->
@@ -329,8 +311,7 @@
                                                    {{ @$order->amount_reduced_by_rp}} ({{ @$order->reward_points_used}} points )
                                                    @else
                                                    0.00
-                                                   @endif
-                                                   
+                                                   @endif        
                                            </td>
                                         </tr>
                                          <tr>
@@ -344,25 +325,28 @@
                                                    
                                            </td>
                                         </tr>
-                                        
-                                    
-
-                                   
-
-                                 
-
-
                                     <tr>
                                        <td colspan="10" class=" text-right">Coupon Amount</td>
                                        <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
+                                    </tr> 
+                                    @else
+                                    <tr>
+                                       <td colspan="10" class=" text-right">Redeemed amount By Admin</td>
+                                       <td class=" h4"> 
+                                              0.00     
+                                       </td>
                                     </tr>
-
-
-                                    
-                                    
-
-
-                                   
+                                     <tr>
+                                       <td colspan="10" class=" text-right">Redeemed amount By Store</td>
+                                       <td class=" h4"> 
+                                          0.00 
+                                               
+                                       </td>
+                                    </tr>
+                                <tr>
+                                   <td colspan="10" class=" text-right">Coupon Amount</td>
+                                   <td class=" h4">0.00 </td>
+                                </tr> 
                                     @endif
                                     
                                     <!-- <tr>-->

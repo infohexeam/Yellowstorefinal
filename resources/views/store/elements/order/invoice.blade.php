@@ -314,13 +314,6 @@
 
                                    
                                     @if(@$order->order_type == 'APP')
-
-                                    
-
-                                        <!--<tr>-->
-                                        <!--   <td colspan="8" class=" text-right">Reward point used</td>-->
-                                        <!--   <td class=" h4"> </td>-->
-                                        <!--</tr>-->
                                         <tr>
                                            <td colspan="10" class=" text-right">Redeemed amount By Admin</td>
                                            <td class=" h4"> 
@@ -343,26 +336,30 @@
                                                    
                                            </td>
                                         </tr>
-                                        
-                                    
-
-                                   
-
-                                 
-
-
                                     <tr>
                                        <td colspan="10" class=" text-right">Coupon Amount</td>
                                        <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
                                     </tr>
+                              @else
+                                    <tr>
+                                       <td colspan="10" class=" text-right">Redeemed amount By Admin</td>
+                                       <td class=" h4"> 
+                                               0.00
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td colspan="10" class=" text-right">Redeemed amount By Store</td>
+                                       <td class=" h4"> 
+                                          0.00
+                                       </td>
+                                    </tr>
+                                <tr>
+                                   <td colspan="10" class=" text-right">Coupon Amount</td>
+                                   <td class=" h4"> 0.00 </td>
+                                </tr>
+                              @endif
 
 
-                                    
-                                    
-
-
-                                   
-                                    @endif
                                     
                                     <!-- <tr>-->
                                     <!--   <td colspan="8" class=" text-right">Sub Total</td>-->

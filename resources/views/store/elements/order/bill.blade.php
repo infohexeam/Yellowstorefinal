@@ -392,7 +392,28 @@
         <td style="font-size: smaller;">Coupon Amount &nbsp;</td>
         <td style="font-size: smaller;">  {{ @$order->amount_reduced_by_coupon }}</td>
       </tr>
+      @else
+      <tr>
+        <td style="font-size: smaller;">Redeemed amount By Admin &nbsp;</td>
+        <td style="font-size: smaller;">
+            0.00
+                                                   
+        </td>
+      </tr>
+
+      <tr>
+        <td style="font-size: smaller;">Redeemed amount By Store</td>
+        <td style="font-size: smaller;"> 
+          0.00
+                
+        </td>
+     </tr>
       
+       <tr>
+        <td style="font-size: smaller;">Coupon Amount &nbsp;</td>
+        <td style="font-size: smaller;">   0.00</td>
+      </tr>
+
       @endif
 
       <tr>
