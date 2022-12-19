@@ -573,13 +573,15 @@ class StoreController extends Controller
 
                 if ($custCheck) {
                     //here
+                   
+                    if (Hash::check($passChk, $custCheck->password)) {
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
                     if($today>=$parentStore->expiry_date)
                     {                
                     $data['status'] = 8;
-                    $data['message'] = "Profile Expired.Please contact Admin ";
+                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
                     }
-                    if (Hash::check($passChk, $custCheck->password)) {
+                  
                         // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
                             if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
                             if ($custCheck->store_otp_verify_status != 0) {
@@ -724,19 +726,17 @@ class StoreController extends Controller
                 $today = Carbon::now()->toDateString();
 
                 if ($custCheck) {  
+                    
+                    
+                    
+                    if (Hash::check($passChk, $custCheck->password)) {
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
                     if($today>=$parentStore->expiry_date)
                     {                
                     $data['status'] = 8;
                     $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
                     }
-                    if($today>=$custCheck->expiry_date)
-                    {                
-                    $data['status'] = 8;
-                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
-                    }
                     
-                    if (Hash::check($passChk, $custCheck->password)) {
                         
                         //old
                     // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
