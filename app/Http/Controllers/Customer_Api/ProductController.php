@@ -4092,7 +4092,6 @@ class ProductController extends Controller
                     ->where('mst_stores.online_status', 1)
                     ->where('trn__store_admins.store_account_status', 1)
                     ->orderBy('mst_stores.store_id', 'DESC')->get();
-                    
                     foreach($listedStoresOthers as $store)
                     {
                         $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
@@ -4107,9 +4106,7 @@ class ProductController extends Controller
                         }
                     }
                 
-                    //return response($expiredStoresOthers);
                 $otherStoresData=$otherStoresData->whereNotIn('mst_stores.store_id',$expiredStoresOthers)->limit(10)->get();
-
                 $otherStoresFinal = array();
                 foreach ($otherStoresData as $otherStores) {
 
