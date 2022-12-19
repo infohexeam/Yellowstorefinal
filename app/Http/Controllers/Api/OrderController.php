@@ -476,7 +476,7 @@ class OrderController extends Controller
                             // $orgCost = $value['productDetail']->product_varient_offer_price * 100 / (100 + $baseProductDetail->tax_value);
 
                             $discount_amount = (@$vaproductDetail->product_varient_price - @$vaproductDetail->product_varient_offer_price) * $value->quantity;
-                            $value->discount_amount =  number_format((float)$discount_amount, 2, '.', '');
+                            //$value->discount_amount =  number_format((float)$discount_amount, 2, '.', '');
                             $value->taxPercentage = @$taxFullData->tax_value;
                             $tTax = $value->quantity * (@$vaproductDetail->product_varient_offer_price * @$taxFullData->tax_value / (100 + @$taxFullData->tax_value));
                             $value->gstAmount = number_format((float)$tTax, 2, '.', '');
