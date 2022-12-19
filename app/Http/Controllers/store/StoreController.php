@@ -79,6 +79,7 @@ use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_StoreBankData;
 use App\Trn_wallet_log;
+use Illuminate\Database\Eloquent\Builder;
 
 class StoreController extends Controller
 {
@@ -3961,6 +3962,9 @@ class StoreController extends Controller
 
       $global_product = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
         ->where('created_by', '!=', $store_id)
+        ->whereHas('product_cat', function (Builder $qry)  {
+          return $qry->whereNull('deleted_at');
+        })
         ->orderBy('global_product_id', 'DESC')->get();
       //dd($global_product);
 
@@ -3975,7 +3979,9 @@ class StoreController extends Controller
           $query = $query->where('product_name', 'LIKE', '%' . $request->product_name . '%');
         }
 
-        $global_product = $query->orderBy('global_product_id', 'DESC')->get();
+        $global_product = $query->whereHas('product_cat', function (Builder $qry)  {
+          return $qry->whereNull('deleted_at');
+        })->orderBy('global_product_id', 'DESC')->get();
       }
 
       return view('store.elements.global_product.list', compact('category', 'global_product', 'pageTitle'));
