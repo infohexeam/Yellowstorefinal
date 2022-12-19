@@ -1038,6 +1038,7 @@ class ProductController extends Controller
 
                     $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)
                         ->where('global_product_id', '!=', null)
+                        ->whereNotNull('product_cat_id')
 
                         ->orderBy('product_id', 'DESC')
                         ->pluck('global_product_id')
@@ -1047,6 +1048,7 @@ class ProductController extends Controller
                     if ($data['globalProductDetails']  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
                         ->select('global_product_id', 'product_name')
                         ->where('created_by', '!=', $request->store_id)
+                        ->whereNotNull('product_cat_id')
 
                         ->where('vendor_id', $request->vendor_id)
                         ->orderBy('global_product_id', 'DESC')->get()
@@ -2674,7 +2676,7 @@ class ProductController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
 
-                    $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
+                    $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->whereNotNull('product_cat_id')->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
 
                     $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
                         ->where('created_by', '!=', $request->store_id)
@@ -2702,7 +2704,7 @@ class ProductController extends Controller
                     return response($data);
                 } else {
 
-                    $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
+                    $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->whereNotNull('product_cat_id')->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
                    
                     $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id);
                    
