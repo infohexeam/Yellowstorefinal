@@ -4022,7 +4022,7 @@ class ProductController extends Controller
                     }
                     $nearByStoreData         =       $stores->whereNotIn('mst_stores.store_id',$expiredStores)->get();
 
-
+                    return $expiredStores;
                     $nearStoreArray[] = 0;
                     $nearByStoreFinal = array();
 
