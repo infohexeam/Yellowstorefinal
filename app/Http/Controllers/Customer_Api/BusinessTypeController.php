@@ -49,6 +49,7 @@ use App\Models\admin\Trn_customerAddress;
 use App\Models\admin\Trn_ReviewsAndRating;
 use App\Models\admin\Trn_RecentlyVisitedProducts;
 use App\Models\admin\Trn_DeliveryBoyLocation;
+use App\Models\admin\Trn_StoreAdmin;
 
 class BusinessTypeController extends Controller
 {
@@ -124,6 +125,9 @@ class BusinessTypeController extends Controller
     public function BTHomePage(Request $request)
     {
         $data = array();
+        $expiredStores=array();
+        $expiredStoresOthers=array();
+        $today = Carbon::now()->toDateString();
         try {
             if (isset($request->business_type_id) && Mst_business_types::find($request->business_type_id)) {
                 if ($request->customer_id == 0) {
@@ -227,8 +231,22 @@ class BusinessTypeController extends Controller
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $nearByStores =   $nearByStores->having('distance', '<', 10);
                     }
+                    $listedStores    = $nearByStores->get();
+                    foreach($listedStores as $store)
+                    {
+                        $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                        if($getParentExpiry)
+                        {
+                            $parentExpiryDate = $getParentExpiry->expiry_date;
+                            if($today>=$parentExpiryDate)
+                            {
+                                array_push($expiredStores,$store->store_id);
+                            }
+                        
+                        }
+                    }
 
-                    $nearByStores   = $nearByStores->limit(10)->get();
+                    $nearByStores   = $nearByStores->whereNotIn('mst_stores.store_id',$expiredStores)->limit(10)->get();
                     $nearStoreArray[] = 0;
 
                     $nearByStoresdataf = array();
@@ -285,8 +303,23 @@ class BusinessTypeController extends Controller
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $otherStores =   $otherStores->orderBy('distance');
                     }
-
-                    $otherStoress = $otherStores->get();
+                    $listedStoresOthers=$otherStores->get();
+                    foreach($listedStoresOthers as $store)
+                    {
+                        $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                        if($getParentExpiry)
+                        {
+                            $parentExpiryDate = $getParentExpiry->expiry_date;
+                            if($today>=$parentExpiryDate)
+                            {
+                                array_push($expiredStoresOthers,$store->store_id);
+                            }
+                        
+                        }
+                    }
+                
+                    
+                    $otherStoress = $otherStores->whereNotIn('mst_stores.store_id',$expiredStoresOthers)->get();
                     $otherStoresTwo = array();
 
 

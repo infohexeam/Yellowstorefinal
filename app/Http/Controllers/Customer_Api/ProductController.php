@@ -1370,6 +1370,8 @@ class ProductController extends Controller
     public function searchStore(Request $request)
     {
         $data = array();
+        $expiredStores=array();
+        $today = Carbon::now()->toDateString();
         try {
             $store = $request->store;
            
@@ -1411,23 +1413,24 @@ class ProductController extends Controller
             }
 
 
-            $storeData =    $storeData->orderBy('mst_stores.store_id', 'ASC')->get();
-            // $listedStores=$storeData->get();
-            // foreach($listedStores as $store)
-            // {
-            //     $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
-            //     if($getParentExpiry)
-            //     {
-            //         $parentExpiryDate = $getParentExpiry->expiry_date;
-            //         if($today>=$parentExpiryDate)
-            //         {
-            //             array_push($expiredStores,$store->store_id);
-            //         }
+            $storeData =    $storeData->orderBy('mst_stores.store_id', 'ASC');
+           $listedStores=$storeData->get();
+             foreach($listedStores as $store)
+            {
+                $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                if($getParentExpiry)
+               {
+                    $parentExpiryDate = $getParentExpiry->expiry_date;
+                    if($today>=$parentExpiryDate)
+                   {
+                       array_push($expiredStores,$store->store_id);
+                    }
                 
-            //     }
-            // }
+                }
+             }
 
             // dd($storeData);
+            $storeData=$storeData->whereNotIn('mst_stores.store_id',$expiredStores)->get();
             $storesList  =  array();
 
             foreach ($storeData as $s) {
@@ -3889,6 +3892,9 @@ class ProductController extends Controller
     public function homePage(Request $request)
     {
         $data = array();
+        $expiredStores=array();
+        $expiredStoresOthers=array();
+        $today = Carbon::now()->toDateString();
         try {
             if ($request->customer_id == 0) {   // if the customer is not logged in 
                 $data['sliderImages'] =  Mst_CustomerAppBanner::select('banner_id', 'image', 'town_id', 'status', 'default_status')->where('default_status', 1)->where('store_id', 0)->where('status', 1)->get();
@@ -3995,7 +4001,21 @@ class ProductController extends Controller
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                     $stores          =       $stores->having('distance', '<', 10);
                     $stores          =       $stores->orderBy('distance', 'asc');
-                    $nearByStoreData         =       $stores->get();
+                    $listedStores    = $stores->get();
+                    foreach($listedStores as $store)
+                    {
+                        $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                        if($getParentExpiry)
+                        {
+                            $parentExpiryDate = $getParentExpiry->expiry_date;
+                            if($today>=$parentExpiryDate)
+                            {
+                                array_push($expiredStores,$store->store_id);
+                            }
+                        
+                        }
+                    }
+                    $nearByStoreData         =       $stores->whereNotIn('mst_stores.store_id',$expiredStores)->get();
 
 
                     $nearStoreArray[] = 0;
@@ -4059,7 +4079,23 @@ class ProductController extends Controller
                     ->where('trn__store_admins.role_id', 0)->where('mst_stores.online_status', 1)
                     ->where('trn__store_admins.store_account_status', 1)
                     ->whereNotIn('mst_stores.store_id', $nearStoreArray)
-                    ->orderBy('mst_stores.store_id', 'ASC')->limit(10)->get();
+                    ->orderBy('mst_stores.store_id', 'ASC');
+                $listedStoresOthers=$otherStoresData->get();
+                    foreach($listedStoresOthers as $store)
+                    {
+                        $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                        if($getParentExpiry)
+                        {
+                            $parentExpiryDate = $getParentExpiry->expiry_date;
+                            if($today>=$parentExpiryDate)
+                            {
+                                array_push($expiredStoresOthers,$store->store_id);
+                            }
+                        
+                        }
+                    }
+                
+                $otherStoresData=$otherStoresData->whereNotIn('mst_stores.store_id',$expiredStoresOthers)->limit(10)->get();
                 $otherStoresFinal = array();
                 foreach ($otherStoresData as $otherStores) {
 
