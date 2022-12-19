@@ -2685,7 +2685,7 @@ class ProductController extends Controller
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
                     }
 
-                    $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->get();
+                    $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->get();
                     
 
                     foreach ($data['globalProductDetails'] as $product) {
