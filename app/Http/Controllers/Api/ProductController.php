@@ -3008,6 +3008,13 @@ class ProductController extends Controller
                         }
                     }
                     }
+                    else
+                    {
+                        $data['status'] = 15;
+                       $data['message'] = "Products without category cannot be added to store.";
+                       return response($data);  
+
+                    }
                     
                 }
                 }
@@ -3043,6 +3050,7 @@ class ProductController extends Controller
                     'trn__recently_visited_products.visit_count',
                     'trn__recently_visited_products.created_at',
                     'trn__recently_visited_products.updated_at',
+                    DB::raw('SUM(trn__recently_visited_products.visit_count) AS sum_visit'),
                     'trn_store_customers.customer_id',
                     'trn_store_customers.customer_first_name',
                     'trn_store_customers.customer_last_name',
@@ -3113,7 +3121,8 @@ class ProductController extends Controller
                 // $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->groupBy('trn__recently_visited_products.product_varient_id', 'trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
                 //    $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->groupBy('trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"));
 
-                $dataRV = $dataRV->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
+                $dataRV = $dataRV->groupBy('trn__recently_visited_products.product_varient_id','trn__recently_visited_products.store_id','trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
+                          ->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
                 
 
                 if (isset($request->page)) {
