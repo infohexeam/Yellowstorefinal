@@ -231,7 +231,12 @@ class BusinessTypeController extends Controller
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $nearByStores =   $nearByStores->having('distance', '<', 10);
                     }
-                    $listedStores    = $nearByStores->get();
+                    //$listedStores    = $nearByStores->get();
+                    $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                    ->where('trn__store_admins.role_id', 0)
+                    ->where('mst_stores.online_status', 1)
+                    ->where('trn__store_admins.store_account_status', 1)
+                    ->orderBy('mst_stores.store_id', 'DESC')->get();
                     foreach($listedStores as $store)
                     {
                         $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
@@ -303,7 +308,12 @@ class BusinessTypeController extends Controller
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $otherStores =   $otherStores->orderBy('distance');
                     }
-                    $listedStoresOthers=$otherStores->get();
+                    //$listedStoresOthers=$otherStores->get();
+                    $listedStoresOthers= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                    ->where('trn__store_admins.role_id', 0)
+                    ->where('mst_stores.online_status', 1)
+                    ->where('trn__store_admins.store_account_status', 1)
+                    ->orderBy('mst_stores.store_id', 'DESC')->get();
                     foreach($listedStoresOthers as $store)
                     {
                         $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();

@@ -4001,7 +4001,12 @@ class ProductController extends Controller
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                     $stores          =       $stores->having('distance', '<', 10);
                     $stores          =       $stores->orderBy('distance', 'asc');
-                    $listedStores    = $stores->get();
+                    //$listedStores    = $stores->get();
+                    $listedStores =Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                    ->where('trn__store_admins.role_id', 0)
+                    ->where('mst_stores.online_status', 1)
+                    ->where('trn__store_admins.store_account_status', 1)
+                    ->orderBy('mst_stores.store_id', 'DESC')->get();
                     foreach($listedStores as $store)
                     {
                         $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
@@ -4066,6 +4071,7 @@ class ProductController extends Controller
 
 
                     $data['nearByStores'] = $nearByStoreFinal;
+
                 } else {
                     $data['nearByStores'] = [];
                 }
@@ -4080,7 +4086,12 @@ class ProductController extends Controller
                     ->where('trn__store_admins.store_account_status', 1)
                     ->whereNotIn('mst_stores.store_id', $nearStoreArray)
                     ->orderBy('mst_stores.store_id', 'ASC');
-                $listedStoresOthers=$otherStoresData->get();
+                //$listedStoresOthers=$otherStoresData->get();
+                $listedStoresOthers=Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                    ->where('trn__store_admins.role_id', 0)
+                    ->where('mst_stores.online_status', 1)
+                    ->where('trn__store_admins.store_account_status', 1)
+                    ->orderBy('mst_stores.store_id', 'DESC')->get();
                     foreach($listedStoresOthers as $store)
                     {
                         $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
