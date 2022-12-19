@@ -724,6 +724,12 @@ class StoreController extends Controller
                     $data['status'] = 4;
                     $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
                     }
+                    if($today>=$custCheck->expiry_date)
+                    {                
+                    $data['status'] = 4;
+                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+                    }
+                    
                     if (Hash::check($passChk, $custCheck->password)) {
                         
                         //old
