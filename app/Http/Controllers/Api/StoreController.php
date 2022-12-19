@@ -569,6 +569,7 @@ class StoreController extends Controller
             if (!$validator->fails()) {
                 $custCheck = Trn_StoreAdmin::where('store_mobile', '=', $phone)->first();
                 $today = Carbon::now()->toDateString();
+                
 
                 if ($custCheck) {
                     //here
@@ -726,12 +727,12 @@ class StoreController extends Controller
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
                     if($today>=$parentStore->expiry_date)
                     {                
-                    $data['status'] = 4;
+                    $data['status'] = 8;
                     $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
                     }
                     if($today>=$custCheck->expiry_date)
                     {                
-                    $data['status'] = 4;
+                    $data['status'] = 8;
                     $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
                     }
                     
