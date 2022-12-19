@@ -575,7 +575,7 @@ class StoreController extends Controller
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
                     if($today>=$parentStore->expiry_date)
                     {                
-                    $data['status'] = 4;
+                    $data['status'] = 8;
                     $data['message'] = "Profile Expired.Please contact Admin ";
                     }
                     if (Hash::check($passChk, $custCheck->password)) {
