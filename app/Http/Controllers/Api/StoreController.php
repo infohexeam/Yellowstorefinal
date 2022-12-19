@@ -580,6 +580,7 @@ class StoreController extends Controller
                     {                
                     $data['status'] = 8;
                     $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+                    return response($data);
                     }
                   
                         // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
@@ -731,11 +732,12 @@ class StoreController extends Controller
                     
                     if (Hash::check($passChk, $custCheck->password)) {
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
-                    return $parentStore->expiry_date;
+                    //return $parentStore->expiry_date;
                     if($today>=$parentStore->expiry_date)
                     {                
                     $data['status'] = 8;
                     $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+                    return response($data);
                     }
                     
                         
