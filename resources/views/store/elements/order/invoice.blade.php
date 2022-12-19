@@ -165,7 +165,7 @@
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
                                            <td> {{ @$order_item->mrp }}</td>
-                                           <td> {{ @$$order_item->unit_price }}</td>
+                                           <td> {{ @$order_item->unit_price }}</td>
                                  
                                            <td>
                                               @php
