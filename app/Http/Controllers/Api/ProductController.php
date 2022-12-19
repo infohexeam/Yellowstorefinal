@@ -2853,14 +2853,14 @@ class ProductController extends Controller
                         return response($data);    
                     }
                     else{
-                        if ($global_product->product_cat_id!=NULL)
+                        /*if ($global_product->product_cat_id!=NULL)
                         {
                             //$data['status'] = 15;
                             //$data['message'] = "Products without category cannot be added to store.";
                             //return response($data);    
 
                        
-                       
+                       */
 
                     $product['product_name'] = $global_product->product_name;
                     $product['product_name_slug'] = Str::of($global_product->product_name)->slug('-');
@@ -3016,7 +3016,7 @@ class ProductController extends Controller
 
                     }
                     
-                }
+                //}
                 }
 
                 $data['status'] = 1;
