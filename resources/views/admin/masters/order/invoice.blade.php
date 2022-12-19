@@ -164,14 +164,15 @@
                                            @endif --}}
                                            </td>
                                           <td>{{@$order_item->quantity}} </td>
-                                           <td> {{ @$order_item->product_varient->product_varient_price }}</td>
-                                           <td> {{ @$order_item->product_varient->product_varient_offer_price }}</td>
+                                           <td> {{ @$order_item->mrp }}</td>
+                                           <td> {{ @$order_item->unit_price }}</td>
                                  
                                            <td>
-                                              @php
-                                                 $discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
+                                            @php
+                                                 //$discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
+                                                $discountAmt=@$order_item->discount_amount ;
                                               @endphp
-                                              {{@$discountAmt}} 
+                                            {{ number_format((float)$discountAmt, 2, '.', '') }}  
                                              </td>
                                  
                                            <td>
@@ -182,9 +183,9 @@
                                                 ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
                                                 ->first();  
                                                 $tval  = $order_item->unit_price * @$order_item->quantity;
-                                                $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
-                                                $orgCost =  $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * 100 / (100 + @$tax_info->tax_value));
-                                                $Tot = $tTax + $orgCost;
+                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                             $orgCost =  $order_item->quantity * (@$order_item->unit_price * 100 / (100 + @$tax_info->tax_value));
+                                             $Tot = $tTax + $orgCost;
                                              @endphp
 
                                               {{@$tax_info->tax_value}} 
