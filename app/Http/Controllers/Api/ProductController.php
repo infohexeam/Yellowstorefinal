@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Response;
@@ -2678,9 +2678,14 @@ class ProductController extends Controller
 
                     $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->whereNotNull('product_cat_id')->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
 
-                    $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
+                    $query  = Mst_GlobalProducts::with('product_cat')
+                    ->whereHas('product_cat', function (Builder $qry)  {
+                        return $qry->whereNotNull('deleted_at');
+                      })
+                    ->whereNotIn('global_product_id', $products_global_products_id)
                         ->where('created_by', '!=', $request->store_id)
                         ->where('product_cat_id', $request->category_id);
+                       
                     
 
                     if (isset($request->product_name)) {
@@ -2692,12 +2697,15 @@ class ProductController extends Controller
 
                     foreach ($data['globalProductDetails'] as $product) {
                         $catData =  Mst_categories::find($product->product_cat_id);
+                        if($catData->category_name!=NULL)
+                        {
 
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                         $taxData = Mst_Tax::find(@$product->tax_id);
                         $product->tax_name = @$taxData->tax_name;
                         $product->tax_value = @$taxData->tax_value;
                         @$product->category_name = $catData->category_name;
+                        }
                     }
                     $data['status'] = 1;
                     $data['message'] = "success";
@@ -2706,7 +2714,10 @@ class ProductController extends Controller
 
                     $products_global_products_id = Mst_store_product::where('store_id', $request->store_id)->where('global_product_id', '!=', null)->whereNotNull('product_cat_id')->orderBy('product_id', 'DESC')->pluck('global_product_id')->toArray();
                    
-                    $query  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id);
+                    $query  = Mst_GlobalProducts::with('product_cat')
+                    ->whereHas('product_cat', function (Builder $qry)  {
+                        return $qry->whereNotNull('deleted_at');
+                      })->whereNotIn('global_product_id', $products_global_products_id);
                    
                     if (isset($request->product_name)) {
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
