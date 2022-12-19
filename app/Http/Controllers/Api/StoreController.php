@@ -731,6 +731,7 @@ class StoreController extends Controller
                     
                     if (Hash::check($passChk, $custCheck->password)) {
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
+                    return $parentStore->expiry_date;
                     if($today>=$parentStore->expiry_date)
                     {                
                     $data['status'] = 8;
