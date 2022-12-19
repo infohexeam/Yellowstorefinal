@@ -2680,7 +2680,7 @@ class ProductController extends Controller
 
                     $query  = Mst_GlobalProducts::with('product_cat')
                     ->whereHas('product_cat', function (Builder $qry)  {
-                        return $qry->whereNotNull('deleted_at');
+                        return $qry->whereNull('deleted_at');
                       })
                     ->whereNotIn('global_product_id', $products_global_products_id)
                         ->where('created_by', '!=', $request->store_id)
@@ -2716,7 +2716,7 @@ class ProductController extends Controller
                    
                     $query  = Mst_GlobalProducts::with('product_cat')
                     ->whereHas('product_cat', function (Builder $qry)  {
-                        return $qry->whereNotNull('deleted_at');
+                        return $qry->whereNull('deleted_at');
                       })->whereNotIn('global_product_id', $products_global_products_id);
                    
                     if (isset($request->product_name)) {
