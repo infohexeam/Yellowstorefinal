@@ -3008,13 +3008,13 @@ class ProductController extends Controller
                         }
                     }
                     }
-                    else
-                    {
-                        $data['status'] = 15;
-                       $data['message'] = "Products without category cannot be added to store.";
-                       return response($data);  
+                    // else
+                    // {
+                    //     $data['status'] = 15;
+                    //    $data['message'] = "Products without category cannot be added to store.";
+                    //    return response($data);  
 
-                    }
+                    // }
                     
                 //}
                 }
