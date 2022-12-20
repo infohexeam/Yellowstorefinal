@@ -330,6 +330,8 @@
                                    <td class=" h4"> {{ @$order->amount_reduced_by_coupon }} </td>
                                 </tr>
                           @else
+
+                          
                                 <tr>
                                    <td colspan="10" class=" text-right">Redeemed amount By Admin</td>
                                    <td class=" h4"> 
