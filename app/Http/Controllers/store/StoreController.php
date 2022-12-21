@@ -5,6 +5,7 @@ namespace App\Http\Controllers\store;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+
 use Illuminate\Support\Facades\Validator;
 use App\Models\admin\Mst_store;
 use App\Models\admin\Mst_store_product;
@@ -3413,6 +3414,7 @@ class StoreController extends Controller
   {
     $pageTitle = "POS";
     $store_id =   Auth::guard('store')->user()->store_id;
+    //dd(Helper::checkOrderNumber(Auth::guard('store')->user()->store_id));
 
     $customer = Trn_store_customer::all();
     //  $products = Mst_store_product::where('store_id',$store_id)->where('stock_count','!=',0)->get();
@@ -3528,7 +3530,13 @@ class StoreController extends Controller
     } else {
       $orderNumberPrefix = 'ORDRYSTR';
     }
-
+    $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+    $orderNumber = $last_order_number + 1;
+    $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+    if($order_no_exists)
+    {
+      $orderNumber=$orderNumber+1;
+    }
     $store_order->order_number = $orderNumberPrefix . @$orderNumber;
     //dd(Auth::guard('store')->user()->store_admin_id);
     $store_order->customer_id = 3;

@@ -936,5 +936,28 @@ class Helper
         
 
     }
+    public static function checkOrderNumber($store_id)
+    {
+        $latest=Trn_store_order::where('store_id',$store_id)->orderBy('order_id','DESC')->first();
+        //return $latest->order_number;
+        $store_data = Mst_store::find($store_id);
+    if($latest)
+    {
+        if (isset($store_data->order_number_prefix)) {
+            $orderNumberPrefix = $store_data->order_number_prefix;
+        } else {
+            $orderNumberPrefix = 'ORDRYSTR';
+        }
+        $latest_count=ltrim($latest->order_number,$orderNumberPrefix);
+        return (int)$latest_count;
+
+    }
+    else
+    {
+        $latest_count=0;
+        return $latest_count;
+    }
+        
+    }
 
 }

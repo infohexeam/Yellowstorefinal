@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -112,9 +113,9 @@ class PosController extends Controller
                 );
 
                 if (!$validator->fails()) {
-                    $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+                    // $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
 
-                    $orderNumber = @$storeOrderCount + 1;
+                    // $orderNumber = @$storeOrderCount + 1;
 
                     $store_data = Mst_store::find($request->store_id);
 
@@ -122,6 +123,13 @@ class PosController extends Controller
                         $orderNumberPrefix = $store_data->order_number_prefix;
                     } else {
                         $orderNumberPrefix = 'ORDRYSTR';
+                    }
+                    $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+                    $orderNumber = $last_order_number + 1;
+                    $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    if($order_no_exists)
+                    {
+                      $orderNumber=$orderNumber+1;
                     }
 
 
@@ -142,7 +150,8 @@ class PosController extends Controller
                     $store_order->order_type = 'POS';
 
                     $store_order->save();
-                    $order_id = DB::getPdo()->lastInsertId();
+                    $exist_last=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    $order_id = $exist_last->order_id;
 
                     $invoice_info['order_id'] = $order_id;
                     $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');

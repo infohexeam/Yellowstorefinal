@@ -503,9 +503,9 @@ class StoreOrderController extends Controller
                         $data['noStockProducts'] = $noStockProducts;
                         return response($data);
                     }
-                    $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+                    // $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
 
-                    $orderNumber = @$storeOrderCount + 1;
+                    // $orderNumber = @$storeOrderCount + 1;
 
                     $store_data = Mst_store::find($request->store_id);
 
@@ -513,6 +513,13 @@ class StoreOrderController extends Controller
                         $orderNumberPrefix = $store_data->order_number_prefix;
                     } else {
                         $orderNumberPrefix = 'ORDRYSTR';
+                    }
+                    $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+                    $orderNumber = $last_order_number + 1;
+                    $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    if($order_no_exists)
+                    {
+                      $orderNumber=$orderNumber+1;
                     }
 
 
@@ -908,9 +915,9 @@ class StoreOrderController extends Controller
                             $data['noStockProducts'] = $noStockProducts;
                             return response($data);
                         }
-                        $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+                        //  $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
     
-                        $orderNumber = @$storeOrderCount + 1;
+                        //  $orderNumber = @$storeOrderCount + 1;
     
                         $store_data = Mst_store::find($request->store_id);
     
@@ -919,6 +926,9 @@ class StoreOrderController extends Controller
                         } else {
                             $orderNumberPrefix = 'ORDRYSTR';
                         }
+                        $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+                        $orderNumber = $last_order_number + 1;
+                        
     
                         //check for any locked orders
                         if(isset($request->lock_order_id) && $request->lock_order_id != 0) //if the order is locked release lock
@@ -955,6 +965,11 @@ class StoreOrderController extends Controller
             
             
                         }else{ //place a new order
+                        $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                        if($order_no_exists)
+                        {
+                          $orderNumber=$orderNumber+1;
+                        }
                             
                             $store_order = new Trn_store_order;
     
@@ -1027,7 +1042,9 @@ class StoreOrderController extends Controller
     
                         $store_order->save();
 
-                        $order_id = DB::getPdo()->lastInsertId();
+                        //$order_id = DB::getPdo()->lastInsertId();
+                        $exist_last=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                        $order_id = $exist_last->order_id;
                         
                         //delete cart items
                         Trn_Cart::where('customer_id', $request->customer_id)
