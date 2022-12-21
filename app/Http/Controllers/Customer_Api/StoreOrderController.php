@@ -890,6 +890,7 @@ class StoreOrderController extends Controller
                             if($varProdu )
                             {
                                 $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
+                                if ($request->payment_type_id != 2) {
                                 if($stockDiffernece<0)
                                 {
                                     $data['status'] = 0;
@@ -897,6 +898,7 @@ class StoreOrderController extends Controller
                                     return response($data);
     
                                 }
+                            }
                             }
                             
                         }
