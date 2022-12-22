@@ -91,7 +91,7 @@
                                             <!--<th class="wd-15p">Order Status</th>-->
                                             
                                             <th class="wd-15p">Total Amount</th> 
-                                            <th class="wd-15p">Total Amount</th>
+                            
                                             <th class="wd-15p">Delivery Charge</th>
                                             <th class="wd-15p">Packing Charge</th>
                                             <th class="wd-15p">Reference ID</th>
