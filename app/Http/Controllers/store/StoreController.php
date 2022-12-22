@@ -3464,7 +3464,8 @@ class StoreController extends Controller
         'mst_store_product_varients.product_varient_id',
         'mst_store_product_varients.stock_count',
         'mst_store_product_varients.product_varient_price',
-        'mst_store_products.*'
+        'mst_store_product_varients.variant_name',
+        'mst_store_products.*',
       )
       ->first();
 

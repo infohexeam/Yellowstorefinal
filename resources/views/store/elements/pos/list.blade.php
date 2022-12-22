@@ -252,7 +252,7 @@ var countPro = 0;
                success:function(result)
                {
                           $('#quantity').val(quantity);
-                    product_name = result['product_name'];
+                    product_name = result['variant_name'];
                     let product_varient_price = result['product_varient_price'];
                     product_sale_price = result['product_varient_offer_price'];
                     s_tax = result['tax'];
@@ -330,7 +330,7 @@ var countPro = 0;
                data:{product_id:product_res[0],product_varient_id:product_res[1], _token:_token},
                success:function(result)
                {
-                    product_name = result['product_name'];
+                    product_name = result['variant_name'];
                     product_sale_price = result['product_varient_offer_price'];
                     product_varient_price = result['product_varient_price'];
                     var s_tax = result['tax'];
