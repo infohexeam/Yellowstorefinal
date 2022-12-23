@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Response;
 use Image;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use Hash;
 use Carbon\Carbon;
 use Crypt;
