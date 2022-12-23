@@ -934,7 +934,11 @@ class StoreOrderController extends Controller
                         //check for any locked orders
                         if(isset($request->lock_order_id) && $request->lock_order_id != 0) //if the order is locked release lock
                         {
-                            
+                            $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                            if($order_no_exists)
+                            {
+                              $orderNumber=$orderNumber+1;
+                            }
                             Trn_store_order::withTrashed()->where('order_id','=',$request->lock_order_id)->update([
                                 'deleted_at' => NULL,
                                 'is_locked' => 0
@@ -946,6 +950,7 @@ class StoreOrderController extends Controller
 
                             $update_order =  Trn_store_order::find($order_id);
                             $update_order->referenceId = $request->referenceId;
+                            $update_order->order_number=$orderNumberPrefix . @$orderNumber;
                             $update_order->txTime = $request->txTime;
                             $update_order->trn_id = $request->orderId;
                             $update_order->orderAmount = $request->orderAmount;
