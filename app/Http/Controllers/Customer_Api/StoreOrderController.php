@@ -17,6 +17,7 @@ use Crypt;
 use Mail;
 use PDF;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\admin\Mst_store;
 use App\Models\admin\Mst_Tax;
