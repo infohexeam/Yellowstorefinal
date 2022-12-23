@@ -879,8 +879,8 @@ class PurchaseController extends Controller
                                 
                             )
                             ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)
-                            //->where('mst_store_products.product_status',1)
-                            //->where('mst_store_product_varients.variant_status',1)
+                            ->whereNotNull('mst_store_product_varients.product_varient_price')
+                            ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
                             ->first();
                         @$cartData->productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_base_image;
                         @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_varient_base_image;

@@ -3929,6 +3929,11 @@ class StoreController extends Controller
         // {
         //   $data['password'] =  Hash::make($request->password);
         // }
+        if($request->password)
+        {
+          $data['password'] =  Hash::make($request->password);
+
+        }
 
 
         $data['username'] = $request->username;
