@@ -102,9 +102,9 @@ class OrderController extends Controller
                     }
 
                     if (isset($request->page)) {
-                        $data['orderDetails'] = $query->orderBy('order_id', 'DESC')->paginate(10, ['data'], 'page', $request->page);
+                        $data['orderDetails'] = $query->orderBy('created_at', 'DESC')->paginate(10, ['data'], 'page', $request->page);
                     } else {
-                        $data['orderDetails'] = $query->orderBy('order_id', 'DESC')->paginate(10);
+                        $data['orderDetails'] = $query->orderBy('created_at', 'DESC')->paginate(10);
                     }
 
 
