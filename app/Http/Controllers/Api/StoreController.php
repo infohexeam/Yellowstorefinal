@@ -826,7 +826,7 @@ class StoreController extends Controller
                                 $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
                                 $otp_verify->store_otp                 = $store_otp;
                                 $otp_verify->update();
-                                $res=Helper::sendOtp($storeData->store_mobile,$store_otp,1);
+                                $res=Helper::sendOtp($custCheck->store_mobile,$store_otp,1);
                                 $data['otp_session_id']=$res['session_id'];
                                 $data['store_id'] = $custCheck->store_id;
                                 $data['store_admin_id'] = $custCheck->store_admin_id;
