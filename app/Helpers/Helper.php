@@ -938,7 +938,7 @@ class Helper
     }
     public static function checkOrderNumber($store_id)
     {
-        $latest=Trn_store_order::where('store_id',$store_id)->orderBy('order_id','DESC')->first();
+        $latest=Trn_store_order::where('store_id',$store_id)->orderBy('created_at','DESC')->first();
         //return $latest->order_number;
         $store_data = Mst_store::find($store_id);
     if($latest)
