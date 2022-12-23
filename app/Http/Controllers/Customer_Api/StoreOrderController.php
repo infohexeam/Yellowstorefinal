@@ -1723,7 +1723,7 @@ class StoreOrderController extends Controller
                     'isRefunded',
                     'refundStatus',
                     'refundId'
-                )->where('customer_id', $request->customer_id)->orderBy('order_id', 'DESC')->get()) {
+                )->where('customer_id', $request->customer_id)->orderBy('created_at', 'DESC')->get()) {
                     foreach ($data['orderHistory'] as $order) {
                         $storeData = Mst_store::withTrashed()->find($order->store_id);
                         if($storeData!=NULL)
