@@ -515,7 +515,7 @@ class StoreOrderController extends Controller
                     } else {
                         $orderNumberPrefix = 'ORDRYSTR';
                     }
-                    $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+                    $last_order_number=Helper::checkOrderNumber($request->store_id);
                     $orderNumber = $last_order_number + 1;
                     $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
                     if($order_no_exists)
@@ -927,7 +927,7 @@ class StoreOrderController extends Controller
                         } else {
                             $orderNumberPrefix = 'ORDRYSTR';
                         }
-                        $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+                        $last_order_number=Helper::checkOrderNumber($request->store_id);
                         $orderNumber = $last_order_number + 1;
                         
     
