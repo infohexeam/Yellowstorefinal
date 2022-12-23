@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Response;
 use Image;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Hash;
 use Carbon\Carbon;
 use Crypt;
@@ -410,6 +410,7 @@ class StoreOrderController extends Controller
     {
         
         try {
+            DB::beginTransaction();
 
             if (isset($request->store_id) && $orderStoreData = Mst_store::find($request->store_id)) {
                 $isActiveSlot=Helper::findHoliday($request->store_id);
@@ -490,6 +491,7 @@ class StoreOrderController extends Controller
                             $stockDiffernece=$varProdu->stock_count-$value['quantity'];
                             if($stockDiffernece<0)
                             {
+                                DB::rollBack();
                                 $data['status'] = 0;
                                 $data['message'] = "Some products quantity is more than available stock..Try again";
                                 return response($data);
@@ -617,6 +619,7 @@ class StoreOrderController extends Controller
                             $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
                             if($stockDiffernece<0)
                             {
+                                DB::rollBack();
                                 $data['status'] = 0;
                                 $data['message'] = "Some products quantity is more than available stock..Try again";
                                 return response($data);
@@ -679,6 +682,7 @@ class StoreOrderController extends Controller
                     $data['status'] = 1;
                     $data['lock_order_id'] = $getlockedOrder->order_id;
                     $data['message'] = "Order Locked.";
+                    DB::commit();
                     return response($data);
                 } else {
                     $data['status'] = 0;
@@ -783,6 +787,7 @@ class StoreOrderController extends Controller
         try {
             if(isset($request->store_id))
             {
+            DB::beginTransaction();
 
             $isActiveSlot=Helper::findHoliday($request->store_id);
                 if($isActiveSlot==false)
@@ -900,6 +905,7 @@ class StoreOrderController extends Controller
                                 if ($request->payment_type_id != 2) {
                                 if($stockDiffernece<0)
                                 {
+                                    DB::rollBack();
                                     $data['status'] = 0;
                                     $data['message'] = "Some products quantity is more than available stock..Try again";
                                     return response($data);
@@ -1302,6 +1308,7 @@ class StoreOrderController extends Controller
                         $data['status'] = 1;
                         $data['order_id'] = $order_id;
                         $data['message'] = "Order saved.";
+                        DB::commit();
                         return response($data);
                     } else {
                         $data['status'] = 0;
