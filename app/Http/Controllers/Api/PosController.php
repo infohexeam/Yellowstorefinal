@@ -169,8 +169,7 @@ class PosController extends Controller
                             if($stockDiffernece<0)
                             {
                                
-                               
-                                $data['status'] = 0;
+                                $data['status'] =0;
                                 $data['message'] = "Some products quantity is more than available stock..Try again.";
                                 return response($data);
                   

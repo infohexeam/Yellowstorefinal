@@ -3358,6 +3358,14 @@ class StoreController extends Controller
     $updated_stock = $request->updated_stock;
     $product_varient_id = $request->product_varient_id;
     $usOld = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->first();
+    if($usOld)
+    {
+      if($usOld->stock_count+$updated_stock<0)
+      {
+        //return "incapable_stock";
+        return response()->json('incapable_stock');
+      }
+    }
 
     if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->increment('stock_count', $updated_stock)) {
       $usData = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->first();
@@ -3394,6 +3402,15 @@ class StoreController extends Controller
     if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->update(['stock_count' => 0, 'updated_at' => Carbon::now()])) {
       DB::table('mst__stock_details')->where('product_varient_id', $product_varient_id)->update(['created_at' => Carbon::now()]);
       $s = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->pluck("stock_count");
+      
+      $sd = new Mst_StockDetail;
+      // $sd->store_id = $usData->store_id;
+      // $sd->product_id = $usData->product_id;
+      // $sd->stock = 0;
+      // $sd->product_varient_id = $request->product_varient_id;
+      // $sd->prev_stock = 0-$usData->stock_count;
+
+      // $sd->save();
 
       // $prodctCnt = DB::table('mst_store_product_varients')->where('product_id', $usData->product_id)->count();
       // if($prodctCnt > 0)

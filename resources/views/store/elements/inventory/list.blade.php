@@ -68,6 +68,11 @@
                 </div>
          
                <div class="card-body">
+              
+               <div class="alert alert-danger alert-dismissible fade in" id="testdiv">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+   
+  </div>
                        
                 <div class="table-responsive">
                   <table  class="table table-striped table-bordered text-nowrap w-100">
@@ -201,8 +206,14 @@
 
                 if(result == 0){
                   $('#td'+product_varient_id).html('Empty');
-                }else{
+                }else if(result>0){
                   $('#td'+product_varient_id).html(result);
+                }
+                else if(result=='incapable_stock')
+                {
+                  
+                  alert('Negative stock is not allowed');
+                  
                 }
 
 
