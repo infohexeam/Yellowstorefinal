@@ -3511,7 +3511,7 @@ class StoreController extends Controller
       if($productVarStockCheck)
       {
           $stockDiffernece=$productVarStockCheck->stock_count-$quantity[$j];
-          if($stockDiffernece<=0)
+          if($stockDiffernece<0)
           {
              
               return  redirect()->back()->with('error', 'Some products quantity is more than available stock..Try again.');

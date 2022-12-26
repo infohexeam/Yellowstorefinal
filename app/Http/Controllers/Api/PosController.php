@@ -166,7 +166,7 @@ class PosController extends Controller
                         if($productVarOlddata)
                         {
                             $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
-                            if($stockDiffernece<=0)
+                            if($stockDiffernece<0)
                             {
                                
                                
