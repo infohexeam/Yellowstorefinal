@@ -944,7 +944,7 @@ class CouponController extends Controller
 
 
 
-    $inventoryData =   Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+    $inventoryData =   Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
       ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
       ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
       ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
