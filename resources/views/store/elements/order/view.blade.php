@@ -412,7 +412,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                             Payment Mode:
                           </td>
                           <td>
-                             {{ @$payment->paymentMode }}
+                             {{ $payment->paymentMode??'Online' }}
                           </td>
                        </tr>
     
