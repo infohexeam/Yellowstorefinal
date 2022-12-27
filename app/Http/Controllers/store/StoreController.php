@@ -3798,11 +3798,28 @@ class StoreController extends Controller
 
 
     $i = 0;
+    //dd($start);
 
     foreach ($request->day as $s) {
       // echo $start[$i]."  : ". 
+      if($start[$i]==NULL && $end[$i]!=NULL )
+      {
+        return redirect()->back()->withErrors(['Please update with start time.You have not entered starting time'])->withInput();
+
+      }
+      if($start[$i]!=NULL && $end[$i]==NULL )
+      {
+        return redirect()->back()->withErrors(['Please update with end time.You have not entered end time'])->withInput();
+
+      }
       if ($start[$i]  > $end[$i]) {
-        return redirect()->back()->withErrors(['Starting time can\'t be greater than ending time.'])->withInput();
+        if($start[$i]!=NULL && $end[$i]!=NULL )
+        {
+          return redirect()->back()->withErrors(['Starting time can\'t be greater than ending time.'])->withInput();
+
+        }
+       
+        
       }
       $i++;
     }
