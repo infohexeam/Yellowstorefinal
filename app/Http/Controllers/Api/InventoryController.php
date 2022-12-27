@@ -214,7 +214,13 @@ class InventoryController extends Controller
                     if (!$validator->fails()) {
                         $proVar = Mst_store_product_varient::find($request->product_varient_id);
                         $productData['stock_count'] = $request->stock_count +  $proVar->stock_count; // stock count
+                         if($productData['stock_count']<0)
+                         {
+                            $data['status'] = 0;
+                            $data['message'] = "Negative Stock update not allowed.";
+                            return response($data);
 
+                         }
 
                         if (Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($productData)) {
 
