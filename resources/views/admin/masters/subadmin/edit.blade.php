@@ -123,7 +123,7 @@
                        <div class="col-md-6">
                         <div class="form-group">
                               <label class="form-label">Pincode *</label>
-                              <select name="town_id" required="" class="form-control" id="town">
+                              <select name="town_id" required="" class="form-control search-pin" id="town">
                                  <option  selected="" value="{{@$subadmin->subadmins['town_id']}}"> {{@$subadmin->subadmins->town['town_name']}}</option>
                               </select>
                            </div>
@@ -182,6 +182,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </script>
 
 <script>
@@ -382,6 +384,7 @@ function validatePassLength() {
             $('#town').empty();
 
             $('#town').append('<option  selected="" value=""> Select Pincode </option>');
+            $('.search-pin').select2();
             $.each(res,function(town_id,town_name)
             {
               $('#town').append('<option value="'+town_id+'">'+town_name+'</option>');

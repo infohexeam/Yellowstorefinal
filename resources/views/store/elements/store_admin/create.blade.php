@@ -68,7 +68,7 @@
                   <div class="form-group">
                      <label class="form-label">Password * </label>
                
-                          <input type="Password" required="" name="password" oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()"  id="password" class="form-control" placeholder=" Password" value="{{old('password')}}">
+                          <input type="password" required="" name="password" oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()"  id="password" class="form-control" placeholder=" Password" value="{{old('password')}}">
                            <div class="password-show__toggle">
                               <i class="fa fa-eye password-show_toggle_show-icon"></i>
                               <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
@@ -114,7 +114,8 @@
    </div>
 </div>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <script type="text/javascript">
 
@@ -158,20 +159,23 @@ $(document).ready(function() {
    
    $(".password-show_toggle_show-icon").hide();
     $(".password-show_toggle_hide-icon").show();
-  $(".password-hide__toggle").on("click", function(e) {
-   alert('hii');
+  $(".password-show_toggle_hide-icon").on("click", function(e) {
+   //alert('hii');
+   
+    $(".password-show_toggle_hide-icon").hide();
+     $(".password-show_toggle_show-icon").show();
      $('#password').attr("type", "text");
      $('#confirm_password').attr("type", "text");
-     {{-- $(".password-show_toggle_hide-icon").hide();
-     $(".password-show_toggle_show-icon").show(); --}}
+    
 
   
   });
-  $(".password-show__toggle").on("click", function(e) {
+  $(".password-show_toggle_show-icon").on("click", function(e) {
+   $(".password-show_toggle_show-icon").hide();
     $(".password-show_toggle_hide-icon").show();
-     $(".password-show_toggle_show-icon").hide();
-     {{-- $('#password').attr("type", "password");
-     $('#confirm_password').attr("type", "password"); --}}
+    
+     $('#password').attr("type", "password");
+     $('#confirm_password').attr("type", "password");
     
 
   

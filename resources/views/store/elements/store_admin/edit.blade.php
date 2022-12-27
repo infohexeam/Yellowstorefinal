@@ -69,6 +69,10 @@
                         <div class="form-group">
                             <label class="form-label">Password</label>
                             <input type="Password" oninput="checkPasswordComplexity(this.value)" id="password" onkeyup="validatePassLength()" name="password" class="form-control" placeholder=" Password" value="">
+                             <div class="password-show__toggle">
+                              <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                            </div>
  <p id="showpassmessage"><p>
                             <p id="showpassmessage2"><p>
                     </div>
@@ -112,10 +116,37 @@
    </div>
 </div>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <script>
+$(document).ready(function() {
+   //alert('hii');
+   
+   $(".password-show_toggle_show-icon").hide();
+    $(".password-show_toggle_hide-icon").show();
+  $(".password-show_toggle_hide-icon").on("click", function(e) {
+   //alert('hii');
+   
+    $(".password-show_toggle_hide-icon").hide();
+     $(".password-show_toggle_show-icon").show();
+     $('#password').attr("type", "text");
+     $('#confirm_password').attr("type", "text");
+    
 
+  
+  });
+  $(".password-show_toggle_show-icon").on("click", function(e) {
+   $(".password-show_toggle_show-icon").hide();
+    $(".password-show_toggle_hide-icon").show();
+    
+     $('#password').attr("type", "password");
+     $('#confirm_password').attr("type", "password");
+    
+
+  
+  });
+});
 
 
 function checkPasswordComplexity(pwd) {
