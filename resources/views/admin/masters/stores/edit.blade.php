@@ -1,5 +1,40 @@
 @extends('admin.layouts.app')
 @section('content')
+<style>
+
+  .password-show {
+    position: relative;
+  }
+  .password-show input {
+    padding-right: 2.5rem;
+  }
+  .password-show__toggle {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    bottom: 0;
+    width: 2.5rem;
+  }
+  .password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #555;
+  }
+  .password-show_toggle_show-icon {
+    display: block;
+  }
+  .password-show.show .password-show_toggle_show-icon {
+    display: none;
+  }
+  .password-show_toggle_hide-icon {
+    display: none;
+  }
+  .password-show.show .password-show_toggle_hide-icon {
+    display: block;
+  }
+  </style>
 <div class="row" id="user-profile" style="min-height: 70vh;">
    <div class="col-lg-12">
       <div class="card">
@@ -716,7 +751,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                  <label id="passlabel" class="form-label">Password </label>
+                                 <div class="password-show">
                                       <input required type="Password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)"  id="password"  name="password" class="form-control" placeholder=" Password" value="{{old('password')}}">
+                                       <div class="password-show__toggle">
+                              <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                            </div>
+                            </div>
                                     <p id="showpassmessage"><p>
                                     <p id="showpassmessage2"><p>
                                 </div>
@@ -724,8 +765,14 @@
                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Confirm Password </label>
+                                         <div class="password-show">
                                         <input required type="password"  class="form-control" onkeyup="validatePass()"
                                         name="password_confirmation" id="confirm_password" value="{{old('password_confirmation')}}"  placeholder="Confirm Password">
+                                         <div class="password-show__toggle">
+                              <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                            </div>
+                            </div>
                                             <p id="showmessage"><p>
                                     </div>
                                 </div>
@@ -844,6 +891,32 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
 </script>
+<script>
+        $(document).ready(function() {
+  $(".password-show__toggle").on("click", function(e) {
+    console.log("click");
+    if (
+      !$(this)
+        .parent()
+        .hasClass("show")
+    ) {
+      $(this)
+        .parent()
+        .addClass("show");
+      $(this)
+        .prev()
+        .attr("type", "text");
+    } else {
+      $(this)
+        .parent()
+        .removeClass("show");
+      $(this)
+        .prev()
+        .attr("type", "password");
+    }
+  });
+});
+   </script>
 
 
 <script>

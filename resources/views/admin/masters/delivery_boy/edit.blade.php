@@ -1,5 +1,40 @@
 @extends('admin.layouts.app')
 @section('content')
+<style>
+
+  .password-show {
+    position: relative;
+  }
+  .password-show input {
+    padding-right: 2.5rem;
+  }
+  .password-show__toggle {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    bottom: 0;
+    width: 2.5rem;
+  }
+  .password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #555;
+  }
+  .password-show_toggle_show-icon {
+    display: block;
+  }
+  .password-show.show .password-show_toggle_show-icon {
+    display: none;
+  }
+  .password-show_toggle_hide-icon {
+    display: none;
+  }
+  .password-show.show .password-show_toggle_hide-icon {
+    display: block;
+  }
+  </style>
 <div class="container">
    <div class="row">
       <div class="col-md-12">
@@ -129,14 +164,26 @@
 
                        <div class="col-md-6">
                    <label class="form-label"> Password </label>
+                   <div class="password-show">
                             <input class="form-control" type="password" onkeyup="validatePassLength()" oninput="checkPasswordComplexity(this.value)" name="password" value="{{old('password')}}" placeholder="Password" id="password" type="password"  autocomplete="current-password">
+                             <div class="password-show__toggle">
+                              <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                            </div>
+                            </div>
                             <p id="showpassmessage"><p>
                             <p id="showpassmessage2"><p>
                        </div>
 
                         <div class="col-md-6">
                       <label class="form-label">Confirm Password </label>
+                      <div class="password-show">
                             <input class="form-control" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password" value="{{old('password_confirmation')}}" id="confirm_password" type="password"  autocomplete="current-password">
+                            <div class="password-show__toggle">
+                              <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                            </div>
+                            </div>
                             <p id="showmessage"><p>
                        </div>
 
@@ -205,7 +252,32 @@
 </script>
 
 
-
+<script>
+        $(document).ready(function() {
+  $(".password-show__toggle").on("click", function(e) {
+    console.log("click");
+    if (
+      !$(this)
+        .parent()
+        .hasClass("show")
+    ) {
+      $(this)
+        .parent()
+        .addClass("show");
+      $(this)
+        .prev()
+        .attr("type", "text");
+    } else {
+      $(this)
+        .parent()
+        .removeClass("show");
+      $(this)
+        .prev()
+        .attr("type", "password");
+    }
+  });
+});
+   </script>
 
 <script>
 
