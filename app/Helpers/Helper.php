@@ -959,5 +959,22 @@ class Helper
     }
         
     }
+    public static function latestOrder($store_id)
+    {
+        $latest=Trn_store_order::where('store_id',$store_id)->orderBy('created_at','DESC')->first();
+        //return $latest->order_number;
+      
+    if($latest)
+    {
+        return $latest->order_id;
+
+    }
+    else
+    {
+        
+        return 0;
+    }
+
+    }
 
 }

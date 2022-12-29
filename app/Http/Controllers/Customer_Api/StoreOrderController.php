@@ -784,6 +784,7 @@ class StoreOrderController extends Controller
         try {
             if(isset($request->store_id))
             {
+                DB::beginTransaction();
 
             $isActiveSlot=Helper::findHoliday($request->store_id);
                 if($isActiveSlot==false)
@@ -956,8 +957,8 @@ class StoreOrderController extends Controller
                             $update_order->orderAmount = $request->orderAmount;
                             $update_order->txMsg = $request->txMsg;
                             $update_order->txStatus = $request->txStatus;
-                            $update_order->created_at = Carbon::now();
-                            $update_order->updated_at = Carbon::now();
+                            $update_order->created_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
+                            $update_order->updated_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
                             $update_order->save();
 
                             $invoice_info['order_id'] = $order_id;
@@ -967,6 +968,7 @@ class StoreOrderController extends Controller
                             $invoice_info['updated_at'] = Carbon::now();
         
                             Trn_order_invoice::insert($invoice_info);
+                            DB::commit();
                             
             
             
@@ -1041,7 +1043,9 @@ class StoreOrderController extends Controller
                         $store_order->orderAmount = $request->orderAmount;
                         $store_order->txMsg = $request->txMsg;
                         $store_order->txStatus = $request->txStatus;
-    
+                        $store_order->created_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
+                        $store_order->updated_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
+                        //(int)substr(Helper::latestOrder(7), -1)
     
                         if (isset($request->amount_reduced_by_coupon))
                             $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
@@ -1308,16 +1312,19 @@ class StoreOrderController extends Controller
                         $data['status'] = 1;
                         $data['order_id'] = $order_id;
                         $data['message'] = "Order saved.";
+                        DB::commit();
                         return response($data);
                     } else {
                         $data['status'] = 0;
                         $data['message'] = "failed";
                         $data['errors'] = $validator->errors();
+                        DB::rollback();
                         return response($data);
                     }
                 } else {
                     $data['status'] = 0;
                     $data['message'] = "Store not found ";
+                     DB::rollback();
                     return response($data);
                 }
 
