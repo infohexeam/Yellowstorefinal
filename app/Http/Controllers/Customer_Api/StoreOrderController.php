@@ -957,8 +957,8 @@ class StoreOrderController extends Controller
                             $update_order->orderAmount = $request->orderAmount;
                             $update_order->txMsg = $request->txMsg;
                             $update_order->txStatus = $request->txStatus;
-                            $update_order->created_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
-                            $update_order->updated_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
+                            $update_order->created_at=Carbon::now();
+                            $update_order->updated_at=Carbon::now();
                             $update_order->save();
 
                             $invoice_info['order_id'] = $order_id;
@@ -1043,8 +1043,8 @@ class StoreOrderController extends Controller
                         $store_order->orderAmount = $request->orderAmount;
                         $store_order->txMsg = $request->txMsg;
                         $store_order->txStatus = $request->txStatus;
-                        $store_order->created_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
-                        $store_order->updated_at=Carbon::now()->addSeconds(Helper::latestOrder($request->store_id), -1);
+                        $store_order->created_at=Carbon::now();
+                        $store_order->updated_at=Carbon::now();
                         //(int)substr(Helper::latestOrder(7), -1)
     
                         if (isset($request->amount_reduced_by_coupon))

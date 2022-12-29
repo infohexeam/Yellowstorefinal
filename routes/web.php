@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\Helper;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +26,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     });
 
     Route::get('/', function () {
+        //dd(Carbon::now(),Carbon::now()->addSeconds(Helper::latestOrder(7), -1));
         return view('welcome');
     })->name('first');
 
