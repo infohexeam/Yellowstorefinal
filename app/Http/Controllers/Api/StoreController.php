@@ -3445,6 +3445,7 @@ class StoreController extends Controller
 			$data = Trn_store_order::select(
 	  
 			  'trn_store_orders.order_id',
+              'trn_store_orders.store_id',
 			  'trn_store_orders.order_number',
 			  'trn_store_orders.customer_id',
 			  'trn_store_orders.subadmin_id',
