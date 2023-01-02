@@ -3523,9 +3523,7 @@ class StoreController extends Controller
 				$data = $data->where('trn_store_orders.subadmin_id', '=', $request->subadmin_id);
 			  }
 	  
-			  if (isset($request->store_id)) {
-				$data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
-			  }
+			
 			
 	  
 			$walletdata = $data->where('mst_stores.store_id',$store_id)
