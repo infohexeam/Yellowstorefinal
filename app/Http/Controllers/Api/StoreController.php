@@ -967,6 +967,7 @@ class StoreController extends Controller
         $data = array();
         try {
             $store_id = $request->store_id;
+           
             $otp_verify = Trn_store_otp_verify::where('store_id', '=', $store_id)->latest()->first();
             if ($otp_verify) {
 
@@ -979,7 +980,17 @@ class StoreController extends Controller
                     $otp_verify->store_otp_expirytime = $extented_time;
                     $otp_verify->store_otp=$store_otp;
                     $otp_verify->update();
-                    $res=Helper::sendOtp($storeData->store_mobile,$store_otp,1);
+                    if($request->store_mobile)
+                    {
+                        $res=Helper::sendOtp($request->store_mobile,$store_otp,1);
+
+                    }
+                    else
+                    {
+                        $res=Helper::sendOtp($storeData->store_mobile,$store_otp,1);
+
+                    }
+                    
                     $data['otp_session_id']=$res['session_id'];
                     $data['status'] = 1;
                     $data['otp'] = $store_otp;
