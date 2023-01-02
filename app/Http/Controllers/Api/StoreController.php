@@ -3524,7 +3524,7 @@ class StoreController extends Controller
 			
 			
 	  
-			$walletdata = $data->where('trn_store_orders.store_id',$store_id)
+			$walletdata = $data->where('trn_store_orders.storee_id',$store_id)
 			       ->where('trn_store_orders.reward_points_used','!=',NULL)
 				   ->Orwhere('trn_store_orders.reward_points_used_store','!=',NULL)
 			       ->get();
