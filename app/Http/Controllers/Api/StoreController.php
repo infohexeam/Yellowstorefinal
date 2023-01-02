@@ -3531,7 +3531,6 @@ class StoreController extends Controller
 			$walletdata = $data->where('trn_store_orders.store_id',$store_id)
 			       ->where('trn_store_orders.reward_points_used','!=',NULL)
 				   ->Orwhere('trn_store_orders.reward_points_used_store','!=',NULL)
-				   ->orderBy('trn_store_orders.order_id', 'DESC')
 			       ->get();
 	  //DD($request->store_id,$request->subadmin_id,$data);
       
