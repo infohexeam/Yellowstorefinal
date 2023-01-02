@@ -3423,6 +3423,7 @@ class StoreController extends Controller
 			$store_id=$request->store_id;
             //dd($store_id);
             $walletdata=array();
+            $resData=array();
 			
 			$datefrom = '';
 			$dateto = '';
@@ -3534,10 +3535,10 @@ class StoreController extends Controller
 			       ->get();
 	  //DD($request->store_id,$request->subadmin_id,$data);
       
-      $data['walletData'] = $walletdata;
-      $data['status'] = 1;
-      $data['message'] = "Success";
-      return response($data);
+      $resData['walletData'] = $walletdata;
+      $resData['status'] = 1;
+      $resData['message'] = "Success";
+      return response($resData);
 	  
 			
   
