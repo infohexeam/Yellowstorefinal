@@ -3447,7 +3447,6 @@ class StoreController extends Controller
 			  'trn_store_orders.order_id',
 			  'trn_store_orders.order_number',
 			  'trn_store_orders.customer_id',
-			  'trn_store_orders.store_id',
 			  'trn_store_orders.subadmin_id',
 			  'trn_store_orders.product_total_amount',
 			  'trn_store_orders.delivery_charge',
