@@ -3431,14 +3431,14 @@ class StoreController extends Controller
 	  
 			
 	  
-			$subadmins = User::where('user_role_id', '!=', 0)->get();
+			// $subadmins = User::where('user_role_id', '!=', 0)->get();
 	  
-			$customers = Trn_store_customer::all();
+			// $customers = Trn_store_customer::all();
 	  
-			$deliveryBoys =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
-			  ->get();
+			// $deliveryBoys =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+			//   ->get();
 	  
-			$orderStatus = Sys_store_order_status::all();
+			// $orderStatus = Sys_store_order_status::all();
 	  
 	  
 	  
@@ -3475,16 +3475,13 @@ class StoreController extends Controller
 			  'trn_store_customers.customer_mobile_number',
 			  'trn_store_customers.place',
 	  
-			  'mst_stores.store_id',
-			  'mst_stores.store_name',
-			  'mst_stores.store_mobile',
-			  'mst_stores.subadmin_id'
+			 
 	  
 			 
 	  
 			)
-			  ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
-			  ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+			  ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id');
+			 
 	  
 			
 			
@@ -3526,7 +3523,7 @@ class StoreController extends Controller
 			
 			
 	  
-			$walletdata = $data->where('mst_stores.store_id',$store_id)
+			$walletdata = $data->where('trn_store_orders.store_id',$store_id)
 			       ->where('trn_store_orders.reward_points_used','!=',NULL)
 				   ->Orwhere('trn_store_orders.reward_points_used_store','!=',NULL)
 			       ->get();
