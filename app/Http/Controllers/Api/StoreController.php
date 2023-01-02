@@ -2123,7 +2123,7 @@ class StoreController extends Controller
 
 
 
-                $inventoryData = $inventoryData->orderBy('updated_time', 'DESC')->skip(($request->page - 1) * 10)->take(10)->get();
+                $inventoryData = $inventoryData->orderBy('updated_time', 'DESC')->get();
 
 
                 // $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
