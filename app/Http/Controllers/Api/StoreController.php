@@ -3487,7 +3487,7 @@ class StoreController extends Controller
 			  ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 	  
 			
-			if ($_GET) {
+			
 			  $datefrom = $request->date_from;
 			  $dateto = $request->date_to;
 	  
@@ -3526,7 +3526,7 @@ class StoreController extends Controller
 			  if (isset($request->store_id)) {
 				$data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
 			  }
-			}
+			
 	  
 			$walletdata = $data->where('trn_store_orders.store_id',$store_id)
 			       ->where('trn_store_orders.reward_points_used','!=',NULL)
