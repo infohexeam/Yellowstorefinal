@@ -493,6 +493,7 @@ class StoreOrderController extends Controller
                             {
                                 $data['status'] = 0;
                                 $data['message'] = "Some products quantity is more than available stock..Try again";
+                                DB::rollback();
                                 return response($data);
 
                             }
@@ -620,6 +621,7 @@ class StoreOrderController extends Controller
                             {
                                 $data['status'] = 0;
                                 $data['message'] = "Some products quantity is more than available stock..Try again";
+                                DB::rollback();
                                 return response($data);
 
                             }
@@ -904,6 +906,7 @@ class StoreOrderController extends Controller
                                 {
                                     $data['status'] = 0;
                                     $data['message'] = "Some products quantity is more than available stock..Try again";
+                                    DB::rollback();
                                     return response($data);
     
                                 }

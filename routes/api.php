@@ -244,6 +244,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('sales-report', 'Api\StoreController@salesReport');
     Route::get('online-sales-report', 'Api\StoreController@salesOnlineReport');
     Route::get('offline-sales-report', 'Api\StoreController@salesOfflineReport');
+    Route::get('wallet-redeem-reports', 'Api\StoreController@walletReport');
 
     Route::get('inventory-report', 'Api\StoreController@inventoryReport');
     Route::get('overall-product-report', 'Api\StoreController@overallProductReport');
