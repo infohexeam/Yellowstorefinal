@@ -3422,6 +3422,7 @@ class StoreController extends Controller
 			
 			$store_id=$request->store_id;
             //dd($store_id);
+            $walletdata=array();
 			
 			$datefrom = '';
 			$dateto = '';
