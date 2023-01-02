@@ -531,7 +531,7 @@ class StoreOrderController extends Controller
                         $store_order->service_order =  $request->service_order; // service order - booking order
 
 
-                    $store_order->order_number = $orderNumberPrefix .DB::getPdo()->lastInsertId(). @$orderNumber;
+                    $store_order->order_number = $orderNumberPrefix . @$orderNumber;
                     // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
                     $store_order->customer_id = $request->customer_id;
                     $store_order->store_id =  $request->store_id;
@@ -954,7 +954,7 @@ class StoreOrderController extends Controller
 
                             $update_order =  Trn_store_order::find($order_id);
                             $update_order->referenceId = $request->referenceId;
-                            $update_order->order_number=$orderNumberPrefix .DB::getPdo()->lastInsertId(). @$orderNumber;
+                            $update_order->order_number=$orderNumberPrefix . @$orderNumber;
                             $update_order->txTime = $request->txTime;
                             $update_order->trn_id = $request->orderId;
                             $update_order->orderAmount = $request->orderAmount;
@@ -988,7 +988,7 @@ class StoreOrderController extends Controller
                             $store_order->service_order =  $request->service_order; // service order - booking order
     
     
-                        $store_order->order_number = $orderNumberPrefix .DB::getPdo()->lastInsertId(). @$orderNumber;
+                        $store_order->order_number = $orderNumberPrefix . @$orderNumber;
                         // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
                         $store_order->customer_id = $request->customer_id;
                         $store_order->store_id =  $request->store_id;
