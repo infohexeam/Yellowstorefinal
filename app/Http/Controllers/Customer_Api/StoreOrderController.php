@@ -516,13 +516,16 @@ class StoreOrderController extends Controller
                     } else {
                         $orderNumberPrefix = 'ORDRYSTR';
                     }
-                    $last_order_number=Helper::checkOrderNumber($request->store_id);
-                    $orderNumber = $last_order_number + 1;
-                    $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
-                    if($order_no_exists)
-                    {
-                      $orderNumber=$orderNumber+1;
-                    }
+                    // $last_order_number=Helper::checkOrderNumber($request->store_id);
+                    // $orderNumber = $last_order_number + 1;
+                    // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    // if($order_no_exists)
+                    // {
+                    //   $orderNumber=$orderNumber+1;
+                    // }
+                    $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->where('is_locked',0)->count();
+
+                    $orderNumber = @$storeOrderCount + 1;
 
 
                     $store_order = new Trn_store_order;
@@ -931,18 +934,21 @@ class StoreOrderController extends Controller
                         } else {
                             $orderNumberPrefix = 'ORDRYSTR';
                         }
-                        $last_order_number=Helper::checkOrderNumber($request->store_id);
-                        $orderNumber = $last_order_number + 1;
+                        // $last_order_number=Helper::checkOrderNumber($request->store_id);
+                        // $orderNumber = $last_order_number + 1;
+                        $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->where('is_locked',0)->count();
+
+                    $orderNumber = @$storeOrderCount + 1;
                         
     
                         //check for any locked orders
                         if(isset($request->lock_order_id) && $request->lock_order_id != 0) //if the order is locked release lock
                         {
-                            $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
-                            if($order_no_exists)
-                            {
-                              $orderNumber=$orderNumber+1;
-                            }
+                            // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                            // if($order_no_exists)
+                            // {
+                            //   $orderNumber=$orderNumber+1;
+                            // }
                             Trn_store_order::withTrashed()->where('order_id','=',$request->lock_order_id)->update([
                                 'deleted_at' => NULL,
                                 'is_locked' => 0
@@ -976,11 +982,11 @@ class StoreOrderController extends Controller
             
             
                         }else{ //place a new order
-                        $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
-                        if($order_no_exists)
-                        {
-                          $orderNumber=$orderNumber+1;
-                        }
+                        // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                        // if($order_no_exists)
+                        // {
+                        //   $orderNumber=$orderNumber+1;
+                        // }
                             
                             $store_order = new Trn_store_order;
     
