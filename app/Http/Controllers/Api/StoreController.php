@@ -2126,89 +2126,89 @@ class StoreController extends Controller
                 $inventoryData = $inventoryData->orderBy('updated_time', 'DESC');
 
 
-                $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
+                // $inventoryDataa = $inventoryData->skip(($request->page - 1) * 20)->take(20)->get();
 
-                $roWc = 0;
-                if ($roWc == 0) {
-                    $inventoryData22 =  Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-                    ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-                    ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
-                    ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-                    ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+                // $roWc = 0;
+                // if ($roWc == 0) {
+                //     $inventoryData22 =  Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                //     ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                //     ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
+                //     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+                //     ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
 
-                    ->where('mst_store_products.store_id', $store_id)
-                    ->where('mst__stock_details.stock', '>', 0)
+                //     ->where('mst_store_products.store_id', $store_id)
+                //     ->where('mst__stock_details.stock', '>', 0)
 
-                    ->where('mst_store_products.product_type', 1)
-                     ->where('mst_store_products.is_removed', 0)
-                    ->where('mst_store_product_varients.is_removed', 0)
-                    // ->orderBy('mst_store_products.product_name','ASC')
-                    //  ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+                //     ->where('mst_store_products.product_type', 1)
+                //      ->where('mst_store_products.is_removed', 0)
+                //     ->where('mst_store_product_varients.is_removed', 0)
+                //     // ->orderBy('mst_store_products.product_name','ASC')
+                //     //  ->orderBy('mst_store_product_varients.stock_count', 'ASC')
 
-                    ->select(
-                        'mst_store_products.product_id',
-                        'mst_store_products.product_name',
-                        'mst_store_products.product_code',
-                        'mst_store_products.product_cat_id',
-                        'mst_store_products.product_base_image',
-                        'mst_store_products.product_status',
-                        'mst_store_products.product_brand',
-                        'mst_store_products.min_stock',
+                //     ->select(
+                //         'mst_store_products.product_id',
+                //         'mst_store_products.product_name',
+                //         'mst_store_products.product_code',
+                //         'mst_store_products.product_cat_id',
+                //         'mst_store_products.product_base_image',
+                //         'mst_store_products.product_status',
+                //         'mst_store_products.product_brand',
+                //         'mst_store_products.min_stock',
 
-                        'mst_store_products.tax_id',
-                        'mst_store_product_varients.product_varient_id',
-                        'mst_store_product_varients.variant_name',
-                        'mst_store_product_varients.product_varient_price',
-                        'mst_store_product_varients.product_varient_offer_price',
-                        'mst_store_product_varients.product_varient_base_image',
-                        'mst_store_product_varients.stock_count',
-                        'mst_store_product_varients.created_at',
-                        'mst_store_product_varients.is_base_variant',
-                        'mst_store_product_varients.variant_status',
-                        'mst_store_categories.category_id',
-                        'mst_store_categories.category_name',
-                        'mst__stock_details.stock',
-                        'mst__stock_details.prev_stock',
-                        'mst__stock_details.created_at AS updated_time',
-                        'mst_store_agencies.agency_name',
-                        'mst__sub_categories.sub_category_name',
+                //         'mst_store_products.tax_id',
+                //         'mst_store_product_varients.product_varient_id',
+                //         'mst_store_product_varients.variant_name',
+                //         'mst_store_product_varients.product_varient_price',
+                //         'mst_store_product_varients.product_varient_offer_price',
+                //         'mst_store_product_varients.product_varient_base_image',
+                //         'mst_store_product_varients.stock_count',
+                //         'mst_store_product_varients.created_at',
+                //         'mst_store_product_varients.is_base_variant',
+                //         'mst_store_product_varients.variant_status',
+                //         'mst_store_categories.category_id',
+                //         'mst_store_categories.category_name',
+                //         'mst__stock_details.stock',
+                //         'mst__stock_details.prev_stock',
+                //         'mst__stock_details.created_at AS updated_time',
+                //         'mst_store_agencies.agency_name',
+                //         'mst__sub_categories.sub_category_name',
 
-                    );
+                //     );
 
-                    if (isset($request->product_id)) {
-                        $inventoryData22 = $inventoryData22->where('mst_store_products.product_id', $request->product_id);
-                    }
+                //     if (isset($request->product_id)) {
+                //         $inventoryData22 = $inventoryData22->where('mst_store_products.product_id', $request->product_id);
+                //     }
 
-                    if (isset($request->agency_id)) {
-                        $inventoryData22 = $inventoryData22->where('mst_store_agencies.agency_id', $request->agency_id);
-                    }
+                //     if (isset($request->agency_id)) {
+                //         $inventoryData22 = $inventoryData22->where('mst_store_agencies.agency_id', $request->agency_id);
+                //     }
 
-                    if (isset($request->category_id)) {
-                        $inventoryData22 = $inventoryData22->where('mst_store_categories.category_id', $request->category_id);
-                    }
+                //     if (isset($request->category_id)) {
+                //         $inventoryData22 = $inventoryData22->where('mst_store_categories.category_id', $request->category_id);
+                //     }
 
-                    if (isset($request->sub_category_id)) {
-                        $inventoryData22 = $inventoryData22->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
-                    }
-                    $roWz = $inventoryData22->get();
-                    $roWc = count($roWz);
-                }
+                //     if (isset($request->sub_category_id)) {
+                //         $inventoryData22 = $inventoryData22->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+                //     }
+                //     $roWz = $inventoryData22->get();
+                //     $roWc = count($roWz);
+                // }
 
 
                 
 
-                $inventoryDatasss = collect($inventoryDataa);
+                $inventoryDatasss = collect($inventoryData);
                 $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
                 $dataReViStoreSS =   $inventoryDatassss->values()->all();
 
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                if ($roWc > 19) {
-                    $data['pageCount'] = floor(@$roWc / 20);
-                } else {
-                    $data['pageCount'] = 1;
-                }
+                // if ($roWc > 19) {
+                //     $data['pageCount'] = floor(@$roWc / 20);
+                // } else {
+                //     $data['pageCount'] = 1;
+                // }
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
