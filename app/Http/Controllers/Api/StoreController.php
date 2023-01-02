@@ -3418,7 +3418,7 @@ class StoreController extends Controller
     }
     public function walletReport(Request $request)
 	{
-		try {
+	
 			
 			$store_id=$request->store_id;
             //dd($store_id);
@@ -3540,13 +3540,7 @@ class StoreController extends Controller
       return response($data);
 	  
 			
-    } catch (\Exception $e) {
-        $response = ['status' => '0', 'message' => $e->getMessage()];
-        return response($response);
-    } catch (\Throwable $e) {
-        $response = ['status' => '0', 'message' => $e->getMessage()];
-        return response($response);
-    }
+  
 	}
 
 }
