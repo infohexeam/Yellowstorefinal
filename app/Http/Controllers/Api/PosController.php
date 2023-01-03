@@ -113,9 +113,9 @@ class PosController extends Controller
                 );
 
                 if (!$validator->fails()) {
-                    // $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+                     $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->where('is_locked',0)->count();
 
-                    // $orderNumber = @$storeOrderCount + 1;
+                    $orderNumber = @$storeOrderCount + 1;
 
                     $store_data = Mst_store::find($request->store_id);
 
@@ -124,17 +124,17 @@ class PosController extends Controller
                     } else {
                         $orderNumberPrefix = 'ORDRYSTR';
                     }
-                    $last_order_number=Helper::checkOrderNumber($request->store_id);
-                    $orderNumber = $last_order_number + 1;
-                    $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
-                    if($order_no_exists)
-                    {
-                      $orderNumber=$orderNumber+1;
-                    }
+                    // $last_order_number=Helper::checkOrderNumber($request->store_id);
+                    // $orderNumber = $last_order_number + 1;
+                    // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    // if($order_no_exists)
+                    // {
+                    //   $orderNumber=$orderNumber+1;
+                    // }
 
 
                     $store_order = new Trn_store_order;
-                    $store_order->order_number = $orderNumberPrefix . @$orderNumber;
+                    $store_order->order_number = $orderNumberPrefix .substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4)), 0, 4). @$orderNumber;
                     // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
                     $store_order->customer_id = 3;
                     $store_order->store_id =  $request->store_id;

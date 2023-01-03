@@ -631,6 +631,7 @@ class StoreOrderController extends Controller
                         }
 
                             Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+                            
                         }
 
                         if (!isset($value['discount_amount'])) {

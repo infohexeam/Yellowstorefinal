@@ -3537,7 +3537,7 @@ class StoreController extends Controller
       }
       $j++;
     }
-    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
+    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->here('is_locked',0)->count();
 
     $orderNumber = @$storeOrderCount + 1;
 
@@ -3548,14 +3548,14 @@ class StoreController extends Controller
     } else {
       $orderNumberPrefix = 'ORDRYSTR';
     }
-    $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
-    $orderNumber = $last_order_number + 1;
-    $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
-    if($order_no_exists)
-    {
-      $orderNumber=$orderNumber+1;
-    }
-    $store_order->order_number = $orderNumberPrefix . @$orderNumber;
+    // $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+    // $orderNumber = $last_order_number + 1;
+    // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+    // if($order_no_exists)
+    // {
+    //   $orderNumber=$orderNumber+1;
+    // }
+    $store_order->order_number = $orderNumberPrefix .substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4)), 0, 4). @$orderNumber;
     //dd(Auth::guard('store')->user()->store_admin_id);
     $store_order->customer_id = 3;
     $store_order->store_id =  Auth::guard('store')->user()->store_id;
