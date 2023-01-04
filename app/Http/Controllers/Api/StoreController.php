@@ -112,7 +112,7 @@ class StoreController extends Controller
 
             if (isset($request->customer_id)) {
                 $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
-                $cusVids = $cusVids->where('town_id', $cusTownId);
+                $cusVids = $cusVids->where('town_id', $cusTownId)->orWhere('town_id','=',NULL);
             }
 
             $cusVids = $cusVids->orderBy('video_id', 'DESC')->get();
@@ -729,8 +729,6 @@ class StoreController extends Controller
                 $today = Carbon::now()->toDateString();
 
                 if ($custCheck) {  
-                    
-                    
                     
                     if (Hash::check($passChk, $custCheck->password)) {
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
