@@ -2153,25 +2153,30 @@ class SettingController extends Controller
 			\DB::enableQueryLog();
 			//   echo $customer_profile_status;die;
 			$query = Trn_store_customer::select("*");
-
-			if ($customer_first_name != "") {
+			if (isset($request->customer_first_name)) {
+			if ($request->customer_first_name != "") {
 
 				
 
-				$query = $query->where('customer_first_name', 'LIKE', "%{$customer_first_name}%")->orWhere('customer_last_name', 'LIKE', "%{$customer_first_name}%")
-				->orWhere(DB::raw("CONCAT(`customer_first_name`,' ',`customer_last_name`)"), 'like', '%' . $customer_first_name . '%');
+				$query = $query->where('customer_first_name', 'LIKE', "%{$customer_first_name}%");
+				if (isset($request->customer_last_name)) {
+					$query=$query->orWhere(DB::raw("CONCAT(`customer_first_name`,' ',`customer_last_name`)"), 'like', '%' . $customer_first_name . '%');
+
+				}
+				
+			}
+		}
+
+			if (isset($request->customer_email)) {
+				$query = $query->orWhere('customer_email', 'LIKE', "%{$customer_email}%");
 			}
 
-			if (isset($customer_email)) {
-				$query = $query->where('customer_email', 'LIKE', "%{$customer_email}%");
+			if (isset($request->customer_mobile_number)) {
+				$query = $query->orWhere('customer_mobile_number', 'LIKE', "%{$customer_mobile_number}%");
 			}
 
-			if (isset($customer_mobile_number)) {
-				$query = $query->where('customer_mobile_number', 'LIKE', "%{$customer_mobile_number}%");
-			}
-
-			if (isset($customer_profile_status)) {
-				if ($customer_profile_status == 0) {
+			if (isset($request->customer_profile_status)) {
+				if ($request->customer_profile_status == 0) {
 					$query = $query->whereIn("customer_profile_status", [$customer_profile_status, null]);
 				} else {
 					$query = $query->where("customer_profile_status", $customer_profile_status);
@@ -4685,13 +4690,14 @@ class SettingController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'registraion_points'          => 'required',
-				'first_order_points'          => 'required',
-				'referal_points'          => 'required',
-				'rupee_points'          => 'required',
-				'rupee'          => 'required',
-				'order_points'          => 'required',
-				'order_amount'          => 'required',
+				'registraion_points'          => 'required|numeric|gte:0',
+				'first_order_points'          => 'required|numeric|gte:0',
+				'referal_points'          => 'required|numeric|gte:0',
+				'rupee_points'          => 'required|numeric|gte:0',
+				'rupee'          => 'required|numeric|gte:0',
+				'order_points'          => 'required|numeric|gte:0',
+				'order_amount'          => 'required|numeric|gte:0',
+				'joiner_points'          => 'numeric|gte:0',
 				//'points'          => 'required',
 			],
 			[

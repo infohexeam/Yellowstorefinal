@@ -55,6 +55,15 @@ class MasterController extends Controller
       try{ 
           if(isset($request->customer_id))
           {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'reward_points'          => 'required|numeric|gt:0',
+                    
+                ]
+                
+            );
+            if (!$validator->fails()) {
             $reward = new Trn_customer_reward;
             $reward->transaction_type_id  	= 0;
             $reward->reward_points_earned  	= $request->reward_points;
@@ -64,6 +73,11 @@ class MasterController extends Controller
             $reward->reward_point_status  	= 1;
             $reward->discription  	= $request->reward_discription;
             $reward->save(); 
+            }
+            else
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
           }else
           {
             return redirect()->back()->withErrors(['Customer not exist!'])->withInput();
@@ -572,12 +586,26 @@ class MasterController extends Controller
              }  
             else
             {
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'customer_mobile_number'          => 'required',
+                        'reward_points'          => 'required|numeric|gt:0',
+                        
+                    ]
+                    
+                );
+                if (!$validator->fails()) {
                  $reward->user_id 		= auth()->user()->id;
                 $reward->customer_mobile_number  	= $request->customer_mobile_number;
                 $reward->reward_discription = $request->reward_discription;
                 $reward->reward_points = $request->reward_points;
                 $reward->added_date 		=  Carbon::now()->format('Y-m-d');
                 $reward->save(); 
+                }
+                else {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
             }
           
 

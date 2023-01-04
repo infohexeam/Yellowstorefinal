@@ -44,12 +44,13 @@ class WalletController extends Controller
 			$request->all(),
 			[
 				//'registraion_points'          => 'required',
-				'first_order_points'          => 'required',
-				'referal_points'          => 'required',
-				'rupee_points'          => 'required',
-				'rupee'          => 'required',
-				'order_points'          => 'required',
-				'order_amount'          => 'required',
+				'first_order_points'          => 'required|numeric|gte:0',
+				'referal_points'          => 'required|numeric|gte:0',
+				'rupee_points'          => 'required|numeric|gte:0',
+				'rupee'          => 'required|numeric|gte:0',
+				'order_points'          => 'required|numeric|gte:0',
+				'order_amount'          => 'required|numeric|gte:0',
+				'joiner_points'  => 'numeric|gte:0',
 				//'points'          => 'required',
 			],
 			[
@@ -185,6 +186,15 @@ class WalletController extends Controller
       try{ 
           if(isset($request->customer_id))
           {
+			$validator = Validator::make(
+                $request->all(),
+                [
+                    'reward_points'          => 'required|numeric|gt:0',
+                    
+                ]
+                
+            );
+            if (!$validator->fails()) {
             $reward = new Trn_customer_reward;
             $reward->store_id=$store_id;
             $reward->transaction_type_id  	= 0;
@@ -204,6 +214,10 @@ class WalletController extends Controller
 			$wallet_log->points_debited=null;
 			$wallet_log->points_credited=$request->reward_points;
 			$wallet_log->save();
+			}
+			else{
+				return redirect()->back()->withErrors($validator)->withInput();
+			}
           }else
           {
             return redirect()->back()->withErrors(['Customer not exist!'])->withInput();
