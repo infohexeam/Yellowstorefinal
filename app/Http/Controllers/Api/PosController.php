@@ -150,8 +150,9 @@ class PosController extends Controller
                     $store_order->order_type = 'POS';
 
                     $store_order->save();
-                    $exist_last=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
-                    $order_id = $exist_last->order_id;
+                    // $exist_last=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    // $order_id = $exist_last->order_id;
+                    $order_id = DB::getPdo()->lastInsertId();
 
                     $invoice_info['order_id'] = $order_id;
                     $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
