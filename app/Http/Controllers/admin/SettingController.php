@@ -2803,7 +2803,7 @@ class SettingController extends Controller
 			$a2  = Carbon::parse($request->date_to)->endOfDay();
 
 			$query = DB::table('mst_delivery_boys')
-				->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
+				
 				//     ->join('mst_stores','mst_stores.store_id','=','mst_delivery_boys.store_id')
 				//->where('mst_stores.subadmin_id',auth()->user()->id)
 				// ->where('mst_store_link_delivery_boys.subadmin_id',auth()->user()->id)
@@ -2815,6 +2815,7 @@ class SettingController extends Controller
 			// }
 
 			if (isset($store_id)) {
+				$query=$query->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id');
 				$query = $query->where('mst_store_link_delivery_boys.store_id', $store_id);
 			}
 
