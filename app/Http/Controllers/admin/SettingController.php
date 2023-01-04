@@ -584,7 +584,7 @@ class SettingController extends Controller
 			if (isset($country_id)) {
 				$query = $query->where('mst_stores.store_country_id', $country_id);
 			}
-			if (isset($store_state_id)) {
+			if (isset($request->store_state_id)) {
 				$query = $query->where('mst_stores.store_state_id', $state_id);
 			}
 			if (isset($district_id)) {
@@ -5140,7 +5140,7 @@ class SettingController extends Controller
 				$query = $query->where('store_country_id', 'like', '%' . $country_id . '%');
 			}
 
-			if ($state_id) {
+			if ($request->state_id) {
 				$query = $query->where('store_state_id', 'like', '%' . $state_id . '%');
 			}
 
