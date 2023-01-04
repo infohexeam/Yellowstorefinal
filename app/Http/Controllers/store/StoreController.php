@@ -3537,7 +3537,7 @@ class StoreController extends Controller
       }
       $j++;
     }
-    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->here('is_locked',0)->count();
+    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->where('is_locked',0)->count();
 
     $orderNumber = @$storeOrderCount + 1;
 
@@ -3558,6 +3558,7 @@ class StoreController extends Controller
     $store_order->order_number = $orderNumberPrefix .substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4)), 0, 4). @$orderNumber;
     //dd(Auth::guard('store')->user()->store_admin_id);
     $store_order->customer_id = 3;
+    
     $store_order->store_id =  Auth::guard('store')->user()->store_id;
     if (isset(Auth::guard('store')->user()->subadmin_id)) {
       $store_order->subadmin_id =  Auth::guard('store')->user()->subadmin_id;
@@ -3574,6 +3575,7 @@ class StoreController extends Controller
     $store_order->order_type = 'POS';
 
     $store_order->save();
+   
     $order_id = DB::getPdo()->lastInsertId();
 
 
