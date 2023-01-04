@@ -551,7 +551,7 @@ class SettingController extends Controller
 		$count = $stores->count();
 		$agencies = Mst_store_agencies::all();
 
-
+        $tList=[];
 		if ($_GET) {
 
 			$subadmin_id = $request->subadmin_id;
@@ -563,6 +563,7 @@ class SettingController extends Controller
 			$email = $request->store_email_address;
 			$store_contact_person_phone_number = $request->store_contact_person_phone_number;
 			$store_account_status = $request->store_account_status;
+           
 
 			$states = State::where('country_id', $request->store_country_id)->get();
 			$districts = District::where('state_id', $request->store_state_id)->get();
@@ -577,32 +578,39 @@ class SettingController extends Controller
 				$query = $query->where('mst_stores.subadmin_id', auth()->user()->id);
 			}
 
-			if (isset($subadmin_id)) {
+			if (isset($request->subadmin_id)) {
 				$query = $query->where('users.id', $subadmin_id);
 			}
 
-			if (isset($country_id)) {
+			if (isset($request->store_country_id)) {
 				$query = $query->where('mst_stores.store_country_id', $country_id);
 			}
 			if (isset($request->store_state_id)) {
 				$query = $query->where('mst_stores.store_state_id', $state_id);
 			}
-			if (isset($district_id)) {
+			if (isset($request->store_district_id)) {
 				$query = $query->where('mst_stores.store_district_id', $district_id);
 			}
-			if (isset($town_id)) {
-				$query = $query->where('mst_stores.town_id', $town_id);
+			if (isset($request->store_town_id)) {
+				$twn=Town::where('town_id',$request->store_town_id)->first();
+				$twns=Town::where('town_name',$twn->town_name)->get();
+				foreach($twns as $tn)
+				{
+					array_push($tList,$tn->town_id);
+				}
+				//dd($tList);
+				$query = $query->whereIn('mst_stores.town_id',$tList);
 			}
-			if (isset($store_name)) {
+			if (isset($request->store_name)) {
 				$query = $query->where('mst_stores.store_name', 'like', '%' . $store_name . '%');
 			}
-			if (isset($email)) {
+			if (isset($request->store_email_address)) {
 				$query = $query->where('mst_stores.email', 'like', '%' . $email . '%');
 			}
-			if (isset($store_contact_person_phone_number)) {
+			if (isset($request->store_contact_person_phone_number)) {
 				$query = $query->where('trn__store_admins.store_mobile', 'like', '%' . $store_contact_person_phone_number . '%');
 			}
-			if (isset($store_account_status)) {
+			if (isset($request->store_account_status)) {
 				$query = $query->where('trn__store_admins.store_account_status', $store_account_status);
 			}
 
@@ -5136,40 +5144,39 @@ class SettingController extends Controller
 
 			$query = Mst_store::select("*");
 
-			if ($country_id) {
-				$query = $query->where('store_country_id', 'like', '%' . $country_id . '%');
+			if (isset($request->store_country_id)) {
+				$query = $query->where('mst_stores.store_country_id', $country_id);
+			}
+			if (isset($request->store_state_id)) {
+				$query = $query->where('mst_stores.store_state_id', $state_id);
+			}
+			if (isset($request->store_district_id)) {
+				$query = $query->where('mst_stores.store_district_id', $district_id);
+			}
+			if (isset($request->store_town_id)) {
+				$twn=Town::where('town_id',$request->store_town_id)->first();
+				$twns=Town::where('town_name',$twn->town_name)->get();
+				foreach($twns as $tn)
+				{
+					array_push($tList,$tn->town_id);
+				}
+				//dd($tList);
+				$query = $query->whereIn('mst_stores.town_id',$tList);
+			}
+			if (isset($request->store_name)) {
+				$query = $query->where('mst_stores.store_name', 'like', '%' . $store_name . '%');
+			}
+			if (isset($request->store_email_address)) {
+				$query = $query->where('mst_stores.email', 'like', '%' . $email . '%');
+			}
+			if (isset($request->store_contact_person_phone_number)) {
+				$query = $query->where('trn__store_admins.store_mobile', 'like', '%' . $store_contact_person_phone_number . '%');
+			}
+			if (isset($request->store_account_status)) {
+				$query = $query->where('trn__store_admins.store_account_status', $store_account_status);
 			}
 
-			if ($request->state_id) {
-				$query = $query->where('store_state_id', 'like', '%' . $state_id . '%');
-			}
-
-			if ($store_town_id) {
-				$query = $query->where('town_id', 'like', '%' . $store_town_id . '%');
-			}
-
-			if ($district_id) {
-				$query = $query->where('store_district_id', 'like', '%' . $district_id . '%');
-			}
-
-			if ($store_name) {
-				//echo $store_name;die;
-				$query = $query->where('store_name', 'like', '%' . $store_name . '%');
-			}
-
-			if ($email) {
-				$query = $query->where('email', 'like', '%' . $email . '%');
-			}
-
-			if ($store_contact_person_phone_number) {
-				$query = $query->where('store_contact_person_phone_number', 'like', '%' . $store_contact_person_phone_number . '%');
-			}
-
-			if ($store_account_status) {
-				$query = $query->where('store_account_status', 'like', '%' . $store_account_status . '%');
-			}
-
-			//dd($query->get());
+			$stores=$query->get();
 
 			return view('admin.masters.subadmin_store.list', compact('subadmins', 'town', 'districts', 'states', 'stores', 'pageTitle', 'countries', 'agencies'));
 		}
