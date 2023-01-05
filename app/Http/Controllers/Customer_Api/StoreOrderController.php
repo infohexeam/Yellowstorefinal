@@ -1081,6 +1081,18 @@ class StoreOrderController extends Controller
 
                         foreach ($request->product_variants as $value) {
                             $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
+                            $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
+                            if ($request->payment_type_id == 1) {
+                                if($stockDiffernece<0)
+                                {
+                                    $data['status'] = 0;
+                                    $data['message'] = "Some products quantity is more than available stock..Try again";
+                                    DB::rollback();
+                                    return response($data);
+    
+                                }
+                            }
+                            
     
                             if ($proData->service_type != 2) {
                                 Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);

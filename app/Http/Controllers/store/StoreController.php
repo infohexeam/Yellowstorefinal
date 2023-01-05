@@ -3521,13 +3521,13 @@ class StoreController extends Controller
     // try {
       $j=0;
       $pro_variant = $request->get('product_varient_id');
-      $quantity = $request->get('quantity');
+      $single_quantity = $request->get('single_quantity');
      //dd($request->get('quantity'));
     foreach ($request->get('product_varient_id') as $pro) {
       $productVarStockCheck =  Mst_store_product_varient::find($pro_variant[$j]);
       if($productVarStockCheck)
       {
-          $stockDiffernece=$productVarStockCheck->stock_count-$quantity[$j];
+          $stockDiffernece=$productVarStockCheck->stock_count-$single_quantity[$j];
           if($stockDiffernece<0)
           {
              
@@ -3604,14 +3604,14 @@ class StoreController extends Controller
 
       $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
 
-      Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $quantity[$i]);
+      Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $single_quantity[$i]);
 
       if (!isset($discount_amount[$i])) {
         $discount_amount[$i] = 0;
       }
 
 
-      $negStock = -1 * abs($quantity[$i]);
+      $negStock = -1 * abs($single_quantity[$i]);
 
       $sd = new Mst_StockDetail;
       $sd->store_id = Auth::guard('store')->user()->store_id;
@@ -3627,7 +3627,7 @@ class StoreController extends Controller
         'product_varient_id' => $pro_variant[$i],
         'customer_id' => $request->get('customer_id'),
         'store_id' => Auth::guard('store')->user()->store_id,
-        'quantity' => $quantity[$i],
+        'quantity' => $single_quantity[$i],
         'unit_price' =>  $single_quantity_rate[$i],
         'mrp'=>$productVarOlddata->product_varient_price,
         'tax_amount' => $total_tax[$i],

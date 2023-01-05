@@ -216,14 +216,14 @@ function validateDis(disValue)
     
     $("#discount").val(0);
     $("#total_discount").val(0);
-    $("#quantity").val(0);
+    $("#quantity").val(1);
     $("#rate").val(0);
     $('#cname').text('');
 
           var customer_id = 0;
           var customer_name;
           var product_id = 0;
-          var quantity = 0;
+          var quantity = 1;
           var rate = 0;
           var discount = 0;
           var total_discount = 0;
@@ -239,7 +239,7 @@ var countPro = 0;
      function productSelected()
      {  
            product_id = $('#product_id').val();
-           quantity = 1;
+           quantity = $('#quantity').val();
            var product_res = product_id.split("|");
 
 
@@ -252,6 +252,7 @@ var countPro = 0;
                success:function(result)
                {
                           $('#quantity').val(quantity);
+                          //alert(quantity);
                     product_name = result['variant_name'];
                     let product_varient_price = result['product_varient_price'];
                     product_sale_price = result['product_varient_offer_price'];
@@ -260,6 +261,7 @@ var countPro = 0;
                     $('#mrp').val(quantity * product_varient_price);
 
                     $('#tax_value').val(s_tax);
+                    $('#quantity').val(quantity);
                     total_amount = quantity * product_sale_price
                          tax = (parseFloat(s_tax) / 100) * total_amount;
                         // total_amount_plus_tax = parseFloat(total_amount) + parseFloat(tax);
@@ -318,6 +320,7 @@ var countPro = 0;
      {  
            product_id = $('#product_id').val();
            quantity = $('#quantity').val();
+           //alert(quantity);
            
            findProductAvailability(product_id,quantity);
 
@@ -335,6 +338,7 @@ var countPro = 0;
                     product_varient_price = result['product_varient_price'];
                     var s_tax = result['tax'];
                     $('#rate').val(quantity * product_sale_price);
+                    $('#quantity').val(quantity);
                     
                     rate = $('#rate').val();
                     tax = (s_tax / 100) * rate;
@@ -408,8 +412,10 @@ var countPro = 0;
            customer_id = $('#customer_id').val();
            product_id = $('#product_id').val();
            quantity = $('#quantity').val();
+           //alert(quantity);
            rate = $('#rate').val();
            mrp=$('#mrp').val();
+           //alert(quantity);
        //    discount = $('#discount').val();
            total_discount = $('#total_discount').val();
            tax_value = $('#tax_value').val();
@@ -438,7 +444,7 @@ var countPro = 0;
                          customer_name = result['customer_first_name']+' '+result['customer_last_name'];
                          //  alert(customer_name);
                         // $('#cname').text(customer_name);
-                         html = '<tr id="tr'+countPro+'"><td> <input type="hidden" class=".classCustomerID" name="customer_id" value="'+customer_id+'"> <input type="hidden" class=".classProductID" name="product_id[]" value="'+product_res[0]+'"> <input type="hidden" class=".classProductInvID" name="product_varient_id[]" value="'+product_res[1]+'"> '+product_name+' </td><td><input type="hidden" class=".classQuantity" name="quantity[]" value="'+quantity+'">'+quantity+' <i class="fa fa-times"></i> <input type="hidden" class=".classSingleQuantityRate" name="single_quantity_rate[]" value="'+(rate/ quantity)+'">'+ (rate/ quantity) +'</td><td><input type="hidden" class=".classDiscountAmount" name="discount_amount[]" value="'+total_discount+'"><input type="hidden" class=".classDiscountPercentage" name="discount_percentage[]" value="'+0+'">'+total_discount+'</td><td><input type="hidden" class=".classTotalTax" name="total_tax[]" value="'+tax.toFixed(2)+'">'+tax_value+'</td><td class="price"><input type="hidden" class=".classTotalAmount" name="total_amount[]" value="'+parseFloat(total_amount).toFixed(2)+'">'+parseFloat(total_amount).toFixed(2)+'</td><td><a class="btn btn-sm btn-danger text-white" id="removeBtn" onclick="removetr('+countPro+')" class=".removeBtn">Remove</a></td></tr>';
+                         html = '<tr id="tr'+countPro+'"><td> <input type="hidden" class=".classCustomerID" name="customer_id" value="'+customer_id+'"> <input type="hidden" class=".classProductID" name="product_id[]" value="'+product_res[0]+'"> <input type="hidden" class=".classProductInvID" name="product_varient_id[]" value="'+product_res[1]+'"> '+product_name+' </td><td><input type="hidden" class=".classQuantity" name="single_quantity[]" value="'+quantity+'">'+quantity+' <i class="fa fa-times"></i> <input type="hidden" class=".classSingleQuantityRate" name="single_quantity_rate[]" value="'+(rate/ quantity)+'">'+ (rate/ quantity) +'</td><td><input type="hidden" class=".classDiscountAmount" name="discount_amount[]" value="'+total_discount+'"><input type="hidden" class=".classDiscountPercentage" name="discount_percentage[]" value="'+0+'">'+total_discount+'</td><td><input type="hidden" class=".classTotalTax" name="total_tax[]" value="'+tax.toFixed(2)+'">'+tax_value+'</td><td class="price"><input type="hidden" class=".classTotalAmount" name="total_amount[]" value="'+parseFloat(total_amount).toFixed(2)+'">'+parseFloat(total_amount).toFixed(2)+'</td><td><a class="btn btn-sm btn-danger text-white" id="removeBtn" onclick="removetr('+countPro+')" class=".removeBtn">Remove</a></td></tr>';
                          $('#myTable tr:last').after(html);
                          $('.total_sum').remove();
                               
@@ -465,7 +471,7 @@ var countPro = 0;
                     
      
                       $("#product_id").val('').trigger('change');;
-                     $('#quantity').val('');
+                     $('#quantity').val(1);
                      $('#rate').val('');
                     $('#mrp').val('');
                    //  $('#discount').val('');
