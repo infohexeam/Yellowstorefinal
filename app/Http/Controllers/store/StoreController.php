@@ -3633,7 +3633,7 @@ class StoreController extends Controller
 
       $sd = new Mst_StockDetail;
       $sd->store_id = Auth::guard('store')->user()->store_id;
-      $sd->product_id = $p_id[$i];
+      $sd->product_id = $productVarOlddata->product_id??0;
       $sd->stock = $negStock;
       $sd->product_varient_id = $pro_variant[$i];
       $sd->prev_stock = $productVarOlddata->stock_count;
@@ -3641,7 +3641,7 @@ class StoreController extends Controller
 
       $data = [
         'order_id' => $order_id,
-        'product_id' => $p_id[$i],
+        'product_id' => $productVarOlddata->product_id??0,
         'product_varient_id' => $pro_variant[$i],
         'customer_id' => $request->get('customer_id'),
         'store_id' => Auth::guard('store')->user()->store_id,
