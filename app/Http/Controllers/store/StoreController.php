@@ -3519,6 +3519,7 @@ class StoreController extends Controller
   public function savePOS(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
   {
     // try {
+      DB::beginTransaction();
       $j=0;
       $pro_variant = $request->get('product_varient_id');
       $single_quantity = $request->get('single_quantity');
@@ -3530,6 +3531,7 @@ class StoreController extends Controller
           $stockDiffernece=$productVarStockCheck->stock_count-$single_quantity[$j];
           if($stockDiffernece<0)
           {
+              DB::rollback();
              
               return  redirect()->back()->with('error', 'Some products quantity is more than available stock..Try again.');
 
@@ -3603,9 +3605,21 @@ class StoreController extends Controller
       $product_detail = Mst_store_product::where('product_id', '=', $p_id)->get();
 
       $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
+      if($productVarOlddata)
+      {
+          $stockDiffernece=$productVarOlddata->stock_count-$single_quantity[$i];
+          if($stockDiffernece<0)
+          {
+            //$order_id
+              Trn_store_order::where('order_id',$order_id)->delete();
+              DB::rollback();
+              return  redirect()->back()->with('error', 'Some products quantity is more than available stock..Try again.');
+
+          }
+      }
 
       Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $single_quantity[$i]);
-
+     
       if (!isset($discount_amount[$i])) {
         $discount_amount[$i] = 0;
       }
@@ -3647,6 +3661,7 @@ class StoreController extends Controller
       $i++;
     }
     // die;
+    DB::commit();
     return  redirect()->back()->with('status', 'Order placed successfully.');
     // } catch (\Exception $e) {
     //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();

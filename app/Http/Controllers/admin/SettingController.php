@@ -2168,11 +2168,11 @@ class SettingController extends Controller
 		}
 
 			if (isset($request->customer_email)) {
-				$query = $query->orWhere('customer_email', 'LIKE', "%{$customer_email}%");
+				$query = $query->where('customer_email', 'LIKE', "%{$customer_email}%");
 			}
 
 			if (isset($request->customer_mobile_number)) {
-				$query = $query->orWhere('customer_mobile_number', 'LIKE', "%{$customer_mobile_number}%");
+				$query = $query->where('customer_mobile_number', 'LIKE', "%{$customer_mobile_number}%");
 			}
 
 			if (isset($request->customer_profile_status)) {
