@@ -412,6 +412,7 @@ var countPro = 0;
            customer_id = $('#customer_id').val();
            product_id = $('#product_id').val();
            quantity = $('#quantity').val();
+           //findProductAvailability(product_id , quantity);
            //alert(quantity);
            rate = $('#rate').val();
            mrp=$('#mrp').val();
