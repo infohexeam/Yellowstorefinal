@@ -3603,9 +3603,10 @@ class StoreController extends Controller
     foreach ($request->get('product_id') as $p_id) {
       //  echo "here";
 
-      $product_detail = Mst_store_product::where('product_id', '=', $p_id)->get();
+      $product_detail = Mst_store_product::where('product_id', '=', $p_id[$i])->get();
 
       $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
+    
       if($productVarOlddata)
       {
           $stockDiffernece=$productVarOlddata->stock_count-$single_quantity[$i];
@@ -3617,6 +3618,8 @@ class StoreController extends Controller
               return  redirect()->back()->with('error', 'Some products quantity is more than available stock..Try again.');
 
           }
+          
+
       }
 
       Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $single_quantity[$i]);
@@ -3630,7 +3633,7 @@ class StoreController extends Controller
 
       $sd = new Mst_StockDetail;
       $sd->store_id = Auth::guard('store')->user()->store_id;
-      $sd->product_id = $p_id;
+      $sd->product_id = $p_id[$i];
       $sd->stock = $negStock;
       $sd->product_varient_id = $pro_variant[$i];
       $sd->prev_stock = $productVarOlddata->stock_count;
@@ -3638,7 +3641,7 @@ class StoreController extends Controller
 
       $data = [
         'order_id' => $order_id,
-        'product_id' => $p_id,
+        'product_id' => $p_id[$i],
         'product_varient_id' => $pro_variant[$i],
         'customer_id' => $request->get('customer_id'),
         'store_id' => Auth::guard('store')->user()->store_id,
