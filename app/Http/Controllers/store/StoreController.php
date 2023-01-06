@@ -3539,8 +3539,8 @@ class StoreController extends Controller
       }
       $j++;
     }
-    // $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->where('is_locked',0)->count();
-    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
+    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->where('is_locked',0)->count();
+    // $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
 
     $orderNumber = @$storeOrderCount + 1;
 
