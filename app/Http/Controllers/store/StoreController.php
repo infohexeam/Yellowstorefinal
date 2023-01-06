@@ -3519,7 +3519,7 @@ class StoreController extends Controller
   public function savePOS(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
   {
     // try {
-      DB::beginTransaction();
+     
       $j=0;
       $pro_variant = $request->get('product_varient_id');
       $single_quantity = $request->get('single_quantity');
@@ -3531,7 +3531,6 @@ class StoreController extends Controller
           $stockDiffernece=$productVarStockCheck->stock_count-$single_quantity[$j];
           if($stockDiffernece<0)
           {
-              DB::rollback();
              
               return  redirect()->back()->with('error', 'Some products quantity is more than available stock..Try again.');
 
@@ -3539,6 +3538,7 @@ class StoreController extends Controller
       }
       $j++;
     }
+    DB::beginTransaction();
     $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
 
     $orderNumber = @$storeOrderCount + 1;
