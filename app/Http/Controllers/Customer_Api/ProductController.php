@@ -1655,6 +1655,7 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
@@ -1693,7 +1694,7 @@ class ProductController extends Controller
                     $productData = $productData->orderBy('distance');
                 }
 
-                $productData = $productData->where('mst_store_products.product_status', 1)
+                $productData = $productData->where('mst_store_products.display_flag', 1)
                     ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
                     ->whereOr('mst_store_product_varients.variant_name', 'LIKE', "%{$product}%")
                     ->where('mst_store_product_varients.stock_count', '>', 0)
@@ -1748,6 +1749,7 @@ class ProductController extends Controller
                             'mst_store_products.product_base_image',
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
+                            'mst_store_products.display_flag',
                             'mst_store_product_varients.product_varient_id',
                             'mst_store_product_varients.variant_name',
                             'mst_store_product_varients.product_varient_price',
@@ -1759,7 +1761,7 @@ class ProductController extends Controller
                             'mst_store_product_varients.variant_status',
                         );
 
-                    $productData = $productData->where('mst_store_products.product_status', 1)
+                    $productData = $productData->where('mst_store_products.display_flag', 1)
                         ->where('mst_store_product_varients.stock_count', '>', 0)
 
                         ->where('mst_store_products.store_id', $request->store_id)
@@ -2538,6 +2540,7 @@ class ProductController extends Controller
                                 'mst_store_products.product_base_image',
                                 'mst_store_products.show_in_home_screen',
                                 'mst_store_products.product_status',
+                                'mst_store_products.display_flag',
                                 'mst_store_product_varients.product_varient_id',
                                 'mst_store_product_varients.variant_name',
                                 'mst_store_product_varients.product_varient_price',
@@ -2546,7 +2549,7 @@ class ProductController extends Controller
                                 'mst_store_product_varients.stock_count',
                                 'mst_store_product_varients.store_id'
                             )
-                            ->where('mst_store_products.product_status', 1)
+                            ->where('mst_store_products.display_flag', 1)
 
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             // ->orWhere('mst_store_products.product_type',2)
@@ -2600,6 +2603,7 @@ class ProductController extends Controller
                                 'mst_store_products.product_base_image',
                                 'mst_store_products.show_in_home_screen',
                                 'mst_store_products.product_status',
+                                'mst_store_products.display_flag',
                                 'mst_store_product_varients.product_varient_id',
                                 'mst_store_product_varients.variant_name',
                                 'mst_store_product_varients.product_varient_price',
@@ -2608,7 +2612,7 @@ class ProductController extends Controller
                                 'mst_store_product_varients.stock_count',
                                 'mst_store_product_varients.store_id'
                             )
-                            ->where('mst_store_products.product_status', 1)
+                            ->where('mst_store_products.display_flag', 1)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             // ->orWhere('mst_store_products.product_type',2)
 
@@ -2690,6 +2694,7 @@ class ProductController extends Controller
                                     'mst_store_products.product_base_image',
                                     'mst_store_products.show_in_home_screen',
                                     'mst_store_products.product_status',
+                                    'mst_store_products.display_flag',
                                     'mst_store_product_varients.product_varient_id',
                                     'mst_store_product_varients.variant_name',
                                     'mst_store_product_varients.product_varient_price',
@@ -2698,7 +2703,7 @@ class ProductController extends Controller
                                     'mst_store_product_varients.stock_count',
                                     'mst_store_product_varients.store_id'
                                 )
-                                ->where('mst_store_products.product_status', 1)
+                                ->where('mst_store_products.display_flag', 1)
 
                                 ->where('mst_store_product_varients.stock_count', '>', 0)
                                 // ->orWhere('mst_store_products.product_type',2)
@@ -2751,6 +2756,7 @@ class ProductController extends Controller
                                     'mst_store_products.product_base_image',
                                     'mst_store_products.show_in_home_screen',
                                     'mst_store_products.product_status',
+                                    'mst_store_products.display_flag',
                                     'mst_store_product_varients.product_varient_id',
                                     'mst_store_product_varients.variant_name',
                                     'mst_store_product_varients.product_varient_price',
@@ -2759,7 +2765,7 @@ class ProductController extends Controller
                                     'mst_store_product_varients.stock_count',
                                     'mst_store_product_varients.store_id'
                                 )
-                                ->where('mst_store_products.product_status', 1)
+                                ->where('mst_store_products.display_flag', 1)
                                 ->where('mst_store_product_varients.stock_count', '>', 0)
                                 //  ->orWhere('mst_store_products.product_type',2)
 
@@ -2905,7 +2911,7 @@ class ProductController extends Controller
                             $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
                         }
 
-                        $productData = $productData->where('mst_store_products.product_status', 1)
+                        $productData = $productData->where('mst_store_products.display_flag', 1)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             ->where('mst_store_products.product_cat_id', $category_id)
                             ->where('mst_store_products.is_removed', 0)
@@ -3018,7 +3024,7 @@ class ProductController extends Controller
                         }
 
 
-                        $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                        $allProducts = $allProducts->where('mst_store_products.display_flag', 1)
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             ->where('mst_store_product_varients.is_removed', 0)
@@ -3157,7 +3163,7 @@ class ProductController extends Controller
                                 $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
                             }
 
-                            $productData = $productData->where('mst_store_products.product_status', 1)
+                            $productData = $productData->where('mst_store_products.display_flag', 1)
                                 ->where('mst_store_product_varients.stock_count', '>', 0)
                                 ->where('mst_store_products.store_id', $store_id)
                                 ->where('mst_store_products.product_cat_id', $category_id)
@@ -3236,7 +3242,7 @@ class ProductController extends Controller
                             }
 
 
-                            $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                            $allProducts = $allProducts->where('mst_store_products.display_flag', 1)
                                 ->where('mst_store_products.store_id', $store_id)
                                 ->where('mst_store_product_varients.stock_count', '>', 0)
                                 ->where('mst_store_product_varients.is_removed', 0)
@@ -3369,7 +3375,7 @@ class ProductController extends Controller
                     $data['offerProducts']  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                         // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
-                        ->where('mst_store_products.product_status', 1)
+                        ->where('mst_store_products.display_flag', 1)
                         ->where('mst_store_products.store_id', $store_id)
                         ->where('mst_store_product_varients.stock_count', '>', 0)
                         //->orWhere('mst_store_products.product_type',2)
@@ -3455,7 +3461,7 @@ class ProductController extends Controller
                     $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                         // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
-                        ->where('mst_store_products.product_status', 1)
+                        ->where('mst_store_products.display_flag', 1)
                         ->where('mst_store_products.store_id', $store_id)
                         ->where('mst_store_product_varients.stock_count', '>', 0)
                         ->where('mst_store_product_varients.is_removed', 0)
@@ -3623,7 +3629,7 @@ class ProductController extends Controller
                         $data['offerProducts']  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                             // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
-                            ->where('mst_store_products.product_status', 1)
+                            ->where('mst_store_products.display_flag', 1)
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             //->orWhere('mst_store_products.product_type',2)
@@ -3705,7 +3711,7 @@ class ProductController extends Controller
                             ->where('trn__recently_visited_products.customer_id', $request->customer_id)
                             ->where('mst_store_products.store_id', $store_id)
 
-                            ->where('mst_store_products.product_status', 1)
+                            ->where('mst_store_products.display_flag', 1)
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
@@ -3744,7 +3750,7 @@ class ProductController extends Controller
                         $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                             // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
-                            ->where('mst_store_products.product_status', 1)
+                            ->where('mst_store_products.display_flag', 1)
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
                             ->where('mst_store_product_varients.is_removed', 0)
@@ -3919,7 +3925,7 @@ class ProductController extends Controller
                                     + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                     $productData = $productData->orderBy('distance');
                 }
-                $productData = $productData->where('mst_store_products.product_status', 1)
+                $productData = $productData->where('mst_store_products.display_flag', 1)
                     ->where('mst_store_product_varients.stock_count', '>', 0)
                     ->where('mst_store_product_varients.is_removed', 0)
                     ->where('mst_store_products.is_removed', 0)
@@ -4198,6 +4204,7 @@ class ProductController extends Controller
                             'mst_store_products.product_base_image',
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
+                            'mst_store_products.display_flag',
                             'mst_store_product_varients.product_varient_id',
                             'mst_store_product_varients.variant_name',
                             'mst_store_product_varients.product_varient_price',
@@ -4207,7 +4214,7 @@ class ProductController extends Controller
                             'mst_store_product_varients.store_id'
                         );
 
-                    $productData = $productData->where('mst_store_products.product_status', 1)
+                    $productData = $productData->where('mst_store_products.display_flag', 1)
                         ->where('mst_store_product_varients.stock_count', '>', 0)
                         //  ->orWhere('mst_store_products.product_type',2)
 
@@ -4558,6 +4565,7 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
@@ -4574,7 +4582,7 @@ class ProductController extends Controller
 
 
 
-                    $PurproductData = $PurproductData->where('mst_store_products.product_status', 1)
+                    $PurproductData = $PurproductData->where('mst_store_products.display_flag', 1)
                         //->where('mst_store_products.show_in_home_screen',1)
                         ->where('trn_store_orders.customer_id', $request->customer_id)
                         ->orderBy('trn_order_items.order_item_id', 'DESC');
@@ -4744,6 +4752,7 @@ class ProductController extends Controller
                     'mst_store_products.product_base_image',
                     'mst_store_products.show_in_home_screen',
                     'mst_store_products.product_status',
+                    'mst_store_products.display_flag',
                     'mst_store_product_varients.product_varient_id',
                     'mst_store_product_varients.variant_name',
                     'mst_store_product_varients.product_varient_price',
@@ -4752,7 +4761,7 @@ class ProductController extends Controller
                     'mst_store_product_varients.stock_count',
                     'mst_store_product_varients.store_id'
                 )
-                ->where('mst_store_products.product_status', 1)
+                ->where('mst_store_products.display_flag', 1)
                 ->where('mst_store_products.show_in_home_screen', 1)->get()
             ) {
 
@@ -4795,6 +4804,7 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
@@ -4804,7 +4814,7 @@ class ProductController extends Controller
                         'mst_store_product_varients.store_id'
                     )
                     ->where('mst_store_products.store_id', $store_id)
-                    ->where('mst_store_products.product_status', 1)
+                    ->where('mst_store_products.display_flag', 1)
                     ->where('mst_store_products.show_in_home_screen', 1)->get()
                 ) {
 
@@ -4851,6 +4861,7 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
@@ -4860,7 +4871,7 @@ class ProductController extends Controller
                         'mst_store_product_varients.store_id'
                     )
                     ->where('mst_store_products.store_id', $store_id)
-                    ->where('mst_store_products.product_status', 1)->get()
+                    ->where('mst_store_products.display_flag', 1)->get()
                 ) {
 
                     foreach ($data['storeProducts'] as $product) {
@@ -4908,6 +4919,7 @@ class ProductController extends Controller
                             'mst_store_products.product_base_image',
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
+                            'mst_store_products.display_flag',
                             'mst_store_product_varients.product_varient_id',
                             'mst_store_product_varients.variant_name',
                             'mst_store_product_varients.product_varient_price',
@@ -4918,7 +4930,7 @@ class ProductController extends Controller
                         )
                         ->where('mst_store_products.store_id', $store_id)
                         ->where('mst_store_products.product_cat_id', $category_id)
-                        ->where('mst_store_products.product_status', 1)->get()
+                        ->where('mst_store_products.display_flag', 1)->get()
                     ) {
 
                         foreach ($data['storeProducts'] as $product) {
@@ -5006,6 +5018,7 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
@@ -5015,7 +5028,7 @@ class ProductController extends Controller
                         'mst_store_product_varients.store_id'
                     )
                     ->whereIn('mst_store_product_varients.product_varient_id', $mostVisitedPrdts)
-                    ->where('mst_store_products.product_status', 1)->get()
+                    ->where('mst_store_products.display_flag', 1)->get()
                 ) {
 
                     foreach ($data['mostVisitedProducts'] as $product) {
@@ -5120,6 +5133,7 @@ class ProductController extends Controller
                     'mst_store_products.product_base_image',
                     'mst_store_products.show_in_home_screen',
                     'mst_store_products.product_status',
+                    'mst_store_products.display_flag',
                     'mst_store_product_varients.product_varient_id',
                     'mst_store_product_varients.variant_name',
                     'mst_store_product_varients.product_varient_price',
@@ -5128,7 +5142,7 @@ class ProductController extends Controller
                     'mst_store_product_varients.stock_count',
                     'mst_store_product_varients.store_id'
                 )
-                ->where('mst_store_products.product_status', 1)
+                ->where('mst_store_products.display_flag', 1)
                 ->where('mst_store_products.show_in_home_screen', 1)->get()
             ) {
 
@@ -5265,6 +5279,7 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
@@ -5275,7 +5290,7 @@ class ProductController extends Controller
                     )
                     ->where('mst_store_products.product_name', 'LIKE', "%{$product}%")
                     ->orWhere('mst_store_product_varients.variant_name', 'LIKE', "%{$product}%")
-                    ->where('mst_store_products.product_status', 1)->get()
+                    ->where('mst_store_products.display_flag', 1)->get()
                 ) {
 
                     foreach ($data['storeProducts'] as $product) {
@@ -5323,6 +5338,7 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_product_varients.product_varient_id',
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
@@ -5336,7 +5352,7 @@ class ProductController extends Controller
                     ->where('mst_stores.online_status', 1)
                     ->where('trn__store_admins.store_account_status', 1)
                     ->where('mst_stores.store_name', 'LIKE', "%{$store}%")
-                    ->where('mst_store_products.product_status', 1)->get()
+                    ->where('mst_store_products.display_flag', 1)->get()
                 ) {
 
                     foreach ($data['storeProducts'] as $product) {
@@ -5453,11 +5469,12 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.display_flag',
                         'mst_store_products.store_id',
                         'mst_stores.business_type_id'
                     )
                     ->where('trn__recently_visited_products.customer_id', $customer_id)
-                    ->where('mst_store_products.product_status', 1)
+                    ->where('mst_store_products.display_flag', 1)
                     ->take(3)->get()
                 ) {
 

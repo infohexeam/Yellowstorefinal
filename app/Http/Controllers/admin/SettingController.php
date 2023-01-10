@@ -71,7 +71,7 @@ use App\Models\admin\Trn_customerAddress;
 
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
-
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class SettingController extends Controller
 {
@@ -2873,10 +2873,14 @@ class SettingController extends Controller
 			$stores = Mst_store::where('subadmin_id', auth()->user()->id)->get();
 			//  dd($store);
 		}
+		$states=DB::table('sys_states')->where('country_id',101)->get();
+		//dd($delivery_boy->district_id);
+		$districts=DB::table('mst_districts')->where('state_id',$delivery_boy->state_id)->get();
+		$towns=DB::table('mst_towns')->where('district_id',$delivery_boy->district_id)->get();
 		$vehicle_types = Sys_vehicle_type::all();
 		$availabilities = Sys_delivery_boy_availability::all();
 
-		return view('admin.masters.delivery_boy.edit', compact('pageTitle', 'delivery_boy', 'countries', 'stores', 'vehicle_types', 'availabilities'));
+		return view('admin.masters.delivery_boy.edit', compact('pageTitle', 'delivery_boy', 'countries', 'stores', 'vehicle_types', 'availabilities','states','districts','towns'));
 	}
 
 
@@ -3414,6 +3418,7 @@ class SettingController extends Controller
 			
 
 			if ($status_id) {
+				//dd($status_id);
 				$query = $query->where('status_id', $status_id);
 			}
 
@@ -3432,6 +3437,7 @@ class SettingController extends Controller
 					$store_array[] = $val->store_id;
 				}
 				$query = $query->whereIn('store_id', $store_array);
+				//dd($store_array);
 				//$query = $query->where('store_id', $store_id);
 			} elseif ($store_id == 0 && !isset($subadmin_id)) {
 
@@ -3439,10 +3445,12 @@ class SettingController extends Controller
 				foreach ($store_data as $val) {
 					$store_array[] = $val->store_id;
 				}
+				dd(2);
 				$query = $query->whereIn('store_id', $store_array);
 			} else {
 				
 				$store_array[] = $store_id;
+				dd(3);
 				$query = $query->whereIn('store_id', $store_array);
 			}
 			

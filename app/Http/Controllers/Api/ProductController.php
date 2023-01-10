@@ -1180,7 +1180,8 @@ class ProductController extends Controller
                             'draft',
                             'product_brand',
                             'product_type',
-                            'service_type'
+                            'service_type',
+                            'display_flag'
                         )
                         ->first()
                     ) {
@@ -1298,6 +1299,7 @@ class ProductController extends Controller
                         }
                         $product['business_type_id'] = 0;
                         $product['product_status']         = $request->product_status;
+                        $product['display_flag']=$request->display_flag;
 
                         if (Mst_store_product::where('product_id', $product_id)->update($product)) {
                             $c = 1; //

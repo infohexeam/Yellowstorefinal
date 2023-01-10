@@ -19,7 +19,7 @@ class Mst_store_product extends Model
     'product_base_image', 'store_id', 'product_status', 'product_commision_rate',
     'attr_value_id', 'attr_group_id',
     'tax_id', 'color_id', 'vendor_id', 'global_product_id', 'draft', 'product_brand',
-    'product_type', 'service_type', 'sub_category_id', 'min_stock', 'is_removed', 'is_added_from_web'
+    'product_type', 'service_type', 'sub_category_id', 'min_stock', 'is_removed', 'is_added_from_web','display_flag'
 
   ];
 

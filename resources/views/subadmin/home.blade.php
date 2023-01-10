@@ -8,9 +8,13 @@ use App\Models\admin\Mst_store;
 
 use App\Models\admin\Trn_subadmin_payments_tracker;
 use App\Models\admin\Trn_sub_admin_payment_settlment;
-
-
-    $orders_count = Trn_store_order::where('subadmin_id',auth()->user()->id)->count();
+   //dd(auth()->user()->id);
+    $store_data = DB::table('mst_stores')->select("store_id")->where('subadmin_id', '=',auth()->user()->id)->where('subadmin_id', '!=',NULL)->get();
+	$store_array[] = 0;
+	foreach ($store_data as $val) {
+		$store_array[] = $val->store_id;
+	}
+    $orders_count = Trn_store_order::where('subadmin_id',auth()->user()->id)->whereIn('store_id',$store_array)->count();
 
    //  $storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->groupBy('subadmin_id')->pluck('store_id');
 

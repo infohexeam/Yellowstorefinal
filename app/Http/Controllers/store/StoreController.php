@@ -1958,6 +1958,31 @@ class StoreController extends Controller
       return redirect()->back()->with('err_status', 'No variant exists.');
     }
   }
+  public function displayProduct(Request $request, Mst_store_product $product, $product_id)
+  {
+
+    $pro_id = $request->product_id;
+    $product = Mst_store_product::Find($pro_id);
+    $dflag = $product->display_flag;
+    
+    
+    $varCount = Mst_store_product_varient::where('product_id', $product_id)->count();
+    if ($varCount > 0) {
+      
+      if ($dflag == 0) {
+        
+        $product->display_flag  = 1;
+      } else {
+        $product->display_flag  = 0;
+      }
+      $product->update();
+      
+      
+      return redirect()->back()->with('status', 'Display flag Changed Successfully');
+    } else {
+      return redirect()->back()->with('err_status', 'No variant exists.');
+    }
+  }
 
   public function stockUpdate(
     Request $request,

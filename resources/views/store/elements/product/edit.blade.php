@@ -307,6 +307,7 @@
                             <input type="text"  class="form-control" name="product_brand" id="product_brand" value="{{old('product_brand',$product->product_brand)}}" placeholder="Product Brand">
                         </div>
                     </div>
+                    
   
 
                       <div class="col-md-12">

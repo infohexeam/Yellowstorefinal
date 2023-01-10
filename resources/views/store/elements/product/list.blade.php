@@ -146,6 +146,7 @@
                         <th class="wd-15p">{{ __('Price') }}</th>
                         <th class="wd-15p">{{__('Image')}}</th>
                         <th class="wd-15p">{{__('Status')}}</th>
+                        <th class="wd-15p">{{__('Display Flag')}}</th>
                         <th class="wd-15p">{{__('Stock')}}</th>
                        <th class="wd-15p">{{__('Action')}}</th>
                        
@@ -213,6 +214,18 @@
                             @endif</button>
                         </form>
                         </td>
+                        <td>
+                         <form id="displayForm{{$product->product_id}}" action="{{route('store.display_product',$product->product_id)}}" method="POST">
+                          @csrf
+                          @method('POST')
+                          	<label class="custom-switch">
+                                                       <input type="hidden" name="status" value=0 /> 
+														<input type="checkbox" name="display_flag"  @if ($product->display_flag == 1) checked @endif  value="1" class="custom-switch-input" onclick="changeDisplay({{$product->product_id}})">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </form>
+                          </td>
                         <td>
                          
                             <button type="button"  data-toggle="modal" data-target="#___StockModal{{$product->product_id}}"  class="btn btn-sm @if(@$stock_count_sum == 0) btn-danger @else btn-success @endif"> 
@@ -328,6 +341,10 @@
             @endforeach
 
             <script>
+            function changeDisplay(product_id)
+            {
+              document.getElementById('displayForm'+product_id).submit();
+            }
 
               $(function(e) {
                   $('#exampletable').DataTable( {

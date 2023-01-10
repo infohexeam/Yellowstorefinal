@@ -767,7 +767,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store/product-variant/status/{varient_id}', 'StoreController@statusProductVarient')->name('store.status_product_variant');
         Route::post('store/product/attribute/destroy/{attr_groups}', 'StoreController@destroyAttribute')->name('store.destroy_attribute');
         Route::post('store/product/attribute/store', 'StoreController@storeAttribute')->name('store.store_attribute');
-
+        Route::post('store/product/display-flag/{product_id}', 'StoreController@displayProduct')->name('store.display_product');
 
         Route::post('store/product/variant/destroy/{product_varient_id}', 'StoreController@destroyProductVariant')->name('store.destroy_product_variant');
         Route::post('store/product/variant/attr/destroy/{variant_attribute_id}', 'StoreController@destroyProductVariantAttr')->name('store.destroy_product_var_attr');
