@@ -23,6 +23,7 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Mst_store_product;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Mst_delivery_boy;
+use App\Models\admin\Mst_order_link_delivery_boy;
 use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Mst_store_link_delivery_boy;
 use App\Models\admin\Mst_SubCategory;
@@ -3058,6 +3059,7 @@ class StoreController extends Controller
                     $i++;
           
                     array_push($check_array,$sd->order_id);
+                    $orlink=Mst_order_link_delivery_boy::where('order_id',$sd->order_id)->where('delivery_boy_id',@$sd->delivery_boy_id)->first();
                     $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$sd->delivery_boy_id)->orderBy('order_id','DESC')->count();
                     $tot_now_count[$i]=$total_count;
                     $tot_prev_count[$i]=$tot_now_count[$i]-1;
@@ -3065,10 +3067,10 @@ class StoreController extends Controller
                     $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
                     $sd->subadmin_name=Helper::subAdminName($sd->subadmin_id)??'';
                     $sd->subadmin_phone=$sd->subadmindetail->phone??'';
-                    $sd->commission_month=@$sd->delivery_boy_commision;
-                    $sd->commission_order=@$sd->delivery_boy_commision_amount;
-                    $sd->previous_commission=$sd->delivery_boy_commision+($tot_prev_count[$i]*@$sd->delivery_boy_commision_amount);
-                    $sd->commission_after_order=$sd->delivery_boy_commision+($tot_now_count[$i]*@$sd->delivery_boy_commision_amount);
+                    $sd->commission_month=$orlink->commision_per_month??$sd->delivery_boy_commision;
+                    $sd->commission_order=$orlink->commision_per_order??$sd->delivery_boy_commision_amount;
+                    $sd->previous_commission=$sd->commission_month+($tot_prev_count[$i]*@$sd->commission_order);
+                    $sd->commission_after_order=$sd->commission_month+($tot_now_count[$i]*@$sd->commission_order);
                     
 
                    
