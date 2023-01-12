@@ -1916,6 +1916,7 @@ class ProductController extends Controller
                             'product_brand',
                             'product_type',
                             'service_type',
+                            'display_flag'
                         )
                         ->first()
                     ) {
