@@ -2327,7 +2327,7 @@ class ProductController extends Controller
                                 $productData['vendor_id'] = $request->vendor_id;
                                 $productData['product_brand'] = $request->product_brand;
                                 $productData['product_status'] = $request->product_status;
-    
+                                $productData['display_flag'] = $request->display_flag;
                                 $varCount = Mst_store_product_varient::where('product_id', $request->product_id)->count();
     
                                 if ($request->c != 'other') {
