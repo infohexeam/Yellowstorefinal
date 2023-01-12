@@ -2987,9 +2987,11 @@ class StoreController extends Controller
     if (!$validator->fails()) {
 
       $data = $request->except('_token');
-
+      $db=Mst_delivery_boy::where('delivery_boy_id',$request->delivery_boy_id)->first();
       $link_delivery_boy->order_id = $request->order_id;
       $link_delivery_boy->delivery_boy_id = $request->delivery_boy_id;
+      $link_delivery_boy->commision_per_month=$db->delivery_boy_commision;
+      $link_delivery_boy->commision_per_order=$db->delivery_boy_commision_amount;
       $link_delivery_boy->save();
 
       $order = Trn_store_order::Find($request->order_id);

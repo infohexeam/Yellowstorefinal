@@ -32,6 +32,7 @@ use App\Models\admin\District;
 use App\Models\admin\Town;
 use App\Models\admin\Mst_store_agencies;
 use App\Models\admin\Mst_categories;
+use App\Models\admin\Mst_order_link_delivery_boy;
 use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Trn_StoreWebToken;
@@ -1662,7 +1663,6 @@ class CouponController extends Controller
         'mst_stores.store_id',
         'mst_stores.store_name',
         'mst_stores.store_mobile',
-        'mst_stores.subadmin_id',
 
         'mst_delivery_boys.delivery_boy_name',
         'mst_delivery_boys.delivery_boy_mobile',
@@ -1724,7 +1724,7 @@ class CouponController extends Controller
         }
       }
 
-      $data = $data->where('trn_store_orders.store_id',$store_id) ->get();
+      $data = $data->where('trn_store_orders.store_id',$store_id)->orderBy('trn_store_orders.order_id','DESC')->get();
         $check_array=[];
         $i = 0;
         $tot_pre=[];
@@ -1732,16 +1732,22 @@ class CouponController extends Controller
         $tot_prev_count=[];
         $tot_now_count=[];
         
-        foreach($data as $d)
+        foreach($data->reverse() as $d)
         {
           $i++;
-          
-          array_push($check_array,$d->order_id);
-          $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
-          $tot_now_count[$i]=$total_count;
-          $tot_prev_count[$i]=$tot_now_count[$i]-1;
-          $d->previous_amount=$d->delivery_boy_commision+($tot_prev_count[$i]*@$d->delivery_boy_commision_amount);
-          $d->new_amount=$d->delivery_boy_commision+($tot_now_count[$i]*@$d->delivery_boy_commision_amount);
+        
+        array_push($check_array,$d->order_id);
+
+        $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
+        $orlink=Mst_order_link_delivery_boy::where('order_id',$d->order_id)->where('delivery_boy_id',@$d->delivery_boy_id)->first();
+        $tot_now_count[$i]=$total_count;
+        $tot_prev_count[$i]=$tot_now_count[$i]-1;
+        $cm=$orlink->commision_per_month;
+        $co=$orlink->commision_per_order;
+        $d->previous_amount=$cm+($tot_prev_count[$i]*@$co);
+        $d->new_amount=$cm+($tot_now_count[$i]*@$co);
+        $d->c_month= $cm;
+        $d->c_order=$co;
     
           
         }

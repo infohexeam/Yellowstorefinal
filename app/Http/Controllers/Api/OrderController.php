@@ -1094,9 +1094,12 @@ class OrderController extends Controller
 
 
                         if (isset($request->delivery_boy_id)) {
+                            $db=Mst_delivery_boy::where('delivery_boy_id',$request->delivery_boy_id)->first();
                             $orderData = [
                                 'order_id'      => $order_id,
                                 'delivery_boy_id' => $request->delivery_boy_id,
+                                'commision_per_month'=>$db->delivery_boy_commision??0,
+                                'commision_per_order'=>$db->delivery_boy_commision_amount??0,
                                 'created_at'         => Carbon::now(),
                                 'updated_at'         => Carbon::now(),
                             ];

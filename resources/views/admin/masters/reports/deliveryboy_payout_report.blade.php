@@ -132,7 +132,7 @@
                                         //dd($total_count);
                                         $i=0;
                                         @endphp
-                                        @foreach ($data->reverse() as $d)
+                                        @foreach ($data as $d)
                                        
                                         <tr>
                                             <td>{{ ++$i }}</td>
@@ -161,8 +161,8 @@
                                             <td>{{ $d->product_total_amount }}</td>
                                             <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
                                              <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->delivery_boy_commision,2)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->delivery_boy_commision_amount,2)??0.00 }}</td>
+                                            <td>{{ number_format(@$d->c_month,2)??0.00 }}</td>
+                                            <td>{{ number_format(@$d->c_order,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->previous_amount)??0.00 }}</td>
                                             <td>{{ number_format(@$d->new_amount)??0.00 }}</td>
 
