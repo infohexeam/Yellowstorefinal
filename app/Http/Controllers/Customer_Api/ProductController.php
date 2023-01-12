@@ -627,6 +627,7 @@ class ProductController extends Controller
                     $productData->variantCount = Helper::variantCount($productData->product_id);
                     $productData->isBaseVariant = Helper::isBaseVariant($productData->product_id);
                     $productData->attrCount = Helper::attrCount($productData->product_id);
+                    $productData->display_flag=$productData->display_flag;
 
 
                     $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
