@@ -609,7 +609,17 @@ class ProductController extends Controller
                         ->first();
                     $productData->product_description =   strip_tags(@$productData->product_description);
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
-                    $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
+                    if($productData->product_varient_base_image!=NULL)
+                    {
+                        $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
+
+                    }
+                    else
+                    {
+                        $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
+
+                    }
+                   
 
 
                     $productData->productStock = Helper::productStock($productData->product_id);
@@ -706,7 +716,17 @@ class ProductController extends Controller
                         ->where('product_id', $productData->product_id)
                         ->get();
                     foreach ($otherVariants as $r) {
-                        $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+                        if($r->product_varient_base_image!=NULL)
+                        {
+                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+    
+                        }
+                        else
+                        {
+                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
+    
+                        }
+                       
                     }
                     $data['otherVariants'] = $otherVariants;
 
@@ -793,15 +813,7 @@ class ProductController extends Controller
                         // }
 
 
-                        $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
-                            ->where('product_id', $gData->product_id)
-                            ->where('is_removed', 0)
-                            ->where('variant_status',1)
-                            ->get();
-                        foreach ($otherVariants as $r) {
-                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
-                        }
-                        $data['otherVariants'] = $otherVariants;
+                      
 
 
                         $orderData = Trn_store_order::join('trn_order_items', 'trn_order_items.order_id', '=', 'trn_store_orders.order_id')
@@ -858,16 +870,44 @@ class ProductController extends Controller
                             )
                             ->where('mst_store_product_varients.product_varient_id', $productVarientId)
                             ->first();
+                            // Mst_store_product::where('product_id')
+                            
                         $productData->product_description =   strip_tags(@$productData->product_description);
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
-                        $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
+                        if($productData->product_varient_base_image!=NULL)
+                        {
+                            $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
+    
+                        }
+                        else
+                        {
+                            $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
+    
+                        }
 
 
                         $productData->productStock = Helper::productStock($productData->product_id);
                         $productData->variantCount = Helper::variantCount($productData->product_id);
                         $productData->isBaseVariant = Helper::isBaseVariant($productData->product_id);
                         $productData->attrCount = Helper::attrCount($productData->product_id);
-
+                        $otherVariants = Mst_store_product_varient::select('product_varient_id', 'product_varient_base_image')
+                        ->where('product_id', $gData->product_id)
+                        ->where('is_removed', 0)
+                        ->where('variant_status',1)
+                        ->get();
+                    foreach ($otherVariants as $r) {
+                        if($r->product_varient_base_image!=NULL)
+                        {
+                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+    
+                        }
+                        else
+                        {
+                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
+    
+                        }
+                    }
+                    $data['otherVariants'] = $otherVariants;
 
                         $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
                         $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->count();
