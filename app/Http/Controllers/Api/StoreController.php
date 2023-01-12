@@ -3538,8 +3538,13 @@ class StoreController extends Controller
 			$walletdata = $data->where('trn_store_orders.store_id',$store_id)
 			    // ->where('trn_store_orders.reward_points_used','!=',NULL)
 				// ->Orwhere('trn_store_orders.reward_points_used_store','!=',NULL)
-                ->whereNotNull('trn_store_orders.reward_points_used_store')
-			       ->get();
+                ->whereNotNull('trn_store_orders.reward_points_used_store');
+			       
+                if (isset($request->page)) {
+                    $walletdata = $walletdata->paginate(10, ['data'], 'page', $request->page);
+                } else {
+                    $walletdata = $walletdata->paginate(10);
+                }
 	  //DD($request->store_id,$request->subadmin_id,$data);
       
       $resData['walletData'] = $walletdata;
