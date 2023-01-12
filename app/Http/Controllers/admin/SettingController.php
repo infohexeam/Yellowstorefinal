@@ -4706,6 +4706,8 @@ class SettingController extends Controller
 				'order_points'          => 'required|numeric|gte:0',
 				'order_amount'          => 'required|numeric|gte:0',
 				'joiner_points'          => 'numeric|gte:0',
+				'redeem_percentage'          => 'numeric|gte:0',
+				'max_redeem_amount'          => 'numeric|gte:0',
 				//'points'          => 'required',
 			],
 			[
