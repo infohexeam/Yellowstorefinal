@@ -26,6 +26,7 @@ Route::get('make-store-customer', 'Api\OrderController@makeStoreCustomer');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('test-order-credit','Api\OrderController@testOrderCredit');
 
 Route::middleware('auth:customer')->get('/customer', function (Request $request) {
     dd($request->all());

@@ -607,10 +607,20 @@ class ProductController extends Controller
                             'mst_store_product_varients.product_varient_base_image',
                             'mst_store_product_varients.stock_count',
                             'mst_store_product_varients.variant_status',
+                            'mst_store_product_varients.is_base_variant',
                             'mst_stores.store_name'
                         )
                         ->where('mst_store_product_varients.product_varient_id', $productVarientId)
                         ->first();
+                    if($productData->is_base_variant==1)
+                    {
+                        if($productData->product_status==0)
+                        {
+                            $productData->variant_status=0;
+
+                        }
+
+                    }
                     $productData->product_description =   strip_tags(@$productData->product_description);
                     $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                     if($productData->product_varient_base_image!=NULL)
@@ -873,11 +883,21 @@ class ProductController extends Controller
                                 'mst_store_product_varients.product_varient_base_image',
                                 'mst_store_product_varients.stock_count',
                                 'mst_store_product_varients.variant_status',
+                                'mst_store_product_varients.is_base_variant',
                                 'mst_stores.store_name'
                             )
                             ->where('mst_store_product_varients.product_varient_id', $productVarientId)
                             ->first();
                             // Mst_store_product::where('product_id')
+                            if($productData->is_base_variant==1)
+                            {
+                                if($productData->product_status==0)
+                                {
+                                    $productData->variant_status=0;
+        
+                                }
+        
+                            }
                             
                         $productData->product_description =   strip_tags(@$productData->product_description);
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;

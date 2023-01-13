@@ -976,5 +976,15 @@ class Helper
     }
 
     }
+public static function totalOrderCredit($configOrderAmount,$configOrderPoint,$OrderTotal)
+{
+    $orderAmount  = $configOrderAmount;
+    $productTotal=$OrderTotal;
+    $amountRatio=$productTotal/$orderAmount;
+    $orderPoint  = $configOrderPoint;
+    $n=floor($amountRatio);
+    return $n*$orderPoint;
+    
+}
 
 }

@@ -774,8 +774,9 @@ class OrderController extends Controller
                             $orderAmount  = $configPoint->order_amount;
                             $orderPoint  = $configPoint->order_points;
 
-                            $orderAmounttoPointPercentage =  $orderPoint / $orderAmount;
-                            $orderPointAmount =  $orderDataz->product_total_amount * $orderAmounttoPointPercentage;
+                            //$orderAmounttoPointPercentage =  $orderPoint / $orderAmount;
+                            //$orderPointAmount =  $orderDataz->product_total_amount * $orderAmounttoPointPercentage;
+                            $orderPointAmount=Helper::totalOrderCredit($orderAmount,$orderPoint,$orderDataz->product_total_amount);
                             //echo $orderPointAmount;die;
                             ///////////////////////////////////////////////////////
                             $store_id=$request->store_id;
@@ -785,8 +786,9 @@ class OrderController extends Controller
                             $storeOrderAmount  = $storeConfigPoint->order_amount;
                             $storeOrderPoint  = $storeConfigPoint->order_points;
 
-                            $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
-                            $storeOrderPointAmount =  $orderDataz->product_total_amount * $storeOrderAmounttoPointPercentage;
+                            // $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
+                            // $storeOrderPointAmount =  $orderDataz->product_total_amount * $storeOrderAmounttoPointPercentage;
+                            $storeOrderPointAmount=Helper::totalOrderCredit($storeOrderAmount,$storeOrderPoint,$orderDataz->product_total_amount);
                             }
                             ///////////////////////////////////////////////////////
 
@@ -1426,4 +1428,15 @@ class OrderController extends Controller
             return response($response);
         }
     }
+public function totalOrderCredit($configOrderAmount,$OrderTotal)
+{
+    $orderAmount  = $configOrderAmount;
+    $productTotal=$OrderTotal;
+    $amountRatio=$productTotal/$orderAmount;
+    $orderPoint  = 10;
+    $n=floor($amountRatio);
+    return $n*$orderPoint;
+    
 }
+}
+

@@ -728,8 +728,9 @@ class DeliveryBoyOrderController extends Controller
                     $orderAmount  = $configPoint->order_amount;
                     $orderPoint  = $configPoint->order_points;
                     $customer_id = $order->customer_id;
-                    $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
-                    $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
+                    // $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
+                    // $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
+                    $orderPointAmount=Helper::totalOrderCredit($orderAmount,$orderPoint,$order->product_total_amount);
                     $store_id=$order->store_id;
                     $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
                     if($storeConfigPoint)
@@ -737,8 +738,9 @@ class DeliveryBoyOrderController extends Controller
                     $storeOrderAmount  = $storeConfigPoint->order_amount;
                     $storeOrderPoint  = $storeConfigPoint->order_points;
 
-                    $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
-                    $storeOrderPointAmount =  $order->product_total_amount * $storeOrderAmounttoPointPercentage;
+                    // $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
+                    // $storeOrderPointAmount =  $order->product_total_amount * $storeOrderAmounttoPointPercentage;
+                    $storeOrderPointAmount=Helper::totalOrderCredit($storeOrderAmount,$storeOrderPoint,$order->product_total_amount);
                     }
 
 

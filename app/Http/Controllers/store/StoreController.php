@@ -2538,9 +2538,9 @@ class StoreController extends Controller
         $orderAmount  = $configPoint->order_amount;
         $orderPoint  = $configPoint->order_points;
 
-        $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
-        $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
-
+        // $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
+        // $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
+        $orderPointAmount=Helper::totalOrderCredit($orderAmount,$orderPoint,$order->product_total_amount);
          ///////////////////////////////////////////////////////
          $store_id=Auth::guard('store')->user()->store_id;
         // dd($store_id);
@@ -2550,8 +2550,9 @@ class StoreController extends Controller
          $storeOrderAmount  = $storeConfigPoint->order_amount;
          $storeOrderPoint  = $storeConfigPoint->order_points;
 
-         $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
-         $storeOrderPointAmount =$order->product_total_amount * $storeOrderAmounttoPointPercentage;
+        //  $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
+        //  $storeOrderPointAmount =$order->product_total_amount * $storeOrderAmounttoPointPercentage;
+        $storeOrderPointAmount=Helper::totalOrderCredit($storeOrderAmount,$storeOrderPoint,$order->product_total_amount);
         }
          ///////////////////////////////////////////////////////
         if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
