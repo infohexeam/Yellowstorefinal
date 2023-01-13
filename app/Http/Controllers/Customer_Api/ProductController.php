@@ -616,7 +616,7 @@ class ProductController extends Controller
                     {
                         if($productData->product_status==0)
                         {
-                            $productData->variant_status=0;
+                            $productData->variant_status="0";
 
                         }
 
@@ -893,7 +893,7 @@ class ProductController extends Controller
                             {
                                 if($productData->product_status==0)
                                 {
-                                    $productData->variant_status=0;
+                                    $productData->variant_status="0";
         
                                 }
         
