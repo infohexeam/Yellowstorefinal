@@ -3445,12 +3445,12 @@ class SettingController extends Controller
 				foreach ($store_data as $val) {
 					$store_array[] = $val->store_id;
 				}
-				dd(2);
+				//dd(2);
 				$query = $query->whereIn('store_id', $store_array);
 			} else {
 				
 				$store_array[] = $store_id;
-				dd(3);
+				//dd(3);
 				$query = $query->whereIn('store_id', $store_array);
 			}
 			
