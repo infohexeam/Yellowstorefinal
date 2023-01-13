@@ -1067,7 +1067,7 @@ class ProductController extends Controller
                     ->where('is_removed', 0)
                     ->where('variant_status',1)
                     ->get();
-                $pdt=Mst_store_product::where('product_id',$product_id)->first();
+                $pdt=Mst_store_product::where('product_id',$vardata->product_id)->first();
                 foreach ($productVartiantdata as $row) {
                     
                     if($row->is_base_variant==1)
