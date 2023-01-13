@@ -1067,8 +1067,18 @@ class ProductController extends Controller
                     ->where('is_removed', 0)
                     ->where('variant_status',1)
                     ->get();
+                $pdt=Mst_store_product::where('product_id',$product_id)->first();
                 foreach ($productVartiantdata as $row) {
+                    
+                    if($row->is_base_variant==1)
+                    {
+                        if($pdt->product_status==0)
+                        {
+                            $row->variant_status="0";
 
+                        }
+
+                    }
                     $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
                     $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
                     foreach ($attributesData as $j) {
