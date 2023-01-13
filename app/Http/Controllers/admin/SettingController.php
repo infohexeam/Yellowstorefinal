@@ -2247,11 +2247,11 @@ class SettingController extends Controller
 		$decrId  = Crypt::decryptString($id);
 		$customers = Trn_store_customer::Find($decrId);
 		$redeemedpoints = Trn_points_redeemed::where('customer_id', $decrId)->orderBy('points_redeemed_id', 'DESC')->get();
-		$redeemedPointsSum = Trn_points_redeemed::where('customer_id', $decrId)->sum('points');
-
+		//$redeemedPointsSum = Trn_points_redeemed::where('customer_id', $decrId)->sum('points');
+        //$totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
+        $redeemedPointsSum = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
 		$customerRewards = Trn_customer_reward::where('customer_id', $decrId)
-			->where('reward_point_status', 1)->orderBy('reward_id', 'DESC')->get();
-
+		->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store_points')->orderBy('reward_id', 'DESC')->get();
 		$customerAddress = Trn_customerAddress::where('customer_id', $decrId)->get();
 		$countries = Country::all();
 
