@@ -148,12 +148,12 @@ use App\Models\admin\Trn_store_order;
                         <div class="table-responsive ">
                            @php
                            
-                              $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                              //$totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
+                             $totalCustomerRewardsCount= Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
                             $totalusedPoints = Trn_store_order::where('customer_id', $customers->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
             
                             $customerRewardsCount = ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPointsSum;
-                            $customerRewardsCount = number_format($customerRewardsCount, 0);
-                            $totalCustomerRewardsCount = number_format($totalCustomerRewardsCount, 0);
+                           // $totalCustomerRewardsCount = number_format($totalCustomerRewardsCount, 0);
             
                             if ($totalusedPoints >= 0)
                                 $data['totalusedPoints']  = $totalusedPoints + $redeemedPointsSum ;
@@ -162,8 +162,8 @@ use App\Models\admin\Trn_store_order;
                     
                            @endphp
                          <p>Total Points Earned : </p><h2>{{$totalCustomerRewardsCount}}</h2> <br>
-                         <p>Used Points : </p><h2>{{$totalusedPoints + $redeemedPointsSum}}</h2> <br>
-                         <p>Balance Points : </p><h2>{{$totalCustomerRewardsCount??0 - ($redeemedPointsSum??0 + $totalusedPoints??0) }}</h2> <br>
+                         <p>Used Points : </p><h2>{{$totalusedPoints}}</h2> <br>
+                         <p>Balance Points : </p><h2>{{$totalCustomerRewardsCount -$totalusedPoints }}</h2> <br>
 
                         <h3>Earned Points</h3>
 
