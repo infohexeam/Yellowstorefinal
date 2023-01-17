@@ -22,6 +22,7 @@ use PDF;
 use Auth;
 
 use App\Models\admin\Mst_delivery_boy;
+use App\Models\admin\Mst_order_link_delivery_boy;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Sys_store_order_status;
 use App\Models\admin\Trn_store_customer;
@@ -123,8 +124,10 @@ class DeliveryBoyOrderController extends Controller
                 if ($data['completedOrders']  = Trn_store_order::where('delivery_boy_id', $request->delivery_boy_id)->where('status_id', 9)->where('delivery_status_id', 3)->orderBy('updated_at', 'DESC')->get()) {
                     foreach ($data['completedOrders'] as $order) {
                         //dd($order);
+                        $orlink=Mst_order_link_delivery_boy::where('order_id',$order->order_id)->where('delivery_boy_id',$request->delivery_boy_id)->first();
                         $statusInfo = Sys_store_order_status::find($order->status_id);
                         $order->status = @$statusInfo->status;
+                        $order->amount_earned=$orlink->commision_per_order??0;
                         $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
                         $customerInfo = Trn_store_customer::find($order->customer_id);
 

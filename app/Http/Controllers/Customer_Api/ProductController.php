@@ -1901,7 +1901,7 @@ class ProductController extends Controller
                         }
                         else
                         {
-                            $offerProduct->product_varient_base_image = $offerProduct->product_varient_base_image;
+                            $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
     
                         }
                         $storeData = Mst_store::find($offerProduct->store_id);
