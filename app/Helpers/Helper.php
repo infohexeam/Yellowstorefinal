@@ -910,9 +910,11 @@ class Helper
         $response = $client->request('GET', $url,[
             'headers' => ['Accept' => 'application/json'],
             ]);
+        return response($response);
         if($response->getStatusCode()==200)
         {
             $resArray=['status'=>'success','message'=>"OTP MATCHED"];
+
         }
         else
         {
