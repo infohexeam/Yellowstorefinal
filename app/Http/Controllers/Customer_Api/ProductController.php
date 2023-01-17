@@ -1796,12 +1796,12 @@ class ProductController extends Controller
                     $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                     if($offerProduct->is_base_variant==1)
                     {
-                        $offerProduct->product_varient_base_image = 't1/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
 
                     }
                     else
                     {
-                        $offerProduct->product_varient_base_image = 't2/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                        $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
 
                     }
                    
@@ -1894,7 +1894,16 @@ class ProductController extends Controller
 
                     foreach ($data['productsData'] as $offerProduct) {
                         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
-                        $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                        if($offerProduct->is_base_variant==1)
+                        {
+                            $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+    
+                        }
+                        else
+                        {
+                            $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+    
+                        }
                         $storeData = Mst_store::find($offerProduct->store_id);
                         $offerProduct->store_name = $storeData->store_name;
                         // $offerProduct->rating = number_format((float)4.20, 1, '.', '');
