@@ -496,9 +496,18 @@ class DeliveryBoyOrderController extends Controller
 
                         $data['orderDetails']->km_covered = $dist;
                         if (isset($deliveryBoy->delivery_boy_commision_amount))
-                            $data['orderDetails']->amount_earned =@$deliveryBoy->delivery_boy_commision_amount;  //$data['orderDetails']->delivery_charge;
+                        {
+                            $orlink=Mst_order_link_delivery_boy::where('order_id',$request->order_id)->where('delivery_boy_id',$request->delivery_boy_id)->first();
+                            $data['orderDetails']->amount_earned =$orlink->commision_per_order??$deliveryBoy->delivery_boy_commision_amount;  //$data['orderDetails']->delivery_charge;
+
+                        }
+                       
                         else
+                        {
                             $data['orderDetails']->amount_earned = '0';
+
+                        }
+                            
 
 
                         if (isset($orderAddress)) {
