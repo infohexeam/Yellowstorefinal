@@ -1077,9 +1077,17 @@ class ProductController extends Controller
                             $row->variant_status="0";
 
                         }
+                        
+                        $row->product_varient_base_image = $productData->product_base_image;
 
                     }
-                    $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
+                    else
+                    {
+                        $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
+
+                    }
+                    
+                    
                     $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
                     foreach ($attributesData as $j) {
                         $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
