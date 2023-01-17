@@ -925,12 +925,12 @@ class ProductController extends Controller
                     foreach ($otherVariants as $r) {
                         if($r->product_varient_base_image!=NULL)
                         {
-                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $r->product_varient_base_image;
+                            $r->product_varient_base_image = $r->product_varient_base_image;
     
                         }
                         else
                         {
-                            $r->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
+                            $r->product_varient_base_image = $productData->product_base_image;
     
                         }
                     }
