@@ -452,6 +452,7 @@ class CustomerController extends Controller
                 else {
                     $data['status'] = 3;
                     $data['message'] = "OTP Mismatched"; 
+                    return response($data);
                 }
             } else {
                 $data['status'] = 0;
