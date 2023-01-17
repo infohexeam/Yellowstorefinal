@@ -3486,14 +3486,16 @@ class StoreController extends Controller
 			  'trn_store_customers.customer_last_name',
 			  'trn_store_customers.customer_mobile_number',
 			  'trn_store_customers.place',
+
+              'sys_store_order_status.status',
 	  
 			 
 	  
 			 
 	  
 			)
-			  ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id');
-			 
+			  ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+			  ->leftjoin('sys_store_order_status', 'sys_store_order_status.status_id', '=', 'trn_store_orders.status_id');
 	  
 			
 			

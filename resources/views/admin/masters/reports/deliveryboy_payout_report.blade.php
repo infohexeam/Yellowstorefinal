@@ -114,7 +114,7 @@
                                             <th class="wd-15p">Commision/Month</th>
                                             <th class="wd-15p">Commision/Order</th>
                                              <th class="wd-15p">Previous Commision</th>
-                                            <th class="wd-15p">Commisiion After order</th>
+                                            <th class="wd-15p">Commission After order</th>
 
                                            
                                             
@@ -200,7 +200,7 @@
                 title: 'Delivery Boy Payout Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
                  },
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
@@ -210,7 +210,7 @@
                 title: 'Delivery Boy Payout Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
                  }
             }
          ]

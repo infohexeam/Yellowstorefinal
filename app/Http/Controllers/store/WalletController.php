@@ -114,8 +114,7 @@ class WalletController extends Controller
         $store_id=Auth::guard('store')->user()->store_id;
 		$customer_rewards = Trn_customer_reward::leftjoin('trn_store_orders','trn_customer_rewards.order_id','=','trn_store_orders.order_id')->orderBy('reward_id', 'DESC')
         ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', 'trn_customer_rewards.customer_id')
-        ->where('trn_customer_rewards.store_id',$store_id)
-        ->orWhere('trn_store_orders.store_id',$store_id)
+        ->where('trn_store_orders.store_id',$store_id)
         ->get();
 		if ($_GET) {
 
@@ -127,10 +126,10 @@ class WalletController extends Controller
 			$a2  = Carbon::parse($request->date_to)->endOfDay();
 			$customer_first_name = $request->customer_name;
 			$query = Trn_customer_reward::with(['customer','order']);
-            $query=$query->whereHas('order', function (Builder $qry) use($store_id) {
+            $query->whereHas('order', function (Builder $qry) use($store_id) {
                 return $qry->where('store_id','=',$store_id);
                 
-              })->orWhere('trn_customer_rewards.store_id',$store_id);
+              });
             //->orWhere('trn_store_orders.store_id',$store_id);
 
 			// if (isset($request->date_from) && isset($request->date_to)) {
@@ -138,17 +137,17 @@ class WalletController extends Controller
 			// }
 			if(isset($request->date_from))
              {
-              $query = $query->whereDate('trn_customer_rewards.created_at','>=',$a1);
+             $query->whereDate('trn_customer_rewards.created_at','>=',$a1);
              }
 
              if(isset($request->date_to))
              {
-                $query = $query->whereDate('trn_customer_rewards.created_at','<=',$a2);
+                $query->whereDate('trn_customer_rewards.created_at','<=',$a2);
              }
 
 			if (isset($request->customer_name)) {
                 $cust_name=$request->customer_name;
-                $query=$query->whereHas('customer', function (Builder $qry) use($cust_name) {
+                $query->whereHas('customer', function (Builder $qry) use($cust_name) {
                     return $qry->where('customer_first_name','like','%'.$cust_name.'%');
                     
                   });

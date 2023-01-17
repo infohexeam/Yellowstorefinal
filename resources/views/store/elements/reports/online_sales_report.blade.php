@@ -133,7 +133,7 @@
                                             <th class="wd-15p">Tax Amount</th>
                                             <th class="wd-15p">Coupon<br>Redeemed Value</th>
                                             <th class="wd-15p">Wallet<br>Points Used</th>
-                                           
+                                           <th class="wd-15p">Store Wallet<br>Points Used</th>
                                            
                                             <th class="wd-15p">Delivery Boy</th>
                                             <th class="wd-15p">Delivery Status</th>
@@ -168,7 +168,22 @@
                                                 {{ (new \App\Helpers\Helper)->orderTotalTax($d->order_id) }}
                                             </td>
                                             <td>{{ $d->amount_reduced_by_coupon }}</td>
-                                            <td>{{ $d->reward_points_used }}</td>
+                                             <td>
+                                                @if(isset($d->reward_points_used))
+                                                    {{ $d->reward_points_used }}
+                                                @else
+                                                ---
+                                                @endif
+                                                
+                                            </td>
+                                             <td>
+                                                @if(isset($d->reward_points_used_store))
+                                                    {{ $d->reward_points_used_store }}
+                                                @else
+                                                ---
+                                                @endif
+                                                
+                                            </td>
                                             
                                             <td>{{ $d->delivery_boy_name }}</td>
                                             <td>

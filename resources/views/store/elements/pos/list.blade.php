@@ -283,9 +283,9 @@ var countPro = 0;
        //  let product_id = $('#product_id').val();
         // let   quantity = $('#quantity').val();
         
-        if(quantity < 0)
+        if(quantity <= 0)
         {
-            $('#quantity').val(0);
+            $('#quantity').val(1);
         }
         
                      //   $('#addBtn').attr('disabled', 'disabled');
@@ -337,17 +337,41 @@ var countPro = 0;
                     product_sale_price = result['product_varient_offer_price'];
                     product_varient_price = result['product_varient_price'];
                     var s_tax = result['tax'];
-                    $('#rate').val(quantity * product_sale_price);
-                    $('#quantity').val(quantity);
-                    
                     rate = $('#rate').val();
-                    tax = (s_tax / 100) * rate;
-                    //total_amount_after_tax = parseFloat(rate) + parseFloat(tax);
-                    total_amount_after_tax = parseFloat(rate);
+                    
+                    if(quantity<=1)
+                    {
+                         $('#quantity').val(1);
+                          $('#rate').val(product_sale_price);
+                          //alert(product_sale_price);
+                           tax = (s_tax / 100) * 1 * product_sale_price;
+                         //total_amount_after_tax = parseFloat(rate) + parseFloat(tax);
+                         total_amount_after_tax = parseFloat(1 * product_sale_price);
 
-                    let total_discount = parseFloat(product_varient_price) - parseFloat(product_sale_price);
-                    $('#total_discount').val(total_discount * quantity);
-                    $('#total_amount').val(total_amount_after_tax.toFixed(2)); // remove it
+                         let total_discount = parseFloat(product_varient_price) - parseFloat(product_sale_price);
+                         $('#total_discount').val(total_discount * 1);
+                         $('#total_amount').val(total_amount_after_tax.toFixed(2)); // remove it
+
+                    }
+                    else
+                    {
+                         $('#quantity').val(quantity);
+                        // alert(quantity);
+                          
+                          $('#rate').val(quantity * product_sale_price);
+                          //alert(quantity * product_sale_price);
+                         tax = (s_tax / 100) * rate;
+                         //total_amount_after_tax = parseFloat(rate) + parseFloat(tax);
+                         total_amount_after_tax = parseFloat(quantity * product_sale_price);
+
+                         let total_discount = parseFloat(product_varient_price) - parseFloat(product_sale_price);
+                         $('#total_discount').val(total_discount * quantity);
+                         $('#total_amount').val(total_amount_after_tax.toFixed(2)); // remove it
+
+                    }
+                    
+                    
+                   
                   //  changeDiscount();
                }
           })

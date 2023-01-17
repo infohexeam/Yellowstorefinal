@@ -95,7 +95,7 @@
                            // orientation:'landscape',
                            footer: true,
                            exportOptions: {
-                                columns: [0,1],
+                                columns: [0,1,2],
                                 alignment: 'right',
                             },
                              customize: function(doc) {
@@ -112,7 +112,7 @@
                            title: 'AttributesValue',
                            footer: true,
                            exportOptions: {
-                                columns: [0,1]
+                                columns: [0,1,2]
                             }
                        }
                     ]

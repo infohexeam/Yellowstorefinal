@@ -192,7 +192,7 @@ $date = Carbon\Carbon::now();
                                  <!--  </h6></td>-->
                                  <!--</tr>-->
                                  <tr>
-                                    <td><h6>Approved Date : {{ \Carbon\Carbon::parse(@$customer_reward->reward_approved_date)->format('M d, Y')}}
+                                    <td><h6>Approved Date : {{ \Carbon\Carbon::parse(@$customer_reward->created_at)->format('M d, Y')}}
                                    </h6></td>
                                  </tr>
                                 <!--<tr>-->

@@ -885,10 +885,10 @@ class StoreController extends Controller
         //'product_name'          => 'required|unique:mst_store_products,product_name,'.$store_id.',store_id',
         'product_name'          => 'required',
         'product_description'   => 'required',
-        'regular_price'   => 'required',
-        'sale_price'   => 'required',
+        'regular_price'   => 'required|gt:0',
+        'sale_price'   => 'required|gt:0',
         'tax_id'   => 'required',
-        'min_stock'   => 'required',
+        'min_stock'   => 'required|gte:0',
         'product_code'   => 'required|unique:mst_store_products',
         // 'business_type_id'   => 'required',
         //'attr_group_id'   => 'required',
@@ -907,10 +907,13 @@ class StoreController extends Controller
         'product_name.required'             => 'Product name required',
         'product_name.unique'             => 'Product name already exist',
         'product_description.required'      => 'Product description required',
-        'regular_price.required'      => 'Regular price required',
+        'regular_price.required'      => 'MRP required',
+        'regular_price.gt'      => 'MRP should be greater than 0',
         'sale_price.required'      => 'Sale price required',
+        'sale_price.gt'      => 'Sale price should be greater than 0',
         'tax_id.required'      => 'Tax required',
         'min_stock.required'      => 'Minimum stock required',
+        'min_stock.gt'      => 'Minimum stock should be greater than or equal to zero',
         'product_code.required'      => 'Product code required',
         'product_code.required'      => 'Product code Already exists',
         'business_type_id.required'        => 'Product type required',
@@ -1557,10 +1560,11 @@ class StoreController extends Controller
         // 'product_name'          => 'required|unique:mst_store_products,product_name,'.$product_id.',product_id',
         'product_name'   => 'required',
         'product_description'   => 'required',
-        'regular_price'   => 'required',
-        'sale_price'   => 'required',
+        'regular_price'   => 'required|gt:0',
+        
+        'sale_price'   => 'required|gt:0',
         'tax_id'   => 'required',
-        'min_stock'   => 'required',
+        'min_stock'   => 'required|gte:0',
         'product_code'   => 'required|unique:mst_store_products,product_code,'.$product_id.',product_id',
         //  'business_type_id'   => 'required',
         //  'attr_group_id'   => 'required',
@@ -1581,10 +1585,13 @@ class StoreController extends Controller
         'product_name.required'             => 'Product name required',
         'product_name.unique'             => 'Product name already exist',
         'product_description.required'      => 'Product description required',
-        'regular_price.required'      => 'Regular price required',
+        'regular_price.required'      => 'MRP is required',
+        'regular_price.gt'      => 'MRP should be greater than  zero',
         'sale_price.required'      => 'Sale price required',
+        'sale_price.gt'      => 'Sale Price should be greater than  zero',
         'tax_id.required'      => 'Tax required',
         'min_stock.required'      => 'Minimum stock required',
+        'min_stock.gte'      => 'Minimum stock should be greater than or equal to zero',
         'product_code.required'      => 'Product code required',
         'product_code.unique'      => 'Product code already taken',
         'business_type_id.required'        => 'Product type required',
@@ -2261,7 +2268,7 @@ class StoreController extends Controller
     $store_id =   Auth::guard('store')->user()->store_id;
     $customer = Trn_store_customer::all();
 
-    $orders = Trn_store_order::where('store_id', '=', $store_id)->orderBy('order_id', 'DESC')->paginate(10);
+    $orders = Trn_store_order::where('store_id', '=', $store_id)->orderBy('order_id', 'DESC')->get();
     $status = Sys_store_order_status::all();
     $store = Mst_store::all();
     $product = Mst_store_product::where('store_id', '=', $store_id)->get();
@@ -2285,8 +2292,9 @@ class StoreController extends Controller
       $delivery_boy_id = $request->delivery_boy_id;
       $status_id = $request->status_id;
       $customer_id = $request->customer_id;
-
-
+      $datefrom = $request->date_from;
+      $dateto = $request->date_to;
+      // dd($request->all());
       $a1 = Carbon::parse($request->date_from)->startOfDay();
       $a2  = Carbon::parse($request->date_to)->endOfDay();
       DB::enableQueryLog();
@@ -2303,10 +2311,14 @@ class StoreController extends Controller
       if (isset($request->customer_id)) {
         $query->where('customer_id', $customer_id);
       }
-      if (isset($request->date_from) && isset($request->date_to)) {
-        $query->whereDate('created_at', '>=', $a1)->whereDate('created_at', '<=', $a2);
+      if (isset($request->date_from)) {
+        $query->whereDate('trn_store_orders.created_at', '>=', $a1);
       }
-      $orders = $query->orderBy('order_id', 'DESC')->paginate(10);
+
+      if (isset($request->date_to)) {
+        $query->whereDate('trn_store_orders.created_at', '<=', $a2);
+      }
+      $orders = $query->orderBy('order_id', 'DESC')->get();
       // dd(DB::getQueryLog());
       return view('store.elements.order.list', compact('assign_delivery_boys', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
     }
@@ -3627,13 +3639,13 @@ class StoreController extends Controller
     
 
     $i = 0;
-
+  //dd($request->get('product_id'));
     foreach ($request->get('product_id') as $p_id) {
       //  echo "here";
-
-      $product_detail = Mst_store_product::where('product_id', '=', $p_id[$i])->get();
-
       $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
+      $product_detail = Mst_store_product::where('product_id', '=',  $productVarOlddata->product_id)->get();
+
+      
     
       if($productVarOlddata)
       {
@@ -3749,11 +3761,12 @@ class StoreController extends Controller
 
     Mst_store::where('store_id', Auth::guard('store')->user()->store_id)->update($data);
 
-
+  
 
 
 
     foreach ($request->start as $s) {
+      
       $info = [
         'store_id' => Auth::guard('store')->user()->store_id,
         'service_start' => $start[$i],

@@ -671,9 +671,9 @@ class SettingController extends Controller
 				//'email'       		       => 'required',
 
 				//	'store_commision_amount'                => 'required',
-
+                'store_commision_amount'                => 'sometimes|nullable|gte:0',
 				'store_district_id'                => 'required',
-				//	'store_commision_percentage'       => 'required',
+				'store_commision_percentage'       => 'gte:0',
 				'store_username' 				   => 'required|unique:mst_stores',
 				'store_mobile' 				   => 'required|unique:trn__store_admins|numeric',
 				'password'       			   => 'required|min:5|same:password_confirmation',
@@ -978,11 +978,11 @@ class SettingController extends Controller
 
 
 				//'store_commision_amount'			       => 'required',
-
+				'store_commision_amount'                => 'ometimes|nullable||gte:0',
 				'store_district_id'                => 'required',
 				'store_username'   => 'required',
 				//	'password'       			   => 'sometimes|same:password_confirmation',
-				//'store_commision_percentage' =>'required',
+				'store_commision_percentage' =>'gte:0',
 
 
 			],
@@ -2539,8 +2539,8 @@ class SettingController extends Controller
 				//'email'        => 'required',
 				'phone'        => 'required',
 				'password'		=> 'required|confirmed|min:6',
-				'subadmin_commision_percentage'		=> 'required',
-				'subadmin_commision_amount'		=> 'required',
+				'subadmin_commision_percentage'		=> 'required|gte:0',
+				'subadmin_commision_amount'		=> 'required|gte:0',
 				'subadmin_address'		=> 'required',
 
 				'country_id'		=> 'required',
@@ -2640,8 +2640,8 @@ class SettingController extends Controller
 				//'email'        => 'required',
 				'password'		=> 'sometimes|same:password_confirmation',
 
-				'subadmin_commision_percentage'		=> 'required',
-				'subadmin_commision_amount'		=> 'required',
+				'subadmin_commision_percentage'		=> 'required|gte:0',
+				'subadmin_commision_amount'		=> 'required|gte:0',
 				'subadmin_address'		=> 'required',
 
 				'country_id'		=> 'required',
@@ -2936,8 +2936,8 @@ class SettingController extends Controller
 				'state_id'       		    		=> 'required',
 				'town_id'       		    		=> 'required',
 				'district_id'               		=> 'required',
-				'delivery_boy_commision'            => 'required',
-				'delivery_boy_commision_amount'            => 'required',
+				'delivery_boy_commision'            => 'required|gte:0',
+				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
 				'password'  => 'sometimes|same:password_confirmation',
 
@@ -3043,6 +3043,8 @@ class SettingController extends Controller
 				'state_id'       		    		=> 'required',
 				'town_id'       		    		=> 'required',
 				'district_id'               		=> 'required',
+				'delivery_boy_commision'            => 'required|gte:0',
+				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys',
 				'delivery_boy_password'  => 'required|min:5|same:password_confirmation',
 				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=1000,min_height=800'

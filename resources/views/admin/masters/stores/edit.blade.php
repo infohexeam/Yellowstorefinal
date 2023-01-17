@@ -132,7 +132,7 @@
 
                         <div class="col-md-6">
                          <div class="form-group">
-                           <label class="form-label">Contact Person Number</label>
+                           <label class="form-label">Contact Person Number*</label>
                             <input type="text"   maxlength="10" name="store_contact_person_phone_number" id='txtcontact'  onpaste="return false" class="form-control" value="{{old('store_contact_person_phone_number',$store->store_contact_person_phone_number)}}"  onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  placeholder="Contact Person Number ">
                            </div>
                         </div>
@@ -221,14 +221,14 @@
                   <div class="col-md-6">
                     <div class="form-group">
                           <label class="form-label">Store Commission Amount (Monthly)</label>
-                          <input type="number"    name="store_commision_amount" step="0.1" class="form-control" placeholder="Store Commision Amount (Monthly) "  value="{{old('store_commision_amount',$store->store_commision_amount )}}">
+                          <input type="number" min="0"   name="store_commision_amount" step="0.1" class="form-control" placeholder="Store Commision Amount (Monthly) "  value="{{old('store_commision_amount',$store->store_commision_amount )}}">
                     </div>
                      </div>
 
                    <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Store Commission Percentage (Per Order)</label>
-                          <input type="number"   name="store_commision_percentage"  step="0.1" class="form-control" value="{{old('store_commision_percentage',$store->store_commision_percentage)}}" placeholder="Store Commission Percentage (Per Order)" >
+                          <input type="number" min="0"   name="store_commision_percentage"  step="0.1" class="form-control" value="{{old('store_commision_percentage',$store->store_commision_percentage)}}" placeholder="Store Commission Percentage (Per Order)" >
                         </div>
                      </div>
 @endif
