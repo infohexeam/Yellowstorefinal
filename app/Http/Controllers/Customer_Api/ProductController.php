@@ -903,12 +903,12 @@ class ProductController extends Controller
                         $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                         if($productData->product_varient_base_image!=NULL)
                         {
-                            $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_varient_base_image;
+                            $productData->product_varient_base_image = $productData->product_varient_base_image;
     
                         }
                         else
                         {
-                            $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
+                            $productData->product_varient_base_image = $productData->product_base_image;
     
                         }
 
