@@ -434,7 +434,6 @@ class CustomerController extends Controller
                 $session_id=$request->otp_session_id;
 
                 $res=Helper::verifyOtp($session_id,$otp,1);
-                return $res;
                 if($res['status']=="success")
                {
 
