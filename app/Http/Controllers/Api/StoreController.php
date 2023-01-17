@@ -952,10 +952,10 @@ class StoreController extends Controller
 
             return response($data);
         } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
+            $response = ['status' => '0', 'message' => 'Invalid OTP...Try Again'];
             return response($response);
         } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
+            $response = ['status' => '0', 'message' => 'Invalid OTP...Try Again'];
             return response($response);
         }
     }
