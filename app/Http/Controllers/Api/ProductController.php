@@ -2381,6 +2381,22 @@ class ProductController extends Controller
                                                     DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                                 }
                                             }
+                                            else
+                                            {
+                                                if ($c == 1) {
+                                                    if($filename)
+                                                    {
+                                                    if($filename="")
+                                                    {
+                                                    DB::table('mst_store_products')->where('product_id', $request->product_id)
+                                                        ->update(['product_base_image' => $proData->product_base_image]);
+                                                    $c++;
+                                                    }
+                                                }
+                                                    //DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+                                                }
+
+                                            }
                                         }
                                     }
     
