@@ -280,7 +280,7 @@ class PosController extends Controller
                         }
                         else
                         {
-                            $product->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' .$product->product_base_image;
+                            $product->product_varient_base_image = $product->product_base_image;
 
                         }
                         $taxData = Mst_Tax::find(@$product->tax_id);
