@@ -614,7 +614,7 @@ class StoreController extends Controller
                                     ->count();
 
 
-                                if ($devTokenC == 0) {
+                                if (($divTok > 0) && ($devTokenC == 0)) {
                                     $data['login_status '] =1 ; // logged in another device (otp)
                                     $store_otp=rand(100000,999999);
                                     $storeData = Mst_store::find($custCheck->store_id);
