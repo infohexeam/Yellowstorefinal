@@ -912,7 +912,7 @@ class PurchaseController extends Controller
                         @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_base_image;
 
                     }
-                        \
+                        
                         $storeData = Mst_store::find(@$cartData->productData->store_id);
                         @$cartData->productData->store_name = @$storeData->store_name;
 
