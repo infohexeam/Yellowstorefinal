@@ -615,7 +615,7 @@ class StoreController extends Controller
 
 
                                 if (($divTok > 0) && ($devTokenC == 0)) {
-                                    $data['login_status '] = 1; // logged in another device (otp)
+                                    $data['login_status '] = 0; // logged in another device (otp)
                                     $store_otp=rand(100000,999999);
                                     $storeData = Mst_store::find($custCheck->store_id);
                                     //$otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
@@ -633,7 +633,7 @@ class StoreController extends Controller
                                     $data['otp']=$store_otp;
                                     $data['message'] = "Success";
                                 } else {
-                                    $data['login_status '] = 0; // success 
+                                    $data['login_status '] = 1; // success 
                                 }
 
                                 //  $data['login_status '] = $divTok;
