@@ -543,10 +543,29 @@ class PurchaseController extends Controller
                 
                             $proData = Mst_store_product::find($varProdu->product_id);
 
-                            if ($request->quantity > $varProdu->stock_count || $proData->product_status == 0) {  
-                            $data['message'] = 'Stock/Product unavailable';
+                            if ($request->quantity > $varProdu->stock_count ) {  
+                                $data['message'] = 'Stock unavailable';
+                                $data['status'] = 3;
+                                return response($data);
+                            
+                        }
+                        if($proData->product_status == 0)
+                        {
+                            if($varProdu->is_base_varient==1)
+                            {
+                                $data['message'] = 'Product unavailable';
+                                $data['status'] = 3;
+                                return response($data);
+
+                            }
+
+                        }
+                        if($varProdu->variant_status==0)
+                        {
+                            $data['message'] = 'Product unavailable';
                             $data['status'] = 3;
                             return response($data);
+
                         }
                            
                     //if ($proData->service_type != 2) {  
