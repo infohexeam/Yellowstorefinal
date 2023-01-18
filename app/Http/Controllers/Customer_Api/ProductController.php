@@ -918,7 +918,7 @@ class ProductController extends Controller
                         }
                         else
                         {
-                            $productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/'.$productData->product_base_image;
+                            $productData->product_varient_base_image = $productData->product_base_image;
     
                         }
 
