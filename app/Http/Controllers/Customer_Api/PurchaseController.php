@@ -902,7 +902,17 @@ class PurchaseController extends Controller
                             ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
                             ->first();
                         @$cartData->productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_base_image;
+                        if(@$cartData->productData->product_varient_base_image!=NULL)
+                    {
                         @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_varient_base_image;
+
+                    }
+                    else
+                    {
+                        @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_base_image;
+
+                    }
+                        \
                         $storeData = Mst_store::find(@$cartData->productData->store_id);
                         @$cartData->productData->store_name = @$storeData->store_name;
 
