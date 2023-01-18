@@ -620,7 +620,18 @@ class DeliveryBoyOrderController extends Controller
                         foreach ($orderItems as $value) {
                             $value->variant_name = @$value->variant_name . " " . $value->variant_name;
                             $value['productDetail'] = Mst_store_product_varient::find($value->product_varient_id);
-                            @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
+                            if(@$value->productDetail->product_varient_base_image!=NULL)
+                            {
+                             
+                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$value->productDetail->product_varient_base_image;
+ 
+                            }
+                            else
+                            {
+                             $baseProduct = Mst_store_product::find($value->product_id);
+                             @$value->productDetail->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' .@$baseProduct->product_base_image;
+ 
+                            }
 
                             $baseProductDetail = Mst_store_product::find($value->product_id);
 
