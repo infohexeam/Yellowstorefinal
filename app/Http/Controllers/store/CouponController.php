@@ -1746,7 +1746,6 @@ class CouponController extends Controller
         $orlink=Mst_order_link_delivery_boy::where('order_id',$d->order_id)->where('delivery_boy_id',@$d->delivery_boy_id)->first();
         $tot_now_count[$i]=$total_count;
         $tot_prev_count[$i]=$tot_now_count[$i]-1;
-        $cm=0;
         $cm=$orlink->commision_per_month;
         $co=$orlink->commision_per_order;
         $d->previous_amount=$prev_amount[$i-1];

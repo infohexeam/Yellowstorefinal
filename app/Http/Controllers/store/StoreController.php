@@ -3515,7 +3515,7 @@ class StoreController extends Controller
     $products = DB::table('mst_store_products')->where('product_id', $product_id)->first();
     $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
       ->where('mst_store_products.product_id', '=', $product_id)
-      ->where('mst_store_product_varients.product_varient_id', '=', $product_varient_id)
+      ->where('mst_store_product_vlistInvarients.product_varient_id', '=', $product_varient_id)
       ->select(
         'mst_store_product_varients.product_varient_offer_price',
         'mst_store_product_varients.product_varient_id',
