@@ -3053,6 +3053,7 @@ class StoreController extends Controller
         $tot_prev_count[0]=0;
         $tot_now_count[0]=0;
         $prev_amount[0]=0;
+        $month_commision[0]=0;
         
         
 
@@ -3070,10 +3071,11 @@ class StoreController extends Controller
                     $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
                     $sd->subadmin_name=Helper::subAdminName($sd->subadmin_id)??'';
                     $sd->subadmin_phone=$sd->subadmindetail->phone??'';
+                    $month_commision[$i]=$orlink->commision_per_month;
                     $sd->commission_month=$orlink->commision_per_month??$sd->delivery_boy_commision;
                     $sd->commission_order=$orlink->commision_per_order??$sd->delivery_boy_commision_amount;
-                    $sd->previous_commission=$prev_amount[$i-1];
-                    $sd->commission_after_order=$prev_amount[$i-1]+$sd->commission_order;
+                    $sd->previous_commission=$prev_amount[$i-1]+$month_commision[$i];
+                    $sd->commission_after_order=$prev_amount[$i-1]+$sd->commission_order+$month_commision[$i];
                     $prev_amount[$i]=$sd->commission_after_order;
                     //////////////////////////////////////////////
         //             $cm=$orlink->commision_per_month;
