@@ -326,7 +326,7 @@ class AdminController extends Controller
     public function restoreVehicleTypes(Request $request, $vehicle_type_id)
     {
         $vehicle_type = Sys_vehicle_type::onlyTrashed()->find($vehicle_type_id)->restore();
-        return redirect('admin/vihicle_types/list')->with('status', 'Vehicle type restored successfully.');
+        return redirect('admin/vehicle_types/list')->with('status', 'Vehicle type restored successfully.');
     }
 
 
