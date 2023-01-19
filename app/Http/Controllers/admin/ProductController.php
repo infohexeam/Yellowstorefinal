@@ -2289,6 +2289,7 @@ class ProductController extends Controller
       
       foreach($data->reverse() as $d)
       {
+        $i++;
         $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
         $orlink=Mst_order_link_delivery_boy::where('order_id',$d->order_id)->where('delivery_boy_id',@$d->delivery_boy_id)->first();
         $tot_now_count[$i]=$total_count;
