@@ -1748,7 +1748,7 @@ class CouponController extends Controller
         $tot_prev_count[$i]=$tot_now_count[$i]-1;
         $cm=$orlink->commision_per_month;
         $co=$orlink->commision_per_order;
-        $d->previous_amount=$cm+($tot_prev_count[$i]*@$co);
+        $d->previous_amount=$cm+(($tot_now_count[$i]-1)*@$co);
         $d->new_amount=$cm+($tot_now_count[$i]*@$co);
         $d->c_month= $cm;
         $d->c_order=$co;
