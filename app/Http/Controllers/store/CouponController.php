@@ -1736,7 +1736,7 @@ class CouponController extends Controller
         
         foreach($data->reverse() as $d)
         {
-          $i++;
+          
         
         array_push($check_array,$d->order_id);
 
@@ -1750,6 +1750,7 @@ class CouponController extends Controller
         $d->new_amount=$cm+($tot_now_count[$i-1]*@$co);
         $d->c_month= $cm;
         $d->c_order=$co;
+        $i++;
     
           
         }
