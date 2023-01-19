@@ -1679,7 +1679,7 @@ class CouponController extends Controller
         ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 
       if (auth()->user()->user_role_id  != 0) {
-        // $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+        // $data = $data->where('mst_staaa aaZores.subadmin_id', '=', auth()->user()->id);
         $data = $data->where('trn_store_orders.subadmin_id', '=', auth()->user()->id);
       }
       $data = $data->where('trn_store_orders.delivery_status_id', '=', 3)
@@ -1746,8 +1746,8 @@ class CouponController extends Controller
         $tot_prev_count[$i]=$tot_now_count[$i]-1;
         $cm=$orlink->commision_per_month;
         $co=$orlink->commision_per_order;
-        $d->previous_amount=$cm+($tot_prev_count[$i]*@$co);
-        $d->new_amount=$cm+($tot_now_count[$i]*@$co);
+        $d->previous_amount=$cm+($tot_prev_count[$i-1]*@$co);
+        $d->new_amount=$cm+($tot_now_count[$i-1]*@$co);
         $d->c_month= $cm;
         $d->c_order=$co;
     
