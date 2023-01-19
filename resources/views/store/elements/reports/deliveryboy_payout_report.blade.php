@@ -128,8 +128,8 @@
                                              <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->c_month,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->c_order,2)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->previous_amount)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->new_amount)??0.00 }}</td>
+                                            <td>{{ number_format(@$d->previous_amount+@$d->c_month)??0.00 }}</td>
+                                            <td>{{ number_format(@$d->new_amount+@$d->c_month)??0.00 }}</td>
 
 
                                           

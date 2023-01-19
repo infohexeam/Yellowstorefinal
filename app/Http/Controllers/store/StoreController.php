@@ -3355,7 +3355,7 @@ class StoreController extends Controller
       ->where('mst_store_products.store_id', $store_id)
       ->where('mst_store_products.product_type', 1)
       ->where('mst_store_products.is_removed', 0)
-      ->where('mst_store_categories.category_status', 1)
+      ->where('mst_store_categories.category_status',1)
       ->orderBy('mst_store_product_varients.stock_count', 'ASC')
       ->where('mst_store_product_varients.is_removed', 0);
 

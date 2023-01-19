@@ -3050,6 +3050,9 @@ class StoreController extends Controller
         $tot_now=[];
         $tot_prev_count=[];
         $tot_now_count=[];
+        $tot_prev_count[0]=0;
+        $tot_now_count[0]=0;
+        $prev_amount[0]=0;
         
         
 
@@ -3071,8 +3074,8 @@ class StoreController extends Controller
                     $sd->commission_order=$orlink->commision_per_order??$sd->delivery_boy_commision_amount;
                     $sd->previous_commission=$sd->commission_month+($tot_prev_count[$i]*@$sd->commission_order);
                     $sd->commission_after_order=$sd->commission_month+($tot_now_count[$i]*@$sd->commission_order);
+                    //////////////////////////////////////////////
                     
-
                    
 
                     @$sd->status->status;
