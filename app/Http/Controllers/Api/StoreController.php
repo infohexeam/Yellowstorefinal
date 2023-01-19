@@ -3072,8 +3072,8 @@ class StoreController extends Controller
                     $sd->subadmin_phone=$sd->subadmindetail->phone??'';
                     $sd->commission_month=$orlink->commision_per_month??$sd->delivery_boy_commision;
                     $sd->commission_order=$orlink->commision_per_order??$sd->delivery_boy_commision_amount;
-                    $sd->previous_commission=$prev_amount[$i-1]+$sd->commission_month;
-                    $sd->commission_after_order=$prev_amount[$i-1]+$sd->commission_order+$sd->commission_month;
+                    $sd->previous_commission=$prev_amount[$i-1];
+                    $sd->commission_after_order=$prev_amount[$i-1]+$sd->commission_order;
                     $prev_amount[$i]=$sd->commission_after_order;
                     //////////////////////////////////////////////
         //             $cm=$orlink->commision_per_month;
