@@ -3077,6 +3077,9 @@ class StoreController extends Controller
                     $sd->previous_commission=number_format($prev_amount[$i-1]);
                     $sd->commission_after_order=number_format($prev_amount[$i-1]+$sd->commission_order);
                     $prev_amount[$i]=$sd->commission_after_order;
+                    $sd->previous_commission=$sd->previous_commission+$sd->commission_month;
+                    $sd->commission_after_order=$sd->commission_after_order+$sd->commission_month;
+
                     //////////////////////////////////////////////
         //             $cm=$orlink->commision_per_month;
         // $co=$orlink->commision_per_order;
