@@ -95,6 +95,15 @@ class ProductController extends Controller
                         $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
 
                     }
+                    if($row->is_base_variant==1)
+                    {
+                        if($productData->product_status==0)
+                        {
+                            $row->variant_status="0";
+
+                        }
+
+                    }
                     
                     
                     $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
