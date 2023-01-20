@@ -551,9 +551,9 @@ class PurchaseController extends Controller
                         }
                         if($proData->product_status == 0)
                         {
-                            if($varProdu->is_base_varient==1)
+                            if($varProdu->is_base_variant==1)
                             {
-                                $data['message'] = 'Product unavailable';
+                                $data['message'] = 'Product unavailable..Try again later';
                                 $data['status'] = 3;
                                 return response($data);
 
