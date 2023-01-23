@@ -3921,6 +3921,39 @@ class StoreController extends Controller
     //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     // }
   }
+  public function removePosProduct(Request $request)
+  {
+    $data=array();
+    $pvid=$request->product_varient_id;
+    $order_uid=$request->order_uid;
+    $pos_lock=Trn_pos_lock::where('product_varient_id',$pvid)->where('order_uid',$order_uid);
+    if($pos_lock->first())
+    {
+      $qty=$pos_lock->first()->quantity;
+      if($pos_lock->first()->delete())
+      {
+        Mst_store_product_varient::where('product_varient_id', '=', $pvid)->increment('stock_count', $qty);
+      
+        $data['status']=1;
+        $data['message']="sucessful";
+        return response()->json($data);
+
+      }
+      else
+      {
+        $data['status']=0;
+        $data['message']="failure";
+        return response()->json($data);
+
+      }
+     
+
+
+     
+    }
+
+
+  }
 
 
 

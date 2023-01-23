@@ -481,7 +481,7 @@ var countPro = 0;
                         // $('#cname').text(customer_name);
                         if(result['status']==1)
                         {
-                         html = '<tr id="tr'+countPro+'"><td> <input type="hidden" class=".classCustomerID" name="customer_id" value="'+customer_id+'"> <input type="hidden" class=".classProductID" name="product_id[]" value="'+product_res[0]+'"> <input type="hidden" class=".classProductInvID" name="product_varient_id[]" value="'+product_res[1]+'"> '+product_name+' </td><td><input type="hidden" class=".classQuantity" name="single_quantity[]" value="'+quantity+'">'+quantity+' <i class="fa fa-times"></i> <input type="hidden" class=".classSingleQuantityRate" name="single_quantity_rate[]" value="'+(rate/ quantity)+'">'+ (rate/ quantity) +'</td><td><input type="hidden" class=".classDiscountAmount" name="discount_amount[]" value="'+total_discount+'"><input type="hidden" class=".classDiscountPercentage" name="discount_percentage[]" value="'+0+'">'+total_discount+'</td><td><input type="hidden" class=".classTotalTax" name="total_tax[]" value="'+tax.toFixed(2)+'">'+tax_value+'</td><td class="price"><input type="hidden" class=".classTotalAmount" name="total_amount[]" value="'+parseFloat(total_amount).toFixed(2)+'">'+parseFloat(total_amount).toFixed(2)+'</td><td><a class="btn btn-sm btn-danger text-white" id="removeBtn" onclick="removetr('+countPro+')" class=".removeBtn">Remove</a></td></tr>';
+                         html = '<tr id="tr'+countPro+'"><td> <input type="hidden" class=".classCustomerID" name="customer_id" value="'+customer_id+'"> <input type="hidden" class=".classProductID" name="product_id[]" value="'+product_res[0]+'"> <input type="hidden" class=".classProductInvID" name="product_varient_id[]" value="'+product_res[1]+'"> '+product_name+' </td><td><input type="hidden" class=".classQuantity" name="single_quantity[]" value="'+quantity+'">'+quantity+' <i class="fa fa-times"></i> <input type="hidden" class=".classSingleQuantityRate" name="single_quantity_rate[]" value="'+(rate/ quantity)+'">'+ (rate/ quantity) +'</td><td><input type="hidden" class=".classDiscountAmount" name="discount_amount[]" value="'+total_discount+'"><input type="hidden" class=".classDiscountPercentage" name="discount_percentage[]" value="'+0+'">'+total_discount+'</td><td><input type="hidden" class=".classTotalTax" name="total_tax[]" value="'+tax.toFixed(2)+'">'+tax_value+'</td><td class="price"><input type="hidden" class=".classTotalAmount" name="total_amount[]" value="'+parseFloat(total_amount).toFixed(2)+'">'+parseFloat(total_amount).toFixed(2)+'</td><td><a class="btn btn-sm btn-danger text-white" id="removeBtn" onclick="removetr('+countPro+','+product_res[1]+')" class=".removeBtn">Remove</a></td></tr>';
                          $('#myTable tr:last').after(html);
                          $('.total_sum').remove();
                               
@@ -567,29 +567,54 @@ var countPro = 0;
     
 
 
-function removetr(key)
+function removetr(key,product_varient_id)
 {
-     //console.log(key); 
-    // alert("here");
-    $('#tr'+key).remove();
-     $('.total_sum').remove(); 
+     alert(product_varient_id);
+     var _token = $('input[name="_token"]').val();
+    
+   $.ajax({
+                    url:"{{ route('store.remove_pos_product') }}",
+                    method:"POST",
+                     data:{product_varient_id:product_varient_id,order_uid:order_uid,_token:_token},
+                    success:function(result)
+                    {
+                         countPro++;
+                         //alert(result['status']);
+                         //  alert(customer_name);
+                        // $('#cname').text(customer_name);
+                        if(result['status']==1)
+                        {
+                                                  //console.log(key); 
+                         // alert("here");
+                         $('#tr'+key).remove();
+                              $('.total_sum').remove(); 
 
-var ht = '';
-let ts = 0;
-    $(".price").each(function(){
-     ts += parseFloat($(this).text());
-    // console.log($(this).text());
-    });
-     ht = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input id="classFullAmountId" type="hidden" class="classFullAmount" name="full_amount" value="'+ts.toFixed(2)+'">'+ts.toFixed(2)+'</td></tr>';
-   $('#myTable tr:last').after(ht);
-   let total_sumr =   parseFloat($("#classFullAmountId").val());
-   console.log($("#classFullAmountId").text());
-  console.log(total_sumr);
-   if(total_sumr <= 0){
-     $('#order_btn').hide();
-     }else{
-          $('#order_btn').show();
+                         var ht = '';
+                         let ts = 0;
+                         $(".price").each(function(){
+                              ts += parseFloat($(this).text());
+                         // console.log($(this).text());
+                         });
+                              ht = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input id="classFullAmountId" type="hidden" class="classFullAmount" name="full_amount" value="'+ts.toFixed(2)+'">'+ts.toFixed(2)+'</td></tr>';
+                         $('#myTable tr:last').after(ht);
+                         let total_sumr =   parseFloat($("#classFullAmountId").val());
+                         console.log($("#classFullAmountId").text());
+                         console.log(total_sumr);
+                         if(total_sumr <= 0){
+                              $('#order_btn').hide();
+                              }else{
+                                   $('#order_btn').show();
      }
+                         
+                        }
+                       
+
+                        
+
+
+                    }
+               })
+   
 
 }
 </script>

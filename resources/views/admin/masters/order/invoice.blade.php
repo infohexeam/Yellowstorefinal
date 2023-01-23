@@ -27,12 +27,15 @@
                                     <p class="h3">Invoice From:</p>
                                       @php
                                         $invoice_data = \DB::table('trn_order_invoices')->where('order_id',$order->order_id)->first();
+                                         $order_data = \DB::table('trn_store_orders')->where('order_id',$order->order_id)->first();
                                        @endphp
                                     <p class="h5">{{ @$store_data->store_name }}</p>
                                     <address>
                                     <h6>Invoice Number : {{@$invoice_data->invoice_id}}</h6>
                                     <h6>Invoice Date : {{$changeDate = date("d-m-Y", strtotime( @$invoice_data->invoice_date))  }}</h6>
-                                   
+                                   @if(@$order_data->status_id==9)
+                                   <h6>Delivery Date : {{$changeOrdedater = date("d-m-Y", strtotime( @$order_data->updated_at))  }}</h6>
+                                   @endif
                                     <div>
                                        {{ @$store_data->store_primary_address }} <br>
                                  
