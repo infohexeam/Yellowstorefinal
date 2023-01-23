@@ -808,8 +808,11 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         // pos
         Route::get('store/pos/list', 'StoreController@listPOS')->name('store.list_pos');
+        Route::get('store/pos/list2', 'StoreController@listPOS2')->name('store.list_pos2');
         Route::post('store/pos/save', 'StoreController@savePOS')->name('store.save_pos');
+        Route::post('store/pos/save-lock', 'StoreController@savePOSLOCK')->name('store.save_pos_lock');
         Route::post('stores/ajax/find/product', 'StoreController@findProduct')->name('store.find_product');
+        Route::post('stores/ajax/lock/product', 'StoreController@lockProduct')->name('store.lock_product');
         Route::post('stores/ajax/find/customer', 'StoreController@findCustomer')->name('store.find_customer');
         Route::post('stores/ajax/find/tax', 'StoreController@findTax')->name('store.find_tax'); // not implimented
         Route::post('stores/ajax/find/product-avilability', 'StoreController@checkProductAvailability')->name('store.checkProductAvailability');

@@ -35,11 +35,13 @@
                 <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
             </div>
             <div class="card-body border">
+          
                 <form id="reset" method="GET" enctype="multipart/form-data">
                    @csrf
                         <div class="row">
 
                             <div class="col-md-12">
+                              <span id="msgPro" style="color:red"></span>
                                 <div class="form-group">
                                     <label class="form-label">Customer</label>
                                         <select name="customer_id2" id="customer_id2" class="form-control" readonly="">
@@ -84,7 +86,7 @@
                                    $uid = uniqid();
                                    @endphp
 
-                                    <input type="text" name="order_uid" value="{{$uid}}">
+                                    <input type="text" id="order_uid" name="order_uid" value="{{$uid}}">
                                    <input type="text" readonly class="form-control" id="mrp" name="mrp" value="{{request()->input('mrp')}}" placeholder="MRP">
                                  </div>
                             </div>
@@ -157,8 +159,9 @@
                <div class="card-body">
                          <h3 class="text-bold" id="cname"></h3>
                 <div class="table-responsive">
-                  <form action="{{route('store.save_pos')}}" method="POST" enctype="multipart/form-data">
+                  <form action="{{route('store.save_pos_lock')}}" method="POST" enctype="multipart/form-data">
                   @csrf
+                   <input type="text" id="or_uid" name="or_uid" value="{{$uid}}">
                   <table id="myTable" style="background: #f1f1f9;" class="table table-striped table-bordered text-nowrap w-100">
                     <thead>
                       <tr>
@@ -441,6 +444,8 @@ var countPro = 0;
            customer_id = $('#customer_id').val();
            product_id = $('#product_id').val();
            quantity = $('#quantity').val();
+           //alert(quantity);
+           order_uid= $('#order_uid').val();
            //findProductAvailability(product_id , quantity);
            //alert(quantity);
            rate = $('#rate').val();
@@ -465,15 +470,17 @@ var countPro = 0;
                product_res[0]=0;
                var _token = $('input[name="_token"]').val();
                $.ajax({
-                    url:"{{ route('store.find_customer') }}",
+                    url:"{{ route('store.lock_product') }}",
                     method:"POST",
-                    data:{customer_id:customer_id, _token:_token},
+                     data:{product_id:product_res[0],product_varient_id:product_res[1],order_uid:order_uid,quantity:quantity,_token:_token},
                     success:function(result)
                     {
                          countPro++;
-                         customer_name = result['customer_first_name']+' '+result['customer_last_name'];
+                         //alert(result['status']);
                          //  alert(customer_name);
                         // $('#cname').text(customer_name);
+                        if(result['status']==1)
+                        {
                          html = '<tr id="tr'+countPro+'"><td> <input type="hidden" class=".classCustomerID" name="customer_id" value="'+customer_id+'"> <input type="hidden" class=".classProductID" name="product_id[]" value="'+product_res[0]+'"> <input type="hidden" class=".classProductInvID" name="product_varient_id[]" value="'+product_res[1]+'"> '+product_name+' </td><td><input type="hidden" class=".classQuantity" name="single_quantity[]" value="'+quantity+'">'+quantity+' <i class="fa fa-times"></i> <input type="hidden" class=".classSingleQuantityRate" name="single_quantity_rate[]" value="'+(rate/ quantity)+'">'+ (rate/ quantity) +'</td><td><input type="hidden" class=".classDiscountAmount" name="discount_amount[]" value="'+total_discount+'"><input type="hidden" class=".classDiscountPercentage" name="discount_percentage[]" value="'+0+'">'+total_discount+'</td><td><input type="hidden" class=".classTotalTax" name="total_tax[]" value="'+tax.toFixed(2)+'">'+tax_value+'</td><td class="price"><input type="hidden" class=".classTotalAmount" name="total_amount[]" value="'+parseFloat(total_amount).toFixed(2)+'">'+parseFloat(total_amount).toFixed(2)+'</td><td><a class="btn btn-sm btn-danger text-white" id="removeBtn" onclick="removetr('+countPro+')" class=".removeBtn">Remove</a></td></tr>';
                          $('#myTable tr:last').after(html);
                          $('.total_sum').remove();
@@ -490,6 +497,13 @@ var countPro = 0;
                          // add total amount
                          html = '<tr class="total_sum"><td colspan="5" class=" text-right">Total</td><td class=""><input type="hidden" id="classFullAmountId" class="classFullAmount" name="full_amount" value="'+total_sum.toFixed(2)+'">'+total_sum.toFixed(2)+'</td></tr>';
                          $('#myTable tr:last').after(html);
+                        }
+                        else
+                        {
+                         $('#msgPro').text(result['message']);
+                          $('#order_btn').hide();
+
+                        }
 
                         
 

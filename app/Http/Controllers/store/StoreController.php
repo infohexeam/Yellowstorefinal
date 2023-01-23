@@ -79,6 +79,7 @@ use PDF;
 use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_StoreBankData;
+use App\Trn_pos_lock;
 use App\Trn_wallet_log;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -1851,7 +1852,7 @@ class StoreController extends Controller
 
     $removeProductVar = array();
     $removeProductVar['is_removed'] = 1;
-    $removeProductVar['stock_count'] = 0;
+   // $removeProductVar['stock_count'] = 0;
 
     $productData  = Mst_store_product::find($product);
 
@@ -1902,7 +1903,7 @@ class StoreController extends Controller
 
     $removeProductVar = array();
     $removeProductVar['is_removed'] = 0;
-    $removeProductVar['stock_count'] = 0;
+    //$removeProductVar['stock_count'] = 0;
 
     // $productData  = Mst_store_product::find($product);
 
@@ -3490,6 +3491,34 @@ class StoreController extends Controller
 
     return view('store.elements.pos.list', compact('tax', 'products', 'customer', 'pageTitle'));
   }
+  public function listPOS2(Request $request)
+  {
+    $pageTitle = "POS";
+    $store_id =   Auth::guard('store')->user()->store_id;
+    //dd(Helper::checkOrderNumber(Auth::guard('store')->user()->store_id));
+    $check_wasted_lock=Trn_pos_lock::where('status',1)->where('ip_address',$request->ip());
+    if($check_wasted_lock->count()>0)
+    {
+       
+    }
+
+    $customer = Trn_store_customer::all();
+    //  $products = Mst_store_product::where('store_id',$store_id)->where('stock_count','!=',0)->get();
+    $tax = Mst_Tax::where('is_removed', '!=', 1)->get();
+
+    $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+      ->where('mst_store_products.store_id', $store_id)
+      ->where('mst_store_products.product_status', 1)
+      ->where('mst_store_products.product_type', 1)
+      ->where('mst_store_products.is_removed', 0)
+      ->where('mst_store_product_varients.is_removed', 0)
+      ->where('mst_store_product_varients.variant_status', 1)
+      ->where('mst_store_product_varients.stock_count', '>', 0)
+      ->orderBy('mst_store_products.product_id', 'DESC')
+      ->get();
+
+    return view('store.elements.pos.list2', compact('tax', 'products', 'customer', 'pageTitle'));
+  }
 
   public function checkProductAvailability(Request $request)
   {
@@ -3515,7 +3544,7 @@ class StoreController extends Controller
     $products = DB::table('mst_store_products')->where('product_id', $product_id)->first();
     $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
       ->where('mst_store_products.product_id', '=', $product_id)
-      ->where('mst_store_product_vlistInvarients.product_varient_id', '=', $product_varient_id)
+      ->where('mst_store_product_varients.product_varient_id', '=', $product_varient_id)
       ->select(
         'mst_store_product_varients.product_varient_offer_price',
         'mst_store_product_varients.product_varient_id',
@@ -3544,6 +3573,53 @@ class StoreController extends Controller
     $customer = DB::table('trn_store_customers')->where('customer_id', $customer_id)->first();
 
     return response()->json($customer);
+  }
+  public function lockProduct(Request $request)
+  {
+
+    $product_id = $request->product_id;
+    $product_varient_id = $request->product_varient_id;
+    $quantity=$request->quantity;
+    $order_uid=$request->order_uid;
+
+    //$products = DB::table('mst_store_products')->where('product_id', $product_id)->first();
+    // $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+    //   ->where('mst_store_products.product_id', '=', $product_id)
+    //   ->where('mst_store_product_vlistInvarients.product_varient_id', '=', $product_varient_id)
+    //   ->select(
+    //     'mst_store_product_varients.product_varient_offer_price',
+    //     'mst_store_product_varients.product_varient_id',
+    //     'mst_store_product_varients.stock_count',
+    //     'mst_store_product_varients.product_varient_price',
+    //     'mst_store_product_varients.variant_name',
+    //     'mst_store_products.*',
+    //   )
+    //   ->first();
+      $productVarOlddata = Mst_store_product_varient::find($product_varient_id);
+      $stockDiffernece=$productVarOlddata->stock_count-$quantity;
+      if($stockDiffernece<0)
+      {
+          $data['status'] = 0;
+          $data['message'] = "Out of stock now...Please try again later";
+          
+          return response()->json($data);
+
+      }
+      Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->decrement('stock_count',$quantity);
+    $lock=new Trn_pos_lock();
+    $lock->order_number=Auth::guard('store')->user()->store_id.'-'.$order_uid;
+    $lock->order_uid=$request->order_uid;
+    $lock->product_varient_id=$product_varient_id;
+    $lock->store_id=Auth::guard('store')->user()->store_id;
+    $lock->ip_address=$request->ip();
+    $lock->quantity=$quantity;
+    $lock->save();
+  
+
+    // dd($products);
+    $data['status']=1;
+    $data['message']="sucessful";
+    return response()->json($data);
   }
 
   public function findTax(Request $request)
@@ -3664,6 +3740,140 @@ class StoreController extends Controller
 
       Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $single_quantity[$i]);
      
+      if (!isset($discount_amount[$i])) {
+        $discount_amount[$i] = 0;
+      }
+
+
+      $negStock = -1 * abs($single_quantity[$i]);
+
+      $sd = new Mst_StockDetail;
+      $sd->store_id = Auth::guard('store')->user()->store_id;
+      $sd->product_id = $productVarOlddata->product_id??0;
+      $sd->stock = $negStock;
+      $sd->product_varient_id = $pro_variant[$i];
+      $sd->prev_stock = $productVarOlddata->stock_count;
+      $sd->save();
+
+      $data = [
+        'order_id' => $order_id,
+        'product_id' => $productVarOlddata->product_id??0,
+        'product_varient_id' => $pro_variant[$i],
+        'customer_id' => $request->get('customer_id'),
+        'store_id' => Auth::guard('store')->user()->store_id,
+        'quantity' => $single_quantity[$i],
+        'unit_price' =>  $single_quantity_rate[$i],
+        'mrp'=>$productVarOlddata->product_varient_price,
+        'tax_amount' => $total_tax[$i],
+        'total_amount' => $total_amount[$i],
+        'discount_amount' => $discount_amount[$i],
+        'discount_percentage' => $discount_percentage[$i],
+
+
+      ];
+
+
+
+      Trn_store_order_item::insert($data);
+
+      //  $order_item->save();
+
+      $i++;
+    }
+    // die;
+    DB::commit();
+    return  redirect()->back()->with('status', 'Order placed successfully.');
+    // } catch (\Exception $e) {
+    //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    // }
+  }
+  //save pos with lock release
+
+  public function savePOSLOCK(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
+  {
+    // try {
+     
+      $j=0;
+      $pro_variant = $request->get('product_varient_id');
+      $single_quantity = $request->get('single_quantity');
+      $order_uid=$request->or_uid;
+     //dd($request->get('quantity'));
+   
+    DB::beginTransaction();
+    // $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->where('is_locked',0)->count();
+    $storeOrderCount = Trn_store_order::where('store_id', Auth::guard('store')->user()->store_id)->count();
+
+    $orderNumber = @$storeOrderCount + 1;
+
+    $storeData = Mst_store::where('store_id', Auth::guard('store')->user()->store_id)->select('order_number_prefix')->first();
+
+    if (isset($storeData->order_number_prefix)) {
+      $orderNumberPrefix = $storeData->order_number_prefix;
+    } else {
+      $orderNumberPrefix = 'ORDRYSTR';
+    }
+    // $last_order_number=Helper::checkOrderNumber(Auth::guard('store')->user()->store_id);
+    // $orderNumber = $last_order_number + 1;
+    // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+    // if($order_no_exists)
+    // {
+    //   $orderNumber=$orderNumber+1;
+    // }
+    $store_order->order_number = $orderNumberPrefix .substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4)), 0, 4). @$orderNumber;
+    //dd(Auth::guard('store')->user()->store_admin_id);
+    $store_order->customer_id = 3;
+    
+    $store_order->store_id =  Auth::guard('store')->user()->store_id;
+    if (isset(Auth::guard('store')->user()->subadmin_id)) {
+      $store_order->subadmin_id =  Auth::guard('store')->user()->subadmin_id;
+    } else {
+      $store_order->subadmin_id =  0;
+    }
+
+    $store_order->store_admin_id =  Auth::guard('store')->user()->store_admin_id;
+
+    $store_order->product_total_amount =  $request->get('full_amount');
+    $store_order->payment_type_id = 1;
+    $store_order->payment_status = 9;
+    $store_order->status_id = 9;
+    $store_order->order_type = 'POS';
+
+    $store_order->save();
+   
+    $order_id = DB::getPdo()->lastInsertId();
+
+
+
+    $invoice_info['order_id'] = $order_id;
+    $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+    $invoice_info['invoice_id'] = "INV0" . $order_id;
+
+    Trn_order_invoice::insert($invoice_info);
+
+    // dd($data);
+    
+    $single_quantity_rate = $request->get('single_quantity_rate');
+    $discount_amount = $request->get('discount_amount');
+    $discount_percentage = $request->get('discount_percentage');
+    $total_tax = $request->get('total_tax');
+    $total_amount = $request->get('total_amount');
+    
+
+    $i = 0;
+  //dd($request->get('product_id'));
+    foreach ($request->get('product_id') as $p_id) {
+      //  echo "here";
+      $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
+      $product_detail = Mst_store_product::where('product_id', '=',  $productVarOlddata->product_id)->get();
+
+      
+    
+    
+
+      // Mst_store_product_varient::where('product_varient_id', '=', $pro_variant[$i])->decrement('stock_count', $single_quantity[$i]);
+      //update trn_pos_loc row
+      Trn_pos_lock::where('product_varient_id',$pro_variant[$i])->where('order_uid',$order_uid)->update(['status'=>0]);
+      
       if (!isset($discount_amount[$i])) {
         $discount_amount[$i] = 0;
       }

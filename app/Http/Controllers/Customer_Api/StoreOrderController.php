@@ -1481,8 +1481,18 @@ class StoreOrderController extends Controller
                     if (isset($varProdu)) {
                        // || $proData->product_status == 1
                        //check varient status
+                       if($proData->product_status==0)
+                       {
+                           if($varProdu->is_base_variant==1)
+                           {
+                               $varProdu->variant_status=0;
+
+                           }
+
+                       }
                        if($varProdu->variant_status == 0)
                        {
+                       
                         $data['product_name'] = @$varProdu->variant_name;
 
                         $noStockProducts[] = $varProdu->product_varient_id;
@@ -1492,17 +1502,25 @@ class StoreOrderController extends Controller
                         $data['status'] = 2;
                        }
 
-                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status == 0) {
+                        if ($value['quantity'] > $varProdu->stock_count ) {
 
+                           
+                                    $data['product_name'] = @$varProdu->variant_name;
 
-                            $data['product_name'] = @$varProdu->variant_name;
-
-                            $noStockProducts[] = $varProdu->product_varient_id;
-
-                            $data['noStockProducts'] = $noStockProducts;
-                            $data['message'] = 'Stock/Product unavailable';
-                            $data['status'] = 2;
+                                    $noStockProducts[] = $varProdu->product_varient_id;
+        
+                                    $data['noStockProducts'] = $noStockProducts;
+                                    $data['message'] = 'Stock unavailable';
+                                    $data['status'] = 2;
+        
+                                
+        
+                            }
+                           
+                          
                         }
+                       
+                       
 
                         if (isset($value['price'])) {
                             if ($varProdu->product_varient_offer_price != $value['price']) {
