@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Trn_pos_lock;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,8 +26,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('command:getPaymentData')->everyFiveMinutes();
-        $schedule->command('command:getRefundData')->everyThirtyMinutes();
+    
+    
+    $schedule->command('command:getunusedProduct')->everyMinute();
+       
+        // $schedule->command('command:getPaymentData')->everyFiveMinutes();
+        // $schedule->command('command:getRefundData')->everyThirtyMinutes();
     }
 
     /**

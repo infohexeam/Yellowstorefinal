@@ -3494,6 +3494,9 @@ class StoreController extends Controller
   public function listPOS2(Request $request)
   {
     $pageTitle = "POS";
+    //dd(Carbon::now()->toDateTimeString());
+    //$pos_locks=Trn_pos_lock::where('expiry_time','<=',Carbon::now()->toDateTimeString())->where('status',1)->get();
+    //dd($pos_locks);
     $store_id =   Auth::guard('store')->user()->store_id;
     //dd(Helper::checkOrderNumber(Auth::guard('store')->user()->store_id));
     $check_wasted_lock=Trn_pos_lock::where('status',1)->where('ip_address',$request->ip());
@@ -3612,6 +3615,7 @@ class StoreController extends Controller
     $lock->product_varient_id=$product_varient_id;
     $lock->store_id=Auth::guard('store')->user()->store_id;
     $lock->ip_address=$request->ip();
+    $lock->expiry_time=Carbon::now()->addMinutes(10);
     $lock->quantity=$quantity;
     $lock->save();
   
