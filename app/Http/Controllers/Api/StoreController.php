@@ -3533,9 +3533,13 @@ class StoreController extends Controller
 			  }
 	  
 	  
-			  if (isset($request->customer_id)) {
-				$data = $data->where('trn_store_orders.customer_id', '=', $request->customer_id);
-			  }
+			  if (isset($request->customer_mobile_number)) {
+
+
+				$data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+			 
+		  }
+			 
 	  
 			  if (isset($request->delivery_boy_id)) {
 				$data = $data->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);

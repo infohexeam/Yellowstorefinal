@@ -227,7 +227,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                          <label class="form-label">Store Commission Amount (Monthly) *</label>
+                          <label class="form-label">Store Commission Amount (Monthly)</label>
                           <input type="number" min="0"  step="0.1"  id="exclude"  name="store_commision_amount" class="form-control" placeholder="Store Commision Amount (Monthly) "  value="{{old('store_commision_amount')}}">
                         </div>
                      </div>

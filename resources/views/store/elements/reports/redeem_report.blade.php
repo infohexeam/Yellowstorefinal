@@ -30,7 +30,7 @@
                              </div>
                              
                               <div class="card-body border">
-                                <form action="{{route('admin.redeem_reports')}}" method="GET" enctype="multipart/form-data">
+                                <form action="{{route('store.wallet_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6">
@@ -73,13 +73,9 @@
                                         <!-- </div>-->
                                         <div class="col-md-6">
                                               <div class="form-group">
-                                                  <label class="form-label">Customer</label>
-                                                      <select name="customer_id" id="customer_id" class="form-control select2-show-search" data-placeholder="Customer" >
-                                                           <option value="" >Customer</option>
-                                                           @foreach ($customers as $key)
-                                                                <option value="{{ $key->customer_id }}" {{request()->input('customer_id') == $key->customer_id ? 'selected':''}} >{{ $key->customer_first_name }} {{ $key->customer_last_name }} - {{ $key->customer_mobile_number }} </option>
-                                                           @endforeach
-                                                      </select>
+                                                  <label class="form-label">Customer Mobile Number</label>
+                                                      <input type="number" class="form-control"  name="customer_mobile_number" id="date_fromc"  value="{{@$customer_mobile}}" placeholder="Customer Mobile">
+                            
                                                </div>
                                           </div>
                                           <div class="col-md-6">

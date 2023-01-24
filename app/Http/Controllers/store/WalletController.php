@@ -303,9 +303,10 @@ class WalletController extends Controller
 			  ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
 	  
 			
-			if ($_GET) {
+			
 			  $datefrom = $request->date_from;
 			  $dateto = $request->date_to;
+			  $customer_mobile=$request->customer_mobile_number;
 	  
 			  $a1 = Carbon::parse($request->date_from)->startOfDay();
 			  $a2  = Carbon::parse($request->date_to)->endOfDay();
@@ -319,9 +320,12 @@ class WalletController extends Controller
 			  }
 	  
 	  
-			  if (isset($request->customer_id)) {
-				$data = $data->where('trn_store_orders.customer_id', '=', $request->customer_id);
-			  }
+			  if (isset($request->customer_mobile_number)) {
+
+
+				$data = $data->where('trn_store_customers.customer_mobile_number', 'LIKE', '%' . $request->customer_mobile_number . '%');
+			 
+		  }
 	  
 			  if (isset($request->delivery_boy_id)) {
 				$data = $data->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
@@ -342,16 +346,17 @@ class WalletController extends Controller
 			  if (isset($request->store_id)) {
 				$data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
 			  }
-			}
+			// }
 	  
-			$data = $data->where('trn_store_orders.store_id',$store_id)
-			       ->where('trn_store_orders.reward_points_used','!=',NULL)
-				   ->Orwhere('trn_store_orders.reward_points_used_store','!=',NULL)
-				   ->orderBy('trn_store_orders.order_id', 'DESC')
-			       ->get();
+			// $data = $data->where('trn_store_orders.store_id',$store_id)
+			//        ->where('trn_store_orders.reward_points_used','!=',NULL)
+			// 	   ->Orwhere('trn_store_orders.reward_points_used_store','!=',NULL)
+			// 	   ->orderBy('trn_store_orders.order_id', 'DESC')
+			//        ->get();
 	  //DD($request->store_id,$request->subadmin_id,$data);
+	  $data=$data->get();
 	  
-			return view('store.elements.reports.redeem_report', compact('subadmins', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
+			return view('store.elements.reports.redeem_report', compact('subadmins', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom','customer_mobile', 'data', 'pageTitle'));
 		  } catch (\Exception $e) {
 			return redirect()->back()->withErrors([$e->getMessage()])->withInput();
 			return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
