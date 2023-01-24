@@ -99,7 +99,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Contact Person Number*</label>
-                            <input type="text"  maxlength="10" name="store_contact_person_phone_number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="form-control" value="{{old('store_contact_person_phone_number')}}" placeholder="Contact Person Number">
+                            <input type="text"  maxlength="10" name="store_contact_person_phone_number" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" class="form-control" value="{{old('store_contact_person_phone_number')}}" placeholder="Contact Person Number" required>
                         </div>
                     </div>
                       <div class="col-md-6">
