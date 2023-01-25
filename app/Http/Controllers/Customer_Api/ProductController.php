@@ -3502,7 +3502,7 @@ class ProductController extends Controller
                         // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
                         ->where('mst_store_products.display_flag', 1)
                         ->where('mst_store_products.store_id', $store_id)
-                       // ->where('mst_store_product_varients.stock_count', '>', 0)
+                       
                         //->orWhere('mst_store_products.product_type',2)
                         ->where('mst_store_product_varients.is_removed', 0)
                         ->where('mst_store_products.is_removed', 0)
