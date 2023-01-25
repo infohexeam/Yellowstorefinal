@@ -491,7 +491,7 @@ class OrderController extends Controller
                             $value->taxPercentage = @$taxFullData->tax_value;
                             $tTax = $value->quantity * (@$value->unit_price * @$taxFullData->tax_value / (100 + @$taxFullData->tax_value));
                             $value->gstAmount = number_format((float)$tTax, 2, '.', '');
-                            $orgCost =  $value->quantity * (@$vaproductDetail->product_varient_offer_price * 100 / (100 + @$taxFullData->tax_value));
+                            $orgCost =  $value->quantity * (@$value->unit_price * 100 / (100 + @$taxFullData->tax_value));
                             $value->orgCost = number_format((float)$orgCost, 2, '.', '');
 
                             $stax = 0;
