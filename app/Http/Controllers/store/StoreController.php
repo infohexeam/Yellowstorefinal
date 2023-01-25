@@ -3868,7 +3868,7 @@ class StoreController extends Controller
     foreach ($request->get('product_id') as $p_id) {
       //  echo "here";
       $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
-      $product_detail = Mst_store_product::where('product_id', '=',  $productVarOlddata->product_id)->get();
+      $product_detail = Mst_store_product::where('product_id', '=',$productVarOlddata->product_id)->first();
 
       
     
@@ -3893,6 +3893,8 @@ class StoreController extends Controller
       $sd->prev_stock = $productVarOlddata->stock_count;
       $sd->save();
 
+      $taxData = Mst_Tax::find($product_detail->tax_id);
+
       $data = [
         'order_id' => $order_id,
         'product_id' => $productVarOlddata->product_id??0,
@@ -3902,6 +3904,8 @@ class StoreController extends Controller
         'quantity' => $single_quantity[$i],
         'unit_price' =>  $single_quantity_rate[$i],
         'mrp'=>$productVarOlddata->product_varient_price,
+        'tax_value'=>@$taxData->tax_value,
+        'tax_id'=>$taxData->tax_id,
         'tax_amount' => $total_tax[$i],
         'total_amount' => $total_amount[$i],
         'discount_amount' => $discount_amount[$i],

@@ -314,11 +314,14 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              $tax_info = \DB::table('mst_store_products')
                                              ->join('mst__taxes','mst__taxes.tax_id','=','mst_store_products.tax_id')
                                              ->where('mst_store_products.product_id', $order_item->product_id)
-                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value')
-                                             ->first();  
+                                             ->select('mst__taxes.tax_id','mst__taxes.tax_name','mst__taxes.tax_value','mst_store_products.tax_id as product_tax_id')
+                                             ->first(); 
+                                             $tax_info->tax_value=$order_item->tax_value;
+                                             $tax_info->tax_id=$order_item->tax_id; 
                                              $tval  = $order_item->unit_price * @$order_item->quantity;
-                                             $tTax = $order_item->quantity * (@$order_item->product_varient->product_varient_offer_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
+                                             $tTax = $order_item->quantity * (@$order_item->unit_price * @$tax_info->tax_value / (100 + @$tax_info->tax_value));
                                              $orgCost =  $order_item->quantity * (@$order_item->unit_price * 100 / (100 + @$tax_info->tax_value));
+                                             
                                              $Tot = $tTax + $orgCost;
                                           @endphp
                                         

@@ -191,6 +191,8 @@ class PosController extends Controller
                         $sd->product_varient_id = $value['product_varient_id'];
                         $sd->prev_stock = $productVarOlddata->stock_count;
                         $sd->save();
+                        $product_detail = Mst_store_product::where('product_id', '=',$productVarOlddata->product_id)->first();
+                        $taxData = Mst_Tax::find($product_detail->tax_id);
 
 
                         $data2 = [
@@ -204,6 +206,8 @@ class PosController extends Controller
                             'total_amount' => $value['total_amount'],
                             'mrp'=>$productVarOlddata->product_varient_price,
                             'tax_amount' => $value['tax_amount'],
+                            'tax_value'=>@$taxData->tax_value,
+                            'tax_id'=>$taxData->tax_id,
                             'discount_amount' => $value['discount_amount'],
                             'discount_percentage' => $value['discount_percentage'],
                             'created_at'         => Carbon::now(),
