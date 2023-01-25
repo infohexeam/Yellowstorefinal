@@ -502,7 +502,7 @@ class OrderController extends Controller
                             $splitdata = [];
 
                             if (isset($taxFullData)) {
-                                $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$baseProductDetail->tax_id)->get();
+                                $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',@$value->tax_id)->get();
 
                                 foreach ($splitdata as $sd) {
                                     if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
