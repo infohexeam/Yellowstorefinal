@@ -3163,6 +3163,46 @@ class SettingController extends Controller
 
 		return redirect('admin/delivery_boy/list')->with('status', 'Delivery boy deleted successfully');;
 	}
+	public function restoreDelivery_boy(Request $request)
+	{
+
+		$pageTitle = "Restore Delivery Boys";
+		if (auth()->user()->user_role_id  == 0) {
+			$delivery_boys = Mst_delivery_boy::onlyTrashed()->orderBy('delivery_boy_id', 'DESC')->get();
+		} else {
+
+			$storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->pluck('store_id');
+			
+			$delivery_boys = \DB::table('mst_delivery_boys')
+				->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
+				->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
+				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
+				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
+				->whereNotNull('deleted_at')
+				->get();
+			
+		}
+
+		
+		
+
+		return view('admin.masters.delivery_boy.restore', compact('delivery_boys', 'pageTitle'));
+	}
+	public function restoreDelivery_boySave(Request $request,$dbid)
+	{
+
+		$pageTitle = "Restore Delivery Boys";
+		
+        $db=Mst_delivery_boy::withTrashed()->find($dbid);
+        $db->restore();
+         return redirect('admin/delivery_boy/trash')->with('status', 'Delivery boy Restored Successfully');
+
+		
+		
+
+		return view('admin.masters.delivery_boy.restore', compact('delivery_boys', 'pageTitle'));
+	}
+
 
 	public function assignDelivery_boy(Request $request, $id)
 	{

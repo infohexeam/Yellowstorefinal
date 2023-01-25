@@ -288,7 +288,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/delivery_boy/edit/{id}', 'SettingController@editDelivery_boy')->name('admin.edit_delivery_boy');
         Route::post('admin/delivery_boy/update/{delivery_boy_id}', 'SettingController@updateDelivery_boy')->name('admin.update_delivery_boy');
         Route::post('admin/delivery_boy/destroy/{delivery_boy}', 'SettingController@destroyDelivery_boy')->name('admin.destroy_delivery_boy');
-
+        Route::get('admin/delivery_boy/trash', 'SettingController@restoreDelivery_boy')->name('admin.restore_delivery_boy');
+        Route::get('admin/delivery_boy/restore/{dbid?}', 'SettingController@restoreDelivery_boySave')->name('admin.restore_delivery_boy_save');
         Route::get('admin/delivery_boy/view/{id}', 'SettingController@viewDelivery_boy')->name('admin.view_delivery_boy');
 
         Route::get('admin/delivery_boy/assign_store/{id}', 'SettingController@AssignStore')->name('admin.assign_store');

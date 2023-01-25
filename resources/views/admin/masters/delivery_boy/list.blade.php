@@ -79,7 +79,12 @@
                            <i class="fa fa-plus"></i>
                            Create Delivery Boy
                         </a>
-                        </br>
+                       
+                        <br/>
+                        <a href="{{route('admin.restore_delivery_boy')}}" class=" text-white btn btn-block btn-danger">
+                           <i class="fa fa-recycle"></i>
+                          Restore Delivery Boy
+                        </a><br/>
                 <div class="table-responsive">
                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                     <thead>

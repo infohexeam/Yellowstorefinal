@@ -192,6 +192,12 @@
         var updated_stock = $('#stock_id'+product_varient_id).val();
         var _token = $('input[name="_token"]').val();
           var current_stock =    $('#td'+product_varient_id).text();
+          if(updated_stock.toString().length>10)
+          {
+            alert('stock count should not exceed 10 digits');
+             $('#stock_id'+product_varient_id).val('');
+            return false;
+          }
 
     $.ajax({
         url:"{{ route('store.stock_update') }}",

@@ -3,12 +3,14 @@
 namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
 class Mst_delivery_boy extends Authenticatable
 {
    use HasApiTokens;
+   use SoftDeletes;
 
 	protected $table = "mst_delivery_boys";
    protected $primaryKey = "delivery_boy_id";
