@@ -23,6 +23,7 @@ class Trn_store_order_item extends Model
                        'quantity',
                        'unit_price',
                        'tax_value',
+                       'tax_id',
                        'total_amount',
                        'mrp',
                        'delivery_status',
