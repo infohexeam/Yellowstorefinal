@@ -159,7 +159,7 @@ class OrderController extends Controller
     {
         $data = array();
 
-        try {
+      
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 
                 $validator = Validator::make(
@@ -483,7 +483,7 @@ class OrderController extends Controller
 
                             $taxFullData = Mst_Tax::find(@$value->tax_id);
                             //return $value->tax_id;
-                            return response($taxFullData);
+                            //return response($taxFullData);
                             $taxFullData->tax_value=$value->tax_value;
                             // $gstAmount = $value['productDetail']->product_varient_offer_price * $baseProductDetail->tax_value / (100 + $baseProductDetail->tax_value);
                             // $orgCost = $value['productDetail']->product_varient_offer_price * 100 / (100 + $baseProductDetail->tax_value);
@@ -585,13 +585,7 @@ class OrderController extends Controller
                 $data['message'] = "Store not found ";
                 return response($data);
             }
-        } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        }
+       
     }
 
 
