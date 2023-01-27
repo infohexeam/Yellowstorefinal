@@ -1551,10 +1551,10 @@ class StoreOrderController extends Controller
                 }
             }
 
-            // if (count($noStockProducts) <= 0) {
-            //     $data['message'] = 'Stock available';
-            //     $data['status'] = 1;
-            // }
+            if (count($noStockProducts) <= 0) {
+                $data['message'] = 'Stock unavailable';
+                $data['status'] = 2;
+            }
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
