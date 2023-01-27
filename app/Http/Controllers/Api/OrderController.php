@@ -481,7 +481,7 @@ class OrderController extends Controller
                             else
                                 $value->product_name = @$baseProductDetail->product_name;
 
-                            $taxFullData = Mst_Tax::find(@$value->tax_id);
+                            $taxFullData = Mst_Tax::find($value->tax_id);
                             //return $value->tax_id;
                             //return response($taxFullData);
                             $taxFullData->tax_value=$value->tax_value;
