@@ -183,6 +183,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('customer/list', 'Api\PosController@listCustomers'); // customer list
     Route::post('pos-order/save', 'Api\PosController@saveOrder');  // save order
     Route::get('pos-product/list', 'Api\PosController@listProducts'); // list products
+    Route::get('lock-product/submit', 'Api\PosController@lockProduct'); // lock product
 
     // COUPON
     Route::get('coupon/list', 'Api\CouponController@listCoupon'); //list by store

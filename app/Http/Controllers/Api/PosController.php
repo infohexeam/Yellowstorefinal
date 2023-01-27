@@ -43,7 +43,7 @@ use App\Models\admin\Mst_order_link_delivery_boy;
 use App\Models\admin\Mst_store_product_varient;
 
 use App\Models\admin\Mst_StockDetail;
-
+use App\Trn_pos_lock;
 
 class PosController extends Controller
 {
@@ -72,6 +72,55 @@ class PosController extends Controller
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
+    }
+    public function lockProduct(Request $request)
+    {
+  
+      $product_id = $request->product_id;
+      $store_id=$request->store_id;
+      $product_varient_id = $request->product_varient_id;
+      $quantity=$request->quantity;
+      $order_uid=$request->order_uid;
+  
+      //$products = DB::table('mst_store_products')->where('product_id', $product_id)->first();
+      // $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+      //   ->where('mst_store_products.product_id', '=', $product_id)
+      //   ->where('mst_store_product_vlistInvarients.product_varient_id', '=', $product_varient_id)
+      //   ->select(
+      //     'mst_store_product_varients.product_varient_offer_price',
+      //     'mst_store_product_varients.product_varient_id',
+      //     'mst_store_product_varients.stock_count',
+      //     'mst_store_product_varients.product_varient_price',
+      //     'mst_store_product_varients.variant_name',
+      //     'mst_store_products.*',
+      //   )
+      //   ->first();
+        $productVarOlddata = Mst_store_product_varient::find($product_varient_id);
+        $stockDiffernece=$productVarOlddata->stock_count-$quantity;
+        if($stockDiffernece<0)
+        {
+            $data['status'] = 0;
+            $data['message'] = "Out of stock now...Please try again later";
+            
+            return response()->json($data);
+  
+        }
+        Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->decrement('stock_count',$quantity);
+      $lock=new Trn_pos_lock();
+      $lock->order_number=$store_id.'-'.$order_uid;
+      $lock->order_uid=$request->order_uid;
+      $lock->product_varient_id=$product_varient_id;
+      $lock->store_id=$store_id;
+      $lock->ip_address=$request->ip();
+      $lock->expiry_time=Carbon::now()->addMinutes(10);
+      $lock->quantity=$quantity;
+      $lock->save();
+    
+  
+      // dd($products);
+      $data['status']=1;
+      $data['message']="sucessful";
+      return response()->json($data);
     }
 
     public function saveOrder(Request $request)
