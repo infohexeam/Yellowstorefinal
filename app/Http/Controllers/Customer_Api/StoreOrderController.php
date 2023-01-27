@@ -1493,6 +1493,7 @@ class StoreOrderController extends Controller
                                $varProdu->variant_status=0;
 
                            }
+                           
 
                        }
                        if($varProdu->variant_status == 0)
@@ -1516,7 +1517,7 @@ class StoreOrderController extends Controller
         
                                     $data['noStockProducts'] = $noStockProducts;
                                     $data['message'] = 'Stock unavailable';
-                                    $data['status'] = 2;
+                                    $data['status'] = 22;
         
                                 
         
@@ -1553,7 +1554,7 @@ class StoreOrderController extends Controller
 
             if (count($noStockProducts) <= 0) {
                 $data['message'] = 'Stock unavailable';
-                $data['status'] = 2;
+                $data['status'] = 23;
             }
             return response($data);
         } catch (\Exception $e) {
