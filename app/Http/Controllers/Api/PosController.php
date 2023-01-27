@@ -122,6 +122,40 @@ class PosController extends Controller
       $data['message']="sucessful";
       return response()->json($data);
     }
+    public function removePosProduct(Request $request)
+    {
+      $data=array();
+      $pvid=$request->product_varient_id;
+      $order_uid=$request->order_uid;
+      $pos_lock=Trn_pos_lock::where('product_varient_id',$pvid)->where('order_uid',$order_uid);
+      if($pos_lock->first())
+      {
+        $qty=$pos_lock->first()->quantity;
+        if($pos_lock->first()->delete())
+        {
+          Mst_store_product_varient::where('product_varient_id', '=', $pvid)->increment('stock_count', $qty);
+        
+          $data['status']=1;
+          $data['message']="sucessful";
+          return response()->json($data);
+  
+        }
+        else
+        {
+          $data['status']=0;
+          $data['message']="failure";
+          return response()->json($data);
+  
+        }
+       
+  
+  
+       
+      }
+  
+  
+    }
+    
 
     public function saveOrder(Request $request)
     {
@@ -242,6 +276,161 @@ class PosController extends Controller
                         $sd->save();
                         $product_detail = Mst_store_product::where('product_id', '=',$productVarOlddata->product_id)->first();
                         $taxData = Mst_Tax::find($product_detail->tax_id);
+
+
+                        $data2 = [
+                            'order_id' => $order_id,
+                            'product_id' => $value['product_id'],
+                            'product_varient_id' => $value['product_varient_id'],
+                            'customer_id' => 3,
+                            'store_id' => $request['store_id'],
+                            'quantity' => $value['quantity'],
+                            'unit_price' =>  $value['unit_price'],
+                            'total_amount' => $value['total_amount'],
+                            'mrp'=>$productVarOlddata->product_varient_price,
+                            'tax_amount' => $value['tax_amount'],
+                            'tax_value'=>@$taxData->tax_value,
+                            'tax_id'=>$taxData->tax_id,
+                            'discount_amount' => $value['discount_amount'],
+                            'discount_percentage' => $value['discount_percentage'],
+                            'created_at'         => Carbon::now(),
+                            'updated_at'         => Carbon::now(),
+                        ];
+                        Trn_store_order_item::insert($data2);
+                    }
+
+                    $data['status'] = 1;
+                    $data['message'] = "Order saved.";
+                    return response($data);
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                    $data['errors'] = $validator->errors();
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+    public function saveOrderLock(Request $request)
+    {
+
+        try {
+            $order_uid=$request->or_uid;
+
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'customer_id'   => 'required',
+                        'order_total_amount'  => 'required',
+                        'payment_type_id'   => 'required',
+                        'status_id' => 'required',
+                        'product_variants.*.product_id'    => 'required',
+                        'product_variants.*.product_varient_id'    => 'required',
+                        'product_variants.*.quantity'    => 'required',
+                        'product_variants.*.unit_price'    => 'required',
+                        'product_variants.*.total_amount'    => 'required',
+                        'product_variants.*.tax_amount'    => 'required',
+                        'product_variants.*.discount_amount'    => 'required',
+                        'product_variants.*.discount_percentage'    => 'required',
+                    ],
+                    [
+                        'customer_id.required'  => 'Customer required',
+                        'total_amount.required' => 'Total order amount required',
+                        'payment_type_id.required'  => 'Payment type required',
+                        'status_id.required'    => 'Status required',
+                        'product_variants.*.product_id.required'    => 'Product required',
+                        'product_variants.*.product_varient_id.required'    => 'Product variant required',
+                        'product_variants.*.quantity.required'    => 'Product quantity required',
+                        'product_variants.*.unit_price.required'    => 'Product quantity required',
+                        'product_variants.*.total_amount.required'    => 'Total amount required',
+                        'product_variants.*.tax_amount.required'    => 'Tax amount required',
+                        'product_variants.*.discount_amount.required'    => 'Discount amount required',
+                        'product_variants.*.discount_percentage.required'    => 'Discount percentage required',
+                    ]
+                );
+
+                if (!$validator->fails()) {
+                     $storeOrderCount = Trn_store_order::where('store_id', $request->store_id)->count();
+
+                    $orderNumber = @$storeOrderCount + 1;
+
+                    $store_data = Mst_store::find($request->store_id);
+
+                    if (isset($store_data->order_number_prefix)) {
+                        $orderNumberPrefix = $store_data->order_number_prefix;
+                    } else {
+                        $orderNumberPrefix = 'ORDRYSTR';
+                    }
+                    // $last_order_number=Helper::checkOrderNumber($request->store_id);
+                    // $orderNumber = $last_order_number + 1;
+                    // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    // if($order_no_exists)
+                    // {
+                    //   $orderNumber=$orderNumber+1;
+                    // }
+
+
+                    $store_order = new Trn_store_order;
+                    $store_order->order_number = $orderNumberPrefix .substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4)), 0, 4). @$orderNumber;
+                    // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
+                    $store_order->customer_id = 3;
+                    $store_order->store_id =  $request->store_id;
+                    if($request->store_admin_id != 0)
+                    {
+                        $store_order->store_admin_id =  $request->store_admin_id;
+                    }
+                    $store_order->subadmin_id =  $store_data->subadmin_id;
+                    $store_order->product_total_amount =  $request->order_total_amount;
+                    $store_order->payment_type_id = 1;
+                    $store_order->payment_status = 9;
+                    $store_order->status_id = 9;
+                    $store_order->order_type = 'POS';
+
+                    $store_order->save();
+                    // $exist_last=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
+                    // $order_id = $exist_last->order_id;
+                    $order_id = DB::getPdo()->lastInsertId();
+
+                    $invoice_info['order_id'] = $order_id;
+                    $invoice_info['invoice_date'] =  Carbon::now()->format('Y-m-d');
+                    $invoice_info['invoice_id'] = "INV0" . $order_id;
+                    $invoice_info['created_at'] = Carbon::now();
+                    $invoice_info['updated_at'] = Carbon::now();
+
+                    Trn_order_invoice::insert($invoice_info);
+
+                    foreach ($request->product_variants as $value) {
+                        $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
+                       
+                        //Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+
+                        if (!isset($value['discount_amount'])) {
+                            $value['discount_amount'] = 0;
+                        }
+
+                        $negStock = -1 * abs($value['quantity']);
+
+                        $sd = new Mst_StockDetail;
+                        $sd->store_id = $request->store_id;
+                        $sd->product_id = $value['product_id'];
+                        $sd->stock = $negStock;
+                        $sd->product_varient_id = $value['product_varient_id'];
+                        $sd->prev_stock = $productVarOlddata->stock_count;
+                        $sd->save();
+                        $product_detail = Mst_store_product::where('product_id', '=',$productVarOlddata->product_id)->first();
+                        $taxData = Mst_Tax::find($product_detail->tax_id);
+                        Trn_pos_lock::where('product_varient_id',$value['product_varient_id'])->where('order_uid',$order_uid)->update(['status'=>0]);
 
 
                         $data2 = [
