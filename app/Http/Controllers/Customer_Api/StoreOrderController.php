@@ -1474,7 +1474,7 @@ class StoreOrderController extends Controller
                 }
             }
 
-          
+            if(isset($request->store_id))
             
             foreach ($request->product_variants as $value) {
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
@@ -1493,7 +1493,6 @@ class StoreOrderController extends Controller
                                $varProdu->variant_status=0;
 
                            }
-                           
 
                        }
                        if($varProdu->variant_status == 0)
@@ -1501,9 +1500,9 @@ class StoreOrderController extends Controller
                        
                         $data['product_name'] = @$varProdu->variant_name;
 
-                        // $noStockProducts[] = $varProdu->product_varient_id;
+                        $noStockProducts[] = $varProdu->product_varient_id;
 
-                        // $data['noStockProducts'] = $noStockProducts;
+                        $data['noStockProducts'] = $noStockProducts;
                         $data['message'] = 'Product unavailable';
                         $data['status'] = 2;
                        }
@@ -1517,7 +1516,7 @@ class StoreOrderController extends Controller
         
                                     $data['noStockProducts'] = $noStockProducts;
                                     $data['message'] = 'Stock unavailable';
-                                    $data['status'] = 22;
+                                    $data['status'] = 2;
         
                                 
         
@@ -1553,8 +1552,8 @@ class StoreOrderController extends Controller
             }
 
             if (count($noStockProducts) <= 0) {
-                $data['message'] = 'Stock unavailable';
-                $data['status'] = 2;
+                $data['message'] = 'Stock available';
+                $data['status'] = 1;
             }
             return response($data);
         } catch (\Exception $e) {
