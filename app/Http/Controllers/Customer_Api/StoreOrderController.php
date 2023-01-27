@@ -1474,7 +1474,7 @@ class StoreOrderController extends Controller
                 }
             }
 
-            if(isset($request->store_id))
+          
             
             foreach ($request->product_variants as $value) {
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
@@ -1554,7 +1554,7 @@ class StoreOrderController extends Controller
 
             if (count($noStockProducts) <= 0) {
                 $data['message'] = 'Stock unavailable';
-                $data['status'] = 23;
+                $data['status'] = 2;
             }
             return response($data);
         } catch (\Exception $e) {
