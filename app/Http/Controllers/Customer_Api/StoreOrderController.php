@@ -1480,7 +1480,7 @@ class StoreOrderController extends Controller
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
                 $proData = Mst_store_product::find($varProdu->product_id);
 
-                if ($proData->service_type != 2) {
+                
 
 
                     if (isset($varProdu)) {
@@ -1500,12 +1500,13 @@ class StoreOrderController extends Controller
                        
                         $data['product_name'] = @$varProdu->variant_name;
 
-                        $noStockProducts[] = $varProdu->product_varient_id;
+                        // $noStockProducts[] = $varProdu->product_varient_id;
 
-                        $data['noStockProducts'] = $noStockProducts;
+                        // $data['noStockProducts'] = $noStockProducts;
                         $data['message'] = 'Product unavailable';
                         $data['status'] = 2;
                        }
+                       if ($proData->service_type != 2) {
 
                         if ($value['quantity'] > $varProdu->stock_count ) {
 
@@ -1524,6 +1525,7 @@ class StoreOrderController extends Controller
                            
                           
                         }
+                    }
                        
                        
 
@@ -1543,18 +1545,27 @@ class StoreOrderController extends Controller
                         }
 
 
+
                     } else {
                         $data['message'] = 'Product not found';
                         $data['status'] = 2;
                         return response($data);
                     }
                 }
-            }
-
+        
+           
+        if ($proData->service_type != 2) {
             if (count($noStockProducts) <= 0) {
-                $data['message'] = 'Stock available';
+                $data['message'] = 'Stock unavailable';
                 $data['status'] = 1;
+             }
             }
+            if ($proData->service_type == 2) {
+                
+                    $data['message'] = 'Service Product available';
+                    $data['status'] = 1;
+                 
+                }
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
