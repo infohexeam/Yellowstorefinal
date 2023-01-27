@@ -159,7 +159,7 @@ class OrderController extends Controller
     {
         $data = array();
 
-      
+        try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 
                 $validator = Validator::make(
@@ -481,7 +481,7 @@ class OrderController extends Controller
                             else
                                 $value->product_name = @$baseProductDetail->product_name;
 
-                            $taxFullData = Mst_Tax::find($value->tax_id);
+                            $taxFullData = Mst_Tax::find(@$value->tax_id);
                             //return $value->tax_id;
                             //return response($taxFullData);
                             //$taxFullData->tax_value=$value->tax_value;
@@ -490,10 +490,10 @@ class OrderController extends Controller
 
                             $discount_amount = (@$vaproductDetail->product_varient_price - @$vaproductDetail->product_varient_offer_price) * $value->quantity;
                             //$value->discount_amount =  number_format((float)$discount_amount, 2, '.', '');
-                            $value->taxPercentage = $taxFullData->tax_value;
-                            $tTax = $value->quantity * (@$value->unit_price * @$taxFullData->tax_value / (100 + @$taxFullData->tax_value));
+                            $value->taxPercentage = $value->tax_value;
+                            $tTax = $value->quantity * (@$value->unit_price * @$value->tax_value / (100 + @$value->tax_value));
                             $value->gstAmount = number_format((float)$tTax, 2, '.', '');
-                            $orgCost =  $value->quantity * (@$value->unit_price * 100 / (100 + @$taxFullData->tax_value));
+                            $orgCost =  $value->quantity * (@$value->unit_price * 100 / (100 + @$value->tax_value));
                             $value->orgCost = number_format((float)$orgCost, 2, '.', '');
 
                             $stax = 0;
@@ -507,10 +507,10 @@ class OrderController extends Controller
                                 $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id',@$value->tax_id)->get();
 
                                 foreach ($splitdata as $sd) {
-                                    if (@$taxFullData->tax_value == 0 || !isset($taxFullData->tax_value))
-                                        $taxFullData->tax_value = 1;
+                                    if (@$value->tax_value == 0 || !isset($value->tax_value))
+                                        $value->tax_value = 1;
 
-                                    $stax = ($sd->split_tax_value * $tTax) / @$taxFullData->tax_value;
+                                    $stax = ($sd->split_tax_value * $tTax) / @$value->tax_value;
                                     $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
                                 }
                             }
@@ -585,7 +585,13 @@ class OrderController extends Controller
                 $data['message'] = "Store not found ";
                 return response($data);
             }
-       
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
     }
 
 
