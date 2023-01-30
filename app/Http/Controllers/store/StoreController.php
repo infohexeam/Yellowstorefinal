@@ -3386,9 +3386,10 @@ class StoreController extends Controller
       ->paginate(10);
     $category = Mst_categories::where('category_status', 1)->get();
 
+    $product_cat_id=$request->product_cat_id??'';
+    $product_name=$request->product_name??'';
 
-
-    return view('store.elements.inventory.list', compact('category', 'products', 'pageTitle'));
+    return view('store.elements.inventory.list', compact('category', 'products', 'pageTitle','product_cat_id','product_name'));
   }
 
 

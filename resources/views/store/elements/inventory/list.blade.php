@@ -140,7 +140,7 @@
                     </tbody>
                   </table>
                   
-                      <div class="float-right"> {!! $products->links() !!} </div>
+                      <div class="float-right"> {!! $products->appends(['product_cat_id' => $product_cat_id,'product_name' => $product_name])->links() !!} </div>
                     
                       @if(count($products) == 0)
                       <p style="text-align: center;" >No data found...</p>
