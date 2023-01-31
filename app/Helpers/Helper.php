@@ -471,13 +471,13 @@ class Helper
 
     public static function orderTotalDiscount($order_id)
     {
-        $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price', 'product_varient_id')->where('order_id', $order_id)->get();
+        $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price','mrp','product_varient_id')->where('order_id', $order_id)->get();
         $orderItemsCount = Trn_store_order_item::where('order_id', $order_id)->count();
         $totalDis = 0;
         if ($orderItemsCount > 0) {
             foreach ($orderItems as $item) {
                 $product_varient = Mst_store_product_varient::find($item->product_varient_id);
-                $totalDis = $totalDis + ((@$product_varient->product_varient_price - @$product_varient->product_varient_offer_price) * $item->quantity);
+                $totalDis = $totalDis + ((@$item->mrp - @$item->unit_price) * $item->quantity);
             }
             return $totalDis;
         } else {
