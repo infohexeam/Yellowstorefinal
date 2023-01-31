@@ -348,20 +348,11 @@
   
   
         @endif
-  
-      <tr>
-        <td style="font-size: smaller;font-weight: 500;">Grand Total &nbsp;</td>
-        <td style="font-size: smaller;font-weight: 500;"> {{ @$order->product_total_amount }}</td>
-      </tr>
-  
-      <tr>
+         <tr>
         <td style="font-size: smaller;">Applied Discount &nbsp;</td>
         <td style="font-size: smaller;">  {{ number_format((float)$dis_amt, 2, '.', '') }}</td>
       </tr>
-  
-  
-     
-        @if(@$order->order_type == 'APP')
+          @if(@$order->order_type == 'APP')
      
 
        <tr>
@@ -415,6 +406,17 @@
       </tr>
 
       @endif
+  
+      <tr>
+        <td style="font-size: smaller;font-weight: 500;">Grand Total &nbsp;</td>
+        <td style="font-size: smaller;font-weight: 500;"> {{ @$order->product_total_amount }}</td>
+      </tr>
+  
+     
+  
+  
+     
+      
 
       <tr>
         <td style="font-size: smaller;font-weight: 500;">&nbsp;</td>
