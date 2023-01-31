@@ -344,7 +344,8 @@ class WalletController extends Controller
 			  }
 	  
 			
-				$data = $data->where('trn_store_orders.store_id', '=', Auth::user('store')->store_id);
+				$data = $data->where('trn_store_orders.store_id', '=', Auth::user('store')->store_id)->whereNotNull('trn_store_orders.reward_points_used_store');
+				
 			  
 			// }
 	  
