@@ -186,7 +186,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('pos-product/list', 'Api\PosController@listProducts'); // list products
     Route::get('lock-product/submit', 'Api\PosController@lockProduct'); // lock product
     Route::get('remove-product/list', 'Api\PosController@removePosProduct'); // lock product remove
-
+    Route::get('pos/refresh', 'Api\PosController@refreshPosProduct'); // lock product refresh
     // COUPON
     Route::get('coupon/list', 'Api\CouponController@listCoupon'); //list by store
     Route::get('coupon-filter/list', 'Api\CouponController@listFilterCoupon'); // filter by status

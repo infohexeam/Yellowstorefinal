@@ -155,6 +155,54 @@ class PosController extends Controller
   
   
     }
+    public function refreshPosProduct(Request $request)
+    {
+      $data=array();
+      //$pvid=$request->product_varient_id;
+      $order_uid=$request->order_uid;
+      $pos_lock=Trn_pos_lock::where('order_uid',$order_uid);
+      $locks=$pos_lock->get();
+      if($locks)
+      {
+        
+        foreach($locks as $lock)
+        {
+          $qty=$lock->quantity;
+       
+          Mst_store_product_varient::where('product_varient_id', '=',$lock->product_varient_id)->increment('stock_count',$qty); 
+
+        }
+        if($pos_lock->delete())
+        {
+            $data['status']=1;
+            $data['message']="sucessful";
+            return response()->json($data);
+
+        }
+        else
+        {
+            $data['status']=0;
+            $data['message']="failed";
+            return response()->json($data);
+        }
+      
+        
+       
+  
+  
+       
+      }
+      else
+      {
+        $data['status']=0;
+        $data['message']="failed";
+        return response()->json($data);
+
+      }
+
+  
+  
+    }
     
 
     public function saveOrder(Request $request)
