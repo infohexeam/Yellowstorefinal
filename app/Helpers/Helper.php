@@ -491,17 +491,17 @@ class Helper
 
         $orderTotalTax = Trn_store_order_item::where('order_id', $order_id)->sum('tax_amount');
         if (isset($orderTotalTax) && ($orderTotalTax != 0)) {
-            $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price', 'product_varient_id')->where('order_id', $order_id)->get();
+            $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price','mrp' ,'tax_id','tax_value','tax_amount','product_varient_id')->where('order_id', $order_id)->get();
             $totalTax = 0;
             foreach ($orderItems as $item) {
                 $productData = Mst_store_product::find($item->product_id);
                 if (isset($productData->tax_id) && ($productData->tax_id != 0)) {
 
-                    $taxData = Mst_Tax::find($productData->tax_id);
+                    $taxData = Mst_Tax::find($item->tax_id);
 
                     $product_varient = Mst_store_product_varient::find($item->product_varient_id);
                     //return $product_varient;
-                    $tax = $item->quantity * (@$product_varient->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value));
+                    $tax = $item->quantity * (@$item->unit_price * @$taxData->tax_value / (100 + @$taxData->tax_value));
 
                     //  return   $tax = (@$taxData->tax_value / 100) * ($item->quantity * $item->unit_price);
                     $totalTax = $totalTax + $tax;
@@ -509,14 +509,14 @@ class Helper
             }
             return number_format((float)$totalTax, 2, '.', '');
         } elseif ($orderTotalTax == 0) {
-            $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price')->where('order_id', $order_id)->get();
+            $orderItems = Trn_store_order_item::select('product_id', 'quantity', 'unit_price','tax_id','tax_value','tax_amount')->where('order_id', $order_id)->get();
             $totalTax = 0;
             foreach ($orderItems as $item) {
                 $productData = Mst_store_product::find($item->product_id);
                 if (isset($productData->tax_id) && ($productData->tax_id != 0)) {
-                    $taxData = Mst_Tax::find($productData->tax_id);
+                    $taxData = Mst_Tax::find($item->tax_id);
 
-                    $tax = (@$taxData->tax_value / 100) * ($productData->quantity * $productData->unit_price);
+                    $tax = (@$taxData->tax_value / 100) * ($item->quantity * $item->unit_price);
                     $totalTax = $totalTax + $tax;
                 }
             }

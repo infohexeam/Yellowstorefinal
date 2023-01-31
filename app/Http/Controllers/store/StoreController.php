@@ -1899,10 +1899,12 @@ class StoreController extends Controller
 
     $removeProduct = array();
     $removeProduct['is_removed'] = 0;
-    $removeProduct['product_status'] = 0;
+    $removeProduct['product_status'] = 1;
 
     $removeProductVar = array();
     $removeProductVar['is_removed'] = 0;
+    $removeProductVar['updated_at'] = Carbon::now();
+
     //$removeProductVar['stock_count'] = 0;
 
     // $productData  = Mst_store_product::find($product);
@@ -1913,6 +1915,7 @@ class StoreController extends Controller
     Mst_store_product::where('product_id', $product)->update($removeProduct);
 
     Mst_store_product_varient::where('product_id', $product)->update($removeProductVar);
+    
 
 
 
