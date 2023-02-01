@@ -93,8 +93,12 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
             // echo "<pre>";
             // print_r($dataz);die;
             
-
+        if($row['regular_price']!=0 && $row['sale_price']!=0)
+        {
             $global_products = Mst_GlobalProducts::create($dataz);
+
+        }
+           
         }
 
     }
