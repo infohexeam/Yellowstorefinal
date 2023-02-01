@@ -222,7 +222,7 @@ $date = Carbon\Carbon::now();
         buttons: [
             {
                 extend: 'pdf',
-                title: 'customer Reward',
+                title: 'Customer Reward',
                 footer: true,
                 
                  orientation : 'landscape',
@@ -233,7 +233,7 @@ $date = Carbon\Carbon::now();
             },
             {
                 extend: 'excel',
-                title: 'Out of stock report',
+                title: 'Customer Reward',
                 footer: true,
                  exportOptions: {
                      columns: [0,1,2,3]
