@@ -3605,7 +3605,7 @@ class StoreController extends Controller
     //   ->first();
       $productVarOlddata = Mst_store_product_varient::find($product_varient_id);
       $stockDiffernece=$productVarOlddata->stock_count-$quantity;
-      if($stockDiffernece<=0)
+      if($stockDiffernece<0)
       {
           $data['status'] = 0;
           $data['message'] = "Out of stock now...Please try again later";
@@ -3654,7 +3654,7 @@ class StoreController extends Controller
       if($productVarStockCheck)
       {
           $stockDiffernece=$productVarStockCheck->stock_count-$single_quantity[$j];
-          if($stockDiffernece<=0)
+          if($stockDiffernece<0)
           {
              
               return  redirect()->back()->with('error', 'Some products quantity is more than available stock..Try again.');
@@ -3735,7 +3735,7 @@ class StoreController extends Controller
       if($productVarOlddata)
       {
           $stockDiffernece=$productVarOlddata->stock_count-$single_quantity[$i];
-          if($stockDiffernece<=0)
+          if($stockDiffernece<0)
           {
             //$order_id
               Trn_store_order::where('order_id',$order_id)->delete();

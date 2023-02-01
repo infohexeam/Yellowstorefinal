@@ -97,7 +97,7 @@ class PosController extends Controller
       //   ->first();
         $productVarOlddata = Mst_store_product_varient::find($product_varient_id);
         $stockDiffernece=$productVarOlddata->stock_count-$quantity;
-        if($stockDiffernece<=0)
+        if($stockDiffernece<0)
         {
             $data['status'] = 0;
             $data['message'] = "Out of stock now...Please try again later";
@@ -298,7 +298,7 @@ class PosController extends Controller
                         if($productVarOlddata)
                         {
                             $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
-                            if($stockDiffernece<=0)
+                            if($stockDiffernece<0)
                             {
                                
                                 $data['status'] =0;

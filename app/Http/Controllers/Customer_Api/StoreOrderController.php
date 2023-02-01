@@ -490,7 +490,7 @@ class StoreOrderController extends Controller
                         if($varProdu )
                         {
                             $stockDiffernece=$varProdu->stock_count-$value['quantity'];
-                            if($stockDiffernece<=0)
+                            if($stockDiffernece<0)
                             {
                                 $data['status'] = 0;
                                 $data['message'] = "Some products quantity is more than available stock..Try again";
@@ -621,7 +621,7 @@ class StoreOrderController extends Controller
                          if($productVarOlddata)
                         {
                             $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
-                            if($stockDiffernece<=0)
+                            if($stockDiffernece<0)
                             {
                                 $data['status'] = 0;
                                 $data['message'] = "Some products quantity is more than available stock..Try again";
@@ -909,7 +909,7 @@ class StoreOrderController extends Controller
                             {
                                 $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
                                 if ($request->payment_type_id != 2) {
-                                if($stockDiffernece<=0)
+                                if($stockDiffernece<0)
                                 {
                                     $data['status'] = 0;
                                     $data['message'] = "Some products quantity is more than available stock..Try again";
@@ -1086,7 +1086,7 @@ class StoreOrderController extends Controller
                             $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
                             $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
                             if ($request->payment_type_id == 1) {
-                                if($stockDiffernece<=0)
+                                if($stockDiffernece<0)
                                 {
                                     $data['status'] = 0;
                                     $data['message'] = "Some products quantity is more than available stock..Try again";
@@ -1490,7 +1490,7 @@ class StoreOrderController extends Controller
                             {
                                 $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
                                 if ($request->payment_type_id != 2) {
-                                if($stockDiffernece<=0)
+                                if($stockDiffernece<0)
                                 {
                                     $data['status'] = 0;
                                     $data['message'] = "Some products quantity is more than available stock..Try again";
@@ -1667,7 +1667,7 @@ class StoreOrderController extends Controller
                             $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
                             $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
                             if ($request->payment_type_id == 1) {
-                                if($stockDiffernece<=0)
+                                if($stockDiffernece<0)
                                 {
                                     $data['status'] = 0;
                                     $data['message'] = "Some products quantity is more than available stock..Try again";
