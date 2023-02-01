@@ -1099,6 +1099,16 @@ class StoreOrderController extends Controller
     
                             if ($proData->service_type != 2) {
                                 Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+                                $prv=Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->first();
+                                if($prv->stock_count<0)
+                                {
+                                    $data['status'] = 0;
+                                    $data['message'] = "Some products quantity is more than available stock..Try again Later";
+                                    DB::rollback();
+                                    return response($data);
+
+                                }
+
                             }
     
 
