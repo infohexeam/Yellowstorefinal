@@ -88,6 +88,18 @@
 @endsection
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript">
+$(function() {
+        $('.form-control').on('keypress', function(e) {
+            if (e.which == 45){
+                alert('No negative data allowed');
+                return false;
+            }
+             if (e.which == 46){
+                alert('No Decimal data allowed');
+                return false;
+            }
+        });
+});
     $(document).ready(function(){
      $('#attribute_group').change(function(){
       //alert('dsd');

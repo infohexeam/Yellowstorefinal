@@ -1538,6 +1538,7 @@ class StoreController extends Controller
 
     $store_id =  Auth::guard('store')->user()->store_id;
     $product_id = $request->product_id;
+    dd($product_id);
     //echo $product_id;die;
     // $product = Mst_store_product::where($product_id);
     //  $varient_product = Mst_store_product_varient::where('product_id','=',$product_id)->first();

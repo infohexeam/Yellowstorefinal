@@ -132,7 +132,18 @@
    //      }
    //   });
    // });
-
+$(function() {
+        $('.form-control').on('keypress', function(e) {
+            if (e.which == 45){
+                alert('No negative data allowed');
+                return false;
+            }
+             if (e.which == 46){
+                alert('No Decimal data allowed');
+                return false;
+            }
+        });
+});
 
 $(document).ready(function() {
    var wrapper      = $("#teamArea"); //Fields wrapper
