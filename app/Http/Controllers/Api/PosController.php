@@ -152,6 +152,13 @@ class PosController extends Controller
   
        
       }
+      else
+      {
+        $data['status']=0;
+          $data['message']="failure-No lock exists";
+          return response()->json($data);
+
+      }
   
   
     }
@@ -297,15 +304,15 @@ class PosController extends Controller
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
                         if($productVarOlddata)
                         {
-                            $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
-                            if($stockDiffernece<0)
-                            {
+                            // $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
+                            // if($stockDiffernece<0)
+                            // {
                                
-                                $data['status'] =0;
-                                $data['message'] = "Some products quantity is more than available stock..Try again.";
-                                return response($data);
+                            //     $data['status'] =0;
+                            //     $data['message'] = "Some products quantity is more than available stock..Try again.";
+                            //     return response($data);
                   
-                            }
+                            // }
                         }
                         Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
 

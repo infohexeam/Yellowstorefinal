@@ -1537,8 +1537,8 @@ class StoreController extends Controller
   {
 
     $store_id =  Auth::guard('store')->user()->store_id;
-    $product_id = $request->product_id;
-    dd($product_id);
+    //$product_id = $request->product_id;
+    //dd($product_id);
     //echo $product_id;die;
     // $product = Mst_store_product::where($product_id);
     //  $varient_product = Mst_store_product_varient::where('product_id','=',$product_id)->first();
@@ -1577,10 +1577,6 @@ class StoreController extends Controller
         //  'product_image.*' => 'dimensions:min_width=1000,min_height=800',
         'product_image.*' => 'dimensions:min_width=1000,min_height=800|mimes:jpeg,jpg,png|max:10000',
         'product_image.*' => 'mimes:jpeg,jpg,png|max:10000',
-
-
-
-
       ],
       [
 
@@ -1595,7 +1591,7 @@ class StoreController extends Controller
         'min_stock.required'      => 'Minimum stock required',
         'min_stock.gte'      => 'Minimum stock should be greater than or equal to zero',
         'product_code.required'      => 'Product code required',
-        'product_code.unique'      => 'Product code already taken',
+        //'product_code.unique'      => 'Product code already taken',
         'business_type_id.required'        => 'Product type required',
         'attr_group_id.required'        => 'Attribute group required',
         'attr_value_id.required'        => 'Attribute value required',
@@ -1604,8 +1600,6 @@ class StoreController extends Controller
         'color_id.required'        => 'Color required',
         'product_image.required'        => 'Product image required',
         'product_image.dimensions'        => 'Product image dimensions invalid',
-
-
       ]
     );
 
