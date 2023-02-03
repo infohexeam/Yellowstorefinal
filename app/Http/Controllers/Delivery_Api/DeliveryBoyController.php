@@ -175,7 +175,14 @@ class DeliveryBoyController extends Controller
 
 
                 $deliveryBoyData = Mst_delivery_boy::find($request->delivery_boy_id);
-
+                $cn=DB::table('sys_countries')->where('country_id',$deliveryBoyData->country_id)->first();
+                $deliveryBoyData->country_name=$cn->country_name;
+                $cn=DB::table('sys_states')->where('state_id',$deliveryBoyData->state_id)->first();
+                $deliveryBoyData->state_name=$cn->country_name;
+                $cn=DB::table('mst_districts')->where('district_id',$deliveryBoyData->district_id)->first();
+                $deliveryBoyData->district_name=$cn->country_name;
+                $cn=DB::table('mst_towns')->where('town_id',$deliveryBoyData->town_id)->first();
+                $deliveryBoyData->pincode=$cn->town_name;
                 $data['deliveryBoyData'] = $deliveryBoyData;
                 $data['status'] = 1;
                 $data['message'] = "success";
