@@ -122,6 +122,11 @@ class CouponController extends Controller
                                     }
                                     
                                     $data['couponDetails'] = $couponDetail->orderBy('coupon_id','DESC')->get();
+                                    foreach($data['couponDetails'] as $coupon)
+                                    {
+                                        $coupon->min_purchase_amt=(int)$coupon->min_purchase_amt;
+                                        $coupon->discount=(int)$coupon->discount;
+                                    }
                                     $data['status'] = 1;
                                     $data['message'] = "success";
                                     return response($data);
