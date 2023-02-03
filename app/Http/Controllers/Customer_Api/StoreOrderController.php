@@ -928,7 +928,7 @@ class StoreOrderController extends Controller
     
                                 }
                             }
-                            }b  
+                            } 
                             
                         }
     
