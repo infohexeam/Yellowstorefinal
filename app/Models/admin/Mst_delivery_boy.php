@@ -40,7 +40,7 @@ class Mst_delivery_boy extends Authenticatable
    
    public function town()
    {
-   	return $this->belongsTo('App\Models\admin\Town','town_id','town_id');
+   	return $this->belongsTo('App\Models\admin\Town','town_id','town_id')->withTrashed();
    }
    
    
