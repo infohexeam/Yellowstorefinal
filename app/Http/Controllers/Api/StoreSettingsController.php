@@ -578,13 +578,13 @@ class StoreSettingsController extends Controller
                     $data['storeDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
                     $data['storeDetails']['store_qrcode'] = @$data['storeDetails']->store_name_slug . "-" . @$data['storeDetails']->store_mobile;
                     $cn=DB::table('sys_countries')->where('country_id',$data['storeDetails']->store_country_id)->first();
-                    $data['storeDetails']['country_name']=$cn->country_name;
+                    $data['storeDetails']['country_name']=$cn->country_name??'';
                     $st=DB::table('sys_states')->where('state_id',$data['storeDetails']->store_state_id)->first();
-                    $data['storeDetails']['state_name']=$st->state_name;
+                    $data['storeDetails']['state_name']=$st->state_name??'';
                     $di=DB::table('mst_districts')->where('district_id',$data['storeDetails']->store_district_id)->first();
-                    $data['storeDetails']['district_name']=$di->district_name;
+                    $data['storeDetails']['district_name']=$di->district_name??'';
                     $pin=DB::table('mst_towns')->where('town_id',$data['storeDetails']->town_id)->first();
-                    $data['storeDetails']['pincode']=$pin->town_name;
+                    $data['storeDetails']['pincode']=$pin->town_name??'';
                     if (isset($data['storeDetails']->profile_image))
                         $data['storeDetails']['profile_image'] = '/assets/uploads/store_images/images/' . $data['storeDetails']->profile_image;
 
