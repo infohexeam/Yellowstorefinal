@@ -748,14 +748,14 @@ class CustomerController extends Controller
                 $data['customerData']->joiner_points = @$ConfigPoints->joiner_points;
                 $data['customerData']->referal_points = @$ConfigPoints->referal_points;
                 $data['cid']=$data['customerData']->country_id;
-                // $cn=DB::table('sys_countries')->where('country_id', $data['customerData']->country_id)->first();
-                // $data['customerData']['country_name']=$cn->country_name;
-                // $st=DB::table('sys_states')->where('state_id', $data['customerData']->state_id)->first();
-                // $data['customerData']['state_name']=$st->state_name??'';
-                // $di=DB::table('mst_districts')->where('district_id',$data['customerData']->district_id)->first();
-                // $data['customerData']['district_name']=$di->district_name??'';
-                // $pin=DB::table('mst_towns')->where('town_id',$data['customerData']->town_id)->first();
-                // $data['customerData']['pincode']=$pin->town_name??'';
+                $cn=DB::table('sys_countries')->where('country_id', $data['customerData']->country_id)->first();
+                $data['customerData']['country_name']=$cn->country_name??'';
+                $st=DB::table('sys_states')->where('state_id', $data['customerData']->state_id)->first();
+                $data['customerData']['state_name']=$st->state_name??'';
+                $di=DB::table('mst_districts')->where('district_id',$data['customerData']->district_id)->first();
+                $data['customerData']['district_name']=$di->district_name??'';
+                $pin=DB::table('mst_towns')->where('town_id',$data['customerData']->town_id)->first();
+                $data['customerData']['pincode']=$pin->town_name??'';
 
                 $data['customerData']->customerAddress = Trn_customerAddress::where('customer_id', $request->customer_id)->get();
                 foreach ($data['customerData']->customerAddress as $a) {
