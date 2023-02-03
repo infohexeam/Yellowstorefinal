@@ -91,6 +91,13 @@ class StoreSettingsController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
                 if ($data['defaultStoreSettingsDetails']['service_amount']  = Trn_store_setting::where('store_id', $store_id)->get()) {
+                    foreach($data['defaultStoreSettingsDetails']['service_amount'] as $sa)
+                    {
+                        $sa->delivery_charge=(int)$sa->delivery_charge;
+                        $sa->packing_charge=(int)$sa->packing_charge;
+                        $sa->delivery_charge=(string)$sa->delivery_charge;
+                        $sa->packing_charge=(string)$sa->packing_charge;
+                    }
                     $store_data = Mst_store::find($store_id);
 
                     $data['defaultStoreSettingsDetails']['order_number_prefix'] = $store_data->order_number_prefix;
