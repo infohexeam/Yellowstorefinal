@@ -126,6 +126,9 @@ class CouponController extends Controller
                                     {
                                         $coupon->min_purchase_amt=(int)$coupon->min_purchase_amt;
                                         $coupon->discount=(int)$coupon->discount;
+                                        $coupon->min_purchase_amt=(string)$coupon->min_purchase_amt;
+                                        $coupon->discount=(string)$coupon->discount;
+
                                     }
                                     $data['status'] = 1;
                                     $data['message'] = "success";
