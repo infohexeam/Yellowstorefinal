@@ -102,6 +102,7 @@
    $(document).ready(function() {
       var wrapper      = $(".bodyClass"); //Fields wrapper
      var add_button      = $(".add_row"); //Add button ID
+     var submit_button=$("#submitAdd");//Submit button
    
      var x = 1; //initlal text box count
      $(add_button).click(function(e){ //on add input button click
@@ -110,6 +111,17 @@
          x++; //text box increment
       //   alert(x);
          $(wrapper).append('<tr><td><input required type="text" name="split_tax_name[]" id="split_tax_name'+x+'"  class=".split_name form-control" placeholder="Tax Name" ></td><td><input required type="number" step="0.01" name="split_tax_value[]" oninput="valueChanged(this.id)" id="split_tax_name'+x+'" class="split_value form-control" placeholder="Tax Value(%)"></td><td><a href="#" class="remove_field btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td></tr>'); //add input box
+         
+     });
+      $(submit_button).click(function(e){ //on add input button click
+      var tax_value=$("#tax_value").numeric();//Submit button
+      if(tax_value)
+      {
+         alert('tax value should be number');
+         $("#tax_value").val('');
+         return false;
+      }
+      
          
      });
    
