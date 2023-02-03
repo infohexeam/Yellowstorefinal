@@ -569,7 +569,7 @@ var countPro = 0;
 
 function removetr(key,product_varient_id)
 {
-     alert(product_varient_id);
+     //alert(product_varient_id);
      var _token = $('input[name="_token"]').val();
     
    $.ajax({

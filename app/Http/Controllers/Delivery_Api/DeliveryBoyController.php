@@ -170,7 +170,7 @@ class DeliveryBoyController extends Controller
                     $stateId = State::where('state_name', 'LIKE', "%{$request->state}%")->first()->state_id;
                 }
                 if (!isset($dboyData->country_id) && !isset($dboyData->state_id)) {
-                    Mst_delivery_boy::where('delivery_boy_id', $request->delivery_boy_id) > update(['country_id' => @$contryId, 'state_id' => @$stateId]);
+                    Mst_delivery_boy::where('delivery_boy_id', $request->delivery_boy_id) ->update(['country_id' => @$contryId, 'state_id' => @$stateId]);
                 }
 
 

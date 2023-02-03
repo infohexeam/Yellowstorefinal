@@ -40,7 +40,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Reward Points *</label>
-                           <input type="number" class="form-control" required name="reward_points" value="{{old('reward_points')}}" placeholder="Reward Points">
+                           <input type="number" min="1" step="1" oninput="validity.valid||(value='');" class="form-control" required name="reward_points" value="{{old('reward_points')}}" placeholder="Reward Points">
                         </div>
                     </div>
                     

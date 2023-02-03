@@ -1567,7 +1567,7 @@ class StoreController extends Controller
         'sale_price'   => 'required|gt:0',
         'tax_id'   => 'required',
         'min_stock'   => 'required|gte:0',
-        'product_code'   => 'required|unique:mst_store_products,product_code,'.$product_id.',product_id',
+        'product_code'   => 'required|unique:mst_store_products,product_code,'.$product_id.',product_id,store_id,'.$store_id,
         //  'business_type_id'   => 'required',
         //  'attr_group_id'   => 'required',
         // 'attr_value_id'   => 'required',
@@ -3608,6 +3608,15 @@ class StoreController extends Controller
 
       }
       Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->decrement('stock_count',$quantity);
+      $prv=Mst_store_product_varient::where('product_varient_id', '=',$product_varient_id)->first();
+      if($prv->stock_count<0)
+      {
+          Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->increment('stock_count', $value['quantity']);
+          $data['status'] = 0;
+          $data['message'] = "Some products quantity is more than available stock..Try again Later";
+         return response($data);
+
+      }
     $lock=new Trn_pos_lock();
     $lock->order_number=Auth::guard('store')->user()->store_id.'-'.$order_uid;
     $lock->order_uid=$request->order_uid;

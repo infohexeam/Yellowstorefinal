@@ -631,7 +631,17 @@ class StoreOrderController extends Controller
                             }
                         }
 
-                            Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+                        $prv=Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->first();
+                        if($prv->stock_count<0)
+                        {
+                            Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->increment('stock_count', $value['quantity']);
+                            $data['status'] = 0;
+                            $data['message'] = "Some products quantity is more than available stock..Try again Later";
+                            DB::rollback();
+                            return response($data);
+
+                        }
+
                             
                         }
 
@@ -811,7 +821,7 @@ class StoreOrderController extends Controller
                     if($today>=$parentExpiryDate)
                     {
                             
-                        $data['status'] = 0;
+                         $data['status'] = 0;
                         $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
                         return response($data);          
                     }
@@ -918,7 +928,7 @@ class StoreOrderController extends Controller
     
                                 }
                             }
-                            }
+                            }b  
                             
                         }
     
@@ -1102,6 +1112,7 @@ class StoreOrderController extends Controller
                                 $prv=Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->first();
                                 if($prv->stock_count<0)
                                 {
+                                    Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->increment('stock_count', $value['quantity']);
                                     $data['status'] = 0;
                                     $data['message'] = "Some products quantity is more than available stock..Try again Later";
                                     DB::rollback();

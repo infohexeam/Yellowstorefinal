@@ -98,7 +98,10 @@ use App\User;
                                     <td><strong>District :</strong> {{ $delivery_boy->district['district_name']}}</td>
                                  </tr>
                                   <tr>
-                                    <td><strong>Pincode :</strong>  {{@$delivery_boy->town->town_name}}</td>
+                                  @php
+                                  $twn=DB::table('mst_towns')->where('town_id',$delivery_boy->town_id)->first();
+                                  @endphp
+                                    <td><strong>Pincode :</strong>  {{@$twn->town_name}}</td>
                                  </tr>
                                 
                          {{--        <tr>

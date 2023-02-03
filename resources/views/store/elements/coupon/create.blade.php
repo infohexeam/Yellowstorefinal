@@ -38,7 +38,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">  Minimum Purchase Amount *</label>
-                                <input type="number" step="0.01" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt')}}" placeholder="Minimum Purchase Amount">
+                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt')}}" placeholder="Minimum Purchase Amount">
                             </div>
                         </div>
                         
@@ -67,7 +67,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Discount <span id="loseend" > </span> *</label>
-                                <input type="number" step="0.01" oninput="disChange(this.value)" required class="form-control" name="discount" id="discountAmt" value="{{old('discount')}}" placeholder="Discount">
+                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');" required class="form-control" name="discount" id="discountAmt" value="{{old('discount')}}" placeholder="Discount">
                             </div>
                         </div>
                      
@@ -159,6 +159,8 @@
 function disChange(dis)
 {
    var discountType =  $('#discount_type').val();
+   if(validity.valid)
+   {
    if(discountType == 2)
    {
        if(dis > 100)
@@ -171,6 +173,14 @@ function disChange(dis)
        {
             $('#discountAmt').val(0);
        }
+       //validity.valid||(value='');
+   }
+   else
+
+   {
+     $('#discountAmt').val(0);
+
+   }
 }
 
 </script>
