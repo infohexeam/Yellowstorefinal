@@ -181,7 +181,7 @@ Route::group(['prefix' => 'store'], function () {
 
     //POS
     Route::get('customer/list', 'Api\PosController@listCustomers'); // customer list
-    Route::post('pos-order/save', 'Api\PosController@saveOrder');  // save order
+    Route::post('pos-order/save', 'Api\PosController@saveOrderLock');  // save order
     Route::post('pos-order-lock/save', 'Api\PosController@saveOrderLock');  // save order Lock(new saving )
     Route::get('pos-product/list', 'Api\PosController@listProducts'); // list products
     Route::get('lock-product/submit', 'Api\PosController@lockProduct'); // lock product
