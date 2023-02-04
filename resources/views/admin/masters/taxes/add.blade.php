@@ -110,7 +110,7 @@
        //max input box allowed
          x++; //text box increment
       //   alert(x);
-         $(wrapper).append('<tr><td><input required type="text" name="split_tax_name[]" id="split_tax_name'+x+'"  class=".split_name form-control" placeholder="Tax Name" ></td><td><input required type="number" step="0.01" name="split_tax_value[]" oninput="valueChanged(this.id)" id="split_tax_name'+x+'" class="split_value form-control" placeholder="Tax Value(%)"></td><td><a href="#" class="remove_field btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td></tr>'); //add input box
+         $(wrapper).append('<tr><td><input  type="text" name="split_tax_name[]" id="split_tax_name'+x+'"  class=".split_name form-control" placeholder="Tax Name" ></td><td><input   step="0.01" name="split_tax_value[]" oninput="valueChanged(this.id)" id="split_tax_name'+x+'" class="split_value form-control" placeholder="Tax Value(%)"></td><td><a href="#" class="remove_field btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td></tr>'); //add input box
          
      });
       $(submit_button).click(function(e){ //on add input button click

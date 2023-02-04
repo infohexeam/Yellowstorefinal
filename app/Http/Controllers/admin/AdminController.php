@@ -689,6 +689,20 @@ class AdminController extends Controller
     public function updateTax(Request $request, Mst_Tax $tax, $tax_id)
     {
         // dd($request->all());
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'tax_value'          => 'required|numeric|gte:0',
+                'tax_name'          => 'required',
+                "split_tax_name.*"  => "required",
+                "split_tax_value.*"  => "required|numeric|gte:0",
+                
+            ],['split_tax_name.*.required'=>'split name is missing',
+            'split_tax_value.*.required'=>'split value is missing']
+            
+        );
+        if (!$validator->fails()) 
+        {
 
         $tax = Mst_Tax::find($tax_id);
         $tax->tax_value  = $request->tax_value;
@@ -716,6 +730,13 @@ class AdminController extends Controller
 
 
         return redirect('admin/tax/list')->with('status', 'Tax updated successfully.');
+    }
+    else
+    {
+        return redirect()->back()->withErrors($validator)->withInput();
+
+    }
+    
     }
 
 

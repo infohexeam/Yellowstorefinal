@@ -33,7 +33,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Tax Name</label>
-                            <input type="text" required  id="tax_name"  class="form-control" value="{{ old('tax_name',$tax->tax_name) }}" placeholder="Tax Name" name="tax_name"  >
+                            <input type="text"   id="tax_name"  class="form-control" value="{{$tax->tax_name}}" placeholder="Tax Name" name="tax_name"  >
         
                         </div>
                      </div> 
@@ -41,7 +41,7 @@
                      <div class="col-md-12">
                         <div class="form-group">
                             <label class="form-label">Tax Value</label>
-                            <input oninput="valueChanged(this.id)" onkeyup="valueChanged(this.id)" value="{{ old('tax_name',$tax->tax_value) }}" type="number" id="tax_value" required class="form-control" oninput="if (this.value < 0) this.value = '';" placeholder="Tax Value" name="tax_value" >
+                            <input oninput="valueChanged(this.id)" onkeyup="valueChanged(this.id)" value="{{$tax->tax_value}}"  id="tax_value"  class="form-control" oninput="if (this.value < 0) this.value = '';" placeholder="Tax Value" name="tax_value" >
                         </div>
                      </div>
 
@@ -58,10 +58,10 @@
                                         
                                         <tr>
                                             <td>
-                                                <input  type="text" required name="split_tax_name[]" id="split_tax_name0" value="{{ $split->split_tax_name }}"  class=".split_name form-control" placeholder="Tax Name" >
+                                                <input  type="text"  name="split_tax_name[]" id="split_tax_name0" value="{{ $split->split_tax_name }}"  class=".split_name form-control" placeholder="Tax Name" >
                                             </td>
                                             <td>
-                                                <input step="0.01" type="number" required oninput="valueChanged(this.id)" value="{{ $split->split_tax_value }}" name="split_tax_value[]" id="split_tax_name0" class="split_value form-control" placeholder="Tax Value(%)" >
+                                                <input step="0.01"   oninput="valueChanged(this.id)" value="{{ $split->split_tax_value }}" name="split_tax_value[]" id="split_tax_name0" class="split_value form-control" placeholder="Tax Value(%)" >
                                             </td>
                                             <td><a href="#" id="remove_field" onclick="valueChanged(this.id)" class="remove_field btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td>
                                         </tr>
@@ -115,7 +115,7 @@
        //max input box allowed
          x++; //text box increment
       //   alert(x);
-         $(wrapper).append('<tr><td><input required type="text" name="split_tax_name[]" id="split_tax_name'+x+'"  class=".split_name form-control" placeholder="Tax Name" ></td><td><input required type="number" name="split_tax_value[]" oninput="valueChanged(this.id)" id="split_tax_name'+x+'" class="split_value form-control" placeholder="Tax Value(%)"></td><td><a href="#" class="remove_field btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td></tr>'); //add input box
+         $(wrapper).append('<tr><td><input  type="text" name="split_tax_name[]" id="split_tax_name'+x+'"  class=".split_name form-control" placeholder="Tax Name" ></td><td><input   name="split_tax_value[]" oninput="valueChanged(this.id)" id="split_tax_name'+x+'" class="split_value form-control" placeholder="Tax Value(%)"></td><td><a href="#" class="remove_field btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td></tr>'); //add input box
          
      });
    
