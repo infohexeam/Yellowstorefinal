@@ -350,8 +350,8 @@ class ProductController extends Controller
     $agencies = Mst_store_agencies::all();
     $business_types = Mst_business_types::all();
 
-    $category = Mst_categories::all();
-    $subcategories = Mst_SubCategory::where('category_id', @$product->product_cat_id)->get();
+    $category = Mst_categories::withTrashed()->get();
+    $subcategories = Mst_SubCategory::withTrashed()->where('category_id', @$product->product_cat_id)->get();
     // dd($subcategories);
 
     return view('admin.masters.global_product.edit', compact('subcategories', 'category', 'videos', 'business_types', 'agencies', 'colors', 'tax', 'attr_groups', 'product_images', 'product', 'global_product_id', 'pageTitle'));

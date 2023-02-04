@@ -30,7 +30,7 @@ class Mst_GlobalProducts extends Model
 
     public function business_type() 
     {
-        return $this->belongsTo('App\Models\admin\Mst_business_types','business_type_id','business_type_id');
+        return $this->belongsTo('App\Models\admin\Mst_business_types','business_type_id','business_type_id')->withTrashed();
     }
 
     public function color() 
@@ -50,12 +50,12 @@ class Mst_GlobalProducts extends Model
 
     public function product_cat() 
     {
-        return $this->belongsTo('App\Models\admin\Mst_categories','product_cat_id','category_id');
+        return $this->belongsTo('App\Models\admin\Mst_categories','product_cat_id','category_id')->withTrashed();
     }
 
     public function product_subcat() 
     {
-        return $this->belongsTo('App\Models\admin\Mst_SubCategory','sub_category_id','sub_category_id');
+        return $this->belongsTo('App\Models\admin\Mst_SubCategory','sub_category_id','sub_category_id')->withTrashed();
     }
 
     public function vendor() 
