@@ -624,29 +624,47 @@ class AdminController extends Controller
 
     public function createTax(Request $request, Mst_Tax $tax)
     {
-
-        $tax->tax_value  = $request->tax_value;
-        $tax->tax_name  = $request->tax_name;
-        // dd($request->all());
-        $tax->save();
-        $last_id = DB::getPdo()->lastInsertId();
-        $i = 0;
-        foreach ($request->split_tax_name as $tax) {
-
-
-            $data = [
-                'tax_id'      => $last_id,
-                'split_tax_name'      => $tax,
-                'split_tax_value'      => $request->split_tax_value[$i],
-
-            ];
-            Trn_TaxSplitUp::create($data);
-
-            $i++;
+        
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'tax_value'          => 'required|numeric|gte:0',
+                'tax_name'          => 'required',
+                
+            ]
+            
+        );
+        if (!$validator->fails()) 
+        {
+            $tax->tax_value  = $request->tax_value;
+            $tax->tax_name  = $request->tax_name;
+            // dd($request->all());
+            $tax->save();
+            $last_id = DB::getPdo()->lastInsertId();
+            $i = 0;
+            foreach ($request->split_tax_name as $tax) {
+    
+    
+                $data = [
+                    'tax_id'      => $last_id,
+                    'split_tax_name'      => $tax,
+                    'split_tax_value'      => $request->split_tax_value[$i],
+    
+                ];
+                Trn_TaxSplitUp::create($data);
+    
+                $i++;
+            }
+    
+    
+            return redirect('admin/tax/list')->with('status', 'Tax added successfully.');
         }
+        else
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
-
-        return redirect('admin/tax/list')->with('status', 'Tax added successfully.');
+       
     }
 
 

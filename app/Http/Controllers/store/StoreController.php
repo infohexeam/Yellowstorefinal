@@ -1388,7 +1388,7 @@ class StoreController extends Controller
     $attr_groups = Mst_attribute_group::all();
     $product_images = Mst_product_image::where('product_id', '=', $product_id)->orderBy('product_varient_id')->get();
     $tax = Mst_Tax::where('is_removed', '!=', 1)->get();
-    $category = Mst_categories::where('category_status', 1)->get();
+    $category = Mst_categories::where('category_status', 1)->withTrashed()->get();
 
     $colors = Mst_attribute_value::join('mst_attribute_groups', 'mst_attribute_groups.attr_group_id', '=', 'mst_attribute_values.attribute_group_id')
       ->where('mst_attribute_groups.group_name', 'LIKE', '%color%')
