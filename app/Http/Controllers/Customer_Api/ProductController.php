@@ -1706,7 +1706,7 @@ class ProductController extends Controller
                 $data['logs']=$wallet_logs;  
                 foreach($data['logs'] as $log)
                 {
-                    $log->store_points_balance=number_format($log->store_points_credited-$log->store_points_debited);
+                    $log->store_points_balance=number_format($log->store_points_credited-$log->store_points_debited,2);
                 }            
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
