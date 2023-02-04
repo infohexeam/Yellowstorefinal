@@ -293,6 +293,8 @@ class Helper
             ->exists();
         return $timeslotdata;
     }
+   
+
 
     public static function findServiceVariant($product_id)
     {

@@ -3699,7 +3699,8 @@ class ProductController extends Controller
 
                             $latitude = $cusAddDataLat;
                             $longitude = $cusAddDataLog;
-                        } else {
+                        } 
+                        else {
                             $latitude = $request->latitude;
                             $longitude = $request->longitude;
                         }

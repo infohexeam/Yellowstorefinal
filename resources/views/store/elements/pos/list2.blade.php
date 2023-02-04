@@ -500,9 +500,18 @@ var countPro = 0;
                         }
                         else
                         {
+                         if(result['status']==0)
+                        {
                          $('#msgPro').text(result['message']);
                           $('#order_btn').hide();
 
+                        }
+                        else
+                        {
+                         alert(result['message']);
+                         location.reload();
+                        }
+                         
                         }
 
                         

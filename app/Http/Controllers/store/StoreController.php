@@ -3597,6 +3597,21 @@ class StoreController extends Controller
     //     'mst_store_products.*',
     //   )
     //   ->first();
+
+    //Expiry check
+    $pos_time=Trn_pos_lock::where('order_uid',$order_uid)->where('expiry_time','<=',Carbon::now()->toDateTimeString())->exists();
+    if($pos_time)
+    {
+      $data['status'] = 3;
+      $data['message'] = "POS Expired try again";
+      
+      return response()->json($data);
+
+    }
+
+
+
+    //
       $productVarOlddata = Mst_store_product_varient::find($product_varient_id);
       $stockDiffernece=$productVarOlddata->stock_count-$quantity;
       if($stockDiffernece<0)
@@ -3626,6 +3641,10 @@ class StoreController extends Controller
     $lock->expiry_time=Carbon::now()->addMinutes(10);
     $lock->quantity=$quantity;
     $lock->save();
+
+    $exp_update=Trn_pos_lock::where('order_uid',$request->order_uid)->first();
+    $exp_update->expiry_time=$lock->expiry_time;
+    $exp_update->update();
   
 
     // dd($products);
@@ -3809,6 +3828,12 @@ class StoreController extends Controller
       $pro_variant = $request->get('product_varient_id');
       $single_quantity = $request->get('single_quantity');
       $order_uid=$request->or_uid;
+      $pos_time=Trn_pos_lock::where('order_uid',$order_uid)->where('expiry_time','<=',Carbon::now()->toDateTimeString())->exists();
+      if($pos_time)
+      {
+        return  redirect()->back()->with('error', 'POS expired..Try again.');
+  
+      }
      //dd($request->get('quantity'));
    
     DB::beginTransaction();
