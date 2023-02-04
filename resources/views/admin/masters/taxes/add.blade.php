@@ -32,16 +32,16 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">Tax Name</label>
-                            <input type="text"  required  id="tax_name"  class="form-control" value="" placeholder="Tax Name" name="tax_name"  >
+                            <label class="form-label">Tax Name *</label>
+                            <input type="text"    id="tax_name"  class="form-control" value="" placeholder="Tax Name" name="tax_name"  >
         
                         </div>
                      </div> 
 
                      <div class="col-md-12">
                         <div class="form-group">
-                            <label class="form-label">Tax Value</label>
-                            <input step="0.01" oninput="valueChanged(this.id)" type="text" id="tax_value" required class="form-control" onchange="if (this.value < 0) this.value = '';" placeholder="Tax Value" name="tax_value" >
+                            <label class="form-label">Tax Value *</label>
+                            <input step="0.01" oninput="valueChanged(this.id)" type="text" id="tax_value"  class="form-control" onchange="if (this.value < 0) this.value = '';" placeholder="Tax Value" name="tax_value" >
                         </div>
                      </div>
 
@@ -56,10 +56,10 @@
                                     <tbody class="bodyClass">
                                         <tr>
                                             <td>
-                                                <input type="text" required name="split_tax_name[]" id="split_tax_name0"  class=".split_name form-control" placeholder="Tax Name" >
+                                                <input type="text"  name="split_tax_name[]" id="split_tax_name0"  class=".split_name form-control" placeholder="Tax Name" >
                                             </td>
                                             <td>
-                                                <input step="0.01" type="number" required oninput="valueChanged(this.id)" name="split_tax_value[]" id="split_tax_name0" class="split_value form-control" placeholder="Tax Value(%)" >
+                                                <input step="0.01"   oninput="valueChanged(this.id)" name="split_tax_value[]" id="split_tax_name0" class="split_value form-control" placeholder="Tax Value(%)" >
                                             </td>
                                         </tr>
                                        
@@ -114,13 +114,17 @@
          
      });
       $(submit_button).click(function(e){ //on add input button click
-      var tax_value=$("#tax_value").numeric();//Submit button
-      if(tax_value)
+      {{-- var tax_value=$("#tax_value").val();//Submit button
+      var split_value=$(".split_value").val();
+      if($.isNumeric(tax_value)||$.isNumeric(split_value))
       {
          alert('tax value should be number');
          $("#tax_value").val('');
+           $(".split_value").val('');
          return false;
-      }
+       
+      } --}}
+
       
          
      });

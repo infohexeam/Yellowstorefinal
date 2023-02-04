@@ -630,8 +630,11 @@ class AdminController extends Controller
             [
                 'tax_value'          => 'required|numeric|gte:0',
                 'tax_name'          => 'required',
+                "split_tax_name.*"  => "required",
+                "split_tax_value.*"  => "required|numeric|gte:0",
                 
-            ]
+            ],['split_tax_name.*.required'=>'split name is missing',
+            'split_tax_value.*.required'=>'split value is missing']
             
         );
         if (!$validator->fails()) 
