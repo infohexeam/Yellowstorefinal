@@ -398,7 +398,7 @@ class PosController extends Controller
             if($pos_time)
             {
               $data['status'] = 3;
-              $data['message'] = "POS Expired try again";
+              $data['message'] = "POS Expired...Try again";
               
               return response()->json($data);
         

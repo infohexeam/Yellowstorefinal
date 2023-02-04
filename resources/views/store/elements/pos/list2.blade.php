@@ -86,7 +86,7 @@
                                    $uid = uniqid();
                                    @endphp
 
-                                    <input type="text" id="order_uid" name="order_uid" value="{{$uid}}">
+                                    <input type="hidden" id="order_uid" name="order_uid" value="{{$uid}}">
                                    <input type="text" readonly class="form-control" id="mrp" name="mrp" value="{{request()->input('mrp')}}" placeholder="MRP">
                                  </div>
                             </div>
@@ -161,7 +161,7 @@
                 <div class="table-responsive">
                   <form action="{{route('store.save_pos_lock')}}" method="POST" enctype="multipart/form-data">
                   @csrf
-                   <input type="text" id="or_uid" name="or_uid" value="{{$uid}}">
+                   <input type="hidden" id="or_uid" name="or_uid" value="{{$uid}}">
                   <table id="myTable" style="background: #f1f1f9;" class="table table-striped table-bordered text-nowrap w-100">
                     <thead>
                       <tr>
@@ -538,6 +538,7 @@ var countPro = 0;
               // $('#total_amount').val(0);
             //   $('#total_discount').val(0);
  alert("Plese fill all fields..");
+  $('#order_btn').hide();
            }
 
          // alert('cusId='+customer_id+'\n proid='+product_id+' \n qty='+quantity+'\n rate='+rate+' \n disc='+discount+'\n tDis='+total_discount+'\n tax_value='+tax_value+'\n tAmt='+total_amount);
