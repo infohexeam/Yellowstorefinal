@@ -1703,7 +1703,11 @@ class ProductController extends Controller
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_credited');
                 $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->sum('points_debited');
                 $available_points=$wallet_log_credited-$wallet_log_redeemed;              
-                $data['logs']=$wallet_logs;              
+                $data['logs']=$wallet_logs;  
+                foreach($data['logs'] as $log)
+                {
+                    $log->store_points_balance==number_format($log->store_points_credited-$log->store_points_debited);
+                }            
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
                 else

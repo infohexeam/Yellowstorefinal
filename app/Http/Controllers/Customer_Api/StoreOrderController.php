@@ -94,8 +94,7 @@ class StoreOrderController extends Controller
                         'product_variants.*.unit_price'    => 'required',
                         'product_variants.*.total_amount'    => 'required',
                         'product_variants.*.tax_amount'    => 'required',
-                        'product_variants.*.discount_amount'    => 'required',
-                        //  'product_variants.*.discount_percentage'    =>'required',
+                        'product_variants.*.discount_amount'    => 'required',                       
                     ],
                     [
                         'customer_id.required'  => 'Customer required',
