@@ -77,6 +77,13 @@ class PurchaseController extends Controller
 
        
             if (isset($request->order_amount) && isset($store_id) ) {
+                if(number_format($orderAmount,2)<1.00)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Unable to redeem wallet points. Order amount cannot be less than Rs. 1";
+                    return response($data);
+
+                }
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                     $customer_id = $request->customer_id;
                     if($request->admin_points==1)
