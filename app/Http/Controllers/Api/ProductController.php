@@ -1505,7 +1505,7 @@ class ProductController extends Controller
 
                     $removeProductVar = array();
                     $removeProductVar['is_removed'] = 1;
-                    $removeProductVar['stock_count'] = 0;
+                    //$removeProductVar['stock_count'] = 0;
 
                     // if (isset($productData->global_product_id)) //restore back to global listing. feature removed due to latest client update of providing restore option for store
                     //     $removeProduct['global_product_id'] = 0;
