@@ -271,7 +271,7 @@ class ProductController extends Controller
     
                         $removeProductVar = array();
                         $removeProductVar['is_removed'] = 0; 
-                        $removeProductVar['updated'] = 0; 
+                        //$removeProductVar['updated'] = 0; 
                         $removeProductVar['updated_at'] = Carbon::now();
                         //$removeProductVar['stock_count'] = 0;
     
