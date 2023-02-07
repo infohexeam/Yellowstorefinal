@@ -893,6 +893,7 @@ class PurchaseController extends Controller
                                 'mst_store_products.product_base_image',
                                 'mst_store_products.show_in_home_screen',
                                 'mst_store_products.product_status',
+                                'mst_store_products.display_flag',
                                 'mst_store_product_varients.product_varient_id',
                                 'mst_store_product_varients.variant_name',
                                 'mst_store_product_varients.product_varient_price',
@@ -905,6 +906,7 @@ class PurchaseController extends Controller
                                 
                             )
                             ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)
+                            ->where('mst_store_products.display_flag',1)
                             ->whereNotNull('mst_store_product_varients.product_varient_price')
                             ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
                             ->first();
