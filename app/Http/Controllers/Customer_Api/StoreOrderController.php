@@ -2169,7 +2169,7 @@ class StoreOrderController extends Controller
            
         if ($proData->service_type != 2) {
             if (count($noStockProducts) <= 0) {
-                $data['message'] = 'Stock unavailable';
+                $data['message'] = 'Stock available';
                 $data['status'] = 1;
              }
             }
