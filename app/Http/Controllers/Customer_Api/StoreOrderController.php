@@ -2118,6 +2118,7 @@ class StoreOrderController extends Controller
                     // $data['noStockProducts'] = $noStockProducts;
                     $data['message'] = 'Product unavailable';
                     $data['status'] = 2;
+                    return response($data);
                       }
                        if ($proData->service_type != 2) {
 
