@@ -2098,9 +2098,19 @@ class StoreOrderController extends Controller
                            }
 
                        }
-                       if($varProdu->variant_status == 0 || $proData->display_flag == 0)
+                       if($varProdu->variant_status == 0)
                        {
                        
+                        $data['product_name'] = @$varProdu->variant_name;
+
+                        // $noStockProducts[] = $varProdu->product_varient_id;
+
+                        // $data['noStockProducts'] = $noStockProducts;
+                        $data['message'] = 'Product unavailable';
+                        $data['status'] = 2;
+                       }
+                       if($proData->display_flag == 0)
+                       {
                         $data['product_name'] = @$varProdu->variant_name;
 
                         // $noStockProducts[] = $varProdu->product_varient_id;
