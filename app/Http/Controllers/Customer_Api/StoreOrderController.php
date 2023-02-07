@@ -2109,6 +2109,16 @@ class StoreOrderController extends Controller
                         $data['message'] = 'Product unavailable';
                         $data['status'] = 2;
                        }
+                    //    if($proData->display_flag == 0)
+                    //    {
+                    //     $data['product_name'] = @$varProdu->variant_name;
+
+                    //     // $noStockProducts[] = $varProdu->product_varient_id;
+
+                    //     // $data['noStockProducts'] = $noStockProducts;
+                    //     $data['message'] = 'Product unavailable';
+                    //     $data['status'] = 2;
+                    //    }
                        if ($proData->service_type != 2) {
 
                         if ($value['quantity'] > $varProdu->stock_count ) {
