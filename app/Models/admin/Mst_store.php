@@ -68,7 +68,7 @@ class Mst_store extends Authenticatable
 
     public function business_type()
     {
-        return $this->belongsTo('App\Models\admin\Mst_business_types', 'business_type_id', 'business_type_id');
+        return $this->belongsTo('App\Models\admin\Mst_business_types', 'business_type_id', 'business_type_id')->withTrashed();
     }
 
     public function subadmin()

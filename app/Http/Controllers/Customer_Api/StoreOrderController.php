@@ -1586,7 +1586,9 @@ class StoreOrderController extends Controller
                             
             
             
-                        }else{ //place a new order
+                        }
+                        else
+                        { //place a new order
                         // $order_no_exists=Trn_store_order::where('order_number',$orderNumberPrefix . @$orderNumber)->first();
                         // if($order_no_exists)
                         // {

@@ -906,7 +906,6 @@ class PurchaseController extends Controller
                                 
                             )
                             ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)
-                            ->where('mst_store_products.display_flag',1)
                             ->whereNotNull('mst_store_product_varients.product_varient_price')
                             ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
                             ->first();
