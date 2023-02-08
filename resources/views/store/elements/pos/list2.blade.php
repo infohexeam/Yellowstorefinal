@@ -60,8 +60,10 @@
                                         <select name="product_id" onchange="productSelected(this.value)" id="product_id" class="form-control select2-show-search" data-placeholder="Select Product" >
                                              <option value="" >Select Product</option>
                                               @foreach ($products as $data)
+                                              @if($data->variant_status==1)
+
                                                   <option value="{{ $data->product_id }}|{{ $data->product_varient_id }}" >
-                                                 
+                                            
                                                                                                       {{$data->variant_name}}
 
                                               {{--  {{ $data->product_name }} 
@@ -74,6 +76,7 @@
                                                     @endif  --}}
 
                                                   </option>
+                                                   @endif
                                              @endforeach
                                         </select>
                                  </div>
