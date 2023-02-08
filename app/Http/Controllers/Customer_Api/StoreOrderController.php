@@ -2116,9 +2116,9 @@ class StoreOrderController extends Controller
                     {
                     $data['product_name'] = @$varProdu->variant_name;
 
-                    //$noStockProducts[] = [];
+                     $noStockProducts[] = @$varProdu->product_varient_id;
 
-                    // $data['noStockProducts'] = [];
+                    $data['noStockProducts'] = $noStockProducts;
                     $data['message'] = 'Product unavailable';
                     $data['status'] = 2;
                     return response($data);
