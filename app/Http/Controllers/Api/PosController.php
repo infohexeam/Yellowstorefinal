@@ -566,7 +566,7 @@ class PosController extends Controller
                     //->where('mst_store_products.product_status', 1)
                     ->where('mst_store_products.product_type', 1)
                     ->where('mst_store_products.is_removed', 0)
-                    //->where('mst_store_product_varients.is_removed', 0)
+                    ->where('mst_store_product_varients.is_removed', 0)
                     //->where('mst_store_product_varients.variant_status', 1)
                     ->where('mst_store_product_varients.stock_count', '>', 0)
                     ->orderBy('mst_store_products.product_id', 'DESC')
