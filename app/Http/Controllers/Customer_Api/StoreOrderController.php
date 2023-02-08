@@ -2118,7 +2118,7 @@ class StoreOrderController extends Controller
 
                     //$noStockProducts[] = [];
 
-                    $data['noStockProducts'] = [];
+                    // $data['noStockProducts'] = [];
                     $data['message'] = 'Product unavailable';
                     $data['status'] = 2;
                     return response($data);
