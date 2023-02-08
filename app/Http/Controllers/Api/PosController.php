@@ -563,11 +563,11 @@ class PosController extends Controller
                 if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                     // ->join('mst__taxes','mst_store_products.tax_id','=','mst__taxes.tax_id')
                     ->where('mst_store_products.store_id', $request->store_id)
-                    ->where('mst_store_products.product_status', 1)
+                    //->where('mst_store_products.product_status', 1)
                     ->where('mst_store_products.product_type', 1)
                     ->where('mst_store_products.is_removed', 0)
                     ->where('mst_store_product_varients.is_removed', 0)
-                    ->where('mst_store_product_varients.variant_status', 1)
+                    //->where('mst_store_product_varients.variant_status', 1)
                     ->where('mst_store_product_varients.stock_count', '>', 0)
                     ->orderBy('mst_store_products.product_id', 'DESC')
                     ->select(
@@ -585,11 +585,26 @@ class PosController extends Controller
                         'mst_store_product_varients.variant_name',
                         'mst_store_product_varients.product_varient_price',
                         'mst_store_product_varients.product_varient_offer_price',
+                        'mst_store_product_varients.product_varient_offer_price',
                         'mst_store_product_varients.product_varient_base_image',
+                        'mst_store_product_varients.is_base_variant',
+                        
                         'mst_store_product_varients.stock_count'
                     )->get()
                 ) {
                     foreach ($data['productDetails'] as $product) {
+                        if($product->product_status==0)
+                       {
+                           if($product->is_base_variant==1)
+                           {
+                               $product->variant_status=0;
+
+                           }
+
+                       }
+                if($product->variant_status==1)
+                {
+
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                         
                         if($product->product_varient_base_image!=NULL)
@@ -605,6 +620,7 @@ class PosController extends Controller
                         $taxData = Mst_Tax::find(@$product->tax_id);
                         $product->tax_name = @$taxData->tax_name;
                         $product->tax_value = @$taxData->tax_value;
+                }
                     }
                     $data['status'] = 1;
                     $data['message'] = "success";
