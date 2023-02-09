@@ -3616,7 +3616,7 @@ class StoreController extends Controller
     if($pos_time)
     {
       $data['status'] = 3;
-      $data['message'] = "POS Expired try again";
+      $data['message'] = "The page had expired due to inactivity..Please try again";
       
       return response()->json($data);
 
@@ -3844,7 +3844,7 @@ class StoreController extends Controller
       $pos_time=Trn_pos_lock::where('order_uid',$order_uid)->where('expiry_time','<=',Carbon::now()->toDateTimeString())->exists();
       if($pos_time)
       {
-        return  redirect()->back()->with('error', 'POS expired..Try again.');
+        return  redirect()->back()->with('error', 'The page had expired due to inactivity..Please try again');
   
       }
      //dd($request->get('quantity'));

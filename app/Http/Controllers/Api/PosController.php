@@ -99,7 +99,7 @@ class PosController extends Controller
       if($pos_time)
       {
         $data['status'] = 3;
-        $data['message'] = "POS Expired try again";
+        $data['message'] = "The page had expired due to inactivity..Please try again";
         
         return response()->json($data);
   
@@ -398,7 +398,7 @@ class PosController extends Controller
             if($pos_time)
             {
               $data['status'] = 3;
-              $data['message'] = "POS Expired...Try again";
+              $data['message'] = "The page had expired due to inactivity..Please try again";
               
               return response()->json($data);
         
