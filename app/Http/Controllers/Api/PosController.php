@@ -602,8 +602,7 @@ class PosController extends Controller
                            }
 
                        }
-                if($product->variant_status==1)
-                {
+               
 
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                         
@@ -620,7 +619,7 @@ class PosController extends Controller
                         $taxData = Mst_Tax::find(@$product->tax_id);
                         $product->tax_name = @$taxData->tax_name;
                         $product->tax_value = @$taxData->tax_value;
-                }
+               
                     }
                     $data['status'] = 1;
                     $data['message'] = "success";
