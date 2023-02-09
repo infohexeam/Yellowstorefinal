@@ -890,7 +890,7 @@ class StoreController extends Controller
         'sale_price'   => 'required|gt:0',
         'tax_id'   => 'required',
         'min_stock'   => 'required|gte:0',
-        'product_code'   => 'required|unique:mst_store_products',
+        'product_code'   => 'required',
         // 'business_type_id'   => 'required',
         //'attr_group_id'   => 'required',
         // 'attr_value_id'   => 'required',
@@ -935,11 +935,11 @@ class StoreController extends Controller
     if (!$validator->fails()) {
 
       $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$request->product_code)->count();
-      // $ChkNameExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_name',$request->product_name)->count();
-      // if($ChkNameExstnce > 0)
-      // {
-      //     return redirect()->back()->with('status-error', 'Product Name already used by the store.')->withInput();
-      // }
+       $ChkNameExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_name',$request->product_name)->count();
+       if($ChkNameExstnce > 0)
+       {
+           return redirect()->back()->with('status-error', 'Product Name already used by the store.')->withInput();
+       }
         
       if($ChkCodeExstnce > 0)
       {
