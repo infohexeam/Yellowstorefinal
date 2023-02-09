@@ -622,10 +622,11 @@ class PosController extends Controller
                         $product->tax_value = @$taxData->tax_value;
                
                     }
-                    // $new = array_filter($data['productDetails'], function ($var) {
-                    //     return ($var['variant_status'] != 0);
-                    // });
-                    // $data['productDetails']=$new;
+
+                    $new = array_filter(json_decode($data['productDetails']), function ($var) {
+                       return ($var['variant_status'] != 0);
+                     });
+                     $data['productDetails']=$new;
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
