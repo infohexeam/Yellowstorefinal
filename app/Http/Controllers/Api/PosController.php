@@ -623,8 +623,8 @@ class PosController extends Controller
                
                     }
 
-                    $new = array_filter(json_decode($data['productDetails'],true), function ($var) {
-                        return ($var['variant_status'] != 0);
+                $new = array_filter(json_decode($data['productDetails'],true), function ($var) {
+                        return ($var['variant_status'] != "0");
                  });
                      $data['productDetails']=$new;
                     $data['status'] = 1;
