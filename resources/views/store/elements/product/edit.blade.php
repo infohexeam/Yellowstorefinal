@@ -97,6 +97,7 @@
                             <label class="form-label">MRP *</label>
                             <input type="number" step="0.01" class="form-control" required 
                              name="regular_price"   id="regular_price" value="{{old('regular_price',$product->product_price)}}" placeholder="MRP" oninput="regularPriceChange()">
+                             <span style="color:red" id="mrp_priceMsg"> </span>
                         </div>
                     </div>
 
@@ -1001,14 +1002,36 @@ function salePriceChange()
     let salePrice = $('#sale_price').val();
     let regularPrice = $('#regular_price').val();
     
-    if(parseFloat(salePrice) < 0)
+    if(parseFloat(regularPrice) <= 0)
     {
-            $('#sale_price').val(0);
+           
+            $('#mrp_priceMsg').html('MRP should be greater than 0');
+             $('#regular_price').val('');
+              $("#submit").attr("disabled", true);
+             
     }
-    
-    if(parseFloat(regularPrice) < 0)
+    else
     {
-            $('#regular_price').val(0);
+       $("#submit").attr("disabled", false);
+        $('#mrp_priceMsg').html('');
+       
+
+    }
+     if(parseFloat(salePrice) <= 0)
+    {
+      //alert('Sale price should be greater than 0');
+            
+          $('#sale_priceMsg').html('Sale price should be greater than 0');
+          $('#sale_price').val('');
+            
+               
+    }
+    else
+    {
+       $("#submit").attr("disabled", false);
+       $('#sale_priceMsg').html('');
+
+
     }
     
     
@@ -1021,6 +1044,15 @@ function salePriceChange()
             {
                 $('#sale_priceMsg').html('');
                 $("#submit").attr("disabled", false);
+                  if(parseFloat(salePrice) <= 0)
+                {
+                  //alert('Sale price should be greater than 0');
+                        
+                      $('#sale_priceMsg').html('Sale price should be greater than 0');
+                      $('#sale_price').val('');
+                        
+                          
+                }
 
             }
             else

@@ -5184,6 +5184,29 @@ class StoreController extends Controller
 
   public function updateProductVariant(Request $request, $product_varient_id)
   {
+    $validator = Validator::make(
+      $request->all(),
+      [
+        // 'product_name'          => 'required|unique:mst_store_products,product_name,'.$product_id.',product_id',
+        'variant_name'=>'required',
+        'product_varient_price'   => 'required|gt:0',
+        
+        'product_varient_offer_price'   => 'required|gt:0',
+        
+      ],
+      [
+
+       
+        'product_varient_price.required'      => 'MRP is required',
+        'product_varient_price.gt'      => 'MRP should be greater than  zero',
+        'product_varient_offer_price.required'      => 'Sale price required',
+        'product_varient_offer_price.gt'      => 'Sale Price should be greater than  zero',
+     
+      
+      ]
+    );
+
+    if (!$validator->fails()) {
     $data['variant_name'] = $request->variant_name;
     $data['product_varient_price'] = $request->product_varient_price;
     $data['product_varient_offer_price'] = $request->product_varient_offer_price;
@@ -5200,6 +5223,12 @@ class StoreController extends Controller
     Mst_store_product_varient::where('product_varient_id', $product_varient_id)->update($data);
 
     return redirect('store/product/list')->with('status', 'Product variant updated successfully.');
+  }
+  else
+  {
+    return redirect()->back()->withErrors($validator)->withInput();
+
+  }
   }
   public function ShareItems(Request $request)
   {

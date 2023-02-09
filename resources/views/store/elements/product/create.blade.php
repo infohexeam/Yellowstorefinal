@@ -91,6 +91,7 @@ input[type="file"] {
                             <label class="form-label">MRP *</label>
                             <input step="0.01" type="number" class="form-control" required 
                              name="regular_price"   id="regular_price" value="{{old('regular_price')}}"  placeholder="MRP"  oninput="regularPriceChange()" >
+                              <span style="color:red" id="mrp_priceMsg"> </span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -307,6 +308,7 @@ input[type="file"] {
                               <label class="form-label">MRP* </label>
                               <input step="0.01" type="number" class="form-control proVariant "    oninput="regularPriceChangeVar(0)"  
                               name="var_regular_price[]"   id="var_regular_price0" value="" placeholder="MRP">
+                                <span style="color:red" id="sale_priceMsg0"> </span>
                           </div>
                       </div>
                         <div class="col-md-6">
@@ -466,6 +468,7 @@ function showVariant(){
       {
             $("#varClass").hide();
             $("#btnAddVar").text('Add Variant');
+             $(".proVariant").attr("required",false);
       }
       else
       {
@@ -475,6 +478,8 @@ function showVariant(){
         if((firstAttrGrp != '' ) && (firstAttrVal != '')){
           $("#varClass").show();
           $("#btnAddVar").text('Hide Variant');
+          $(".proVariant").attr("required", true);
+          
         }else{
           alert("Base attribute and value can't be empty! ");
         }
@@ -491,15 +496,40 @@ function salePriceChange()
 {
     let salePrice = $('#sale_price').val();
     let regularPrice = $('#regular_price').val();
+    //alert(regularPrice);
     
-    if(parseFloat(salePrice) < 0)
+   
+    
+    if(parseFloat(regularPrice) <= 0)
     {
-            $('#sale_price').val(0);
+           
+            $('#mrp_priceMsg').html('MRP should be greater than 0');
+             $('#regular_price').val('');
+              $("#submit").attr("disabled", true);
+             
     }
-    
-    if(parseFloat(regularPrice) < 0)
+    else
     {
-            $('#regular_price').val(0);
+       $("#submit").attr("disabled", false);
+        $('#mrp_priceMsg').html('');
+       
+
+    }
+     if(parseFloat(salePrice) <= 0)
+    {
+      //alert('Sale price should be greater than 0');
+            
+          $('#sale_priceMsg').html('Sale price should be greater than 0');
+          $('#sale_price').val('');
+            
+               
+    }
+    else
+    {
+       $("#submit").attr("disabled", false);
+       $('#sale_priceMsg').html('');
+
+
     }
     
     
@@ -512,6 +542,15 @@ function salePriceChange()
             {
                 $('#sale_priceMsg').html('');
                 $("#submit").attr("disabled", false);
+                if(parseFloat(salePrice) <= 0)
+                {
+                  //alert('Sale price should be greater than 0');
+                        
+                      $('#sale_priceMsg').html('Sale price should be greater than 0');
+                      $('#sale_price').val('');
+                        
+                          
+                }
 
             }
             else
@@ -545,15 +584,42 @@ function salePriceChangeVar(p)
     let salePrice = $('#var_sale_price'+p).val();
     let regularPrice = $('#var_regular_price'+p).val();
     
-    if(parseFloat(salePrice) < 0)
+  
+
+    //////////////////////////////////////////////
+     if(parseFloat(regularPrice) <= 0)
     {
-            $('#var_sale_price'+p).val(0);
+           
+          $('#sale_priceMsg'+p).html('MRP should be greater than 0');
+          $('#var_regular_price'+p).val('');
+          //$("#submit").attr("disabled", true);
+             
     }
-    
-    if(parseFloat(regularPrice) < 0)
+    else
     {
-            $('#var_regular_price'+p).val(0);
+       $("#submit").attr("disabled", false);
+        $('#sale_priceMsg'+p).html('');
+       
+
     }
+     if(parseFloat(salePrice) <= 0)
+    {
+          $('#sale_priceMsg'+p).html('Sale price should be greater than 0');
+          $('#var_sale_price'+p).val('');
+          //$("#submit").attr("disabled", true);
+            
+               
+    }
+    else
+    {
+       //$("#submit").attr("disabled", false);
+       $('#sale_priceMsg'+p).html('');
+
+
+    }
+
+
+    //////////////////////////////////////////////
     
     
     if(salePrice !== "")
@@ -564,6 +630,21 @@ function salePriceChangeVar(p)
             {
                 $('#sale_priceMsg'+p).html('');
                 $("#submit").attr("disabled", false);
+                  if(parseFloat(salePrice) <= 0)
+                  {
+                        $('#sale_priceMsg'+p).html('Sale price should be greater than 0');
+                        $('#var_sale_price'+p).val('');
+                        //$("#submit").attr("disabled", true);
+                          
+                            
+                  }
+                  else
+                  {
+                    //$("#submit").attr("disabled", false);
+                    $('#sale_priceMsg'+p).html('');
+
+
+                  }
 
             }
             else
