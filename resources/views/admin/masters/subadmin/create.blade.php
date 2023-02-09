@@ -105,7 +105,7 @@
                      <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label"> Commission Percentage (Per Order) *</label>
-                          <input type="number" step="0.1"  required name="subadmin_commision_percentage" class="form-control" placeholder="Commission Percentage (Per Order)" value="{{old('subadmin_commision_percentage')}}">
+                          <input type="number" step="0.1" min="0"  required name="subadmin_commision_percentage" class="form-control" placeholder="Commission Percentage (Per Order)" value="{{old('subadmin_commision_percentage')}}">
 
                         </div>
                       </div>
@@ -113,7 +113,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label"> Commission Amount (Monthly) *</label>
-                          <input type="number" step="0.1"  required name="subadmin_commision_amount" class="form-control" placeholder="Commission Amount (Monthly)" value="{{old('subadmin_commision_amount')}}">
+                          <input type="number" step="0.1" min="0"  required name="subadmin_commision_amount" class="form-control" placeholder="Commission Amount (Monthly)" value="{{old('subadmin_commision_amount')}}">
                         </div>
                       </div>
 
