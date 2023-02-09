@@ -598,7 +598,7 @@ class PosController extends Controller
                        {
                            if($product->is_base_variant==1)
                            {
-                               $product->variant_status="0";
+                               $product->variant_status=(string)0;
 
                            }
 
