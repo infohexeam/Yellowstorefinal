@@ -979,7 +979,7 @@ class SettingController extends Controller
 
 
 				//'store_commision_amount'			       => 'required',
-				'store_commision_amount'                => 'ometimes|nullable||gte:0',
+				'store_commision_amount'                => 'sometimes|nullable||gte:0',
 				'store_district_id'                => 'required',
 				'store_username'   => 'required',
 				//	'password'       			   => 'sometimes|same:password_confirmation',
