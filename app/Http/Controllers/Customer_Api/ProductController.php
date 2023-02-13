@@ -3688,6 +3688,14 @@ class ProductController extends Controller
                         else
                             $data['storeInfo']->district_name = '';
 
+                        if (!isset($data['storeInfo']->store_referral_id ))
+                        {
+                            $data['storeInfo']->store_referral_id=$data['storeInfo']->store_id;
+
+                        }
+                           
+                       
+
 
                         $cusAddData = Trn_customerAddress::where('customer_id', '=', $request->customer_id)->where('default_status', 1)->first();
 

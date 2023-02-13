@@ -210,6 +210,7 @@ class RegisterController extends Controller
 
             \QrCode::format('svg')->size(500)->generate($qrco, 'assets/uploads/store_qrcodes/' . $qrco . '.svg');
             $store->store_qrcode          = $qrco;
+            $store->store_referral_id=uniqid();
 
             $store->save();
             $store_id = DB::getPdo()->lastInsertId();

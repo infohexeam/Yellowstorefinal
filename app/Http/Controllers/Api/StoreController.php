@@ -482,6 +482,7 @@ class StoreController extends Controller
 
                 \QrCode::format('svg')->size(500)->generate($qrco, 'assets/uploads/store_qrcodes/' . $qrco . '.svg');
                 $store->store_qrcode          = $qrco;
+                $store->store_referral_id=uniqid();
                 $store->subadmin_id          = 2; // default subadmin
 
                 $store->latitude   = $request->latitude;
