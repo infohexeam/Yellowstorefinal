@@ -32,6 +32,7 @@ use App\Models\admin\Mst_RewardToCustomer;
 
 use App\Models\admin\Country;
 use App\Models\admin\State;
+use App\Trn_store_referrals;
 
 class CustomerController extends Controller
 {
@@ -1188,6 +1189,50 @@ class CustomerController extends Controller
                 $data['status'] = 1;
                 $data['message'] = "Success";
                 return response($data);
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+    public function initiateReferral(Request $request)
+    {
+        $data = array();
+
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+            $check_reference_exists=Trn_store_referrals::where('joined_by_number',$request->joined_customer_ref_number)->where('refered_by_number',$request->referred_customer_ref_number)->where('store_referral_number',$request->store_referral_number)->first();
+            if($check_reference_exists==NULL)  
+            {
+                $store_referral=new Trn_store_referrals();
+                $store_referral->store_referral_number=$request->store_referral_number;
+                $store_referral->store_id=$request->store_id;
+                $store_referral->refered_by_id=$request->referred_customer_id;
+                $store_referral->refered_by_number=$request->referred_customer_ref_number;
+                $store_referral->joined_by_id=$request->customer_id;
+                $store_referral->joined_by_number=$request->joined_customer_ref_number;
+                $store_referral->reference_status=0;
+                $store_referral->save();
+                $data['status'] = 1;
+                $data['message'] = "Success..Referral initiated";
+                return response($data);
+
+            }
+            else
+            {
+                $data['status'] = 0;
+                $data['message'] = "Failed...Referral was done previously";
+                return response($data);
+
+            }
+               
             } else {
                 $data['status'] = 0;
                 $data['message'] = "Customer not found ";

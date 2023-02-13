@@ -452,6 +452,9 @@ Route::post('customer/payment-response', 'Customer_Api\ProductController@payment
 
 Route::get('test-api', 'Customer_Api\ProductController@testApi');
 
+//Referral customer-store
+Route::post('customer/initiate-referral', 'Customer_Api\CustomerController@initiateReferral');
+
 
 
 
