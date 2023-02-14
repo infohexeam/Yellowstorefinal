@@ -186,7 +186,7 @@
                     </tbody>
                   </table>
           <button id="order_btn" type="submit"  style="color:#ffffff;" class="btn btn-block btn-cyan"> Confirm Order </button>
-          <a id="cancel_btn" href=" "   style="color:#ffffff;" class="mt-2 btn btn-block btn-warning"> Cancel </a>
+          <a id="cancel_btn" href="{{url('store/pos/cancel/'.Crypt::encryptString($uid))}}"   style="color:#ffffff;" class="mt-2 btn btn-block btn-warning"> Cancel </a>
        </form>
 
               </div>

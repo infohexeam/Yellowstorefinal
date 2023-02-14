@@ -25,6 +25,7 @@ use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreBankData;
+use App\Trn_store_referrals;
 use Auth;
 
 class Helper
@@ -989,6 +990,11 @@ public static function totalOrderCredit($configOrderAmount,$configOrderPoint,$Or
     $n=floor($amountRatio);
     return $n*$orderPoint;
     
+}
+public static function manageReferral($joiner_uid,$referrer_uid,$store_uid)
+{
+    //Trn_store_referrals::
+   
 }
 
 }

@@ -3665,6 +3665,41 @@ class StoreController extends Controller
     $data['message']="sucessful";
     return response()->json($data);
   }
+  public function cancelPosProduct($uid)
+  {
+    $data=array();
+    //$pvid=$request->product_varient_id;
+    $order_uid  = Crypt::decryptString($uid);
+    $pos_lock=Trn_pos_lock::where('order_uid',$order_uid);
+    $locks=$pos_lock->get();
+    if($locks)
+    {
+      
+      foreach($locks as $lock)
+      {
+        $qty=$lock->quantity;
+     
+        Mst_store_product_varient::where('product_varient_id', '=',$lock->product_varient_id)->increment('stock_count',$qty); 
+
+      }
+     $pos_lock->delete();
+      return redirect()->back();
+    
+      
+     
+
+
+     
+    }
+    else
+    {
+      return redirect()->back();
+
+    }
+
+
+
+  }
 
   public function findTax(Request $request)
   {

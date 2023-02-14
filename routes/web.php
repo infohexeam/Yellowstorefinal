@@ -810,6 +810,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         // pos
         Route::get('store/pos/list2', 'StoreController@listPOS')->name('store.list_pos2');
         Route::get('store/pos/list', 'StoreController@listPOS2')->name('store.list_pos');
+        Route::get('store/pos/cancel/{uid}', 'StoreController@cancelPosProduct')->name('store.cancel_pos');
         Route::post('store/pos/save', 'StoreController@savePOS')->name('store.save_pos');
         Route::post('store/pos/save-lock', 'StoreController@savePOSLOCK')->name('store.save_pos_lock');
         Route::post('stores/ajax/find/product', 'StoreController@findProduct')->name('store.find_product');
