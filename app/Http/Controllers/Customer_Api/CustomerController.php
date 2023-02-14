@@ -1213,8 +1213,8 @@ class CustomerController extends Controller
             {
                 $store_referral=new Trn_store_referrals();
                 $store_referral->store_referral_number=$request->store_referral_number;
-                $store_referral->store_id=$request->store_id;
-                $store_referral->refered_by_id=$request->referred_customer_id;
+                $store_referral->store_id=$request->store_id??0;
+                $store_referral->refered_by_id=$request->referred_customer_id??0;
                 $store_referral->refered_by_number=$request->referred_customer_ref_number;
                 $store_referral->joined_by_id=$request->customer_id;
                 $store_referral->joined_by_number=$request->joined_customer_ref_number;
