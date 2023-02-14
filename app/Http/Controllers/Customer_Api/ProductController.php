@@ -1757,13 +1757,8 @@ class ProductController extends Controller
                 ->leftjoin('trn_store_orders','trn_wallet_logs.order_id', '=','trn_store_orders.order_id')
                 ->leftjoin('mst_stores','trn_wallet_logs.store_id', '=','mst_stores.store_id')
                 ->leftjoin('trn_configure_points','trn_configure_points.store_id', '=','mst_stores.store_id')
-                ->select('trn_wallet_logs.order_id',
-                'trn_wallet_logs.customer_id',
-                'trn_wallet_logs.type',
-                'trn_wallet_logs.points_credited',
-                'trn_wallet_logs.points_debited',
-                'trn_wallet_logs.created_at',
-                'trn_store_orders.order_number',
+                ->select(
+                
                 'mst_stores.store_id',
                 'trn_wallet_logs.store_id as stid',
                 'mst_stores.store_name',
@@ -1775,9 +1770,9 @@ class ProductController extends Controller
             ,
             DB::raw("(SELECT SUM(trn_wallet_logs.points_debited) FROM trn_wallet_logs
 
-            WHERE trn_wallet_logs.store_id = mst_stores.store_id AND trn_wallet_logs.customer_id =".$request->customer_id."
+            WHERE  trn_wallet_logs.customer_id =".$request->customer_id."
 
-            GROUP BY stid ) as store_points_debited"),
+            AND trn_wallet_logs.order_id !=null GROUP BY stid ) as store_points_debited"),
 
             )
                 //->where('trn_wallet_logs.points_debited','!=',0.00)
