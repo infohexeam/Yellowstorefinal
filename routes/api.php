@@ -441,6 +441,7 @@ Route::get('customer/raise-issues', 'Customer_Api\ProductController@raiseIssuesP
 Route::get('customer/store-wallet-page', 'Customer_Api\ProductController@storeWalletPage');
 
 Route::get('customer/wallet-by-store', 'Customer_Api\ProductController@customerWalletByStore');
+Route::get('customer/store-wallet-transactions', 'Customer_Api\ProductController@customerStoreWalletTransactions');
 Route::get('customer/address-coupon-list', 'Customer_Api\ProductController@listCouponAndAddress');
 Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
 Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
