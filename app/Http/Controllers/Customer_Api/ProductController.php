@@ -1772,7 +1772,7 @@ class ProductController extends Controller
 
             WHERE  trn_wallet_logs.customer_id =".$request->customer_id."
 
-            AND trn_wallet_logs.order_id !=null GROUP BY stid ) as store_points_debited"),
+             GROUP BY stid ) as store_points_debited"),
 
             )
                 //->where('trn_wallet_logs.points_debited','!=',0.00)
