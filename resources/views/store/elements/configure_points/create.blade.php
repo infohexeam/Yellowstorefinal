@@ -38,7 +38,7 @@
 
                          <div class="col-md-12">
                         <div class="form-group">
-                           <label class="form-label">Order Points</label>
+                           <label class="form-label">First Order Points</label>
                            <input type="number"  min="0" oninput="validity.valid||(value='');" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points">
                         </div>
                         </div>
