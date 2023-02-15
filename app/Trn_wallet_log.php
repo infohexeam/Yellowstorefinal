@@ -16,7 +16,8 @@ class Trn_wallet_log extends Model
     					    'order_id',
                             'type',
                             'points_credited',
-                            'points_debited'
+                            'points_debited',
+                            'description'
     						  ];
     public $timestamps=true;
 

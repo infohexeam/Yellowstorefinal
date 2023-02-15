@@ -31,6 +31,7 @@ use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Mst_RewardToCustomer;
 
 use App\Models\admin\Country;
+use App\Models\admin\Mst_store;
 use App\Models\admin\State;
 use App\Trn_store_referrals;
 
@@ -1211,14 +1212,50 @@ class CustomerController extends Controller
             $check_reference_exists=Trn_store_referrals::where('joined_by_number',$request->joined_customer_ref_number)->where('refered_by_number',$request->referred_customer_ref_number)->where('store_referral_number',$request->store_referral_number)->first();
             if($check_reference_exists==NULL)  
             {
+                //$request->store_referral_number
+                $joiner_points=0;
+                $referal_points=0;
+                $fop=0;
+                $store_id=0;
+                
+                $str=Mst_store::where('store_referral_id',$request->store_referral_number)->first();
+                if($str)
+                {
+                    //dd(1);
+                    $cnfg=Trn_configure_points::where('store_id',$str->store_id)->first();
+                    $joiner_points=$cnfg->joiner_points;
+                    $referal_points=$cnfg->referal_points;
+                    $fop=$cnfg->first_order_points;
+                    $store_id=$str->store_id;
+
+                }
+                else
+                {
+                    $st=Mst_store::where('store_id',$request->store_referral_number)->first();
+                    if($st)
+                    {
+                       // dd(2);
+                    $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
+                    $joiner_points=$cnfg->joiner_points;
+                    $referal_points=$cnfg->referal_points;
+                    $fop=$cnfg->first_order_points;
+                    $store_id=$st->store_id;
+
+                    }
+                    //dd(3);
+
+                }
                 $store_referral=new Trn_store_referrals();
                 $store_referral->store_referral_number=$request->store_referral_number;
-                $store_referral->store_id=$request->store_id??0;
+                $store_referral->store_id=$store_id;
                 $store_referral->refered_by_id=$request->referred_customer_id??0;
                 $store_referral->refered_by_number=$request->referred_customer_ref_number;
                 $store_referral->joined_by_id=$request->customer_id;
                 $store_referral->joined_by_number=$request->joined_customer_ref_number;
                 $store_referral->reference_status=0;
+                $store_referral->joiner_points=$joiner_points;
+                $store_referral->referral_points=$referal_points;
+                $store_referral->fop=$fop;
                 $store_referral->save();
                 $data['status'] = 1;
                 $data['message'] = "Success..Referral initiated";

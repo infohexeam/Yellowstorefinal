@@ -2497,9 +2497,11 @@ class StoreController extends Controller
     $order_id = $request->order_id;
     $order = Trn_store_order::Find($order_id);
     
+    
     $order_number = $order->order_number;
     $store_id = $order->store_id;
     $customer_id = $order->customer_id;
+    $cust=Trn_store_customer::where('customer_id',$customer_id)->first();
     //dd($request->status_id);
     $validator = Validator::make(
       $request->all(),
@@ -2679,10 +2681,25 @@ class StoreController extends Controller
             $wallet_log->type='credit';
             $wallet_log->points_debited=null;
             $wallet_log->points_credited=$storeOrderPointAmount;
+
             $wallet_log->save();
             }
 
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+            $str=Mst_store::where('store_referral_id',$order->store_id)->first();
+            if($str->store_referral_id!=NULL)
+            {
+              $st_uid=$str->store_referral_id;
+            }
+            else
+            {
+              $st_uid=$str->store_id;
+
+            }
+            // if(Helper::manageReferral($cust->referral_id,$st_uid,$order)==1)
+            // {
+              
+            // }
         if($order->payment_type_id==2)
         {
           foreach ($customerDevice as $cd) {
@@ -3493,6 +3510,9 @@ class StoreController extends Controller
   public function listPOS2(Request $request)
   {
     $pageTitle = "POS";
+    $order = Trn_store_order::Find(1421);
+    //dd(Helper::manageReferral('115dins147336','hhdhjdhj',$order));
+    
     //dd(Carbon::now()->toDateTimeString());
     //$pos_locks=Trn_pos_lock::where('expiry_time','<=',Carbon::now()->toDateTimeString())->where('status',1)->get();
     //dd($pos_locks);
