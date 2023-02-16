@@ -768,6 +768,34 @@ class DeliveryBoyOrderController extends Controller
 
 
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+                    if (($request->status_id == 9)) {
+                        $cust=Trn_store_customer::where('customer_id',$order->customer_id)->first();
+                        $str=Mst_store::where('store_referral_id',$order->store_id)->first();
+                        // if($str->store_referral_id!=NULL)
+                        // {
+                        //   $st_uid=$str->store_referral_id;
+                        // }
+                        // else
+                        // {
+                        //   $st_uid=$str->store_id;
+            
+                        // }
+                        if($str)
+                        {
+                          
+                          $st_uid=$str->store_id;
+                        }
+                        else
+                        {
+                          $st=Mst_store::where('store_id',$order->store_id)->first();
+                          $st_uid=$st->store_referral_id;
+            
+                        }
+                        if(Helper::manageReferral($cust->referral_id,$st_uid,$order)!=0)
+                        {
+                          
+                        }
+                        }
                     foreach ($customerDevice as $cd) {
                         $title = 'Order delivered';
                         $body = 'Order delivered with order id ' . $order->order_number;

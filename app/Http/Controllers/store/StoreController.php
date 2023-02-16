@@ -2686,20 +2686,25 @@ class StoreController extends Controller
             }
 
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+            if (($request->status_id == 9)) {
             $str=Mst_store::where('store_referral_id',$order->store_id)->first();
-            if($str->store_referral_id!=NULL)
+            if($str)
             {
-              $st_uid=$str->store_referral_id;
+              
+              $st_uid=$str->store_id;
             }
             else
             {
-              $st_uid=$str->store_id;
+              $st=Mst_store::where('store_id',$order->store_id)->first();
+              $st_uid=$st->store_referral_id;
 
             }
-            // if(Helper::manageReferral($cust->referral_id,$st_uid,$order)==1)
-            // {
+            if(Helper::manageReferral($cust->referral_id,$st_uid,$order)!=0)
+            {
               
-            // }
+              
+            }
+            }
         if($order->payment_type_id==2)
         {
           foreach ($customerDevice as $cd) {
