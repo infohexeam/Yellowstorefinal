@@ -998,7 +998,7 @@ public static function manageReferral($joiner_uid,$store_uid,$order)
     if(Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('store_referral_number',$store_uid)->where('reference_status',0)->count()>0)
     {
         if(Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('store_referral_number',$store_uid)->where('reference_status',1)->count()==0)
-        {
+        { 
         $fetchFirstRef=Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('store_referral_number',$store_uid)->where('reference_status','=',0)->first();
         //Joiner ponts
         //dd($joiner_uid,$store_uid);

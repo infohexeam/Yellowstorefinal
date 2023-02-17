@@ -791,10 +791,10 @@ class DeliveryBoyOrderController extends Controller
                           $st_uid=$st->store_referral_id;
             
                         }
-                        if(Helper::manageReferral($cust->referral_id,$st_uid,$order)!=0)
-                        {
+                        // if(Helper::manageReferral($cust->referral_id,$st_uid,$order)!=0)
+                        // {
                           
-                        }
+                        // }
                         }
                     foreach ($customerDevice as $cd) {
                         $title = 'Order delivered';
