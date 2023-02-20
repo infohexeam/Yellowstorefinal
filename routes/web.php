@@ -907,6 +907,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         Route::get('store/disputes/list', 'StoreController@listDisputes')->name('store.list_disputes');
+        Route::get('store/references/list', 'StoreController@listReferences')->name('store.list_references');
         Route::post('store/disputes/status/{dispute_id}', 'StoreController@statusDisputes')->name('store.dispute_status');
         Route::post('store/disputes/store-response/{dispute_id}', 'StoreController@storeResponseUpdate')->name('store.dispute_store_response');
 

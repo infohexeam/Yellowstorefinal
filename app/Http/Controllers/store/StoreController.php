@@ -80,6 +80,7 @@ use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_StoreBankData;
 use App\Trn_pos_lock;
+use App\Trn_store_referrals;
 use App\Trn_wallet_log;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -5435,6 +5436,51 @@ class StoreController extends Controller
 
     $disputes = \DB::table("mst_disputes")->where('store_id', $store_id)->select("*")->orderBy('dispute_id', 'DESC')->get();
     return view('store.elements.disputes.list', compact('disputes', 'pageTitle'));
+  }
+  public function listReferences(Request $request)
+  {
+    $pageTitle = "References";
+    $store_id  = Auth::guard('store')->user()->store_id;
+    if ($_GET) {
+
+      $datefrom = $request->date_from;
+      $dateto = $request->date_to;
+
+      $a1 = Carbon::parse($request->date_from)->startOfDay();
+      $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+      $order_number  = $request->order_number;
+
+      $query = \DB::table("trn_store_referrals")->where('store_id', $store_id)->select("*");
+
+
+      if (isset($order_number)) {
+        $query = $query->where('order_number', $order_number);
+      }
+      if (isset($request->date_from) && isset($request->date_to)) {
+				// $query = $query->whereBetween('created_at',[$a1->format('Y-m-d')." 00:00:00",$a2->format('Y-m-d')." 00:00:00"]);
+				//echo "die";die;
+				$query = $query->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
+				$query = $query->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
+			}
+
+			if (isset($request->date_from) && !isset($request->date_to)) {
+				$query = $query->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
+			}
+			if (!isset($request->date_from) && isset($request->date_to)) {
+				$query = $query->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
+			}
+      
+      $query->orderBy('id', 'DESC');
+      $references = $query->get();
+      return view('store.elements.references.list', compact('dateto', 'datefrom', 'references', 'pageTitle'));
+    }
+
+    $references = \DB::table("trn_store_referrals")
+    // ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_referrals.store_id')
+    ->where('store_id', $store_id)->select("*")->orderBy('id', 'DESC')->get();
+    //$references=Trn_store_referrals::where('store_id', $store_id)->select("*")->orderBy('id', 'DESC')->get();
+    return view('store.elements.references.list', compact('references', 'pageTitle'));
   }
 
   public function statusDisputes(Request $request, $dispute_id)

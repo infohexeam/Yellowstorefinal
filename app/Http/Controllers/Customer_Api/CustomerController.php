@@ -1221,30 +1221,106 @@ class CustomerController extends Controller
                 $str=Mst_store::where('store_referral_id',$request->store_referral_number)->first();
                 if($str)
                 {
-                    //dd(1);
-                    $cnfg=Trn_configure_points::where('store_id',$str->store_id)->first();
-                    $joiner_points=$cnfg->joiner_points;
-                    $referal_points=$cnfg->referal_points;
-                    $fop=$cnfg->first_order_points;
-                    $store_id=$str->store_id;
+                if(is_null($str->store_referral_id))
+                {
+                    $st_uid=$str->store_id;
+                    $cnfg=Trn_configure_points::where('store_id',$st_uid)->first();
+                    if($cnfg)
+                    {
+                        $joiner_points=$cnfg->joiner_points;
+                        $referal_points=$cnfg->referal_points;
+                        $fop=$cnfg->first_order_points;
+                        $store_id=$str->store_id;
+
+                    }
+                    else
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "No configure points added to the store";
+                        return response($data);
+
+                    }
+                   
 
                 }
                 else
                 {
-                    $st=Mst_store::where('store_id',$request->store_referral_number)->first();
+                    $st_uid=$str->store_referral_id;
+                    $st=Mst_store::where('store_referral_id',$st_uid)->first();
                     if($st)
                     {
                        // dd(2);
                     $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
+                    if($cnfg)
+                    {
                     $joiner_points=$cnfg->joiner_points;
                     $referal_points=$cnfg->referal_points;
                     $fop=$cnfg->first_order_points;
                     $store_id=$st->store_id;
 
                     }
-                    //dd(3);
+                    else
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "No configure points added to the store";
+                        return response($data);
+
+                    }
+                    
+
+                    }
 
                 }
+            }
+            else
+            {
+                $st=Mst_store::where('store_id',$request->store_referral_number)->first();
+                $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
+                if($cnfg)
+                {
+                $joiner_points=$cnfg->joiner_points;
+                $referal_points=$cnfg->referal_points;
+                $fop=$cnfg->first_order_points;
+                $store_id=$st->store_id;
+
+                }
+                else
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "No configure points added to the store";
+                    return response($data);
+
+                }
+
+            }
+                // if($str)
+                // {
+                //     //dd(1);
+                //     $cnfg=Trn_configure_points::where('store_id',$str->store_id)->first();
+                //     $joiner_points=$cnfg->joiner_points;
+                //     $referal_points=$cnfg->referal_points;
+                //     $fop=$cnfg->first_order_points;
+                //     $store_id=$str->store_id;
+
+                    
+
+                // }
+                // else
+                // {
+                //     $st=Mst_store::where('store_id',$request->store_referral_number)->first();
+                //     if($st)
+                //     {
+                //        // dd(2);
+                //     $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
+                //     $joiner_points=$cnfg->joiner_points;
+                //     $referal_points=$cnfg->referal_points;
+                //     $fop=$cnfg->first_order_points;
+                //     $store_id=$st->store_id;
+
+                //     }
+                //     //dd(3);
+
+                // }
                 $store_referral=new Trn_store_referrals();
                 $store_referral->store_referral_number=$request->store_referral_number;
                 $store_referral->store_id=$store_id;
