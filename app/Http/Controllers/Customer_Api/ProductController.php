@@ -1850,6 +1850,7 @@ class ProductController extends Controller
                     'trn_wallet_logs.points_credited',
                     'trn_wallet_logs.points_debited',
                     'trn_wallet_logs.created_at',
+                    'trn_wallet_logs.description',
                     'trn_store_orders.order_number',
                     'mst_stores.store_id',
                     'trn_wallet_logs.store_id as stid',
@@ -1884,6 +1885,10 @@ class ProductController extends Controller
                 foreach($data['logs'] as $log)
                 {
                     $log->store_points_balance=number_format($log->store_points_credited-$log->store_points_debited,2);
+                    if($log->description==NULL)
+                    {
+                        $log->description='Order Points';
+                    }
                 }            
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
