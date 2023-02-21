@@ -87,7 +87,7 @@ class PurchaseController extends Controller
                 $con=Trn_configure_points::where('store_id',$store_id)->first();
                 if($con)
                 {
-                    if(number_format($orderAmount,2)<=number_format($con->order_amount,2))
+                    if(number_format($orderAmount,2)<number_format($con->order_amount,2))
                     {
                         $data['status'] = 0;
                         $data['message'] = "Unable to redeem wallet points. Order amount cannot be less than Rs ".$con->order_amount;
