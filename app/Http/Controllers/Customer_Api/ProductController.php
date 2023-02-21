@@ -1193,7 +1193,7 @@ class ProductController extends Controller
         $data = array();
         try {
 
-            if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
+            if (isset($request->product_variant_id) && Mst_store_product_varient::find($request->product_variant_id)) {
 
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
 
@@ -1202,7 +1202,7 @@ class ProductController extends Controller
                         $fb  = new Trn_CustomerFeedback;
                         $fb->feedback_question_id = $fd['feedback_question_id'];
                         $fb->feedback = $fd['feedback'];
-                        $fb->product_varient_id = $request->product_varient_id;
+                        $fb->product_varient_id = $request->product_variant_id;
                         $fb->customer_id = $request->customer_id;
                         $fb->save();
                     }
