@@ -606,7 +606,7 @@ class StoreController extends Controller
                                 $divTok = DB::table('oauth_access_tokens')
                                     ->where('user_id', $custCheck->store_admin_id)
                                     
-                                    ->where('scopes','=',[])
+                                    ->where('scopes','=','[]')
                                     ->where('revoked', 0)
                                     ->count();
 
@@ -614,7 +614,7 @@ class StoreController extends Controller
                                 $devTokenC = Trn_StoreDeviceToken::where('store_admin_id', $custCheck->store_admin_id)
                                     ->where('store_device_id', $request->device_id)
                                     ->count();
-                                return $divTok;
+                                    //return $divTok;
 
 
                                 if (($divTok > 0) && ($devTokenC == 0)) {
