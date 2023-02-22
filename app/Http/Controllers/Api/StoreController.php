@@ -1262,6 +1262,11 @@ class StoreController extends Controller
                 } else {
                     $data['store_status'] = 0;
                 }
+                if ($custCheck->store_account_status != 0) {
+                    $data['active_status'] = 1;
+                } else {
+                    $data['active_status'] = 0;
+                }
 
 
 
