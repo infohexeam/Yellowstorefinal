@@ -197,7 +197,7 @@ class CustomerController extends Controller
                     }
                 } else {
                     $data['status'] = 0;
-                    $data['message'] = "Invalid Login Details";
+                    $data['message'] = "Invalid Mobile number!";
                 }
             } else {
                 $data['errors'] = $validator->errors();
