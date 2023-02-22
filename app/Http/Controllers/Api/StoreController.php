@@ -606,7 +606,7 @@ class StoreController extends Controller
                                 $divTok = DB::table('oauth_access_tokens')
                                     ->where('user_id', $custCheck->store_admin_id)
                                     
-                                    ->where('scopes','=','[]')
+                                    ->where('scopes','=',[])
                                     ->where('revoked', 0)
                                     ->count();
 
