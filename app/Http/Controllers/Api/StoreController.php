@@ -613,6 +613,7 @@ class StoreController extends Controller
                                 $devTokenC = Trn_StoreDeviceToken::where('store_admin_id', $custCheck->store_admin_id)
                                     ->where('store_device_id', $request->device_id)
                                     ->count();
+                                    return $divTok;
 
 
                                 if (($divTok > 0) && ($devTokenC == 0)) {
