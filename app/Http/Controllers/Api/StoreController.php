@@ -683,7 +683,7 @@ class StoreController extends Controller
                     }
                 } else {
                     $data['status'] = 0;
-                    $data['message'] = "Invalid Login Details";
+                    $data['message'] = "Invalid Phone Number";
                 }
             } else {
                 $data['errors'] = $validator->errors();
