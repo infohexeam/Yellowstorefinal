@@ -2337,6 +2337,7 @@ class ProductController extends Controller
         $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
       }
 
+
       $subadmins = User::where('user_role_id', '!=', 0)->get();
 
       $customers = Trn_store_customer::all();
@@ -2445,18 +2446,12 @@ class ProductController extends Controller
     }
   }
 
-
-
-
-  public function showInventoryReport(Request $request)
+public function showInventoryReport(Request $request)
   {
     //echo "working..";die;
     $pageTitle = "Inventory Reports";
     $datefrom = '';
     $dateto = '';
-
-
-
     if (auth()->user()->user_role_id  == 0) {
       $stores = Mst_store::orderby('store_id', 'DESC')->get();
     } else {
@@ -2581,19 +2576,16 @@ class ProductController extends Controller
     $data =   $data->values()->all();
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
-  }
-
-
-
-  public function showOutofStockReport(Request $request)
-  {
+}
+public function showOutofStockReport(Request $request)
+{
     //echo "working..";die;
     $pageTitle = "Out of Stock Reports";
     $datefrom = '';
     $dateto = '';
 
 
-    if (auth()->user()->user_role_id  == 0) {
+    if(auth()->user()->user_role_id  == 0) {
       $stores = Mst_store::orderby('store_id', 'DESC')->get();
     } else {
       $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();

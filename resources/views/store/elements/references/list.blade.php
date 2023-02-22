@@ -29,7 +29,7 @@ $date = Carbon\Carbon::now();
                      <div class="card-header">
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                      </div>
-                 <form action="{{route('store.list_disputes')}}" method="GET"
+                 <form action="{{route('store.list_references')}}" method="GET"
                          enctype="multipart/form-data">
                    @csrf
             <div class="row">
@@ -75,7 +75,7 @@ $date = Carbon\Carbon::now();
                            <button type="submit" class="btn btn-raised btn-primary">
                            <i class="fa fa-check-square-o"></i> Filter</button>
                            {{-- <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button> --}}
-                          <a href="{{route('store.list_disputes')}}"  class="btn btn-info">Cancel</a>
+                          <a href="{{route('store.list_references')}}"  class="btn btn-info">Cancel</a>
                            </center>
                         </div>
                   </div>
@@ -116,22 +116,29 @@ $date = Carbon\Carbon::now();
                                        
                                         $store = \DB::table('mst_stores')->where('store_id',$reference->store_id)->first();
                                         //$order = \DB::table('trn_store_orders')->where('store_id',$reference->store_id)->first();
-
-
+                                        $order = \DB::table('trn_store_orders')->where('order_id',$reference->order_id)->first();
+                                        $refer_by=\DB::table('trn_store_customers')->where('referral_id',$reference->refered_by_number)->first();
+                                        $joined_by=\DB::table('trn_store_customers')->where('customer_id',$reference->joined_by_id)->first();
                                         @endphp
                                        
 
-                                    <td>{{ \Carbon\Carbon::parse($reference->updated_at)->format('M d, Y')}}</td>
+                                    <td>
+                                    @if(@$reference->reference_status==1)
+                                    {{ \Carbon\Carbon::parse($reference->updated_at)->format('M d, Y')}}
+                                    @else
+                                    Not Completed
 
-                                    <td>REf_by</td>
-                                    <td>Join_by</td>
+                                    @endif
+                                    </td>
+
+                                    <td>@if($refer_by) {{@$refer_by->customer_first_name}} {{@$refer_by->customer_last_name}} @endif</td>
+                                    <td>@if($joined_by) {{@$joined_by->customer_first_name}} {{@$joined_by->customer_last_name}} @endif</td>
                                     <td>{{ @$store->store_name}}</td>
-
                                     <td>{{ @$reference->fop}}</td>
-                                     <td>{{ @$reference->referral_points}}</td>
-                                      <td>{{ @$reference->joiner_points }}</td>
-                                   <td>Order_no</td> 
-                                   <td>{{ @$reference->reference_status }}</td>
+                                    <td>{{ @$reference->referral_points}}</td>
+                                    <td>{{ @$reference->joiner_points }}</td>
+                                   <td>@if($order){{$order->order_number}}@endif</td> 
+                                   <td>@if(@$reference->reference_status==1) Success @else Failed @endif</td>
                       
 
                                     {{-- <td>{{ $dispute->discription}}</td> --}}

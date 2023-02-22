@@ -5454,21 +5454,21 @@ class StoreController extends Controller
       $query = \DB::table("trn_store_referrals")->where('store_id', $store_id)->select("*");
 
 
-      if (isset($order_number)) {
-        $query = $query->where('order_number', $order_number);
-      }
+      // if (isset($order_number)) {
+      //   $query = $query->where('order_number', $order_number);
+      // }
       if (isset($request->date_from) && isset($request->date_to)) {
 				// $query = $query->whereBetween('created_at',[$a1->format('Y-m-d')." 00:00:00",$a2->format('Y-m-d')." 00:00:00"]);
 				//echo "die";die;
-				$query = $query->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
-				$query = $query->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
+				$query = $query->whereDate('updated_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
+				$query = $query->whereDate('updated_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
 			}
 
 			if (isset($request->date_from) && !isset($request->date_to)) {
-				$query = $query->whereDate('created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
+				$query = $query->whereDate('updated_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
 			}
 			if (!isset($request->date_from) && isset($request->date_to)) {
-				$query = $query->whereDate('created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
+				$query = $query->whereDate('updated_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
 			}
       
       $query->orderBy('id', 'DESC');
