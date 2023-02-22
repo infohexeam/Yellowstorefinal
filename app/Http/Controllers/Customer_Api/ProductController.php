@@ -3875,7 +3875,19 @@ class ProductController extends Controller
                             $data['storeInfo']->store_referral_id=$data['storeInfo']->store_id;
 
                         }
-                           
+                        $config=Trn_configure_points::where('store_id',$request->store_id)->first(); 
+                        if($config)
+                        {
+                            $data['storeInfo']->referal_points=$config->referal_points;
+                            $data['storeInfo']->joiner_points=$config->joiner_points;
+                        
+                        }
+                        else
+                        {
+                            $data['storeInfo']->referal_points=0;
+                            $data['storeInfo']->joiner_points=0;
+
+                        }
                        
 
 

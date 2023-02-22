@@ -164,10 +164,12 @@
                            <label class="form-label">State *</label>
                            @php
                                @$states_data = \DB::table('sys_states')->where('country_id',@$store->store_country_id)->get();
+                               //dd($store->store_state_id);
                            @endphp
                             <select name="store_state_id" required="" class="form-control" id="state" >
                              @foreach ($states_data as $value)
-                                <option  @if ($store->store_state_id == $value->state_id)  selected  @endif  value="{{@$value->state_id}}">  {{@$value->state_name}}</option>
+                          
+                                <option  @if($store->store_state_id)@if ($store->store_state_id == $value->state_id)  selected  @endif @endif  value="{{@$value->state_id}}">  {{@$value->state_name}}</option>
                              @endforeach
                             </select>
                            </div>
@@ -180,7 +182,7 @@
                            @endphp
                            <select name="store_district_id" required="" class="form-control" id="city">
                            @foreach (@$district_data as $value)
-                                <option @if ($store->store_district_id == $value->district_id)  selected  @endif  value="{{@$value->district_id}}">  {{@$value->district_name}}</option>
+                                <option @if($store->store_district_id) @if ($store->store_district_id == $value->district_id)  selected  @endif @endif  value="{{@$value->district_id}}">  {{@$value->district_name}}</option>
 
                              @endforeach
 
