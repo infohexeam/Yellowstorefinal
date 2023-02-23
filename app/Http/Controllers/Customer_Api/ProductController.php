@@ -3880,12 +3880,14 @@ class ProductController extends Controller
                         {
                             $data['storeInfo']->referal_points=$config->referal_points;
                             $data['storeInfo']->joiner_points=$config->joiner_points;
+                            $data['storeInfo']->first_order_points=$config->first_order_points;
                         
                         }
                         else
                         {
                             $data['storeInfo']->referal_points=0;
                             $data['storeInfo']->joiner_points=0;
+                            $data['storeInfo']->first_order_points=0;
 
                         }
                        
