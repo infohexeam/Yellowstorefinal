@@ -1622,7 +1622,7 @@ class ProductController extends Controller
 
 
                 $data['customerRewards'] = Trn_customer_reward::where('customer_id',$request->customer_id)
-                    ->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store_points')->orderBy('reward_id', 'DESC')->get();
+                    ->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store_points')->orWhere('discription','!=','store points')->orderBy('reward_id', 'DESC')->get();
                 foreach ($data['customerRewards'] as $cr) {
                     if (Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id)) {
                         $cr->rewardTransactionType = Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id);
@@ -4192,7 +4192,7 @@ class ProductController extends Controller
 
                         $PurproductData = collect($PurproductData);
                         $PurproductDatas = $PurproductData->unique('product_varient_id');
-                        $PurproductDataz =   $PurproductDatas->values()->all();
+                        $PurproductDataz =  $PurproductDatas->values()->all();
 
                         $data['purchasedProducts'] = $PurproductDataz;
                         // $dataPurchase = array();
