@@ -1227,9 +1227,19 @@ public static function checkFop($order)
     $fscr->reward_point_status = 1;
     $fscr->discription = 'store points';
     $fscr->save();
+    return 1;
 
    }
+   return 0;
 }
+return 0;
+    
+    
+    
+}
+public static function checkFopApp($order)
+{
+   
     if(Trn_store_order::where('customer_id',$order->customer_id)->where('status_id',9)->count() == 0)
     {
        
@@ -1257,11 +1267,14 @@ public static function checkFop($order)
         $fscr->reward_point_status = 1;
         $fscr->discription = 'App first order points';
         $fscr->save();
+        return 1;
 
        }
+       return 0;
        
         
     }
+    return 0;
     
     
 }

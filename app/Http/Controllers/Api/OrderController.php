@@ -923,11 +923,13 @@ class OrderController extends Controller
                                     $wallet_log->save();
                                     }
                                     
-                                    Helper::checkFop($orderDataz);
+                                    
                             //$data['wallet_id']=$wallet_log->wallet_log_id;
 
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
                                     if (($request->status_id == 9)) {
+                                        Helper::checkFop($orderDataz);
+                                        Helper::checkFopApp($orderDataz);
                                         $cust=Trn_store_customer::where('customer_id',$orderDataz->customer_id)->first();
                                         $str=Mst_store::where('store_referral_id',$orderDataz->store_id)->first();
                                         // if($str->store_referral_id!=NULL)
@@ -956,7 +958,7 @@ class OrderController extends Controller
                 
                                         }
                                         $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz);
-                                        Helper::manageAppReferral($cust->referral_id,$orderDataz);
+                                        $ref_id_app=Helper::manageAppReferral($cust->referral_id,$orderDataz);
 
                                         if($ref_id!=0)
                                         {

@@ -2686,6 +2686,7 @@ class StoreController extends Controller
             $wallet_log->save();
             }
             Helper::checkFop($order);
+            Helper::checkFopApp($order);
 
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
             if (($request->status_id == 9)) {

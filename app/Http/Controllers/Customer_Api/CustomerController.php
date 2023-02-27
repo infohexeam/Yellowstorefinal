@@ -122,6 +122,161 @@ class CustomerController extends Controller
                                     $data['customer_first_name'] = $user->customer_first_name . " " . $user->customer_last_name;
                                     $data['customer_mobile_number'] = $user->customer_mobile_number;
                                     $data['referral_id'] = $user->referral_id;
+                                    /*********Referral Insertion */
+                                    if($request->referral_id)
+                                    {
+                                    if($request->store_referral_number)
+                                    {
+                                    if($user->referral_id == $request->referral_id)
+                                    {
+                                        $data['status'] = 0;
+                                        $data['message'] = "Invalid Reference.Cannot initiate a reference created by yourselves";
+                                        return response($data);
+
+                                    }
+                                    
+                                    
+                                    $check_reference_exists=Trn_store_referrals::where('joined_by_number',$user->referral_id)->where('refered_by_number',$request->referral_id)->where('store_referral_number',$request->store_referral_number)->first();
+                                    if($check_reference_exists==NULL)  
+                                    {
+                                        //$request->store_referral_number
+                                        $joiner_points=0;
+                                        $referal_points=0;
+                                        $fop=0;
+                                        $store_id=0;
+                                        
+                                        $str=Mst_store::where('store_referral_id',$request->store_referral_number)->first();
+                                        if($str)
+                                        {
+                                        if(is_null($str->store_referral_id))
+                                        {
+                                            $st_uid=$str->store_id;
+                                            $cnfg=Trn_configure_points::where('store_id',$st_uid)->first();
+                                            if($cnfg)
+                                            {
+                                                $joiner_points=$cnfg->joiner_points;
+                                                $referal_points=$cnfg->referal_points;
+                                                $fop=$cnfg->first_order_points;
+                                                $store_id=$str->store_id;
+                        
+                                            }
+                                            else
+                                            {
+                                                $data['status'] = 0;
+                                                $data['message'] = "No configure points added to the store";
+                                                return response($data);
+                        
+                                            }
+                                           
+                        
+                                        }
+                                        else
+                                        {
+                                            $st_uid=$str->store_referral_id;
+                                            $st=Mst_store::where('store_referral_id',$st_uid)->first();
+                                            if($st)
+                                            {
+                                               // dd(2);
+                                            $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
+                                            if($cnfg)
+                                            {
+                                            $joiner_points=$cnfg->joiner_points;
+                                            $referal_points=$cnfg->referal_points;
+                                            $fop=$cnfg->first_order_points;
+                                            $store_id=$st->store_id;
+                        
+                                            }
+                                            else
+                                            {
+                                                $data['status'] = 0;
+                                                $data['message'] = "No configure points added to the store";
+                                                return response($data);
+                        
+                                            }
+                                            
+                        
+                                            }
+                        
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $st=Mst_store::where('store_id',$request->store_referral_number)->first();
+                                        $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
+                                        if($cnfg)
+                                        {
+                                        $joiner_points=$cnfg->joiner_points;
+                                        $referal_points=$cnfg->referal_points;
+                                        $fop=$cnfg->first_order_points;
+                                        $store_id=$st->store_id;
+                        
+                                        }
+                                        else
+                                        {
+                                            $data['status'] = 0;
+                                            $data['message'] = "No configure points added to the store";
+                                            return response($data);
+                        
+                                        }
+                        
+                                    }
+                                        // if($str)
+                                        // {
+                                        //     //dd(1);
+                                        //     $cnfg=Trn_configure_points::where('store_id',$str->store_id)->first();
+                                        //     $joiner_points=$cnfg->joiner_points;
+                                        //     $referal_points=$cnfg->referal_points;
+                                        //     $fop=$cnfg->first_order_points;
+                                        //     $store_id=$str->store_id;
+                        
+                                            
+                        
+                                        // }
+                                        // else
+                                        // {
+                                        //     $st=Mst_store::where('store_id',$request->store_referral_number)->first();
+                                        //     if($st)
+                                        //     {
+                                        //        // dd(2);
+                                        //     $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
+                                        //     $joiner_points=$cnfg->joiner_points;
+                                        //     $referal_points=$cnfg->referal_points;
+                                        //     $fop=$cnfg->first_order_points;
+                                        //     $store_id=$st->store_id;
+                        
+                                        //     }
+                                        //     //dd(3);
+                        
+                                        // }
+                                        $store_referral=new Trn_store_referrals();
+                                        $store_referral->store_referral_number=$request->store_referral_number;
+                                        $store_referral->store_id=$store_id;
+                                        $store_referral->refered_by_id=$request->referred_customer_id??0;
+                                        $store_referral->refered_by_number=$request->referral_id;
+                                        $store_referral->joined_by_id=$user->customer_id;
+                                        $store_referral->joined_by_number=$user->referral_id;
+                                        $store_referral->reference_status=0;
+                                        $store_referral->joiner_points=$joiner_points;
+                                        $store_referral->referral_points=$referal_points;
+                                        $store_referral->fop=$fop;
+                                        $store_referral->save();
+                                        $data['status'] = 1;
+                                        $data['message'] = "Success";
+                                        // return response($data);
+                        
+                                    }
+                                    else
+                                    {
+                                        $data['status'] = 0;
+                                        $data['message'] = "Failed...Referral was done previously";
+                                        return response($data);
+                        
+                                    }
+                                }
+                            }
+                                    
+
+                                    /********************************8 */
 
 
 
@@ -378,9 +533,9 @@ class CustomerController extends Controller
                         }
                         else
                         {
-                            $data['status'] = 0;
-                            $data['message'] = "No configure points added to the store";
-                            return response($data);
+                            // $data['status'] = 0;
+                            // $data['message'] = "No configure points added to the store";
+                            // return response($data);
     
                         }
                        
@@ -404,9 +559,9 @@ class CustomerController extends Controller
                         }
                         else
                         {
-                            $data['status'] = 0;
-                            $data['message'] = "No configure points added to the store";
-                            return response($data);
+                            // $data['status'] = 0;
+                            // $data['message'] = "No configure points added to the store";
+                            // return response($data);
     
                         }
                         
@@ -429,9 +584,9 @@ class CustomerController extends Controller
                     }
                     else
                     {
-                        $data['status'] = 0;
-                        $data['message'] = "No configure points added to the store";
-                        return response($data);
+                        // $data['status'] = 0;
+                        // $data['message'] = "No configure points added to the store";
+                        // return response($data);
     
                     }
     
@@ -476,16 +631,16 @@ class CustomerController extends Controller
                     $store_referral->referral_points=$referal_points;
                     $store_referral->fop=$fop;
                     $store_referral->save();
-                    $data['status'] = 1;
-                    $data['message'] = "Success..Store Referral initiated";
-                    return response($data);
+                    // $data['status'] = 1;
+                    // $data['message'] = "Success..Store Referral initiated";
+                    // return response($data);
     
                 }
                 else
                 {
-                    $data['status'] = 0;
-                    $data['message'] = "Failed...Referral was done previously";
-                    return response($data);
+                    // $data['status'] = 0;
+                    // $data['message'] = "Failed...Referral was done previously";
+                    // return response($data);
     
                 }
             }
@@ -514,17 +669,17 @@ class CustomerController extends Controller
                     $store_referral->referral_points=$referal_points;
                     $store_referral->fop=$fop;
                     $store_referral->save();
-                    $data['status'] = 1;
-                    $data['message'] = "Success..App Referral initiated";
-                    return response($data);
+                    // $data['status'] = 1;
+                    // $data['message'] = "Success..App Referral initiated";
+                    // return response($data);
                 
     
                     }
                     else
                     {
-                        $data['status'] = 0;
-                        $data['message'] = "No configure points added to the store";
-                        return response($data);
+                        // $data['status'] = 0;
+                        // $data['message'] = "No configure points added to the store";
+                        // return response($data);
     
                     }
                     

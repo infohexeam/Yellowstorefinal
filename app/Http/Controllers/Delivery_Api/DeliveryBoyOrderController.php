@@ -767,6 +767,7 @@ class DeliveryBoyOrderController extends Controller
                     }
 
                     Helper::checkFop($order);
+                    Helper::checkFopApp($order);
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                     if (($request->status_id == 9)) {
                         $cust=Trn_store_customer::where('customer_id',$order->customer_id)->first();
