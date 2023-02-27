@@ -786,14 +786,15 @@ class DeliveryBoyOrderController extends Controller
                         }
                         
                         //dd($st_uid,1);
-
-                        }
                         $fop_store=Helper::checkFop($order);
                         $fop_app=Helper::checkFopApp($order);
                         $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
                         $ref_id_app=Helper::manageAppReferral($cust->referral_id,$order);
-                        if($ref_id!=0)
-                        {
+
+                        }
+                       
+                       /* if($ref_id!=0)
+                        {*/
                 //               //if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
                 // $configPoint = Trn_configure_points::find(1);
       
@@ -875,7 +876,7 @@ class DeliveryBoyOrderController extends Controller
                 //}
               //}
                           
-                        }
+                        //}
                         }
                     foreach ($customerDevice as $cd) {
                         $title = 'Order delivered';
