@@ -1101,8 +1101,7 @@ public static function manageAppReferral($joiner_uid,$order)
     //$sref=Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('store_referral_number',$store_uid);
     if(Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('reference_status',0)->whereNull('store_referral_number')->count()>0)
     {
-        if(Trn_store_referrals::where('joined_by_number',$joiner_uid)->whereNull('store_referral_number')->count()==0)
-        { 
+        
         $fetchFirstRef=Trn_store_referrals::where('joined_by_number',$joiner_uid)->whereNull('store_referral_number')->where('reference_status','=',0)->first();
         //Joiner ponts
         //dd($joiner_uid,$store_uid);
@@ -1184,11 +1183,8 @@ public static function manageAppReferral($joiner_uid,$order)
        $fetchFirstRef->update();
 
        return $refer_by->customer_id;
-        }
-        else
-        {
-            return 0;
-        }
+        
+       
 
     }
     else
