@@ -922,6 +922,8 @@ class OrderController extends Controller
                                     $wallet_log->points_credited=$storeOrderPointAmount;
                                     $wallet_log->save();
                                     }
+                                    
+                                    Helper::checkFop($orderDataz);
                             //$data['wallet_id']=$wallet_log->wallet_log_id;
 
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
@@ -954,86 +956,88 @@ class OrderController extends Controller
                 
                                         }
                                         $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz);
+                                        Helper::manageAppReferral($cust->referral_id,$orderDataz);
+
                                         if($ref_id!=0)
                                         {
                                               //if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
-                $configPoint = Trn_configure_points::find(1);
+                // $configPoint = Trn_configure_points::find(1);
       
-                $cr = new Trn_customer_reward;
-                $cr->transaction_type_id = 0;
-                $cr->reward_points_earned = $configPoint->first_order_points;
-                $cr->customer_id = $orderDataz->customer_id;
-                $cr->order_id = $order_id;
-                $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-                $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                $cr->reward_point_status = 1;
-                $cr->discription = "First order points";
-                $cr->save();
+                // $cr = new Trn_customer_reward;
+                // $cr->transaction_type_id = 0;
+                // $cr->reward_points_earned = $configPoint->first_order_points;
+                // $cr->customer_id = $orderDataz->customer_id;
+                // $cr->order_id = $order_id;
+                // $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                // $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                // $cr->reward_point_status = 1;
+                // $cr->discription = "First order points";
+                // $cr->save();
       
-                $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
+                // $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
       
-                foreach ($customerDevice as $cd) {
-                  $title = 'First order points credited';
-                  //  $body = 'First order points credited successully..';
-                  $body = $configPoint->first_order_points . ' points credited to your wallet..';
-                  $clickAction = "OrderListFragment";
-                  $type = "order";
-                  $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                }
-      
-      
-                // referal - point
-                // $refCusData = Trn_store_customer::find($order->customer_id);
-                // if ($refCusData->referred_by) {
-                  $crRef = new Trn_customer_reward;
-                  $crRef->transaction_type_id = 0;
-                  $crRef->reward_points_earned = $configPoint->referal_points;
-                  $crRef->customer_id = $ref_id;
-                  $crRef->order_id = $order_id;
-                  $crRef->reward_approved_date = Carbon::now()->format('Y-m-d');
-                  $crRef->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                  $crRef->reward_point_status = 1;
-                  $crRef->discription = "Referal points";
-                  $crRef->save();
-                  $cst=Trn_store_customer::where('customer_id',$orderDataz->customer_id)->first();
-                  $cst->referred_by=$ref_id;
-                  $cst->update();
-      
-                  $customerDevice = Trn_CustomerDeviceToken::where('customer_id',Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz))->get();
-      
-                  foreach ($customerDevice as $cd) {
-                    $title = 'Referal points credited';
-                    //$body = 'Referal points credited successully..';
-                    $body = $configPoint->referal_points . ' points credited to your wallet..';
-                    $clickAction = "OrderListFragment";
-                    $type = "order";
-                    $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                  }
+                // foreach ($customerDevice as $cd) {
+                //   $title = 'First order points credited';
+                //   //  $body = 'First order points credited successully..';
+                //   $body = $configPoint->first_order_points . ' points credited to your wallet..';
+                //   $clickAction = "OrderListFragment";
+                //   $type = "order";
+                //   $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                // }
       
       
+                // // referal - point
+                // // $refCusData = Trn_store_customer::find($order->customer_id);
+                // // if ($refCusData->referred_by) {
+                //   $crRef = new Trn_customer_reward;
+                //   $crRef->transaction_type_id = 0;
+                //   $crRef->reward_points_earned = $configPoint->referal_points;
+                //   $crRef->customer_id = $ref_id;
+                //   $crRef->order_id = $order_id;
+                //   $crRef->reward_approved_date = Carbon::now()->format('Y-m-d');
+                //   $crRef->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                //   $crRef->reward_point_status = 1;
+                //   $crRef->discription = "Referal points";
+                //   $crRef->save();
+                //   $cst=Trn_store_customer::where('customer_id',$orderDataz->customer_id)->first();
+                //   $cst->referred_by=$ref_id;
+                //   $cst->update();
       
-                  // joiner - point
-                  $crJoin = new Trn_customer_reward;
-                  $crJoin->transaction_type_id = 0;
-                  $crJoin->reward_points_earned = $configPoint->joiner_points;
-                  $crJoin->customer_id = $orderDataz->customer_id;
-                  $crJoin->order_id = $orderDataz->order_id;
-                  $crJoin->reward_approved_date = Carbon::now()->format('Y-m-d');
-                  $crJoin->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                  $crJoin->reward_point_status = 1;
-                  $crJoin->discription = "Referal joiner points";
-                  if ($crJoin->save()) {
-                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
+                //   $customerDevice = Trn_CustomerDeviceToken::where('customer_id',Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz))->get();
       
-                    foreach ($customerDevice as $cd) {
-                      $title = 'Referal joiner points credited';
-                      //$body = 'Referal joiner points credited successully..';
-                      $body = $configPoint->joiner_points . ' points credited to your wallet..';
-                      $clickAction = "OrderListFragment";
-                      $type = "order";
-                      $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                    }
-                  }
+                //   foreach ($customerDevice as $cd) {
+                //     $title = 'Referal points credited';
+                //     //$body = 'Referal points credited successully..';
+                //     $body = $configPoint->referal_points . ' points credited to your wallet..';
+                //     $clickAction = "OrderListFragment";
+                //     $type = "order";
+                //     $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                //   }
+      
+      
+      
+                //   // joiner - point
+                //   $crJoin = new Trn_customer_reward;
+                //   $crJoin->transaction_type_id = 0;
+                //   $crJoin->reward_points_earned = $configPoint->joiner_points;
+                //   $crJoin->customer_id = $orderDataz->customer_id;
+                //   $crJoin->order_id = $orderDataz->order_id;
+                //   $crJoin->reward_approved_date = Carbon::now()->format('Y-m-d');
+                //   $crJoin->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                //   $crJoin->reward_point_status = 1;
+                //   $crJoin->discription = "Referal joiner points";
+                //   if ($crJoin->save()) {
+                //     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
+      
+                //     foreach ($customerDevice as $cd) {
+                //       $title = 'Referal joiner points credited';
+                //       //$body = 'Referal joiner points credited successully..';
+                //       $body = $configPoint->joiner_points . ' points credited to your wallet..';
+                //       $clickAction = "OrderListFragment";
+                //       $type = "order";
+                //       $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                //     }
+                //   }
                 //}
               //}
                                           
