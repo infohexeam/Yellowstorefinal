@@ -1139,12 +1139,13 @@ public static function manageAppReferral($joiner_uid,$order)
         // $ref_wallet_log->points_credited=$fetchFirstRef->referral_points;
         // $ref_wallet_log->description='App Referral Points';  
         // $ref_wallet_log->save();
+        $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
 
         $rscr = new Trn_customer_reward;
         $rscr->transaction_type_id = 0;
         $rscr->store_id==$order->store_id;
         $rscr->reward_points_earned = $fetchFirstRef->referral_points;
-        $rscr->customer_id = $order->customer_id;
+        $rscr->customer_id = $refer_by->customer_id;
         $rscr->order_id = $order->order_id;
         $rscr->reward_approved_date = Carbon::now()->format('Y-m-d');
         $rscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
@@ -1155,7 +1156,7 @@ public static function manageAppReferral($joiner_uid,$order)
         
         
        //First Order Points
-       $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
+      
     //    $ref_wallet_log=new Trn_wallet_log();
     //    $ref_wallet_log->store_id=$order->store_id;
     //    $ref_wallet_log->customer_id=$order->customer_id;
