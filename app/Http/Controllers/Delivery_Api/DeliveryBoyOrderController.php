@@ -766,10 +766,10 @@ class DeliveryBoyOrderController extends Controller
                     $storeOrderPointAmount=Helper::totalOrderCredit($storeOrderAmount,$storeOrderPoint,$order->product_total_amount);
                     }
 
-                    Helper::checkFop($order);
-                    Helper::checkFopApp($order);
+                    
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                     if (($request->status_id == 9)) {
+                       
                         $cust=Trn_store_customer::where('customer_id',$order->customer_id)->first();
                         $str=Mst_store::where('store_id',$order->store_id)->first();
                         if($str)
@@ -788,8 +788,10 @@ class DeliveryBoyOrderController extends Controller
                         //dd($st_uid,1);
 
                         }
+                        $fop_store=Helper::checkFop($order);
+                        $fop_app=Helper::checkFopApp($order);
                         $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
-                        Helper::manageAppReferral($cust->referral_id,$order);
+                        $ref_id_app=Helper::manageAppReferral($cust->referral_id,$order);
                         if($ref_id!=0)
                         {
                 //               //if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
