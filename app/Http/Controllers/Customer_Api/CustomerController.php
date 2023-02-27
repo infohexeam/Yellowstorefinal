@@ -491,6 +491,8 @@ class CustomerController extends Controller
             }
             else
             {
+                if($request->refer_type=='app')
+                {
                 $check_reference_exists_app=Trn_store_referrals::where('joined_by_number',$stringRefer)->where('refered_by_number',$request->referred_customer_ref_number)->first();
                 if($check_reference_exists_app==NULL)  
                 {
@@ -528,6 +530,7 @@ class CustomerController extends Controller
                     
     
                 }
+            }
             }
                    
                 } else {
@@ -1416,6 +1419,7 @@ class CustomerController extends Controller
                     return response($data);
 
                 }
+          
             if($request->store_referral_number)
             {
             $check_reference_exists=Trn_store_referrals::where('joined_by_number',$request->joined_customer_ref_number)->where('refered_by_number',$request->referred_customer_ref_number)->where('store_referral_number',$request->store_referral_number)->first();
@@ -1483,6 +1487,7 @@ class CustomerController extends Controller
             }
             else
             {
+
                 $st=Mst_store::where('store_id',$request->store_referral_number)->first();
                 $cnfg=Trn_configure_points::where('store_id',$st->store_id)->first();
                 if($cnfg)
@@ -1557,6 +1562,8 @@ class CustomerController extends Controller
         }
         else
         {
+            if($request->refer_type=='app')
+            {
             $check_reference_exists_app=Trn_store_referrals::where('joined_by_number',$request->joined_customer_ref_number)->where('refered_by_number',$request->referred_customer_ref_number)->first();
             if($check_reference_exists_app==NULL)  
             {
@@ -1594,6 +1601,7 @@ class CustomerController extends Controller
                 
 
             }
+        }
         }
                
             } else {
