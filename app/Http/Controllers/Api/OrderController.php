@@ -928,8 +928,8 @@ class OrderController extends Controller
 
                                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
                                     if (($request->status_id == 9)) {
-                                        Helper::checkFop($orderDataz);
-                                        Helper::checkFopApp($orderDataz);
+                                        $fop_store=Helper::checkFop($orderDataz);
+                                        $fop_app=Helper::checkFopApp($orderDataz);
                                         $cust=Trn_store_customer::where('customer_id',$orderDataz->customer_id)->first();
                                         $str=Mst_store::where('store_referral_id',$orderDataz->store_id)->first();
                                         // if($str->store_referral_id!=NULL)
@@ -955,13 +955,13 @@ class OrderController extends Controller
                                         }
                                         
                                         //dd($st_uid,1);
-                
-                                        }
                                         $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz);
                                         $ref_id_app=Helper::manageAppReferral($cust->referral_id,$orderDataz);
+                
+                                        }
+                                      
 
-                                        if($ref_id!=0)
-                                        {
+                                       
                                               //if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
                 // $configPoint = Trn_configure_points::find(1);
       
@@ -1043,7 +1043,7 @@ class OrderController extends Controller
                 //}
               //}
                                           
-                                        }
+                                        //}
                                         }
                                     foreach ($customerDevice as $cd) {
                                         if($od->payment_type_id==2)
