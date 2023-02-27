@@ -162,9 +162,9 @@ class CustomerController extends Controller
                                             }
                                             else
                                             {
-                                                $data['status'] = 0;
-                                                $data['message'] = "No configure points added to the store";
-                                                return response($data);
+                                                // $data['status'] = 0;
+                                                // $data['message'] = "No configure points added to the store";
+                                                // return response($data);
                         
                                             }
                                            
@@ -188,9 +188,9 @@ class CustomerController extends Controller
                                             }
                                             else
                                             {
-                                                $data['status'] = 0;
-                                                $data['message'] = "No configure points added to the store";
-                                                return response($data);
+                                                // $data['status'] = 0;
+                                                // $data['message'] = "No configure points added to the store";
+                                                // return response($data);
                         
                                             }
                                             
@@ -213,9 +213,9 @@ class CustomerController extends Controller
                                         }
                                         else
                                         {
-                                            $data['status'] = 0;
-                                            $data['message'] = "No configure points added to the store";
-                                            return response($data);
+                                        //     $data['status'] = 0;
+                                        //     $data['message'] = "No configure points added to the store";
+                                        //     return response($data);
                         
                                         }
                         
@@ -267,9 +267,9 @@ class CustomerController extends Controller
                                     }
                                     else
                                     {
-                                        $data['status'] = 0;
-                                        $data['message'] = "Failed...Referral was done previously";
-                                        return response($data);
+                                        // $data['status'] = 0;
+                                        // $data['message'] = "Failed...Referral was done previously";
+                                        // return response($data);
                         
                                     }
                                 }
