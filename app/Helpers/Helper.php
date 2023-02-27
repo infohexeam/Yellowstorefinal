@@ -1246,15 +1246,15 @@ public static function checkFopApp($order)
        $fetchFirstOrderApp=Trn_configure_points::find(1);
        if($fetchFirstOrderApp)
        {
-        $ref_wallet_log=new Trn_wallet_log();
-        $ref_wallet_log->store_id=$order->store_id;
-        $ref_wallet_log->customer_id=$order->customer_id;
-        $ref_wallet_log->order_id=$order->order_id;
-        $ref_wallet_log->type='credit';
-        $ref_wallet_log->points_debited=null;
-        $ref_wallet_log->points_credited=$fetchFirstOrderApp->first_order_points;
-        $ref_wallet_log->description='First Order Points';  
-        $ref_wallet_log->save();
+        // $ref_wallet_log=new Trn_wallet_log();
+        // $ref_wallet_log->store_id=$order->store_id;
+        // $ref_wallet_log->customer_id=$order->customer_id;
+        // $ref_wallet_log->order_id=$order->order_id;
+        // $ref_wallet_log->type='credit';
+        // $ref_wallet_log->points_debited=null;
+        // $ref_wallet_log->points_credited=$fetchFirstOrderApp->first_order_points;
+        // $ref_wallet_log->description='First Order Points';  
+        // $ref_wallet_log->save();
  
         $fscr = new Trn_customer_reward;
         $fscr->transaction_type_id = 0;
