@@ -646,7 +646,7 @@ class CustomerController extends Controller
             }
             else
             {
-                if($request->refer_type=='app')
+                if($request->refer_type=='APP')
                 {
                 $check_reference_exists_app=Trn_store_referrals::where('joined_by_number',$stringRefer)->where('refered_by_number',$request->referred_customer_ref_number)->first();
                 if($check_reference_exists_app==NULL)  
