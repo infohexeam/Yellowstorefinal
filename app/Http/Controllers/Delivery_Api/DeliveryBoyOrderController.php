@@ -771,7 +771,7 @@ class DeliveryBoyOrderController extends Controller
                     if (($request->status_id == 9)) {
                         $fop_store=Helper::checkFop($order);
                         $fop_app=Helper::checkFopApp($order);
-                        //return $order;
+                        return $fop_app;
                        
                         $cust=Trn_store_customer::where('customer_id',$order->customer_id)->first();
                         $str=Mst_store::where('store_id',$order->store_id)->first();
