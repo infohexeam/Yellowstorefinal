@@ -1267,11 +1267,11 @@ public static function checkFopApp($order)
         return 1;
 
        }
-       return 0;
+       return 2;
        
         
     }
-    return 0;
+    return 3;
     
     
 }
