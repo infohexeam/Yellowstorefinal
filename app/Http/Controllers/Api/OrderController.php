@@ -806,7 +806,7 @@ class OrderController extends Controller
                             ///////////////////////////////////////////////////////
 
 
-                            if (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() == 1) {
+                            /*if (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() == 1) {
                                 $configPoint = Trn_configure_points::find(1);
 
                                 // first - order - point
@@ -883,7 +883,7 @@ class OrderController extends Controller
                                         }
                                     }
                                 }
-                            }
+                            }*/
 
                             //if (Trn_customer_reward::where('order_id', $orderDataz->order_id)->count() < 1) {
 
@@ -897,8 +897,9 @@ class OrderController extends Controller
                                     $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
                                     $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
                                     $cr->reward_point_status = 1;
-                                    $cr->discription = null;
+                                    $cr->discription = 'admin points';
                                     $cr->save();
+                                    
                                     if($storeConfigPoint)
                                     {
                                     $scr = new Trn_customer_reward;
