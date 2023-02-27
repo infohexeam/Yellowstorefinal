@@ -794,6 +794,7 @@ class DeliveryBoyOrderController extends Controller
                         }
                         $fop_store=Helper::checkFop($order);
                         $fop_app=Helper::checkFopApp($order);
+                        return $fop_app;
                         
                         $ref_id_app=Helper::manageAppReferral($cust->referral_id,$order);
                        /* if($ref_id!=0)
