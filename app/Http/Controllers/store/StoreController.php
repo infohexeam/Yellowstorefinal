@@ -2685,8 +2685,7 @@ class StoreController extends Controller
 
             $wallet_log->save();
             }
-            Helper::checkFop($order);
-            Helper::checkFopApp($order);
+           
 
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
             if (($request->status_id == 9)) {
@@ -2708,8 +2707,10 @@ class StoreController extends Controller
             }
            //dd($st_uid);
             //dd($cust->referral_id,$st_uid,$order);
+            $fop_store=Helper::checkFop($order);
+            $fop_app=Helper::checkFopApp($order);
             $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
-            Helper::manageAppReferral($cust->referral_id,$order);
+            $ref_id_App=Helper::manageAppReferral($cust->referral_id,$order);
             //dd($ref_id,$st_uid);
 
             if($ref_id!=0)
