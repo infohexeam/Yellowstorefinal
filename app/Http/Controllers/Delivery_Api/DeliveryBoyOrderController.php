@@ -734,12 +734,7 @@ class DeliveryBoyOrderController extends Controller
                     ]);
                 } elseif ($request->status_id == 9 || $request->status_id == '9') {
 
-                    Trn_store_order::where('order_id', $order_id)->update([
-                        'status_id' => $request->status_id,
-                        'delivery_date' => Carbon::now()->format('Y-m-d'),
-                        'delivery_time' => Carbon::now()->format('H:i'),
-                        'delivery_status_id' => 3
-                    ]);
+                  
 
                     $order = Trn_store_order::Find($order_id);
 
@@ -771,7 +766,12 @@ class DeliveryBoyOrderController extends Controller
                     if (($request->status_id == 9)) {
                         $fop_store=Helper::checkFop($order);
                         $fop_app=Helper::checkFopApp($order);
-                        return $fop_app;
+                        Trn_store_order::where('order_id', $order_id)->update([
+                            'status_id' => $request->status_id,
+                            'delivery_date' => Carbon::now()->format('Y-m-d'),
+                            'delivery_time' => Carbon::now()->format('H:i'),
+                            'delivery_status_id' => 3
+                        ]);
                        
                         $cust=Trn_store_customer::where('customer_id',$order->customer_id)->first();
                         $str=Mst_store::where('store_id',$order->store_id)->first();
