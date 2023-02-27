@@ -769,6 +769,8 @@ class DeliveryBoyOrderController extends Controller
                     
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                     if (($request->status_id == 9)) {
+                        $fop_store=Helper::checkFop($order);
+                        $fop_app=Helper::checkFopApp($order);
                        
                         $cust=Trn_store_customer::where('customer_id',$order->customer_id)->first();
                         $str=Mst_store::where('store_id',$order->store_id)->first();
@@ -792,9 +794,8 @@ class DeliveryBoyOrderController extends Controller
                        
 
                         }
-                        $fop_store=Helper::checkFop($order);
-                        $fop_app=Helper::checkFopApp($order);
-                        return $fop_app;
+                       
+                       
                         
                         $ref_id_app=Helper::manageAppReferral($cust->referral_id,$order);
                        /* if($ref_id!=0)
