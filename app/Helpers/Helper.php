@@ -1115,6 +1115,8 @@ public static function manageAppReferral($joiner_uid,$order)
         // $joiner_wallet_log->points_credited=$fetchFirstRef->joiner_points;
         // $joiner_wallet_log->description='Joiner Points';  
         // $joiner_wallet_log->save();
+        if(Trn_customer_reward::where('customer_id',$order->customer_id)->where('discription','App Joiner Points')->count() == 0)
+        {
 
         $jscr = new Trn_customer_reward;
         $jscr->transaction_type_id = 0;
@@ -1127,6 +1129,11 @@ public static function manageAppReferral($joiner_uid,$order)
         $jscr->reward_point_status = 1;
         $jscr->discription = 'App Joiner Points';
         $jscr->save();
+        }
+        else
+        {
+            return 0;
+        }
 
         //Referal ponts
         // $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
@@ -1140,7 +1147,8 @@ public static function manageAppReferral($joiner_uid,$order)
         // $ref_wallet_log->description='App Referral Points';  
         // $ref_wallet_log->save();
         $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
-
+        if(Trn_customer_reward::where('customer_id',$refer_by->customer_id)->where('discription','App Referral Points')->count() == 0)
+        {
         $rscr = new Trn_customer_reward;
         $rscr->transaction_type_id = 0;
         $rscr->store_id==$order->store_id;
@@ -1152,6 +1160,11 @@ public static function manageAppReferral($joiner_uid,$order)
         $rscr->reward_point_status = 1;
         $rscr->discription = 'App Referral Points';
         $rscr->save();
+        }
+        else
+        {
+            return 0;
+        }
         
         
         
@@ -1184,6 +1197,7 @@ public static function manageAppReferral($joiner_uid,$order)
        $fetchFirstRef->update();
 
        return $refer_by->customer_id;
+         
         
        
 
@@ -1252,7 +1266,9 @@ public static function checkFopApp($order)
         // $ref_wallet_log->points_credited=$fetchFirstOrderApp->first_order_points;
         // $ref_wallet_log->description='First Order Points';  
         // $ref_wallet_log->save();
- 
+
+        if(Trn_customer_reward::where('customer_id',$order->customer_id)->where('discription','App first order points')->count() == 0)
+        {
         $fscr = new Trn_customer_reward;
         $fscr->transaction_type_id = 0;
         $fscr->store_id==$order->store_id;
@@ -1265,6 +1281,11 @@ public static function checkFopApp($order)
         $fscr->discription = 'App first order points';
         $fscr->save();
         return 1;
+        }
+        else
+        {
+            return 0;
+        }
 
        }
        return 0;

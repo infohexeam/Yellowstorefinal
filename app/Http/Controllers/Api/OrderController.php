@@ -932,7 +932,7 @@ class OrderController extends Controller
                                         $fop_store=Helper::checkFop($orderDataz);
                                         $fop_app=Helper::checkFopApp($orderDataz);
                                         $cust=Trn_store_customer::where('customer_id',$orderDataz->customer_id)->first();
-                                        $str=Mst_store::where('store_referral_id',$orderDataz->store_id)->first();
+                                        $str=Mst_store::where('store_id',$orderDataz->store_id)->first();
                                         // if($str->store_referral_id!=NULL)
                                         // {
                                         //   $st_uid=$str->store_referral_id;
@@ -958,10 +958,12 @@ class OrderController extends Controller
                                         }
                                         
                                         //dd($st_uid,1);
-                                       
-                                       
                                         $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz);
+                                       
+                                       
+                                       
                                         }
+                                        
                                         
                                         $ref_id_app=Helper::manageAppReferral($cust->referral_id,$orderDataz);
                                       
