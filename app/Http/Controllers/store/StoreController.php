@@ -2650,7 +2650,8 @@ class StoreController extends Controller
        //if (Trn_customer_reward::where('order_id', $order_id)->count() < 1) {
 
           //if ((Trn_customer_reward::where('order_id', $order_id)->count() < 1) || (Trn_store_order::where('customer_id', $customer_id)->count() == 1)) {
-            
+            if($orderPointAmount!=0.00)
+            {
             $cr = new Trn_customer_reward;
             $cr->transaction_type_id = 0;
             $cr->reward_points_earned = $orderPointAmount;
@@ -2661,7 +2662,10 @@ class StoreController extends Controller
             $cr->reward_point_status = 1;
             $cr->discription = 'admin points';
             $cr->save();
+            }
             if($storeConfigPoint)
+            {
+            if($storeOrderPointAmount!=0.00)
             {
             $scr = new Trn_customer_reward;
             $scr->transaction_type_id = 0;
@@ -2684,6 +2688,7 @@ class StoreController extends Controller
             $wallet_log->points_credited=$storeOrderPointAmount;
 
             $wallet_log->save();
+            }
             }
            
 

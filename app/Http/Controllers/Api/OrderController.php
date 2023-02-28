@@ -889,6 +889,8 @@ class OrderController extends Controller
 
 
                                 //if ((Trn_customer_reward::where('order_id', $orderDataz->order_id)->count() < 1) || (Trn_store_order::where('customer_id', $orderDataz->customer_id)->count() >= 1)) {
+                                    if($orderPointAmount!=0.00)
+                                    {
                                     $cr = new Trn_customer_reward;
                                     $cr->transaction_type_id = 0;
                                     $cr->reward_points_earned = $orderPointAmount;
@@ -899,8 +901,11 @@ class OrderController extends Controller
                                     $cr->reward_point_status = 1;
                                     $cr->discription = 'admin points';
                                     $cr->save();
+                                    }
                                     
                                     if($storeConfigPoint)
+                                    {
+                                    if($storeOrderPointAmount!=0.00)
                                     {
                                     $scr = new Trn_customer_reward;
                                     $scr->transaction_type_id = 0;
@@ -913,6 +918,7 @@ class OrderController extends Controller
                                     $scr->reward_point_status = 1;
                                     $scr->discription = 'store points';
                                     $scr->save();
+                                    
 
                                     $wallet_log=new Trn_wallet_log();
                                     $wallet_log->store_id=$orderDataz->store_id;
@@ -922,6 +928,7 @@ class OrderController extends Controller
                                     $wallet_log->points_debited=null;
                                     $wallet_log->points_credited=$storeOrderPointAmount;
                                     $wallet_log->save();
+                                    }
                                     }
                                     
                                     

@@ -891,6 +891,8 @@ class DeliveryBoyOrderController extends Controller
                         $type = "order";
                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
+                    if($orderPointAmount!=0.00)
+                    {
                     $crrr = new Trn_customer_reward;
                     $crrr->transaction_type_id = 0;
                     $crrr->reward_points_earned = $orderPointAmount;
@@ -901,7 +903,10 @@ class DeliveryBoyOrderController extends Controller
                     $crrr->reward_point_status = 1;
                     $crrr->discription = 'admin points';
                     $crrr->save(); 
+                    }
                     if($storeConfigPoint)
+                    {
+                    if($storeOrderPointAmount!=0.00)
                     {
                     $scr = new Trn_customer_reward;
                     $scr->transaction_type_id = 0;
@@ -923,6 +928,7 @@ class DeliveryBoyOrderController extends Controller
                     $wallet_log->points_debited=null;
                     $wallet_log->points_credited=$storeOrderPointAmount;
                     $wallet_log->save();
+                    }
                     }
 
 
