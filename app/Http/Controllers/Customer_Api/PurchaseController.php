@@ -84,7 +84,7 @@ class PurchaseController extends Controller
                     return response($data);
 
                 }
-                $con=Trn_configure_points::where('store_id',$store_id)->first();
+                /*$con=Trn_configure_points::where('store_id',$store_id)->first();
                 if($con)
                 {
                     if(number_format($orderAmount,2)<number_format($con->order_amount,2))
@@ -95,7 +95,7 @@ class PurchaseController extends Controller
     
                     }
 
-                }
+                }*/
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                     $customer_id = $request->customer_id;
                     if($request->admin_points==1)
