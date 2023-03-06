@@ -112,7 +112,7 @@
                    buttons: [
                        {
                            extend: 'pdf',
-                           title: 'AttrGroup',
+                           title: 'Attribute Group',
                            // orientation:'landscape',
                            footer: true,
                            exportOptions: {
@@ -130,7 +130,7 @@
                        },
                        {
                            extend: 'excel',
-                           title: 'AttrGroup',
+                           title: 'Attribute Group',
                            footer: true,
                            exportOptions: {
                                 columns: [0,1]
