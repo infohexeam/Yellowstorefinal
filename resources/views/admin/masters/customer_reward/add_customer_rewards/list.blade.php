@@ -105,7 +105,7 @@ $date = Carbon\Carbon::now();
             </div>
 
             <script> $(function(e) {
-               $('#example').DataTable( {
+               $('#exampletable').DataTable( {
                    dom: 'Bfrtip',
                    buttons: [
                        {
