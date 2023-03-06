@@ -37,7 +37,7 @@ $date = Carbon\Carbon::now();
                         </a>
                         <br>
                         <div class="table-responsive">
-                           <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
@@ -105,7 +105,7 @@ $date = Carbon\Carbon::now();
             </div>
 
             <script> $(function(e) {
-               $('#exampletable').DataTable( {
+               $('#example').DataTable( {
                    dom: 'Bfrtip',
                    buttons: [
                        {
