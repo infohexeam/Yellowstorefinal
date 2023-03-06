@@ -121,7 +121,7 @@ $date = Carbon\Carbon::now();
                                  doc.content[1].margin = [ 100, 0, 100, 0 ]; //left, top, right, bottom
                           doc.content.forEach(function(item) {
                           if (item.table) {
-                             item.table.widths = [40, '*','*']
+                             item.table.widths = [40, '*','*','*','*']
                            }
                           })
                         }
