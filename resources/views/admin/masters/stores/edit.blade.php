@@ -206,7 +206,7 @@
                            </div>
                      </div>
 
-                       {{-- <div class="col-md-6">
+                       {{-- <div class="col-md-6" style="display:none;">
                             <div class="form-group">
                             <label class="form-label">Store Pincode</label>
                             <input type="text" class="form-control" name="store_pincode" value="{{old('store_pincode',$store->store_pincode)}}" placeholder="Store Pincode" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
