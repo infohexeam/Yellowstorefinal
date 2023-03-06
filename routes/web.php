@@ -100,7 +100,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/payment-report', 'ProductController@paymentReport')->name('admin.payment_reports');
 
         Route::get('admin/inventory-report', 'ProductController@showInventoryReport')->name('admin.inventory_reports');
-        Route::get('admin/out-of-stock-report', 'ProductController@showOutofStockReport')->name('admin.out_of_stock_reports');
+        Route::get('admin/out-of-stock-report', 'ProductController@showOutofStockReportshowOutofStockReport')->name('admin.out_of_stock_reports');
         Route::get('admin/referal-reports', 'ProductController@showReferalReport')->name('admin.referal_reports');
         Route::get('admin/wallet-redeem-reports', 'ProductController@showRedeemReports')->name('admin.redeem_reports');
         Route::get('admin/store-name-list', 'ProductController@listStoreNames');
@@ -986,7 +986,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/online-sales-report', 'CouponController@showOnlineSalesReport')->name('store.online_sales_reports');
         Route::get('store/offline-sales-report', 'CouponController@showOfflineSalesReport')->name('store.offline_sales_reports');
 
-        Route::post('store/browser-token/save', 'CouponController@saveBrowserToken')->name('store.saveBrowserToken');
+        Route::post('store/brows2er-token/save', 'CouponController@saveBrowserToken')->name('store.saveBrowserToken');
     });
 
 

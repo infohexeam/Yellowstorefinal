@@ -1322,7 +1322,8 @@ class PurchaseController extends Controller
         return response($data);
 
 
-        
+      
+
     }
     public function adminPointUntick(Request $request)
     {

@@ -356,7 +356,7 @@
                               // orientation:'landscape',
                               footer: true,
                               exportOptions: {
-                                   columns: [0,1,2,3,5,6],
+                                   columns: [0,1,2,3,5],
                                    alignment: 'right',
                                },
                                 customize: function(doc) {
@@ -373,7 +373,7 @@
                               title: 'Product List',
                               footer: true,
                               exportOptions: {
-                                   columns: [0,1,2,3,5,6]
+                                   columns: [0,1,2,3,5]
                                }
                           }
                        ]

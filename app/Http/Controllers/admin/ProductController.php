@@ -2618,7 +2618,7 @@ public function showOutofStockReport(Request $request)
       //->orderBy('mst_store_product_varients.stock_count', 'ASC')
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_product_varients.is_removed', 0)
-      ->orderBy('mst__stock_details.created_at', 'DESC')
+      ->orderBy('mst__stock_details.updated_at', 'DESC')
 
       ->select(
         'mst_store_products.product_id',
@@ -2643,7 +2643,7 @@ public function showOutofStockReport(Request $request)
         'mst_store_categories.category_name',
         'mst__stock_details.stock',
         'mst__stock_details.prev_stock',
-        'mst__stock_details.created_at AS updated_time',
+        'mst__stock_details.updated_at AS updated_time',
         'mst_store_agencies.agency_name',
         'mst__sub_categories.sub_category_name',
 
