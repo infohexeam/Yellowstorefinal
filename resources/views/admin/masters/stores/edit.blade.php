@@ -126,7 +126,7 @@
                       <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">Contact Person Name</label>
-                            <input type="text" required maxlength="10" name="store_contact_person_name" class="form-control"  value="{{old('store_contact_person_name',$store->store_contact_person_name)}}" placeholder="Contact Person Name">
+                            <input type="text" required name="store_contact_person_name" class="form-control"  value="{{old('store_contact_person_name',$store->store_contact_person_name)}}" placeholder="Contact Person Name">
                            </div>
                         </div>
 
