@@ -971,7 +971,7 @@ class SettingController extends Controller
 				'store_name'    => 'required|unique:mst_stores,store_name,' . $store_id . ',store_id',
 				'store_contact_person_name'        => 'required',
 				'store_contact_person_phone_number' => 'required',
-				'store_pincode'				       => 'required',
+				'store_town'				       => 'required',
 				'store_primary_address'            => 'required',
 				'store_country_id'			       => 'required',
 				'store_state_id'       		       => 'required',

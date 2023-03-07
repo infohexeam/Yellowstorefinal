@@ -126,7 +126,7 @@
                       <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">Contact Person Name</label>
-                            <input type="text" required maxlength="10" name="store_contact_person_name" class="form-control"  value="{{old('store_contact_person_name',$store->store_contact_person_name)}}" placeholder="Contact Person Name">
+                            <input type="text" required name="store_contact_person_name" class="form-control"  value="{{old('store_contact_person_name',$store->store_contact_person_name)}}" placeholder="Contact Person Name">
                            </div>
                         </div>
 
@@ -206,12 +206,12 @@
                            </div>
                      </div>
 
-                       <div class="col-md-6">
+                       {{-- <div class="col-md-6" style="display:none;">
                             <div class="form-group">
                             <label class="form-label">Store Pincode</label>
                             <input type="text" class="form-control" name="store_pincode" value="{{old('store_pincode',$store->store_pincode)}}" placeholder="Store Pincode" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                             </div>
-                         </div>
+                         </div> --}}
 
                       <div class="col-md-6">
                             <div class="form-group">
