@@ -4697,8 +4697,11 @@ class SettingController extends Controller
 				$query = $query->whereBetween('trn_customer_rewards.created_at', [$a1, $a2]);
 			}
 
-			if (isset($request->customer_name)) {
+			/*if (isset($request->customer_name)) {
 				$query = $query->orWhereRaw("concat(trn_store_customers.customer_first_name, ' ', trn_store_customers.customer_last_name) like '%$customer_first_name%' ");
+			}*/
+			if (isset($request->customer_name)) {
+				$query = $query->where('trn_store_customers.customer_first_name','like','%'.$customer_first_name.'%');
 			}
 
 			$customer_rewards = $query->orderBy('reward_id', 'DESC')->get();

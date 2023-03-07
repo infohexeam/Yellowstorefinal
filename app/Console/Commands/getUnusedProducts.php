@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\admin\Mst_store_product_varient;
+use App\Models\admin\Trn_StoreAdmin;
 use App\Trn_pos_lock;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Auth;
 
 class getUnusedProducts extends Command
 {
@@ -47,6 +49,28 @@ class getUnusedProducts extends Command
             $checker=Trn_pos_lock::where('id',$lock->id);
             $checker->update(['status'=>2]);
             Mst_store_product_varient::where('product_varient_id', '=', $checker->first()->product_varient_id)->increment('stock_count', $checker->first()->quantity);
+        }
+
+        $logged_admins=Trn_StoreAdmin::where('is_logged_in',1)->get();
+        foreach($logged_admins as $admin)
+        {
+            $check_expires=Trn_StoreAdmin::where('store_admin_id',$admin->store_admin_id)->first();
+            if($check_expires)
+            {
+                if(Carbon::now()>=$check_expires->login_will_expire_at)
+                {
+                    
+                    $admin->is_logged_in=0;
+                    //$admin->last_active_at=Carbon::now();
+                    $admin->login_will_expire_at=null;
+                    $admin->update();
+                    // Auth::guard('store')->logout();
+                    // return redirect()->to('/store-login')->with('danger','Session has been Expired');
+               
+                }
+
+            }
+
         }
         
     }

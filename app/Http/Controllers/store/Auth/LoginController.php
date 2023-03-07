@@ -101,11 +101,22 @@ class LoginController extends Controller
                            return redirect('store/registration/otp_verify/view/'.Crypt::encryptString($cId));
                           
                       }
+                      if ($admin->is_logged_in==1) {
+                        Auth::guard('store')->logout();
+                        return redirect()->back()->with('danger','Profile is logged in another device/browser ,Contact admin '.$phoneNumber);
+                      
+                  }
                     
                         
 
                    
                 }
+            $admin->is_logged_in=1;
+            $admin->last_logged_at=Carbon::now();
+            $admin->last_active_at=Carbon::now();
+            $admin->login_will_expire_at=Carbon::now()->addHour();
+            $admin->update();
+            
             return $this->sendLoginResponse($request);
         }
         return $this->sendFailedLoginResponse($request);
@@ -211,11 +222,21 @@ class LoginController extends Controller
 
      public function logout(Request $request)
     {
-                $store_id  = Auth::guard('store')->user()->store_id;
+        $store_id  = Auth::guard('store')->user()->store_id;
 
         Trn_StoreWebToken::where('store_id',$store_id)->delete();
 
+        $store_admin_id=Auth::guard('store')->user()->store_admin_id;
+        $admin=  Trn_StoreAdmin::where('store_admin_id',$store_admin_id)->first();
+        if($admin)
+        {
+            $admin->is_logged_in=0;
+            $admin->login_will_expire_at=null;
+            $admin->last_active_at=Carbon::now();
+            $admin->update();
+        }
         Auth::guard('store')->logout();
+
         $cookie = \Cookie::forget('first_time');
 
         $request->session()->flush();
