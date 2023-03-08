@@ -945,7 +945,7 @@ class SettingController extends Controller
 		}
 
 		$delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
-		$business_types = Mst_business_types::withTrashed()->where('business_type_status', '=', 1)->get();
+		$business_types = Mst_business_types::withTrashed()->get();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
 		$products = Mst_store_product::where('store_id', $store_id)->orderBy('product_id', 'DESC')
@@ -6211,27 +6211,62 @@ class SettingController extends Controller
 					}
 				}
 			} else {*/
+				$exist_array=[];
+				$ins_Count=0;
 
 				foreach ($values as $value) {
 
+                    $attr_exist=Mst_attribute_value::where('attribute_group_id',$request->attribute_group_id)->where('group_value',$value)->first();
+					if($attr_exist)
+					{
+						array_push($exist_array,$value);
+
+					}
+					else{
 					$data = [
-						[
-							'group_value' => $value,
-							'attribute_group_id' => $request->attribute_group_id,
-							'attr_value_status' => 1,
-							'created_at' => $date,
-							'updated_at' => $date,
+							[
+								'group_value' => $value,
+								'attribute_group_id' => $request->attribute_group_id,
+								'attr_value_status' => 1,
+								'created_at' => $date,
+								'updated_at' => $date,
+	
+	
+							],
+						];
+						Mst_attribute_value::insert($data);
+						$ins_Count++;
+						
 
-
-						],
-					];
+					}
+					//dd($exist_array);
+					
+					
+					
 					//dd($data);
 
-					Mst_attribute_value::insert($data);
+					
 				}
+				if($ins_Count==0)
+				{
+					return redirect('admin/attribute_value/list')->with('danger', 'Already existing attribute values are not allowed.Please try with other value');
+
+				}
+				    if(empty($exist_array))
+					{
+						
+						return redirect('admin/attribute_value/list')->with('status', 'Attribute value added successfully.');
+
+					}
+					else
+					{
+						$repeat_string=implode(',',$exist_array);
+						return redirect('admin/attribute_value/list')->with('error', 'Attribute value added,but some repeated values are not inserted('.$repeat_string.')');
+
+					}
 			//}
 
-			return redirect('admin/attribute_value/list')->with('status', 'Attribute added successfully.');
+			
 		} else {
 			//return redirect('/')->withErrors($validator->errors());
 			return redirect()->back()->withErrors($validator)->withInput();
@@ -6261,8 +6296,9 @@ class SettingController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'group_value'   => 'required',
+				'group_value'   => 'required|unique:mst_attribute_values,group_value,' . $GrpId . ',attr_value_id',
 				'attribute_group_id' => 'required',
+				
 
 			],
 			[

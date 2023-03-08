@@ -732,6 +732,35 @@ class DeliveryBoyOrderController extends Controller
                         'status_id' => $request->status_id,
                         'delivery_status_id' => 2
                     ]);
+                    $order = Trn_store_order::Find($order_id);
+                    $customer_id = $order->customer_id;
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id',$customer_id)->get();
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Order Out For Delivery';
+                        $body = "Your order " . $order->order_number . ' is out for delivery..';
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                    }
+                    $storeDatas = Trn_StoreAdmin::where('store_id',$order->store_id)->where('role_id', 0)->first();
+                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $order->store_id)->get();
+                    foreach ($storeDevice as $sd) {
+                        $title = 'Order Out For Delivery';
+                        $body = 'order with order number ' . $order->order_number . ' is out for delivery..';
+                        $clickAction = "OrdersFragment";
+                        $type = "order";
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                    }
+
+
+                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id',$order->store_id)->get();
+                    foreach ($storeWeb as $sw) {
+                        $title = 'Order Out For Delivery';
+                        $body = 'order with order number ' . $order->order_number . ' is out for delivery..';
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+                    }
                 } elseif ($request->status_id == 9 || $request->status_id == '9') {
 
                   
@@ -884,13 +913,7 @@ class DeliveryBoyOrderController extends Controller
                           
                         //}
                         }
-                    foreach ($customerDevice as $cd) {
-                        $title = 'Order delivered';
-                        $body = 'Order delivered with order id ' . $order->order_number;
-                        $clickAction = "OrderListFragment";
-                        $type = "order";
-                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                    }
+                    
                     if($orderPointAmount!=0.00)
                     {
                     $crrr = new Trn_customer_reward;
@@ -903,7 +926,20 @@ class DeliveryBoyOrderController extends Controller
                     $crrr->reward_point_status = 1;
                     $crrr->discription = 'admin points';
                     $crrr->save(); 
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+                    foreach ($customerDevice as $cd) {
+
+                        $title = 'App Order Points Credited';
+                        $body = $orderPointAmount . ' points credited to your wallet';
+                        $clickAction = "MyWalletFragment";
+                        $type = "wallet";
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
+                   
+                    }
+                   
+                    $storeDatas = Trn_StoreAdmin::where('store_id',$order->store_id)->where('role_id', 0)->first();
+                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $order->store_id)->get();
                     if($storeConfigPoint)
                     {
                     if($storeOrderPointAmount!=0.00)
@@ -928,7 +964,42 @@ class DeliveryBoyOrderController extends Controller
                     $wallet_log->points_debited=null;
                     $wallet_log->points_credited=$storeOrderPointAmount;
                     $wallet_log->save();
+                    foreach ($storeDevice as $sd) {
+    
+                        $title = 'Store Points Credited';
+                        $body = $storeOrderPointAmount . ' points credited to your wallet';
+                        $clickAction = "MyWalletFragment";
+                        $type = "wallet";
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
+
+                    
+                    }
+                    }
+                    foreach ($customerDevice as $cd) {
+                        $title = 'Order delivered';
+                        $body = 'Order delivered with order id ' . $order->order_number;
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                    }
+                  
+                    foreach ($storeDevice as $sd) {
+                        $title = 'Order Delivered';
+                        $clickAction = "OrderListFragment";
+                        $body = 'Order delivered with order id ' . $order->order_number;
+                        $type = "order";
+                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                    }
+
+
+                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id',$order->store_id)->get();
+                    foreach ($storeWeb as $sw) {
+                        $title = 'Order Delivered';
+                        $body = 'Order delivered with order id ' . $order->order_number;
+                        $clickAction = "OrderListFragment";
+                        $type = "order";
+                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                     }
 
 

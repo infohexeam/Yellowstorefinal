@@ -14,7 +14,7 @@ class BusinessTypeController extends Controller
         try {
 
             $data['Business_Types'] = Mst_business_types::withTrashed()->select('business_type_id', 'business_type_name')
-                ->where('business_type_status', 1)
+                //->where('business_type_status', 1)
                 ->orderBy('business_type_name', 'ASC')->get();
             return response($data);
         } catch (\Exception $e) {

@@ -58,6 +58,8 @@ use App\Models\admin\Trn_DeliveryBoyLocation;
 
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
+use App\Models\admin\Trn_StoreDeviceToken;
+use App\Models\admin\Trn_StoreWebToken;
 use App\Trn_wallet_log;
 use Illuminate\Support\Facades\Auth;
 
@@ -901,7 +903,19 @@ class OrderController extends Controller
                                     $cr->reward_point_status = 1;
                                     $cr->discription = 'admin points';
                                     $cr->save();
+                                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderDataz->customer_id)->get();
+                                    foreach ($customerDevice as $cd) {
+    
+                                        $title = 'App Order Points Credited';
+                                        $body = $orderPointAmount . ' points credited to your wallet';
+                                        $clickAction = "MyWalletFragment";
+                                        $type = "wallet";
+                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
+
+                                    }
+                                    $storeDatas = Trn_StoreAdmin::where('store_id',$orderDataz->store_id)->where('role_id', 0)->first();
+                                    $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $orderDataz->store_id)->get();
                                     
                                     if($storeConfigPoint)
                                     {
@@ -928,7 +942,36 @@ class OrderController extends Controller
                                     $wallet_log->points_debited=null;
                                     $wallet_log->points_credited=$storeOrderPointAmount;
                                     $wallet_log->save();
+
+                                    foreach ($storeDevice as $sd) {
+    
+                                        $title = 'Store Points Credited';
+                                        $body = $storeOrderPointAmount . ' points credited to your wallet';
+                                        $clickAction = "MyWalletFragment";
+                                        $type = "wallet";
+                                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                                     }
+
+                                    }
+                                    }
+                                    
+                                   
+                                    foreach ($storeDevice as $sd) {
+                                        $title = 'Order Delivered';
+                                        $clickAction = "OrderListFragment";
+                                        $body = 'Order delivered with order id ' . $orderDataz->order_number;
+                                        $type = "order";
+                                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                                    }
+
+
+                                    $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id',$orderDataz->store_id)->get();
+                                    foreach ($storeWeb as $sw) {
+                                        $title = 'Order Delivered';
+                                        $body = 'Order delivered with order id ' . $orderDataz->order_number;
+                                        $clickAction = "OrderListFragment";
+                                        $type = "order";
+                                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                                     }
                                     
                                     
@@ -1583,6 +1626,34 @@ public function totalOrderCredit($configOrderAmount,$OrderTotal)
     $n=floor($amountRatio);
     return $n*$orderPoint;
     
+}
+private function storeNotification($device_id, $title, $body,$clickAction,$type)
+{
+    $url = 'https://fcm.googleapis.com/fcm/send';
+    $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
+    $fields = array(
+        'to' => $device_id,
+        'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+        'data' => array('title' => $title, 'body' => $body,'type' => $type),
+    );
+    $headers = array(
+        'Content-Type:application/json',
+        'Authorization:key=' . $api_key
+    );
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+    $result = curl_exec($ch);
+    if ($result === FALSE) {
+        die('FCM Send Error: ' . curl_error($ch));
+    }
+    curl_close($ch);
+    return $result;
 }
 }
 
