@@ -180,13 +180,14 @@
                                         $i = 0;
                                         @endphp
                                         @foreach ($data as $d)
+                                        @if($d->updated_time)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('h:i:s')}}</td>
 
                                             {{-- <td>{{ $d->product_name }}</td> --}}
-                                            <td>{{ $d->variant_name }}</td>
+                                            <td>{{ $d->variant_name }}{{ $d->prev_stock }}</td>
                                             
                                             <td>{{ $d->store_name }}</td>
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
@@ -203,6 +204,7 @@
                                             
 
                                         </tr>
+                                        @endif
                                         @endforeach
                                
                                     

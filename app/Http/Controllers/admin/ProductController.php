@@ -2618,7 +2618,7 @@ public function showOutofStockReport(Request $request)
       //->orderBy('mst_store_product_varients.stock_count', 'ASC')
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_product_varients.is_removed', 0)
-      ->orderBy('mst__stock_details.updated_at', 'DESC')
+      
 
       ->select(
         'mst_store_products.product_id',
@@ -2643,7 +2643,8 @@ public function showOutofStockReport(Request $request)
         'mst_store_categories.category_name',
         'mst__stock_details.stock',
         'mst__stock_details.prev_stock',
-        'mst__stock_details.updated_at AS updated_time',
+        'mst__stock_details.created_at AS updated_time',
+        'mst__stock_details.product_varient_id as stocked_varient',
         'mst_store_agencies.agency_name',
         'mst__sub_categories.sub_category_name',
 
@@ -2656,6 +2657,7 @@ public function showOutofStockReport(Request $request)
     if (auth()->user()->user_role_id  != 0) {
       $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
     }
+    //$data=$data->where('mst__stock_details.stocked_varient', '!=', NULL);
 
 
     if ($_GET) {
@@ -2702,7 +2704,10 @@ public function showOutofStockReport(Request $request)
 
     //old
     // $data = $data->orderBy('updated_time', 'DESC')->get();
+    $data=$data->orderBy('updated_time', 'DESC');
     $data = $data->groupBy('mst_store_product_varients.product_varient_id')->get();
+    //dd($data);
+   // dd(1);
     
 
     //   dd($data);

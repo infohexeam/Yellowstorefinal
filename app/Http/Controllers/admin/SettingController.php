@@ -3474,14 +3474,16 @@ class SettingController extends Controller
 
 			if ($store_id == 0 && isset($subadmin_id)) {
 
-				$store_data = DB::table('mst_stores')->select("store_id")->where('subadmin_id', '=',$subadmin_id)->where('subadmin_id', '!=',NULL)->get();
+				$store_data = DB::table('mst_stores')->select("store_id")->where('subadmin_id', '=',$subadmin_id)->get();
 				$store_array[] = 0;
 				foreach ($store_data as $val) {
+					
 					$store_array[] = $val->store_id;
 				}
-				$query = $query->whereIn('store_id', $store_array);
+				$query = $query->where('subadmin_id',$subadmin_id);
 				//dd($store_array);
 				//$query = $query->where('store_id', $store_id);
+				//dd($subadmin_id);
 			} elseif ($store_id == 0 && !isset($subadmin_id)) {
 
 				$store_data = \DB::table('mst_stores')->select("store_id")->get();
@@ -3494,8 +3496,8 @@ class SettingController extends Controller
 				
 				$store_array[] = $store_id;
 				array_push($store_array,$store_id);
-				//dd(3);
-				$query = $query->whereIn('store_id', $store_array)->where('subadmin_id',$request->subadmin_id);
+			//dd(3);
+				$query = $query->whereIn('store_id',$store_array)->where('subadmin_id',$request->subadmin_id);
 			}
 			
 
