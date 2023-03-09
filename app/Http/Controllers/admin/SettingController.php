@@ -611,7 +611,48 @@ class SettingController extends Controller
 				$query = $query->where('trn__store_admins.store_mobile', 'like', '%' . $store_contact_person_phone_number . '%');
 			}
 			if (isset($request->store_account_status)) {
-				$query = $query->where('trn__store_admins.store_account_status', $store_account_status);
+				////////////////////////////////////
+				// $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+				// ->where('trn__store_admins.role_id', 0)
+				// ->where('mst_stores.online_status', 1)
+				// ->where('trn__store_admins.store_account_status', 1)
+				// ->orderBy('mst_stores.store_id', 'DESC')->get();
+				// foreach($listedStores as $store)
+				// {
+				// 	$getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+				// 	if($getParentExpiry)
+				// 	{
+				// 		$parentExpiryDate = $getParentExpiry->expiry_date;
+				// 		if($today>=$parentExpiryDate)
+				// 		{
+				// 			array_push($expiredStores,$store->store_id);
+				// 		}
+					
+				// 	}
+				// }
+
+
+				////////////////////////////////////////
+				//dd($request->store_account_status);
+				//$query = $query->where('trn__store_admins.store_account_status',$request->store_account_status);
+				if($request->store_account_status=="1")
+				{
+				 	$query = $query->where('trn__store_admins.store_account_status', "1")->where('trn__store_admins.expiry_date','>',Carbon::now()->toDateString());
+
+				 }
+				 //dd($request->store_account_status);
+				 if($request->store_account_status=="0")
+				 {
+					//dd('tyuiop');
+					$curr_time=Carbon::now()->toDateString();
+				 	$query = $query->where('trn__store_admins.store_account_status',"0");
+					$query->where(function ($qy) use ($curr_time) {
+						$qy->orWhere('trn__store_admins.expiry_date', '>', $curr_time);
+					});
+					
+					
+				 }
+				
 			}
 
 			$stores =  $query->get();

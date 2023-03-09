@@ -3527,6 +3527,11 @@ class StoreController extends Controller
         //return "incapable_stock";
         return response()->json('incapable_stock');
       }
+      if($usOld->stock_count+$updated_stock>2147483647)
+      {
+        //return "incapable_stock";
+        return response()->json('type_limit_stock');
+      }
     }
 
     if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->increment('stock_count', $updated_stock)) {
@@ -5351,7 +5356,9 @@ class StoreController extends Controller
         'variant_name'=>'required',
         'product_varient_price'   => 'required|gt:0',
         
-        'product_varient_offer_price'   => 'required|gt:0',
+        'product_varient_offer_price'   => 'required|gt:0|lte:product_varient_price',
+
+
         
       ],
       [
@@ -5361,6 +5368,7 @@ class StoreController extends Controller
         'product_varient_price.gt'      => 'MRP should be greater than  zero',
         'product_varient_offer_price.required'      => 'Sale price required',
         'product_varient_offer_price.gt'      => 'Sale Price should be greater than  zero',
+        'product_varient_offer_price.lte'      => 'Sale Price should be less than  or equal to MRP',
      
       
       ]

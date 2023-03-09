@@ -221,6 +221,13 @@
                   alert('Negative stock is not allowed');
                   
                 }
+                 else if(result=='type_limit_stock')
+                {
+                  
+                  alert('Value entered is not allowed.Maximum value allowed is 2147483647');
+                  
+                }
+                
 
 
               if(result > current_stock)
