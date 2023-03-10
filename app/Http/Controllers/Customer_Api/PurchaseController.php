@@ -109,10 +109,10 @@ class PurchaseController extends Controller
                     }
                     if($request->store_points==1)
                     {
-                        $totalCustomerStoreRewardsCount =Trn_wallet_log::where('type','credit')->where('customer_id', $request->customer_id)->sum('points_credited');;
+                        $totalCustomerStoreRewardsCount =Trn_wallet_log::where('customer_id', $request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                         //$totalusedStorePoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used_store');
                         $totalusedStorePoints=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->sum('points_debited');
-                        if($totalCustomerStoreRewardsCount-$totalusedStorePoints<=0)
+                        if($totalCustomerStoreRewardsCount-$totalusedStorePoints<0)
                         {
                             $data['status'] = 0;
                             $data['message'] = "Reward points can't be redeemed for store";
