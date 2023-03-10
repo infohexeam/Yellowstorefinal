@@ -364,11 +364,22 @@ class PurchaseController extends Controller
                                 return response($data);
 
                             }
-                            $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
-                            $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
-                            $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
-                            $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
-                            $data['balanceStorePoint'] = $total_credit_points - $total_debit_points;
+                            if($request->store_points!=0)
+                            {
+                                $data['totalReducableStoreAmount'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                                $data['reducedStoreOrderAmount'] = number_format((float)$reducedOrderStoreAmount, 2, '.', '');
+                                $data['reducedAmountByStoreWalletPoints'] = number_format((float)$storeMaxRedeemAmountPerOrder, 2, '.', '');
+                                $data['usedStorePoint'] = number_format((float)$customerUsedRewardStorePoint, 2, '.', '');
+                                $data['balanceStorePoint'] = $total_credit_points - $total_debit_points;
+                            }
+                            else{
+                                $data['totalReducableStoreAmount'] =0.00;
+                                $data['reducedStoreOrderAmount'] = 0.00;
+                                $data['reducedAmountByStoreWalletPoints'] = 0.00;
+                                $data['usedStorePoint'] = 0.00;
+                                $data['balanceStorePoint'] = 0.00;
+
+                            }
                             
 
                     }
