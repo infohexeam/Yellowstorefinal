@@ -180,7 +180,15 @@ $date = Carbon\Carbon::now();
                         <td>{{ @$order->store['store_mobile']}}</td>
                         <td>
                            @if(isset($order->subadmin->name))
-                           {{ @$order->subadmin->name}}
+                           @php
+                           $subadmin=DB::table('users')->where('id',$order->subadmin_id)->first();
+
+                           @endphp
+                           @if($subadmin)
+                           {{ @$subadmin->name}}
+                           @else
+                           -------
+                           @endif
                            @else
                               ---
                            @endif
