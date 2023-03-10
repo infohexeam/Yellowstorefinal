@@ -3534,10 +3534,10 @@ class SettingController extends Controller
 				$query = $query->whereIn('store_id', $store_array);
 			} else {
 				
-				$store_array[] = $store_id;
-				array_push($store_array,$store_id);
+				// $store_array[] = $store_id;
+				// array_push($store_array,$store_id);
 			//dd(3);
-				$query = $query->whereIn('store_id',$store_array)->where('subadmin_id',$request->subadmin_id);
+				$query = $query->where('store_id',$store_id);
 			}
 			
 
