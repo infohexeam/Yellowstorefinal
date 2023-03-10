@@ -14,7 +14,7 @@ use App\Models\admin\Trn_sub_admin_payment_settlment;
 	foreach ($store_data as $val) {
 		$store_array[] = $val->store_id;
 	}
-    $orders_count = Trn_store_order::where('subadmin_id',auth()->user()->id)->whereIn('store_id',$store_array)->count();
+    $orders_count = Trn_store_order::where('subadmin_id',auth()->user()->id)->count();
 
    //  $storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->groupBy('subadmin_id')->pluck('store_id');
 
