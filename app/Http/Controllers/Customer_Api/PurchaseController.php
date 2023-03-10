@@ -212,12 +212,27 @@ class PurchaseController extends Controller
                                 $data['message'] = "Reward points can't be redeemed for admin";
                                 return response($data);
                             }
-                            $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
-                            $data['totalReducableAmount'] = number_format((float)$totalReducableAmount, 2, '.', '');
-                            $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
-                            $data['reducedAmountByWalletPoints'] = number_format((float)$totalReducableAmount, 2, '.', '');
-                            $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
-                            $data['balancePoint'] = number_format((float)$customerRewardPoint - $customerUsedRewardPoint, 2, '.', '');
+                            if($request->admin_points!=0)
+                            {
+                                $data['orderAmount'] = number_format((float)$orderAmount, 2, '.', '');
+                                $data['totalReducableAmount'] = number_format((float)$totalReducableAmount, 2, '.', '');
+                                $data['reducedOrderAmount'] = number_format((float)$reducedOrderAmount, 2, '.', '');
+                                $data['reducedAmountByWalletPoints'] = number_format((float)$totalReducableAmount, 2, '.', '');
+                                $data['usedPoint'] = number_format((float)$customerUsedRewardPoint, 2, '.', '');
+                                $data['balancePoint'] = number_format((float)$customerRewardPoint - $customerUsedRewardPoint, 2, '.', '');
+
+                            }
+                            else
+                            {
+                                $data['orderAmount'] =0.00;
+                                $data['totalReducableAmount'] = 0.00;
+                                $data['reducedOrderAmount'] = 0.00;
+                                $data['reducedAmountByWalletPoints'] =0.00;
+                                $data['usedPoint'] =0.00;
+                                $data['balancePoint'] = 0.00;
+
+                            }
+                           
                            // $orderAmount=$reducedOrderAmount;
                         }
                     }
