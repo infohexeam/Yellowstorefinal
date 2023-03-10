@@ -185,7 +185,7 @@ $date = Carbon\Carbon::now();
 
                            @endphp
                            @if($subadmin)
-                           {{$order->subadmin_id}}
+                          
                            {{ @$subadmin->name}}
                            @else
                            -------
