@@ -3640,7 +3640,8 @@ class StoreController extends Controller
 
     $products = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
       ->where('mst_store_products.store_id', $store_id)
-      //->where('mst_store_products.product_status', 1)
+      ->where('mst_store_products.product_status', 1)
+      ->where('mst_store_products.display_flag', 1)
       ->where('mst_store_products.product_type', 1)
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_product_varients.is_removed', 0)

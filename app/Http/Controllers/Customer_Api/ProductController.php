@@ -1770,7 +1770,7 @@ class ProductController extends Controller
             ,
             DB::raw("(SELECT SUM(trn_wallet_logs.points_debited) FROM trn_wallet_logs
 
-            WHERE  trn_wallet_logs.customer_id =".$request->customer_id."
+            WHERE trn_wallet_logs.store_id = mst_stores.store_id AND  trn_wallet_logs.customer_id =".$request->customer_id."
 
              GROUP BY stid ) as store_points_debited"),
 
