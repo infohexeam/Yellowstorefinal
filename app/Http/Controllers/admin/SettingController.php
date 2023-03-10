@@ -3456,7 +3456,6 @@ class SettingController extends Controller
 			"mst_stores.place", 
 			"mst_stores.town_id", 
 			"mst_stores.store_commision_amount", 
-			"mst_stores.subadmin_id", 
 			"mst_stores.store_qrcode", 
 			"mst_stores.service_area", 
 			"mst_stores.order_number_prefix", 
