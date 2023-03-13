@@ -456,4 +456,6 @@ class PublicController extends Controller
     $tc = Trn_TermsAndCondition::where('role', 2)->first();
     return view('customer_terms', compact('tc'));
   }
+
+
 }

@@ -312,6 +312,7 @@ ti ti-shopping-cart"></i><span class="side-menu__label">{{ __('Orders') }}</span
            <li><a class="slide-item" href="{{route('admin.password')}}">{{ __('Change Password') }}</a></li>
            <li><a class="slide-item" href="{{route('admin.edit_terms')}}">{{ __('Store Terms & Conditions') }}</a></li>
            <li><a class="slide-item" href="{{route('admin.edit_terms_customer')}}">{{ __('Customer Terms & Conditions') }}</a></li>
+           <li><a class="slide-item" href="{{route('admin.deliveryboy.edit_terms')}}">{{ __('Delivery Boy Terms & Conditions') }}</a></li>
 
         </ul>
       </li>
