@@ -57,7 +57,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Referred Joiner Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points ">
+                            <input type="number"  min="1" oninput="validity.valid||(value='');" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points ">
                            </div>
                         </div>
 
@@ -65,7 +65,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Rupees </label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');" required=""  name="rupee" class="form-control"  value="{{old('rupee_points',@$configure_points->rupee)}}" placeholder="Rupee">
+                            <input type="number" readonly  min="1"  required=""  name="rupee" class="form-control"  value="1" placeholder="Rupee">
                            </div>
                         </div>
                           <div class="col-md-1">
@@ -80,7 +80,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');" required=""  name="rupee_points" class="form-control"  value="{{old('rupee_points',@$configure_points->rupee_points)}}" placeholder="Points">
+                            <input type="number"  min="1"  required=""  name="rupee_points" class="form-control"  value="1" placeholder="Points">
                            </div>
                         </div>
 

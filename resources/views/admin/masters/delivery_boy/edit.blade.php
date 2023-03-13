@@ -107,7 +107,7 @@
                         </div>
 
 
-                           <div class="col-md-6">
+                      <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">State</label>
                             <select name="state_id" required="" class="form-control" id="state" >
@@ -181,7 +181,7 @@
                        </div>
 
                         <div class="col-md-6">
-                      <label class="form-label">Confirm Password </label>
+                      <label class="form-label">Confirm Password</label>
                       <div class="password-show">
                             <input class="form-control" type="password" onkeyup="validatePass()" name="password_confirmation" placeholder="Confirm Password" value="{{old('password_confirmation')}}" id="confirm_password" type="password"  autocomplete="current-password">
                             <div class="password-show__toggle">
@@ -193,7 +193,7 @@
                        </div>
 
 
-                   <div class="col-md-6">
+              <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-label">Commission Amount (Monthly)*</label>
                       <input type="decimal" min="0" step="0.1"  name="delivery_boy_commision" class="form-control" placeholder="Commision Amount (Monthly)" value="{{old('delivery_boy_commision',@$delivery_boy->delivery_boy_commision)}}">
