@@ -133,7 +133,7 @@
 
   <div class="form-group">
                               <label class="form-label">Pincode</label>
-                              <select name="town_id"  class="form-control" id="">
+                              <select name="town_id"  class="form-control" id="town">
                                 @foreach($towns as $town)
                                  <option  @if($town->town_id==$delivery_boy->town_id) selected=""  @endif  value="{{@$town->town_id}}">  {{@$town->town_name}}</option>
                                  @endforeach
@@ -439,19 +439,10 @@ function validatePassLength() {
 
         });
       });
-
-
-    });
-       });
-
-
-
-    //display town
-
-    $(document).ready(function() {
+      //////////////////////////////////////////////
        $('#city').change(function(){
         var city_id = $(this).val();
-       // alert(city_id);
+       //alert(city_id);
         var _token= $('input[name="_token"]').val();
 
         $.ajax({
@@ -462,8 +453,9 @@ function validatePassLength() {
 
            if(res){
               console.log(res);
-            $('#town').prop("diabled",false);
+            $('#town').prop("disabled",false);
             $('#town').empty();
+            $('#city').val(city_id);
 
             $('#town').append('<option value="">Select Pincode</option>');
             $.each(res,function(town_id,town_name)
@@ -479,9 +471,24 @@ function validatePassLength() {
             }
 
         });
-      });
+        
+     
 
     });
+    
+
+      ///////////////////////////////////////////////
+
+
+    });
+       });
+
+
+
+    //display town
+
+    
+      
 
 
 </script>
