@@ -671,7 +671,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('admin/customer/update-tc', 'SettingController@updateCusTC')->name('admin.update_cus_tc');
         //delivery boy 
         Route::get('admin/delivery-boy/terms', 'SettingController@TermsDelivery')->name('admin.deliveryboy.edit_terms');
-        Route::get('admin/delivery-boy/update-terms', 'SettingController@updateTermsDelivery')->name('admin.update.deliveryboy.edit_terms');
+        Route::post('admin/delivery-boy/update-terms', 'SettingController@updateTermsDelivery')->name('admin.update.deliveryboy.edit_terms');
 
         Route::get('admin/ajax/pg-status', 'AdminController@pgStatus');
 
