@@ -80,7 +80,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Points</label>
-                            <input type="number"  min="1"  required=""  name="rupee_points" class="form-control"  value="1" placeholder="Points">
+                            <input type="number" readonly  min="1"  required=""  name="rupee_points" class="form-control"  value="1" placeholder="Points">
                            </div>
                         </div>
 
