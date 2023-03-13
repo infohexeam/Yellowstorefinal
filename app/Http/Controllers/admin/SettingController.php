@@ -6560,7 +6560,7 @@ class SettingController extends Controller
 		return redirect()->back()->with('status', 'Terms and conditions updated.');
 	}
 
-	public function updateTermsDelivery(Request $request)
+	public function TermsDelivery(Request $request)
 	{
 		$pageTitle = "Edit Delivery Terms & Conditions";
 		$tc = Trn_TermsAndCondition::where('role', 3)->first();
