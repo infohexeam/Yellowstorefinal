@@ -6535,6 +6535,8 @@ class SettingController extends Controller
 		return redirect()->back()->with('status', 'Terms and conditions updated.');
 	}
 
+	
+
 	public function updateCusTC(Request $request)
 	{
 
@@ -6546,6 +6548,26 @@ class SettingController extends Controller
 		}
 		return redirect()->back()->with('status', 'Terms and conditions updated.');
 	}
+
+
+	public function updateTermsDelivery(Request $request)
+	{
+		$tcCount = Trn_TermsAndCondition::where('role', 3)->count();
+		if ($tcCount > 0) {
+			Trn_TermsAndCondition::where('role', 3)->update(['terms_and_condition' => $request->tc, 'role' => 3]);
+		} else {
+			Trn_TermsAndCondition::where('role',3)->create(['terms_and_condition' => $request->tc, 'role' => 3]);
+		}
+		return redirect()->back()->with('status', 'Terms and conditions updated.');
+	}
+
+	public function TermsDelivery(Request $request)
+	{
+		$pageTitle = "Edit Delivery Terms & Conditions";
+		$tc = Trn_TermsAndCondition::where('role', 3)->first();
+		return view('admin.masters.tc.list_delivery_tc', compact('pageTitle', 'tc'));
+	}
+
 
 	public function changedBoyStatus(Request $request, Mst_delivery_boy $delivery_boy, $delivery_boy_id)
 	{

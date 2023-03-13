@@ -42,6 +42,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/transfer', 'store\StoreController@transfer');
     Route::get('/store/terms-and-condition', 'PublicController@showTC');
     Route::get('/customer/terms-and-condition', 'PublicController@showCusTC');
+    Route::get('/delivery/terms-and-condition', 'PublicController@showDeliveryTC');
 
     Route::post('store/ajax/unique_storename', 'PublicController@CheckName')->name('unique_storename');
     Route::post('store/ajax/unique_phone', 'PublicController@CheckPhone')->name('unique_store_mobile');
@@ -668,7 +669,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/customer/update-terms', 'SettingController@updateCusTerms')->name('admin.edit_terms_customer');
         Route::post('admin/update-tc', 'SettingController@updateTC')->name('admin.update_tc');
         Route::post('admin/customer/update-tc', 'SettingController@updateCusTC')->name('admin.update_cus_tc');
-
+        //delivery boy 
+        Route::get('admin/delivery-boy/terms', 'SettingController@TermsDelivery')->name('admin.deliveryboy.edit_terms');
+        Route::post('admin/delivery-boy/update-terms', 'SettingController@updateTermsDelivery')->name('admin.update.deliveryboy.edit_terms');
         Route::get('admin/ajax/pg-status', 'AdminController@pgStatus');
 
         Route::get('admin/review/list', 'AdminController@listReview')->name('admin.list_reviews');
