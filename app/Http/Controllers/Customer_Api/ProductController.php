@@ -5817,12 +5817,14 @@ class ProductController extends Controller
                         'mst_store_products.product_base_image',
                         'mst_store_products.show_in_home_screen',
                         'mst_store_products.product_status',
+                        'mst_store_products.is_removed',
                         'mst_store_products.display_flag',
                         'mst_store_products.store_id',
                         'mst_stores.business_type_id'
                     )
                     ->where('trn__recently_visited_products.customer_id', $customer_id)
                     ->where('mst_store_products.display_flag', 1)
+                    ->where('mst_store_products.is_removed',0)
                     ->take(3)->get()
                 ) {
 
