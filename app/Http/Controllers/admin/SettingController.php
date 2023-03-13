@@ -6552,6 +6552,7 @@ class SettingController extends Controller
 
 	public function updateTermsDelivery(Request $request)
 	{
+		$tcCount = Trn_TermsAndCondition::where('role', 3)->count();
 		if ($tcCount > 0) {
 			Trn_TermsAndCondition::where('role', 3)->update(['terms_and_condition' => $request->tc, 'role' => 2]);
 		} else {
