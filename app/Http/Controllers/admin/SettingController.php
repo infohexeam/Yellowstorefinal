@@ -6554,9 +6554,9 @@ class SettingController extends Controller
 	{
 		$tcCount = Trn_TermsAndCondition::where('role', 3)->count();
 		if ($tcCount > 0) {
-			Trn_TermsAndCondition::where('role', 3)->update(['terms_and_condition' => $request->tc, 'role' => 2]);
+			Trn_TermsAndCondition::where('role', 3)->update(['terms_and_condition' => $request->tc, 'role' => 3]);
 		} else {
-			Trn_TermsAndCondition::where('role',3)->create(['terms_and_condition' => $request->tc, 'role' => 2]);
+			Trn_TermsAndCondition::where('role',3)->create(['terms_and_condition' => $request->tc, 'role' => 3]);
 		}
 		return redirect()->back()->with('status', 'Terms and conditions updated.');
 	}
