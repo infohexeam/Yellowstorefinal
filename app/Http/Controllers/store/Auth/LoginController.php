@@ -103,7 +103,7 @@ class LoginController extends Controller
                       }
                       if ($admin->is_logged_in==1) {
                         Auth::guard('store')->logout();
-                        return redirect()->back()->with('danger','Profile is logged in another device/browser ,Contact admin '.$phoneNumber);
+                        return redirect()->back()->with('danger','Your account is logged in another device ,Contact admin '.$phoneNumber);
                       
                   }
                     

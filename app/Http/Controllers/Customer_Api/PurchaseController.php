@@ -450,9 +450,6 @@ class PurchaseController extends Controller
         $orderTotalArray=array();
         $store_id=$request->store_id;
         $orderAmount = $request->order_amount;
-        $customerRewardPoint=0;
-        $customerRewardStorePoint=0;
-        $remainingOrderAmount=0;
         $data['totalReducableAmount'] =0.00;
         $data['reducedOrderAmount'] = 0.00;
         $data['reducedAmountByWalletPoints'] =0.00;
@@ -487,7 +484,7 @@ class PurchaseController extends Controller
                     $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
                     $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
                     $h=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
-                    $h=30;
+                    //$h=30;
                     $j=($h*$d)/100;
 
                     $j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
@@ -532,12 +529,18 @@ class PurchaseController extends Controller
                 }
                 if($request->store_points==1)
                 {
+                    $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
+                    if($wallet_log_first->first())
+                    {
+                        $wallet_log_first->first()->delete();
+                    }
                     $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
                     $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
                     $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
                     $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
                     //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
-                    $g=50;
+                    //$g=50;
+                    $g=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                     $m=($g*$a)/100;
 
                     $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
@@ -569,6 +572,15 @@ class PurchaseController extends Controller
                         $data['totalReducableStoreAmount'] = 0.00;
 
                     }
+                    $wallet_log=new Trn_wallet_log();
+                    $wallet_log->store_id=$store_id;
+                    $wallet_log->customer_id=$request->customer_id;
+                    $wallet_log->type='debit';
+                    $wallet_log->points_debited= number_format((float)$n, 2, '.', '');;
+                    $wallet_log->points_credited=null;
+                    $wallet_log->save();
+                    $data['wallet_id']=$wallet_log->wallet_log_id;
+                                               
                     //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
                     $data['reducedStoreOrderAmount'] = $o;
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');

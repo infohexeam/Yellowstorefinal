@@ -4931,7 +4931,7 @@ class ProductController extends Controller
 
 
                     $PurproductData = $PurproductData->where('mst_store_products.display_flag', 1)
-                        //->where('mst_store_products.show_in_home_screen',1)
+                        ->where('mst_store_products.is_removed',0)
                         ->where('trn_store_orders.customer_id', $request->customer_id)
                         ->orderBy('trn_order_items.order_item_id', 'DESC');
 
