@@ -2995,7 +2995,7 @@ class SettingController extends Controller
 				//'store_id.required'               	   => 'Store required',
 				'country_id.required'         		   => 'Country required',
 				'state_id.required'        			   => 'State required',
-				'town_id.required'        			   => 'Town required',
+				'town_id.required'        			   => 'Pincode required',
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
 				'password.required'	   => 'Password required',
