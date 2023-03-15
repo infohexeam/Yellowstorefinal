@@ -44,7 +44,7 @@
                             <select name="store_id" class="form-control" >
                                 <option value=""> Store</option>
                                 @foreach($stores as $key)
-                                <option {{old('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name}} </option>
+                                <option {{request()->input('store_id')  == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name}} </option>
                                     @endforeach
                                     </select>
                             </div>
@@ -54,16 +54,19 @@
                         <div class="form-group">
                             <label class="form-label">Visibility Status</label>
                             <div id="isVisiblel"></div>
+                            
                             <select class="form-control" name="isVisible" id="isVisible">
-                                        <option  {{request()->input('isVisible') == NULL ? 'selected':''}} value=""> Visibility Status</option>
-                                    <option {{request()->input('isVisible') == 1 ? 'selected':''}} value=" 1 "> Visible </option>
-                                    @if($reviews->has('isVisible'))
-                                    <option {{request()->input('isVisible') == 0 ? 'selected':''}} value=" 0 "> Not Visible </option>
-                                    @else
-                                    <option value=" 0 "> Not Visible </option>
-                                    @endif
+                                        
+                                    <option {{request()->input('isVisible') == 1 ? 'selected':''}} value="1"> Visible </option>
+                                   
+                                    <option value="0"  {{request()->input('isVisible') == 0 ? 'selected':''}}> Not Visible </option>
+                                    <option  value="" @if(is_null(request()->input('isVisible'))) selected @endif> Visibility Status</option>
+                                    
                                 </select>
                         </div>
+                        @php
+                             //dd(request()->input('isVisible'));
+                            @endphp
                     </div>
 
                        {{-- <div class="col-md-4">
