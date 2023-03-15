@@ -640,7 +640,7 @@ class PosController extends Controller
                 $data['productDetails']->filter(function ($item) {
 
                   return $item
-                         ->where('variat_status','!=',"0");
+                         ->where('variant_status','!=',"0");
                        
              });
                     //$data['productDetails']=$new;
