@@ -604,6 +604,15 @@ class PosController extends Controller
                            }
 
                        }
+                       else
+                       {
+                        if($product->is_base_variant==1)
+                           {
+                               $product->variant_status=(string)1;
+
+                           }
+
+                       }
                
 
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
@@ -623,11 +632,18 @@ class PosController extends Controller
                         $product->tax_value = @$taxData->tax_value;
                
                     }
+                    //var_dump($data['productDetails']);
 
-                $new = array_filter(json_decode($data['productDetails'],true), function ($var) {
-                        return ($var['variant_status'] != "0");
-                 });
-                    // $data['productDetails']=$new;
+                // array_filter(json_decode($data['productDetails'],true), function ($var) {
+                //         return ($var['variant_status'] != "0");
+                //  });
+                $data['productDetails']->filter(function ($item) {
+
+                  return $item
+                         ->where('variat_status','!=',"0");
+                       
+             });
+                    //$data['productDetails']=$new;
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
