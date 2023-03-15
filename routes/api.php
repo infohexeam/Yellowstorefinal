@@ -56,6 +56,7 @@ Route::get('state/list', 'Api\LocationController@stateList');
 Route::get('district/list', 'Api\LocationController@districtList');
 //business type list
 Route::get('business-type/list', 'Api\BusinessTypeController@typeList');
+Route::get('business-type/list-register', 'Api\BusinessTypeController@typeListRegister');
 //town list
 Route::get('town/list', 'Api\TownController@townList');
 //check store mobile number unqiue

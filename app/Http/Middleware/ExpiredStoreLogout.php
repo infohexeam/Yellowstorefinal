@@ -32,7 +32,7 @@ class ExpiredStoreLogout
                 $admin->update();
                             
                 Auth::guard('store')->logout();
-                return redirect()->to('/store-login')->with('danger','Profile is inactive ,Contact admin');
+                return redirect()->to('/store-login')->with('danger','Store is inactive ,Contact admin');
 
                 }
                 

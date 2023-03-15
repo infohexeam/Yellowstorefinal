@@ -2832,6 +2832,7 @@ class SettingController extends Controller
 				->whereIn('mst_store_link_delivery_boys.store_id', $storesSubadmins)
 				->orderBy('mst_delivery_boys.delivery_boy_id', 'DESC')
 				->groupBy('mst_store_link_delivery_boys.delivery_boy_id')
+				->whereNull('mst_delivery_boys.deleted_at')
 				->get();
 			
 		}
@@ -2872,7 +2873,7 @@ class SettingController extends Controller
 			}
 
 
-			$delivery_boys = $query->get();
+			$delivery_boys = $query->whereNull('mst_delivery_boys.deleted_at')->get();
 
 			return view('admin.masters.delivery_boy.list', compact('delivery_boys', 'pageTitle', 'countries', 'stores'));
 		}
