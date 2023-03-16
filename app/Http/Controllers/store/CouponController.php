@@ -1030,7 +1030,27 @@ class CouponController extends Controller
 
 
     $inventoryData = $inventoryData->get();
-
+    // foreach($inventoryData as $da)
+    // {
+    //     if($da->stock_count==0)
+    //     {
+    //         if($da->prev_stock>0)
+    //         {
+    //             $da->prev_stock=$da->prev_stock+$da->stock;
+    //             $da->stock=0-$da->prev_stock;
+    //             $da->prev_stock=(string)$da->prev_stock;
+    //             $da->stock=(string)$da->stock;
+    //         }
+           
+    //     }
+    //     if($da->stock>0&&$da->prev_stock==0)
+    //     {
+    //         $st=$da->stock;
+    //         $da->stock=$da->stock_count-$da->stock;
+    //         $da->prev_stock=(string)$st;
+    //         $da->stock=(string)$da->stock;
+    //     }
+    // }
     //  dd($inventoryData);
 
     $inventoryData = collect($inventoryData);

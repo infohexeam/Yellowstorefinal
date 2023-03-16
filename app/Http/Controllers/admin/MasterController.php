@@ -589,7 +589,7 @@ class MasterController extends Controller
                 $validator = Validator::make(
                     $request->all(),
                     [
-                        'customer_mobile_number'          => 'required',
+                        'customer_mobile_number'          => 'required|regex:/^[1-9]\d{9}$/u|digits:10',
                         'reward_points'          => 'required|numeric|gt:0',
                         
                     ]

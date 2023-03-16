@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\admin\Mst_store;
 use App\Models\admin\Trn_store_otp_verify;
 use App\Models\admin\Trn_StoreAdmin;
+use Illuminate\Support\Facades\Validator;
 
 class ForgotPasswordController extends Controller
 {
@@ -205,6 +206,18 @@ class ForgotPasswordController extends Controller
 
         protected function resetPassword(Request $request,$user_id)
         {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'password'          => 'required|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+                    
+                ],
+                [
+                    'password.regex'=>'Password must include at least one upper case letter, lower case letter, number, and special character'
+                ]
+                
+            );
+            if (!$validator->fails()) {
 
             $password   = Hash::make($request->password);
             $data['password'] = $password;
@@ -216,6 +229,12 @@ class ForgotPasswordController extends Controller
             {
                 return redirect()->back()->with('message','Oops! Error.');
             }
+        }
+        else
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+
+        }
 
         }
 

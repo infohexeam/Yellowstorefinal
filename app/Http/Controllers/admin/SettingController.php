@@ -3089,7 +3089,7 @@ class SettingController extends Controller
 				'delivery_boy_commision'            => 'required|gte:0',
 				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys',
-				'delivery_boy_password'  => 'required|min:5|same:password_confirmation',
+				'delivery_boy_password'  => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
 				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=1000,min_height=800'
 
 

@@ -135,11 +135,12 @@ class HomeController extends Controller
 
         $validator = Validator::make($request->all(),
         [
-            'password'         => 'required|same:password_confirmation',
+            'password'         => 'required|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
 
          ],
         [
             'password.required'        => 'Password required',
+            'password.regex'=>'Password must include at least one upper case letter, lower case letter, number, and special character'
 
 
 
@@ -184,7 +185,7 @@ class HomeController extends Controller
         [
             'name'              =>'required',
             'email'              =>'required',
-            'phone_number'      => 'required'
+            'phone_number'      => 'required|regex:/^[1-9]\d{9}$/u|digits:10'
 
          ],
         [

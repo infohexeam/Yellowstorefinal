@@ -419,13 +419,13 @@ function validatePass() {
     if (x == y) {
    // document.getElementById('password').border.color = 'green';
     //document.getElementById('confirm_password').border.color = 'green';
-                                $('#submit').attr('disabled',false);
+                                //$('#submit').attr('disabled',false);
 
 
     } else {
         document.getElementById('showmessage').style.color = 'red';
         document.getElementById('showmessage').innerHTML = 'Passwords not matching';
-                                    $('#submit').attr('disabled', 'disabled');
+                                    //$('#submit').attr('disabled', 'disabled');
 
         
     }
@@ -474,8 +474,9 @@ function validateForm() {
             document.getElementById('showmessage').innerHTML = 'Passwords not matching';
             var elmnt = document.getElementById("passlabel");
             elmnt.scrollIntoView();
+            $('#submit').attr('disabled', 'disabled');
             return false;
-                                       $('#submit').attr('disabled', 'disabled');
+                                       
 
         }
     }
