@@ -2222,27 +2222,37 @@ class StoreController extends Controller
                 // }
 
 
-                /*foreach($inventoryData as $da)
+                foreach($inventoryData as $da)
                 {
-                    if($da->stock_count==0)
-                    {
-                        if($da->prev_stock>0)
-                        {
-                            $da->prev_stock=$da->prev_stock+$da->stock;
-                            $da->stock=0-$da->prev_stock;
-                            $da->prev_stock=(string)$da->prev_stock;
-                            $da->stock=(string)$da->stock;
-                        }
+                    // if($da->stock_count==0)
+                    // {
+                    //     if($da->prev_stock>0)
+                    //     {
+                    //         $da->prev_stock=$da->prev_stock+$da->stock;
+                    //         $da->stock=0-$da->prev_stock;
+                    //         $da->prev_stock=(string)$da->prev_stock;
+                    //         $da->stock=(string)$da->stock;
+                    //     }
                        
-                    }
-                    if($da->stock>0&&$da->prev_stock==0)
-                    {
-                        $st=$da->stock;
-                        $da->stock=$da->stock_count-$da->stock;
-                        $da->prev_stock=(string)$st;
-                        $da->stock=(string)$da->stock;
-                    }
-                }*/
+                    // }
+                    // if($da->stock>0&&$da->prev_stock==0)
+                    // {
+                    //     $st=$da->stock;
+                    //     $da->stock=$da->stock_count-$da->stock;
+                    //     $da->prev_stock=(string)$st;
+                    //     $da->stock=(string)$da->stock;
+                    // }
+                   $stock_info= Mst_StockDetail::where('product_varient_id',$da->product_varient_id)->orderBy('product_varient_id','DESC')->first();
+                   if($stock_info)
+                   {
+                    $da->prev_stock=$stock_info->prev_stock;
+                    $da->stock=$stock_info->stock;
+                    $da->prev_stock=(string)$da->prev_stock;
+                    $da->stock=(string)$da->stock;
+
+                   }
+
+                }
 
                 $inventoryDatasss = collect($inventoryData);
                 $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
