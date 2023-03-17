@@ -2242,7 +2242,7 @@ class StoreController extends Controller
                     //     $da->prev_stock=(string)$st;
                     //     $da->stock=(string)$da->stock;
                     // }
-                   $stock_info= Mst_StockDetail::where('product_varient_id',$da->product_varient_id)->orderBy('product_varient_id','DESC')->first();
+                   $stock_info= Mst_StockDetail::where('product_varient_id',$da->product_varient_id)->orderBy('stock_detail_id','DESC')->first();
                    if($stock_info)
                    {
                     $da->prev_stock=$stock_info->prev_stock;
