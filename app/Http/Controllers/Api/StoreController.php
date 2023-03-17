@@ -2222,7 +2222,7 @@ class StoreController extends Controller
                 // }
 
 
-                foreach($inventoryData as $da)
+                /*foreach($inventoryData as $da)
                 {
                     if($da->stock_count==0)
                     {
@@ -2242,7 +2242,7 @@ class StoreController extends Controller
                         $da->prev_stock=(string)$st;
                         $da->stock=(string)$da->stock;
                     }
-                }
+                }*/
 
                 $inventoryDatasss = collect($inventoryData);
                 $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');

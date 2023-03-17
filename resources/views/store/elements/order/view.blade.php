@@ -99,7 +99,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           <td>
                                              @if (isset($order->time_slot) && ($order->time_slot != 0)) 
                                              @php
-                                                 $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::find($order->time_slot);
+                                                 $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($order->time_slot);
                                              @endphp
                                                 Time Slot Delivery ({{ @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end }})
                                              @else

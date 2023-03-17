@@ -139,7 +139,8 @@ use App\Models\admin\Trn_StoreBankData;
   <select name="store_account_status" id="store_account_status"  class="form-control" >
                  <option value="" >Select Status</option>
                  <option {{request()->input('store_account_status') == '1' ? 'selected':''}} value="1" >Active</option>
-                 <option {{request()->input('store_account_status') == '0' ? 'selected':''}} value="0" >InActive</option>
+                 <option {{request()->input('store_account_status') == '0' ? 'selected':''}} value="0" >Inactive-Manual</option>
+                 <option {{request()->input('store_account_status') == '2' ? 'selected':''}} value="2" >Inactive-Due to Expire</option>
                  </select>
                         </div>
                       </div>

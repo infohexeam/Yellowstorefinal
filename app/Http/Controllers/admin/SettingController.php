@@ -644,13 +644,16 @@ class SettingController extends Controller
 				 if($request->store_account_status=="0")
 				 {
 					//dd('tyuiop');
-					$curr_time=Carbon::now()->toDateString();
+					
 				 	$query = $query->where('trn__store_admins.store_account_status',"0");
-					$query->where(function ($qy) use ($curr_time) {
-						$qy->orWhere('trn__store_admins.expiry_date', '>', $curr_time);
-					});
 					
 					
+					
+				 }
+				 if($request->store_account_status=="2")
+				 {
+					
+					$query = $query->where('trn__store_admins.expiry_date','<',Carbon::now()->toDateString());
 				 }
 				
 			}
