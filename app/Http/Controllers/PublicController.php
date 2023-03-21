@@ -457,5 +457,11 @@ class PublicController extends Controller
     return view('customer_terms', compact('tc'));
   }
 
+  public function showDeliveryTC(Request $request)
+  {
+    $tc = Trn_TermsAndCondition::where('role', 3)->first();
+    return view('delivery_terms', compact('tc'));
+  }
+
 
 }
