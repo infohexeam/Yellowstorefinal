@@ -284,8 +284,13 @@ class InventoryController extends Controller
 
                     if (Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update($productData)) {
                         //$data['productstock'] = $productData->stock_count;
-
+                     // return 999;
                         $usData = DB::table('mst_store_product_varients')->where('product_varient_id', $request->product_varient_id)->first();
+                        // if($usData)
+                        // {
+                        //     $usData->stock_count=999;
+                        //     $usData->update();
+                        // }
                         
                         $usProDataSum = DB::table('mst_store_product_varients')->where('product_id', $usData->product_id)->sum('stock_count');
                         
@@ -301,7 +306,7 @@ class InventoryController extends Controller
                         $sd->product_id = $usData->product_id;
                         $sd->stock = ($usData->stock_count * -1);
                         $sd->product_varient_id = $request->product_varient_id;
-                        $sd->prev_stock = $usData->stock_count;
+                        $sd->prev_stock = $usData->stock_count??0;
                         $sd->save();
 
                         $data['status'] = 1;

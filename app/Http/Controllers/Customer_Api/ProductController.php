@@ -4871,7 +4871,7 @@ class ProductController extends Controller
                         if ($timeslotdata == true) {
 
                             if (isset($nearByStore->profile_image)) {
-                                $nearByStore->store_image =  '/assets/uploads/store_images/images/' . $nearByStore->profile_image;
+                            $nearByStore->store_image =  '/assets/uploads/store_images/images/' . $nearByStore->profile_image;
                             } else {
                                 $nearByStore->store_image =  Helper::default_store_image();
                             }

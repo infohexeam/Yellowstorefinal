@@ -148,11 +148,11 @@ class StoreWalletController extends Controller
 			$customer_first_name = $request->customer_name;
 			//$query = Trn_customer_reward::with(['customer','order'])->Where('trn_customer_rewards.store_id',$store_id);
             //->orWhere('trn_store_orders.store_id',$store_id);
-            $query = Trn_customer_reward::with(['customer','order']);
-            $query->whereHas('order', function (Builder $qry) use($store_id) {
-                return $qry->where('store_id','=',$store_id);
+            $query = Trn_customer_reward::with(['customer','order'])->where('store_id',$store_id);
+            // $query->whereHas('order', function (Builder $qry) use($store_id) {
+            //     return $qry->where('store_id','=',$store_id);
                 
-              });
+            //   });
 			// if (isset($request->date_from) && isset($request->date_to)) {
 			// 	$query = $query->whereBetween('trn_customer_rewards.created_at', [$a1, $a2]);
 			// }
@@ -292,6 +292,7 @@ class StoreWalletController extends Controller
 			$wallet_log->type='credit';
 			$wallet_log->points_debited=null;
 			$wallet_log->points_credited=$request->reward_points;
+            $wallet_log->description=$request->reward_discription;
 			$wallet_log->save();
             
             $data['status']=1;

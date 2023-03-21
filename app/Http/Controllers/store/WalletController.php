@@ -112,9 +112,9 @@ class WalletController extends Controller
 
 		$pageTitle = "Customer Reward";
         $store_id=Auth::guard('store')->user()->store_id;
-		$customer_rewards = Trn_customer_reward::leftjoin('trn_store_orders','trn_customer_rewards.order_id','=','trn_store_orders.order_id')->orderBy('reward_id', 'DESC')
-        ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', 'trn_customer_rewards.customer_id')
-        ->where('trn_store_orders.store_id',$store_id)
+		$customer_rewards = Trn_customer_reward::leftjoin('trn_store_customers', 'trn_store_customers.customer_id', 'trn_customer_rewards.customer_id')
+        ->where('store_id',$store_id)
+		//->whereNull('order_id')
         ->get();
 		if ($_GET) {
 
@@ -125,11 +125,11 @@ class WalletController extends Controller
 			$a1 = Carbon::parse($request->date_from)->startOfDay();
 			$a2  = Carbon::parse($request->date_to)->endOfDay();
 			$customer_first_name = $request->customer_name;
-			$query = Trn_customer_reward::with(['customer','order']);
-            $query->whereHas('order', function (Builder $qry) use($store_id) {
-                return $qry->where('store_id','=',$store_id);
+			$query = Trn_customer_reward::with(['customer','order'])->where('store_id',$store_id);
+            // $query->whereHas('order', function (Builder $qry) use($store_id) {
+            //     return $qry->where('store_id','=',$store_id);
                 
-              });
+            //   });
             //->orWhere('trn_store_orders.store_id',$store_id);
 
 			// if (isset($request->date_from) && isset($request->date_to)) {
@@ -214,6 +214,7 @@ class WalletController extends Controller
 			$wallet_log->type='credit';
 			$wallet_log->points_debited=null;
 			$wallet_log->points_credited=$request->reward_points;
+			$wallet_log->description=$request->reward_discription;
 			$wallet_log->save();
 			}
 			else{

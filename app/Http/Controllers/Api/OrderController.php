@@ -615,6 +615,7 @@ class OrderController extends Controller
                     ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
                     ->where('mst_delivery_boys.availability_status', 1)
                     ->where('mst_delivery_boys.delivery_boy_status', 1)
+                    ->whereNull('mst_delivery_boys.deleted_at')
                     ->get()
                 ) {
 
