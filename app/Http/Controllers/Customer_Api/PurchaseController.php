@@ -480,6 +480,8 @@ class PurchaseController extends Controller
                 if($request->admin_points==1)
                 {
                     $adminConfigPoints = Trn_configure_points::first();
+                    if($adminConfigPoints)
+                    {
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
                     $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
                     $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
@@ -523,7 +525,12 @@ class PurchaseController extends Controller
                     //$data['remainingOrderAmount'] = number_format((float)$p, 2, '.', '');
 
                     //$orderTotalArray['orderAmountAdmin']= $data['reducedOrderAmount'];
-
+                    }
+                    else
+                    {
+                        $data['status']=0;
+                        $data['message'] = "No configure poins set for the admin";
+                    }
 
 
                 }
@@ -535,6 +542,8 @@ class PurchaseController extends Controller
                         $wallet_log_first->first()->delete();
                     }
                     $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
+                    if($storeConfigPoints)
+                    {
                     $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
                     $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
                     $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
@@ -586,6 +595,14 @@ class PurchaseController extends Controller
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
+                }
+                else
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "No configure poins set for the store";
+                    return response($data);
+
+                }
 
                 }
                 $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
@@ -598,7 +615,9 @@ class PurchaseController extends Controller
                     $r=$orderAmount;
                 }
             
-                $data['remainingOrderAmount'] = number_format((float)$r, 2, '.', '');;
+                $data['remainingOrderAmount'] = number_format((float)$r, 2, '.', '');
+                $data['status'] = 1;
+                $data['message'] = "success";
                 return response($data);
                
             } else {
@@ -1197,7 +1216,8 @@ class PurchaseController extends Controller
                             $rvs->save();
                     }
                 }
-                    if($request->remove_flag == 1){
+                    if($request->remove_flag == 1)
+                    {
 
                     //all items related to customer has to be removed from the table and new product shoudl be added
                     //remove all products of the previous store
@@ -1304,7 +1324,7 @@ class PurchaseController extends Controller
                             ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
                             ->first();
                         @$cartData->productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_base_image;
-                        if(@$cartData->productData->product_varient_base_image!=NULL)
+                    if(@$cartData->productData->product_varient_base_image!=NULL)
                     {
                         @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_varient_base_image;
 
