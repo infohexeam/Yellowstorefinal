@@ -1879,7 +1879,7 @@ class ProductController extends Controller
                 ->orderBy('trn_wallet_logs.wallet_log_id','DESC')
                 ->get();
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
-                $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->sum('points_debited');
+                $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                 $available_points=$wallet_log_credited-$wallet_log_redeemed;              
                 $data['logs']=$wallet_logs;  
                 foreach($data['logs'] as $log)
