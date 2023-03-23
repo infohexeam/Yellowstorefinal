@@ -531,9 +531,9 @@ class PurchaseController extends Controller
                         $data['status']=0;
                         $data['message'] = "No configure poins set for the admin";
                     }
+         
 
-
-                }
+                   }
                 if($request->store_points==1)
                 {
                     $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');

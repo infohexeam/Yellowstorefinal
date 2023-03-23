@@ -1889,6 +1889,10 @@ class ProductController extends Controller
                     {
                         $log->description='Order Points';
                     }
+                    if($log->order_number==NULL)
+                    {
+                        $log->order_number='Gift Credit(Non order)';
+                    }
                 }            
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
