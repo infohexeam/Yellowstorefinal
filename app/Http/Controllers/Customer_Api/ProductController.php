@@ -1833,7 +1833,7 @@ class ProductController extends Controller
     {
         $data = array();
         $wallet_logs=array();
-        
+                
         try {
             $type1="debit";
             $type2="credit";
