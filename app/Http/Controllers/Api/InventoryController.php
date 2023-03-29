@@ -301,13 +301,13 @@ class InventoryController extends Controller
                         
 
                         // $dataPro = Mst_store_product::where('product_id', $usData->product_id);
-                        $sd = new Mst_StockDetail;
+                       /* $sd = new Mst_StockDetail;
                         $sd->store_id = $request->store_id;
                         $sd->product_id = $usData->product_id;
                         $sd->stock = ($usData->stock_count * -1);
                         $sd->product_varient_id = $request->product_varient_id;
                         $sd->prev_stock = $usData->stock_count??0;
-                        $sd->save();
+                        $sd->save();*/
 
                         $data['status'] = 1;
                         $data['message'] = "Stock reset successfully.";

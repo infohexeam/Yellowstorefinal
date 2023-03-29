@@ -960,7 +960,7 @@ class CouponController extends Controller
       // ->where('mst_store_product_varients.is_removed', 0)
       // ->orderBy('mst_store_products.product_name','ASC')
       //   ->orderBy('mst_store_product_varients.stock_count', 'ASC')
-      ->orderBy('mst__stock_details.created_at', 'DESC')
+      
 
       ->select(
         'mst_store_products.product_id',
@@ -1029,7 +1029,7 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->get();
+    $inventoryData = $inventoryData->orderBy('updated_time', 'DESC')->get();
     // foreach($inventoryData as $da)
     // {
     //     if($da->stock_count==0)
