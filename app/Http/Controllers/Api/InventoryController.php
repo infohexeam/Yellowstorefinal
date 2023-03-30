@@ -334,4 +334,5 @@ class InventoryController extends Controller
             $response = ['status' => '0', 'message' => $e->getMessage()];
         }
     }
+    
 }
