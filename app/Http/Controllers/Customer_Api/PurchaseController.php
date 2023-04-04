@@ -493,9 +493,20 @@ class PurchaseController extends Controller
                     if($j<=$e)
                     {
                         $k=$j;//Admin Redemption(Based on Max Redemption) (K)
+                        if($d==100)
+                        {
+                            $k=$data['orderAmount']-1;
+
+                        }
+
                     }
                     else{
                         $k=$e;//Admin Redemption(Based on Max Redemption) (K)
+                        if($d==100)
+                        {
+                            $k=$data['orderAmount']-1;
+
+                        }
                     }
                     $balancePoints=$h-$k;
                     if($balancePoints<0)
@@ -508,14 +519,27 @@ class PurchaseController extends Controller
                     $i=$orderAmount;
                     if($i>=$l)
                     {
+                        
                         $p=$i-$l;//Balance if Admin Redemption Only (P)
                         $data['totalReducableAdminAmount'] = number_format((float)$l, 2, '.', '');;
+                        if($d==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
+                       
 
                     }
                     else
                     {
                         $p=$i;//Balance if Admin Redemption Only (P)
                         $data['totalReducableAdminAmount'] = 0.00;
+                        if($d==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
+                        
 
                     }
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
@@ -556,9 +580,19 @@ class PurchaseController extends Controller
                     if($m<=$b)
                     {
                         $n=$m;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n = $data['orderAmount']-1;
+
+                        }
                     }
                     else{
                         $n=$b;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n = $data['orderAmount']-1;
+
+                        }
                     }
                     $balanceStorePoints=$g-$n;
                     if($balanceStorePoints<0)
@@ -573,12 +607,22 @@ class PurchaseController extends Controller
                     {
                         $q=$i-$o;//Balance if Admin Redemption Only (P)
                         $data['totalReducableStoreAmount'] = number_format((float)$o, 2, '.', '');;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');
+
+                        }
 
                     }
                     else
                     {
                         $q=$i;//Balance if Admin Redemption Only (P)
                         $data['totalReducableStoreAmount'] = 0.00;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');
+
+                        }
 
                     }
                     $wallet_log=new Trn_wallet_log();
@@ -688,9 +732,20 @@ class PurchaseController extends Controller
                     if($j<=$e)
                     {
                         $k=$j;//Admin Redemption(Based on Max Redemption) (K)
+                       
+                        if($d==100)
+                        {
+                            $k=$data['orderAmount']-1;
+
+                        }
                     }
                     else{
                         $k=$e;//Admin Redemption(Based on Max Redemption) (K)
+                        if($d==100)
+                        {
+                            $k=$data['orderAmount']-1;
+
+                        }
                     }
                     $balancePoints=$h-$k;
                     if($balancePoints<0)
@@ -705,12 +760,22 @@ class PurchaseController extends Controller
                     {
                         $p=$i-$l;//Balance if Admin Redemption Only (P)
                         $data['totalReducableAdminAmount'] = number_format((float)$l, 2, '.', '');;
+                        if($d==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
 
                     }
                     else
                     {
                         $p=$i;//Balance if Admin Redemption Only (P)
                         $data['totalReducableAdminAmount'] = 0.00;
+                        if($d==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
 
                     }
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
@@ -744,9 +809,20 @@ class PurchaseController extends Controller
                     if($m<=$b)
                     {
                         $n=$m;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n=$data['orderAmount']-1;
+
+                        }
+
                     }
                     else{
                         $n=$b;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n=$data['orderAmount']-1;
+
+                        }
                     }
                     $balanceStorePoints=$g-$n;
                     if($balanceStorePoints<0)
@@ -761,12 +837,22 @@ class PurchaseController extends Controller
                     {
                         $q=$i-$o;//Balance if Admin Redemption Only (P)
                         $data['totalReducableStoreAmount'] = number_format((float)$o, 2, '.', '');;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;
+
+                        }
 
                     }
                     else
                     {
                         $q=$i;//Balance if Admin Redemption Only (P)
                         $data['totalReducableStoreAmount'] = 0.00;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;
+
+                        }
 
                     }
                     $wallet_log=new Trn_wallet_log();
