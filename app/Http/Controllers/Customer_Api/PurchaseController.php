@@ -500,7 +500,8 @@ class PurchaseController extends Controller
                         }
 
                     }
-                    else{
+                    else
+                    {
                         $k=$e;//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
@@ -573,7 +574,9 @@ class PurchaseController extends Controller
                     $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
                     //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
                     //$g=50;
-                    $g=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                    $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
+                    $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
+                    $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                     $m=($g*$a)/100;
 
                     $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
