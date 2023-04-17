@@ -988,7 +988,7 @@ public static function totalOrderCredit($configOrderAmount,$configOrderPoint,$Or
     $orderAmount  = $configOrderAmount;
     $productTotal=$OrderTotal;
     // $amountRatio=$productTotal/$orderAmount; //division by zero bug retrace
-    $amountRatio == 0 ? 0 : ($productTotal / $orderAmount);
+    $amountRatio = 0 ? 0 : ($productTotal / $orderAmount);
     $orderPoint  = $configOrderPoint;
     $n=floor($amountRatio);
     return $n*$orderPoint;
