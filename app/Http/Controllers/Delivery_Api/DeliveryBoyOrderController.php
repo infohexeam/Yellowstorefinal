@@ -772,7 +772,6 @@ class DeliveryBoyOrderController extends Controller
                     // $order->delivery_time = Carbon::now()->format('H:i'); 
 
                     $configPoint = Trn_configure_points::find(1);
-                    dd($configPoint);
                     $orderAmount  = $configPoint->order_amount;
                     $orderPoint  = $configPoint->order_points;
                     $customer_id = $order->customer_id;
