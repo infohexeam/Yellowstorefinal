@@ -778,7 +778,6 @@ class DeliveryBoyOrderController extends Controller
                     // $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
                     // $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
                     $orderPointAmount=Helper::totalOrderCredit($orderAmount,$orderPoint,$order->product_total_amount);
-                    dd($orderPointAmount);
                     $store_id=$order->store_id;
                     $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
                     if($storeConfigPoint)
@@ -795,7 +794,6 @@ class DeliveryBoyOrderController extends Controller
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                     if (($request->status_id == 9)) {
                         $fop_store=Helper::checkFop($order);
-                        dd($fop_store);
                         $fop_app=Helper::checkFopApp($order);
                         Trn_store_order::where('order_id', $order_id)->update([
                             'status_id' => $request->status_id,
