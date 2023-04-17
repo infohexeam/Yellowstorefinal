@@ -983,9 +983,9 @@ class Helper
     }
 
     }
-public static function totalOrderCredit($configOrderAmount,$configOrderPoint,$OrderTotal)
+public static function totalOrderCredit($orderAmount,$configOrderPoint,$OrderTotal)
 {
-    $orderAmount  = $configOrderAmount;
+    $orderAmount  = $orderAmount;
     $productTotal=$OrderTotal;
     dd($orderAmount, $productTotal);
     $amountRatio=$productTotal/$orderAmount;
