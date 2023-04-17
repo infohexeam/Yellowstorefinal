@@ -987,6 +987,7 @@ public static function totalOrderCredit($configOrderAmount,$configOrderPoint,$Or
 {
     $orderAmount  = $configOrderAmount;
     $productTotal=$OrderTotal;
+    dd($orderAmount, $productTotal);
     $amountRatio=$productTotal/$orderAmount;
     $orderPoint  = $configOrderPoint;
     $n=floor($amountRatio);
