@@ -762,7 +762,7 @@ class DeliveryBoyOrderController extends Controller
                         $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                     }
                 } elseif ($request->status_id == 9 || $request->status_id == '9') {
-                    dd("string");
+                   
                   
 
                     $order = Trn_store_order::Find($order_id);
@@ -778,6 +778,7 @@ class DeliveryBoyOrderController extends Controller
                     // $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
                     // $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
                     $orderPointAmount=Helper::totalOrderCredit($orderAmount,$orderPoint,$order->product_total_amount);
+                    dd($orderPointAmount);
                     $store_id=$order->store_id;
                     $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
                     if($storeConfigPoint)
