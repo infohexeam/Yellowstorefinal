@@ -111,7 +111,7 @@
                         <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Percentage of wallet points can be redeemed per order</label>
-                           <input type="number"  min="0" oninput="validity.valid||(value='');" class="form-control" name="redeem_percentage" value="{{old('redeem_percentage',@$configure_points->redeem_percentage)}}" placeholder="Percentage of wallet points can be redeemed per order">
+                           <input type="number"  min="0" max="100" oninput="validity.valid||(value='');" class="form-control" name="redeem_percentage" value="{{old('redeem_percentage',@$configure_points->redeem_percentage)}}" placeholder="Percentage of wallet points can be redeemed per order">
                         </div>
                         </div>
 
