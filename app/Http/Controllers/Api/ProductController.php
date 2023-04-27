@@ -1183,7 +1183,10 @@ class ProductController extends Controller
                             'product_brand',
                             'product_type',
                             'service_type',
-                            'display_flag'
+                            'display_flag',
+                            'is_timeslot_based_product',
+                            'timeslot_start_time',
+                            'timeslot_end_time'
                         )
                         ->first()
                     ) {
@@ -1302,6 +1305,25 @@ class ProductController extends Controller
                         $product['business_type_id'] = 0;
                         $product['product_status']         = $request->product_status;
                         $product['display_flag']=$request->display_flag;
+                        if($request->timeslot_based_product==1)
+                        {
+                          $product['is_timeslot_based_product']=1;
+                          $product['timeslot_start_time']=$request->timeslot_start_time;
+                          $product['timeslot_end_time']=$request->timeslot_end_time;
+                          if($request->timeslot_start_time>$request->timeslot_end_time) 
+                          {
+                            $data['status'] = 0;
+                            $data['message'] = "Starting time cannot be greater than ending time.";
+                            return response($data);
+                          }
+                  
+                        }
+                        else{
+                          $product['is_timeslot_based_product']=0;
+                          $product['timeslot_start_time']=NULL;
+                          $product['timeslot_end_time']=NULL;
+                  
+                        }
 
                         if (Mst_store_product::where('product_id', $product_id)->update($product)) {
                             $c = 1; //
@@ -1918,7 +1940,10 @@ class ProductController extends Controller
                             'product_brand',
                             'product_type',
                             'service_type',
-                            'display_flag'
+                            'display_flag',
+                            'is_timeslot_based_product',
+                            'timeslot_start_time',
+                            'timeslot_end_time'
                         )
                         ->first()
                     ) {
@@ -2331,6 +2356,25 @@ class ProductController extends Controller
                                 $productData['product_brand'] = $request->product_brand;
                                 $productData['product_status'] = $request->product_status;
                                 $productData['display_flag'] = $request->display_flag;
+                                if($request->timeslot_based_product==1)
+                                {
+                                  $productData['is_timeslot_based_product']=1;
+                                  $productData['timeslot_start_time']=$request->timeslot_start_time;
+                                  $productData['timeslot_end_time']=$request->timeslot_end_time;
+                                  if($request->timeslot_start_time>$request->timeslot_end_time) 
+                                  {
+                                    $data['status'] = 0;
+                                    $data['message'] = "Starting time cannot be greater than ending time.";
+                                    return response($data);
+                                  }
+                          
+                                }
+                                else{
+                                  $productData['is_timeslot_based_product']=0;
+                                  $productData['timeslot_start_time']=NULL;
+                                  $productData['timeslot_end_time']=NULL;
+                          
+                                }
                                 $varCount = Mst_store_product_varient::where('product_id', $request->product_id)->count();
     
                                 if ($request->c != 'other') {

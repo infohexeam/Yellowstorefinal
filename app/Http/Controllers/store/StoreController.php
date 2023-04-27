@@ -989,6 +989,22 @@ class StoreController extends Controller
 
       $product->is_added_from_web               =  1;  
 
+      if($request->timeslot_based_product==1)
+      {
+        $product->is_timeslot_based_product=1;
+        $product->timeslot_start_time=$request->timeslot_start_time;
+        $product->timeslot_end_time=$request->timeslot_end_time;
+        if($request->timeslot_start_time>$request->timeslot_end_time) 
+        {
+          return redirect()->back()->withErrors(['Starting time can\'t be greater than ending time.'])->withInput();
+        }
+
+      }
+      else{
+        $product->is_timeslot_based_product=0;
+
+      }
+
       // $product->product_offer_from_date = $request->product_offer_from_date;
       // $product->product_offer_to_date   = $request->product_offer_to_date;
       // $product->product_delivery_info   = $request->product_delivery_info;
@@ -1662,6 +1678,23 @@ class StoreController extends Controller
       }
 
       // $product['product_status'] = 0;
+      if($request->timeslot_based_product==1)
+      {
+        $product['is_timeslot_based_product']=1;
+        $product['timeslot_start_time']=$request->timeslot_start_time;
+        $product['timeslot_end_time']=$request->timeslot_end_time;
+        if($request->timeslot_start_time>$request->timeslot_end_time) 
+        {
+          return redirect()->back()->withErrors(['Starting time can\'t be greater than ending time.'])->withInput();
+        }
+
+      }
+      else{
+        $product['is_timeslot_based_product']=0;
+        $product['timeslot_start_time']=NULL;
+        $product['timeslot_end_time']=NULL;
+
+      }
 
 
       DB::table('mst_store_products')->where('product_id', $product_id)->update($product);

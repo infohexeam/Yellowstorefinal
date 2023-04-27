@@ -148,6 +148,37 @@
                            </select>
                      </div>
                   </div>
+                   <div class="col-md-6">
+                     
+                      
+                          <label class="form-label">Is time slot based product? *</label>
+                          <div class="form-group">
+                          <label class="form-label" for="tsb_product_yes">Yes:</label>
+                            <input type="radio" required class="tsb_product" name="timeslot_based_product" @if($product->is_timeslot_based_product=="1")  checked @endif id="tsb_product_yes" onclick="isTSBProduct(this.value)"  value="1" >
+                            
+                           </div>
+                             <div class="form-group">
+                               <label class="form-label" for="tsb_product_no">No:</label>
+                               @php
+                               //dd($product->is_timeslot_based_product);
+                               @endphp
+                            <input type="radio" required class="tsb_product" @if($product->is_timeslot_based_product=="0" ||$product->is_timeslot_based_product==NULL)  checked @endif	 name="timeslot_based_product" id="tsb_product_no" onclick="isTSBProduct(this.value)"  value="0">
+                           
+                            </div>
+                       
+                        </div>
+                         <div class="col-md-6">
+                         <div id="tslot">
+                       
+                          <label class="form-label">Time slot</label>
+                          <div class="form-group">
+                           <label class="form-label">start Time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_start_time" id="tsb_product_st"  onclick="checkTimeSlot()" @if($product->timeslot_start_time) value="{{$product->timeslot_start_time}}" @endif>
+                           </div>
+                             <div class="form-group">
+                            <label class="form-label">End time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_end_time" id="tsb_product_et" onclick="checkTimeSlot()" @if($product->timeslot_end_time) value="{{$product->timeslot_end_time}}" @endif>
+                            </div>
+                            </div>
+                        </div>
                
 
                   <div id="service_type_id" class="col-md-12">
@@ -1160,6 +1191,13 @@ function changeBaseImage(id,varId)
          }
 
          $(document).ready(function() {
+              tbv=$('input[name="timeslot_based_product"]:checked').val();
+               //alert(tbv);
+               if(tbv==0)
+               {
+                  $('#tslot').hide();
+                  $(".tsb_product_ts").attr("required", false);
+               }
     var pcc = 0;
       //  alert("dd");
        $('#category').change(function(){
@@ -1200,6 +1238,20 @@ function changeBaseImage(id,varId)
 
     });
 
+function isTSBProduct(v)
+    {
+        if(v==0)
+        {
+          $('#tslot').hide();
+          $(".tsb_product_ts").attr("required", false);
+        }
+         if(v==1)
+        {
+          $('#tslot').show();
+          $(".tsb_product_ts").attr("required", true);
+        }
+
+    }
 
 function showVariant(){
 
@@ -1471,7 +1523,11 @@ $(document).ready(function() {
 //});
 
 
+ function checkTimeSlot()
+  {
+    
 
+  }
 
 
 

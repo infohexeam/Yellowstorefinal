@@ -137,6 +137,36 @@ input[type="file"] {
                               </select>
                         </div>
                      </div>
+                      <div class="col-md-6">
+                     
+                      
+                          <label class="form-label">Is time slot based product? *</label>
+                          <div class="form-group">
+                          <label class="form-label" for="tsb_product_yes">Yes:</label>
+                            <input type="radio" required class="tsb_product" name="timeslot_based_product" id="tsb_product_yes" onclick="isTSBProduct(this.value)"  value="1" >
+                            
+                           </div>
+                             <div class="form-group">
+                               <label class="form-label" for="tsb_product_no">No:</label>
+                            <input type="radio" required class="tsb_product" checked name="timeslot_based_product" id="tsb_product_no" onclick="isTSBProduct(this.value)"  value="0">
+                           
+                            </div>
+                       
+                        </div>
+                         <div class="col-md-6">
+                         <div id="tslot">
+                       
+                          <label class="form-label">Time slot</label>
+                          <div class="form-group">
+                           <label class="form-label">start Time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_start_time" id="tsb_product_st"  onchange="checkTimeSlot()"  >
+                           </div>
+                             <div class="form-group">
+                            <label class="form-label">End time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_end_time" id="tsb_product_et" onchange="checkTimeSlot()">
+                            </div>
+                            </div>
+                        </div>
+                       
+                    
                     
                      
                      <div id="service_type_id" class="col-md-12">
@@ -874,6 +904,24 @@ var agsc = 0;
 
 
  //$(document).ready(function() {
+function GetHours(d) {
+var h = parseInt(d.split(':')[0]);
+if (d.split(':')[1].split(' ')[1] == "PM") {
+h = h + 12;
+}
+return h;
+}
+function GetMinutes(d) {
+return parseInt(d.split(':')[1].split(' ')[0]);
+}
+  function checkTimeSlot()
+  {
+
+   
+
+
+
+  }
 
    function findValue(c){
 
@@ -915,9 +963,31 @@ var agsc = 0;
 
     
     //});
+    function isTSBProduct(v)
+    {
+        if(v==0)
+        {
+          $('#tslot').hide();
+          $(".tsb_product_ts").attr("required", false);
+        }
+         if(v==1)
+        {
+          $('#tslot').show();
+          $(".tsb_product_ts").attr("required", true);
+        }
+
+    }
 
 
   $(document).ready(function() {
+    tbv=$('input[name="timeslot_based_product"]:checked').val();
+    //alert(tbv);
+    if(tbv==0)
+    {
+      $('#tslot').hide();
+      $(".tsb_product_ts").attr("required", false);
+    }
+
     var pcc = 0;
       //  alert("dd");
        $('#category').change(function(){
