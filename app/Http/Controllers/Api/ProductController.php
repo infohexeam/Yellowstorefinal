@@ -2193,6 +2193,25 @@ class ProductController extends Controller
                             } else {
                                 $product->product_status         = 1;
                             }
+                            if($request->timeslot_based_product==1)
+                            {
+                              $product->is_timeslot_based_product=1;
+                              $product->timeslot_start_time=$request->timeslot_start_time;
+                              $product->timeslot_end_time=$request->timeslot_end_time;
+                              if($request->timeslot_start_time>$request->timeslot_end_time) 
+                              {
+                                $data['status'] = 0;
+                                $data['message'] = "Starting time cannot be greater than ending time.";
+                                return response($data);
+                              }
+                      
+                            }
+                            else{
+                                $product->is_timeslot_based_product=0;
+                                $product->timeslot_start_time=NULL;
+                                $product->timeslot_end_time=NULL;
+                      
+                            }
     
     
                             if ($product->save()) {
