@@ -16,7 +16,7 @@ class getUnusedProducts extends Command
      *
      * @var string
      */
-    protected $signature = 'command:getunusedProduct';
+    protected $signature = 'command:getUnusedProducts';
 
     /**
      * The console command description.

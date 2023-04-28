@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
     {
     
     
-    $schedule->command('command:getunusedProduct')->everyMinute();
+    $schedule->command('command:getUnusedProducts')->everyMinute();
        
         // $schedule->command('command:getPaymentData')->everyFiveMinutes();
         // $schedule->command('command:getRefundData')->everyThirtyMinutes();
