@@ -1090,6 +1090,7 @@ class StoreOrderController extends Controller
                         $invoice_info['updated_at'] = Carbon::now();
     
                         Trn_order_invoice::insert($invoice_info);
+                        //Product availability time slot check done
 
                         foreach ($request->product_variants as $value) {
                             $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);

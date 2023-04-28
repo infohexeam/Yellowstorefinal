@@ -48,6 +48,7 @@ use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_RecentlyVisitedProducts;
 use App\Trn_wallet_log;
+use DateTime;
 
 class PurchaseController extends Controller
 {
@@ -1022,7 +1023,27 @@ class PurchaseController extends Controller
         }
     }
 
+public function addToCartTest(Request $request)
+{
+    $proData = Mst_store_product::find(395);
+    $currTime = date("G:i");
+    $start = $proData->timeslot_start_time; //init the start time
+    $end = $proData->timeslot_end_time; //init the end time
+    //return $start;
+   
+    if ($currTime<$start || $currTime>$end)
+    {
+        //return 1;
+        if($proData->is_timeslot_based_product==1)
+        {
+            return 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
 
+        }
+       
+
+    }
+  
+}
 
     public function addToCartInternal(Request $request)
     {
@@ -1051,7 +1072,29 @@ class PurchaseController extends Controller
                             $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
                             $proData = Mst_store_product::find($varProdu->product_id);
+                            // $productAvailableRes=$this->productAvailabilityCheck($varProdu->product_id);
+                            // if($productAvailableRes==2)
+                            // {
+                            //     $data['message'] = 'Product Unavailable. The product will be available from'.." to "configured time".”';
+                            //     $data['status'] = 3;
+                            //     return response($data);
 
+                            // }
+                            $currTime = date("G:i");
+                            $start = $proData->timeslot_start_time; //init the start time
+                            $end = $proData->timeslot_end_time; //init the end time
+                            //return $start;
+                           
+                            if ($proData->is_timeslot_based_product==1)
+                            {
+                                if($currTime<$start || $currTime>$end)
+                                {
+                                    $data['message'] = 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
+                                    $data['status'] = 3;
+                                    return response($data);
+                                }
+                               
+                            }
                             if ($request->quantity > $varProdu->stock_count ) {  
                                 $data['message'] = 'Stock unavailable';
                                 $data['status'] = 3;
