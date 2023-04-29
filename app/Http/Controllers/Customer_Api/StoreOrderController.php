@@ -952,7 +952,7 @@ class StoreOrderController extends Controller
                         }
                         if($pua>0)
                         {
-                            $data['status'] = 15;
+                            $data['status'] = 3;
                             $data['message'] = "FEW PRODUCTS IN CART ARE UNAVAILABLE ON THE SELECTED TIMESLOT. PLEASE CONFIRM BY ACCEPTING OR DECLINING";
                             DB::rollback();
                             return response($data);
