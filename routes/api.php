@@ -36,7 +36,7 @@ Route::middleware('auth:customer')->get('/customer', function (Request $request)
 
 Route::get('test', 'Customer_Api\BusinessTypeController@test');
 Route::post('test-pg', 'Customer_Api\StoreOrderController@pgTest');
-
+Route::get('test-delivery-slot', 'Customer_Api\StoreOrderController@deliverySlotTest');
 
 Route::get('video/list', 'Api\StoreController@VideoList');
 Route::get('dboy/list', 'Delivery_Api\DeliveryBoyController@dboy');

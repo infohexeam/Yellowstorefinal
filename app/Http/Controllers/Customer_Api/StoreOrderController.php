@@ -909,11 +909,31 @@ class StoreOrderController extends Controller
                             }
     
                         }
-    
+                        if($request->time_slot)
+                        {
+                            $slot=Trn_StoreDeliveryTimeSlot::find($request->time_slot);
+
+                        }
+                        $pua=0;
     
                         foreach ($request->product_variants as $value) {
                             $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                             $proData = Mst_store_product::find($varProdu->product_id);
+                            $start = $proData->timeslot_start_time; //init the start time
+                            $end = $proData->timeslot_end_time; //init the end time
+                            //return $start;
+                           
+                            if ($proData->is_timeslot_based_product==1)
+                            {
+                                if($slot)
+                                {
+                                if($slot->time_start<$start && $slot->time_end>$end)
+                                {
+                                    $pua=$pua+1;
+                                }
+                             }
+                               
+                            }
                             if($varProdu )
                             {
                                 $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
@@ -929,6 +949,14 @@ class StoreOrderController extends Controller
                             }
                             } 
                             
+                        }
+                        if($pua>0)
+                        {
+                            $data['status'] = 15;
+                            $data['message'] = "FEW PRODUCTS IN CART ARE UNAVAILABLE ON THE SELECTED TIMESLOT. PLEASE CONFIRM BY ACCEPTING OR DECLINING";
+                            DB::rollback();
+                            return response($data);
+
                         }
     
     
@@ -3026,6 +3054,32 @@ class StoreOrderController extends Controller
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
+    }
+    public function deliverySlotTest()
+    {
+        $slot=Trn_StoreDeliveryTimeSlot::find(56);
+        $proDatas=Mst_store_product::whereIn('product_id',[394,395,396,397])->get();
+        $currTime = date("G:i");
+        $pua=0;
+    foreach($proDatas as $proData)
+    {
+        $start = $proData->timeslot_start_time; //init the start time
+        $end = $proData->timeslot_end_time; //init the end time
+        //return $start;
+       
+        if ($proData->is_timeslot_based_product==1)
+        {
+            
+            if($slot->time_start<$start && $slot->time_end>$end)
+            {
+                $pua=$pua+1;
+            }
+           
+        }
+    }
+
+        return $pua;
+
     }
    
 }
