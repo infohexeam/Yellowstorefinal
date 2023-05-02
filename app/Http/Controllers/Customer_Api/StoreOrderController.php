@@ -909,6 +909,7 @@ class StoreOrderController extends Controller
                             }
     
                         }
+                        $slot=[];
                         if($request->time_slot)
                         {
                             $slot=Trn_StoreDeliveryTimeSlot::find($request->time_slot);
