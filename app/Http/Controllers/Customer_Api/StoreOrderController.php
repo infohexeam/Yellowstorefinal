@@ -927,13 +927,14 @@ class StoreOrderController extends Controller
                             {
                                 if($slot)
                                 {
-                                if($slot->time_start<$start && $slot->time_end>$end)
+                                if($slot->time_start<$start || $slot->time_end>$end)
                                 {
                                     $pua=$pua+1;
                                 }
                              }
                                
                             }
+                            return $pua;
                             if($varProdu )
                             {
                                 $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
