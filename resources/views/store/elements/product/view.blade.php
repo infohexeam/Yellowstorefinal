@@ -132,6 +132,9 @@
                                  <tr>
                                      <td><strong>Description:</strong> {!! @$product->product_description !!}</td>
                                  </tr>
+                                  <tr>
+                                     <td><strong>Is Timeslot based:</strong>@if($product->is_timeslot_based_product==1) Yes({{date('g:i A',strtotime($product->timeslot_start_time))}}-{{date('g:i A',strtotime($product->timeslot_end_time))}}) @else No @endif</td>
+                                 </tr>
                                
                                  <tr>
                                     <td><strong>Image:</strong> <img data-toggle="modal" data-target="#viewSingleProduct" src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" ></td>
@@ -141,6 +144,7 @@
                                 <tr>
                                      <td><strong>Minimum Stock Count:</strong> {{ @$product->stock_count}}</td>
                                 </tr>
+                                 
                               </tbody>
                            </table>
 
