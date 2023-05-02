@@ -952,6 +952,8 @@ class StoreOrderController extends Controller
                             
                         }
                         //return $pua;
+                        if($request->accept==0)
+                        {
                         if($pua>0)
                         {
                             $data['status'] = 3;
@@ -960,6 +962,7 @@ class StoreOrderController extends Controller
                             return response($data);
 
                         }
+                    }
     
     
                         if (count($noStockProducts) > 0) {
