@@ -923,6 +923,25 @@ class StoreOrderController extends Controller
                             $start = $proData->timeslot_start_time; //init the start time
                             $end = $proData->timeslot_end_time; //init the end time
                             //return $start;
+                            if($request->time_slot==0)
+                            {
+                                $currTime = date("G:i");
+                                
+                                //return $start;
+                                if($proData->is_timeslot_based_product==1)
+                                {
+                               
+                                if ($currTime<$start || $currTime>$end)
+                                {
+                                    $pua=$pua+1;
+                            
+                                }
+                                   
+                            
+                                }
+
+
+                            }
                            
                             if ($proData->is_timeslot_based_product==1)
                             {
@@ -933,6 +952,7 @@ class StoreOrderController extends Controller
                                     $pua=$pua+1;
                                 }
                              }
+                            
                                
                             }
                             //return $pua;
