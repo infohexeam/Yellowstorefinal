@@ -934,7 +934,7 @@ class StoreOrderController extends Controller
                              }
                                
                             }
-                            return $pua;
+                            //return $pua;
                             if($varProdu )
                             {
                                 $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
