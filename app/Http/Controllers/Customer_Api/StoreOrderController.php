@@ -1220,6 +1220,10 @@ class StoreOrderController extends Controller
                                 'discount_amount' => $iDis,
                                 'created_at'         => Carbon::now(),
                                 'updated_at'         => Carbon::now(),
+                                'is_timeslot_product'=>$proDataZ->is_timeslot_based_product,
+                                'time_start'=>$proDataZ->timeslot_start_time??NULL,
+                                'time_end'=>$proDataZ->timeslot_end_time??NULL,
+
                             ];
                             Trn_store_order_item::insert($data2);
                         }
@@ -2723,7 +2727,7 @@ class StoreOrderController extends Controller
                         $data['orderDetails']->item_list_link = url('item/list/' . Crypt::encryptString($data['orderDetails']->order_id));
 
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
-                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price','mrp','tax_value','tax_id', 'tick_status')
+                            ->select('product_id','product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price','mrp','tax_value','tax_id', 'tick_status','is_timeslot_product','time_start','time_end')
                             ->get();
 
 

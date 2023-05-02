@@ -32,7 +32,7 @@ class Trn_store_order_item extends Model
                        'order_date',
                        'pay_date',
                        'delivery_date',
-                       'tick_status','delivery_boy_tick_status'
+                       'tick_status','delivery_boy_tick_status','is_timeslot_product','time_start','time_end'
     						  ];
    public function customer()
    {
