@@ -950,7 +950,7 @@ class StoreOrderController extends Controller
                             } 
                             
                         }
-                        return $pua;
+                        //return $pua;
                         if($pua>0)
                         {
                             $data['status'] = 3;
