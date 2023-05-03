@@ -283,7 +283,14 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
                                              <br>
                                              {{ @$order_item->product_varient->variant_name }}
-                                             
+                                             @if(@$order->order_type != 'POS')
+                                             @if($order_item->is_timeslot_product)
+                                             @if($order_item->is_timeslot_product==1)
+                                             Product was available between
+                                             {{date('g:i A',strtotime($order_item->time_start))}}-{{date('g:i A',strtotime($order_item->time_end))}}
+                                             @endif
+                                             @endif
+                                             @endif
                                                 {{-- {{@$order_item->product->product_name}}   
                                                 @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )
                                                    @if (@$order_item->product->product_name != @$order_item->product_varient->variant_name )
