@@ -4309,7 +4309,7 @@ class StoreController extends Controller
 
   public function update_delivery_time_slots(Request $request)
   {
-    // dd($request->all());
+    //dd($request->all());
 
     try {
 
@@ -4332,6 +4332,10 @@ class StoreController extends Controller
         ];
 
         //print_r($info);die;
+        if($start[$i]>=$end[$i])
+        {
+          return  redirect()->back()->with('error', 'Failed!End time cannot be less than start time');
+        }
 
         Trn_StoreDeliveryTimeSlot::insert($info);
         $i++;
