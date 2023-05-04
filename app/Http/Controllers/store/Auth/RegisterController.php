@@ -137,8 +137,7 @@ class RegisterController extends Controller
     {
 
         $number = $request->number;
-        $data = Mst_store::where('store_mobile', $number)
-            ->count();
+        $data = Trn_StoreAdmin::where('store_mobile', $number) ->count();
 
         if ($data > 0) {
             echo 'not_unique';

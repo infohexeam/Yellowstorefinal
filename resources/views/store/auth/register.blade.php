@@ -400,9 +400,9 @@
 
 
                         <div class="container-login100-form-btn">
-                           <a type="submit" id="submit" onclick="phoneSendAuth();" class="text-white login100-form-btn btn-primary">
+                           <button type="submit" id="submit" onclick="phoneSendAuth();" class="text-white login100-form-btn btn-primary">
                            {{ __('Register Now') }}
-                           </a>
+                           </button>
                         </div>
                          <div class="container-login100-form-btn">
                            <a href="{{ url('store-login') }}"  class="login100-form-btn btn-primary">
@@ -733,19 +733,19 @@ var firebaseConfig = {
                 success:function(result)
                 {
                 //alert("dszczs");
+                //alert(result);
                 if(result == 'unique')
                 {
                                 $('#error_store_mobile').empty();
-                                       $('#submit').attr('disabled', false);
+                                $('#submit').hide();
 
                 }
                 else
                 {
-                $('#error_store_mobile').html('<label class="text-danger">Mobile Number Already Exist </label>');
-            // $('#email').addClass('has-error');
-                $('#submit').attr('disabled', 'disabled');
+                   $('#submit').show();
 
-            }
+                }
+               
             }
         });
 
@@ -1113,13 +1113,15 @@ $("#store_name").blur(function(){
                 
                                 $('#error_store_mobile').empty();
 $('#store_mobile').removeClass('has-error');
-                $('#submit').attr('disabled', false);
+                $('#submit').attr('disabled',false);
+                //$('#submit').show();
             }
             else
             {
                 $('#error_store_mobile').html('<label class="text-danger">Store phone already exist </label>');
                 $('#store_mobile').addClass('has-error');
-                $('#submit').attr('disabled', 'disabled');
+                $('#submit').attr('disabled',true);
+                //$('#submit').hide();
             }
         }
    })
