@@ -59,7 +59,7 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof AuthenticationException) {
             //return redirect("/");
-            // if (Auth::guard('api')->check()) {
+            if (Auth::guard('api')->check()) {
 
             return response()->json(
                [
@@ -71,9 +71,9 @@ class Handler extends ExceptionHandler
             //     Response::HTTP_UNAUTHORIZED
                 
          );
-            // } else {
-            //     return redirect("/");
-            // }
+            } else {
+                return redirect("/");
+            }
         }
         return parent::render($request, $exception);
     }
