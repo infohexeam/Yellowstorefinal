@@ -2175,9 +2175,8 @@ class StoreOrderController extends Controller
                        
                         $data['product_name'] = @$varProdu->variant_name;
 
-                        // $noStockProducts[] = $varProdu->product_varient_id;
-
-                        // $data['noStockProducts'] = $noStockProducts;
+                        $noStockProducts[] = $varProdu->product_varient_id;
+                        $data['noStockProducts'] = $noStockProducts; // first commented.  uncommented to solve unexpected error in cart proceed due to product unavailability.
                         $data['message'] = 'Product unavailable';
                         $data['status'] = 2;
                         return response($data);
