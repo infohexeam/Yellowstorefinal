@@ -58,19 +58,19 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof AuthenticationException) {
-            return redirect("/");
+            //return redirect("/");
             // if (Auth::guard('api')->check()) {
 
-            // return response()->json(
-            //     [
-            //         'type' => 'error',
-            //         'status' => Response::HTTP_UNAUTHORIZED,
-            //         'status' => '0',
-            //         'message' => 'Access Token expired',
-            //     ],
+            return response()->json(
+               [
+                 'type' => 'error',
+                    'status' => Response::HTTP_UNAUTHORIZED,
+                   'status' => '0',
+                    'message' => 'Access Token expired',
+                ],
             //     Response::HTTP_UNAUTHORIZED
                 
-            // );
+         );
             // } else {
             //     return redirect("/");
             // }

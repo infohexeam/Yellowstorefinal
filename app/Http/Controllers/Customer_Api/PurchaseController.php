@@ -653,6 +653,7 @@ class PurchaseController extends Controller
                 }
 
                 }
+                
                 $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
                 if($orderAmount>$data['totalReducableAmount'])
                 {
@@ -662,6 +663,12 @@ class PurchaseController extends Controller
                 {
                     $r=$orderAmount;
                 }
+                if($r<0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Amount cannot be redeemmed now!";
+                        return response($data);
+                    }
             
                 $data['remainingOrderAmount'] = number_format((float)$r, 2, '.', '');
                 $data['status'] = 1;
@@ -780,6 +787,7 @@ class PurchaseController extends Controller
                             $data['totalReducableStoreAmount'] = number_format((float)$k, 2, '.', '');;
 
                         }
+                        
 
                     }
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
