@@ -1282,7 +1282,10 @@ class StoreController extends Controller
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
+            $data['status']=0;
+            $data['message']="Access token expired";
+            $data['login_status']=0;
+            return response($data);
         } catch (\Throwable $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
