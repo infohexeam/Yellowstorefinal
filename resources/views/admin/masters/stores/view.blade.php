@@ -285,7 +285,7 @@
                            <h5><strong>Products</strong></h5>
                         </div>
                           <div class="table-responsive">
-                           <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                           <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                                    <thead>
                                  <tr>
                                    <th class="wd-15p">S.No</th>
@@ -427,3 +427,35 @@
                 window.open(th.name,'_blank');
             }
         </script>
+
+
+<script>
+   $(function(e) {
+   $('#exampletable').DataTable( {
+       dom: 'Bfrtip',
+       buttons: [
+           {
+               extend: 'pdf',
+               title: 'Products Report',
+               footer: true,
+               exportOptions: {
+                  columns: [0,1,2,3,4],                  
+                  },
+                orientation : 'landscape',
+               pageSize : 'LEGAL',
+           },
+           {
+               extend: 'excel',
+               title: 'Products Report',
+               footer: true,
+               exportOptions: {
+                  columns: [0,1,2,3,4]
+               }              
+              
+           }
+        ]
+   } );
+
+} );
+</script>
+
