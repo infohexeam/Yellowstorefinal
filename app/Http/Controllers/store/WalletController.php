@@ -356,7 +356,7 @@ class WalletController extends Controller
 			// 	   ->orderBy('trn_store_orders.order_id', 'DESC')
 			//        ->get();
 	  //DD($request->store_id,$request->subadmin_id,$data);
-	        $data=$data->get();
+	        $data=$data->orderBy('order_id', 'DESC')->get();
 			return view('store.elements.reports.redeem_report', compact('subadmins', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom','customer_mobile', 'data', 'pageTitle'));
 		  } catch (\Exception $e) {
 			return redirect()->back()->withErrors([$e->getMessage()])->withInput();
