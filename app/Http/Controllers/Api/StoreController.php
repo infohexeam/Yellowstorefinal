@@ -3616,9 +3616,9 @@ class StoreController extends Controller
                 ->whereNotNull('trn_store_orders.reward_points_used_store');
 			       
                 if (isset($request->page)) {
-                    $walletdata = $walletdata->paginate(10, ['data'], 'page', $request->page);
+                    $walletdata = $walletdata->orderBy('order_id', 'DESC')->paginate(10, ['data'], 'page', $request->page);
                 } else {
-                    $walletdata = $walletdata->paginate(10);
+                    $walletdata = $walletdata->orderBy('order_id', 'DESC')->paginate(10);
                 }
 	  //DD($request->store_id,$request->subadmin_id,$data);
       
