@@ -2876,17 +2876,21 @@ class SettingController extends Controller
 			// }
 
 			if (isset($store_id)) {
+				//dd($store_id);
 				//$query=$query->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id');
 				$query = $query->select('mst_delivery_boys.*','mst_store_link_delivery_boys.store_id')->where('mst_store_link_delivery_boys.store_id', $store_id);
+				$delivery_boys = $query->whereNull('mst_delivery_boys.deleted_at')->get();
 			}
 
 			if (isset($request->date_from) && isset($request->date_to)) {
 				$query = $query->whereDate('mst_delivery_boys.created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
 				$query = $query->whereDate('mst_delivery_boys.created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
+				$delivery_boys = $query->whereNull('mst_delivery_boys.deleted_at')->get();
 			}
+              
 
-
-			$delivery_boys = $query->whereNull('mst_delivery_boys.deleted_at')->get();
+			
+			
 
 			return view('admin.masters.delivery_boy.list', compact('delivery_boys', 'pageTitle', 'countries', 'stores'));
 		}
