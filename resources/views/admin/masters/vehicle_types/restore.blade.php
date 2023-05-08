@@ -70,6 +70,36 @@
 {{-- container end --}}
 </div>
 
+<script>
+
+    $(function(e) {
+        $('#exampletable').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'pdf',
+                    title: 'Restore Vehicle_types',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1]
+                     }
+                     
+                },
+                {
+                    extend: 'excel',
+                    title: 'Restore Vehicle_types',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1]
+                     }
+                }
+             ]
+        } );
+    
+    } );
+                </script>
+
+
 
 
 
