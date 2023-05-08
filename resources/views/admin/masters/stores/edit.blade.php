@@ -1050,7 +1050,7 @@ $(function(e) {
             },
             {
                 extend: 'excel',
-                title: 'Stores',
+                title: 'Products',
                 footer: true,
                 exportOptions: {
                      columns: [0,1,2,3]
