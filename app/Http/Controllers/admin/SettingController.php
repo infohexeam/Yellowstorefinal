@@ -2883,10 +2883,13 @@ class SettingController extends Controller
 			}
 
 			if (isset($request->date_from) && isset($request->date_to)) {
-				$query = $query->whereDate('mst_delivery_boys.created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
+				
+;				$query = $query->whereDate('mst_delivery_boys.created_at', '>=', $a1->format('Y-m-d') . " 00:00:00");
 				$query = $query->whereDate('mst_delivery_boys.created_at', '<=', $a2->format('Y-m-d') . " 00:00:00");
-				$delivery_boys = $query->whereNull('mst_delivery_boys.deleted_at')->get();
+				
+				
 			}
+			
               
 
 			
