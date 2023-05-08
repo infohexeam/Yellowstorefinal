@@ -244,7 +244,7 @@ use App\Models\admin\Trn_CategoryBusinessType;
                                title: 'Categories',
                                footer: true,
                                exportOptions: {
-                                    columns: [0,1,2,3]
+                                    columns: [0,1,2,3,4]
                                 }
                            }
                         ]
