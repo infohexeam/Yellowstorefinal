@@ -20,7 +20,7 @@
                                     
                                 <br>
                             <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="exampletable" class="table table-striped table-bdataed text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
@@ -69,6 +69,36 @@
     </div>
 {{-- container end --}}
 </div>
+
+<script>
+
+    $(function(e) {
+        $('#exampletable').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'pdf',
+                    title: 'Restore Vehicle_types',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1]
+                     }
+                     
+                },
+                {
+                    extend: 'excel',
+                    title: 'Restore Vehicle_types',
+                    footer: true,
+                    exportOptions: {
+                         columns: [0,1]
+                     }
+                }
+             ]
+        } );
+    
+    } );
+                </script>
+
 
 
 

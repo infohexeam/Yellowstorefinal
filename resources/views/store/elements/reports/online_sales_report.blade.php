@@ -224,7 +224,6 @@
                 extend: 'pdf',
                 title: 'Online Sales Report',
                 footer: true,
-             
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
             },
