@@ -20,7 +20,7 @@
                                     
                                 <br>
                             <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bdataed text-nowrap w-100">
+                            <table id="exampletable" class="table table-striped table-bdataed text-nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th class="wd-15p">SL.No</th>
