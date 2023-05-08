@@ -419,43 +419,45 @@
   </div>
   @endforeach
 
-
-@endsection
-<script type="text/javascript">
-            function openTab(th)
-            {
-                window.open(th.name,'_blank');
-            }
-        </script>
+  <script type="text/javascript">
+   function openTab(th)
+   {
+       window.open(th.name,'_blank');
+   }
+</script>
 
 
 <script>
-   $(function(e) {
-   $('#exampletable').DataTable( {
-       dom: 'Bfrtip',
-       buttons: [
-           {
-               extend: 'pdf',
-               title: 'Products Report',
-               footer: true,
-               exportOptions: {
-                  columns: [0,1,2,3,4],                  
-                  },
-                orientation : 'landscape',
-               pageSize : 'LEGAL',
-           },
-           {
-               extend: 'excel',
-               title: 'Products Report',
-               footer: true,
-               exportOptions: {
-                  columns: [0,1,2,3,4]
-               }              
-              
-           }
-        ]
-   } );
+$(function(e) {
+$('#exampletable').DataTable( {
+dom: 'Bfrtip',
+buttons: [
+  {
+      extend: 'pdf',
+      title: 'Products Report',
+      footer: true,
+      exportOptions: {
+         columns: [0,1,2,3,4],                  
+         },
+       orientation : 'landscape',
+      pageSize : 'LEGAL',
+  },
+  {
+      extend: 'excel',
+      title: 'Products Report',
+      footer: true,
+      exportOptions: {
+         columns: [0,1,2,3,4]
+      }              
+     
+  }
+]
+} );
 
 } );
 </script>
+
+
+@endsection
+
 
