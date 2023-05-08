@@ -2854,7 +2854,9 @@ class SettingController extends Controller
 			$a2  = Carbon::parse($request->date_to)->endOfDay();
 			$storesSubadmins = Mst_store::where('subadmin_id', auth()->user()->id)->pluck('store_id');
 			if (auth()->user()->user_role_id  == 0) {
-				$query = Mst_delivery_boy::orderBy('delivery_boy_id', 'DESC');
+				$query = Mst_delivery_boy::orderBy('delivery_boy_id', 'DESC')
+				->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
+				->whereNull('mst_delivery_boys.deleted_at');
 			}
 			else{
 				$query = DB::table('mst_delivery_boys')
@@ -2875,7 +2877,7 @@ class SettingController extends Controller
 
 			if (isset($store_id)) {
 				//$query=$query->join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id');
-				$query = $query->where('mst_store_link_delivery_boys.store_id', $store_id);
+				$query = $query->select('mst_delivery_boys.*','mst_store_link_delivery_boys.store_id')->where('mst_store_link_delivery_boys.store_id', $store_id);
 			}
 
 			if (isset($request->date_from) && isset($request->date_to)) {

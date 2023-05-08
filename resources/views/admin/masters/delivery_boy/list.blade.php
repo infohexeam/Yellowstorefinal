@@ -129,13 +129,13 @@
                             $stores__data = \DB::table('mst_store_link_delivery_boys')
                             ->join('mst_stores','mst_stores.store_id','=','mst_store_link_delivery_boys.store_id')
                             ->where('mst_store_link_delivery_boys.delivery_boy_id','=',$delivery_boy->delivery_boy_id)
-                            ->select('mst_stores.*')
+                        
                             ->get();
                             }else{
                                                         $stores__data = \DB::table('mst_store_link_delivery_boys')
                                 ->join('mst_stores','mst_stores.store_id','=','mst_store_link_delivery_boys.store_id')
                                 ->where('mst_store_link_delivery_boys.delivery_boy_id','=',$delivery_boy->delivery_boy_id)
-                                ->select('mst_stores.*')
+                             
                                 ->where('mst_stores.subadmin_id',auth()->user()->id)
                                 ->get();
                             }
