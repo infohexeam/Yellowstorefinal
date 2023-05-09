@@ -3004,7 +3004,7 @@ class SettingController extends Controller
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
 				'password'  => 'sometimes|same:password_confirmation',
 
-			],
+			],          
 			[
 				'delivery_boy_name.required'           => 'Delivery boy name required',
 				'delivery_boy_mobile.required'     	   => 'Mobile required',
@@ -4277,7 +4277,15 @@ class SettingController extends Controller
 
 			$payments->store_id = $store_id;
 			$payments->commision_paid = $request->commision_paid;
+			//dd($request->commision_paid);
 			$payments->payment_note = $request->payment_note;
+			$balance_commision=$request->balance_amount;;
+			//dd($balance_commision,$request->commision_paid);
+			if($balance_commision<$request->commision_paid)
+			{
+				return redirect()->back()->with('error', 'Commision amount given can not be exceeded balance commision to be paid');
+
+			}
 
 			if ($request->date_of_payment) {
 				$changeDate = date("Y-m-d", strtotime($request->date_of_payment));

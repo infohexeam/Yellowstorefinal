@@ -12,6 +12,11 @@
                      <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
                   </div>
                   @endif
+                  @if ($message = Session::get('error'))
+                  <div class="alert alert-danger">
+                     <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+                  </div>
+                  @endif
                   <div class="col-lg-12">
                      @if ($errors->any())
                      <div class="alert alert-danger">
@@ -248,6 +253,8 @@
                   <form action=" {{ url('admin/store/pay/'.Crypt::encryptString($store_id)) }} " method="POST" enctype="multipart/form-data" >
                  @csrf
                    <div class="modal-body">
+                   <input type="hidden" name="balance_amount" value="{{ @$total_store_amount - @$paidAmount }}" >
+
   @if(request()->input('date_from'))
                         <input type="hidden" name="date_of_payment" value="{{request()->input('date_from')}}" >
                     @endif
@@ -311,11 +318,14 @@
 <script>
    function checkAmt(p){
       let ap = $('#tAmt').text();
-      if(p > ap){
+      //alert();
+      if(p < ap){
       $('#updateBtn').attr('disabled', true);
+      //alert('true');
 
       }else{
       $('#updateBtn').attr('disabled', false);
+       //alert('false');
 
       }
    }
