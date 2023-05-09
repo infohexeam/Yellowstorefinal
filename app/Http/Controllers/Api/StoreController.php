@@ -1290,6 +1290,7 @@ class StoreController extends Controller
             //$response = ['status' => '0', 'message' => $e->getMessage()];
             $data['status']=0;
             $data['message']="User already logged in Another device";
+            
             $data['login_status']=0;
             return response($data);
         }
