@@ -1282,15 +1282,15 @@ class StoreController extends Controller
             return response($data);
         } catch (\Exception $e) {
             //$response = ['status' => '0', 'message' => $e->getMessage()];
-            // $data['status']=0;
-            // $data['message']="Access token expired";
-            // $data['login_status']=0;
+            $data['status']=0;
+            $data['message']="Access token expired";
+            $data['login_status']=0;
             return response($data);
         } catch (\Throwable $e) {
             //$response = ['status' => '0', 'message' => $e->getMessage()];
-            // $data['status']=0;
-            // $data['message']="Access token expired";
-            // $data['login_status']=0;
+            $data['status']=0;
+            $data['message']="Access token expired";
+            $data['login_status']=0;
             return response($data);
         }
     }
@@ -3624,6 +3624,11 @@ class StoreController extends Controller
                     $walletdata = $walletdata->orderBy('order_id', 'DESC')->paginate(10);
                 }
 	  //DD($request->store_id,$request->subadmin_id,$data);
+      foreach($walletdata as $w)
+      {
+        $w->amount_before_applying_rp=$w->product_total_amount+$w->amount_reduced_by_rp+$w->amount_reduced_by_rp_store;
+
+      }
       
       $resData['walletData'] = $walletdata;
       $resData['status'] = 1;
