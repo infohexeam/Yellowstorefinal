@@ -769,7 +769,7 @@ class DeliveryBoyOrderController extends Controller
                     if($order->status_id==5)
                     {
                         $data['status'] = 0;
-                        $data['message'] = "Order is already cancelled.You cannot proceed ";
+                        $data['message'] = "Order is already cancelled.You cannot deliver this order ";
                         return response($data);
 
                     }
@@ -823,7 +823,6 @@ class DeliveryBoyOrderController extends Controller
                         {
                             $st_uid=$str->store_referral_id;
                             $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
-
                         }
                         
                         //dd($st_uid,1);
