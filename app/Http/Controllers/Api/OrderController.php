@@ -1188,7 +1188,10 @@ class OrderController extends Controller
                             }
                         }
 
+                        if ($request->status_id == 5) {
+                            
 
+                        }
 
 
                         $orderdata2['delivery_boy_id'] = $request->delivery_boy_id;
@@ -1278,7 +1281,24 @@ class OrderController extends Controller
                         }
 
                         Trn_store_order::where('order_id', $order_id)->update($orderdata2);
+                        $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
 
+                            foreach ($dBoyDevices as $cd) {
+                                $title = 'Order Assigned';
+                                $body = 'An order(' . $od->order_number . ') has been cancelled';
+                                $clickAction = "AssignedOrderFragment";
+                                $type = "order-cancelled";
+                                $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
+                            }
+                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+
+                            foreach ($customerDevice as $cd) {
+                                $title = 'Order out for delivery';
+                                $body = "Your order " . $od->order_number . ' has been cancelled..';
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                            }
                         foreach ($request->tickStatus as $key => $val) {
                             $tickStatus['tick_status'] = $val['tick_status'];
                             Trn_store_order_item::where('order_item_id', $val['order_item_id'])->update($tickStatus);

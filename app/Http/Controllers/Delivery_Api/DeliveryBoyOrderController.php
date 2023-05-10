@@ -766,6 +766,13 @@ class DeliveryBoyOrderController extends Controller
                   
 
                     $order = Trn_store_order::Find($order_id);
+                    if($order->status_id==5)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Order is already cancelled.You cannot proceed ";
+                        return response($data);
+
+                    }
 
 
                     // $order->delivery_date = Carbon::now()->format('Y-m-d');
