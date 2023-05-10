@@ -25,7 +25,7 @@
             <div class="col-lg-12">
                @if ($errors->any())
                <div class="alert alert-danger">
-                  <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                  <strong>Whoops!</strong> Your store wont'be have any time slot available.<br><br>
                   <ul>
                      @foreach ($errors->all() as $error)
                      <li>{{ $error }}</li>

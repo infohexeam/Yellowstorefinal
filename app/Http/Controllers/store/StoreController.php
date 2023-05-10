@@ -4342,7 +4342,7 @@ class StoreController extends Controller
       }
       return  redirect()->back()->with('status', 'Time slots updated successfully.');
     } catch (\Exception $e) {
-      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+      return redirect()->back()->withErrors(['You are updated with no time slots added!'])->withInput();
     }
   }
 
