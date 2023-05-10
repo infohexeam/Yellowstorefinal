@@ -328,7 +328,6 @@ class StoreController extends Controller
             $divTok = DB::table('oauth_access_tokens')
                 ->where('user_id', $request->store_id)
                 ->update(['revoked' => 1]);
-
             $data['status'] = 1;
             $data['message'] = "Success";
         } else {

@@ -13,8 +13,8 @@ class Trn_StoreDeliveryTimeSlot extends Model
     protected $table = "trn__store_delivery_time_slots";
 
     protected $fillable = [
-    					    'store_id','time_start','time_end'
-                        ];
+    'store_id','time_start','time_end'
+    ];
                                                    
     public function store()
    {
