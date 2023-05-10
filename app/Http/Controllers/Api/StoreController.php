@@ -3625,11 +3625,11 @@ class StoreController extends Controller
                     $walletdata = $walletdata->orderBy('order_id', 'DESC')->paginate(10);
                 }
 	  //DD($request->store_id,$request->subadmin_id,$data);
-    //   foreach($walletdata as $w)
-    //   {
-    //     $w->amount_before_applying_rp=$w->product_total_amount+$w->amount_reduced_by_rp+$w->amount_reduced_by_rp_store;
+      foreach($walletdata as $w)
+      {
+        $w->amount_before_applying_rp=(string)$w->product_total_amount+$w->amount_reduced_by_rp+$w->amount_reduced_by_rp_store;
 
-    //   }
+      }
       
       $resData['walletData'] = $walletdata;
       $resData['status'] = 1;
