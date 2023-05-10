@@ -1286,7 +1286,7 @@ class OrderController extends Controller
                             $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
     
                                 foreach ($dBoyDevices as $cd) {
-                                    $title = 'Order Assigned';
+                                    $title = 'Order Cancelled';
                                     $body = 'An order(' . $od->order_number . ') has been cancelled';
                                     $clickAction = "AssignedOrderFragment";
                                     $type = "order-cancelled";
@@ -1295,7 +1295,7 @@ class OrderController extends Controller
                                 $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
     
                                 foreach ($customerDevice as $cd) {
-                                    $title = 'Order out for delivery';
+                                    $title = 'Order Cancelled';
                                     $body = "Your order " . $od->order_number . ' has been cancelled..';
                                     $clickAction = "OrderListFragment";
                                     $type = "order";
