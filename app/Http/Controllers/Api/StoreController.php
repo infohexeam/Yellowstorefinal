@@ -3627,7 +3627,7 @@ class StoreController extends Controller
 	  //DD($request->store_id,$request->subadmin_id,$data);
       foreach($walletdata as $w)
       {
-        $w->amount_before_applying_rp=strval($w->product_total_amount+$w->amount_reduced_by_rp+$w->amount_reduced_by_rp_store);
+        $w->amount_before_applying_rp=strval(number_format($w->product_total_amount+$w->amount_reduced_by_rp+$w->amount_reduced_by_rp_store,2));
 
       }
       
