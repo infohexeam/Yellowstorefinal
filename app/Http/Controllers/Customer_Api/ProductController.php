@@ -1782,7 +1782,7 @@ class ProductController extends Controller
             ,
             DB::raw("(SELECT SUM(trn_wallet_logs.points_debited) FROM trn_wallet_logs
 
-            WHERE trn_wallet_logs.store_id = mst_stores.store_id AND  trn_wallet_logs.customer_id =".$request->customer_id."
+            WHERE trn_wallet_logs.store_id = mst_stores.store_id AND  trn_wallet_logs.customer_id =".$request->customer_id."AND WHERE NOT NULL trn_wallet_logs.order_id
 
              GROUP BY stid ) as store_points_debited"),
 
@@ -1810,10 +1810,10 @@ class ProductController extends Controller
                 else
                     $data['totalcreditedPoints']  = '0';
 
-               // if ($wallet_log_redeemed >= 0)
+               if ($wallet_log_redeemed >= 0)
                     $data['totalRedeemedPoints']  = number_format($wallet_log_redeemed,2);
-                // else
-                //     $data['totalRedeemedPoints']  = '0';
+                else
+                    $data['totalRedeemedPoints']  = '0';
                
                if($available_points>=0)
                {
