@@ -1209,7 +1209,13 @@ class OrderController extends Controller
                         }
 
                         if ($request->status_id == 5) {
-
+                            if($od->status_id==8)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Order is already out for delivery.You cannot cancel this order ";
+                                return response($data);
+        
+                            }
 
                             if (isset($od->referenceId) && ($od->isRefunded < 2)) {
 
