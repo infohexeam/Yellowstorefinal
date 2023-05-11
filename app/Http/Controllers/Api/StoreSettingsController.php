@@ -899,7 +899,7 @@ class StoreSettingsController extends Controller
 
                 $data['expireMsgString'] = $expireMsgString;
 
-                if ($expiredDays <= 0) {
+                if ($expiredDays <0) {
                     $data['isExpired'] = 1;
                 } else {
                     $data['isExpired'] = 0;
