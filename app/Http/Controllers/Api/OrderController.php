@@ -764,6 +764,9 @@ class OrderController extends Controller
                             $orderdata2['delivery_status_id'] = 2;
                         } else if ($request->status_id == 9) {
                             $orderdata2['delivery_status_id'] = 3;
+                        } 
+                        else if ($request->status_id == 5) {
+                            $orderdata2['delivery_status_id'] = 4;
                         } else {
                             $orderdata2['delivery_status_id'] = null;
                         }

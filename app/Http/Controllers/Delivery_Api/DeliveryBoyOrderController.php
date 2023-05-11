@@ -121,7 +121,7 @@ class DeliveryBoyOrderController extends Controller
         $data = array();
         try {
             if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
-                if ($data['completedOrders']  = Trn_store_order::where('delivery_boy_id', $request->delivery_boy_id)->where('status_id', 9)->where('delivery_status_id', 3)->orderBy('updated_at', 'DESC')->get()) {
+                if ($data['completedOrders']  = Trn_store_order::where('delivery_boy_id', $request->delivery_boy_id)->whereIn('status_id', [5,9])->whereIn('delivery_status_id', [3,4])->orderBy('updated_at', 'DESC')->get()) {
                     foreach ($data['completedOrders'] as $order) {
                         //dd($order);
                         $orlink=Mst_order_link_delivery_boy::where('order_id',$order->order_id)->where('delivery_boy_id',$request->delivery_boy_id)->first();
