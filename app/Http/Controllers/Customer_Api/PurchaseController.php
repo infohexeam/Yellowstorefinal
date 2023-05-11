@@ -949,6 +949,8 @@ class PurchaseController extends Controller
                 //return $rem;
             
                 //$data['remainingOrderAmount'] = 
+                $data['status']=1;
+                $data['message']="success";
                 return response($data);
                
             } else {
