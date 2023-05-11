@@ -1795,6 +1795,7 @@ class ProductController extends Controller
                     return $query->where('trn_wallet_logs.type', $type2);
                 })*/
                 ->groupBy('stid')
+                ->whereNotNull('trn_wallet_logs.order_id')
                 ->orderBy('trn_wallet_logs.wallet_log_id','DESC')
                 ->get();
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->sum('points_credited');
