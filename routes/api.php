@@ -449,7 +449,7 @@ Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPag
 //Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');
-Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPointNew');
+Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPointLatest');
 Route::get('customer/reduce-reward-point-test', 'Customer_Api\PurchaseController@reduceRewardPointTest');
 Route::get('customer/untick-store-points', 'Customer_Api\PurchaseController@storePointUntick');
 
