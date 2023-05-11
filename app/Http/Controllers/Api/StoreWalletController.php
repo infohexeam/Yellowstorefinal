@@ -161,7 +161,7 @@ class StoreWalletController extends Controller
 
             if(isset($request->date_from))
              {
-              $query = $query->whereDat('trn_customer_rewards.created_at','>=',$a1);
+              $query = $query->whereDate('trn_customer_rewards.created_at','>=',$a1);
              }
 
              if(isset($request->date_to))
