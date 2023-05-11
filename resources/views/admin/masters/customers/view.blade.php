@@ -3,6 +3,7 @@
 @php
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_store_order;
+use App\Models\admin\Trn_points_redeemed;
 
 @endphp
 <div class="row" id="user-profile">
@@ -149,14 +150,14 @@ use App\Models\admin\Trn_store_order;
                            @php
                            
                               //$totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->sum('reward_points_earned');
-                             $totalCustomerRewardsCount= Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
+                            $totalCustomerRewardsCount= Trn_customer_reward::where('customer_id', $customers->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
                             $totalusedPoints = Trn_store_order::where('customer_id', $customers->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
-            
+                            $redeemedPointsSum=Trn_points_redeemed::where('customer_id', $customers->customer_id)->sum('points');;
                             $customerRewardsCount = ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPointsSum;
                            // $totalCustomerRewardsCount = number_format($totalCustomerRewardsCount, 0);
-            
+                             $totalusedPoints=$totalusedPoints + $redeemedPointsSum ;
                             if ($totalusedPoints >= 0)
-                                $data['totalusedPoints']  = $totalusedPoints + $redeemedPointsSum ;
+                                $data['totalusedPoints']  = $totalusedPoints;
                             else
                                 $data['totalusedPoints']  = '0';
                     

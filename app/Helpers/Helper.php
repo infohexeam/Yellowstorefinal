@@ -112,9 +112,9 @@ class Helper
         return number_format($customerRewardsCount, 2);*/
         $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id',$cusId)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
         $totalusedPoints = Trn_store_order::where('customer_id',$cusId)->whereNotIn('status_id', [5])->sum('reward_points_used');
-        //$redeemedPoints = Trn_points_redeemed::where('customer_id',$cusId)->sum('points');
+        $redeemedPoints = Trn_points_redeemed::where('customer_id',$cusId)->sum('points');
 
-        $customerRewardsCount =  ($totalCustomerRewardsCount - $totalusedPoints);
+        $customerRewardsCount =  ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPoints;
         return number_format($customerRewardsCount, 2);
                
     }

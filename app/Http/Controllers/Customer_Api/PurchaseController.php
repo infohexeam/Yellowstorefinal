@@ -486,7 +486,10 @@ class PurchaseController extends Controller
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
                     $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
                     $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
-                    $h=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
+                    $total_points=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
+                    $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                    $h=$total_points-$totalusedPoints-$redeemedPoints;
                     //$h=30;
                     $j=($h*$d)/100;
 

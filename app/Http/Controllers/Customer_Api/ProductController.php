@@ -1617,22 +1617,22 @@ class ProductController extends Controller
                 $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
                 $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
 
-                $customerRewardsCount =  ($totalCustomerRewardsCount - $totalusedPoints);
+                $customerRewardsCount =  ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPoints;
                 $data['customerRewardsCount'] = number_format($totalCustomerRewardsCount, 2);
-                
+                $totalAdminRedeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
                 if ($totalusedPoints >= 0)
-                    $data['totalusedPoints']  = $totalusedPoints;
+                    $data['totalusedPoints']  = $totalusedPoints+$totalAdminRedeemedPoints;
                 else
                     $data['totalusedPoints']  = '0';
 
-                $totalAdminRedeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+               
 
                 if ($totalAdminRedeemedPoints >= 0)
                     $data['totalAdminRedeemedPoints']  = $totalAdminRedeemedPoints;
                 else
                     $data['totalAdminRedeemedPoints']  = '0';
 
-
+                
                 $data['customerRewards'] = Trn_customer_reward::where('customer_id',$request->customer_id)
                     ->where('reward_point_status', 1)->where('reward_points_earned','!=',0.00)->whereNull('store_id')->where('discription','!=','store points')->orderBy('reward_id', 'DESC')->get();
                 foreach ($data['customerRewards'] as $cr) {
