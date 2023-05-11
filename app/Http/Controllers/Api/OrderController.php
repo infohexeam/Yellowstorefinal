@@ -1212,6 +1212,24 @@ class OrderController extends Controller
                         }
 
                         if ($request->status_id == 5) {
+                            $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
+    
+                                foreach ($dBoyDevices as $cd) {
+                                    $title = 'Order Cancelled';
+                                    $body = 'An order(' . $od->order_number . ') has been cancelled';
+                                    $clickAction = "AssignedOrderFragment";
+                                    $type = "order-cancelled";
+                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
+                                }
+                                $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
+    
+                                foreach ($customerDevice as $cd) {
+                                    $title = 'Order Cancelled';
+                                    $body = "Your order " . $od->order_number . ' has been cancelled..';
+                                    $clickAction = "OrderListFragment";
+                                    $type = "order";
+                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                }
                             if($od->status_id==8)
                             {
                                 $data['status'] = 0;
@@ -1289,24 +1307,7 @@ class OrderController extends Controller
                             }
                         }
                             
-                            $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
-    
-                                foreach ($dBoyDevices as $cd) {
-                                    $title = 'Order Cancelled';
-                                    $body = 'An order(' . $od->order_number . ') has been cancelled';
-                                    $clickAction = "AssignedOrderFragment";
-                                    $type = "order-cancelled";
-                                    $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
-                                }
-                                $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
-    
-                                foreach ($customerDevice as $cd) {
-                                    $title = 'Order Cancelled';
-                                    $body = "Your order " . $od->order_number . ' has been cancelled..';
-                                    $clickAction = "OrderListFragment";
-                                    $type = "order";
-                                    $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                                }
+                            
                             foreach ($request->tickStatus as $key => $val) {
                                 $tickStatus['tick_status'] = $val['tick_status'];
                                 Trn_store_order_item::where('order_item_id', $val['order_item_id'])->update($tickStatus);
