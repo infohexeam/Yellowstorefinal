@@ -1698,9 +1698,9 @@ class ProductController extends Controller
             ,
             DB::raw("(SELECT SUM(trn_wallet_logs.points_debited) FROM trn_wallet_logs
 
-            WHERE trn_wallet_logs.store_id = mst_stores.store_id AND trn_wallet_logs.customer_id =".$request->customer_id."
+            WHERE trn_wallet_logs.store_id = mst_stores.store_id AND  trn_wallet_logs.customer_id =".$request->customer_id."
 
-            GROUP BY stid ) as store_points_debited"),
+             GROUP BY stid ) as store_points_debited"),
 
             )
                 //->where('trn_wallet_logs.points_debited','!=',0.00)
@@ -1794,7 +1794,7 @@ class ProductController extends Controller
                 ->orWhen($type2, function ($query) use ($type2) {
                     return $query->where('trn_wallet_logs.type', $type2);
                 })*/
-                ->whereNotNull('trn_wallet_logs.order_id')
+               // ->whereNotNull('trn_wallet_logs.order_id')
                 ->groupBy('stid')
                
                 ->orderBy('trn_wallet_logs.wallet_log_id','DESC')
