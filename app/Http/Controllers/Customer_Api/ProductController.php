@@ -1810,10 +1810,10 @@ class ProductController extends Controller
                 else
                     $data['totalcreditedPoints']  = '0';
 
-                if ($wallet_log_redeemed >= 0)
+               // if ($wallet_log_redeemed >= 0)
                     $data['totalRedeemedPoints']  = number_format($wallet_log_redeemed,2);
-                else
-                    $data['totalRedeemedPoints']  = '0';
+                // else
+                //     $data['totalRedeemedPoints']  = '0';
                
                if($available_points>=0)
                {
