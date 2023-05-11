@@ -526,7 +526,7 @@ class PurchaseController extends Controller
                     {
                         
                         $p=$i-$l;//Balance if Admin Redemption Only (P)
-                        $data['totalReducableAdminAmount'] = number_format((float)$l, 2, '.', '');;
+                        $data['totalReducableAdminAmount'] = number_format((float)$p, 2, '.', '');;
                         if($d==100)
                         {
                             $data['totalReducableStoreAmount'] = number_format((float)$k, 2, '.', '');;
@@ -613,7 +613,7 @@ class PurchaseController extends Controller
                     if($i>=$o)
                     {
                         $q=$i-$o;//Balance if Admin Redemption Only (P)
-                        $data['totalReducableStoreAmount'] = number_format((float)$o, 2, '.', '');;
+                        $data['totalReducableStoreAmount'] = number_format((float)$q, 2, '.', '');;
                         if($a==100)
                         {
                             $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');
@@ -851,7 +851,7 @@ class PurchaseController extends Controller
                     if($i>=$o)
                     {
                         $q=$i-$o;//Balance if Admin Redemption Only (P)
-                        $data['totalReducableStoreAmount'] = number_format((float)$o, 2, '.', '');;
+                        $data['totalReducableStoreAmount'] = number_format((float)$q, 2, '.', '');;
                         if($a==100)
                         {
                             $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;

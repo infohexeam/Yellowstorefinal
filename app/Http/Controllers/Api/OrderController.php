@@ -1188,10 +1188,7 @@ class OrderController extends Controller
                             }
                         }
 
-                        if ($request->status_id == 5) {
-                            
-
-                        }
+                      
 
 
                         $orderdata2['delivery_boy_id'] = $request->delivery_boy_id;
@@ -1282,7 +1279,7 @@ class OrderController extends Controller
                                 DB::table('mst_store_product_varients')->where('product_varient_id', $o->product_varient_id)->increment('stock_count', $o->quantity);
                             }
                         }
-                            Trn_store_order::where('order_id', $order_id)->update($orderdata2);
+                            
                             $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
     
                                 foreach ($dBoyDevices as $cd) {
@@ -1307,6 +1304,7 @@ class OrderController extends Controller
                             }
     
                         }
+                        Trn_store_order::where('order_id', $order_id)->update($orderdata2);
 
                        
 
