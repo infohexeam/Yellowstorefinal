@@ -88,7 +88,7 @@ class LoginController extends Controller
                            return redirect()->back()->with('danger','Profile is inactive ,Contact admin '.$phoneNumber);
 
                           }
-                          if($today>=$parentStore->expiry_date)
+                          if($today>$parentStore->expiry_date)
                           {
                         
                             Auth::guard('store')->logout();

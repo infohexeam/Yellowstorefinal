@@ -57,7 +57,7 @@ class ExpiredStoreLogout
             {
                 $today = Carbon::now()->toDateString();
                 $parentExpiryDate = $getParentExpiry->expiry_date;
-                if($today>=$parentExpiryDate)
+                if($today>$parentExpiryDate)
                 {
                 $admin = Trn_StoreAdmin::where('store_admin_id',Auth::guard('store')->user()->store_admin_id)->first();
                 $admin->is_logged_in=0;
