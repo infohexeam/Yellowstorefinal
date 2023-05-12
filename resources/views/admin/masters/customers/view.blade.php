@@ -155,7 +155,7 @@ use App\Models\admin\Trn_points_redeemed;
                             $redeemedPointsSum=Trn_points_redeemed::where('customer_id', $customers->customer_id)->sum('points');;
                             $customerRewardsCount = ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPointsSum;
                            // $totalCustomerRewardsCount = number_format($totalCustomerRewardsCount, 0);
-                             $totalusedPoints=$totalusedPoints + $redeemedPointsSum ;
+                             //$totalusedPoints=$totalusedPoints + $redeemedPointsSum ;
                             if ($totalusedPoints >= 0)
                                 $data['totalusedPoints']  = $totalusedPoints;
                             else
