@@ -2566,7 +2566,7 @@ class StoreController extends Controller
       if($order->status_id==8)
       {
 
-        return redirect()->back()->with('status', 'Order is already out for delivery.You cannot cancel this order.');
+        return redirect()->back()->with('error', 'Order is already out for delivery.You cannot cancel this order.');
                              
       
       }
