@@ -164,7 +164,7 @@ use App\Models\admin\Trn_points_redeemed;
                            @endphp
                          <p>Total Points Earned : </p><h2>{{$totalCustomerRewardsCount}}</h2> <br>
                          <p>Used Points : </p><h2>{{$totalusedPoints}}</h2> <br>
-                         <p>Balance Points : </p><h2>{{$totalCustomerRewardsCount -$totalusedPoints }}</h2> <br>
+                         <p>Balance Points : </p><h2>{{$totalCustomerRewardsCount -$customerRewardsCount }}</h2> <br>
 
                         <h3>Earned Points</h3>
 
