@@ -916,6 +916,7 @@ class StoreOrderController extends Controller
 
                         }
                         $pua=0;
+                        //$remCount=0;
     
                         foreach ($request->product_variants as $value) {
                             $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
@@ -969,10 +970,23 @@ class StoreOrderController extends Controller
     
                                 }
                             }
+                            // if($varProdu->is_removed==1)
+                            // {
+                            //     $remCount=$remCount+1;
+
+                            // }
                             } 
                             
                         }
                         //return $pua;
+                        /*if($remCount>0)
+                        {
+                            $data['status'] = 3;
+                            $data['message'] = "FEW PRODUCTS IN CART ARE REMOVED FROM STORE";
+                            DB::rollback();
+                            return response($data);
+
+                        }*/
                         if($request->accept==0)
                         {
                         if($pua>0)
