@@ -426,7 +426,7 @@ class StoreOrderController extends Controller
                 {
                     $today = Carbon::now()->toDateString();
                     $parentExpiryDate = $getParentExpiry->expiry_date;
-                    if($today>=$parentExpiryDate)
+                    if($today>$parentExpiryDate)
                     {
                             
                         $data['status'] = 0;
@@ -817,7 +817,7 @@ class StoreOrderController extends Controller
                 {
                     $today = Carbon::now()->toDateString();
                     $parentExpiryDate = $getParentExpiry->expiry_date;
-                    if($today>=$parentExpiryDate)
+                    if($today>$parentExpiryDate)
                     {
                             
                          $data['status'] = 0;
@@ -1493,7 +1493,7 @@ class StoreOrderController extends Controller
                 {
                     $today = Carbon::now()->toDateString();
                     $parentExpiryDate = $getParentExpiry->expiry_date;
-                    if($today>=$parentExpiryDate)
+                    if($today>$parentExpiryDate)
                     {
                             
                         $data['status'] = 0;
@@ -2151,7 +2151,7 @@ class StoreOrderController extends Controller
                 {
                     $today = Carbon::now()->toDateString();
                     $parentExpiryDate = $getParentExpiry->expiry_date;
-                    if($today>=$parentExpiryDate)
+                    if($today>$parentExpiryDate)
                     {
                             
                         $data['status'] = 6;
