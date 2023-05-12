@@ -2909,6 +2909,11 @@ class StoreController extends Controller
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } elseif ($status_id == 5) {
+        if($order->status_id==8)
+        {
+          return redirect()->back()->with('status', 'Order is already out for delivery.You cannot cancel this order.');
+        }
+
         $order_status = "Cancelled";
 
         $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
@@ -2998,11 +3003,7 @@ class StoreController extends Controller
       //dd($customer_email);
 
       if ($request->status_id == 5) {
-        if($order->status_id==8)
-        {
-          return redirect()->back()->with('status', 'Order is already out for delivery.You cannot cancel this order.');
-        }
-
+        
         if (isset($order->referenceId) && ($order->isRefunded < 2)) {
 
 
