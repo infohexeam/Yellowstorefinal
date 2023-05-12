@@ -186,10 +186,11 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                  <tr>
                                     <td><strong>Delivery Phone :</strong> {{@$order->delivery_boy['delivery_boy_mobile']}}</td>
                                  </tr>
-
+                           @if($order->status_id!=5)
                                 <tr>
                                     <td><strong>Delivery Date :</strong> {{ \Carbon\Carbon::parse($order->delivery_date)->format('M d, Y')}}</td>
                                  </tr>
+                           @endif
                               </tbody>
                            </table>
                            </div>
