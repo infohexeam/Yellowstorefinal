@@ -2562,12 +2562,6 @@ class StoreController extends Controller
 
       }
     }
-    if ($request->status_id == 5) {
-      if($order->status_id==8)
-      {
-        return redirect()->back()->with('status', 'Order is already out for delivery.You cannot cancel this order.');
-      }
-    }
       $order->status_id = $request->status_id;
 
       if ($request->status_id == 8) {
@@ -2577,7 +2571,6 @@ class StoreController extends Controller
           }
         }
       }
-      
       if (($request->status_id == 9)) {
 
         $order->delivery_date = Carbon::now()->format('Y-m-d');
@@ -3004,7 +2997,14 @@ class StoreController extends Controller
       $customer_email = $customer->customer_email;
       //dd($customer_email);
 
-      
+      if ($request->status_id == 5) {
+        if($order->status_id==8)
+        {
+  
+          return redirect()->back()->with('status', 'Order is already out for delivery.You cannot cancel this order.');
+                               
+        
+        }
 
         if (isset($order->referenceId) && ($order->isRefunded < 2)) {
 
