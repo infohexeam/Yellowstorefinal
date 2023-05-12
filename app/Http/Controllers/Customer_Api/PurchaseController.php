@@ -974,6 +974,684 @@ class PurchaseController extends Controller
             
       
     }
+    public function reduceRewardPointProcess(Request $request)
+    {
+        $data = array();
+        $orderTotalArray=array();
+        $store_id=$request->store_id;
+        $orderAmount = $request->order_amount;
+        $data['totalReducableAmount'] =0.00;
+        $data['reducedOrderAmount'] = 0.00;
+        $data['reducedAmountByWalletPoints'] =0.00;
+        $data['usedPoint'] = 0.00;
+        $data['balancePoint'] = 0.00;
+        $data['totalReducableStoreAmount'] =0.00;
+        $data['reducedStoreOrderAmount'] = 0.00;
+        $data['reducedAmountByStoreWalletPoints'] =0.00;
+        $data['usedStorePoint'] = 0.00;
+        $data['balanceStorePoint'] = 0.00;
+        $data['orderAmount'] =number_format((float)$request->order_amount, 2, '.', '');
+        $data['totalReducableAmount'] = 0.00;
+        $data['totalReducableAdminAmount']=0.00;
+        $data['totalReducableStoreAmount']=0.00;
+        $data['reducedOrderAmount'] = 0.00;
+        $data['reducedAmountByWalletPoints'] =0.00;
+        $data['usedPoint'] =0.00;
+        $data['balancePoint'] = 0.00;
+        $data['remainingOrderAmount'] = 0.00;
+        $orderTotalArray['orderAmountAdmin']=0.00;
+        $orderTotalArray['orderAmountStore']=0.00;
+        $max_reedem_set_admin=false;
+        $max_reedem_set_store=false;
+        $relatableRedeemAmount=$data['orderAmount'];
+        $redeem_preference=$request->redeem_preference;//1-Admin,2-Store,0-No
+        $adminOrderAmount=$data['orderAmount'];
+        $storeOrderAmount=$data['orderAmount'];
+        
+        
+
+       
+            if (isset($request->order_amount) ) {
+                $orderAmount=$request->order_amount;
+                if($redeem_preference==1)
+                {
+                    $adminConfigPoints = Trn_configure_points::first();
+                    $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
+                    $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
+                    $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
+                    $total_points=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
+                    $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                    $h=$total_points-$totalusedPoints-$redeemedPoints;
+                    //$h=$request->admin_wallet_balance;
+                    //$h=30;
+                    $j=($h*$d)/100;
+
+                    $j=number_format((float)$j, 2, '.', '');
+                    if($j<=$relatableRedeemAmount)
+                    {
+                        $adminOrderAmount=$relatableRedeemAmount;
+                        $storeOrderAmount=$relatableRedeemAmount-$j;
+                    }
+                    else
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for admin";
+                        return response($data);
+
+                    }
+
+                }
+                if($redeem_preference==2)
+                {
+                    $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
+                    $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
+                    $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
+                    $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
+                    //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
+                    //$g=50;
+                    $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
+                    $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
+                    $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                    ///$g=$request->store_wallet_balance;
+                    $m=($g*$a)/100;
+                    //return $m;153.76<=100
+
+                    $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    if($m<=$relatableRedeemAmount)
+                    {
+                        
+                        $adminOrderAmount=$relatableRedeemAmount-$m;
+                        $storeOrderAmount=$relatableRedeemAmount;
+                        //return $adminOrderAmount;
+                    }
+                    else
+                    {
+                        
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for store";
+                        return response($data);
+
+                    }
+
+                }
+                if($request->admin_points==1)
+                {
+                    if(!$max_reedem_set_store)
+                    {
+                    $adminConfigPoints = Trn_configure_points::first();
+                    $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
+                    $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
+                    $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
+                    $total_points=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
+                    $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                    //$h=$total_points-$totalusedPoints-$redeemedPoints;
+                    $h=$request->admin_wallet_balance;
+                    //$h=30;
+                    $j=($h*$d)/100;
+
+                    $j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    if($j<=$adminOrderAmount)
+                    {
+                        $k=$j;//Admin Redemption(Based on Max Redemption) (K)
+                        //$relatableAdminRedeemAmount
+                        //$relatableRedeemAmount=$relatableRedeemAmount-$j;
+                       
+                        if($d==100)
+                        {
+                            $k=$adminOrderAmount-1;
+                            $max_reedem_set_admin=true;
+
+                        }
+                        //$relatableRedeemAmount=$relatableRedeemAmount-$k;
+                        //return $k."6";
+                       // $k=$r
+                    }
+                    else{
+                        $k=$adminOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        if($d==100)
+                        {
+                            $k=$adminOrderAmount-1;
+                            $max_reedem_set_admin=true;
+
+                        }
+                        //$k=
+                       // return $k."7";
+                    }
+                    $balancePoints=$h-$k;
+                    if($balancePoints<0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for admin";
+                        return response($data);
+                    }
+                    $l=$k*$f;//Admin Redemption Amount(RS)(L)
+                    $i=$adminOrderAmount;
+                    if($i>=$l)
+                    {
+                        $p=$i-$l;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableAdminAmount'] = number_format((float)$l, 2, '.', '');;
+                        if($d==100)
+                        {
+                            $data['totalReducableAdminAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
+
+                    }
+                    else
+                    {
+                        $p=$i;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableAdminAmount'] = 0.00;
+                        if($d==100)
+                        {
+                            $data['totalReducableAdminAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
+                        
+
+                    }
+                    $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
+                    $data['reducedAmountByWalletPoints'] =$l;
+                    $data['usedPoint'] =number_format((float)$k, 2, '.', '');
+                    $data['balancePoint'] = number_format((float)$balancePoints, 2, '.', '');
+                    //$data['remainingOrderAmount'] = number_format((float)$p, 2, '.', '');
+
+                    //$orderTotalArray['orderAmountAdmin']= $data['reducedOrderAmount'];
+
+                }
+
+                }
+                if($request->store_points==1)
+                {
+                    if(!$max_reedem_set_admin)
+                    {
+                    $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
+                    if($wallet_log_first->first())
+                    {
+                        $wallet_log_first->first()->delete();
+                    }
+                    $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
+                    $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
+                    $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
+                    $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
+                    //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
+                    //$g=50;
+                    $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
+                    $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
+                    //$g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                    $g=$request->store_wallet_balance;
+                    $m=($g*$a)/100;
+                    //return $m;153.76<=100
+
+                    $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    if($m<=$storeOrderAmount)
+                    {
+                        $n=$m;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n=$storeOrderAmount-1;
+                            $max_reedem_set_store=true;
+
+                        }
+
+                    }
+                    else{
+                        $n=$storeOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n=$storeOrderAmount-1;
+                            $max_reedem_set_store=true;
+
+                        }
+                    }
+                    $balanceStorePoints=$g-$n;
+                    if($balanceStorePoints<0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for store";
+                        return response($data);
+                    }
+                    $o=$n*$c;//Admin Redemption Amount(RS)(L)
+                    $i=$storeOrderAmount;
+                    if($i>=$o)
+                    {
+                        $q=$i-$o;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableStoreAmount'] = number_format((float)$o, 2, '.', '');;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;
+
+                        }
+
+                    }
+                    else
+                    {
+                        $q=$o;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableStoreAmount'] = 0.00;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;
+
+                        }
+
+                    }
+                    $wallet_log=new Trn_wallet_log();
+                    $wallet_log->store_id=$store_id;
+                    $wallet_log->customer_id=$request->customer_id;
+                    $wallet_log->type='debit';
+                    $wallet_log->points_debited= number_format((float)$n, 2, '.', '');;
+                    $wallet_log->points_credited=null;
+                    $wallet_log->save();
+                    $data['wallet_id']=$wallet_log->wallet_log_id;
+                                               
+                    //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
+                    $data['reducedStoreOrderAmount'] = $q;
+                    $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
+                    $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                    $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
+
+                }
+            }
+                $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
+               
+                //return $data['totalReducableAmount'];
+                 $data['max_reedeem_admin']=$max_reedem_set_admin;
+                 $data['max_reedeem_store']=$max_reedem_set_store;
+                if($orderAmount<$data['totalReducableAmount'])
+                {
+                $r=$orderAmount-$data['totalReducableAmount'];
+                }
+                else
+                {
+                    $r=$orderAmount;
+                }
+                // if($r<=0)
+                //     {
+                //         $data['status'] = 0;
+                //         $data['message'] = "Amount cannot be redeemmed now!";
+                //         //return response($data);
+                //     }
+                $rem=$data['orderAmount']-$data['totalReducableAmount'];
+                if($rem>0)
+                {
+                    $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+
+                }
+                else
+                {
+                    $rem=1;
+
+                    $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+                    
+                }
+                //return $rem;
+            
+                //$data['remainingOrderAmount'] = 
+                $data['status']=1;
+                $data['message']="success";
+                return response($data);
+               
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Order amount required";
+            }
+            
+
+        // if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints'],$data['reducedAmountByStoreWalletPoints'])==0)
+        // {
+        //     $data['status'] = 0;
+        //     $data['message'] = "Wallet reduced amount cannot be greater than order amount";
+        //     return response($data);
+
+        // }
+        // else
+        // {
+        //     return response($data);
+
+        // }
+            
+      
+    }
+    public function reduceRewardPointCheck(Request $request)
+    {
+        $data = array();
+        $orderTotalArray=array();
+        $store_id=$request->store_id;
+        $orderAmount = $request->order_amount;
+        $data['totalReducableAmount'] =0.00;
+        $data['reducedOrderAmount'] = 0.00;
+        $data['reducedAmountByWalletPoints'] =0.00;
+        $data['usedPoint'] = 0.00;
+        $data['balancePoint'] = 0.00;
+        $data['totalReducableStoreAmount'] =0.00;
+        $data['reducedStoreOrderAmount'] = 0.00;
+        $data['reducedAmountByStoreWalletPoints'] =0.00;
+        $data['usedStorePoint'] = 0.00;
+        $data['balanceStorePoint'] = 0.00;
+        $data['orderAmount'] =number_format((float)$request->order_amount, 2, '.', '');
+        $data['totalReducableAmount'] = 0.00;
+        $data['totalReducableAdminAmount']=0.00;
+        $data['totalReducableStoreAmount']=0.00;
+        $data['reducedOrderAmount'] = 0.00;
+        $data['reducedAmountByWalletPoints'] =0.00;
+        $data['usedPoint'] =0.00;
+        $data['balancePoint'] = 0.00;
+        $data['remainingOrderAmount'] = 0.00;
+        $orderTotalArray['orderAmountAdmin']=0.00;
+        $orderTotalArray['orderAmountStore']=0.00;
+        $max_reedem_set_admin=false;
+        $max_reedem_set_store=false;
+        $relatableRedeemAmount=$data['orderAmount'];
+        $redeem_preference=$request->redeem_preference;//1-Admin,2-Store,0-No
+        $adminOrderAmount=$data['orderAmount'];
+        $storeOrderAmount=$data['orderAmount'];
+        
+        
+
+       
+            if (isset($request->order_amount) ) {
+                $orderAmount=$request->order_amount;
+                if($redeem_preference==1)
+                {
+                    $adminConfigPoints = Trn_configure_points::first();
+                    $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
+                    $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
+                    $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
+                    $total_points=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
+                    $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                    //$h=$total_points-$totalusedPoints-$redeemedPoints;
+                    $h=$request->admin_wallet_balance;
+                    //$h=30;
+                    $j=($h*$d)/100;
+
+                    $j=number_format((float)$j, 2, '.', '');
+                    if($j<=$relatableRedeemAmount)
+                    {
+                        $adminOrderAmount=$relatableRedeemAmount;
+                        $storeOrderAmount=$relatableRedeemAmount-$j;
+                    }
+                    else
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for admin";
+                        return response($data);
+
+                    }
+
+                }
+                if($redeem_preference==2)
+                {
+                    $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
+                    $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
+                    $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
+                    $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
+                    //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
+                    //$g=50;
+                    $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
+                    $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
+                    //$g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                    $g=$request->store_wallet_balance;
+                    $m=($g*$a)/100;
+                    //return $m;153.76<=100
+
+                    $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    if($m<=$relatableRedeemAmount)
+                    {
+                        
+                        $adminOrderAmount=$relatableRedeemAmount-$m;
+                        $storeOrderAmount=$relatableRedeemAmount;
+                        //return $adminOrderAmount;
+                    }
+                    else
+                    {
+                        
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for store";
+                        return response($data);
+
+                    }
+
+                }
+                if($request->admin_points==1)
+                {
+                    if(!$max_reedem_set_store)
+                    {
+                    $adminConfigPoints = Trn_configure_points::first();
+                    $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
+                    $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
+                    $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
+                    $total_points=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
+                    $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                    //$h=$total_points-$totalusedPoints-$redeemedPoints;
+                    $h=$request->admin_wallet_balance;
+                    //$h=30;
+                    $j=($h*$d)/100;
+
+                    $j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    if($j<=$adminOrderAmount)
+                    {
+                        $k=$j;//Admin Redemption(Based on Max Redemption) (K)
+                        //$relatableAdminRedeemAmount
+                        //$relatableRedeemAmount=$relatableRedeemAmount-$j;
+                       
+                        if($d==100)
+                        {
+                            $k=$adminOrderAmount-1;
+                            $max_reedem_set_admin=true;
+
+                        }
+                        //$relatableRedeemAmount=$relatableRedeemAmount-$k;
+                        //return $k."6";
+                       // $k=$r
+                    }
+                    else{
+                        $k=$adminOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        if($d==100)
+                        {
+                            $k=$adminOrderAmount-1;
+                            $max_reedem_set_admin=true;
+
+                        }
+                        //$k=
+                       // return $k."7";
+                    }
+                    $balancePoints=$h-$k;
+                    if($balancePoints<0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for admin";
+                        return response($data);
+                    }
+                    $l=$k*$f;//Admin Redemption Amount(RS)(L)
+                    $i=$adminOrderAmount;
+                    if($i>=$l)
+                    {
+                        $p=$i-$l;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableAdminAmount'] = number_format((float)$l, 2, '.', '');;
+                        if($d==100)
+                        {
+                            $data['totalReducableAdminAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
+
+                    }
+                    else
+                    {
+                        $p=$i;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableAdminAmount'] = 0.00;
+                        if($d==100)
+                        {
+                            $data['totalReducableAdminAmount'] = number_format((float)$k, 2, '.', '');;
+
+                        }
+                        
+
+                    }
+                    $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
+                    $data['reducedAmountByWalletPoints'] =$l;
+                    $data['usedPoint'] =number_format((float)$k, 2, '.', '');
+                    $data['balancePoint'] = number_format((float)$balancePoints, 2, '.', '');
+                    //$data['remainingOrderAmount'] = number_format((float)$p, 2, '.', '');
+
+                    //$orderTotalArray['orderAmountAdmin']= $data['reducedOrderAmount'];
+
+                }
+
+                }
+                if($request->store_points==1)
+                {
+                    if(!$max_reedem_set_admin)
+                    {
+                    $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
+                    if($wallet_log_first->first())
+                    {
+                        $wallet_log_first->first()->delete();
+                    }
+                    $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
+                    $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
+                    $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
+                    $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
+                    //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
+                    //$g=50;
+                    $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
+                    $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
+                    //$g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                    $g=$request->store_wallet_balance;
+                    $m=($g*$a)/100;
+                    //return $m;153.76<=100
+
+                    $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    if($m<=$storeOrderAmount)
+                    {
+                        $n=$m;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n=$storeOrderAmount-1;
+                            $max_reedem_set_store=true;
+
+                        }
+
+                    }
+                    else{
+                        $n=$storeOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        if($a==100)
+                        {
+                            $n=$storeOrderAmount-1;
+                            $max_reedem_set_store=true;
+
+                        }
+                    }
+                    $balanceStorePoints=$g-$n;
+                    if($balanceStorePoints<0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Reward points can't be redeemed for store";
+                        return response($data);
+                    }
+                    $o=$n*$c;//Admin Redemption Amount(RS)(L)
+                    $i=$storeOrderAmount;
+                    if($i>=$o)
+                    {
+                        $q=$i-$o;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableStoreAmount'] = number_format((float)$o, 2, '.', '');;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;
+
+                        }
+
+                    }
+                    else
+                    {
+                        $q=$o;//Balance if Admin Redemption Only (P)
+                        $data['totalReducableStoreAmount'] = 0.00;
+                        if($a==100)
+                        {
+                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;
+
+                        }
+
+                    }
+                    $wallet_log=new Trn_wallet_log();
+                    $wallet_log->store_id=$store_id;
+                    $wallet_log->customer_id=$request->customer_id;
+                    $wallet_log->type='debit';
+                    $wallet_log->points_debited= number_format((float)$n, 2, '.', '');;
+                    $wallet_log->points_credited=null;
+                    $wallet_log->save();
+                    $data['wallet_id']=$wallet_log->wallet_log_id;
+                                               
+                    //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
+                    $data['reducedStoreOrderAmount'] = $q;
+                    $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
+                    $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                    $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
+
+                }
+            }
+                $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
+               
+                //return $data['totalReducableAmount'];
+                 $data['max_reedeem_admin']=$max_reedem_set_admin;
+                 $data['max_reedeem_store']=$max_reedem_set_store;
+                if($orderAmount<$data['totalReducableAmount'])
+                {
+                $r=$orderAmount-$data['totalReducableAmount'];
+                }
+                else
+                {
+                    $r=$orderAmount;
+                }
+                // if($r<=0)
+                //     {
+                //         $data['status'] = 0;
+                //         $data['message'] = "Amount cannot be redeemmed now!";
+                //         //return response($data);
+                //     }
+                $rem=$data['orderAmount']-$data['totalReducableAmount'];
+                if($rem>0)
+                {
+                    $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+
+                }
+                else
+                {
+                    $rem=1;
+
+                    $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+                    
+                }
+                //return $rem;
+            
+                //$data['remainingOrderAmount'] = 
+                $data['status']=1;
+                $data['message']="success";
+                return response($data);
+               
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Order amount required";
+            }
+            
+
+        // if($this->checkReducedAmount($orderAmount,$data['reducedAmountByWalletPoints'],$data['reducedAmountByStoreWalletPoints'])==0)
+        // {
+        //     $data['status'] = 0;
+        //     $data['message'] = "Wallet reduced amount cannot be greater than order amount";
+        //     return response($data);
+
+        // }
+        // else
+        // {
+        //     return response($data);
+
+        // }
+            
+      
+    }
     public function reduceRewardPointTest(Request $request)
     {
         $data = array();

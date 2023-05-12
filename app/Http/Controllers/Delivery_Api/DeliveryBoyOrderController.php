@@ -87,7 +87,6 @@ class DeliveryBoyOrderController extends Controller
                             else
                             {
                                 $order->store_name = 'Store not exists';
-
                             }
                            
 
