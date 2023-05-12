@@ -1633,6 +1633,19 @@ class ProductController extends Controller
                     $data['totalAdminRedeemedPoints']  = '0';
 
                 
+                if ($customerRewardsCount >= 0)
+                {
+                    $data['balancePoints']=$customerRewardsCount;
+
+                }
+                else
+                {
+                    $data['balancePoints']='0';
+
+                }
+                $data['totalAdminRedeemedPoints']  = '0';
+
+                
                 $data['customerRewards'] = Trn_customer_reward::where('customer_id',$request->customer_id)
                     ->where('reward_point_status', 1)->where('reward_points_earned','!=',0.00)->whereNull('store_id')->where('discription','!=','store points')->orderBy('reward_id', 'DESC')->get();
                 foreach ($data['customerRewards'] as $cr) {
