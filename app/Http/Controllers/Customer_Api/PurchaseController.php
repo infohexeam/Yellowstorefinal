@@ -761,7 +761,7 @@ class PurchaseController extends Controller
                     $j=($h*$d)/100;
 
                     $j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($j<=$e)
+                    if($j<=$data['orderAmount'])
                     {
                         $k=$j;//Admin Redemption(Based on Max Redemption) (K)
                        
@@ -773,7 +773,7 @@ class PurchaseController extends Controller
                         }
                     }
                     else{
-                        $k=$e;//Admin Redemption(Based on Max Redemption) (K)
+                        $k=$data['orderAmount']-1;//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
                             $k=$data['orderAmount']-1;
@@ -846,7 +846,7 @@ class PurchaseController extends Controller
                     //return $m;153.76<=100
 
                     $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($m<=$b)
+                    if($m<=$data['orderAmount'])
                     {
                         $n=$m;//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
@@ -858,7 +858,7 @@ class PurchaseController extends Controller
 
                     }
                     else{
-                        $n=$b;//Admin Redemption(Based on Max Redemption) (K)
+                        $n=$data['orderAmount']-1;//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
                             $n=$data['orderAmount']-1;
