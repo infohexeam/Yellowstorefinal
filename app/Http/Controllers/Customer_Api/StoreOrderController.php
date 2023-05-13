@@ -981,7 +981,7 @@ class StoreOrderController extends Controller
                         //return $pua;
                         if($remCount>0)
                         {
-                            $data['status'] = 3;
+                            $data['status'] = 0;
                             $data['message'] = "FEW PRODUCTS IN CART ARE REMOVED FROM STORE";
                             DB::rollback();
                             return response($data);
