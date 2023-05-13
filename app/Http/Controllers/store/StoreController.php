@@ -5941,4 +5941,32 @@ class StoreController extends Controller
     //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     // }
   }
+  private function storeNotification($device_id, $title, $body,$clickAction,$type)
+{
+    $url = 'https://fcm.googleapis.com/fcm/send';
+    $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
+    $fields = array(
+        'to' => $device_id,
+        'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+        'data' => array('title' => $title, 'body' => $body,'type' => $type),
+    );
+    $headers = array(
+        'Content-Type:application/json',
+        'Authorization:key=' . $api_key
+    );
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+    $result = curl_exec($ch);
+    if ($result === FALSE) {
+        die('FCM Send Error: ' . curl_error($ch));
+    }
+    curl_close($ch);
+    return $result;
+}
 }
