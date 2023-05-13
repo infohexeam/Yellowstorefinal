@@ -1212,6 +1212,13 @@ class OrderController extends Controller
                         }
 
                         if ($request->status_id == 5) {
+                            if($od->status_id==8)
+                            {
+                                $data['status'] = 0;
+                                $data['message'] = "Order is already out for delivery.You cannot cancel this order ";
+                                return response($data);
+        
+                            }
                             $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
     
                                 foreach ($dBoyDevices as $cd) {
@@ -1230,13 +1237,7 @@ class OrderController extends Controller
                                     $type = "order";
                                     $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                 }
-                            if($od->status_id==8)
-                            {
-                                $data['status'] = 0;
-                                $data['message'] = "Order is already out for delivery.You cannot cancel this order ";
-                                return response($data);
-        
-                            }
+                           
 
                             if (isset($od->referenceId) && ($od->isRefunded < 2)) {
 
