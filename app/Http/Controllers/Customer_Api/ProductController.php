@@ -1817,6 +1817,15 @@ class ProductController extends Controller
                 $data['logs']=$wallet_logs;  
                 foreach($data['logs'] as $log)
                 {
+                    if($log->type=='debit')
+                    {
+                        if($log->order_id==NULL)
+                        {
+                            continue;
+                        }
+
+                    }
+
                     $log->store_points_balance=number_format($log->store_points_credited-$log->store_points_debited,2);
                 }            
                 if ($wallet_log_credited >= 0)
