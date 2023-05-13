@@ -2930,6 +2930,15 @@ class StoreController extends Controller
           $type = "order";
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title,$body,$clickAction,$type);
         }
+        
+        foreach ($storeDevice as $sd) {
+          $title = 'Order cancelled';
+          $body = 'Order with order id ' . $order_number . ' is cancelled..';
+          $clickAction = "OrdersFragment";
+          $type = "order";
+          $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $clickAction, $type);
+      }
+        
       } elseif ($status_id == 4) {
         $order_status = "Confirmed";
 
