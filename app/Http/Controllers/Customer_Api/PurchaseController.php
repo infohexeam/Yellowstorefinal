@@ -1352,6 +1352,8 @@ class PurchaseController extends Controller
        
             if (isset($request->order_amount) ) {
                 $orderAmount=$request->order_amount;
+            if($request->admin_points==1&&$request->store_points==1) 
+            { 
                 if($redeem_preference==1)
                 {
                     $adminConfigPoints = Trn_configure_points::first();
@@ -1414,6 +1416,7 @@ class PurchaseController extends Controller
                     }
 
                 }
+            }
                 if($request->admin_points==1)
                 {
                     if(!$max_reedem_set_store)
