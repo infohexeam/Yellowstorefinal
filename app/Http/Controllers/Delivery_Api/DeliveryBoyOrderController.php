@@ -199,6 +199,15 @@ class DeliveryBoyOrderController extends Controller
                                 $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $clickAction, $type);
                             }
 
+                            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $orderdatas->customer_id)->get();
+                            foreach ($customerDevice as $cd) {
+                                $title = 'Delivery Boy Accepted Order';
+                                $body = 'New order with order id ' . $orderdatas->order_number . ' has been accepted by ' . $dBoy->delivery_boy_name;
+                                $clickAction = "OrderListFragment";
+                                $type = "order";
+                                $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                              }
+
 
                             $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)
                                 ->where('store_id', @$orderdatas->store_id)->get();
