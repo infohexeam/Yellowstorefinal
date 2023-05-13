@@ -2930,6 +2930,18 @@ class StoreController extends Controller
           $type = "order";
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title,$body,$clickAction,$type);
         }
+      if($order->delivery_boy_id!=NULL)
+      {
+        $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $order->delivery_boy_id)->get();
+      
+        foreach ($dBoyDevices as $cd) {
+            $title = 'Order Cancelled';
+            $body = 'An order(' . $order_number . ') has been cancelled';
+            $clickAction = "AssignedOrderFragment";
+            $type = "order";
+            $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
+        }
+      }
         
         foreach ($storeDevice as $sd) {
           $title = 'Order cancelled';

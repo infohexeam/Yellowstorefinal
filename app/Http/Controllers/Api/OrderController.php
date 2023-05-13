@@ -1225,7 +1225,7 @@ class OrderController extends Controller
                                     $title = 'Order Cancelled';
                                     $body = 'An order(' . $od->order_number . ') has been cancelled';
                                     $clickAction = "AssignedOrderFragment";
-                                    $type = "order-cancelled";
+                                    $type = "order";
                                     $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
                                 }
                                 $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $od->customer_id)->get();
