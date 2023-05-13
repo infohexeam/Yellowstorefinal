@@ -1089,8 +1089,8 @@ class PurchaseController extends Controller
                     $total_points=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
                     $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
                     $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
-                    //$h=$total_points-$totalusedPoints-$redeemedPoints;
-                    $h=$request->admin_wallet_balance;
+                    $h=$total_points-$totalusedPoints-$redeemedPoints;
+                    //$h=$request->admin_wallet_balance;
                     //$h=30;
                     $j=($h*$d)/100;
 
@@ -1182,8 +1182,8 @@ class PurchaseController extends Controller
                     //$g=50;
                     $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
-                    //$g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
-                    $g=$request->store_wallet_balance;
+                    $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                    //$g=$request->store_wallet_balance;
                     $m=($g*$a)/100;
                     //return $m;153.76<=100
 
@@ -1354,7 +1354,7 @@ class PurchaseController extends Controller
 
        
             if (isset($request->order_amount) ) {
-                $orderAmount=$request->order_amount;
+            $orderAmount=$request->order_amount;
             if($request->admin_points==1&&$request->store_points==1) 
             { 
                 if($redeem_preference==1)
