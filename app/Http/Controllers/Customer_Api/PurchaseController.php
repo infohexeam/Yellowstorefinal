@@ -1249,7 +1249,7 @@ class PurchaseController extends Controller
                     $data['wallet_id']=$wallet_log->wallet_log_id;
                                                
                     //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
-                    $data['reducedStoreOrderAmount'] = $q;
+                    $data['reducedStoreOrderAmount'] = number_format((float)$q, 2, '.', '');;;
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
