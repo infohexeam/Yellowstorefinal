@@ -1823,9 +1823,10 @@ class ProductController extends Controller
                         {
                             continue;
                         }
-                        $log->store_points_debited=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$log->store_id)->whereNotNull('store_id')->whereNotNull('order_id')->sum('points_debited');
+                       
 
                     }
+                    $log->store_points_debited=Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$log->store_id)->whereNotNull('store_id')->whereNotNull('order_id')->sum('points_debited');
 
                     $log->store_points_balance=number_format($log->store_points_credited-$log->store_points_debited,2);
                 }            
