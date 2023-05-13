@@ -1397,7 +1397,7 @@ class PurchaseController extends Controller
                     $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                     $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
-                    ///$g=$request->store_wallet_balance;
+                    $g=$request->store_wallet_balance;
                     $m=($g*$a)/100;
                     //return $m;153.76<=100
 
