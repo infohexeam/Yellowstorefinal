@@ -1129,12 +1129,12 @@ class PurchaseController extends Controller
                        // return $k."7";
                     }
                     $balancePoints=$h-$k;
-                    if($balancePoints<0)
-                    {
-                        $data['status'] = 0;
-                        $data['message'] = "Reward points can't be redeemed for admin123";
-                        return response($data);
-                    }
+                    // if($balancePoints<0)
+                    // {
+                    //     $data['status'] = 0;
+                    //     $data['message'] = "Reward points can't be redeemed for admin123";
+                    //     return response($data);
+                    // }
                     $l=$k*$f;//Admin Redemption Amount(RS)(L)
                     $i=$adminOrderAmount;
                     if($i>=$l)
@@ -1226,12 +1226,12 @@ class PurchaseController extends Controller
                        
                     }
                     $balanceStorePoints=$g-$n;
-                    if($balanceStorePoints<0)
-                    {
-                        $data['status'] = 0;
-                        $data['message'] = "Reward points can't be redeemed for store";
-                        return response($data);
-                    }
+                    // if($balanceStorePoints<0)
+                    // {
+                    //     $data['status'] = 0;
+                    //     $data['message'] = "Reward points can't be redeemed for store";
+                    //     return response($data);
+                    // }
                     $o=$n*$c;//Admin Redemption Amount(RS)(L)
                     $i=$storeOrderAmount;
                     if($i>=$o)
