@@ -1381,7 +1381,7 @@ class ProductController extends Controller
                             $data['vendorId']  = '0';
 
                         $data['timeSlotDetails']  = Trn_StoreDeliveryTimeSlot::select('store_delivery_time_slot_id', 'store_id', 'time_start', 'time_end')->where('store_id', $request->store_id)->get();
-
+                          
                         //   $data['paymentTypes']  = Sys_payment_type::all();
                         $data['rewardReducible']  = Trn_configure_points::find(1)->redeem_percentage;
                         $data['redeemAmt']  = Trn_configure_points::find(1)->max_redeem_amount;
@@ -1645,10 +1645,8 @@ class ProductController extends Controller
                 }
 
                 
-                $data['customerRewards'] = Trn_customer_reward::leftjoin('trn_store_orders','trn_customer_rewards.customer_id', '=','trn_store_orders.customer_id')
-                ->leftjoin('trn_points_redeemeds','trn_customer_rewards.customer_id', '=','trn_points_redeemeds.customer_id')
-                ->where('trn_customer_rewards.customer_id',$request->customer_id)
-                ->where('trn_customer_rewards.reward_point_status', 1)->where('trn_customer_rewards.reward_points_earned','!=',0.00)->whereNull('trn_customer_rewards.store_id')->where('trn_customer_rewards.discription','!=','store points')->orderBy('trn_customer_rewards.reward_id', 'DESC')->get();
+                $data['customerRewards'] = Trn_customer_reward::where('customer_id',$request->customer_id)
+                    ->where('reward_point_status', 1)->where('reward_points_earned','!=',0.00)->whereNull('store_id')->where('discription','!=','store points')->orderBy('reward_id', 'DESC')->get();
                 foreach ($data['customerRewards'] as $cr) {
                     if (Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id)) {
                         $cr->rewardTransactionType = Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id);
@@ -1664,10 +1662,8 @@ class ProductController extends Controller
                         }
                     }
                 }
-                $data['customerUsedPoints']=Trn_store_order::leftjoin()
-                                        ->select('order_id','reward_points_used')
-                                        ->where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->get();
-
+                $data['customerUsedLogs']=Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->orderBy('updated_at','DESC')->get();
+                $data['customerAdminRedeemedLogs']=Trn_points_redeemed::where('customer_id', $request->customer_id)->orderBy('updated_at','DESC')->get();
                 $data['status'] = 1;
                 $data['message'] = "Success";
             } else {
