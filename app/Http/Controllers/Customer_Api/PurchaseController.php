@@ -1062,7 +1062,7 @@ class PurchaseController extends Controller
                     //return $storeOrderAmount;
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($m+1<=$storeOrderAmount)
+                    if($m<=$storeOrderAmount)
                     {
                         
                         $adminOrderAmount=$relatableRedeemAmount-$m;
@@ -1181,8 +1181,7 @@ class PurchaseController extends Controller
                 }
                 if($request->store_points==1)
                 {
-                    if(!$max_reedem_set_admin)
-                    {
+                    
                     $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
                     if($wallet_log_first->first())
                     {
@@ -1274,7 +1273,7 @@ class PurchaseController extends Controller
                     $data['usedStorePoint'] = strval($n);//number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
 
-                }
+               
             }
                 $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
                
