@@ -1083,8 +1083,7 @@ class PurchaseController extends Controller
             }
                 if($request->admin_points==1)
                 {
-                    if(!$max_reedem_set_store)
-                    {
+                   
                     $adminConfigPoints = Trn_configure_points::first();
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
                     $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
@@ -1176,7 +1175,7 @@ class PurchaseController extends Controller
 
                     //$orderTotalArray['orderAmountAdmin']= $data['reducedOrderAmount'];
 
-                }
+                
 
                 }
                 if($request->store_points==1)
