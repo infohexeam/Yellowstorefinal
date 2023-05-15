@@ -1167,7 +1167,7 @@ class PurchaseController extends Controller
                     }
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
                     $data['reducedAmountByWalletPoints'] =strval($l);
-                    $data['usedPoint'] =number_format((float)$k, 2, '.', '');
+                    $data['usedPoint'] =strval($k);//number_format((float)$k, 2, '.', '');
                     $data['balancePoint'] = number_format((float)$balancePoints, 2, '.', '');
                     //$data['remainingOrderAmount'] = number_format((float)$p, 2, '.', '');
 
