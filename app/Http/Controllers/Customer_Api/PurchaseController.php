@@ -1107,6 +1107,11 @@ class PurchaseController extends Controller
                             $max_reedem_set_admin=true;
 
                         }
+                        if($e<=$j)
+                        {
+                            $k=$e;
+
+                        }
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
                         //return $k."6";
                        // $k=$r
@@ -1117,6 +1122,11 @@ class PurchaseController extends Controller
                         {
                             $k=$adminOrderAmount-1;
                             $max_reedem_set_admin=true;
+
+                        }
+                        if($e<=$j)
+                        {
+                            $k=$e;
 
                         }
                         //$k=
@@ -1197,6 +1207,11 @@ class PurchaseController extends Controller
                             $max_reedem_set_store=true;
 
                         }
+                        if($b<=$m)
+                        {
+                            $n=$b;
+
+                        }
 
                     }
                     else{
@@ -1205,6 +1220,11 @@ class PurchaseController extends Controller
                         {
                             $n=$storeOrderAmount-1;
                             $max_reedem_set_store=true;
+
+                        }
+                        if($b<=$m)
+                        {
+                            $n=$b;
 
                         }
                     }
