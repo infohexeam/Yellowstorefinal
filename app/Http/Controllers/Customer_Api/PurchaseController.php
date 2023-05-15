@@ -1225,6 +1225,7 @@ class PurchaseController extends Controller
                         }
                        
                     }
+                    return $n;
                     $balanceStorePoints=$g-$n;
                     // if($balanceStorePoints<0)
                     // {
