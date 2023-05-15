@@ -1240,7 +1240,7 @@ class PurchaseController extends Controller
                         $data['totalReducableStoreAmount'] = number_format((float)$o, 2, '.', '');;
                         if($a==100)
                         {
-                            $data['totalReducableStoreAmount'] = number_format((float)$n, 2, '.', '');;
+                            $data['totalReducableStoreAmount'] = number_format((float)$q, 2, '.', '');;
 
                         }
 
