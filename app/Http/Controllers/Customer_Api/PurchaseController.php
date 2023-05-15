@@ -1027,7 +1027,7 @@ class PurchaseController extends Controller
                     $h=$total_points-$totalusedPoints-$redeemedPoints;
                     //$h=$request->admin_wallet_balance;
                     //$h=30;
-                    $j=floor(($h*$d)/100);
+                    $j=($h*$d)/100;
 
                     //$j=number_format((float)$j, 2, '.', '');
                     if($j<=$relatableRedeemAmount)
@@ -1056,7 +1056,7 @@ class PurchaseController extends Controller
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                     $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                     ///$g=$request->store_wallet_balance;
-                    $m=floor(($g*$a)/100);
+                    $m=($g*$a)/100;
                     //return $m;153.76<=100
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
@@ -1293,7 +1293,7 @@ class PurchaseController extends Controller
                 //         //return response($data);
                 //     }
                 $rem=$data['orderAmount']-$data['totalReducableAmount'];
-                if($rem>=0)
+                if($rem>0)
                 {
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
 
