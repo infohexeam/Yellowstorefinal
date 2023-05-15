@@ -1080,8 +1080,7 @@ class PurchaseController extends Controller
             }
                 if($request->admin_points==1)
                 {
-                    if(!$max_reedem_set_store)
-                    {
+                  
                     $adminConfigPoints = Trn_configure_points::first();
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
                     $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
@@ -1173,13 +1172,12 @@ class PurchaseController extends Controller
 
                     //$orderTotalArray['orderAmountAdmin']= $data['reducedOrderAmount'];
 
-                }
+               
 
                 }
                 if($request->store_points==1)
                 {
-                    if(!$max_reedem_set_admin)
-                    {
+                   
                     $wallet_log_first=Trn_wallet_log::where('type','debit')->where('customer_id', $request->customer_id)->where('store_id',$store_id)->whereNull('order_id');
                     if($wallet_log_first->first())
                     {
@@ -1271,7 +1269,7 @@ class PurchaseController extends Controller
                     $data['usedStorePoint'] = strval($n);//number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
 
-                }
+                
             }
                 $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
                
