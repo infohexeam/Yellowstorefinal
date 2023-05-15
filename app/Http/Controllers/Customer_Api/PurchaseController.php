@@ -1100,21 +1100,16 @@ class PurchaseController extends Controller
                         $k=$j;//Admin Redemption(Based on Max Redemption) (K)
                         //$relatableAdminRedeemAmount
                         //$relatableRedeemAmount=$relatableRedeemAmount-$j;
-                      
+                       
                         if($d==100)
                         {
                             $k=$adminOrderAmount-1;
                             $max_reedem_set_admin=true;
 
-                        
+                        }
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
                         //return $k."6";
                        // $k=$r
-                       if($e<=$j)
-                       {
-                        $k=$e;
-                        
-                       }
                     }
                     else{
                         $k=$adminOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
@@ -1124,16 +1119,6 @@ class PurchaseController extends Controller
                             $max_reedem_set_admin=true;
 
                         }
-                        if($e<=$j)
-                        {
-                         $k=$e;
-                         
-                        }
-                        // if($e<=$j)
-                        // {
-                        //  $k=$e;
-                         
-                        // }
                         //$k=
                        // return $k."7";
                     }
@@ -1212,11 +1197,6 @@ class PurchaseController extends Controller
                             $max_reedem_set_store=true;
 
                         }
-                        if($b<=$m)
-                        {
-                         $n=$b;
-                         
-                        }
 
                     }
                     else{
@@ -1226,11 +1206,6 @@ class PurchaseController extends Controller
                             $n=$storeOrderAmount-1;
                             $max_reedem_set_store=true;
 
-                        }
-                        if($b<=$m)
-                        {
-                         $n=$b;
-                         
                         }
                     }
                     $balanceStorePoints=$g-$n;
