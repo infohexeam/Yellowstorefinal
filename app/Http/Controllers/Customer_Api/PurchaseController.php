@@ -1225,7 +1225,6 @@ class PurchaseController extends Controller
                         }
                        
                     }
-                    return $n;
                     $balanceStorePoints=$g-$n;
                     // if($balanceStorePoints<0)
                     // {
@@ -1269,7 +1268,7 @@ class PurchaseController extends Controller
                     //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
                     $data['reducedStoreOrderAmount'] = number_format((float)$q, 2, '.', '');;;
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
-                    $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                    $data['usedStorePoint'] = strval($n);//number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
 
                 }
