@@ -1293,7 +1293,7 @@ class PurchaseController extends Controller
                 //         //return response($data);
                 //     }
                 $rem=$data['orderAmount']-$data['totalReducableAmount'];
-                if($rem>0)
+                if($rem>=0)
                 {
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
 
