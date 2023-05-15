@@ -1042,6 +1042,7 @@ class PurchaseController extends Controller
                         return response($data);
 
                     }
+                    return 1;
 
                 }
                 if($redeem_preference==2)
@@ -1075,6 +1076,7 @@ class PurchaseController extends Controller
                         return response($data);
 
                     }
+                    return 2;
 
                 }
             }
