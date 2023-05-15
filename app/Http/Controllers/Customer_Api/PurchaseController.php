@@ -1092,18 +1092,18 @@ class PurchaseController extends Controller
                     $h=$total_points-$totalusedPoints-$redeemedPoints;
                     //$h=$request->admin_wallet_balance;
                     //$h=30;
-                    $j=floor(($h*$d)/100);
+                    $j=($h*$d)/100;
 
                     //$j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($j<=$adminOrderAmount)
                     {
-                        $k=$j;//Admin Redemption(Based on Max Redemption) (K)
+                        $k=floor($j);//Admin Redemption(Based on Max Redemption) (K)
                         //$relatableAdminRedeemAmount
                         //$relatableRedeemAmount=$relatableRedeemAmount-$j;
                        
                         if($d==100)
                         {
-                            $k=$j;
+                            $k=floor($j);
                             $max_reedem_set_admin=true;
 
                         }
@@ -1135,7 +1135,7 @@ class PurchaseController extends Controller
                     //     $data['message'] = "Reward points can't be redeemed for admin123";
                     //     return response($data);
                     // }
-                    $l=$k*$f;//Admin Redemption Amount(RS)(L)
+                    $l=floor($k)*$f;//Admin Redemption Amount(RS)(L)
                     $i=$adminOrderAmount;
                     if($i>=$l)
                     {
@@ -1195,16 +1195,16 @@ class PurchaseController extends Controller
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                     $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                     //$g=$request->store_wallet_balance;
-                    $m=floor(($g*$a)/100);
+                    $m=($g*$a)/100;
                     //return $m;153.76<=100
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
-                        $n=$m;//Admin Redemption(Based on Max Redemption) (K)
+                        $n=floor($m);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=$m;
+                            $n=floor($m);
                             $max_reedem_set_store=true;
 
                         }
@@ -1232,7 +1232,7 @@ class PurchaseController extends Controller
                     //     $data['message'] = "Reward points can't be redeemed for store";
                     //     return response($data);
                     // }
-                    $o=$n*$c;//Admin Redemption Amount(RS)(L)
+                    $o=floor($n)*$c;//Admin Redemption Amount(RS)(L)
                     $i=$storeOrderAmount;
                     if($i>=$o)
                     {
