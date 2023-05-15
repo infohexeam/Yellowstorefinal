@@ -1027,9 +1027,9 @@ class PurchaseController extends Controller
                     $h=$total_points-$totalusedPoints-$redeemedPoints;
                     //$h=$request->admin_wallet_balance;
                     //$h=30;
-                    $j=($h*$d)/100;
+                    $j=floor(($h*$d)/100);
 
-                    $j=number_format((float)$j, 2, '.', '');
+                    //$j=number_format((float)$j, 2, '.', '');
                     if($j<=$relatableRedeemAmount)
                     {
                         $adminOrderAmount=$relatableRedeemAmount;
@@ -1056,10 +1056,10 @@ class PurchaseController extends Controller
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                     $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                     ///$g=$request->store_wallet_balance;
-                    $m=($g*$a)/100;
+                    $m=floor(($g*$a)/100);
                     //return $m;153.76<=100
 
-                    $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$relatableRedeemAmount)
                     {
                         
@@ -1092,9 +1092,9 @@ class PurchaseController extends Controller
                     $h=$total_points-$totalusedPoints-$redeemedPoints;
                     //$h=$request->admin_wallet_balance;
                     //$h=30;
-                    $j=($h*$d)/100;
+                    $j=floor(($h*$d)/100);
 
-                    $j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    //$j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($j<=$adminOrderAmount)
                     {
                         $k=$j;//Admin Redemption(Based on Max Redemption) (K)
@@ -1103,13 +1103,13 @@ class PurchaseController extends Controller
                        
                         if($d==100)
                         {
-                            $k=$adminOrderAmount-1;
+                            $k=floor($adminOrderAmount-1);
                             $max_reedem_set_admin=true;
 
                         }
                         if($e<=$j)
                         {
-                            $k=$e;
+                            $k=floor($e);
 
                         }
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
@@ -1117,7 +1117,7 @@ class PurchaseController extends Controller
                        // $k=$r
                     }
                     else{
-                        $k=$adminOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        $k=floor($adminOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
                             $k=$adminOrderAmount-1;
@@ -1195,31 +1195,31 @@ class PurchaseController extends Controller
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                     $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                     //$g=$request->store_wallet_balance;
-                    $m=($g*$a)/100;
+                    $m=floor(($g*$a)/100);
                     //return $m;153.76<=100
 
-                    $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
                         $n=$m;//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=$storeOrderAmount-1;
+                            $n=floor($storeOrderAmount-1);
                             $max_reedem_set_store=true;
 
                         }
                         if($b<=$m)
                         {
-                            $n=$b;
+                            $n=floor($b);
 
                         }
 
                     }
                     else{
-                        $n=$storeOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        $n=floor($storeOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=$storeOrderAmount-1;
+                            $n=floor($storeOrderAmount-1);
                             $max_reedem_set_store=true;
 
                         }
