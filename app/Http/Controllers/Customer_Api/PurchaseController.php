@@ -1124,11 +1124,7 @@ class PurchaseController extends Controller
                             $max_reedem_set_admin=true;
 
                         }
-                        if($e<=$j)
-                        {
-                            $k=$e;
-
-                        }
+                       
                         //$k=
                        // return $k."7";
                     }
@@ -1143,6 +1139,11 @@ class PurchaseController extends Controller
                     $i=$adminOrderAmount;
                     if($i>=$l)
                     {
+                        // if($e<=$l)
+                        // {
+                        //     $k=$e;
+
+                        // }
                         $p=$i-$l;//Balance if Admin Redemption Only (P)
                         $data['totalReducableAdminAmount'] = number_format((float)$l, 2, '.', '');;
                         if($d==100)
@@ -1222,11 +1223,7 @@ class PurchaseController extends Controller
                             $max_reedem_set_store=true;
 
                         }
-                        if($b<=$m)
-                        {
-                            $n=$b;
-
-                        }
+                       
                     }
                     $balanceStorePoints=$g-$n;
                     if($balanceStorePoints<0)
