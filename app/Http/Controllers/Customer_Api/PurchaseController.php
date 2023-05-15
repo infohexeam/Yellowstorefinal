@@ -1105,6 +1105,11 @@ class PurchaseController extends Controller
                         {
                             $k=floor($adminOrderAmount-1);
                             $max_reedem_set_admin=true;
+                            if($e<=$j)
+                            {
+                                $k=floor($e);
+    
+                            }
 
                         }
                         if($e<=$j)
@@ -1206,6 +1211,11 @@ class PurchaseController extends Controller
                         {
                             $n=floor($storeOrderAmount-1);
                             $max_reedem_set_store=true;
+                            if($b<=$m)
+                        {
+                            $n=floor($b);
+
+                        }
 
                         }
                         if($b<=$m)
@@ -1219,7 +1229,7 @@ class PurchaseController extends Controller
                         $n=floor($storeOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=floor($storeOrderAmount-1);
+                            $n=$storeOrderAmount-1;
                             $max_reedem_set_store=true;
 
                         }
