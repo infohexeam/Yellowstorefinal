@@ -1132,7 +1132,7 @@ class PurchaseController extends Controller
                     if($balancePoints<0)
                     {
                         $data['status'] = 0;
-                        $data['message'] = "Reward points can't be redeemed for admin";
+                        $data['message'] = "Reward points can't be redeemed for admin123";
                         return response($data);
                     }
                     $l=$k*$f;//Admin Redemption Amount(RS)(L)
