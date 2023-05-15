@@ -1268,7 +1268,7 @@ class PurchaseController extends Controller
                     //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
                     $data['reducedStoreOrderAmount'] = number_format((float)$q, 2, '.', '');;;
                     $data['reducedAmountByStoreWalletPoints'] =strval($n);//number_format((float)$n, 2, '.', '');
-                    $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                    $data['usedStorePoint'] = strval($n);//number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
 
                 }
