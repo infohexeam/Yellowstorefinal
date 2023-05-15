@@ -1030,7 +1030,7 @@ class PurchaseController extends Controller
                     $j=($h*$d)/100;
 
                     //$j=number_format((float)$j, 2, '.', '');
-                    if($j<=$relatableRedeemAmount)
+                    if($j<$relatableRedeemAmount)
                     {
                         $adminOrderAmount=$relatableRedeemAmount;
                         $storeOrderAmount=$relatableRedeemAmount-$j;
@@ -1060,7 +1060,7 @@ class PurchaseController extends Controller
                     //return $m;153.76<=100
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($m<=$relatableRedeemAmount)
+                    if($m<$relatableRedeemAmount)
                     {
                         
                         $adminOrderAmount=$relatableRedeemAmount-$m;
