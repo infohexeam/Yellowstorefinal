@@ -1645,8 +1645,10 @@ class ProductController extends Controller
                 }
 
                 
-                $data['customerRewards'] = Trn_customer_reward::where('customer_id',$request->customer_id)
-                    ->where('reward_point_status', 1)->where('reward_points_earned','!=',0.00)->whereNull('store_id')->where('discription','!=','store points')->orderBy('reward_id', 'DESC')->get();
+                $data['customerRewards'] = Trn_customer_reward::leftjoin('trn_store_orders','trn_customer_rewards.customer_id', '=','trn_store_orders.customer_id')
+                ->leftjoin('trn_points_redeemeds','trn_customer_rewards.customer_id', '=','trn_points_redeemeds.customer_id')
+                ->where('trn_customer_rewards.customer_id',$request->customer_id)
+                ->where('trn_customer_rewards.reward_point_status', 1)->where('trn_customer_rewards.reward_points_earned','!=',0.00)->whereNull('trn_customer_rewards.store_id')->where('trn_customer_rewards.discription','!=','store points')->orderBy('trn_customer_rewards.reward_id', 'DESC')->get();
                 foreach ($data['customerRewards'] as $cr) {
                     if (Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id)) {
                         $cr->rewardTransactionType = Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id);
@@ -1662,6 +1664,9 @@ class ProductController extends Controller
                         }
                     }
                 }
+                $data['customerUsedPoints']=Trn_store_order::leftjoin()
+                                        ->select('order_id','reward_points_used')
+                                        ->where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->get();
 
                 $data['status'] = 1;
                 $data['message'] = "Success";
