@@ -1219,7 +1219,7 @@ class PurchaseController extends Controller
                         $n=floor($storeOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=floor($storeOrderAmount-1);
+                            $n=$storeOrderAmount-1;
                             $max_reedem_set_store=true;
 
                         }
