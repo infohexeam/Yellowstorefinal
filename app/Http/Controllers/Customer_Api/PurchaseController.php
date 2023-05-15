@@ -1042,7 +1042,7 @@ class PurchaseController extends Controller
                         return response($data);
 
                     }
-                    return 1;
+                    //return 1;
 
                 }
                 if($redeem_preference==2)
@@ -1059,6 +1059,7 @@ class PurchaseController extends Controller
                     ///$g=$request->store_wallet_balance;
                     $m=($g*$a)/100;
                     //return $relatableRedeemAmount;//153.76<=100
+                    return $m;
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
@@ -1076,7 +1077,7 @@ class PurchaseController extends Controller
                         return response($data);
 
                     }
-                    return 2;
+                    //return 2;
 
                 }
             }
