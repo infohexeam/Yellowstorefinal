@@ -1166,7 +1166,7 @@ class PurchaseController extends Controller
 
                     }
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
-                    $data['reducedAmountByWalletPoints'] =strval($l);
+                    $data['reducedAmountByWalletPoints'] =number_format((float)$l, 2, '.', '');
                     $data['usedPoint'] =strval($k);//number_format((float)$k, 2, '.', '');
                     $data['balancePoint'] = number_format((float)$balancePoints, 2, '.', '');
                     //$data['remainingOrderAmount'] = number_format((float)$p, 2, '.', '');
@@ -1267,7 +1267,7 @@ class PurchaseController extends Controller
                                                
                     //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
                     $data['reducedStoreOrderAmount'] = number_format((float)$q, 2, '.', '');;;
-                    $data['reducedAmountByStoreWalletPoints'] =strval($n);//number_format((float)$n, 2, '.', '');
+                    $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
 
