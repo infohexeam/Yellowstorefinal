@@ -1037,9 +1037,9 @@ class PurchaseController extends Controller
                     }
                     else
                     {
-                        $data['status'] = 0;
-                        $data['message'] = "Reward points can't be redeemed for admin";
-                        return response($data);
+                        // $data['status'] = 0;
+                        // $data['message'] = "Reward points can't be redeemed for admin";
+                        // return response($data);
 
                     }
                     //return 1;
@@ -1072,9 +1072,9 @@ class PurchaseController extends Controller
                     else
                     {
                         
-                        $data['status'] = 0;
-                        $data['message'] = "Reward points can't be redeemed for store";
-                        return response($data);
+                        // $data['status'] = 0;
+                        // $data['message'] = "Reward points can't be redeemed for store";
+                        // return response($data);
 
                     }
                     //return 2;
