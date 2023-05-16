@@ -1036,11 +1036,6 @@ class PurchaseController extends Controller
                     {
                         $adminOrderAmount=$relatableRedeemAmount;
                         $storeOrderAmount=$relatableRedeemAmount-$j;
-                        if($storeOrderAmount>=0&&$$storeOrderAmount<=1)
-                        {
-                            $storeOrderAmount=ceil($storeOrderAmount);
-                        }
-
                     }
                     else
                     {
@@ -1076,10 +1071,6 @@ class PurchaseController extends Controller
                     {
                         
                         $adminOrderAmount=$relatableRedeemAmount-$m;
-                        if($adminOrderAmount>=0&&$adminOrderAmount<=1)
-                        {
-                            $adminOrderAmount=ceil($adminOrderAmount);
-                        }
                         $storeOrderAmount=$relatableRedeemAmount;
                         //return $adminOrderAmount;
                     }
