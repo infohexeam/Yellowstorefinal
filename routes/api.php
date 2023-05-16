@@ -73,7 +73,7 @@ Route::get('store/resend-otp', 'Api\StoreController@resendOtp');
 Route::post('store/login', 'Api\StoreController@loginStore');
 Route::get('store/login-status', 'Api\StoreController@loginStoreStatus');
 Route::get('store/logout-all-device', 'Api\StoreController@logoutAllDevice');
-Route::get('send-store-login-otp','Api\StoreController@sendStoreLoginOtp');
+Route::get('store/send-store-login-otp','Api\StoreController@sendStoreLoginOtp');
 
 //Forgot Password - Store
 Route::get('store/forgot-password/verify_mobile', 'Api\StoreController@FpverifyMobile');
