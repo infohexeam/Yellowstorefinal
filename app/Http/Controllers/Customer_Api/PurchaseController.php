@@ -1124,9 +1124,20 @@ class PurchaseController extends Controller
                         {
                             $k=$adminOrderAmount-1;
                             $max_reedem_set_admin=true;
-                            return $adminOrderAmount;
+                            //return $adminOrderAmount;
+                            
+                            if($k<=0)
+                            {
+                                $k=0;
+
+                            }
 
                         }
+                        if($k<=0)
+                            {
+                                $k=0;
+
+                            }
                        
                         //$k=
                        // return $k."7";
@@ -1223,7 +1234,15 @@ class PurchaseController extends Controller
                         {
                             $n=$storeOrderAmount-1;
                             $max_reedem_set_store=true;
+                            if($n<=0)
+                            {
+                                $n=0;
+                            }
 
+                        }
+                        if($n<=0)
+                        {
+                            $n=0;
                         }
                        
                     }
