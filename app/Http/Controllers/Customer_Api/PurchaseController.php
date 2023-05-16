@@ -1082,6 +1082,7 @@ class PurchaseController extends Controller
         
                 if($request->admin_points==1)
                 {
+                    return 1;
                    
                     $adminConfigPoints = Trn_configure_points::first();
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
