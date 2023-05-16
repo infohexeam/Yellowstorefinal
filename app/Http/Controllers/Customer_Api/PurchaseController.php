@@ -1039,7 +1039,7 @@ class PurchaseController extends Controller
                     }
                     else
                     {
-                        //$store_not_redeem=true;
+                        $store_not_redeem=true;
                         // $data['status'] = 0;
                         // $data['message'] = "Reward points can't be redeemed for store";
                         
@@ -1077,7 +1077,7 @@ class PurchaseController extends Controller
                     {
                         
                        
-                        //$admin_not_redeem=true;
+                        $admin_not_redeem=true;
                         
 
                     }
