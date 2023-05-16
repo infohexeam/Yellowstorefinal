@@ -1250,7 +1250,7 @@ class PurchaseController extends Controller
                         }
                         
 
-                        
+                        $n=99999;
                        
                     }
                     $balanceStorePoints=$g-$n;
