@@ -1007,6 +1007,8 @@ class PurchaseController extends Controller
         $redeem_preference=$request->redeem_preference;//1-Admin,2-Store,0-No
         $adminOrderAmount=$data['orderAmount'];
         $storeOrderAmount=$data['orderAmount'];
+        $admin_not_redeem=false;
+        $store_not_redeem=false;
         
         
 
@@ -1037,9 +1039,11 @@ class PurchaseController extends Controller
                     }
                     else
                     {
-                        $data['status'] = 0;
-                        $data['message'] = "Reward points can't be redeemed for store";
-                        return response($data);
+                        $store_not_redeem=true;
+                        // $data['status'] = 0;
+                        // $data['message'] = "Reward points can't be redeemed for store";
+                        
+                        // return response($data);
 
                     }
                     //return 1;
@@ -1072,9 +1076,9 @@ class PurchaseController extends Controller
                     else
                     {
                         
-                        $data['status'] = 0;
-                        $data['message'] = "Reward points can't be redeemed for admin";
-                        return response($data);
+                       
+                        $admin_not_redeem=true;
+                        
 
                     }
                     //return 2;
@@ -1329,6 +1333,20 @@ class PurchaseController extends Controller
                 //return $rem;
             
                 //$data['remainingOrderAmount'] = 
+                if($admin_not_redeem)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Reward points can't be redeemed for admin";
+                    return response($data);
+
+                }
+                if($store_not_redeem)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Reward points can't be redeemed for store";
+                    return response($data);
+                    
+                }
                 $data['status']=1;
                 $data['message']="success";
                 return response($data);
