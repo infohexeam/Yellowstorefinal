@@ -1130,6 +1130,7 @@ class PurchaseController extends Controller
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
                             
+                            
                             if($k<=0)
                             {
                                 $k=0;
@@ -1141,6 +1142,11 @@ class PurchaseController extends Controller
                             {
                                 $k=0;
 
+                            }
+                            if($e<=$j)
+                            {
+                                $k=floor($e);
+    
                             }
                        
                         //$k=
@@ -1247,6 +1253,11 @@ class PurchaseController extends Controller
                         if($n<=0)
                         {
                             $n=0;
+                        }
+                        if($b<=$m)
+                        {
+                            $n=floor($b);
+
                         }
                        
                     }
