@@ -1007,8 +1007,6 @@ class PurchaseController extends Controller
         $redeem_preference=$request->redeem_preference;//1-Admin,2-Store,0-No
         $adminOrderAmount=$data['orderAmount'];
         $storeOrderAmount=$data['orderAmount'];
-        $u=0.00;
-        $t=0.00;
         $admin_not_redeem=false;
         $store_not_redeem=false;
         
@@ -1042,12 +1040,7 @@ class PurchaseController extends Controller
                     else
                     {
                         $store_not_redeem=true;
-                        $u=ceil($adminOrderAmount-1);
-                        if($e<=$j)
-                        {
-                            $u=floor($e);
-
-                        }
+                        
 
                         // $data['status'] = 0;
                         // $data['message'] = "Reward points can't be redeemed for store";
@@ -1087,13 +1080,6 @@ class PurchaseController extends Controller
                         
                        
                         $admin_not_redeem=true;
-                        $t=ceil($storeOrderAmount-1);
-                        if($b<=$m)
-                        {
-                            $t=floor($b);
-
-                        }
-                        
                         
 
                     }
@@ -1362,7 +1348,7 @@ class PurchaseController extends Controller
                 //$data['remainingOrderAmount'] = 
                 if($admin_not_redeem)
                 {
-                    $data['usedPoint'] =$t;
+                    //$data['usedPoint'] =0.00;
                     $data['status'] = 0;
                     $data['message'] = "Reward points can't be redeemed for admin";
                     return response($data);
@@ -1370,7 +1356,7 @@ class PurchaseController extends Controller
                 }
                 if($store_not_redeem)
                 {
-                    $data['usedStorePoint'] =$u;
+                    //$data['usedStorePoint'] =0.00;
                     $data['status'] = 0;
                     $data['message'] = "Reward points can't be redeemed for store";
                     return response($data);
