@@ -1335,6 +1335,7 @@ class PurchaseController extends Controller
                 //$data['remainingOrderAmount'] = 
                 if($admin_not_redeem)
                 {
+                    $data['usedPoint'] =0.00;
                     $data['status'] = 0;
                     $data['message'] = "Reward points can't be redeemed for admin";
                     return response($data);
@@ -1342,6 +1343,7 @@ class PurchaseController extends Controller
                 }
                 if($store_not_redeem)
                 {
+                    $data['usedStorePoint'] =0.00;
                     $data['status'] = 0;
                     $data['message'] = "Reward points can't be redeemed for store";
                     return response($data);
