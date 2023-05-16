@@ -1007,7 +1007,6 @@ class PurchaseController extends Controller
         $redeem_preference=$request->redeem_preference;//1-Admin,2-Store,0-No
         $adminOrderAmount=$data['orderAmount'];
         $storeOrderAmount=$data['orderAmount'];
-        $t=0;
         $admin_not_redeem=false;
         $store_not_redeem=false;
         
@@ -1077,7 +1076,7 @@ class PurchaseController extends Controller
                     else
                     {
                         
-                        $t=$m;
+                       
                         $admin_not_redeem=true;
                         
 
@@ -1358,7 +1357,7 @@ class PurchaseController extends Controller
                 }
                 if($store_not_redeem)
                 {
-                    $data['usedStorePoint'] =$t;
+                    $data['usedStorePoint'] =0.00;
                     $data['status'] = 0;
                     $data['message'] = "Reward points can't be redeemed for store";
                     return response($data);
