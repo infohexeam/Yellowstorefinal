@@ -1118,6 +1118,10 @@ class PurchaseController extends Controller
                             $k=floor($e);
 
                         }
+                        if($k>=$e)
+                        {
+                            $n=$e;
+                        }
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
                         //return $k."6";
                        // $k=$r
@@ -1141,6 +1145,10 @@ class PurchaseController extends Controller
                             {
                                 $k=0;
 
+                            }
+                            if($k>=$e)
+                            {
+                                $n=$e;
                             }
                        
                         //$k=
@@ -1225,10 +1233,9 @@ class PurchaseController extends Controller
                             $max_reedem_set_store=true;
 
                         }
-                        if($b<=$m)
+                        if($n>=$b)
                         {
-                            $n=floor($b);
-
+                            $n=$b;
                         }
 
                     }
@@ -1248,7 +1255,7 @@ class PurchaseController extends Controller
                         {
                             $n=0;
                         }
-                        if($n>$b)
+                        if($n>=$b)
                         {
                             $n=$b;
                         }
