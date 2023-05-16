@@ -1009,8 +1009,7 @@ class PurchaseController extends Controller
         $storeOrderAmount=$data['orderAmount'];
         $admin_not_redeem=false;
         $store_not_redeem=false;
-        $t=0.00;
-        $u=0.00;
+        
         
 
        
@@ -1041,9 +1040,7 @@ class PurchaseController extends Controller
                     else
                     {
                         $store_not_redeem=true;
-                        $u=$adminOrderAmount-1;
                         
-
                         // $data['status'] = 0;
                         // $data['message'] = "Reward points can't be redeemed for store";
                         
@@ -1082,7 +1079,6 @@ class PurchaseController extends Controller
                         
                        
                         $admin_not_redeem=true;
-                        $t=$storeOrderAmount-1;
                         
 
                     }
@@ -1351,7 +1347,7 @@ class PurchaseController extends Controller
                 //$data['remainingOrderAmount'] = 
                 if($admin_not_redeem)
                 {
-                    $data['usedPoint'] =$adminOrderAmount-1;
+                    $data['usedPoint'] =0.00;
                     $data['status'] = 0;
                     $data['message'] = "Reward points can't be redeemed for admin";
                     return response($data);
@@ -1359,7 +1355,7 @@ class PurchaseController extends Controller
                 }
                 if($store_not_redeem)
                 {
-                    $data['usedStorePoint'] =$storeOrderAmount-1;
+                    $data['usedStorePoint'] =0.00;
                     $data['status'] = 0;
                     $data['message'] = "Reward points can't be redeemed for store";
                     return response($data);
