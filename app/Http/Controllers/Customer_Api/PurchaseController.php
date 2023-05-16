@@ -1124,7 +1124,7 @@ class PurchaseController extends Controller
                         {
                             $k=$adminOrderAmount-1;
                             $max_reedem_set_admin=true;
-                            return $k;
+                            return $adminOrderAmount;
 
                         }
                        
