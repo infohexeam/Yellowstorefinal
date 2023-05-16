@@ -737,12 +737,16 @@ class StoreController extends Controller
                                 $data['store_id'] = $custCheck->store_id;
                                 $data['store_admin_id'] = $custCheck->store_admin_id;
                                 $data['store_name'] = $storeData->store_name;
-                                $data['status'] = 2;
+                                $data['status'] = 1;
                                 $data['otp']=$store_otp;
                                 $data['message'] = "OTP has been sent";
+                                return response($data);
                     }
                 }
             }
+            $data['status']=0;
+            $data['message']="store expired/in active";
+            return response($data);
         
 
     }
