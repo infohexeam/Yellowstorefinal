@@ -1248,11 +1248,7 @@ class PurchaseController extends Controller
                         {
                             $n=0;
                         }
-                        if($b<=$m)
-                        {
-                            $n=floor($b);
-
-                        }
+                        
 
                         
                        
