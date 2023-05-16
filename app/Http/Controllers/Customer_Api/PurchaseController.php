@@ -1310,6 +1310,11 @@ class PurchaseController extends Controller
                     $data['reducedStoreOrderAmount'] = number_format((float)$q, 2, '.', '');;;
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                    $ch=$storeOrderAmount-$data['usedStorePoint'];
+                    if($ch>0&&$ch<1)
+                    {
+                        $n=$n-1;
+                    }
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
 
                
@@ -1350,7 +1355,7 @@ class PurchaseController extends Controller
             
                 //$data['remainingOrderAmount'] = 
                 $data['message']="success";
-                $data['status']=1;
+                 $data['status']=1;
               if($admin_not_redeem==1&&$store_not_redeem==0)
                 {
                     $data['usedPoint']=0.00;
