@@ -1928,7 +1928,7 @@ class StoreController extends Controller
 
     $removeProduct = array();
     $removeProduct['is_removed'] = 0;
-    $removeProduct['product_status'] = 1;
+    $removeProduct['product_status'] = 0;
 
     $removeProductVar = array();
     $removeProductVar['is_removed'] = 0;

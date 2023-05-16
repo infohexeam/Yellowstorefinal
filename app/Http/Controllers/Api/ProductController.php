@@ -267,7 +267,7 @@ class ProductController extends Controller
                         
                         $removeProduct = array();
                         $removeProduct['is_removed'] = 0; //restore 
-                        $removeProduct['product_status'] = 1; //inactive
+                        $removeProduct['product_status'] = 0; //inactive
     
                         $removeProductVar = array();
                         $removeProductVar['is_removed'] = 0; 
