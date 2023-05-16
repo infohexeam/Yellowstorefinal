@@ -700,6 +700,52 @@ class StoreController extends Controller
             return response($response);
         }
     }
+    public function sendStoreLoginOtp(Request $request)
+    {
+        $store_mobile=$request->store_mobile;
+        $custCheck = Trn_StoreAdmin::where('store_mobile', '=',$store_mobile)->first();
+        $today = Carbon::now()->toDateString();
+
+        if ($custCheck) {  
+            
+           
+            $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
+            //return $parentStore->expiry_date;
+            if($today>$parentStore->expiry_date)
+            {                
+            $data['status'] = 8;
+            $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+            return response($data);
+            }
+            
+                
+                //old
+            // if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
+            if (($custCheck->store_account_status != 0) && ($today <= $custCheck->expiry_date)) {
+                
+                    if ($custCheck->store_otp_verify_status != 0) {
+                        $store_otp=rand(100000,999999);
+                                $storeData = Mst_store::find($custCheck->store_id);
+                                $otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
+                                $store_otp_expirytime = Carbon::now()->addMinute(10);
+                                $otp_verify->store_id                 = $custCheck->store_id;
+                                $otp_verify->store_otp_expirytime     = $store_otp_expirytime;
+                                $otp_verify->store_otp                 = $store_otp;
+                                $otp_verify->update();
+                                $res=Helper::sendOtp($store_mobile,$store_otp,1);
+                                $data['otp_session_id']=$res['session_id'];
+                                $data['store_id'] = $custCheck->store_id;
+                                $data['store_admin_id'] = $custCheck->store_admin_id;
+                                $data['store_name'] = $storeData->store_name;
+                                $data['status'] = 2;
+                                $data['otp']=$store_otp;
+                                $data['message'] = "OTP has been sent";
+                    }
+                }
+            }
+        
+
+    }
 
 
     public function loginStore(Request $request)
