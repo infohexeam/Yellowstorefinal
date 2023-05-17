@@ -4314,7 +4314,7 @@ class ProductController extends Controller
                         }
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
-                        $data['allProducts']=json_encode($data['allProducts']);
+                        $data['allProducts']=json_encode($data['allProducts'],false);
                         //$allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
                         // $allProducts = $allProducts->where('mst_store_products.product_status', 1)
