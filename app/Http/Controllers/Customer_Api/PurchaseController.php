@@ -2771,13 +2771,13 @@ public function addToCartTest(Request $request)
 
                         }
                         
-                        if($variant_stock_count>0)
+                        /*if($variant_stock_count>0)
                         {
                             $data['message'] = 'Variants unavailable';
                             $data['status'] = 3;
                             return response($data);
 
-                        }
+                        }*/
                         if($varProdu->variant_status==0)
                         {
                             $data['message'] = 'Product unavailable';
