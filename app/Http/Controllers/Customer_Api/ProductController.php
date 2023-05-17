@@ -4314,7 +4314,10 @@ class ProductController extends Controller
                         }
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
-                        
+                        //$decodedData = json_decode($data['allProducts'], true);
+                        $products = collect($data['allProducts'] )->values();
+                        $data['allProducts']=$products;
+                        //$data['allProducts']=json_decode()
                         // $data['allProducts']=collect($data['allProducts'])->map(function ($item) {
                         //     return (array) $item;
                         // })->toJson();
