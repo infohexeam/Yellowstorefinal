@@ -2763,7 +2763,7 @@ public function addToCartTest(Request $request)
                         {
                             if($varProdu->is_base_variant==1)
                             {
-                                $data['message'] = strval($variant_stock_count);
+                                $data['message'] = 'Product unavailable..Try again later';
                                 $data['status'] = 3;
                                 return response($data);
 
