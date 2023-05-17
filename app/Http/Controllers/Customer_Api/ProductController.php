@@ -4313,7 +4313,7 @@ class ProductController extends Controller
                             $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                         }
 
-                        $data['allProducts']  = json_encode($allProducts->where('variant_stock_count','>',0)->all(),true);
+                        $data['allProducts']  = json_decode($allProducts->where('variant_stock_count','>',0)->all(),true);
 
                         //$allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
