@@ -274,10 +274,10 @@ class ProductController extends Controller
                     ->first();
 
 
-                if (count($orderData)>0)
-                    $data['itemPurchasedStatus'] = 1;
-                else
+                if (!$orderData)
                     $data['itemPurchasedStatus'] = 0;
+                else
+                    $data['itemPurchasedStatus'] = 1;
 
                 $fbStatus = Trn_CustomerFeedback::whereIn('product_varient_id', $productVarientIds)->where('customer_id', $request->customer_id)->first();
                 if (!$fbStatus)
