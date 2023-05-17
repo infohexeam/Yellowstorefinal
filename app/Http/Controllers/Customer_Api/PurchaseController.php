@@ -2763,7 +2763,7 @@ public function addToCartTest(Request $request)
                         {
                             if($varProdu->is_base_variant==1)
                             {
-                                $data['message'] = srrval($variant_stock_count);
+                                $data['message'] = strval($variant_stock_count);
                                 $data['status'] = 3;
                                 return response($data);
 
