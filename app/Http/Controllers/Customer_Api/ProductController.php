@@ -3757,7 +3757,7 @@ class ProductController extends Controller
                                 $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                             }
 
-                            $allProducts->where('varaint_stock_count','>','stock_count');
+                            $data['listProducts']  =$allProducts->where('varaint_stock_count','>','stock_count');
 
 
 
