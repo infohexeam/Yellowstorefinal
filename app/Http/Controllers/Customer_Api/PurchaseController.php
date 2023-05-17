@@ -1359,7 +1359,7 @@ class PurchaseController extends Controller
                 //$data['remainingOrderAmount'] = 
                 $data['message']="success";
                
-              if($admin_not_redeem==1&&$store_not_redeem==0)
+              if($admin_not_redeem==1)
                 {
                     $data['usedPoint']=0.00;
                     //$data['status'] = 0;
@@ -1367,7 +1367,7 @@ class PurchaseController extends Controller
                     //return response($data);
 
                 }
-                if($admin_not_redeem==0&&$store_not_redeem==1)
+                if($store_not_redeem==1)
                 {
                     $data['usedStorePoint']=0.00;
                     //$data['status'] = 0;
