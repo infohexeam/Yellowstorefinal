@@ -1036,20 +1036,6 @@ class PurchaseController extends Controller
                     {
                         $adminOrderAmount=$relatableRedeemAmount;
                         $storeOrderAmount=$relatableRedeemAmount-$j;
-                    if($d==100)
-                    {
-                        if($relatableRedeemAmount>$j)
-                        {
-                            $storeOrderAmount=$relatableRedeemAmount-$j;
-
-                        }
-                        else
-                        {
-                            $storeOrderAmount=$storeOrderAmount-$e;
-
-                        }
-                    }
-                        
                     }
                     else
                     {
@@ -1083,19 +1069,8 @@ class PurchaseController extends Controller
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
+                        
                         $adminOrderAmount=$relatableRedeemAmount-$m;
-                    if($a==100)
-                    {
-                        if($relatableRedeemAmount>$m)
-                        {
-                        $adminOrderAmount=$relatableRedeemAmount-$m;
-                        }
-                        else
-                        {
-                            $adminOrderAmount=$relatableRedeemAmount-$b;
-
-                        }
-                    }
                         $storeOrderAmount=$relatableRedeemAmount;
                         //return $adminOrderAmount;
                     }
