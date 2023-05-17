@@ -4382,7 +4382,7 @@ class ProductController extends Controller
                            $pvar_base=Mst_store_product_varient::where('product_id',$p->product_id)->where('is_base_variant',1)->first();
                            $p->product_varient_id=strval($pvar_base->product_varient_id);
                            $p->variant_name=$pvar_base->product_name;
-                           $p->product_varient_base_image=$pvar_base->product_base_image;
+                           //$p->product_varient_base_image=$pvar_base->product_base_image;
                         }
 
                         $PurproductData = collect($PurproductData);
