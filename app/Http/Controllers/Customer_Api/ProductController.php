@@ -127,13 +127,14 @@ class ProductController extends Controller
                     $row->product_type = $productData->product_type;
                     $row->service_type = $productData->service_type;
                 }
-                $data['productVartiantdata'] = $productVartiantdata->where('variant_status',1)->where('stock_count','>',0);
-                /*if(count($data['productVartiantdata'])==0)
+                $data['productVartiantdata'] = $productVartiantdata;
+                $variant_stock_count=Mst_store_product_varient::where('product_id',$productData->product_id)->where('is_removed',0)->where('stock_count','>',0)->where('variant_status',1)->sum('stock_count');
+                if($variant_stock_count>0)
                 {
-                    $data['message'] = 'No variants ';
+                    $data['message'] = 'No variants';
                     $data['status'] = 0;
 
-                }*/
+                }
 
                 $data['productData'] = $productData;
 
