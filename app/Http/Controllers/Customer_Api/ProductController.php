@@ -128,7 +128,7 @@ class ProductController extends Controller
                     $row->service_type = $productData->service_type;
                 }
                 $data['productVartiantdata'] = $productVartiantdata->where('variant_status',1)->where('stock_count','>',0);
-                if(empty($data['productVartiantdata']))
+                if(count($data['productVartiantdata'])==0)
                 {
                     $data['message'] = 'No variants ';
                     $data['status'] = 0;
