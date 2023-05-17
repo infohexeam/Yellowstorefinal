@@ -3548,7 +3548,8 @@ class ProductController extends Controller
                         }
 
                         $data['listProducts']  = $allProducts->where('variant_stock_count','>',0);
-
+                        $products = collect($data['listProducts'] )->values();
+                        $data['listProducts']=$products;
 
 
 
@@ -3769,7 +3770,8 @@ class ProductController extends Controller
 
                             $data['listProducts'] =$allProducts->where('variant_stock_count','>',0);
 
-
+                            $products = collect($data['listProducts'] )->values();
+                            $data['listProducts']=$products;
 
                             $data['message'] = 'success';
                             $data['status'] = 1;
@@ -3988,7 +3990,8 @@ class ProductController extends Controller
                     }
 
                     $data['allProducts']  = $allProducts->where('variant_stock_count','>',0)->all();
-
+                    $products = collect($data['allProducts'] )->values();
+                    $data['allProducts']=$products;
 
 
                     //   $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
