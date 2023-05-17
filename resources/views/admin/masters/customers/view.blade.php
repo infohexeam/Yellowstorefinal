@@ -234,7 +234,7 @@ use App\Models\admin\Trn_points_redeemed;
                            <!--{{ \Carbon\Carbon::parse($s->created_at)->format('H:i')}}-->
                         
                         </td>
-                        <td>{{ $s->points }}</td>
+                        <td>{{ number_format($s->points,2) }}</td>
                                     <td>{{ $s->discription }}</td>
                                  </tr>
                                  @endforeach
