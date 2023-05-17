@@ -2758,18 +2758,19 @@ public function addToCartTest(Request $request)
                                 return response($data);
                             
                         }
+                        $variant_stock_count=Mst_store_product_varient::where('product_id',$varProdu->product_id)->where('is_removed',0)->where('stock_count','>',0)->where('variant_status',1)->sum('stock_count');
                         if($proData->product_status == 0)
                         {
                             if($varProdu->is_base_variant==1)
                             {
-                                $data['message'] = 'Product unavailable..Try again later';
+                                $data['message'] = srrval($variant_stock_count);
                                 $data['status'] = 3;
                                 return response($data);
 
                             }
 
                         }
-                        $variant_stock_count=Mst_store_product_varient::where('product_id',$varProdu->product_id)->where('is_removed',0)->where('stock_count','>',0)->where('variant_status',1)->sum('stock_count');
+                        
                         if($variant_stock_count>0)
                         {
                             $data['message'] = 'Variants unavailable';
