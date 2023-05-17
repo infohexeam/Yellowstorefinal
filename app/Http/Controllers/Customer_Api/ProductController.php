@@ -131,7 +131,7 @@ class ProductController extends Controller
                 $variant_stock_count=Mst_store_product_varient::where('product_id',$productData->product_id)->where('is_removed',0)->where('stock_count','>',0)->where('variant_status',1)->sum('stock_count');
                 if($variant_stock_count>0)
                 {
-                    $data['message'] = 'No variants';
+                    $data['message'] = 'No variants available';
                     $data['status'] = 0;
 
                 }
