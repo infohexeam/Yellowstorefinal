@@ -313,6 +313,11 @@ $(function(e) {
     } );
 
 } );
+$('input').keydown(function(e){
+    var kCode = (e.which || e.keyCode)
+    if(kCode == 190 || kCode == 110) return false;
+    if(e.which === 86 && (e.ctrlKey || e.metaKey)) return false;
+})
 
 </script>
 
