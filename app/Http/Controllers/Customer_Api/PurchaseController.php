@@ -2728,6 +2728,7 @@ public function addToCartTest(Request $request)
                             $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
                             $proData = Mst_store_product::find($varProdu->product_id);
+                            $varProList=Mst_store_product_varient::where('product_id',$varProdu->product_id)->where('is_removed',0)->where('variant_status',1)->get();
                             // $productAvailableRes=$this->productAvailabilityCheck($varProdu->product_id);
                             // if($productAvailableRes==2)
                             // {
@@ -2766,6 +2767,14 @@ public function addToCartTest(Request $request)
                                 return response($data);
 
                             }
+
+                        }
+                        $variant_stock_count=Mst_store_product_varient::where('product_id',$varProdu->product_id)->where('is_removed',0)->where('stock_count','>',0)->where('variant_status',1)->sum('stock_count');
+                        if($variant_stock_count>0)
+                        {
+                            $data['message'] = 'Variants unavailable';
+                            $data['status'] = 3;
+                            return response($data);
 
                         }
                         if($varProdu->variant_status==0)
