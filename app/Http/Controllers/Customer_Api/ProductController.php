@@ -4316,8 +4316,8 @@ class ProductController extends Controller
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
                         
                         $data['allProducts']=collect($data['allProducts'])->map(function ($item) {
-                            return (object) $item;
-                        })->toArray();
+                            return (array) $item;
+                        })->toJson();
                         //$allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
                         // $allProducts = $allProducts->where('mst_store_products.product_status', 1)
