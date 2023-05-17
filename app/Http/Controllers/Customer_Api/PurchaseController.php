@@ -1040,8 +1040,18 @@ class PurchaseController extends Controller
                     }
                     else
                     {
-                        $store_not_redeem=1;
-                        $admin_not_redeem=0;
+                        if($adminOrderAmount>=$e)
+                        {
+                            $storeOrderAmount=$relatableRedeemAmount-$e;
+                            
+                        }
+                        else
+                        {
+                            $store_not_redeem=1;
+                            $admin_not_redeem=0;
+
+                        }
+                       
                         // $data['status'] = 0;
                         // $data['message'] = "Reward points can't be redeemed for store";
                         
@@ -1070,7 +1080,7 @@ class PurchaseController extends Controller
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
-                        
+                    
                         $adminOrderAmount=$relatableRedeemAmount-$m;
                         $storeOrderAmount=$relatableRedeemAmount;
                         //return $adminOrderAmount;
@@ -1078,9 +1088,19 @@ class PurchaseController extends Controller
                     else
                     {
                         
+                        if($storeOrderAmount>=$b)
+                        {
+                            $adminOrderAmount=$relatableRedeemAmount-$b;
+                            
+                        }
+                        else
+                        {
+                            $admin_not_redeem=1;
+                            $store_not_redeem=0;
+                        }
+
                        
-                        $admin_not_redeem=1;
-                        $store_not_redeem=0;
+                        
 
                         
 
@@ -1359,7 +1379,7 @@ class PurchaseController extends Controller
                 //$data['remainingOrderAmount'] = 
                 $data['message']="success";
                
-              if($admin_not_redeem==1)
+              if($admin_not_redeem==1&&$store_not_redeem==0)
                 {
                     $data['usedPoint']=0.00;
                     //$data['status'] = 0;
@@ -1367,7 +1387,7 @@ class PurchaseController extends Controller
                     //return response($data);
 
                 }
-                if($store_not_redeem==1)
+                if($admin_not_redeem==0&&$store_not_redeem==1)
                 {
                     $data['usedStorePoint']=0.00;
                     //$data['status'] = 0;
