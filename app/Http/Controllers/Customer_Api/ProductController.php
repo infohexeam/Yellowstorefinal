@@ -128,12 +128,12 @@ class ProductController extends Controller
                     $row->service_type = $productData->service_type;
                 }
                 $data['productVartiantdata'] = $productVartiantdata->where('variant_status',1)->where('stock_count','>',0);
-                if(count($data['productVartiantdata'])==0)
+                /*if(count($data['productVartiantdata'])==0)
                 {
                     $data['message'] = 'No variants ';
                     $data['status'] = 0;
 
-                }
+                }*/
 
                 $data['productData'] = $productData;
 
@@ -4375,6 +4375,12 @@ class ProductController extends Controller
 
 
                         $PurproductData = $PurproductData->get();
+                        foreach($PurproductData as $p)
+                        {
+                           $pvar=Mst_store_product_varient::where('product_varient_id',$p->product_varient_id)->first();
+                           $pvar_base=Mst_store_product_varient::where('product_id',$p->product_id)->where('is_base_variant',1)->first();
+                           $p->product_varient_id=$pvar_base->product_varient_id;
+                        }
 
                         $PurproductData = collect($PurproductData);
                         $PurproductDatas = $PurproductData->unique('product_varient_id');
