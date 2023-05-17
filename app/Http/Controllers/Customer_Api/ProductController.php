@@ -3516,7 +3516,6 @@ class ProductController extends Controller
                             ->get();
 
                         foreach ($allProducts as $allProduct) {
-                            $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
                             $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                             $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                             $storeData = Mst_store::find($allProduct->store_id);
@@ -3538,7 +3537,7 @@ class ProductController extends Controller
                             $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                         }
 
-                        $data['listProducts']  = $allProducts->where('varaint_stock_count','>','stock_count');
+                        $data['listProducts']  = $allProducts;
 
 
 
@@ -3735,7 +3734,6 @@ class ProductController extends Controller
                                 ->get();
 
                             foreach ($allProducts as $allProduct) {
-                                $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
                                 $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                                 $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                                 $storeData = Mst_store::find($allProduct->store_id);
@@ -3757,7 +3755,7 @@ class ProductController extends Controller
                                 $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                             }
 
-                            $data['listProducts']  =$allProducts->where('varaint_stock_count','>','stock_count');
+                            $data['listProducts']  = $allProducts;
 
 
 
