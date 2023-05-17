@@ -82,6 +82,7 @@ class ProductController extends Controller
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
                     ->where('stock_count', '>', 0)
+                    ->where('is_removed',0)
                     ->where('variant_status',1)
                     ->get();
                 foreach ($productVartiantdata as $row) {
@@ -126,7 +127,13 @@ class ProductController extends Controller
                     $row->product_type = $productData->product_type;
                     $row->service_type = $productData->service_type;
                 }
-                $data['productVartiantdata'] = $productVartiantdata;
+                $data['productVartiantdata'] = $productVartiantdata->where('variant_status',1)->where('stock_count','>',0);
+                if(empty($data['productVartiantdata']))
+                {
+                    $data['message'] = 'No variants ';
+                    $data['status'] = 0;
+
+                }
 
                 $data['productData'] = $productData;
 
@@ -3604,6 +3611,7 @@ class ProductController extends Controller
                             // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
                             //     $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
                             // }
+
 
                             // $productData = $productData->where('mst_store_products.product_status', 1)
                             //     ->where('mst_store_products.store_id', $store_id)
