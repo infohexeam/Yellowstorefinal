@@ -1048,6 +1048,38 @@ class PurchaseController extends Controller
 
                     }
                     //return 1;
+                    $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
+                    $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
+                    $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
+                    $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
+                    //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
+                    //$g=50;
+                    $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
+                    $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
+                    $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
+                    ///$g=$request->store_wallet_balance;
+                    $m=($g*$a)/100;
+                    //return $relatableRedeemAmount;//153.76<=100
+                    //return $storeOrderAmount;
+
+                    //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    if($m<=$storeOrderAmount)
+                    {
+                        
+                        $adminOrderAmount=$relatableRedeemAmount-$m;
+                        $storeOrderAmount=$relatableRedeemAmount;
+                        //return $adminOrderAmount;
+                    }
+                    else
+                    {
+                        
+                       
+                        $admin_not_redeem=1;
+                        $store_not_redeem=0;
+
+                        
+
+                    }
 
                 }
                 if($redeem_preference==2)
@@ -1084,9 +1116,37 @@ class PurchaseController extends Controller
                         
 
                     }
-                    //return 2;
+                    $adminConfigPoints = Trn_configure_points::first();
+                    $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
+                    $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
+                    $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
+                    $total_points=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//Admin wallet balance()
+                    $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                    $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                    $h=$total_points-$totalusedPoints-$redeemedPoints;
+                    //$h=$request->admin_wallet_balance;
+                    //$h=30;
+                    $j=($h*$d)/100;
+
+                    //$j=number_format((float)$j, 2, '.', '');
+                    if($j<=$adminOrderAmount)
+                    {
+                        $adminOrderAmount=$relatableRedeemAmount;
+                        $storeOrderAmount=$relatableRedeemAmount-$j;
+                    }
+                    else
+                    {
+                        $store_not_redeem=1;
+                        $admin_not_redeem=0;
+                        // $data['status'] = 0;
+                        // $data['message'] = "Reward points can't be redeemed for store";
+                        
+                        // return response($data);
+
+                    }
 
                 }
+
             }
                 if($request->admin_points==1)
                 {
