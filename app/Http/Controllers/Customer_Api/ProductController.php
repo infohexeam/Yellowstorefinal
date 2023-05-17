@@ -4314,7 +4314,10 @@ class ProductController extends Controller
                         }
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
-                        
+                        $arrayOfObjects = collect( $data['allProducts'])->map(function ($item, $key) {
+                            return (object) array_merge(["product_id" => $key], (array) $item);
+                        })->values()->toArray();
+                        $data['allProducts']=$arrayOfObjects;
                         // $data['allProducts']=collect($data['allProducts'])->map(function ($item) {
                         //     return (array) $item;
                         // })->toJson();
