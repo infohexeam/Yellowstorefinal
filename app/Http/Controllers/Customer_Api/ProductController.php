@@ -133,6 +133,7 @@ class ProductController extends Controller
                 {
                     $data['message'] = 'No variants available';
                     $data['status'] = 0;
+                    return response($data);
 
                 }
 
