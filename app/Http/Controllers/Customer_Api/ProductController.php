@@ -375,10 +375,11 @@ class ProductController extends Controller
     public function checkPurchasedOrders(Request $request)
     {
         $is_purchased=Trn_store_order_item::where('product_id',$request->product_id)->where('customer_id',$request->customer_id)->count();
+        $puArray=[];
         if($is_purchased>0)
             {
                 $oArray=[];
-                $puArray=[];
+                
                 $orders=Trn_store_order_item::where('product_id',$request->product_id)->where('customer_id',$request->customer_id)->get();
                 foreach($orders as $order)
                 {
