@@ -2912,6 +2912,50 @@ class StoreOrderController extends Controller
                     {
                         $reward->delete();
                     }
+                    if($orderData->reward_points_used!=NULL||$orderData->reward_points_used!=0.00)
+                    {
+                        $cr=new Trn_customer_reward();
+                        $cr = new Trn_customer_reward;
+                        $cr->transaction_type_id = 0;
+                        $cr->reward_points_earned = $orderData->reward_points_used;
+                        $cr->customer_id = $orderData->customer_id;
+                        $cr->order_id = $orderData->order_id;
+                        $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                        $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                        $cr->reward_point_status = 1;
+                        $cr->discription = 'admin points';
+                        $cr->save();
+
+
+
+                    }
+                    if($orderData->reward_points_used_store!=NULL||$orderData->reward_points_used_store!=0.00)
+                    {
+                        $scr = new Trn_customer_reward;
+                        $scr->transaction_type_id = 0;
+                        $scr->store_id=$orderData->store_id;
+                        $scr->reward_points_earned = $orderData->reward_points_used_store;
+                        $scr->customer_id = $orderData->customer_id;
+                        $scr->order_id = $orderData->order_id;
+                        $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_status = 1;
+                        $scr->discription = 'store points';
+                        $scr->save();
+                        
+
+                        $wallet_log=new Trn_wallet_log();
+                        $wallet_log->store_id=$orderData->store_id;
+                        $wallet_log->customer_id=$orderData->customer_id;
+                        $wallet_log->order_id=$orderData->order_id;
+                        $wallet_log->type='credit';
+                        $wallet_log->points_debited=null;
+                        $wallet_log->points_credited=$orderData->reward_points_used_store;
+                        $wallet_log->save();
+                        
+
+                    }
+
                     $data['message'] = "Order cancelled";
                     $data['refundId'] = "";
 
