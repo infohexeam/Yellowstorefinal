@@ -1130,19 +1130,19 @@ class PurchaseController extends Controller
                         $k=floor($j);//Admin Redemption(Based on Max Redemption) (K)
                         //$relatableAdminRedeemAmount
                         //$relatableRedeemAmount=$relatableRedeemAmount-$j;
-                        if($j-$k<1&&$j-$k>0)
+                       /* if($j-$k<1&&$j-$k>0)
                         {
                             $k=$k-1;
-                        }
+                        }*/
 
                        
                         if($d==100)
                         {
                             $k=floor($j);
-                            if($j-$k<1&&$j-$k>0)
+                            /*if($j-$k<1&&$j-$k>0)
                             {
                                 $k=$k-1;
-                            }
+                            }*/
                             $max_reedem_set_admin=true;
 
                         }
@@ -1161,17 +1161,17 @@ class PurchaseController extends Controller
                     }
                     else{
                         $k=floor($adminOrderAmount);//Admin Redemption(Based on Max Redemption) (K)
-                        if($adminOrderAmount-$k<1&&$adminOrderAmount-$k>0)
-                        {
-                            $k=$k-1;
-                        }
+                        // if($adminOrderAmount-$k<1&&$adminOrderAmount-$k>0)
+                        // {
+                        //     $k=$k-1;
+                        // }
                         if($d==100)
                         {
                             $k=floor($adminOrderAmount);
-                            if($adminOrderAmount-$k<1&&$adminOrderAmount-$k>0)
-                        {
-                            $k=$k-1;
-                        }
+                        //     if($adminOrderAmount-$k<1&&$adminOrderAmount-$k>0)
+                        // {
+                        //     $k=$k-1;
+                        // }
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
                             
@@ -1270,17 +1270,17 @@ class PurchaseController extends Controller
                     {
                         $n=floor($m);//Admin Redemption(Based on Max Redemption) (K)
                         
-                        if($m-$n<1&&$m-$n>0)
-                            {
-                                $n=$n-1;
-                            }
+                        // if($m-$n<1&&$m-$n>0)
+                        //     {
+                        //         $n=$n-1;
+                        //     }
                         if($a==100)
                         {
                             $n=floor($m);
-                            if($m-$n<1&&$m-$n>0)
-                            {
-                                $n=$n-1;
-                            }
+                            // if($m-$n<1&&$m-$n>0)
+                            // {
+                            //     $n=$n-1;
+                            // }
                             $max_reedem_set_store=true;
 
                         }
@@ -1292,17 +1292,17 @@ class PurchaseController extends Controller
                     }
                     else{
                         $n=floor($storeOrderAmount);//Admin Redemption(Based on Max Redemption) (K)
-                        if($storeOrderAmount-$n<1&&$storeOrderAmount-$n>0)
-                            {
-                                $n=$n-1;
-                            }
+                        // if($storeOrderAmount-$n<1&&$storeOrderAmount-$n>0)
+                        //     {
+                        //         $n=$n-1;
+                        //     }
                         if($a==100)
                         {
                             $n=floor($storeOrderAmount);
-                            if($storeOrderAmount-$n<1&&$storeOrderAmount-$n>0)
-                            {
-                                $n=$n-1;
-                            }
+                            // if($storeOrderAmount-$n<1&&$storeOrderAmount-$n>0)
+                            // {
+                            //     $n=$n-1;
+                            // }
                             $max_reedem_set_store=true;
                             if($n<=0)
                             {
