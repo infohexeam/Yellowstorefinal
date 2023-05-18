@@ -646,9 +646,9 @@ class DeliveryBoyController extends Controller
 
 
                 if (isset($request->page)) {
-                    $deliveryReport = $deliveryReport->paginate(10, ['data'], 'page', $request->page);
+                    $deliveryReport = $deliveryReport->paginate(20, ['data'], 'page', $request->page);
                 } else {
-                    $deliveryReport = $deliveryReport->paginate(10);
+                    $deliveryReport = $deliveryReport->paginate(20);
                 }
 
 
