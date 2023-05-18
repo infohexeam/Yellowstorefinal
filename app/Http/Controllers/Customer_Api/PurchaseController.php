@@ -1158,7 +1158,7 @@ class PurchaseController extends Controller
                         }
                         else
                         {
-                            $k=$k+1;
+                            $k=ceil($k);
                         }
                         if($d==100)
                         {
@@ -1169,7 +1169,7 @@ class PurchaseController extends Controller
                         }
                         else
                         {
-                            $k=$k+1;
+                            $k=ceil($k);
                         }
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
@@ -1288,7 +1288,7 @@ class PurchaseController extends Controller
                             }
                             else
                             {
-                                $n=$n+1;
+                                $n=ceil($n);
                             }
                         if($a==100)
                         {
@@ -1298,7 +1298,7 @@ class PurchaseController extends Controller
                                 $n=$n-1;
                             }
                             else{
-                                $n=$n+1;
+                                $n=ceil($n);
 
                             }
                             $max_reedem_set_store=true;
