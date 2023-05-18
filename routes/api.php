@@ -432,7 +432,7 @@ Route::get('customer/view-base-product', 'Customer_Api\ProductController@viewBas
 Route::get('customer/view-product-popup', 'Customer_Api\ProductController@viewProductPopup');
 
 Route::get('customer/base-product/variants', 'Customer_Api\ProductController@viewBaseProductVariants');
-
+Route::get('customer/check-purchased-orders', 'Customer_Api\ProductController@checkPurchasedOrders'); //2
 
 Route::get('customer/search-product', 'Customer_Api\ProductController@searchProduct');
 Route::get('customer/search-store', 'Customer_Api\ProductController@searchStore');

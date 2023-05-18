@@ -273,7 +273,7 @@ class ProductController extends Controller
                     ->whereIn('trn_store_orders.status_id', [9])
                     ->first();
 
-                    $is_purchased=Trn_store_order_item::where('product_id',$productData->product_id)->where('customer_id',$request->customer_id)->count();
+        $is_purchased=Trn_store_order_item::where('product_id',$productData->product_id)->where('customer_id',$request->customer_id)->count();
         if($is_purchased>0)
             {
                 $oArray=[];
@@ -371,6 +371,31 @@ class ProductController extends Controller
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
+    }
+    public function checkPurchasedOrders(Request $request)
+    {
+        $is_purchased=Trn_store_order_item::where('product_id',$request->product_id)->where('customer_id',$request->customer_id)->count();
+        if($is_purchased>0)
+            {
+                $oArray=[];
+                $puArray=[];
+                $orders=Trn_store_order_item::where('product_id',$request->product_id)->where('customer_id',$request->customer_id)->get();
+                foreach($orders as $order)
+                {
+                    array_push($oArray,$order->order_id);
+
+                }
+                $purchased_orders=Trn_store_order::whereIn('order_id',$oArray)->where('status_id','=',9)->get();
+                
+                foreach($purchased_orders as $porder)
+                {
+                    array_push($puArray,$porder->order_id);
+
+                }
+                
+            }
+            return response($puArray);
+
     }
 
 
