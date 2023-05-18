@@ -1154,7 +1154,7 @@ class PurchaseController extends Controller
                         $k=ceil($adminOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
-                            $k=ceil($adminOrderAmount-1);
+                            $k=$adminOrderAmount-1;
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
                             
@@ -1364,7 +1364,7 @@ class PurchaseController extends Controller
                 //         //return response($data);
                 //     }
                 $rem=$data['orderAmount']-$data['totalReducableAmount'];
-                if($rem>0)
+                if($rem>1)
                 {
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
 
