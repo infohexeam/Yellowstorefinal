@@ -1182,6 +1182,7 @@ class PurchaseController extends Controller
                      if($balancePoints<0)
                     {
                         $data['status'] = 0;
+                        $data['usedPoint']=0.00;
                          $data['message'] = "Reward points can't be redeemed for admin123";
                         return response($data);
                      }
@@ -1292,6 +1293,7 @@ class PurchaseController extends Controller
                      if($balanceStorePoints<0)
                      {
                         $data['status'] = 0;
+                        $data['usedStorePoint']=0.00;
                         $data['message'] = "Reward points can't be redeemed for store";
                         return response($data);
                     }
