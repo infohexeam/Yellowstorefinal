@@ -3444,11 +3444,11 @@ public function addToCartTest(Request $request)
                                         $ReducedAmount = 0;
                                         if ($coupon->discount_type == 1) {
                                             //fixedAmt
-                                            $amtToBeReduced = $coupon->discount;
+                                            $amtToBeReduced = intval($coupon->discount);
                                             $ReducedAmount = $request->total_amount - $coupon->discount;
                                         } else {
                                             //percentage
-                                            $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
+                                            $amtToBeReduced = intval(($coupon->discount * 100) / $request->total_amount);
                                             $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                         }
 
@@ -3462,12 +3462,12 @@ public function addToCartTest(Request $request)
                                             $ReducedAmount = 0;
                                             if ($coupon->discount_type == 1) {
                                                 //fixedAmt
-                                                $amtToBeReduced = $coupon->discount;
+                                                $amtToBeReduced = intval($coupon->discount);
 
                                                 $ReducedAmount = $request->total_amount - $coupon->discount;
                                             } else {
                                                 //percentage
-                                                $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
+                                                $amtToBeReduced = intval(($coupon->discount * 100) / $request->total_amount);
                                                 $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                             }
 
