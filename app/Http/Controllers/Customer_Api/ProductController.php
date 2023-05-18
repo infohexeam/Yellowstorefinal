@@ -926,7 +926,7 @@ class ProductController extends Controller
                         $orderData = Trn_store_order::join('trn_order_items', 'trn_order_items.order_id', '=', 'trn_store_orders.order_id')
                             ->where('trn_order_items.product_varient_id', $productVarientId)
                             ->where('trn_store_orders.customer_id', $request->customer_id)
-                            ->whereIn('trn_store_orders.status_id', [6, 9])
+                            ->whereIn('trn_store_orders.status_id', [9])
                             ->first();
                         if (!$orderData)
                             $data['itemPurchasedStatus'] = 0;
@@ -2888,7 +2888,7 @@ class ProductController extends Controller
                         $orderData = Trn_store_order::join('trn_order_items', 'trn_order_items.order_id', '=', 'trn_store_orders.order_id')
                             ->where('trn_order_items.product_varient_id', $request->product_varient_id)
                             ->where('trn_store_orders.customer_id', $request->customer_id)
-                            ->whereIn('trn_store_orders.status_id', [6, 9])
+                            ->whereIn('trn_store_orders.status_id', [9])
                             ->first();
                         if (!$orderData)
                             $data['itemPurchasedStatus'] = 0;
