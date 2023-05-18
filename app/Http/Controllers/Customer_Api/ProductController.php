@@ -287,7 +287,7 @@ class ProductController extends Controller
                 
                 if($store_order_purchase_count>0)
                 {
-                    $data['itemPurchasedStatus'] = 1;
+                    $data['itemPurchasedStatus'] = 0;
 
                 }
                 else
