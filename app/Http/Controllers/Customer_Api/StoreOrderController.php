@@ -2914,17 +2914,17 @@ class StoreOrderController extends Controller
                     }
                     if($orderData->reward_points_used!=NULL||$orderData->reward_points_used!=0.00)
                     {
-                        $cr=new Trn_customer_reward();
-                        $cr = new Trn_customer_reward;
-                        $cr->transaction_type_id = 0;
-                        $cr->reward_points_earned = $orderData->reward_points_used;
-                        $cr->customer_id = $orderData->customer_id;
-                        $cr->order_id = $orderData->order_id;
-                        $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
-                        $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-                        $cr->reward_point_status = 1;
-                        $cr->discription = 'Cancel Recredit';
-                        $cr->save();
+                        //$cr=new Trn_customer_reward();
+                        // $cr = new Trn_customer_reward;
+                        // $cr->transaction_type_id = 0;
+                        // $cr->reward_points_earned = $orderData->reward_points_used;
+                        // $cr->customer_id = $orderData->customer_id;
+                        // $cr->order_id = $orderData->order_id;
+                        // $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                        // $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                        // $cr->reward_point_status = 1;
+                        // $cr->discription = 'Cancel Recredit';
+                        // $cr->save();
 
 
 
