@@ -3472,7 +3472,7 @@ public function addToCartTest(Request $request)
                                             }
 
                                             $data['status'] = 1;
-                                            $data['discount_amount'] = number_format((float)$amtToBeReduced, 2, '.', '');
+                                            $data['discount_amount'] = number_format((int)$amtToBeReduced, 2, '.', '');
                                             $data['total_amount'] = number_format((float)$ReducedAmount, 2, '.', '');
                                             $data['message'] = "Coupon amount reduced";
                                         } else {
