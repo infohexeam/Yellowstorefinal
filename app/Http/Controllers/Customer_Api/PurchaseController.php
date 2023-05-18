@@ -3411,11 +3411,16 @@ public function addToCartTest(Request $request)
                                         $ReducedAmount = 0;
                                         if ($coupon->discount_type == 1) {
                                             //fixedAmt
-                                            $amtToBeReduced = $coupon->discount;
-                                            $ReducedAmount = $request->total_amount - $coupon->discount;
+                                            $amtToBeReduced = floor($coupon->discount);
+                                            if($amtToBeReduced==0)
+                                            {
+                                                $amtToBeReduced=1;
+                                            }
+                                            $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                         } else {
                                             //percentage
                                             $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
+                                            $amtToBeReduced=floor($amtToBeReduced);
                                             $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                         }
 
@@ -3429,12 +3434,15 @@ public function addToCartTest(Request $request)
                                             $ReducedAmount = 0;
                                             if ($coupon->discount_type == 1) {
                                                 //fixedAmt
-                                                $amtToBeReduced = $coupon->discount;
-
-                                                $ReducedAmount = $request->total_amount - $coupon->discount;
+                                                $amtToBeReduced = floor($coupon->discount);
+                                            if($amtToBeReduced==0)
+                                            {
+                                                $amtToBeReduced=1;
+                                            }
                                             } else {
                                                 //percentage
                                                 $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
+                                                $amtToBeReduced=floor($amtToBeReduced);
                                                 $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                             }
 
