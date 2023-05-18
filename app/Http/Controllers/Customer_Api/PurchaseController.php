@@ -1152,9 +1152,17 @@ class PurchaseController extends Controller
                     }
                     else{
                         $k=floor($adminOrderAmount);//Admin Redemption(Based on Max Redemption) (K)
+                        if($adminOrderAmount-$k<1)
+                        {
+                            $k=$k-1;
+                        }
                         if($d==100)
                         {
                             $k=floor($adminOrderAmount);
+                            if($adminOrderAmount-$k<1)
+                        {
+                            $k=$k-1;
+                        }
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
                             
@@ -1266,9 +1274,17 @@ class PurchaseController extends Controller
                     }
                     else{
                         $n=floor($storeOrderAmount);//Admin Redemption(Based on Max Redemption) (K)
+                        if($storeOrderAmount-$n<1)
+                            {
+                                $n=$n-1;
+                            }
                         if($a==100)
                         {
                             $n=floor($storeOrderAmount);
+                            if($storeOrderAmount-$n<1)
+                            {
+                                $n=$n-1;
+                            }
                             $max_reedem_set_store=true;
                             if($n<=0)
                             {
