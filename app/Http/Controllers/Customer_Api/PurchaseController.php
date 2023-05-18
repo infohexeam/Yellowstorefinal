@@ -1151,7 +1151,7 @@ class PurchaseController extends Controller
                        // $k=$r
                     }
                     else{
-                        $k=$adminOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        $k=floor($adminOrderAmount);//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
                             $k=floor($adminOrderAmount);
@@ -1265,7 +1265,7 @@ class PurchaseController extends Controller
 
                     }
                     else{
-                        $n=$storeOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        $n=floor($storeOrderAmount);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
                             $n=floor($storeOrderAmount);
