@@ -1134,10 +1134,6 @@ class PurchaseController extends Controller
                         {
                             $k=$k-1;
                         }
-                        else
-                        {
-                            $k=ceil($k);
-                        }
 
                        
                         if($d==100)
@@ -1146,10 +1142,6 @@ class PurchaseController extends Controller
                             if($j-$k<1)
                             {
                                 $k=$k-1;
-                            }
-                            else
-                            {
-                                $k=ceil($k);
                             }
                             $max_reedem_set_admin=true;
 
@@ -1173,20 +1165,12 @@ class PurchaseController extends Controller
                         {
                             $k=$k-1;
                         }
-                        else
-                        {
-                            $k=ceil($k);
-                        }
                         if($d==100)
                         {
                             $k=floor($adminOrderAmount);
                             if($adminOrderAmount-$k<1)
                         {
                             $k=$k-1;
-                        }
-                        else
-                        {
-                            $k=ceil($k);
                         }
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
@@ -1290,20 +1274,12 @@ class PurchaseController extends Controller
                             {
                                 $n=$n-1;
                             }
-                            else
-                            {
-                                $n=ceil($n);
-                            }
                         if($a==100)
                         {
                             $n=floor($m);
                             if($m-$n<1)
                             {
                                 $n=$n-1;
-                            }
-                            else
-                            {
-                                $n=ceil($n);
                             }
                             $max_reedem_set_store=true;
 
@@ -1320,20 +1296,12 @@ class PurchaseController extends Controller
                             {
                                 $n=$n-1;
                             }
-                            else
-                            {
-                                $n=ceil($n);
-                            }
                         if($a==100)
                         {
                             $n=floor($storeOrderAmount);
                             if($storeOrderAmount-$n<1)
                             {
                                 $n=$n-1;
-                            }
-                            else
-                            {
-                                $n=ceil($n);
                             }
                             $max_reedem_set_store=true;
                             if($n<=0)
