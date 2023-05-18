@@ -273,11 +273,40 @@ class ProductController extends Controller
                     ->whereIn('trn_store_orders.status_id', [9])
                     ->first();
 
+                    $is_purchased=Trn_store_order_item::where('product_id',$productData->product_id)->where('customer_id',$request->customer_id)->count();
+        if($is_purchased>0)
+            {
+                $oArray=[];
+                $orders=Trn_store_order_item::where('product_id',$productData->product_id)->where('customer_id',$request->customer_id)->get();
+                foreach($orders as $order)
+                {
+                    array_push($oArray,$order->order_id);
 
-                if (!$orderData)
-                    $data['itemPurchasedStatus'] = 0;
-                else
+                }
+                $store_order_purchase_count=Trn_store_order::whereIn('order_id',$oArray)->where('status_id','=',9)->count();
+                
+                if($store_order_purchase_count>0)
+                {
                     $data['itemPurchasedStatus'] = 1;
+
+                }
+                else
+                {
+                    $data['itemPurchasedStatus'] = 0;
+                }
+                
+            }
+            else
+            {
+                $data['itemPurchasedStatus'] = 0;
+
+            }
+
+
+                // if (!$orderData)
+                //     $data['itemPurchasedStatus'] = 0;
+                // else
+                //     $data['itemPurchasedStatus'] = 1;
 
                 $fbStatus = Trn_CustomerFeedback::whereIn('product_varient_id', $productVarientIds)->where('customer_id', $request->customer_id)->first();
                 if (!$fbStatus)
