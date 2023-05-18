@@ -2923,7 +2923,7 @@ class StoreOrderController extends Controller
                         $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
                         $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
                         $cr->reward_point_status = 1;
-                        $cr->discription = 'admin points';
+                        $cr->discription = 'Cancel Recredit';
                         $cr->save();
 
 
