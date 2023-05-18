@@ -1134,6 +1134,10 @@ class PurchaseController extends Controller
                         {
                             $k=$k-1;
                         }
+                        else
+                        {
+                            $k=ceil($k);
+                        }
 
                        
                         if($d==100)
@@ -1142,6 +1146,10 @@ class PurchaseController extends Controller
                             if($j-$k<1)
                             {
                                 $k=$k-1;
+                            }
+                            else
+                            {
+                                $k=ceil($k);
                             }
                             $max_reedem_set_admin=true;
 
@@ -1165,12 +1173,20 @@ class PurchaseController extends Controller
                         {
                             $k=$k-1;
                         }
+                        else
+                        {
+                            $k=ceil($k);
+                        }
                         if($d==100)
                         {
                             $k=floor($adminOrderAmount);
                             if($adminOrderAmount-$k<1)
                         {
                             $k=$k-1;
+                        }
+                        else
+                        {
+                            $k=ceil($k);
                         }
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
@@ -1269,9 +1285,14 @@ class PurchaseController extends Controller
                     if($m<=$storeOrderAmount)
                     {
                         $n=floor($m);//Admin Redemption(Based on Max Redemption) (K)
+                        
                         if($m-$n<1)
                             {
                                 $n=$n-1;
+                            }
+                            else
+                            {
+                                $n=ceil($n);
                             }
                         if($a==100)
                         {
@@ -1279,6 +1300,10 @@ class PurchaseController extends Controller
                             if($m-$n<1)
                             {
                                 $n=$n-1;
+                            }
+                            else
+                            {
+                                $n=ceil($n);
                             }
                             $max_reedem_set_store=true;
 
@@ -1295,12 +1320,20 @@ class PurchaseController extends Controller
                             {
                                 $n=$n-1;
                             }
+                            else
+                            {
+                                $n=ceil($n);
+                            }
                         if($a==100)
                         {
                             $n=floor($storeOrderAmount);
                             if($storeOrderAmount-$n<1)
                             {
                                 $n=$n-1;
+                            }
+                            else
+                            {
+                                $n=ceil($n);
                             }
                             $max_reedem_set_store=true;
                             if($n<=0)
@@ -3448,7 +3481,7 @@ public function addToCartTest(Request $request)
                                             $ReducedAmount = $request->total_amount - $coupon->discount;
                                         } else {
                                             //percentage
-                                            $amtToBeReduced = 5.26;//($coupon->discount * 100) / $request->total_amount;
+                                            $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
                                             $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                         }
 
@@ -3468,7 +3501,7 @@ public function addToCartTest(Request $request)
                                             } else {
                                                 //percentage
                                                 $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
-                                                $ReducedAmount =5.27;// $request->total_amount - $amtToBeReduced;
+                                                $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                             }
 
                                             $data['status'] = 1;
