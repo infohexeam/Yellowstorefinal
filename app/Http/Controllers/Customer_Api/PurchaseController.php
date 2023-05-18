@@ -3444,16 +3444,16 @@ public function addToCartTest(Request $request)
                                         $ReducedAmount = 0;
                                         if ($coupon->discount_type == 1) {
                                             //fixedAmt
-                                            $amtToBeReduced = intval($coupon->discount);
+                                            $amtToBeReduced = $coupon->discount;
                                             $ReducedAmount = $request->total_amount - $coupon->discount;
                                         } else {
                                             //percentage
-                                            $amtToBeReduced = intval(($coupon->discount * 100) / $request->total_amount);
+                                            $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
                                             $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                         }
 
                                         $data['status'] = 1;
-                                        $data['discount_amount'] = number_format((int)$amtToBeReduced, 2, '.', '');
+                                        $data['discount_amount'] = number_format((float)$amtToBeReduced, 2, '.', '');
                                         $data['total_amount'] = number_format((float)$ReducedAmount, 2, '.', '');
                                         $data['message'] = "Coupon amount reduced";
                                     } else {
@@ -3462,17 +3462,17 @@ public function addToCartTest(Request $request)
                                             $ReducedAmount = 0;
                                             if ($coupon->discount_type == 1) {
                                                 //fixedAmt
-                                                $amtToBeReduced = intval($coupon->discount);
+                                                $amtToBeReduced = $coupon->discount;
 
                                                 $ReducedAmount = $request->total_amount - $coupon->discount;
                                             } else {
                                                 //percentage
-                                                $amtToBeReduced = intval(($coupon->discount * 100) / $request->total_amount);
+                                                $amtToBeReduced = ($coupon->discount * 100) / $request->total_amount;
                                                 $ReducedAmount = $request->total_amount - $amtToBeReduced;
                                             }
 
                                             $data['status'] = 1;
-                                            $data['discount_amount'] = number_format(floor((int)$amtToBeReduced), 2, '.', '');
+                                            $data['discount_amount'] = number_format((float)$amtToBeReduced, 2, '.', '');
                                             $data['total_amount'] = number_format((float)$ReducedAmount, 2, '.', '');
                                             $data['message'] = "Coupon amount reduced";
                                         } else {
