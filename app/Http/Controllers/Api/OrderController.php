@@ -1219,6 +1219,32 @@ class OrderController extends Controller
                                 return response($data);
         
                             }
+                if($od->reward_points_used_store!=NULL||$od->reward_points_used_store!=0.00)
+                    {
+                        $scr = new Trn_customer_reward;
+                        $scr->transaction_type_id = 0;
+                        $scr->store_id=$od->store_id;
+                        $scr->reward_points_earned = $od->reward_points_used_store;
+                        $scr->customer_id = $od->customer_id;
+                        $scr->order_id = $od->order_id;
+                        $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_status = 1;
+                        $scr->discription = 'store points';
+                        $scr->save();
+                        
+
+                        $wallet_log=new Trn_wallet_log();
+                        $wallet_log->store_id=$od->store_id;
+                        $wallet_log->customer_id=$od->customer_id;
+                        $wallet_log->order_id=$od->order_id;
+                        $wallet_log->type='credit';
+                        $wallet_log->points_debited=null;
+                        $wallet_log->points_credited=$od->reward_points_used_store;
+                        $wallet_log->save();
+                        
+
+                    }
                             $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $request->delivery_boy_id)->get();
     
                                 foreach ($dBoyDevices as $cd) {

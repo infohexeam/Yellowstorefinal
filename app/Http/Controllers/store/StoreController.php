@@ -2918,6 +2918,32 @@ class StoreController extends Controller
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } elseif ($status_id == 5) {
+        if($order->reward_points_used_store!=NULL||$order->reward_points_used_store!=0.00)
+                    {
+                        $scr = new Trn_customer_reward;
+                        $scr->transaction_type_id = 0;
+                        $scr->store_id=$order->store_id;
+                        $scr->reward_points_earned = $order->reward_points_used_store;
+                        $scr->customer_id = $order->customer_id;
+                        $scr->order_id = $order->order_id;
+                        $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_status = 1;
+                        $scr->discription = 'store points';
+                        $scr->save();
+                        
+
+                        $wallet_log=new Trn_wallet_log();
+                        $wallet_log->store_id=$order->store_id;
+                        $wallet_log->customer_id=$order->customer_id;
+                        $wallet_log->order_id=$order->order_id;
+                        $wallet_log->type='credit';
+                        $wallet_log->points_debited=null;
+                        $wallet_log->points_credited=$order->reward_points_used_store;
+                        $wallet_log->save();
+                        
+
+                    }
         $order_status = "Cancelled";
 
         $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
