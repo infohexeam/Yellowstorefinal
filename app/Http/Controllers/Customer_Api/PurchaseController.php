@@ -1088,10 +1088,16 @@ class PurchaseController extends Controller
                     else
                     {
                         
-                        
+                        if($storeOrderAmount>=$b)
+                        {
+                            $adminOrderAmount=$relatableRedeemAmount-$b;
+                            
+                        }
+                        else
+                        {
                             $admin_not_redeem=1;
                             $store_not_redeem=0;
-                        
+                        }
 
                        
                         
