@@ -1127,19 +1127,19 @@ class PurchaseController extends Controller
                     //$j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($j<=$adminOrderAmount)
                     {
-                        $k=$j;//Admin Redemption(Based on Max Redemption) (K)
+                        $k=floor($j);//Admin Redemption(Based on Max Redemption) (K)
                         //$relatableAdminRedeemAmount
                         //$relatableRedeemAmount=$relatableRedeemAmount-$j;
                        
                         if($d==100)
                         {
-                            $k=$j;
+                            $k=floor($j);
                             $max_reedem_set_admin=true;
 
                         }
                         if($e<=$j)
                         {
-                            $k=$e;
+                            $k=floor($e);
 
                         }
                         if($k>=$e)
@@ -1151,7 +1151,7 @@ class PurchaseController extends Controller
                        // $k=$r
                     }
                     else{
-                        $k=$adminOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        $k=ceil($adminOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
                             $k=$adminOrderAmount-1;
@@ -1186,7 +1186,7 @@ class PurchaseController extends Controller
                          $data['message'] = "Reward points can't be redeemed for admin123";
                         return response($data);
                      }
-                    $l=$k*$f;//Admin Redemption Amount(RS)(L)
+                    $l=floor($k)*$f;//Admin Redemption Amount(RS)(L)
                     $i=$adminOrderAmount;
                     if($i>=$l)
                     {
@@ -1218,7 +1218,7 @@ class PurchaseController extends Controller
                     }
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
                     $data['reducedAmountByWalletPoints'] =number_format((float)$l, 2, '.', '');
-                    $data['usedPoint'] =number_format((float)$k, 2, '.', '');
+                    $data['usedPoint'] =strval($k);//number_format((float)$k, 2, '.', '');
                     $data['balancePoint'] = number_format((float)$balancePoints, 2, '.', '');
                     //$data['remainingOrderAmount'] = number_format((float)$p, 2, '.', '');
 
@@ -1251,10 +1251,10 @@ class PurchaseController extends Controller
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
-                        $n=$m;//Admin Redemption(Based on Max Redemption) (K)
+                        $n=floor($m);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=$m;
+                            $n=floor($m);
                             $max_reedem_set_store=true;
 
                         }
@@ -1265,10 +1265,10 @@ class PurchaseController extends Controller
 
                     }
                     else{
-                        $n=$storeOrderAmount-1;//Admin Redemption(Based on Max Redemption) (K)
+                        $n=ceil($storeOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=$storeOrderAmount-1;
+                            $n=ceil($storeOrderAmount-1);
                             $max_reedem_set_store=true;
                             if($n<=0)
                             {
@@ -1297,7 +1297,7 @@ class PurchaseController extends Controller
                         $data['message'] = "Reward points can't be redeemed for store";
                         return response($data);
                     }
-                    $o=$n*$c;//Admin Redemption Amount(RS)(L)
+                    $o=floor($n)*$c;//Admin Redemption Amount(RS)(L)
                     $i=$storeOrderAmount;
                     if($i>=$o)
                     {
