@@ -2182,7 +2182,7 @@ class StoreOrderController extends Controller
                           $remCount=$remCount+1;
                           if($remCount>0)
                           {
-                            $data['status'] = 0;
+                            $data['status'] = 6;
                             $data['message'] = "FEW PRODUCTS IN CART ARE REMOVED FROM STORE";
                             return response($data);
                           }
