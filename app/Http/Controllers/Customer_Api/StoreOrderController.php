@@ -2136,6 +2136,7 @@ class StoreOrderController extends Controller
 
 
             $noStockProducts = array();
+            $remCount=0;
             if($request->store_id)
             {
                 $isActiveSlot=Helper::findHoliday($request->store_id);
@@ -2165,6 +2166,7 @@ class StoreOrderController extends Controller
 
             if(isset($request->store_id))
             
+            
             foreach ($request->product_variants as $value) {
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
                 $proData = Mst_store_product::find($varProdu->product_id);
@@ -2175,6 +2177,18 @@ class StoreOrderController extends Controller
                     if (isset($varProdu)) {
                        // || $proData->product_status == 1
                        //check varient status
+                       if($varProdu->is_removed==1)
+                       {
+                          $remCount=$remCount+1;
+                          if($remCount>0)
+                          {
+                            $data['status'] = 0;
+                            $data['message'] = "FEW PRODUCTS IN CART ARE REMOVED FROM STORE";
+                            return response($data);
+                          }
+                         
+
+                      }
                        if($proData->product_status==0)
                        {
                            if($varProdu->is_base_variant==1)
