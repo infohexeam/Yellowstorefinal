@@ -1101,8 +1101,8 @@ class StoreOrderController extends Controller
                         $store_order->coupon_code =  $request->coupon_code;
     
                         if ($request->status_id != 5) {
-                            $store_order->reward_points_used =  floor($request->reward_points_used);
-                            $store_order->reward_points_used_store =  floor($request->reward_points_used_store);
+                            $store_order->reward_points_used =  $request->reward_points_used;
+                            $store_order->reward_points_used_store =  $request->reward_points_used_store;
                             $store_order->amount_before_applying_rp =  $request->amount_before_applying_rp;
                             $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
                             $store_order->amount_reduced_by_rp_store =  $request->amount_reduced_by_rp_store;
@@ -1390,7 +1390,7 @@ class StoreOrderController extends Controller
                                 foreach ($customerDevice as $cd) {
     
                                     $title = 'Store Points Deducted';
-                                    $body = floor($request->reward_points_used_store) . ' points deducted from your wallet';
+                                    $body = $request->reward_points_used_store . ' points deducted from your wallet';
                                     $clickAction = "MyWalletFragment";
                                     $type = "wallet";
                                     $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
@@ -1434,7 +1434,7 @@ class StoreOrderController extends Controller
                                 foreach ($customerDevice as $cd) {
     
                                     $title = 'Points Deducted';
-                                    $body = floor($request->reward_points_used) . ' points deducted from your wallet';
+                                    $body = $request->reward_points_used . ' points deducted from your wallet';
                                     $clickAction = "MyWalletFragment";
                                     $type = "wallet";
                                     $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
