@@ -1682,17 +1682,17 @@ class ProductController extends Controller
                 $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
 
                 $balanceCount =  ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPoints;
-                $data['customerRewardsCount'] = number_format($totalCustomerRewardsCount, 2);
+                $data['customerRewardsCount'] = number_format(floor($totalCustomerRewardsCount), 2);
                 $totalAdminRedeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
                 if ($totalusedPoints >= 0)
-                    $data['totalusedPoints']  = $totalusedPoints;
+                    $data['totalusedPoints']  = number_format((float)floor($totalusedPoints), 2, '.', '');
                 else
                     $data['totalusedPoints']  = '0';
 
                
 
                 if ($totalAdminRedeemedPoints >= 0)
-                    $data['totalAdminRedeemedPoints']  = $totalAdminRedeemedPoints;
+                    $data['totalAdminRedeemedPoints']  =  number_format((float)floor($totalAdminRedeemedPoints), 2, '.', '');//$totalAdminRedeemedPoints;
                 else
                     $data['totalAdminRedeemedPoints']  = '0';
 
