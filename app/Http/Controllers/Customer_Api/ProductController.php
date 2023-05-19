@@ -1698,7 +1698,7 @@ class ProductController extends Controller
 
                 if($balanceCount>=0)
                 {
-                    $data['balancePoints']=number_format((float)floor($balanceCount), 2, '.', '');//$totalAdminRedeemedPoints;;
+                    $data['balancePoints']=number_format((float)floor($balanceCount), 2, '.', '');//$totalAdminRedeemedPoints;
 
                 }
                 else

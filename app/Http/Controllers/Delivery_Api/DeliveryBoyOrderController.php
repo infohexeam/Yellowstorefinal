@@ -179,7 +179,16 @@ class DeliveryBoyOrderController extends Controller
             if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
                 if (isset($request->order_id) && Trn_store_order::find($request->order_id)) {
 
+
                     $order_id = $request->order_id;
+                    $ord = Trn_store_order::Find($order_id);
+                if($ord->status_id==5)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Order is already cancelled.You cannot proceed this order ";
+                    return response($data);
+
+                }
                     if ($request->delivery_accept == 1) {
                         if (Trn_store_order::where('order_id', $request->order_id)->where('delivery_boy_id', $request->delivery_boy_id)->update(['delivery_accept' => 1])) {
 
@@ -730,6 +739,14 @@ class DeliveryBoyOrderController extends Controller
         try {
 
             if (Trn_store_order::find($request->order_id)) {
+                $ord = Trn_store_order::Find($request->order_id);
+                if($ord->status_id==5)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Order is already cancelled.You cannot proceed this order ";
+                    return response($data);
+
+                }
 
                 $order_id = $request->order_id;
                 $delivery_boy_id = $request->delivery_boy_id;
