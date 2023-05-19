@@ -1144,7 +1144,7 @@ class PurchaseController extends Controller
                         }
                         if($k>=$e)
                         {
-                            $n=$e;
+                            $k=$e;
                         }
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
                         //return $k."6";
