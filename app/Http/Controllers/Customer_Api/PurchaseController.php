@@ -1035,14 +1035,14 @@ class PurchaseController extends Controller
                     //$j=number_format((float)$j, 2, '.', '');
                     if($j<=$adminOrderAmount)
                     {
-                        $adminOrderAmount=$relatableRedeemAmount;
-                        $storeOrderAmount=$relatableRedeemAmount-$j;
+                        //$adminOrderAmount=$relatableRedeemAmount;
+                        $storeOrderAmount=$adminOrderAmount-$j;
                     }
                     else
                     {
                         if($adminOrderAmount>=$e)
                         {
-                            $storeOrderAmount=$relatableRedeemAmount-$e;
+                            $storeOrderAmount=$adminOrderAmount-$e;
                             
                         }
                         else
@@ -1081,8 +1081,8 @@ class PurchaseController extends Controller
                     if($m<=$storeOrderAmount)
                     {
                     
-                        $adminOrderAmount=$relatableRedeemAmount-$m;
-                        $storeOrderAmount=$relatableRedeemAmount;
+                        $adminOrderAmount=$storeOrderAmount-$m;
+                        //$storeOrderAmount=$relatableRedeemAmount;
                         //return $adminOrderAmount;
                     }
                     else
@@ -1090,7 +1090,7 @@ class PurchaseController extends Controller
                         
                         if($storeOrderAmount>=$b)
                         {
-                            $adminOrderAmount=$relatableRedeemAmount-$b;
+                            $adminOrderAmount=$storeOrderAmount-$b;
                             
                         }
                         else
