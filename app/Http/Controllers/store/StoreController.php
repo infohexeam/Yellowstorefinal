@@ -3666,8 +3666,9 @@ class StoreController extends Controller
     if ($us = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->update(['stock_count' => 0, 'updated_at' => Carbon::now()])) {
       DB::table('mst__stock_details')->where('product_varient_id', $product_varient_id)->update(['created_at' => Carbon::now()]);
       $s = DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)->pluck("stock_count");
-      
+      DB::table('empty_stock_log')->insert(['product_varient_id'=>$product_varient_id,'created_time' => Carbon::now()]);
       $sd = new Mst_StockDetail;
+      //$sd->created_at=
       // $sd->store_id = $usData->store_id;
       // $sd->product_id = $usData->product_id;
       // $sd->stock = 0;
