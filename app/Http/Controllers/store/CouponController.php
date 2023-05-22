@@ -1093,7 +1093,7 @@ class CouponController extends Controller
       ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
       ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
       ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-
+      ->leftjoin('empty_stock_log', 'empty_stock_log.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
       ->where('mst_store_products.store_id', $store_id)
       ->where('mst_store_products.product_type', 1)
       // ->orderBy('mst_store_products.product_name','ASC')
@@ -1101,6 +1101,7 @@ class CouponController extends Controller
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_product_varients.is_removed', 0)
       ->orderBy('mst__stock_details.created_at', 'DESC')
+      ->whereNotNull('empty_stock_log.created_time')
 
       ->select(
         'mst_store_products.product_id',
@@ -1128,7 +1129,8 @@ class CouponController extends Controller
         'mst__stock_details.created_at',
         'mst_store_agencies.agency_name',
         'mst__sub_categories.sub_category_name',
-        'mst__stock_details.created_at AS updated_time',
+        //'mst__stock_details.created_at AS updated_time',
+        'empty_stock_log.created_time  as updated_time'
 
       );
 
