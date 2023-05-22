@@ -1545,6 +1545,7 @@ class PurchaseController extends Controller
                     $j=($h*$d)/100;
 
                     $j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    $adminOrderAmount=$relatableRedeemAmount-$j;
                     if($j<=$adminOrderAmount)
                     {
                         $k=$j;//Admin Redemption(Based on Max Redemption) (K)
@@ -1604,6 +1605,7 @@ class PurchaseController extends Controller
                         
 
                     }
+                    $data['adminOrderAmount']=$adminOrderAmount;
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
                     $data['reducedAmountByWalletPoints'] =$l;
                     $data['usedPoint'] =number_format((float)$k, 2, '.', '');
@@ -1638,6 +1640,7 @@ class PurchaseController extends Controller
                     //return $m;153.76<=100
 
                     $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
+                    $storeOrderAmount=$relatableRedeemAmount-$m;
                     if($m<=$storeOrderAmount)
                     {
                         $n=$m;//Admin Redemption(Based on Max Redemption) (K)
@@ -1703,7 +1706,7 @@ class PurchaseController extends Controller
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
-
+                    $data['storeOrderAmount']=$storeOrderAmount;
                 }
             }
                 $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
