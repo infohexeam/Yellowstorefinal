@@ -308,6 +308,7 @@ class InventoryController extends Controller
                         $sd->product_varient_id = $request->product_varient_id;
                         $sd->prev_stock = $usData->stock_count??0;
                         $sd->save();*/
+                        Db::table('empty_stock_log')->where('product_varient_id',$request->product_varient_id)->delete();
                         DB::table('empty_stock_log')->insert(['product_varient_id'=>$request->product_varient_id,'created_time' => Carbon::now()]);
 
                         $data['status'] = 1;

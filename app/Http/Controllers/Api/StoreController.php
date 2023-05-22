@@ -2351,6 +2351,7 @@ class StoreController extends Controller
                     ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
                     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
                     ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+                    ->leftjoin('empty_stock_log', 'empty_stock_log.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
                     ->where('mst_store_products.store_id', $store_id)
                     ->where('mst_store_product_varients.stock_count', '<=', 0)
                     ->where('mst_store_products.product_type', 1)
@@ -2358,6 +2359,7 @@ class StoreController extends Controller
                     ->orderBy('mst__stock_details.created_at', 'DESC')
                     ->where('mst_store_products.is_removed', 0)
                     ->where('mst_store_product_varients.is_removed', 0)
+                    ->whereNotNull('empty_stock_log.created_time')
 
                     ->select(
                         'mst_store_products.product_id',
@@ -2378,7 +2380,7 @@ class StoreController extends Controller
                         'mst_store_product_varients.stock_count',
                         'mst_store_product_varients.is_base_variant',
                         'mst_store_product_varients.variant_status',
-                        'mst__stock_details.created_at AS updated_time',
+                        //'mst__stock_details.created_at AS updated_time',
                         //'mst__stock_details.created_at',
                         'mst_store_categories.category_id',
                         'mst_store_categories.category_name',
@@ -2386,6 +2388,7 @@ class StoreController extends Controller
                         'mst__stock_details.prev_stock',
                         'mst_store_agencies.agency_name',
                         'mst__sub_categories.sub_category_name',
+                        'empty_stock_log.created_time  as updated_time'
 
                     );
 
