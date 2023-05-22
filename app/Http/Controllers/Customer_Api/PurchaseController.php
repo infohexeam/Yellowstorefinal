@@ -1010,6 +1010,8 @@ class PurchaseController extends Controller
         $storeOrderAmount=$data['orderAmount'];
         $admin_not_redeem=2;
         $store_not_redeem=2;
+        $excess_admin_set=false;
+        $excess_store_set=false;
         
         
 
@@ -1174,6 +1176,7 @@ class PurchaseController extends Controller
                             {
                                 $k=$e;
                             }
+                            $excess_admin_set=true;
                        
                         
                        // return $k."7";
@@ -1293,6 +1296,7 @@ class PurchaseController extends Controller
                        
                         //$excess=$data['orderAmount']+$j;
                         //$n=$storeOrderAmount+$;
+                        $excess_store_set=true;
                         
                        
                     }
@@ -1384,6 +1388,12 @@ class PurchaseController extends Controller
                     
                 }
                 //return $rem;
+                if($excess_store_set)
+                {
+                    $re_store=floor($rem-1);
+                    $n=$n+$re_store;
+                    $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                }
             
                 //$data['remainingOrderAmount'] = 
                 $data['message']="success";
