@@ -1036,13 +1036,13 @@ class PurchaseController extends Controller
                     if($j<=$adminOrderAmount)
                     {
                         $adminOrderAmount=$relatableRedeemAmount;
-                        $storeOrderAmount=$relatableRedeemAmount-$j;
+                        $storeOrderAmount=$adminOrderAmount-$j;
                     }
                     else
                     {
                         if($adminOrderAmount>=$e)
                         {
-                            $storeOrderAmount=$relatableRedeemAmount-$e;
+                            $storeOrderAmount=$adminOrderAmount-$e;
                             
                         }
                         else
@@ -1080,9 +1080,10 @@ class PurchaseController extends Controller
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
-                    
-                        $adminOrderAmount=$relatableRedeemAmount-$m;
                         $storeOrderAmount=$relatableRedeemAmount;
+                    
+                        $adminOrderAmount=$storeOrderAmount-$m;
+                        
                         //return $adminOrderAmount;
                     }
                     else
@@ -1090,7 +1091,7 @@ class PurchaseController extends Controller
                         
                         if($storeOrderAmount>=$b)
                         {
-                            $adminOrderAmount=$relatableRedeemAmount-$b;
+                            $adminOrderAmount=$storeOrderAmount-$b;
                             
                         }
                         else
@@ -1144,7 +1145,7 @@ class PurchaseController extends Controller
                         }
                         if($k>=$e)
                         {
-                            $n=$e;
+                            $k=$e;
                         }
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
                         //return $k."6";
