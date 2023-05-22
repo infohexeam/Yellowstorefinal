@@ -2356,10 +2356,11 @@ class StoreController extends Controller
                     ->where('mst_store_product_varients.stock_count', '<=', 0)
                     ->where('mst_store_products.product_type', 1)
                     // ->orderBy('mst_store_products.product_name','ASC')
-                    ->orderBy('mst__stock_details.created_at', 'DESC')
+                    
                     ->where('mst_store_products.is_removed', 0)
                     ->where('mst_store_product_varients.is_removed', 0)
                     ->whereNotNull('empty_stock_log.created_time')
+                    ->orderBy('empty_stock_log.created_time', 'DESC')
 
                     ->select(
                         'mst_store_products.product_id',
