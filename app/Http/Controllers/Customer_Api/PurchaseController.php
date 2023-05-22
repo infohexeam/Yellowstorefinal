@@ -1289,6 +1289,7 @@ class PurchaseController extends Controller
 
                         //$n=99999;
                         //$n=999;
+                        $n=$storeOrderAmount;
                         
                        
                     }
