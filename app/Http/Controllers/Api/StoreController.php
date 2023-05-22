@@ -2425,9 +2425,9 @@ class StoreController extends Controller
                 $inventoryData = $inventoryData->groupBy('mst_store_product_varients.product_varient_id');
 
                 if (isset($request->page)) {
-                    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->paginate(10, ['data'], 'page', $request->page);
+                    $inventoryData = $inventoryData->paginate(10, ['data'], 'page', $request->page);
                 } else {
-                    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->paginate(10);
+                    $inventoryData = $inventoryData->paginate(10);
                 }
 
 
