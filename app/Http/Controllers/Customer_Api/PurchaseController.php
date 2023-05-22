@@ -1285,9 +1285,12 @@ class PurchaseController extends Controller
                             $n=$b;
                         }
                         
+                        
 
                         //$n=99999;
-                        $n=999;
+                        //$n=999;
+                        $bp=$g-$n;
+                        $n=$n+$bp;
                        
                     }
                     $balanceStorePoints=$g-$n;
