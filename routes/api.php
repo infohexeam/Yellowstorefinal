@@ -451,7 +451,7 @@ Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPag
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');
 Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPointProcess');
-Route::get('customer/reduce-reward-point-test', 'Customer_Api\PurchaseController@reduceRewardPointChk');
+Route::get('customer/reduce-reward-point-test', 'Customer_Api\PurchaseController@reduceRewardPointProcessTest');
 Route::get('customer/untick-store-points', 'Customer_Api\PurchaseController@storePointUntick');
 
 Route::post('customer/share-feedback', 'Customer_Api\ProductController@shareFeedback');
