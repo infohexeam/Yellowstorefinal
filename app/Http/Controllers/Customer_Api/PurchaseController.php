@@ -1018,7 +1018,7 @@ class PurchaseController extends Controller
                 $orderAmount=$request->order_amount;
             if($request->admin_points==1&&$request->store_points==1) 
             { 
-               /* if($redeem_preference==1)
+                if($redeem_preference==1)
                 {
                     $adminConfigPoints = Trn_configure_points::first();
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
@@ -1107,7 +1107,7 @@ class PurchaseController extends Controller
                     }
                     //return 2;
 
-                }*/
+                }
             }
                 if($request->admin_points==1)
                 {
@@ -1123,14 +1123,9 @@ class PurchaseController extends Controller
                     //$h=$request->admin_wallet_balance;
                     //$h=30;
                     $j=($h*$d)/100;
-                    if($redeem_preference==1)
-                    {
-                        $relatableRedeemAmount=$relatableRedeemAmount-$j;
-                        //$adminOrderAmount=$relatableRedeemAmount;
-                    }
-                    //adminOrderAmount=$relatableRedeemAmount;
+
                     //$j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($j<=$relatableRedeemAmount)
+                    if($j<=$adminOrderAmount)
                     {
                         $k=floor($j);//Admin Redemption(Based on Max Redemption) (K)
                         //$relatableAdminRedeemAmount
@@ -1156,10 +1151,10 @@ class PurchaseController extends Controller
                        // $k=$r
                     }
                     else{
-                        $k=ceil($relatableRedeemAmount-1);//Admin Redemption(Based on Max Redemption) (K)
+                        $k=ceil($adminOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
-                            $k=$relatableRedeemAmount-1;
+                            $k=$adminOrderAmount-1;
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
                             
@@ -1192,7 +1187,7 @@ class PurchaseController extends Controller
                         return response($data);
                      }
                     $l=floor($k)*$f;//Admin Redemption Amount(RS)(L)
-                    $i=$relatableRedeemAmount;
+                    $i=$adminOrderAmount;
                     if($i>=$l)
                     {
                         // if($e<=$l)
@@ -1252,14 +1247,9 @@ class PurchaseController extends Controller
                     //$g=$request->store_wallet_balance;
                     $m=($g*$a)/100;
                     //return $m;153.76<=100
-                    if($redeem_preference==2)
-                    {
-                        $relatableRedeemAmount=$relatableRedeemAmount-$m;
-                        //$storeOrderAmount=$relatableRedeemAmount;
-                    }
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($m<=$relatableRedeemAmount)
+                    if($m<=$storeOrderAmount)
                     {
                         $n=floor($m);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
@@ -1275,10 +1265,10 @@ class PurchaseController extends Controller
 
                     }
                     else{
-                        $n=ceil($relatableRedeemAmount-1);//Admin Redemption(Based on Max Redemption) (K)
+                        $n=ceil($storeOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=ceil($relatableRedeemAmount-1);
+                            $n=ceil($storeOrderAmount-1);
                             $max_reedem_set_store=true;
                             if($n<=0)
                             {
@@ -1308,7 +1298,7 @@ class PurchaseController extends Controller
                         return response($data);
                     }
                     $o=floor($n)*$c;//Admin Redemption Amount(RS)(L)
-                    $i=$relatableRedeemAmount;
+                    $i=$storeOrderAmount;
                     if($i>=$o)
                     {
                         $q=$i-$o;//Balance if Admin Redemption Only (P)
@@ -1555,7 +1545,6 @@ class PurchaseController extends Controller
                     $j=($h*$d)/100;
 
                     $j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    $adminOrderAmount=$relatableRedeemAmount-$j;
                     if($j<=$adminOrderAmount)
                     {
                         $k=$j;//Admin Redemption(Based on Max Redemption) (K)
@@ -1615,7 +1604,6 @@ class PurchaseController extends Controller
                         
 
                     }
-                    $data['adminOrderAmount']=$adminOrderAmount;
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
                     $data['reducedAmountByWalletPoints'] =$l;
                     $data['usedPoint'] =number_format((float)$k, 2, '.', '');
@@ -1650,7 +1638,6 @@ class PurchaseController extends Controller
                     //return $m;153.76<=100
 
                     $m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    $storeOrderAmount=$relatableRedeemAmount-$m;
                     if($m<=$storeOrderAmount)
                     {
                         $n=$m;//Admin Redemption(Based on Max Redemption) (K)
@@ -1716,7 +1703,7 @@ class PurchaseController extends Controller
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
-                    $data['storeOrderAmount']=$storeOrderAmount;
+
                 }
             }
                 $data['totalReducableAmount']=$data['totalReducableStoreAmount']+$data['totalReducableAdminAmount'];
