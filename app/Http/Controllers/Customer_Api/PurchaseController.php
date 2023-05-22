@@ -1054,6 +1054,16 @@ class PurchaseController extends Controller
 
                 if($redeem_preference==1)
                 {
+                    if($j>$adminOrderAmount)
+                    {
+                        $store_not_redeem=0;
+                        $admin_not_redeem=1;
+
+                    }
+                    // {
+                    //     $adminOrderAmount=$relatableRedeemAmount;
+                    //     $storeOrderAmount=$adminOrderAmount-$j;
+                    //  }
                     // if($j<=$adminOrderAmount)
                     // {
                     //     $adminOrderAmount=$relatableRedeemAmount;
@@ -1092,6 +1102,12 @@ class PurchaseController extends Controller
                 }
                 if($redeem_preference==2)
                 {
+                    if($m>$storeOrderAmount)
+                    {
+                        $store_not_redeem=1;
+                        $admin_not_redeem=0;
+
+                    }
                     
                     //return $relatableRedeemAmount;//153.76<=100
                     //return $storeOrderAmount;
