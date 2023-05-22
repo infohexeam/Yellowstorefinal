@@ -1390,11 +1390,20 @@ class PurchaseController extends Controller
                 //return $rem;
                 if($excess_store_set)
                 {
-                    $re_store=floor($rem-1);
+                    $re_store=ceil($rem-1);
                     $n=$n+$re_store;
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $rem=1;
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
+                    $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+                }
+                if($excess_admin_set)
+                {
+                    $re_admin=ceil($rem-1);
+                    $n=$n+$re_admin;
+                    $data['usedPoint'] = number_format((float)$k, 2, '.', '');
+                    $rem=1;
+                    $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
                 }
             
