@@ -1149,7 +1149,7 @@ class PurchaseController extends Controller
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
                         //return $k."6";
                        // $k=$r
-                       $storeOrderAmount=$adminOrderAmount-$k;
+                       $adminOrderAmount=$adminOrderAmount-$k;
                     }
                     else{
                         $k=ceil($adminOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
@@ -1264,7 +1264,7 @@ class PurchaseController extends Controller
                         {
                             $n=$b;
                         }
-                        $adminOrderAmount=$storeOrderAmount-$k;
+                        $storeOrderAmount=$storeOrderAmount-$n;
 
                     }
                     else{
