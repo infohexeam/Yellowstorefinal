@@ -2053,6 +2053,7 @@ class PurchaseController extends Controller
                         
 
                     }
+                    $data['adminOrderAmount']=$adminOrderAmount;
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
                     $data['reducedAmountByWalletPoints'] =$l;
                     $data['usedPoint'] =number_format((float)$k, 2, '.', '');
@@ -2148,6 +2149,7 @@ class PurchaseController extends Controller
                     $data['wallet_id']=$wallet_log->wallet_log_id;
                                                
                     //$data['totalReducableStoreAmount'] =number_format((float)$q, 2, '.', '');;
+                    $data['storeOrderAmount']=$storeOrderAmount;
                     $data['reducedStoreOrderAmount'] = $q;
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
