@@ -1036,13 +1036,13 @@ class PurchaseController extends Controller
                     if($j<=$adminOrderAmount)
                     {
                         $adminOrderAmount=$relatableRedeemAmount;
-                        $storeOrderAmount=$adminOrderAmount-$j;
+                        $storeOrderAmount=$relatableRedeemAmount-$j;
                     }
                     else
                     {
                         if($adminOrderAmount>=$e)
                         {
-                            $storeOrderAmount=$adminOrderAmount-$e;
+                            $storeOrderAmount=$relatableRedeemAmount-$e;
                             
                         }
                         else
@@ -1080,10 +1080,9 @@ class PurchaseController extends Controller
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
-                        $storeOrderAmount=$relatableRedeemAmount;
                     
-                        $adminOrderAmount=$storeOrderAmount-$m;
-                        
+                        $adminOrderAmount=$relatableRedeemAmount-$m;
+                        $storeOrderAmount=$relatableRedeemAmount;
                         //return $adminOrderAmount;
                     }
                     else
@@ -1091,7 +1090,7 @@ class PurchaseController extends Controller
                         
                         if($storeOrderAmount>=$b)
                         {
-                            $adminOrderAmount=$storeOrderAmount-$b;
+                            $adminOrderAmount=$relatableRedeemAmount-$b;
                             
                         }
                         else
@@ -1145,7 +1144,7 @@ class PurchaseController extends Controller
                         }
                         if($k>=$e)
                         {
-                            $k=$e;
+                            $n=$e;
                         }
                         //$relatableRedeemAmount=$relatableRedeemAmount-$k;
                         //return $k."6";
@@ -1180,13 +1179,13 @@ class PurchaseController extends Controller
                        // return $k."7";
                     }
                     $balancePoints=$h-$k;
-                    //  if($balancePoints<0)
-                    // {
-                    //     $data['status'] = 0;
-                    //     $data['usedPoint']=0.00;
-                    //      $data['message'] = "Reward points can't be redeemed for admin123";
-                    //     return response($data);
-                    //  }
+                     if($balancePoints<0)
+                    {
+                        $data['status'] = 0;
+                        $data['usedPoint']=0.00;
+                         $data['message'] = "Reward points can't be redeemed for admin123";
+                        return response($data);
+                     }
                     $l=floor($k)*$f;//Admin Redemption Amount(RS)(L)
                     $i=$adminOrderAmount;
                     if($i>=$l)
@@ -1291,13 +1290,13 @@ class PurchaseController extends Controller
                        
                     }
                     $balanceStorePoints=$g-$n;
-                    //  if($balanceStorePoints<0)
-                    //  {
-                    //     $data['status'] = 0;
-                    //     $data['usedStorePoint']=0.00;
-                    //     $data['message'] = "Reward points can't be redeemed for store";
-                    //     return response($data);
-                    // }
+                     if($balanceStorePoints<0)
+                     {
+                        $data['status'] = 0;
+                        $data['usedStorePoint']=0.00;
+                        $data['message'] = "Reward points can't be redeemed for store";
+                        return response($data);
+                    }
                     $o=floor($n)*$c;//Admin Redemption Amount(RS)(L)
                     $i=$storeOrderAmount;
                     if($i>=$o)
