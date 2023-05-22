@@ -1054,6 +1054,11 @@ class PurchaseController extends Controller
 
                 if($redeem_preference==1)
                 {
+                    // if($j<=$adminOrderAmount)
+                    // {
+                    //     $adminOrderAmount=$relatableRedeemAmount;
+                    //     $storeOrderAmount=$adminOrderAmount-$j;
+                    //  }
                     
 
                     //$j=number_format((float)$j, 2, '.', '');
@@ -1064,17 +1069,17 @@ class PurchaseController extends Controller
                     // }
                     // else
                     // {
-                        if($adminOrderAmount>=$e)
-                        {
-                            $storeOrderAmount=$adminOrderAmount-$e;
+                        // if($adminOrderAmount>=$e)
+                        // {
+                        //     $storeOrderAmount=$adminOrderAmount-$e;
                             
-                        }
-                        else
-                        {
-                            $store_not_redeem=1;
-                            $admin_not_redeem=0;
+                        // }
+                        // else
+                        // {
+                        //     $store_not_redeem=1;
+                        //     $admin_not_redeem=0;
 
-                        }
+                        // }
                        
                         // $data['status'] = 0;
                         // $data['message'] = "Reward points can't be redeemed for store";
@@ -1103,16 +1108,16 @@ class PurchaseController extends Controller
                     // else
                     // {
                         
-                        if($storeOrderAmount>=$b)
-                        {
-                            $adminOrderAmount=$storeOrderAmount-$b;
+                        // if($storeOrderAmount>=$b)
+                        // {
+                        //     $adminOrderAmount=$storeOrderAmount-$b;
                             
-                        }
-                        else
-                        {
-                            $admin_not_redeem=1;
-                            $store_not_redeem=0;
-                        }
+                        // }
+                        // else
+                        // {
+                        //     $admin_not_redeem=1;
+                        //     $store_not_redeem=0;
+                        // }
 
                        
                         
