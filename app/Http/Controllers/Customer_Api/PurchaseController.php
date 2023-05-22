@@ -1394,6 +1394,7 @@ class PurchaseController extends Controller
                     $n=$n+$re_store;
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $rem=1;
+                    $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
                 }
             
