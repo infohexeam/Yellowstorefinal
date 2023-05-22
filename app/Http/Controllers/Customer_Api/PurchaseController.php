@@ -1175,7 +1175,7 @@ class PurchaseController extends Controller
                                 $k=$e;
                             }
                        
-                        //$k=
+                        $k=999;
                        // return $k."7";
                     }
                     $balancePoints=$h-$k;
@@ -1482,8 +1482,8 @@ class PurchaseController extends Controller
                     $j=number_format((float)$j, 2, '.', '');
                     if($j<=$relatableRedeemAmount)
                     {
-                        $adminOrderAmount=$relatableRedeemAmount-$j;
-                        $storeOrderAmount=$relatableRedeemAmount;
+                        $adminOrderAmount=$relatableRedeemAmount;
+                        $storeOrderAmount=$relatableRedeemAmount-$j;
                     }
                     else
                     {
@@ -1513,8 +1513,8 @@ class PurchaseController extends Controller
                     if($m<=$relatableRedeemAmount)
                     {
                         
-                        $adminOrderAmount=$relatableRedeemAmount;
-                        $storeOrderAmount=$relatableRedeemAmount-$m;
+                        $adminOrderAmount=$relatableRedeemAmount-$m;
+                        $storeOrderAmount=$relatableRedeemAmount;
                         //return $adminOrderAmount;
                     }
                     else
