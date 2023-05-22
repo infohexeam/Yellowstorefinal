@@ -1126,11 +1126,11 @@ class PurchaseController extends Controller
                     if($redeem_preference==1)
                     {
                         $relatableRedeemAmount=$relatableRedeemAmount-$j;
-                        $adminOrderAmount=$relatableRedeemAmount;
+                        //$adminOrderAmount=$relatableRedeemAmount;
                     }
                     //adminOrderAmount=$relatableRedeemAmount;
                     //$j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($j<=$adminOrderAmount)
+                    if($j<=$relatableRedeemAmount)
                     {
                         $k=floor($j);//Admin Redemption(Based on Max Redemption) (K)
                         //$relatableAdminRedeemAmount
@@ -1156,10 +1156,10 @@ class PurchaseController extends Controller
                        // $k=$r
                     }
                     else{
-                        $k=ceil($adminOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
+                        $k=ceil($relatableRedeemAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($d==100)
                         {
-                            $k=$adminOrderAmount-1;
+                            $k=$relatableRedeemAmount-1;
                             $max_reedem_set_admin=true;
                             //return $adminOrderAmount;
                             
@@ -1192,7 +1192,7 @@ class PurchaseController extends Controller
                         return response($data);
                      }
                     $l=floor($k)*$f;//Admin Redemption Amount(RS)(L)
-                    $i=$adminOrderAmount;
+                    $i=$relatableRedeemAmount;
                     if($i>=$l)
                     {
                         // if($e<=$l)
@@ -1255,11 +1255,11 @@ class PurchaseController extends Controller
                     if($redeem_preference==2)
                     {
                         $relatableRedeemAmount=$relatableRedeemAmount-$m;
-                        $storeOrderAmount=$relatableRedeemAmount;
+                        //$storeOrderAmount=$relatableRedeemAmount;
                     }
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($m<=$storeOrderAmount)
+                    if($m<=$relatableRedeemAmount)
                     {
                         $n=floor($m);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
@@ -1275,10 +1275,10 @@ class PurchaseController extends Controller
 
                     }
                     else{
-                        $n=ceil($storeOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
+                        $n=ceil($relatableRedeemAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
-                            $n=ceil($storeOrderAmount-1);
+                            $n=ceil($relatableRedeemAmount-1);
                             $max_reedem_set_store=true;
                             if($n<=0)
                             {
@@ -1308,7 +1308,7 @@ class PurchaseController extends Controller
                         return response($data);
                     }
                     $o=floor($n)*$c;//Admin Redemption Amount(RS)(L)
-                    $i=$storeOrderAmount;
+                    $i=$relatableRedeemAmount;
                     if($i>=$o)
                     {
                         $q=$i-$o;//Balance if Admin Redemption Only (P)
