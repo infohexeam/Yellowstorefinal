@@ -1291,7 +1291,7 @@ class PurchaseController extends Controller
                         //$n=999;
                         //$n=$storeOrderAmount;
                        
-                        $excess=$data['orderAmount']-$storeOrderAmount;
+                        $excess=$data['orderAmount']-$storeOrderAmount-$j;
                         $n=$n+floor($excess);
                         
                        
