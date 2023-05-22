@@ -1018,8 +1018,6 @@ class PurchaseController extends Controller
                 $orderAmount=$request->order_amount;
             if($request->admin_points==1&&$request->store_points==1) 
             { 
-                if($redeem_preference==1)
-                {
                     $adminConfigPoints = Trn_configure_points::first();
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
                     $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
@@ -1031,38 +1029,6 @@ class PurchaseController extends Controller
                     //$h=$request->admin_wallet_balance;
                     //$h=30;
                     $j=($h*$d)/100;
-
-                    //$j=number_format((float)$j, 2, '.', '');
-                    if($j<=$adminOrderAmount)
-                    {
-                        $adminOrderAmount=$relatableRedeemAmount;
-                        $storeOrderAmount=$relatableRedeemAmount-$j;
-                    }
-                    else
-                    {
-                        if($adminOrderAmount>=$e)
-                        {
-                            $storeOrderAmount=$relatableRedeemAmount-$e;
-                            
-                        }
-                        else
-                        {
-                            $store_not_redeem=1;
-                            $admin_not_redeem=0;
-
-                        }
-                       
-                        // $data['status'] = 0;
-                        // $data['message'] = "Reward points can't be redeemed for store";
-                        
-                        // return response($data);
-
-                    }
-                    //return 1;
-
-                }
-                if($redeem_preference==2)
-                {
                     $storeConfigPoints=Trn_configure_points::where('store_id',$store_id)->first();
                     $a=$storeConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(A)
                     $b=$storeConfigPoints->max_redeem_amount;//Max. Amount Redeemable (B)
@@ -1074,37 +1040,107 @@ class PurchaseController extends Controller
                     $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
                     ///$g=$request->store_wallet_balance;
                     $m=($g*$a)/100;
+                if($redeem_preference==1)
+                {
+                    $adminOrderAmount=$relatableRedeemAmount-$j;
+                    $storeOrderAmount=$adminOrderAmount-$m;
+                }
+                
+                if($redeem_preference==2)
+                {
+                    $storeOrderAmount=$relatableRedeemAmount-$m;
+                    $adminOrderAmount=$storeOrderAmount-$j;
+                }
+
+                if($redeem_preference==1)
+                {
+                    if($j>$adminOrderAmount)
+                    {
+                        $store_not_redeem=0;
+                        $admin_not_redeem=1;
+
+                    }
+                    // {
+                    //     $adminOrderAmount=$relatableRedeemAmount;
+                    //     $storeOrderAmount=$adminOrderAmount-$j;
+                    //  }
+                    // if($j<=$adminOrderAmount)
+                    // {
+                    //     $adminOrderAmount=$relatableRedeemAmount;
+                    //     $storeOrderAmount=$adminOrderAmount-$j;
+                    //  }
+                    
+
+                    //$j=number_format((float)$j, 2, '.', '');
+                    // if($j<=$adminOrderAmount)
+                    // {
+                    //     $adminOrderAmount=$relatableRedeemAmount;
+                    //     $storeOrderAmount=$adminOrderAmount-$j;
+                    // }
+                    // else
+                    // {
+                        // if($adminOrderAmount>=$e)
+                        // {
+                        //     $storeOrderAmount=$adminOrderAmount-$e;
+                            
+                        // }
+                        // else
+                        // {
+                        //     $store_not_redeem=1;
+                        //     $admin_not_redeem=0;
+
+                        // }
+                       
+                        // $data['status'] = 0;
+                        // $data['message'] = "Reward points can't be redeemed for store";
+                        
+                        // return response($data);
+
+                    //}
+                    //return 1;
+
+                }
+                if($redeem_preference==2)
+                {
+                    if($m>$storeOrderAmount)
+                    {
+                        $store_not_redeem=1;
+                        $admin_not_redeem=0;
+
+                    }
+                    
                     //return $relatableRedeemAmount;//153.76<=100
                     //return $storeOrderAmount;
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
-                    if($m<=$storeOrderAmount)
-                    {
+                    // if($m<=$storeOrderAmount)
+                    // {
+                    //     $storeOrderAmount=$relatableRedeemAmount;
                     
-                        $adminOrderAmount=$relatableRedeemAmount-$m;
-                        $storeOrderAmount=$relatableRedeemAmount;
-                        //return $adminOrderAmount;
-                    }
-                    else
-                    {
+                    //     $adminOrderAmount=$storeOrderAmount-$m;
                         
-                        if($storeOrderAmount>=$b)
-                        {
-                            $adminOrderAmount=$relatableRedeemAmount-$b;
+                    //     //return $adminOrderAmount;
+                    // }
+                    // else
+                    // {
+                        
+                        // if($storeOrderAmount>=$b)
+                        // {
+                        //     $adminOrderAmount=$storeOrderAmount-$b;
                             
-                        }
-                        else
-                        {
-                            $admin_not_redeem=1;
-                            $store_not_redeem=0;
-                        }
+                        // }
+                        // else
+                        // {
+                        //     $admin_not_redeem=1;
+                        //     $store_not_redeem=0;
+                        // }
 
                        
                         
 
                         
 
-                    }
+                    //}
                     //return 2;
 
                 }
@@ -1218,7 +1254,7 @@ class PurchaseController extends Controller
                     }
                     $data['reducedOrderAmount'] = number_format((float)$p, 2, '.', '');
                     $data['reducedAmountByWalletPoints'] =number_format((float)$l, 2, '.', '');
-                    $data['usedPoint'] =strval($k);//number_format((float)$k, 2, '.', '');
+                    $data['usedPoint'] =number_format((float)$adminOrderAmount, 2, '.', '');
                     $data['balancePoint'] = number_format((float)$balancePoints, 2, '.', '');
                     //$data['remainingOrderAmount'] = number_format((float)$p, 2, '.', '');
 
@@ -1338,7 +1374,7 @@ class PurchaseController extends Controller
                     // {
                     //     $n=$n-1;
                     // }
-                    $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                    $data['usedStorePoint'] = number_format((float)$storeOrderAmount, 2, '.', '');
                    
                     $data['balanceStorePoint'] = number_format((float)$balanceStorePoints, 2, '.', '');
 
