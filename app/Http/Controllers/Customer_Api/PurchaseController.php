@@ -1036,7 +1036,7 @@ class PurchaseController extends Controller
                     if($j<=$adminOrderAmount)
                     {
                         $adminOrderAmount=$relatableRedeemAmount-$j;
-                        $storeOrderAmount=$relatableRedeemAmount-$adminOrderAmount;
+                        $storeOrderAmount=$relatableRedeemAmount+$adminOrderAmount;
                     }
                     else
                     {
@@ -1083,7 +1083,7 @@ class PurchaseController extends Controller
                     
                         //$adminOrderAmount=$relatableRedeemAmount-$m;
                         $storeOrderAmount=$relatableRedeemAmount-$m;
-                        $adminOrderAmount=$relatableRedeemAmount-$storeOrderAmount;
+                        $adminOrderAmount=$relatableRedeemAmount+$storeOrderAmount;
                         //return $adminOrderAmount;
                     }
                     else
