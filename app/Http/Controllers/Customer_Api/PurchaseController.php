@@ -1175,7 +1175,7 @@ class PurchaseController extends Controller
                                 $k=$e;
                             }
                        
-                        $k=999;
+                        
                        // return $k."7";
                     }
                     $balancePoints=$h-$k;
@@ -1287,6 +1287,7 @@ class PurchaseController extends Controller
                         
 
                         //$n=99999;
+                        $k=999;
                        
                     }
                     $balanceStorePoints=$g-$n;
