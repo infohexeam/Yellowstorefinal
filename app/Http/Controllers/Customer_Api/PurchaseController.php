@@ -1292,7 +1292,7 @@ class PurchaseController extends Controller
                         //$n=$storeOrderAmount;
                        
                         //$excess=$data['orderAmount']+$j;
-                        $n=$storeOrderAmount+$j;
+                        //$n=$storeOrderAmount+$;
                         
                        
                     }
