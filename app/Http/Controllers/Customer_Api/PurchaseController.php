@@ -1018,7 +1018,7 @@ class PurchaseController extends Controller
                 $orderAmount=$request->order_amount;
             if($request->admin_points==1&&$request->store_points==1) 
             { 
-                if($redeem_preference==1)
+               /* if($redeem_preference==1)
                 {
                     $adminConfigPoints = Trn_configure_points::first();
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
@@ -1107,7 +1107,7 @@ class PurchaseController extends Controller
                     }
                     //return 2;
 
-                }
+                }*/
             }
                 if($request->admin_points==1)
                 {
@@ -1123,7 +1123,12 @@ class PurchaseController extends Controller
                     //$h=$request->admin_wallet_balance;
                     //$h=30;
                     $j=($h*$d)/100;
-
+                    if($redeem_preference==1)
+                    {
+                        $relatableRedeemAmount=$relatableRedeemAmount-$j;
+                        $adminOrderAmount=$relatableRedeemAmount;
+                    }
+                    //adminOrderAmount=$relatableRedeemAmount;
                     //$j=number_format((float)$j, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($j<=$adminOrderAmount)
                     {
@@ -1247,6 +1252,11 @@ class PurchaseController extends Controller
                     //$g=$request->store_wallet_balance;
                     $m=($g*$a)/100;
                     //return $m;153.76<=100
+                    if($redeem_preference==2)
+                    {
+                        $relatableRedeemAmount=$relatableRedeemAmount-$m;
+                        $storeOrderAmount=$relatableRedeemAmount;
+                    }
 
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
