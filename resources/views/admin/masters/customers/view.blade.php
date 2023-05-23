@@ -190,7 +190,7 @@ use App\Models\admin\Trn_points_redeemed;
                                     </td>
                                      <td>
                                                  
-                                        {{ number_format(floor($row->reward_points_earned,2)) }}</td>
+                                        {{ number_format(floor($row->reward_points_earned),2) }}</td>
                                     <td>
                                         @php
                                         $rewardDis = '';
