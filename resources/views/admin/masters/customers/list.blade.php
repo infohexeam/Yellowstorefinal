@@ -284,7 +284,7 @@ function updateCustomerData(id,rewPts){
     let cusName = $('#cusId'+id).val();
     $('#customerName').text(cusName);
     $('#customerId').val(id);
-    $('#rewPts').text(rewPts);
+    $('#rewPts').text(rewPts.toFixed(2));
 
 }
 
