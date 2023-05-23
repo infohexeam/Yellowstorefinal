@@ -162,9 +162,9 @@ use App\Models\admin\Trn_points_redeemed;
                                 $data['totalusedPoints']  = '0';
                     
                            @endphp
-                         <p>Total Points Earned : </p><h2>{{$totalCustomerRewardsCount}}</h2> <br>
-                         <p>Used Points : </p><h2>{{$totalusedPoints}}</h2> <br>
-                         <p>Balance Points : </p><h2>{{$customerRewardsCount}}</h2> <br>
+                         <p>Total Points Earned : </p><h2>{{number_format(floor($totalCustomerRewardsCount),2)}}</h2> <br>
+                         <p>Used Points : </p><h2>{{number_format(floor($totalusedPoints),2)}}</h2> <br>
+                         <p>Balance Points : </p><h2>{{number_format(floor($customerRewardsCount),2)}}</h2> <br>
 
                         <h3>Earned Points</h3>
 
@@ -234,7 +234,7 @@ use App\Models\admin\Trn_points_redeemed;
                            <!--{{ \Carbon\Carbon::parse($s->created_at)->format('H:i')}}-->
                         
                         </td>
-                        <td>{{ number_format($s->points,2) }}</td>
+                        <td>{{ number_format(floor($s->points),2) }}</td>
                                     <td>{{ $s->discription }}</td>
                                  </tr>
                                  @endforeach

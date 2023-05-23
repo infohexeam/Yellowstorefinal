@@ -270,7 +270,7 @@
 $('#reward_point').val(0)
 function reduceRewPts(valRew){
     //console.log(valRew);
-    let rewPts = parseFloat($('#rewPts').text());
+    let rewPts = parseFloat(Math.floor($('#rewPts').text()));
     // console.log(valRew+" : "+rewPts);
     if(valRew > rewPts){
         $("#saveBtn").attr("disabled", true);
