@@ -188,7 +188,7 @@
                         {{-- <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button> --}}
                          {{-- </form> --}}
                                           
-                <button type="button" class="btn btn-sm btn-gray" data-toggle="modal" onclick="updateCustomerData({{$customer->customer_id}},{{ floor((new \App\Helpers\Helper)->findRewardPoints($customer->customer_id)) }})" data-target="#reddemRewardModal"  >
+                <button type="button" class="btn btn-sm btn-gray" data-toggle="modal" onclick="updateCustomerData({{$customer->customer_id}},{{ (new \App\Helpers\Helper)->findRewardPoints($customer->customer_id) }})" data-target="#reddemRewardModal"  >
                     Redeem Points
                 </button>
 
