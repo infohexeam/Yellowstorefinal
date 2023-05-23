@@ -246,6 +246,8 @@ class StoreWalletController extends Controller
     {
         $data=array();
         $store_id=$request->store_id;
+        $customer_ids=[];
+
         $customer_orders=Trn_store_order::where('store_id',$store_id)->get();
     foreach ($customer_orders as $order) {
         $customer_ids[] = $order->customer_id;
