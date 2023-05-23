@@ -1409,7 +1409,7 @@ class PurchaseController extends Controller
                 if($excess_admin_set)
                 {
                     $re_admin=ceil($rem-1);
-                    $n=$n+$re_admin;
+                    $k=$k+$re_admin;
                     $data['usedPoint'] = number_format((float)$k, 2, '.', '');
                     $rem=1;
                     $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
