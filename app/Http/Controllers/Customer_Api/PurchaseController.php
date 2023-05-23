@@ -1254,6 +1254,7 @@ class PurchaseController extends Controller
                     //$m=number_format((float)$m, 2, '.', '');//Admin Redemption Points (Actual) (J)
                     if($m<=$storeOrderAmount)
                     {
+                        
                         $n=floor($m);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
@@ -1268,6 +1269,7 @@ class PurchaseController extends Controller
 
                     }
                     else{
+                        //return $m;
                         $n=ceil($storeOrderAmount-1);//Admin Redemption(Based on Max Redemption) (K)
                         if($a==100)
                         {
@@ -1277,6 +1279,7 @@ class PurchaseController extends Controller
                             {
                                 $n=0;
                             }
+                            
 
                         }
                         if($n<=0)
@@ -1286,7 +1289,10 @@ class PurchaseController extends Controller
                         if($n>=$b)
                         {
                             $n=$b;
+                            //return 123;
                         }
+                        //return $n;
+                        
                         
                         
 
@@ -1388,6 +1394,9 @@ class PurchaseController extends Controller
                     
                 }
                 //return $rem;
+                if($redeem_preference==1||$redeem_preference==2)
+                {
+                    //return 345;
                 if($excess_store_set)
                 {
                     $re_store=ceil($rem-1);
@@ -1406,6 +1415,7 @@ class PurchaseController extends Controller
                     $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
                 }
+            }
             
                 //$data['remainingOrderAmount'] = 
                 $data['message']="success";
