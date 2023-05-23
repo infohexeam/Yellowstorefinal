@@ -188,7 +188,7 @@
                         {{-- <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button> --}}
                          {{-- </form> --}}
                                           
-                <button type="button" class="btn btn-sm btn-gray" data-toggle="modal" onclick="updateCustomerData({{$customer->customer_id}},{{ (new \App\Helpers\Helper)->findRewardPoints($customer->customer_id) }})" data-target="#reddemRewardModal"  >
+                <button type="button" class="btn btn-sm btn-gray" data-toggle="modal" onclick="updateCustomerData({{$customer->customer_id}},{{ floor((new \App\Helpers\Helper)->findRewardPoints($customer->customer_id)) }})" data-target="#reddemRewardModal"  >
                     Redeem Points
                 </button>
 
@@ -270,7 +270,7 @@
 $('#reward_point').val(0)
 function reduceRewPts(valRew){
     //console.log(valRew);
-    let rewPts = 865.00;//parseFloat($('#rewPts').text());
+    let rewPts = parseFloat($('#rewPts').text());
     // console.log(valRew+" : "+rewPts);
     if(valRew > rewPts){
         $("#saveBtn").attr("disabled", true);
