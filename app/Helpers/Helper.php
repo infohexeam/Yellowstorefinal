@@ -115,7 +115,7 @@ class Helper
         $redeemedPoints = Trn_points_redeemed::where('customer_id',$cusId)->sum('points');
 
         $customerRewardsCount =  ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPoints;
-        return number_format($customerRewardsCount, 2);
+        return number_format(floor($customerRewardsCount), 2);
                
     }
 
