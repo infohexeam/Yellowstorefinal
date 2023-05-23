@@ -4813,6 +4813,7 @@ class SettingController extends Controller
 
 	public function storeConfigurePoints(Request $request, Trn_configure_points $points, $cf_id)
 	{
+		dd($cf_id);
 		$validator = Validator::make(
 			$request->all(),
 			[
