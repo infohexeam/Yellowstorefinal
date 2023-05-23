@@ -735,7 +735,7 @@ class CustomerController extends Controller
 
                 $cr = new Trn_customer_reward;
                 $cr->transaction_type_id = 0;
-                $cr->reward_points_earned = $configPoint->registraion_points;
+                $cr->reward_points_earned = $configPoint->registraion_points??0;
                 $cr->customer_id = $customer_id;
                 $cr->order_id = null;
                 $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
