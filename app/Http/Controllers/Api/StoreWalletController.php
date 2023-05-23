@@ -252,6 +252,13 @@ class StoreWalletController extends Controller
     foreach ($customer_orders as $order) {
         $customer_ids[] = $order->customer_id;
     }
+    if(empty($customer_ids))
+    {
+        $data['status']=0;
+        $data['customers']=[];
+        $data['message']="No eligible customers found";
+
+    }
        $customers = Trn_store_customer::select('customer_id','customer_first_name','customer_last_name','customer_mobile_number')
                     ->whereIn('customer_id',$customer_ids)
                     ->where('customer_id','!=',3)
