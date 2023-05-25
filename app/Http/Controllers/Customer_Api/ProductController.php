@@ -2097,7 +2097,7 @@ class ProductController extends Controller
                        
                         if($log->order_id==NULL)
                         {
-                            $debited=$debited-$log->points_debited;
+                            //$debited=$debited-$log->points_debited;
                             continue;
                         }
                         
