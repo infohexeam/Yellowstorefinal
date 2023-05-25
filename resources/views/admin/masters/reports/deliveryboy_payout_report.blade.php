@@ -111,6 +111,8 @@
                                             <th class="wd-15p">Total Amount</th>
                                             <th class="wd-15p">Delivery Charge</th>
                                             <th class="wd-15p">Packing Charge</th>
+                                            <th class="wd-15p">Admin<br>Points Used</th>
+                                            <th class="wd-15p">Store<br>Points Used</th>
                                             <th class="wd-15p">Commision/Month</th>
                                             <th class="wd-15p">Commision/Order</th>
                                              <th class="wd-15p">Previous Commision</th>
@@ -161,6 +163,20 @@
                                             <td>{{ $d->product_total_amount }}</td>
                                             <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
                                              <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
+                                             <td>
+                                                @if(isset($d->reward_points_used))
+                                                {{ $d->reward_points_used }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($d->reward_points_used))
+                                                {{ $d->reward_points_used_store }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
                                             <td>{{ number_format(@$d->c_month,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->c_order,2)??0.00 }}</td>
                                             <td>{{ number_format(@$d->previous_amount+@$d->c_month)??0.00 }}</td>

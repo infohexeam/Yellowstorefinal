@@ -2203,6 +2203,7 @@ class ProductController extends Controller
         'trn_store_orders.coupon_id',
         'trn_store_orders.coupon_code',
         'trn_store_orders.reward_points_used',
+        'trn_store_orders.reward_points_used_store',
         'trn_store_orders.amount_before_applying_rp',
         'trn_store_orders.trn_id',
         'trn_store_orders.created_at',
