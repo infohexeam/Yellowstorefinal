@@ -1426,8 +1426,17 @@ class PurchaseController extends Controller
                 {
                     $re_admin=ceil($rem-1);
                     $k=$k+$re_admin;
+                    if($k>$e)
+                    {
+                        $k=$e;
+                        $rem=$data['orderAmount']-$data['totalReducableAmount'];
+
+                    }
+                    else{
+                        $rem=1;
+                    }
                     $data['usedPoint'] = number_format((float)$k, 2, '.', '');
-                    $rem=1;
+                   // $rem=1;
                     $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
                 }
