@@ -166,8 +166,8 @@
                                             <th class="wd-15p">Discount</th>
                                             <th class="wd-15p">Tax Amount</th>
                                             <th class="wd-15p">Coupon<br>Redeemed Value</th>
-                                            <th class="wd-15p">Wallet<br>Points Used</th>
-                                           
+                                            <th class="wd-15p">Admin<br>Points Used</th>
+                                            <th class="wd-15p">Store<br>Points Used</th>
                                            
                                             <th class="wd-15p">Delivery Boy</th>
                                             <th class="wd-15p">Delivery Status</th>
@@ -222,6 +222,13 @@
                                                 ---
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if(isset($d->reward_points_used))
+                                                {{ $d->reward_points_used_store }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
                                             
                                             <td>
                                                 @if(isset($d->delivery_boy_name))
@@ -271,11 +278,7 @@
                 extend: 'pdf',
                 title: 'Online Sales Report',
                 footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-                 },
-                 orientation : 'landscape',
-                pageSize : 'LEGAL',
+               
             },
             {
                 extend: 'excel',
