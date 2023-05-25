@@ -54,7 +54,7 @@ class StoreWalletController extends Controller
 				'rupee'          => 'required',
 				'order_points'          => 'required',
 				'order_amount'          => 'required',
-                'redeem_percentage'    => 'max:100',
+                'redeem_percentage'    => 'numeric|max:100',
 
 				//'points'          => 'required',
 			],
