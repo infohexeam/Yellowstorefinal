@@ -2085,10 +2085,6 @@ class ProductController extends Controller
                 {
                     if($log->type=='debit')
                     {
-                        if($log->order_id==NULL)
-                        {
-                            continue;
-                        }
                         $o_check=Trn_store_order::where('order_id',$log->order_id)->first();
                         if($o_check!=NULL)
                         {
@@ -2098,6 +2094,12 @@ class ProductController extends Controller
 
                         }
                         $debited=$debited+$log->points_debited;
+                        if($log->order_id==NULL)
+                        {
+                            continue;
+                        }
+                       
+                       
                     }
 
                     }
