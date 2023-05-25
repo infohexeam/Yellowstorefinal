@@ -1401,6 +1401,10 @@ class PurchaseController extends Controller
                 {
                     $re_store=ceil($rem-1);
                     $n=$n+$re_store;
+                    if($n>$b)
+                    {
+                        $n=$b;
+                    }
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $rem=1;
                     $w_log=Trn_wallet_log::find($data['wallet_id']);
