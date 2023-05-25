@@ -2079,7 +2079,8 @@ class ProductController extends Controller
                 $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
                 $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                 $available_points=$wallet_log_credited-$wallet_log_redeemed;              
-                $data['logs']=$wallet_logs;  
+                $data['logs']=$wallet_logs; 
+                $debited=0; 
                 foreach($data['logs'] as $log)
                 {
                     if($log->type=='debit')
@@ -2096,6 +2097,7 @@ class ProductController extends Controller
                             $log->points_debited=$o_check->reward_points_used_store;
 
                         }
+                        $debited=$debited+$log->points_debited;
                     }
 
                     }
@@ -2109,14 +2111,16 @@ class ProductController extends Controller
                     {
                         $log->order_number='Gift Credit(Non order)';
                     }
-                }            
+                }
+                $available_points=$wallet_log_credited-$debited;              
+
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
                 else
                     $data['totalcreditedPoints']  = '0';
 
                 if ($wallet_log_redeemed >= 0)
-                    $data['totalRedeemedPoints']  = number_format($wallet_log_redeemed,2);
+                    $data['totalRedeemedPoints']  = number_format($debited,2);
                 else
                     $data['totalRedeemedPoints']  = '0';
                
