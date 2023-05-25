@@ -1405,7 +1405,7 @@ class PurchaseController extends Controller
                     {
                         $n=$b;
                         $r=$n-$b;
-                        $rem=$r+1;
+                        $re=$r+1;
                     }
                     else
                     {
@@ -1418,19 +1418,16 @@ class PurchaseController extends Controller
                     $w_log->points_debited=number_format((float)$n, 2, '.', '');;
                     $w_log->update();
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
-                    $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+                    $data['remainingOrderAmount']=number_format((float)$re, 2, '.', '');
                 }
                 if($excess_admin_set)
                 {
-                    if(!$excess_store_set)
-                    {
                     $re_admin=ceil($rem-1);
                     $k=$k+$re_admin;
                     $data['usedPoint'] = number_format((float)$k, 2, '.', '');
                     $rem=1;
                     $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
-                    }
                 }
             }
             
