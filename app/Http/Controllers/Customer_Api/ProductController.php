@@ -2088,6 +2088,15 @@ class ProductController extends Controller
                         {
                             continue;
                         }
+                        $o_check=Trn_store_order::where('order_id',$log->order_id)->first();
+                        if($o_check!=NULL)
+                        {
+                        if($o_check->reward_points_used_store>$log->points_debited)
+                        {
+                            $log->points_debited=$o_check->reward_points_used_store;
+
+                        }
+                    }
 
                     }
 

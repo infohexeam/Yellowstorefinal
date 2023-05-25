@@ -257,6 +257,7 @@ class StoreWalletController extends Controller
         $data['status']=0;
         $data['customers']=[];
         $data['message']="No eligible customers found";
+        return response($data);
 
     }
        $customers = Trn_store_customer::select('customer_id','customer_first_name','customer_last_name','customer_mobile_number')
