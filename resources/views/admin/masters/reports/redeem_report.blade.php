@@ -146,7 +146,7 @@
                                             <td>{{ $d->product_total_amount }}</td>
                                             <td>{{ $d->reward_points_used??'--' }}</td>
                                              <td>{{ $d->reward_points_used_store??'--' }}</td>
-                                            <td>{{ $d->amount_before_applying_rp }}</td>
+                                            
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>
                                             
