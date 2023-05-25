@@ -1394,21 +1394,34 @@ class PurchaseController extends Controller
                     
                 }
                 //return $rem;
-                if($redeem_preference==1||$redeem_preference==2)
+                if($redeem_preference==1)
                 {
                     //return 345;
                 if($excess_store_set)
                 {
                     $re_store=ceil($rem-1);
                     $n=$n+$re_store;
+                    if($n>$b)
+                    {
+                        $n=$b;
+                        $rem=$data['orderAmount']-$data['totalReducableAmount'];
+
+                    }
+                    else
+                    {
+                        $rem=1;
+                    }
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
-                    $rem=1;
+                    
                     $w_log=Trn_wallet_log::find($data['wallet_id']);
                     $w_log->points_debited=number_format((float)$n, 2, '.', '');;
                     $w_log->update();
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
                 }
+            }
+            if($redeem_preference==2)
+            {
                 if($excess_admin_set)
                 {
                     $re_admin=ceil($rem-1);
