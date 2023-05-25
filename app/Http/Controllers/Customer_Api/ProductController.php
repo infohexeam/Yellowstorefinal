@@ -2111,16 +2111,14 @@ class ProductController extends Controller
                     {
                         $log->order_number='Gift Credit(Non order)';
                     }
-                }
-                $available_points=$wallet_log_credited-$debited;              
-
+                }            
                 if ($wallet_log_credited >= 0)
                     $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
                 else
                     $data['totalcreditedPoints']  = '0';
 
                 if ($wallet_log_redeemed >= 0)
-                    $data['totalRedeemedPoints']  = number_format($debited,2);
+                    $data['totalRedeemedPoints']  = number_format($wallet_log_redeemed,2);
                 else
                     $data['totalRedeemedPoints']  = '0';
                
