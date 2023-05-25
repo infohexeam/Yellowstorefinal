@@ -2093,12 +2093,14 @@ class ProductController extends Controller
                             $log->points_debited=$o_check->reward_points_used_store;
 
                         }
+                        $debited=$debited+$log->points_debited;
                        
                         if($log->order_id==NULL)
                         {
+                            $debited=$debited-$log->points_debited;
                             continue;
                         }
-                        $debited=$debited+$log->points_debited;
+                        
                        
                        
                     }
