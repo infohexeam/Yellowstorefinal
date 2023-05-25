@@ -222,9 +222,11 @@
                                                 @endif
                                             </td>
                                              <td>
-                                              
+                                                @if(isset($d->reward_points_used_store))
                                                 {{ $d->reward_points_used_store }}
-                                               
+                                                @else
+                                                ---
+                                                @endif
                                             </td>
                                             
                                             <td>
