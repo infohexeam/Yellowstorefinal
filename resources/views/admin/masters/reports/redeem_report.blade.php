@@ -122,8 +122,8 @@
                                             <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Order Number</th>
                                             <th class="wd-15p">Total Amount</th>
-                                            <th class="wd-15p">Redeem Points<br> Used</th>
-                                            <th class="wd-15p">Amount before <br> applying Points</th>
+                                            <th class="wd-15p">Admin Points<br> Used</th>
+                                           <th class="wd-15p">Store Points<br> Used</th>
                                              <th class="wd-15p">Customer</th>
                                             <th class="wd-15p">Customer Phone</th>
                                             <th class="wd-15p">Store</th>
@@ -144,7 +144,8 @@
 
                                             <td>{{ $d->order_number }}</td>
                                             <td>{{ $d->product_total_amount }}</td>
-                                            <td>{{ $d->reward_points_used }}</td>
+                                            <td>{{ $d->reward_points_used??'--' }}</td>
+                                             <td>{{ $d->reward_points_used_store??'--' }}</td>
                                             <td>{{ $d->amount_before_applying_rp }}</td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>
