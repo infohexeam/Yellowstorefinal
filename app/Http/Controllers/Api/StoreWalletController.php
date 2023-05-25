@@ -54,7 +54,7 @@ class StoreWalletController extends Controller
 				'rupee'          => 'required',
 				'order_points'          => 'required',
 				'order_amount'          => 'required',
-                'redeem_percentage'    => 'numeric|max:100',
+                //'redeem_percentage'    => 'numeric|max:100',
 
 				//'points'          => 'required',
 			],
@@ -67,9 +67,16 @@ class StoreWalletController extends Controller
 				
 				'rupee_points.required'          => 'Rupees to points required',
 				'order_amount.required'          => 'Order amount required',
-                'redeem_percentage'    => 'Percentage should not exceed 100',
+                //'redeem_percentage'    => 'Percentage should not exceed 100',
 			]
 		);
+
+        if($request->redeem_percentage > 100)
+        {
+            $data['status'] = 0;
+            $data['message'] = "Percentage should not exceed 100";
+            return response($data);
+        }
 
 		if (!$validator->fails()) {
 
