@@ -1397,37 +1397,27 @@ class PurchaseController extends Controller
                 if($redeem_preference==1||$redeem_preference==2)
                 {
                     //return 345;
-                    if($excess_admin_set)
-                    {
-                        $re_admin=ceil($rem-1);
-                        $k=$k+$re_admin;
-                        $data['usedPoint'] = number_format((float)$k, 2, '.', '');
-                        $rem=1;
-                        $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
-                        $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
-                    }
                 if($excess_store_set)
                 {
                     $re_store=ceil($rem-1);
                     $n=$n+$re_store;
-                    // if($n>$b)
-                    // {
-                    //     $n=$b;
-                    //     $rem=$re_store;
-                    // }
-                    // else
-                    // {
-                    //     $rem=1;
-                    // }
-                    $rem=1;
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
+                    $rem=1;
                     $w_log=Trn_wallet_log::find($data['wallet_id']);
                     $w_log->points_debited=number_format((float)$n, 2, '.', '');;
                     $w_log->update();
                     $data['reducedAmountByStoreWalletPoints'] =number_format((float)$n, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
                 }
-              
+                if($excess_admin_set)
+                {
+                    $re_admin=ceil($rem-1);
+                    $k=$k+$re_admin;
+                    $data['usedPoint'] = number_format((float)$k, 2, '.', '');
+                    $rem=1;
+                    $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
+                    $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+                }
             }
             
                 //$data['remainingOrderAmount'] = 
