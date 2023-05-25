@@ -1422,12 +1422,15 @@ class PurchaseController extends Controller
                 }
                 if($excess_admin_set)
                 {
+                    if(!$excess_store_set)
+                    {
                     $re_admin=ceil($rem-1);
                     $k=$k+$re_admin;
                     $data['usedPoint'] = number_format((float)$k, 2, '.', '');
                     $rem=1;
                     $data['reducedAmountByWalletPoints'] =number_format((float)$k, 2, '.', '');
                     $data['remainingOrderAmount']=number_format((float)$rem, 2, '.', '');
+                    }
                 }
             }
             
