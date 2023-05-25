@@ -1410,15 +1410,15 @@ class PurchaseController extends Controller
                 {
                     $re_store=ceil($rem-1);
                     $n=$n+$re_store;
-                    if($n>$b)
-                     {
-                         $n=$b;
-                        $rem=$re_store;
-                     }
-                     else
-                     {
-                         $rem=1;
-                     }
+                    // if($n>$b)
+                    // {
+                    //     $n=$b;
+                    //     $rem=$re_store;
+                    // }
+                    // else
+                    // {
+                    //     $rem=1;
+                    // }
                     $rem=1;
                     $data['usedStorePoint'] = number_format((float)$n, 2, '.', '');
                     $w_log=Trn_wallet_log::find($data['wallet_id']);
