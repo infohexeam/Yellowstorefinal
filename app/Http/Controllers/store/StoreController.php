@@ -3869,7 +3869,7 @@ class StoreController extends Controller
       $prv=Mst_store_product_varient::where('product_varient_id', '=',$product_varient_id)->first();
       if($prv->stock_count<0)
       {
-          Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->increment('stock_count', $value['quantity']);
+          Mst_store_product_varient::where('product_varient_id', '=', $product_varient_id)->increment('stock_count', $quantity);
           $data['status'] = 0;
           $data['message'] = "Some products quantity is more than available stock..Try again Later";
          return response($data);
