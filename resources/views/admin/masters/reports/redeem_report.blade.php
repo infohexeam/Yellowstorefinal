@@ -147,7 +147,7 @@
                                             <td>{{ $d->product_total_amount }}</td>
                                             <td>{{ $d->reward_points_used??'--' }}</td>
                                              <td>{{ $d->reward_points_used_store??'--' }}</td>
-                                             <td>{{ $d->reward_points_used_store??'--' }}</td>
+                                            
                                               @php
                                              $item_price=DB::table('trn_order_items')->where('order_id',$d->order_id)->sum('total_amount');
         //$w->amount_before_applying_rp=$item_price+$$w->amount_reduced_by_rp??0+$w->packing_charge??0+$w->delivery_charge??0+$w->amount_reduced_by_rp_store??0+$w->amount_reduced_by_coupon??0;
