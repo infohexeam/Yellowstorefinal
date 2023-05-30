@@ -30,6 +30,7 @@ use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Sys_store_order_status;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
+use App\Models\admin\Trn_store_order_item;
 use File;
 use App\User;
 
@@ -3680,7 +3681,9 @@ class StoreController extends Controller
 	  //DD($request->store_id,$request->subadmin_id,$data);
       foreach($walletdata as $w)
       {
-        $w->amount_before_applying_rp=strval(number_format($w->product_total_amount+$w->amount_reduced_by_rp+$w->amount_reduced_by_rp_store,2));
+        $item_price=Trn_store_order_item::where('order_id',$w->order_id)->sum('total_amount');
+        //$w->amount_before_applying_rp=$item_price+$$w->amount_reduced_by_rp??0+$w->packing_charge??0+$w->delivery_charge??0+$w->amount_reduced_by_rp_store??0+$w->amount_reduced_by_coupon??0;
+        $w->amount_before_applying_rp=strval(number_format($item_price+$w->packing_charge??0+$w->delivery_charge??0,2));
 
       }
       
