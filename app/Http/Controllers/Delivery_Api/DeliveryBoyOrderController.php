@@ -747,6 +747,13 @@ class DeliveryBoyOrderController extends Controller
                     return response($data);
 
                 }
+                if($ord->status_id==9)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Order is delivered by store.You cannot proceed this order ";
+                    return response($data);
+
+                }
 
                 $order_id = $request->order_id;
                 $delivery_boy_id = $request->delivery_boy_id;
@@ -995,13 +1002,22 @@ class DeliveryBoyOrderController extends Controller
                     $wallet_log->points_debited=null;
                     $wallet_log->points_credited=$storeOrderPointAmount;
                     $wallet_log->save();
-                    foreach ($storeDevice as $sd) {
+                    // foreach ($storeDevice as $sd) {
     
-                        $title = 'Store Points Credited';
-                        $body = $storeOrderPointAmount . ' points credited to your wallet';
+                    //     $title = 'Store Points Credited';
+                    //     $body = $storeOrderPointAmount . ' points credited to your wallet';
+                    //     $clickAction = "MyWalletFragment";
+                    //     $type = "wallet";
+                    //     $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                    // }
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+                    foreach ($customerDevice as $cd) {
+
+                        $title = 'Store Order Points Credited';
+                        $body = $storeOrderPointAmount . ' points credited to your store wallet';
                         $clickAction = "MyWalletFragment";
                         $type = "wallet";
-                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
 
                     

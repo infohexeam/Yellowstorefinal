@@ -2562,6 +2562,11 @@ class StoreController extends Controller
 
       }
     }
+    if($order->status_id==9)
+    {
+      return redirect()->back()->withErrors(['Order is already delivered.Cannot proceed']);
+                    
+    }
     if ($request->status_id == 5) {
       if($order->status_id==8)
       {
@@ -2704,6 +2709,16 @@ class StoreController extends Controller
             $cr->reward_point_status = 1;
             $cr->discription = 'admin points';
             $cr->save();
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+            foreach ($customerDevice as $cd) {
+
+                $title = 'App Order Points Credited';
+                $body = $orderPointAmount . ' points credited to your wallet';
+                $clickAction = "MyWalletFragment";
+                $type = "wallet";
+                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
             }
             if($storeConfigPoint)
             {
@@ -2730,6 +2745,16 @@ class StoreController extends Controller
             $wallet_log->points_credited=$storeOrderPointAmount;
 
             $wallet_log->save();
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+            foreach ($customerDevice as $cd) {
+
+                $title = 'Store Order Points Credited';
+                $body = $storeOrderPointAmount . ' points credited to your wallet';
+                $clickAction = "MyWalletFragment";
+                $type = "wallet";
+                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
             }
             }
            
