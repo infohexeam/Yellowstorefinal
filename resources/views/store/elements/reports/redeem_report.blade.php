@@ -151,7 +151,7 @@
         //$d->amount_before_applying_rp=strval(number_format($item_price+$w->packing_charge+$w->delivery_charge,2));
 
                                             @endphp
-                                            <td>{{ number_format($item_price+$d->packing_charge+$d->delivery_charge,2) }}</td>
+                                            <td>{{ number_format($item_price+$d->packing_charge+$d->delivery_charge+$d->amount_reduced_by_coupon??0,2) }}</td>
                                            
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ @$d->customer_mobile_number }}</td>
