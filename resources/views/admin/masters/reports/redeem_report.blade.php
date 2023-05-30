@@ -124,6 +124,7 @@
                                             <th class="wd-15p">Total Amount</th>
                                             <th class="wd-15p">Admin Points<br> Used</th>
                                            <th class="wd-15p">Store Points<br> Used</th>
+                                            <th class="wd-15p">Amount Before Points</th>
                                              <th class="wd-15p">Customer</th>
                                             <th class="wd-15p">Customer Phone</th>
                                             <th class="wd-15p">Store</th>
@@ -146,7 +147,14 @@
                                             <td>{{ $d->product_total_amount }}</td>
                                             <td>{{ $d->reward_points_used??'--' }}</td>
                                              <td>{{ $d->reward_points_used_store??'--' }}</td>
-                                            
+                                             <td>{{ $d->reward_points_used_store??'--' }}</td>
+                                              @php
+                                             $item_price=DB::table('trn_order_items')->where('order_id',$d->order_id)->sum('total_amount');
+        //$w->amount_before_applying_rp=$item_price+$$w->amount_reduced_by_rp??0+$w->packing_charge??0+$w->delivery_charge??0+$w->amount_reduced_by_rp_store??0+$w->amount_reduced_by_coupon??0;
+        //$d->amount_before_applying_rp=strval(number_format($item_price+$w->packing_charge+$w->delivery_charge,2));
+
+                                            @endphp
+                                            <td>{{ number_format($item_price+$d->packing_charge+$d->delivery_charge+$d->amount_reduced_by_coupon??0,2) }}</td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>
                                             
