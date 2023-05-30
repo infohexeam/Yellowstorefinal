@@ -1,6 +1,9 @@
 @extends('store.layouts.app')
 @section('content')
+@php
+use App\Models\Admin\Trn_store_order_item;
 
+@endphp
 
 <div class="container">
     <div class="row justify-content-center">
@@ -146,7 +149,7 @@
                                             <td>{{$d->amount_reduced_by_rp}}</td>
                                             <td>{{$d->amount_reduced_by_rp_store}}</td>
                                             @php
-                                             $item_price=App\Models\Admin\Trn_store_order_item::where('order_id',$w->order_id)->sum('total_amount');
+                                             $item_price=Trn_store_order_item::where('order_id',$w->order_id)->sum('total_amount');
         //$w->amount_before_applying_rp=$item_price+$$w->amount_reduced_by_rp??0+$w->packing_charge??0+$w->delivery_charge??0+$w->amount_reduced_by_rp_store??0+$w->amount_reduced_by_coupon??0;
         //$d->amount_before_applying_rp=strval(number_format($item_price+$w->packing_charge+$w->delivery_charge,2));
 
