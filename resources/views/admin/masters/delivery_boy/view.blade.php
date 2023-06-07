@@ -230,7 +230,7 @@ use App\User;
                            $statusInfo = Sys_store_order_status::find($delivery_boy_order->status_id);
                         @endphp
                         <td>{{ ++$i }}</td>
-                        <td>{{ \Carbon\Carbon::parse($delivery_boy_order->created_at)->format('M d, Y')}}</td>
+                        <td>{{ \Carbon\Carbon::parse($orderDAta->updated_at)->format('M d, Y')}}</td>
                         <td>{{ @$orderDAta->order_number}}</td>
                         <!--<td>{{ @$dBoyDAta->delivery_boy_name }}</td>-->
                         <!--<td>{{ @$dBoyDAta->delivery_boy_mobile }}</td>-->
