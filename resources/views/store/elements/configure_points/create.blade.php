@@ -57,7 +57,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Referred Joiner Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points ">
+                            <input type="number"  min="1" oninput="validity.valid||(value='');" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points ">
                            </div>
                         </div>
 
