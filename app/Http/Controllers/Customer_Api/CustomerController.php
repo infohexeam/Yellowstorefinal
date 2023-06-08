@@ -1703,6 +1703,7 @@ class CustomerController extends Controller
                 $store_referral->fop=$fop;
                 $store_referral->save();
                 $data['status'] = 1;
+                $data['store_id']=$store_id;
                 $data['message'] = "Success..Store Referral initiated";
                 return response($data);
 
