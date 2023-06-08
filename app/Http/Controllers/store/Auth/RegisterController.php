@@ -160,7 +160,7 @@ class RegisterController extends Controller
                 // 'store_contact_person_phone_number'=> 'required',
                 'business_type_id'                  => 'required',
                 //'email'                            => 'required|unique:mst_stores',
-                'store_mobile'                     => 'required|unique:mst_stores',
+                'store_mobile'                     => 'required|unique:trn__store_admins',
                 'password'                         => 'required|min:5|same:password_confirmation',
 
 
