@@ -294,22 +294,15 @@ $(document).ready(function() {
     //  }
 
     x = ($('.trClass').length) - 1;
-     //alert($('.trClass').length);
+
      let lastEndVal = $("#end"+x).val();
      let lastStartVal = $("#start"+x).val();
-     if(('.trClass').length==0)
-     {
-      //alert('hii');
-      //lastStartVal = 0;
-
-
-     }
     // console.log(x);
      
         if(parseFloat(lastEndVal) <= parseFloat(lastStartVal))
         {
                 //console.log(lastEndVal + "<"+lastStartVal);
-          
+
             if(lastEndVal != lastStartVal)
              alert("Wrong input entered. " +lastEndVal+ " is lessthan "+lastStartVal);
              else
@@ -322,17 +315,7 @@ $(document).ready(function() {
             // if(lastEndValuePlus <= serviceArea)
             // {
                 x++; 
-                if(x==0)
-                {
-                  $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input min="0" step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="0.0"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" min="0" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0.0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]" min="0"></td><td><input type="number" min="0" min="0" step="1" oninput="validity.valid||(value=0);" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
-
-                }
-                else
-                {
-                  $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input min="0" step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" min="0" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]" min="0"></td><td><input type="number" min="0" min="0" step="1" oninput="validity.valid||(value=0);" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
-
-                }
-                
+                $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input min="0" step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" min="0" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]" min="0"></td><td><input type="number" min="0" min="0" step="1" oninput="validity.valid||(value=0);" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
             // }else{
             //     alert("Service area already filled..");
             // }

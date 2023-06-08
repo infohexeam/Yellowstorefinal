@@ -4356,7 +4356,7 @@ class StoreController extends Controller
       
       $info = [
         'store_id' => Auth::guard('store')->user()->store_id,
-        'service_start' => $start[$i]??0,
+        'service_start' => $start[$i],
         'service_end' =>  $end[$i],
         'delivery_charge' => $delivery_charge[$i],
         'packing_charge' => $packing_charge[$i],
