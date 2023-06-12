@@ -156,6 +156,7 @@ use App\Models\admin\Trn_points_redeemed;
                             $customerRewardsCount = ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPointsSum;
                            // $totalCustomerRewardsCount = number_format($totalCustomerRewardsCount, 0);
                              //$totalusedPoints=$totalusedPoints + $redeemedPointsSum ;
+                             $tUsedPts=$totalusedPoints + $redeemedPointsSum;
                             if ($totalusedPoints >= 0)
                                 $data['totalusedPoints']  = $totalusedPoints;
                             else
@@ -164,6 +165,7 @@ use App\Models\admin\Trn_points_redeemed;
                            @endphp
                          <p>Total Points Earned : </p><h2>{{number_format(floor($totalCustomerRewardsCount),2)}}</h2> <br>
                          <p>Used Points : </p><h2>{{number_format(floor($totalusedPoints),2)}}</h2> <br>
+                         <p>Admin Redeemed Points : </p><h2>{{number_format(floor($redeemedPointsSum),2)}}</h2> <br>
                          <p>Balance Points : </p><h2>{{number_format(floor($customerRewardsCount),2)}}</h2> <br>
 
                         <h3>Earned Points</h3>
