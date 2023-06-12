@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\admin\Mst_order_link_delivery_boy;
 use Illuminate\Support\Str;
 use Crypt;
 use  Carbon\Carbon;
@@ -1307,6 +1308,22 @@ public static function checkFopApp($order)
    // return 3;
     
     
+}
+public static function deliveryBoyCommission($order_id,$dbid)
+{
+  /*  $dat=[];
+    $previousCommsion=Mst_order_link_delivery_boy::where('delivery_boy_id',$dbid)
+    ->where('order_id', '<', $order_id)
+    ->sum('commission_per_order');
+    $currentCommision=Mst_order_link_delivery_boy::where('delivery_boy_id',$dbid)
+    ->where('order_id', '<=', $order_id)
+    ->sum('commission_per_order');
+    $dat['previous_commision']=$previousCommsion;
+    $dat['current_commision']=$currentCommision;
+    return $dat;*/
+
+
+
 }
 
 }
