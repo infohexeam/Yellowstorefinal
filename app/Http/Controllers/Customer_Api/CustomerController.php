@@ -1604,6 +1604,7 @@ class CustomerController extends Controller
                     else
                     {
                         $data['status'] = 0;
+                        $data['store_id']=$st_uid;
                         $data['message'] = "No configure points added to the store";
                         return response($data);
 
@@ -1629,7 +1630,9 @@ class CustomerController extends Controller
                     }
                     else
                     {
+                        $store_id=$st->store_id;
                         $data['status'] = 0;
+                        $data['store_id']=$store_id;
                         $data['message'] = "No configure points added to the store";
                         return response($data);
 
@@ -1655,7 +1658,9 @@ class CustomerController extends Controller
                 }
                 else
                 {
+                    $store_id=$st->store_id;
                     $data['status'] = 0;
+                    $data['store_id']=$store_id;
                     $data['message'] = "No configure points added to the store";
                     return response($data);
 
@@ -1710,7 +1715,10 @@ class CustomerController extends Controller
             }
             else
             {
+                $sr=Mst_store::where('store_referral_id',$request->store_referral_number)->first();
+                $s_id=$sr->store_id;
                 $data['status'] = 0;
+                $data['store_id']=$s_id;
                 $data['message'] = "Failed...Referral was done previously";
                 return response($data);
 
