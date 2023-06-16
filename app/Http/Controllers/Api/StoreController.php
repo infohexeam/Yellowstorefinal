@@ -391,8 +391,8 @@ class StoreController extends Controller
                     // if (isset($store_qrcodeData->store_qrcode)) {
                     //     File::delete(public_path('upload/test.png')); // delete qrcode
                     // }
-                    Trn_StoreAdmin::where("store_mobile", '=', $storMob)->delete();
-                    Mst_store::where("store_mobile", '=', $storMob)->forceDelete();
+                   //commented to 777-Trn_StoreAdmin::where("store_mobile", '=', $storMob)->delete();
+                    //Mst_store::where("store_mobile", '=', $storMob)->forceDelete();
                 }
 
                 $storMobCheck = Trn_StoreAdmin::where("store_mobile", '=', $storMob)->first();
