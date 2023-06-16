@@ -2204,6 +2204,7 @@ class StoreController extends Controller
                 if (isset($request->sub_category_id)) {
                     $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                 }
+               
 
 
 
@@ -2313,17 +2314,22 @@ class StoreController extends Controller
 
                 $inventoryDatasss = collect($inventoryData);
                 $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
-                $dataReViStoreSS =   $inventoryDatassss->values()->all();
+                $perPage = 15;
+                $page=$request->page??1;
+                $offset = ($page - 1) * $perPage;
+                $roWc=count($inventoryDatassss);
+                $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
 
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                // if ($roWc > 19) {
-                //     $data['pageCount'] = floor(@$roWc / 20);
-                // } else {
-                //     $data['pageCount'] = 1;
-                // }
+                if ($roWc >14) {
+                    $data['pageCount'] = floor(@$roWc /15);
+                 } else {
+                     $data['pageCount'] = 1;
+                 }
                 $data['status'] = 1;
+                $data['currentPage']=$page;
                 $data['message'] = "Success";
             } else {
                 $data['status'] = 0;
