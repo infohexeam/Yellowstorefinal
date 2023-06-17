@@ -25,7 +25,7 @@
                     </ul>
                 </div>
                 @endif
-                    <form id="myForm" action="{{route('admin.update.deliveryboy.edit_terms')}}" method="POST" enctype="multipart/form-data">
+                    <form id="myForm" action="{{route('admin.update.deliveryboy.edit_policy')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
 
