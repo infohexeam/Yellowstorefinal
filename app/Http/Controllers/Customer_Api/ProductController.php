@@ -1753,6 +1753,12 @@ class ProductController extends Controller
             $type1="debit";
             $type2="credit";
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                $unused_redeems=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNull('order_id')->where('type','debit');
+                if($unused_redeems->count()>0)
+                {
+                    $unused_redeems->delete();
+                }
+
                 $wallet_logs=Trn_wallet_log::Where('trn_wallet_logs.customer_id',$request->customer_id)
                 ->leftjoin('trn_store_orders','trn_wallet_logs.order_id', '=','trn_store_orders.order_id')
                 ->leftjoin('mst_stores','trn_wallet_logs.store_id', '=','mst_stores.store_id')
