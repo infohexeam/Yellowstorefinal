@@ -2204,7 +2204,6 @@ class StoreController extends Controller
                 if (isset($request->sub_category_id)) {
                     $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                 }
-               
 
 
 
@@ -2314,22 +2313,17 @@ class StoreController extends Controller
 
                 $inventoryDatasss = collect($inventoryData);
                 $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
-                $perPage = 15;
-                $page=$request->page??1;
-                $offset = ($page - 1) * $perPage;
-                $roWc=count($inventoryDatassss);
-                $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
+                $dataReViStoreSS =   $inventoryDatassss->values()->all();
 
 
 
                 $data['inventoryData'] = $dataReViStoreSS;
-                if ($roWc >14) {
-                    $data['pageCount'] = floor(@$roWc /15);
-                 } else {
-                     $data['pageCount'] = 1;
-                 }
+                // if ($roWc > 19) {
+                //     $data['pageCount'] = floor(@$roWc / 20);
+                // } else {
+                //     $data['pageCount'] = 1;
+                // }
                 $data['status'] = 1;
-                $data['currentPage']=$page;
                 $data['message'] = "Success";
             } else {
                 $data['status'] = 0;
@@ -3188,8 +3182,8 @@ class StoreController extends Controller
                     $month_commision[$i]=$orlink->commision_per_month;
                     $sd->commission_month=$orlink->commision_per_month??$sd->delivery_boy_commision;
                     $sd->commission_order=$orlink->commision_per_order??$sd->delivery_boy_commision_amount;
-                    $sd->previous_commission=number_format($prev_amount[$i-1]);
-                    $sd->commission_after_order=number_format($prev_amount[$i-1]+$sd->commission_order);
+                    $sd->previous_commission=(float)number_format($prev_amount[$i-1]);
+                    $sd->commission_after_order=(float)number_format($prev_amount[$i-1]+$sd->commission_order);
                     $prev_amount[$i]=$sd->commission_after_order;
                     $sd->previous_commission=$sd->previous_commission+$sd->commission_month;
                     $sd->commission_after_order=$sd->commission_after_order+$sd->commission_month;
