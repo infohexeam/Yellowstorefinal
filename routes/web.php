@@ -43,6 +43,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/store/terms-and-condition', 'PublicController@showTC');
     Route::get('/customer/terms-and-condition', 'PublicController@showCusTC');
     Route::get('/delivery/terms-and-condition', 'PublicController@showDeliveryTC');
+    Route::get('/delivery/privacy-policy','PublicController@showDeliveryPrivacy');
 
     Route::post('store/ajax/unique_storename', 'PublicController@CheckName')->name('unique_storename');
     Route::post('store/ajax/unique_phone', 'PublicController@CheckPhone')->name('unique_store_mobile');
