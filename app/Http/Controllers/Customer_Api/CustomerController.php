@@ -1570,6 +1570,14 @@ class CustomerController extends Controller
                 if($request->joined_customer_ref_number==$request->referred_customer_ref_number)
                 {
                     $data['status'] = 0;
+                    $stre=Mst_store::where('store_referral_id',$request->store_referral_number)->first();
+                    if($stre)
+                    {
+                        $stre_uid=$stre->store_id;
+                        $data['store_id']=$stre_uid;
+
+
+                    }
                     $data['message'] = "Invalid Reference.Cannot initiate a reference created by yourselves";
                     return response($data);
 
