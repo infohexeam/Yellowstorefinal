@@ -43,6 +43,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/store/terms-and-condition', 'PublicController@showTC');
     Route::get('/customer/terms-and-condition', 'PublicController@showCusTC');
     Route::get('/delivery/terms-and-condition', 'PublicController@showDeliveryTC');
+    Route::get('/delivery/privacy-policy','PublicController@showDeliveryPrivacy');
 
     Route::post('store/ajax/unique_storename', 'PublicController@CheckName')->name('unique_storename');
     Route::post('store/ajax/unique_phone', 'PublicController@CheckPhone')->name('unique_store_mobile');
@@ -673,6 +674,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/delivery-boy/terms', 'SettingController@TermsDelivery')->name('admin.deliveryboy.edit_terms');
         Route::post('admin/delivery-boy/update-terms', 'SettingController@updateTermsDelivery')->name('admin.update.deliveryboy.edit_terms');
         Route::get('admin/ajax/pg-status', 'AdminController@pgStatus');
+
+        //delivery boy - policy
+        Route::get('admin/delivery-boy/privacy-policy', 'SettingController@PolicyDelivery')->name('admin.deliveryboy.edit_policy');
+        Route::post('admin/delivery-boy/update-policy', 'SettingController@updatePolicyDelivery')->name('admin.update.deliveryboy.edit_policy');
 
         Route::get('admin/review/list', 'AdminController@listReview')->name('admin.list_reviews');
         Route::post('admin/remove-review/{reviews_id}', 'AdminController@removeReview')->name('admin.destroy_review');
