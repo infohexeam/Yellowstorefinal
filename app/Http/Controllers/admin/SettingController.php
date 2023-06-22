@@ -4288,10 +4288,13 @@ class SettingController extends Controller
 
 			}
 
-			if ($request->date_of_payment) {
+			if ($request->date_of_payment) 
+			{
 				$changeDate = date("Y-m-d", strtotime($request->date_of_payment));
 				$payments->date_of_payment = $changeDate;
-			} else {
+			} 
+			else 
+			{
 				$payments->date_of_payment = date('Y-m-d');
 			}
 
