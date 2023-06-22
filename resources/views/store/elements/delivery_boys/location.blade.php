@@ -43,11 +43,23 @@
   {
     $orgJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$orgLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
 
-  }                                 
+  }  
+  else
+  {
+    $orgJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$destLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
+
+  }                               
    
    $destJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$destLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
-
+      if($lastLoc)
+  {
         $jsonOne = json_decode($orgJson);
+  }
+  else
+  {
+     $jsonOne = json_decode($destJson);
+
+  }
         $jsonTwo = json_decode($destJson);
         
 
