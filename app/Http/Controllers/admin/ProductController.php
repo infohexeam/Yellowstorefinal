@@ -2101,6 +2101,7 @@ class ProductController extends Controller
         ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
         ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
         ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+        $data = $data->where('trn_store_orders.status_id', '=', 9);
 
       if (auth()->user()->user_role_id  != 0) {
         // $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
