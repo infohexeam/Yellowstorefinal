@@ -49,7 +49,7 @@
 				  <div class="col-md-4">
 					<div class="form-group">
 						   <label class="form-label">Number</label>
-						 <input type="number" class="form-control" name="phone_number" value="{{$admin->phone_number}}" placeholder="Phone number" pattern="/(1|2|3|4|5|6|7|8|9)\d{9}/">
+						 <input type="text" class="form-control" name="phone_number" value="{{$admin->phone_number}}" placeholder="Phone number" pattern="/(1|2|3|4|5|6|7|8|9)\d{9}/">
 				   </div>
 					 </div>
 
