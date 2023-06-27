@@ -2776,6 +2776,12 @@ class ProductController extends Controller
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
                     }
 
+                    if (isset($request->page)) {
+                        $data = $query->paginate(10, ['data'], 'page', $request->page);
+                    } else {
+                        $data = $query->paginate(10);
+                    }
+
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->get();
                     
 
@@ -2807,6 +2813,12 @@ class ProductController extends Controller
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
                     }
 
+                    if (isset($request->page)) {
+                        $data = $query->paginate(10, ['data'], 'page', $request->page);
+                    } else {
+                        $data = $query->paginate(10);
+                    }
+
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->where('created_by', '!=', $request->store_id)->get();
                        
                     foreach ($data['globalProductDetails'] as $product) {
@@ -2817,6 +2829,9 @@ class ProductController extends Controller
                         $product->tax_value = @$taxData->tax_value;
                         @$product->category_name = $catData->category_name;
                     }
+
+                    
+
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
