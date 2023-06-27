@@ -148,11 +148,10 @@
                                             <td>{{ $d->reward_points_used??'--' }}</td>
                                              <td>{{ $d->reward_points_used_store??'--' }}</td>
                                             
-                                              @php
+                                            @php
                                              $item_price=DB::table('trn_order_items')->where('order_id',$d->order_id)->sum('total_amount');
         //$w->amount_before_applying_rp=$item_price+$$w->amount_reduced_by_rp??0+$w->packing_charge??0+$w->delivery_charge??0+$w->amount_reduced_by_rp_store??0+$w->amount_reduced_by_coupon??0;
         //$d->amount_before_applying_rp=strval(number_format($item_price+$w->packing_charge+$w->delivery_charge,2));
-
                                             @endphp
                                             <td>{{ number_format($item_price+$d->packing_charge+$d->delivery_charge+$d->amount_reduced_by_coupon??0,2) }}</td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
@@ -200,7 +199,7 @@
                 title: 'Wallet Redeem Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10]
                  },
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
@@ -210,7 +209,7 @@
                 title: 'Wallet Redeem Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10]
                  }
             }
          ]

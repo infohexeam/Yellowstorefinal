@@ -158,10 +158,12 @@ input[type="file"] {
                        
                           <label class="form-label">Time slot</label>
                           <div class="form-group">
-                           <label class="form-label">start Time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_start_time" id="tsb_product_st"  onchange="checkTimeSlot()"  >
+                           <label class="form-label">start Time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_start_time" id="tsb_product_st"  onchange="checkTimeSlot()" value="00:00"  >
+                            <span style="color:red" id="st_msg"> </span>
                            </div>
                              <div class="form-group">
-                            <label class="form-label">End time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_end_time" id="tsb_product_et" onchange="checkTimeSlot()">
+                            <label class="form-label">End time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_end_time" id="tsb_product_et" onchange="checkTimeSlot()" value="00:00">
+                            <span style="color:red" id="et_msg"> </span>
                             </div>
                             </div>
                         </div>
@@ -916,6 +918,26 @@ return parseInt(d.split(':')[1].split(' ')[0]);
 }
   function checkTimeSlot()
   {
+    var time1 = $('#tsb_product_st').val();
+   
+var time2 = $('#tsb_product_et').val();
+//alert(time2);
+
+var date1 = new Date("01/01/2023 " + time1);
+var date2 = new Date("01/01/2023 " + time2);
+
+ if (date1 >= date2) {
+    //alert(time1 + " is later than " + time2);
+     $('#et_msg').html('starting time cannot be greater than endtime');
+     $("#submit").prop("disabled", true);
+}
+else
+{
+  $("#submit").prop("disabled", false);
+  $('#et_msg').html('');
+   
+
+}
 
    
 
@@ -969,11 +991,15 @@ return parseInt(d.split(':')[1].split(' ')[0]);
         {
           $('#tslot').hide();
           $(".tsb_product_ts").attr("required", false);
+          $("#submit").prop("disabled", false);
         }
          if(v==1)
         {
           $('#tslot').show();
+          $('#tsb_product_st').val("00:00");
+           $('#tsb_product_et').val("00:00");
           $(".tsb_product_ts").attr("required", true);
+          $('#et_msg').html('');
         }
 
     }
