@@ -2777,9 +2777,9 @@ class ProductController extends Controller
                     }
 
                     if (isset($request->page)) {
-                        $data = $query->paginate(10, ['query'], 'page', $request->page);
+                        $query = $query->paginate(10, ['data'], 'page', $request->page);
                     } else {
-                        $data = $query->paginate(10);
+                        $query = $query->paginate(10);
                     }
 
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->get();
@@ -2814,9 +2814,9 @@ class ProductController extends Controller
                     }
 
                     if (isset($request->page)) {
-                        $data = $query->paginate(10, ['query'], 'page', $request->page);
+                        $query = $query->paginate(10, ['data'], 'page', $request->page);
                     } else {
-                        $data = $query->paginate(10);
+                        $query = $query->paginate(10);
                     }
 
                     $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->where('created_by', '!=', $request->store_id)->get();
