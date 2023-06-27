@@ -2777,7 +2777,7 @@ class ProductController extends Controller
                     }
 
                     if (isset($request->page)) {
-                        $data = $query->paginate(10, ['data'], 'page', $request->page);
+                        $data = $query->paginate(10, ['query'], 'page', $request->page);
                     } else {
                         $data = $query->paginate(10);
                     }
@@ -2814,7 +2814,7 @@ class ProductController extends Controller
                     }
 
                     if (isset($request->page)) {
-                        $data = $query->paginate(10, ['data'], 'page', $request->page);
+                        $data = $query->paginate(10, ['query'], 'page', $request->page);
                     } else {
                         $data = $query->paginate(10);
                     }
