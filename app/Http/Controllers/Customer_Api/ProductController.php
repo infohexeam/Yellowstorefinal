@@ -4076,7 +4076,8 @@ class ProductController extends Controller
                     $perPage = 16;
                     $page=$request->page??1;
                     $offset = ($page - 1) * $perPage;
-                    $roWc=count($allProducts);
+                    $roWc=count(collect($data['allProducts'] )->values());
+                    $data['allProductCount']=$roWc;
                     $products = collect($data['allProducts'] )->slice($offset, $perPage)->values();
                     $data['allProducts']=$products;
 
@@ -4409,12 +4410,20 @@ class ProductController extends Controller
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
                         //$decodedData = json_decode($data['allProducts'], true);
+                        //$data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
+
                         $perPage = 16;
                         $page=$request->page??1;
                         $offset = ($page - 1) * $perPage;
-                        $roWc=count($allProducts);
+                        $roWc=count(collect($data['allProducts'] )->values());
+                        $data['allProductCount']=$roWc;
                         $products = collect($data['allProducts'] )->slice($offset, $perPage)->values();
                         $data['allProducts']=$products;
+                    if ($roWc >15) {
+                        $data['pageCount'] = ceil(@$roWc /16);
+                     } else {
+                         $data['pageCount'] = 1;
+                     }
                         //$data['allProducts']=json_decode()
                         // $data['allProducts']=collect($data['allProducts'])->map(function ($item) {
                         //     return (array) $item;
