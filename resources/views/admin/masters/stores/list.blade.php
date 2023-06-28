@@ -363,8 +363,9 @@ if($("#is_pgActivated").is(":checked")){
 
      }
 });
-
-
+</script>
+ @if(auth()->user()->user_role_id  == 0)
+<script>
 $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
@@ -389,6 +390,37 @@ $(function(e) {
     } );
 
 } );
+</script>
+@else
+<script>
+$(function(e) {
+	 $('#exampletable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                title: 'Stores',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,5,4]
+                 }
+            },
+            {
+                extend: 'excel',
+                title: 'Stores',
+                footer: true,
+                exportOptions: {
+                     columns: [0,1,2,3,5,4]
+                 }
+            }
+         ]
+    } );
+
+} );
+</script>
+
+@endif
+<script>
 
 
 

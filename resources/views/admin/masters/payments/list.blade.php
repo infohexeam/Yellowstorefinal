@@ -107,6 +107,7 @@ $date = Carbon\Carbon::now();
                         <th class="wd-20p">Reference Id</th>
                         <th class="wd-20p">Delivery<br>Charge</th>
                         <th class="wd-20p">Packing<br>Charge</th>
+                        <th class="wd-20p">Date</th>
                         <th class="wd-15p">{{__('Action')}}</th>
                      </tr>
                      
@@ -133,6 +134,7 @@ $date = Carbon\Carbon::now();
 
                         <td>{{ @$row->delivery_charge }}</td>
                         <td>{{ @$row->packing_charge }}</td>
+                        <td>{{ @$row->created_at }}</td>
                         <td>
                                 <button data-toggle="modal" data-target="#viewModal{{$row->opt_id}}"  class="btn btn-sm btn-cyan">View</button>
                         </td>
@@ -314,7 +316,7 @@ $(function(e) {
                 orientation : 'landscape',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10]
                  }
             },
             {
@@ -322,7 +324,7 @@ $(function(e) {
                 title: 'Incoming Payments',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10]
                  }
             }
          ]
