@@ -1047,7 +1047,7 @@ class ProductController extends Controller
                         ->toArray();
 
 
-                    if ($data['globalProductDetails']  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
+                    if ($globalProducts  = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
                         ->select('global_product_id', 'product_name')
                         ->where('created_by', '!=', $request->store_id)
                         ->whereNotNull('product_cat_id')
@@ -1055,6 +1055,19 @@ class ProductController extends Controller
                         ->where('vendor_id', $request->vendor_id)
                         ->orderBy('global_product_id', 'DESC')->get()
                     ) {
+                        $inventoryDatasss = collect($globalProducts);
+                        $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
+                        $perPage = 15;
+                        $page=$request->page??1;
+                        $offset = ($page - 1) * $perPage;
+                        $roWc=count($inventoryDatassss);
+                        $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
+                        $data['globalProductDetails']=$dataReViStoreSS;
+                        if ($roWc >14) {
+                            $data['pageCount'] = floor(@$roWc /15);
+                         } else {
+                             $data['pageCount'] = 1;
+                         }
                         $data['status'] = 1;
                         $data['message'] = "success";
                         return response($data);
@@ -2776,10 +2789,10 @@ class ProductController extends Controller
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
                     }
 
-                    $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->get();
+                    $globalProducts = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->get();
                     
 
-                    foreach ($data['globalProductDetails'] as $product) {
+                    foreach ($globalProducts as $product) {
                         $catData =  Mst_categories::find($product->product_cat_id);
                         if($catData->category_name!=NULL)
                         {
@@ -2791,6 +2804,23 @@ class ProductController extends Controller
                         @$product->category_name = $catData->category_name;
                         }
                     }
+                    $inventoryDatasss = collect($globalProducts);
+                $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
+                $perPage = 15;
+                $page=$request->page??1;
+                $offset = ($page - 1) * $perPage;
+                $roWc=count($inventoryDatassss);
+                $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
+
+
+
+                $data['globalProductDetails'] = $dataReViStoreSS;
+                if ($roWc >14) {
+                    $data['pageCount'] = floor(@$roWc /15);
+                 } else {
+                     $data['pageCount'] = 1;
+                 }
+
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
@@ -2807,9 +2837,9 @@ class ProductController extends Controller
                         $query  = $query->where('product_name', 'LIKE', "%{$request->product_name}%");
                     }
 
-                    $data['globalProductDetails'] = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->where('created_by', '!=', $request->store_id)->get();
+                    $globalProducts = $query->orderBy('global_product_id', 'DESC')->whereNotNull('product_cat_id')->where('created_by', '!=', $request->store_id)->get();
                        
-                    foreach ($data['globalProductDetails'] as $product) {
+                    foreach ($globalProducts as $product) {
                         $catData =  Mst_categories::find($product->product_cat_id);
                         $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                         $taxData = Mst_Tax::find(@$product->tax_id);
@@ -2817,6 +2847,23 @@ class ProductController extends Controller
                         $product->tax_value = @$taxData->tax_value;
                         @$product->category_name = $catData->category_name;
                     }
+                    $inventoryDatasss = collect($globalProducts);
+                $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
+                $perPage = 15;
+                $page=$request->page??1;
+                $offset = ($page - 1) * $perPage;
+                $roWc=count($inventoryDatassss);
+                $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
+
+
+
+                $data['globalProductDetails'] = $dataReViStoreSS;
+                if ($roWc >14) {
+                    $data['pageCount'] = floor(@$roWc /15);
+                 } else {
+                     $data['pageCount'] = 1;
+                 }
+
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);

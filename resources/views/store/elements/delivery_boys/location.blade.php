@@ -51,16 +51,15 @@
   }                               
    
    $destJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$destLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
-      if($lastLoc)
+  if($lastLoc)
   {
-        $jsonOne = json_decode($orgJson);
+      $jsonOne = json_decode($orgJson);
   }
   else
   {
-     $jsonOne = json_decode($destJson);
-
+      $jsonOne = json_decode($destJson);
   }
-        $jsonTwo = json_decode($destJson);
+      $jsonTwo = json_decode($destJson);
         
 
                 $doyLoc = $jsonOne->results[1]->formatted_address;
