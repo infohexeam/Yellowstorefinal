@@ -3653,8 +3653,21 @@ class ProductController extends Controller
                         }
 
                         $data['listProducts']  = $allProducts->where('variant_stock_count','>',0);
-                        $products = collect($data['listProducts'] )->values();
+                        // $products = collect($data['listProducts'] )->values();
+                        //
+                        $perPage = 10;
+                        $page=$request->page??1;
+                        $offset = ($page - 1) * $perPage;
+                        $roWc=count(collect($data['listProducts'] )->values());
+                        //$data['allProductCount']=$roWc;
+                        $products = collect($data['listProducts'] )->slice($offset, $perPage)->values();
+                        //
                         $data['listProducts']=$products;
+                        if ($roWc >9) {
+                            $data['pageCount'] = ceil(@$roWc /10);
+                         } else {
+                             $data['pageCount'] = 1;
+                         }
 
 
 
@@ -3875,8 +3888,21 @@ class ProductController extends Controller
 
                             $data['listProducts'] =$allProducts->where('variant_stock_count','>',0);
 
-                            $products = collect($data['listProducts'] )->values();
+                            // $products = collect($data['listProducts'] )->values();
+                            // $data['listProducts']=$products;
+                            $perPage = 10;
+                            $page=$request->page??1;
+                            $offset = ($page - 1) * $perPage;
+                            $roWc=count(collect($data['listProducts'] )->values());
+                            //$data['allProductCount']=$roWc;
+                            $products = collect($data['listProducts'] )->slice($offset, $perPage)->values();
+                            //
                             $data['listProducts']=$products;
+                            if ($roWc >9) {
+                                $data['pageCount'] = ceil(@$roWc /10);
+                            } else {
+                                $data['pageCount'] = 1;
+                            }
 
                             $data['message'] = 'success';
                             $data['status'] = 1;
