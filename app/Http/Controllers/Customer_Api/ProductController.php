@@ -2238,7 +2238,13 @@ class ProductController extends Controller
                     ->get();
 
                 $data['productsData']  = $productData;
-
+                $searchProducts = collect($productData);
+                $perPage = 15;
+                $page=$request->page??1;
+                $offset = ($page - 1) * $perPage;
+                $roWc=count($searchProducts);
+                $serachProductList =   $searchProducts->slice($offset, $perPage)->values()->all();
+                $data['productsData']=$serachProductList;
                 foreach ($data['productsData'] as $offerProduct) {
                     $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                     if($offerProduct->is_base_variant==1)
@@ -2274,6 +2280,11 @@ class ProductController extends Controller
                     $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
                     $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
                 }
+                if ($roWc >15) {
+                    $data['pageCount'] = ceil(@$roWc /16);
+                 } else {
+                     $data['pageCount'] = 1;
+                 }
                 $data['status'] = 1;
                 $data['message'] = "success ";
             } else {
@@ -2339,8 +2350,14 @@ class ProductController extends Controller
 
 
                     $productData = $productData->get();
+                    $searchProducts = collect($productData);
+                    $perPage = 15;
+                    $page=$request->page??1;
+                    $offset = ($page - 1) * $perPage;
+                    $roWc=count($searchProducts);
+                    $serachProductList =   $searchProducts->slice($offset, $perPage)->values()->all();
 
-                    $data['productsData']  = $productData;
+                    $data['productsData']  = $serachProductList;
 
                     foreach ($data['productsData'] as $offerProduct) {
                         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -2371,6 +2388,11 @@ class ProductController extends Controller
                         $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                         $offerProduct->ratingCount = $countRating;
                     }
+                    if ($roWc >15) {
+                        $data['pageCount'] = ceil(@$roWc /16);
+                     } else {
+                         $data['pageCount'] = 1;
+                     }
                     $data['status'] = 1;
                     $data['message'] = "success ";
                 } else {
@@ -4111,7 +4133,7 @@ class ProductController extends Controller
                     //     $data['allProducts']  = $allProductDataFinal;
 
                     if ($roWc >15) {
-                        $data['pageCount'] = floor(@$roWc /16);
+                        $data['pageCount'] = ceil(@$roWc /16);
                      } else {
                          $data['pageCount'] = 1;
                      }
