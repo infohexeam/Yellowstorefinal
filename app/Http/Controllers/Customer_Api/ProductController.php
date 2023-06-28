@@ -2239,7 +2239,7 @@ class ProductController extends Controller
 
                 $data['productsData']  = $productData;
                 $searchProducts = collect($productData);
-                $perPage = 15;
+                $perPage = 10;
                 $page=$request->page??1;
                 $offset = ($page - 1) * $perPage;
                 $roWc=count($searchProducts);
@@ -2280,8 +2280,8 @@ class ProductController extends Controller
                     $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
                     $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
                 }
-                if ($roWc >15) {
-                    $data['pageCount'] = ceil(@$roWc /16);
+                if ($roWc >9) {
+                    $data['pageCount'] = ceil(@$roWc /10);
                  } else {
                      $data['pageCount'] = 1;
                  }
@@ -2351,7 +2351,7 @@ class ProductController extends Controller
 
                     $productData = $productData->get();
                     $searchProducts = collect($productData);
-                    $perPage = 15;
+                    $perPage = 10;
                     $page=$request->page??1;
                     $offset = ($page - 1) * $perPage;
                     $roWc=count($searchProducts);
@@ -2388,8 +2388,8 @@ class ProductController extends Controller
                         $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                         $offerProduct->ratingCount = $countRating;
                     }
-                    if ($roWc >15) {
-                        $data['pageCount'] = ceil(@$roWc /16);
+                    if ($roWc >9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
                      } else {
                          $data['pageCount'] = 1;
                      }
@@ -4095,7 +4095,7 @@ class ProductController extends Controller
                     }
 
                     $data['allProducts']  = $allProducts->where('variant_stock_count','>',0)->all();
-                    $perPage = 16;
+                    $perPage = 10;
                     $page=$request->page??1;
                     $offset = ($page - 1) * $perPage;
                     $roWc=count(collect($data['allProducts'] )->values());
@@ -4132,8 +4132,8 @@ class ProductController extends Controller
 
                     //     $data['allProducts']  = $allProductDataFinal;
 
-                    if ($roWc >15) {
-                        $data['pageCount'] = ceil(@$roWc /16);
+                    if ($roWc >9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
                      } else {
                          $data['pageCount'] = 1;
                      }
@@ -4434,15 +4434,15 @@ class ProductController extends Controller
                         //$decodedData = json_decode($data['allProducts'], true);
                         //$data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
 
-                        $perPage = 16;
+                        $perPage = 10;
                         $page=$request->page??1;
                         $offset = ($page - 1) * $perPage;
                         $roWc=count(collect($data['allProducts'] )->values());
                         $data['allProductCount']=$roWc;
                         $products = collect($data['allProducts'] )->slice($offset, $perPage)->values();
                         $data['allProducts']=$products;
-                    if ($roWc >15) {
-                        $data['pageCount'] = ceil(@$roWc /16);
+                    if ($roWc >9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
                      } else {
                          $data['pageCount'] = 1;
                      }
