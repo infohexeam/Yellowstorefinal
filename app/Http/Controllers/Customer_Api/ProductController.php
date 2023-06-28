@@ -4073,7 +4073,11 @@ class ProductController extends Controller
                     }
 
                     $data['allProducts']  = $allProducts->where('variant_stock_count','>',0)->all();
-                    $products = collect($data['allProducts'] )->values();
+                    $perPage = 16;
+                    $page=$request->page??1;
+                    $offset = ($page - 1) * $perPage;
+                    $roWc=count($allProducts);
+                    $products = collect($data['allProducts'] )->slice($offset, $perPage)->values();
                     $data['allProducts']=$products;
 
 
@@ -4105,7 +4109,11 @@ class ProductController extends Controller
 
                     //     $data['allProducts']  = $allProductDataFinal;
 
-
+                    if ($roWc >15) {
+                        $data['pageCount'] = floor(@$roWc /16);
+                     } else {
+                         $data['pageCount'] = 1;
+                     }
 
                     $data['message'] = 'success';
                     $data['status'] = 1;
@@ -4401,7 +4409,11 @@ class ProductController extends Controller
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
                         //$decodedData = json_decode($data['allProducts'], true);
-                        $products = collect($data['allProducts'] )->values();
+                        $perPage = 16;
+                        $page=$request->page??1;
+                        $offset = ($page - 1) * $perPage;
+                        $roWc=count($allProducts);
+                        $products = collect($data['allProducts'] )->slice($offset, $perPage)->values();
                         $data['allProducts']=$products;
                         //$data['allProducts']=json_decode()
                         // $data['allProducts']=collect($data['allProducts'])->map(function ($item) {
