@@ -2805,7 +2805,7 @@ class ProductController extends Controller
                         }
                     }
                     $inventoryDatasss = collect($globalProducts);
-                $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
+                $inventoryDatassss=$inventoryDatasss;
                 $perPage = 15;
                 $page=$request->page??1;
                 $offset = ($page - 1) * $perPage;
@@ -2848,7 +2848,7 @@ class ProductController extends Controller
                         @$product->category_name = $catData->category_name;
                     }
                     $inventoryDatasss = collect($globalProducts);
-                $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
+                $inventoryDatassss=$inventoryDatasss;
                 $perPage = 15;
                 $page=$request->page??1;
                 $offset = ($page - 1) * $perPage;
