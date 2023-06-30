@@ -2816,7 +2816,7 @@ class ProductController extends Controller
 
                 $data['globalProductDetails'] = $dataReViStoreSS;
                 if ($roWc >14) {
-                    $data['pageCount'] = floor(@$roWc /15);
+                    $data['pageCount'] = ceil(@$roWc /15);
                  } else {
                      $data['pageCount'] = 1;
                  }
@@ -2860,7 +2860,7 @@ class ProductController extends Controller
 
                 $data['globalProductDetails'] = $dataReViStoreSS;
                 if ($roWc >14) {
-                    $data['pageCount'] = floor(@$roWc /15);
+                    $data['pageCount'] = ceil(@$roWc /15);
                  } else {
                      $data['pageCount'] = 1;
                  }
