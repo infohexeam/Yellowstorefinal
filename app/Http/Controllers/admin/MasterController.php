@@ -417,7 +417,7 @@ class MasterController extends Controller
 		[
 		    'category_id'       => 'required',
 		    'sub_category_name'       => 'required|unique:mst__sub_categories',
-			'sub_category_icon'        => 'image|mimes:jpeg,png,jpg',
+			'sub_category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
 			'sub_category_description' => 'required',
 			'business_type_id'		=> 'required',
 
@@ -430,6 +430,7 @@ class MasterController extends Controller
 			'sub_category_icon.dimensions'        => 'Sub category icon dimensions is invalid',
 			'sub_category_description.required'	 => 'Sub category description required',
 			'business_type_id.required'	 => 'Business type required',
+            'sub_category_icon.max'=>'Maximum file size must not exceeeds 1MB'
 
 		]);
 
@@ -487,7 +488,7 @@ class MasterController extends Controller
 		[
 		    'category_id'       => 'required',
 		    'sub_category_name'       => 'required',
-			'sub_category_icon'        => 'image|mimes:jpeg,png,jpg',
+			'sub_category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
 			'sub_category_description' => 'required',
 			'business_type_id'		=> 'required',
 
@@ -499,6 +500,7 @@ class MasterController extends Controller
 			'sub_category_icon.dimensions'        => 'Sub category icon dimensions is invalid',
 			'sub_category_description.required'	 => 'Sub category description required',
 			'business_type_id.required'	 => 'Business type required',
+            'sub_category_icon.max'=>'Maximum file size must not exceeeds 1MB'
 
 		]);
         if(!$validator->fails())

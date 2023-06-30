@@ -220,7 +220,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'category_name'       => 'required|unique:mst_store_categories,category_name,' . $category_id . ',category_id',
-				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
+				'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
 				//		'category_description' => 'required',
 				//'business_type_id'		=> 'required',
 
@@ -232,6 +232,7 @@ class SettingController extends Controller
 				'category_icon.required'        => 'Category icon required',
 				'category_description.required'	 => 'Category description required',
 				'business_type_id.required'	 => 'Business type required',
+				'category_icon.max'=>'Maximum file size must not exceeeds 1MB'
 
 			]
 		);
@@ -369,8 +370,8 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'business_type_name'       => 'required|unique:mst_store_business_types',
-				'business_type_icon'        => 'required',
-				//	'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:width=150,height=150',
+				//'business_type_icon'        => 'required',
+					'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:1024',
 
 
 
@@ -379,7 +380,7 @@ class SettingController extends Controller
 				'business_type_name.required'         => 'Business type name required',
 				'business_type_icon.required'        => 'Business type icon required',
 				'business_type_icon.dimensions'        => 'Business type icon size invalid',
-
+				'business_type_icon.max'        => 'Maximum file size must not exceeeds 1MB',
 
 			]
 		);
@@ -442,7 +443,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'business_type_name'       => 'required|unique:mst_store_business_types,business_type_name,' . $business_type_id . ',business_type_id',
-				//	'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:width=150,height=150',
+				'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:1024',
 
 
 
@@ -451,6 +452,7 @@ class SettingController extends Controller
 				'business_type_name.required'         => 'Business type name required',
 				'business_type_icon.required'        => 'Business type icon required',
 				'business_type_icon.dimensions'        => 'Business type icon size invalid',
+				'business_type_icon.max'        => 'Maximum file size must not exceeeds 1MB',
 
 
 			]
