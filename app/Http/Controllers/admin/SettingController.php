@@ -498,6 +498,12 @@ class SettingController extends Controller
 	}
 	public function destroyBusiness(Request $request, Mst_business_types $business_type)
 	{
+		$count_store=Mst_store::where('business_type_id',$business_type->business_type_id)->count();
+		//dd($count_store);
+		if($count_store>0)
+		{
+			return  redirect()->back()->with('error', 'Business Type Cannot be deleted since it already assigned to stores');
+		}
 
 		$delete = $business_type->delete();
 
