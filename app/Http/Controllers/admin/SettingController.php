@@ -502,7 +502,7 @@ class SettingController extends Controller
 		//dd($count_store);
 		if($count_store>0)
 		{
-			return  redirect()->back()->with('error', 'Business Type Cannot be deleted since it already assigned to stores');
+			return  redirect()->back()->with('error', 'Business type cannot be deleted since it is already assigned to stores');
 		}
 
 		$delete = $business_type->delete();
