@@ -127,7 +127,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'category_name'       => 'required|unique:mst_store_categories',
-				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
+					'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
 				//	'category_description' => 'required',
 				//	'business_type_id'		=> 'required',
 
@@ -139,6 +139,7 @@ class SettingController extends Controller
 				'category_icon.dimensions'        => 'Category icon dimensions is invalid',
 				'category_description.required'	 => 'Category description required',
 				'business_type_id.required'	 => 'Business type required',
+				'category_icon.max'=>'Maximum file size must not exceeeds 1MB'
 
 
 

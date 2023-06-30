@@ -1611,6 +1611,7 @@ class ProductController extends Controller
 
             // dd($storeData);
             $storeData=$storeData->whereNotIn('mst_stores.store_id',$expiredStores)->get();
+          
             $storesList  =  array();
 
             foreach ($storeData as $s) {
@@ -1655,7 +1656,20 @@ class ProductController extends Controller
                 }
             }
 
-            $data['storesList']  = $storesList;
+           
+            $storeDatassss = collect($storesList);
+            $perPage = 10;
+            $page=$request->page??1;
+            $offset = ($page - 1) * $perPage;
+           
+            $storeDatas =   $storeDatassss->slice($offset, $perPage)->values()->all();
+            $roWc=count($storesList);
+            $data['storesList']  = $storeDatas;
+            if ($roWc >9) {
+                $data['pageCount'] = ceil(@$roWc /10);
+             } else {
+                 $data['pageCount'] = 1;
+             }
 
             $data['status'] = 1;
             $data['message'] = "success ";
