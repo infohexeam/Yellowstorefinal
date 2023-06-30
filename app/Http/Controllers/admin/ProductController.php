@@ -526,6 +526,11 @@ class ProductController extends Controller
 
   public function removeGlobalProductImage(Request $request, $global_product_image_id)
   {
+    $gp_image=Trn_GlobalProductImage::where('global_product_image_id', $global_product_image_id)->first();
+    if($gp_image)
+    {
+      Mst_GlobalProducts::where('global_product_id',$gp_image->global_product_id)->update(['product_base_image'=>null]);
+    }
     Trn_GlobalProductImage::where('global_product_image_id', $global_product_image_id)->delete();
 
     return redirect()->back()->with('status', 'Product image deleted successfully.');
