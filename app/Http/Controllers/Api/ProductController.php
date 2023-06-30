@@ -2853,6 +2853,7 @@ class ProductController extends Controller
                 $page=$request->page??1;
                 $offset = ($page - 1) * $perPage;
                 $roWc=count($inventoryDatassss);
+                $data['productCount']=$roWc;
                 $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
 
 

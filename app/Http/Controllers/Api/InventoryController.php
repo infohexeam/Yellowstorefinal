@@ -100,7 +100,7 @@ class InventoryController extends Controller
                 $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
                 $data['productDetails']=$dataReViStoreSS;
                 if ($roWc >14) {
-                    $data['pageCount'] = floor(@$roWc /15);
+                    $data['pageCount'] = ceil(@$roWc /15);
                  } else {
                      $data['pageCount'] = 1;
                  }
