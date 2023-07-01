@@ -994,7 +994,7 @@ function validatePassLength() {
         }
         else
         {
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
+            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 characters!';
         }
                   //  $('#submit').attr('disabled', 'disabled');
    }

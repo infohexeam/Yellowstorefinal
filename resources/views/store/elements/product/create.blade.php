@@ -997,7 +997,7 @@ else
         {
           $('#tslot').show();
           $('#tsb_product_st').val("00:00");
-           $('#tsb_product_et').val("00:00");
+           $('#tsb_product_et').val("01:00");
           $(".tsb_product_ts").attr("required", true);
           $('#et_msg').html('');
         }

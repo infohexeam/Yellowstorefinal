@@ -3012,7 +3012,8 @@ class SettingController extends Controller
 				'delivery_boy_commision'            => 'required|gte:0',
 				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
-				'password'  => 'sometimes|same:password_confirmation',
+				'password'  => 'sometimes|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+	
 
 			],          
 			[
@@ -3029,6 +3030,7 @@ class SettingController extends Controller
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
 				'password.required'	   => 'Password required',
+				'password.regex'=>'Password must include at least one upper case letter, lower case letter, number, and special character'
 				
 
 
@@ -3120,7 +3122,7 @@ class SettingController extends Controller
 				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys',
 				'delivery_boy_password'  => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
-				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=1000,min_height=800'
+				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:1024'
 
 
 			],
