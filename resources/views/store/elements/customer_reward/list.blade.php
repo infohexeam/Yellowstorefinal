@@ -85,7 +85,7 @@ $date = Carbon\Carbon::now();
                            <button type="submit" class="btn btn-raised btn-primary">
                            <i class="fa fa-check-square-o"></i> Filter</button>
                            <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button>
-                          <a href="{{route('admin.list_customer_reward')}}"  class="btn btn-info">Cancel</a>
+                          <a href="{{route('store.customer_reward.list')}}"  class="btn btn-info">Cancel</a>
                            </center>
                         </div>
                   </div>
