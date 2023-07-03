@@ -195,7 +195,7 @@ class ProductController extends Controller
         //  'sub_category_id' => ['required' ],
         //  'attr_value_id' => ['required' ],
         //  'product_image.*' => ['required', 'dimensions:min_width=1000,min_height=800'],
-        'product_image.*' => ['required'],
+        'product_image.*' => ['required','max:30'],
 
       ],
       [
@@ -218,6 +218,7 @@ class ProductController extends Controller
         'sub_category_id.required'         => 'Product subcategory required',
         'vendor_id.required'         => 'Vendor required',
         //   'product_image.required'        => 'Product image required',
+        'product_image.*.max'=>'Product image size should not exceed 30KB',
         'product_image.dimensions'        => 'Product image dimensions invalid',
 
       ]
@@ -379,6 +380,7 @@ class ProductController extends Controller
         //'vendor_id' => ['required'],
         //'attr_value_id' => ['required' ],
         // 'product_image.*' => 'dimensions:min_width=1000,min_height=800'
+        'product_image.*' => ['required','max:30'],
 
       ],
       [
@@ -400,7 +402,8 @@ class ProductController extends Controller
         'product_cat_id.required'         => 'Product category required',
         'vendor_id.required'         => 'Vendor required',
         // 'product_image.required'        => 'Product image required',
-        'product_image.dimensions'        => 'Product image dimensions invalid',
+        'product_image.*.max'=>'Product image size should not exceed 30KB',
+        //'product_image.dimensions'        => 'Product image dimensions invalid',
 
       ]
     );
