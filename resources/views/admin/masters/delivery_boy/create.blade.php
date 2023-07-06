@@ -203,7 +203,7 @@
 
                        <div class="col-md-6">
                         <div class="form-group">
-                      <label class="form-label">Image [1000*800] [in png, jpeg or jpg]</label>
+                      <label class="form-label">Image [150*150] [in png, jpeg or jpg]</label>
                           <input type="file"  accept="image/x-png,image/jpg,image/jpeg" name="delivery_boy_image" class="form-control" placeholder="delivery_boy Logo" value="{{old('delivery_boy_image')}}">
 
                        </div>
@@ -441,7 +441,7 @@ function validatePassLength() {
     if(x.length < 8)
    {
      document.getElementById('showpassmessage').style.color = 'red';
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
+            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 charaters!';
    }
    else
    {

@@ -58,7 +58,7 @@ class InventoryController extends Controller
                     if ($request->category_id == 0  ||   Mst_categories::find($request->category_id)) {
                        
                         if ($request->category_id == 0) {
-                            if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                            if ($inventoryData  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                                 ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                                 ->where('mst_store_products.store_id', $request->store_id)
                                 ->where('mst_store_products.is_removed', 0)
@@ -88,11 +88,24 @@ class InventoryController extends Controller
                                     'mst_store_categories.category_name'
                                 )->get()
                             ) {
-                                foreach ($data['productDetails'] as $product) {
+                                foreach ($inventoryData as $product) {
                                     $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                                     $product->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_varient_base_image;
                                 }
-                                $data['status'] = 1;
+                                $inventoryDatassss = collect($inventoryData);
+                $perPage = 15;
+                $page=$request->page??1;
+                $offset = ($page - 1) * $perPage;
+                $roWc=count($inventoryDatassss);
+                $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
+                $data['productDetails']=$dataReViStoreSS;
+                if ($roWc >14) {
+                    $data['pageCount'] = ceil(@$roWc /15);
+                 } else {
+                     $data['pageCount'] = 1;
+                 }
+                $data['status'] = 1;
+                $data['currentPage']=$page;
                                 $data['message'] = "success";
                                 return response($data);
                             } else {
@@ -158,7 +171,20 @@ class InventoryController extends Controller
                                     $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                                     $product->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_varient_base_image;
                                 }
+                                $inventoryDatassss = collect($data['productDetails']);
+                                $perPage = 15;
+                                $page=$request->page??1;
+                                $offset = ($page - 1) * $perPage;
+                                $roWc=count($inventoryDatassss);
+                                $dataReViStoreSS =   $inventoryDatassss->slice($offset, $perPage)->values()->all();
+                                $data['productDetails']=$dataReViStoreSS;
+                                if ($roWc >14) {
+                                    $data['pageCount'] = ceil(@$roWc /15);
+                                 } else {
+                                     $data['pageCount'] = 1;
+                                 }
                                 $data['status'] = 1;
+                                $data['currentPage']=$page;
                                 $data['message'] = "success";
                                 return response($data);
                             } else {

@@ -4335,6 +4335,7 @@ class StoreController extends Controller
     $end = $request->end;
     $delivery_charge = $request->delivery_charge;
     $packing_charge = $request->packing_charge;
+    $service_error_count=0;
 
     $data = [
 
@@ -4362,6 +4363,11 @@ class StoreController extends Controller
         'packing_charge' => $packing_charge[$i],
 
       ];
+      if($end[$i]<$start[$i])
+      {
+        return redirect()->back()->with('error', 'Ending KM should be greater than starting KM');
+
+      }
 
       Trn_store_setting::insert($info);
       $i++;

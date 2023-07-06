@@ -1611,6 +1611,7 @@ class ProductController extends Controller
 
             // dd($storeData);
             $storeData=$storeData->whereNotIn('mst_stores.store_id',$expiredStores)->get();
+          
             $storesList  =  array();
 
             foreach ($storeData as $s) {
@@ -1655,7 +1656,20 @@ class ProductController extends Controller
                 }
             }
 
-            $data['storesList']  = $storesList;
+           
+            $storeDatassss = collect($storesList);
+            $perPage = 10;
+            $page=$request->page??1;
+            $offset = ($page - 1) * $perPage;
+           
+            $storeDatas =   $storeDatassss->slice($offset, $perPage)->values()->all();
+            $roWc=count($storesList);
+            $data['storesList']  = $storeDatas;
+            if ($roWc >9) {
+                $data['pageCount'] = ceil(@$roWc /10);
+             } else {
+                 $data['pageCount'] = 1;
+             }
 
             $data['status'] = 1;
             $data['message'] = "success ";
@@ -2238,7 +2252,13 @@ class ProductController extends Controller
                     ->get();
 
                 $data['productsData']  = $productData;
-
+                $searchProducts = collect($productData);
+                $perPage = 10;
+                $page=$request->page??1;
+                $offset = ($page - 1) * $perPage;
+                $roWc=count($searchProducts);
+                $serachProductList =   $searchProducts->slice($offset, $perPage)->values()->all();
+                $data['productsData']=$serachProductList;
                 foreach ($data['productsData'] as $offerProduct) {
                     $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
                     if($offerProduct->is_base_variant==1)
@@ -2274,6 +2294,11 @@ class ProductController extends Controller
                     $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
                     $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
                 }
+                if ($roWc >9) {
+                    $data['pageCount'] = ceil(@$roWc /10);
+                 } else {
+                     $data['pageCount'] = 1;
+                 }
                 $data['status'] = 1;
                 $data['message'] = "success ";
             } else {
@@ -2339,8 +2364,14 @@ class ProductController extends Controller
 
 
                     $productData = $productData->get();
+                    $searchProducts = collect($productData);
+                    $perPage = 10;
+                    $page=$request->page??1;
+                    $offset = ($page - 1) * $perPage;
+                    $roWc=count($searchProducts);
+                    $serachProductList =   $searchProducts->slice($offset, $perPage)->values()->all();
 
-                    $data['productsData']  = $productData;
+                    $data['productsData']  = $serachProductList;
 
                     foreach ($data['productsData'] as $offerProduct) {
                         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -2371,6 +2402,11 @@ class ProductController extends Controller
                         $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
                         $offerProduct->ratingCount = $countRating;
                     }
+                    if ($roWc >9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
+                     } else {
+                         $data['pageCount'] = 1;
+                     }
                     $data['status'] = 1;
                     $data['message'] = "success ";
                 } else {
@@ -3631,8 +3667,21 @@ class ProductController extends Controller
                         }
 
                         $data['listProducts']  = $allProducts->where('variant_stock_count','>',0);
-                        $products = collect($data['listProducts'] )->values();
+                        // $products = collect($data['listProducts'] )->values();
+                        //
+                        $perPage = 10;
+                        $page=$request->page??1;
+                        $offset = ($page - 1) * $perPage;
+                        $roWc=count(collect($data['listProducts'] )->values());
+                        //$data['allProductCount']=$roWc;
+                        $products = collect($data['listProducts'] )->slice($offset, $perPage)->values();
+                        //
                         $data['listProducts']=$products;
+                        if ($roWc >9) {
+                            $data['pageCount'] = ceil(@$roWc /10);
+                         } else {
+                             $data['pageCount'] = 1;
+                         }
 
 
 
@@ -3853,8 +3902,21 @@ class ProductController extends Controller
 
                             $data['listProducts'] =$allProducts->where('variant_stock_count','>',0);
 
-                            $products = collect($data['listProducts'] )->values();
+                            // $products = collect($data['listProducts'] )->values();
+                            // $data['listProducts']=$products;
+                            $perPage = 10;
+                            $page=$request->page??1;
+                            $offset = ($page - 1) * $perPage;
+                            $roWc=count(collect($data['listProducts'] )->values());
+                            //$data['allProductCount']=$roWc;
+                            $products = collect($data['listProducts'] )->slice($offset, $perPage)->values();
+                            //
                             $data['listProducts']=$products;
+                            if ($roWc >9) {
+                                $data['pageCount'] = ceil(@$roWc /10);
+                            } else {
+                                $data['pageCount'] = 1;
+                            }
 
                             $data['message'] = 'success';
                             $data['status'] = 1;
@@ -4073,7 +4135,12 @@ class ProductController extends Controller
                     }
 
                     $data['allProducts']  = $allProducts->where('variant_stock_count','>',0)->all();
-                    $products = collect($data['allProducts'] )->values();
+                    $perPage = 10;
+                    $page=$request->page??1;
+                    $offset = ($page - 1) * $perPage;
+                    $roWc=count(collect($data['allProducts'] )->values());
+                    $data['allProductCount']=$roWc;
+                    $products = collect($data['allProducts'] )->slice($offset, $perPage)->values();
                     $data['allProducts']=$products;
 
 
@@ -4105,7 +4172,11 @@ class ProductController extends Controller
 
                     //     $data['allProducts']  = $allProductDataFinal;
 
-
+                    if ($roWc >9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
+                     } else {
+                         $data['pageCount'] = 1;
+                     }
 
                     $data['message'] = 'success';
                     $data['status'] = 1;
@@ -4401,8 +4472,20 @@ class ProductController extends Controller
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
                         //$decodedData = json_decode($data['allProducts'], true);
-                        $products = collect($data['allProducts'] )->values();
+                        //$data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
+
+                        $perPage = 10;
+                        $page=$request->page??1;
+                        $offset = ($page - 1) * $perPage;
+                        $roWc=count(collect($data['allProducts'] )->values());
+                        $data['allProductCount']=$roWc;
+                        $products = collect($data['allProducts'] )->slice($offset, $perPage)->values();
                         $data['allProducts']=$products;
+                    if ($roWc >9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
+                     } else {
+                         $data['pageCount'] = 1;
+                     }
                         //$data['allProducts']=json_decode()
                         // $data['allProducts']=collect($data['allProducts'])->map(function ($item) {
                         //     return (array) $item;

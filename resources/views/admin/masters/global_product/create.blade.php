@@ -183,7 +183,7 @@
                    <div class="form-group">
                     <div class="BaseFeatureArea">
                         <label class="form-label">Upload Images*</label>
-                        <input type="file" required accept="image/png, image/jpeg, image/jpg"  class="form-control" name="product_image[]" multiple="" value="{{old('product_image')}}" placeholder="Product Feature Image">
+                        <input type="file" required accept="image/png, image/jpeg, image/jpg"  class="form-control imgValidation" name="product_image[]"  value="{{old('product_image')}}" placeholder="Product Feature Image">
                         <br>
                      </div>
                      </div>

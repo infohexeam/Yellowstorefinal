@@ -37,13 +37,29 @@
                                        </select>
                                        
                                        @php
-                                       $orgLoc = $lastLoc->latitude.','.$lastLoc->longitude;
+                                       $orgLoc = @$lastLoc->latitude.','.@$lastLoc->longitude;
                                        $destLoc = $storeLoc->latitude.','.$storeLoc->longitude;
-   $orgJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$orgLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
-   $destJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$destLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
+  if($lastLoc)
+  {
+    $orgJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$orgLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
 
-        $jsonOne = json_decode($orgJson);
-        $jsonTwo = json_decode($destJson);
+  }  
+  else
+  {
+    $orgJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$destLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
+
+  }                               
+   
+   $destJson = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?latlng=$destLoc&key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ");
+  if($lastLoc)
+  {
+      $jsonOne = json_decode($orgJson);
+  }
+  else
+  {
+      $jsonOne = json_decode($destJson);
+  }
+      $jsonTwo = json_decode($destJson);
         
 
                 $doyLoc = $jsonOne->results[1]->formatted_address;

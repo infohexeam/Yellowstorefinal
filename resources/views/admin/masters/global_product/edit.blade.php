@@ -238,7 +238,7 @@ iframe{
                    <div class="form-group">
                     <div class="BaseFeatureArea">
                         <label class="form-label">Upload Images</label>
-                        <input type="file" accept="image/png, image/jpeg, image/jpg"  class="form-control" name="product_image[]" multiple=""  placeholder="Product Feature Image">
+                        <input type="file" accept="image/png, image/jpeg, image/jpg"  class="form-control imgValidation" name="product_image[]"   placeholder="Product Feature Image">
                         <br>
                      </div>
                      </div>
@@ -620,7 +620,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div>  <input type="file" class="form-control" name="product_image[]"  multiple="" value="{{old('product_image')}}" placeholder="Base Product Feature Image" /> <a href="#" class="remove_field btn btn-primary">Remove</a></div>'); //add input box
+      $(wrapper).append('<div>  <input type="file" class="form-control" name="product_image[]"   value="{{old('product_image')}}" placeholder="Base Product Feature Image" /> <a href="#" class="remove_field btn btn-primary">Remove</a></div>'); //add input box
 
   });
 

@@ -127,7 +127,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'category_name'       => 'required|unique:mst_store_categories',
-				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
+					'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
 				//	'category_description' => 'required',
 				//	'business_type_id'		=> 'required',
 
@@ -139,6 +139,7 @@ class SettingController extends Controller
 				'category_icon.dimensions'        => 'Category icon dimensions is invalid',
 				'category_description.required'	 => 'Category description required',
 				'business_type_id.required'	 => 'Business type required',
+				'category_icon.max'=>'Maximum file size must not exceeeds 1MB'
 
 
 
@@ -219,7 +220,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'category_name'       => 'required|unique:mst_store_categories,category_name,' . $category_id . ',category_id',
-				//	'category_icon'        => 'dimensions:width=150,height=150|image|mimes:jpeg,png,jpg',
+				'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
 				//		'category_description' => 'required',
 				//'business_type_id'		=> 'required',
 
@@ -231,6 +232,7 @@ class SettingController extends Controller
 				'category_icon.required'        => 'Category icon required',
 				'category_description.required'	 => 'Category description required',
 				'business_type_id.required'	 => 'Business type required',
+				'category_icon.max'=>'Maximum file size must not exceeeds 1MB'
 
 			]
 		);
@@ -368,8 +370,8 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'business_type_name'       => 'required|unique:mst_store_business_types',
-				'business_type_icon'        => 'required',
-				//	'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:width=150,height=150',
+				//'business_type_icon'        => 'required',
+					'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:1024',
 
 
 
@@ -378,7 +380,7 @@ class SettingController extends Controller
 				'business_type_name.required'         => 'Business type name required',
 				'business_type_icon.required'        => 'Business type icon required',
 				'business_type_icon.dimensions'        => 'Business type icon size invalid',
-
+				'business_type_icon.max'        => 'Maximum file size must not exceeeds 1MB',
 
 			]
 		);
@@ -441,7 +443,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'business_type_name'       => 'required|unique:mst_store_business_types,business_type_name,' . $business_type_id . ',business_type_id',
-				//	'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:width=150,height=150',
+				'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:1024',
 
 
 
@@ -450,6 +452,7 @@ class SettingController extends Controller
 				'business_type_name.required'         => 'Business type name required',
 				'business_type_icon.required'        => 'Business type icon required',
 				'business_type_icon.dimensions'        => 'Business type icon size invalid',
+				'business_type_icon.max'        => 'Maximum file size must not exceeeds 1MB',
 
 
 			]
@@ -497,6 +500,12 @@ class SettingController extends Controller
 	}
 	public function destroyBusiness(Request $request, Mst_business_types $business_type)
 	{
+		$count_store=Mst_store::where('business_type_id',$business_type->business_type_id)->count();
+		//dd($count_store);
+		if($count_store>0)
+		{
+			return  redirect()->back()->with('error', 'Business type cannot be deleted since it is already assigned to stores');
+		}
 
 		$delete = $business_type->delete();
 
@@ -3003,7 +3012,8 @@ class SettingController extends Controller
 				'delivery_boy_commision'            => 'required|gte:0',
 				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
-				'password'  => 'sometimes|same:password_confirmation',
+				'password'  => 'sometimes|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+	
 
 			],          
 			[
@@ -3020,6 +3030,7 @@ class SettingController extends Controller
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
 				'password.required'	   => 'Password required',
+				'password.regex'=>'Password must include at least one upper case letter, lower case letter, number, and special character'
 				
 
 
@@ -3111,7 +3122,7 @@ class SettingController extends Controller
 				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys',
 				'delivery_boy_password'  => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
-				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=1000,min_height=800'
+				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:1024'
 
 
 			],
@@ -4288,10 +4299,13 @@ class SettingController extends Controller
 
 			}
 
-			if ($request->date_of_payment) {
+			if ($request->date_of_payment) 
+			{
 				$changeDate = date("Y-m-d", strtotime($request->date_of_payment));
 				$payments->date_of_payment = $changeDate;
-			} else {
+			} 
+			else 
+			{
 				$payments->date_of_payment = date('Y-m-d');
 			}
 

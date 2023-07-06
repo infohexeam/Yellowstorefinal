@@ -104,9 +104,11 @@
       $(document).ready(function() {       
       $('.imgValidation').bind('change', function() {
          var a=(this.files[0].size);
+		 //alert(a)
          //return true; oooyi?? 300 kb mathiyooiii
-         if(a > 1000000) {
-               alert('Image size should not exceed 1MB!');
+         if(a > 30000) {
+               alert('Image size should not exceed 30KB!');
+
                $(this).val('');
          };
       });

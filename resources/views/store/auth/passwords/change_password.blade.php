@@ -261,7 +261,7 @@ function validatePassLength() {
    if(x.length < 8)
    {
      document.getElementById('showpassmessage').style.color = 'red';
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
+            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 charaters!';
    }
    else
    {
@@ -297,7 +297,7 @@ function validateForm() {
     else
     {
            document.getElementById('showpassmessage').style.color = 'red';
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
+            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 characters!';
             var elmnt = document.getElementById("passlabel");
             elmnt.scrollIntoView();
             return false;

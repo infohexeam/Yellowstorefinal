@@ -195,7 +195,7 @@ class ProductController extends Controller
         //  'sub_category_id' => ['required' ],
         //  'attr_value_id' => ['required' ],
         //  'product_image.*' => ['required', 'dimensions:min_width=1000,min_height=800'],
-        'product_image.*' => ['required'],
+        'product_image.*' => ['required','max:30'],
 
       ],
       [
@@ -218,6 +218,7 @@ class ProductController extends Controller
         'sub_category_id.required'         => 'Product subcategory required',
         'vendor_id.required'         => 'Vendor required',
         //   'product_image.required'        => 'Product image required',
+        'product_image.*.max'=>'Product image size should not exceed 30KB',
         'product_image.dimensions'        => 'Product image dimensions invalid',
 
       ]
@@ -379,6 +380,7 @@ class ProductController extends Controller
         //'vendor_id' => ['required'],
         //'attr_value_id' => ['required' ],
         // 'product_image.*' => 'dimensions:min_width=1000,min_height=800'
+        'product_image.*' => ['required','max:30'],
 
       ],
       [
@@ -400,7 +402,8 @@ class ProductController extends Controller
         'product_cat_id.required'         => 'Product category required',
         'vendor_id.required'         => 'Vendor required',
         // 'product_image.required'        => 'Product image required',
-        'product_image.dimensions'        => 'Product image dimensions invalid',
+        'product_image.*.max'=>'Product image size should not exceed 30KB',
+        //'product_image.dimensions'        => 'Product image dimensions invalid',
 
       ]
     );
@@ -526,6 +529,18 @@ class ProductController extends Controller
 
   public function removeGlobalProductImage(Request $request, $global_product_image_id)
   {
+    $gp_image=Trn_GlobalProductImage::where('global_product_image_id', $global_product_image_id)->first();
+    if($gp_image)
+    {
+      $gp=Mst_GlobalProducts::where('global_product_id',$gp_image->global_product_id)->first();
+      if($gp->product_base_image==$gp_image->image_name)
+      {
+        Mst_GlobalProducts::where('global_product_id',$gp_image->global_product_id)->update(['product_base_image'=>null]);
+
+      }
+
+      
+    }
     Trn_GlobalProductImage::where('global_product_image_id', $global_product_image_id)->delete();
 
     return redirect()->back()->with('status', 'Product image deleted successfully.');
@@ -2101,6 +2116,7 @@ class ProductController extends Controller
         ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
         ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
         ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+        $data = $data->where('trn_store_orders.status_id', '=', 9);
 
       if (auth()->user()->user_role_id  != 0) {
         // $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
