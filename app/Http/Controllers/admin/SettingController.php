@@ -6598,6 +6598,25 @@ class SettingController extends Controller
 		return view('admin.masters.tc.list_delivery_tc', compact('pageTitle', 'tc'));
 	}
 
+	public function updatePolicyDelivery(Request $request)
+	{
+		$tcCount = Trn_TermsAndCondition::where('role', 4)->count();
+		if ($tcCount > 0) {
+			Trn_TermsAndCondition::where('role', 4)->update(['terms_and_condition' => $request->tc, 'role' => 4]);
+		} else {
+			Trn_TermsAndCondition::where('role',4)->create(['terms_and_condition' => $request->tc, 'role' => 4]);
+		}
+		return redirect()->back()->with('status', 'Privacy Policy updated.');
+	}
+
+	public function PolicyDelivery(Request $request)
+	{
+		$pageTitle = "Edit Delivery Privacy Policy";
+		$tc = Trn_TermsAndCondition::where('role', 4)->first();
+		return view('admin.masters.tc.list_delivery_privacy', compact('pageTitle', 'tc'));
+	}
+
+
 
 	public function changedBoyStatus(Request $request, Mst_delivery_boy $delivery_boy, $delivery_boy_id)
 	{
