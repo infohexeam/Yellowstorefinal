@@ -162,8 +162,9 @@ use App\Models\admin\Trn_StoreBankData;
                            </center>
                         </div>
                   </div>
+                  </form>
                 </div>
-                   </form>
+                   
                 </div>
 
                     <div class="card-body">
