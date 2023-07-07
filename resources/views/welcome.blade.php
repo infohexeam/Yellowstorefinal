@@ -86,7 +86,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    YELLOWSTORE
+                    -YELLOWSTORE-
                 </div>
 
                 {{-- <div class="links">
