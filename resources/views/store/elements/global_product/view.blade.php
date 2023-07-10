@@ -59,6 +59,10 @@
                                   <tr>
                                     <td><strong> Category:</strong> {{@$product->product_cat['category_name']}}</td>
                                  </tr>
+                                  <tr>
+                                  
+                                    <td><strong> Subcategory:</strong> @if(isset($product->product_subcat['sub_category_name'])){{@$product->product_subcat['sub_category_name']}}@else Others  @endif</td>
+                                 </tr>
                               
 
                                 <tr>

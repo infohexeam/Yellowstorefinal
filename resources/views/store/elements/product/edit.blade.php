@@ -210,13 +210,16 @@
 
                      <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label" >Product Sub Category  </label>
-                            <select name="sub_category_id"  id="sub_category_id" class="form-control"  >
-                                 <option value="">Product Sub Category</option>
+                            <label class="form-label" >Product Subcategory  </label>
+                            <select name="sub_category_id"  id="sub_category_id" class="form-control" required  >
+                                 <option value="">Product Subcategory</option>
                                  @foreach ($subcategories as $key)
                                  <option {{old('sub_category_id',$product->sub_category_id) == $key->sub_category_id ? 'selected':''}} value="{{ @$key->sub_category_id }}">{{ @$key->sub_category_name }}</option>
                                  @endforeach
-                                
+                               
+                                  <option value="0"  @if($product->sub_category_id==0) selected @endif>Others</option>
+
+                               
   
                             </select>
                         </div>

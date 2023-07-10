@@ -192,7 +192,7 @@ class ProductController extends Controller
         //  'attr_group_id' => ['required' ],
         'product_cat_id' => ['required'],
         //'vendor_id' => ['required'],
-        //  'sub_category_id' => ['required' ],
+         'sub_category_id' => ['required' ],
         //  'attr_value_id' => ['required' ],
         //  'product_image.*' => ['required', 'dimensions:min_width=1000,min_height=800'],
         'product_image.*' => ['required','max:30'],

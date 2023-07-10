@@ -157,8 +157,8 @@
 
                    <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label" >Product Sub Category  </label>
-                        <select name="sub_category_id"  id="sub_category_id" class="form-control"  >
+                        <label class="form-label" >Product Sub Category *  </label>
+                        <select name="sub_category_id"  id="sub_category_id" class="form-control" required  >
                              <option value="">Product Sub Category</option>
                             
 
@@ -380,16 +380,20 @@ $(document).ready(function() {
             $('#sub_category_id').prop("diabled",false);
             $('#sub_category_id').empty();
             $('#sub_category_id').append('<option value="">Product Sub Category</option>');
+           
             $.each(res,function(sub_category_id,sub_category_name)
             {
               $('#sub_category_id').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
+              
             });
 
             }else
             {
               $('#sub_category_id').empty();
+              
 
             }
+             $('#sub_category_id').append('<option value="'+0+'">Others</option>');
             }
 
         });

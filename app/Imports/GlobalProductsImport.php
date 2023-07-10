@@ -45,8 +45,28 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
          //   $att_val_data = Mst_attribute_value::where('group_value',$row['attribute_value'])->first();
             $pro_categ = Mst_categories::where('category_name',$row['product_category'])->first();
             $vendor_data = Mst_store_agencies::where('agency_name',$row['vendor'])->first();
-    
-            $pro_Subcateg = Mst_SubCategory::where('sub_category_name',$row['sub_category_name'])->first();
+            if($row['sub_category_name']!='Others')
+            {
+                $sub_cat_id=0;
+                $pro_Subcateg = Mst_SubCategory::where('sub_category_name',$row['sub_category_name'])->first();
+                if($pro_Subcateg)
+                {
+                    $sub_cat_id=$pro_Subcateg->sub_category_id;
+                }
+                else
+                {
+                    $sub_cat_id=0;
+
+                }
+
+
+            }
+            else
+            {
+                $sub_cat_id=0;
+
+            }
+            
             
             // $business_type_id = $business_type->business_type_id;
             // if(!isset($business_type))
@@ -82,7 +102,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
                     'attr_group_id' => 0 ,
                     'attr_value_id' => 0 ,
                     'product_cat_id' => @$pro_categ->category_id ,
-                    'sub_category_id' => @$pro_Subcateg->sub_category_id,
+                    'sub_category_id' => @$sub_cat_id,
                     'vendor_id' =>  @$vendor_data->agency_id ,
                     'product_base_image' => null,
                     'created_date' =>  Carbon::now()->format('Y-m-d'),
@@ -110,6 +130,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
             '*.regular_price' => ['required','numeric'],
             '*.sale_price' => ['required','numeric'],
             '*.product_category' => ['required'],
+            '*.sub_category_name' => ['required'],
             '*.tax' => ['required'],
             '*.product_code' => ['required',Rule::unique('mst__global_products')],
         ];

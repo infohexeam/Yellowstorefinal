@@ -75,7 +75,7 @@ iframe{
                                  </tr>
 
                                   <tr>
-                                    <td><strong> Sub Category:</strong> {{@$product->product_subcat['sub_category_name']}}</td>
+                                    <td><strong> Subcategory:</strong> @if(isset($product->product_subcat['sub_category_name'])){{@$product->product_subcat['sub_category_name']}}@else Others  @endif</td>
                                  </tr>
                                 
                                 <tr>

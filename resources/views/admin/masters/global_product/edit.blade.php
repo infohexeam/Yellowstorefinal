@@ -209,12 +209,13 @@ iframe{
 
                   <div class="col-md-6">
                      <div class="form-group">
-                         <label class="form-label" >Product Sub Category </label>
-                         <select name="sub_category_id"  id="sub_category_id" class="form-control"  >
+                         <label class="form-label" >Product Sub Category * </label>
+                         <select name="sub_category_id"  id="sub_category_id" class="form-control" required >
                               <option value="">Product Sub Category</option>
                               @foreach ($subcategories as $key)
-                              <option {{old('sub_category_id',$product->sub_category_id) == $key->sub_category_id ? 'selected':''}} value="{{ @$key->sub_category_id }}">{{ @$key->sub_category_name }}</option>
+                              <option @if($product->sub_category_id) @if($key->sub_category_id==$product->sub_category_id) selected @endif @endif  value="{{ @$key->sub_category_id }}">{{ @$key->sub_category_name }}</option>
                               @endforeach
+                               <option value="0" @if($product->sub_category_id==0) selected @endif>Others</option>
                              
 
                          </select>
@@ -569,6 +570,7 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
+   //$('#sub_category_id').append('<option value="'+0+'">Others</option>');
     var pcc = 0;
       //  alert("dd");
        $('#category').change(function(){
@@ -599,6 +601,7 @@ $(document).ready(function() {
               $('#sub_category_id').empty();
 
             }
+            $('#sub_category_id').append('<option value="'+0+'">Others</option>');
             }
 
         });

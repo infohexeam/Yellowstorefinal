@@ -197,9 +197,9 @@ input[type="file"] {
 
                      <div class="col-md-6">
                       <div class="form-group">
-                          <label class="form-label" >Product Sub Category </label>
-                          <select name="sub_category_id" id="sub_category_id" class="form-control"  >
-                               <option value="">Product Sub Category</option>
+                          <label class="form-label" >Product Sub Category * </label>
+                          <select name="sub_category_id" id="sub_category_id" class="form-control" required >
+                               <option value="">Product Sub Category </option>
                               
 
                           </select>
@@ -1044,6 +1044,7 @@ else
               $('#sub_category_id').empty();
 
             }
+            $('#sub_category_id').append('<option value="'+0+'">Others</option>');
             }
 
         });

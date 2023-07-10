@@ -61,7 +61,7 @@
                                  </tr>
                                  
                                   <tr>
-                                    <td><strong> Sub Category:</strong> {{@$product->sub_category['sub_category_name']}}</td>
+                                    <td><strong> Subcategory:</strong> @if(isset($product->sub_category['sub_category_name'])){{@$product->sub_category['sub_category_name']}}@else Others  @endif</td>
                                  </tr>
                                  
                                  <tr>
