@@ -772,7 +772,7 @@ class ProductController extends Controller
                     }
                     $additionalSubCategory = (object) [
                         "sub_category_id" => 0,
-                        "category_id" => "0",
+                        "category_id" => $request->category_id,
                         "sub_category_name" => "Others",
                         "sub_category_icon" => Helper::default_subcat_image(),
                         "sub_category_description" => "Others"
