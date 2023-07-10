@@ -768,7 +768,16 @@ class ProductController extends Controller
                 ) {
                     foreach ($data['productSubCategoryDetails'] as $productCategory) {
                         $productCategory->sub_category_icon = '/assets/uploads/category/icons/' . $productCategory->sub_category_icon;
+                        
                     }
+                    $additionalSubCategory = (object) [
+                        "sub_category_id" => 0,
+                        "category_id" => "0",
+                        "sub_category_name" => "Others",
+                        "sub_category_icon" => Helper::default_subcat_image(),
+                        "sub_category_description" => "Others"
+                    ];
+                    $data['productSubCategoryDetails']->push($additionalSubCategory);
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
