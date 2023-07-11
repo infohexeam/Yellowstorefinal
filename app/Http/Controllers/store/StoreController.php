@@ -4306,6 +4306,7 @@ class StoreController extends Controller
     $pageTitle = "Store Settings";
     $store_id =   Auth::guard('store')->user()->store_id;
     $store = Mst_store::find($store_id);
+    $product_count=Mst_store_product_varient::where('store_id',Auth::guard('store')->user()->store_id)->count();
     $business_types = Mst_business_types::all();
     $districts = District::where('state_id', $store->store_state_id)->get();
 
@@ -4313,7 +4314,7 @@ class StoreController extends Controller
     $settingcount = Trn_store_setting::where('store_id', Auth::guard('store')->user()->store_id)->count();
 
 
-    return view('store.elements.settings.create', compact('settingcount', 'store_settings', 'store', 'districts', 'pageTitle', 'business_types'));
+    return view('store.elements.settings.create', compact('settingcount', 'store_settings', 'store', 'districts', 'pageTitle', 'business_types','product_count'));
   }
 
   public function updateStoreSettings(Request $request)

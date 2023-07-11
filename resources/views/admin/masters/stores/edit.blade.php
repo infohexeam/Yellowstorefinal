@@ -272,7 +272,7 @@
 
                            <label class="form-label"> Product Upload Limit </label>
                            <input type="number" class="form-control" 
-                           name="product_limit" value="{{old('product_limit',@$store->product_upload_limit)}}" placeholder="Product Upload Limit">
+                           name="product_limit" value="{{$store->product_upload_limit}}" placeholder="Product Upload Limit">
                         </div>
                      </div>
 

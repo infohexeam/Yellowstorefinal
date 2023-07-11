@@ -114,6 +114,20 @@
                         <span style="color:red" id="prefixErr" ></span>
                       </div>
                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                         <label class="form-label">Product Upload Limit</label>
+                         <input type="text" readonly value="{{$store->product_upload_limit}}"   class="form-control"  placeholder="Order Number Prefix">
+                        <span style="color:red" id="prefixErr" ></span>
+                      </div>
+                   </div>
+                   <div class="col-md-6">
+                      <div class="form-group">
+                         <label class="form-label">Total Products Uploaded</label>
+                         <input type="text" readonly  value="{{$product_count}} Products Uploaded /{{$store->product_upload_limit}}"   class="form-control"  placeholder="Order Number Prefix">
+                        <span style="color:red" id="prefixErr" ></span>
+                      </div>
+                   </div>
                    
                      <div class="col-md-12">
                       <div class="form-group">

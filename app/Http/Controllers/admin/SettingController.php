@@ -1122,6 +1122,7 @@ class SettingController extends Controller
 			$store->store_district_id   	     = $request->store_district_id;
 			$store->business_type_id   	     	= $request->business_type_id;
 			$store->store_username               = $request->store_username;
+			$store->product_upload_limit               = $request->product_limit;
 
 			if (auth()->user()->user_role_id == 0) {
 				$store->subadmin_id          = $request->subadmin_id??2;
