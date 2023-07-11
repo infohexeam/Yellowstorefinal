@@ -3533,8 +3533,32 @@ class ProductController extends Controller
                             $productData = $productData->orderBy('distance');
                         }
 
-                        if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                            $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                        if (isset($request->sub_category_id)) {
+                            if($request->sub_category_id>=0)
+                            {
+                                $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+
+                            }
+                            else
+                            {
+                               
+                                $subcat_first= Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->first();
+                                if($subcat_first)
+                                {
+                                    $productData = $productData->where('mst_store_products.sub_category_id', $subcat_first->sub_category_id);
+
+
+                                }
+                    
+
+                              
+
+                               }
+                               
+
+
+                            }
+                            
                         }
 
                         $productData = $productData->where('mst_store_products.display_flag', 1)
