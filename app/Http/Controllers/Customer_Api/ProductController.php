@@ -3482,7 +3482,7 @@ class ProductController extends Controller
                             $additionalSubCategory = (object) [
                                 "sub_category_id" => 0,
                                 "category_id" => $request->category_id,
-                                "sub_category_name" => "Others",
+                                "sub_category_name" => "",
                                 "sub_category_name_slug"=> "otherss",
                                 "sub_category_icon" =>'/assets/uploads/others.png',
                                 "sub_category_description" => "Others",
@@ -3740,7 +3740,7 @@ class ProductController extends Controller
                                 $additionalSubCategory = (object) [
                                     "sub_category_id" => 0,
                                     "category_id" => $request->category_id,
-                                    "sub_category_name" => "Others",
+                                    "sub_category_name" => "",
                                     "sub_category_name_slug"=> "otherss",
                                     "sub_category_icon" => '/assets/uploads/others.png',
                                     "sub_category_description" => "Others",
