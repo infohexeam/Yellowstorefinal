@@ -1978,7 +1978,16 @@ class ProductController extends Controller
                         $glbPro =  Mst_GlobalProducts::find($data['prouctDetails']->global_product_id);
 
                         @$data['prouctDetails']->category_name = $catData->category_name;
-                        @$data['prouctDetails']->sub_category_name = $subCatData->sub_category_name;
+                        if(@$data['prouctDetails']->sub_category_id==0)
+                        {
+                            @$data['prouctDetails']->sub_category_name = 'Others';
+
+                        }
+                        else
+                        {
+                            @$data['prouctDetails']->sub_category_name = $subCatData->sub_category_name;
+                        }
+                        
                         @$data['prouctDetails']->tax_name = @$tax->tax_name;
                         @$data['prouctDetails']->tax_value = @$tax->tax_value;
                         @$data['prouctDetails']->vendor = @$vendor->agency_name;

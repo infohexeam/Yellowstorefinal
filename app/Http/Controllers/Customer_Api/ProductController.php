@@ -3320,7 +3320,8 @@ class ProductController extends Controller
 
                                 ->where('mst_store_products.show_in_home_screen', 1)->get();
                             $offerProductsFinal = array();
-                            foreach ($offerProductsObj as $offerProduct) {
+                            foreach ($offerProductsObj as $offerProduct) 
+                            {
 
                                 $timeslotdata = Helper::findHoliday($offerProduct->store_id);
 
