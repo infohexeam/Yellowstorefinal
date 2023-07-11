@@ -281,12 +281,20 @@
                     <!-- </div>-->
 
 
-                     <div class="col-md-4">
+                     <div class="col-md-8">
                         <div class="form-group">
 
                            <label class="form-label"> Registered GSTIN </label>
                            <input type="text" class="form-control" 
                            name="store_document_gstin" value="{{old('store_document_gstin')}}" placeholder="Registered GSTIN">
+                        </div>
+                     </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+
+                           <label class="form-label"> Product Upload Limit </label>
+                           <input type="number" class="form-control" 
+                           name="product_limit" value="{{old('product_limit')}}" placeholder="Product Upload Limit">
                         </div>
                      </div>
 

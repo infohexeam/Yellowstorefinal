@@ -722,6 +722,7 @@ class SettingController extends Controller
 				'store_country_id'			       => 'required',
 				'store_state_id'       		       => 'required',
 				'business_type_id' 					=> 'required',
+				'product_limit' 					=> 'required|numeric|gte:0',
 				//'email'       		       => 'required',
 
 				//	'store_commision_amount'                => 'required',
@@ -754,7 +755,7 @@ class SettingController extends Controller
 
 				'store_commision_percentage.required'	=> 'Store commision percentage requird',
 				
-
+                'product_limit.required'        			 => 'Product Upload Limit required',
 			]
 		);
 
@@ -815,6 +816,7 @@ class SettingController extends Controller
 			$store->store_district_id   	     = $request->store_district_id;
 			$store->store_username               = $request->store_username;
 			$store->store_commision_percentage   = "2.00"; //new update
+			$store->product_upload_limit         = $request->product_limit;
 			$store->password                     = Hash::make($request->password);
 			$store->store_otp_verify_status       = 0;
 			if ($store_added_by == 0) {
@@ -1029,6 +1031,7 @@ class SettingController extends Controller
 				'store_primary_address'            => 'required',
 				'store_country_id'			       => 'required',
 				'store_state_id'       		       => 'required',
+				'product_limit' 					=> 'required|numeric|gte:0',
 				//'email'       		       => 'required',
 
 
@@ -1058,7 +1061,7 @@ class SettingController extends Controller
 				//'store_commision_amount.required'                => 'Store commision amount required',
 
 				//'store_commision_percentage.required'	=>'Store commision percentage required',
-
+                'product_limit.required'        			 => 'Product Upload Limit required',
 
 
 			]

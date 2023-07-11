@@ -3479,9 +3479,20 @@ class ProductController extends Controller
                                     $cat->sub_category_icon =  Helper::default_subcat_image();
                                 }
                             }
-                          
+                            $additionalSubCategory = (object) [
+                                "sub_category_id" => 0,
+                                "category_id" => $request->category_id,
+                                "sub_category_name" => "Others",
+                                "sub_category_name_slug"=> "otherss",
+                                "sub_category_icon" => Helper::default_subcat_image(),
+                                "sub_category_description" => "Others",
+                                "sub_category_status"=>"1",
+                                "deleted_at"=>null,
+                                "created_at"=> "2023-06-19T14:51:36.000000Z",
+                                "updated_at"=> "2023-06-19T14:51:36.000000Z"
+                            ];
 
-                            
+                            $data['subCategoriesList']->push($additionalSubCategory);
                         } else {
                             $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
                             foreach ($data['subCategoriesList'] as $cat) {
@@ -3725,9 +3736,20 @@ class ProductController extends Controller
                                         $cat->sub_category_icon =  Helper::default_subcat_image();
                                     }
                                 }
-                               
+                                $additionalSubCategory = (object) [
+                                    "sub_category_id" => 0,
+                                    "category_id" => $request->category_id,
+                                    "sub_category_name" => "Others",
+                                    "sub_category_name_slug"=> "otherss",
+                                    "sub_category_icon" => Helper::default_subcat_image(),
+                                    "sub_category_description" => "Others",
+                                    "sub_category_status"=>"1",
+                                    "deleted_at"=>null,
+                                    "created_at"=> "2023-06-19T14:51:36.000000Z",
+                                    "updated_at"=> "2023-06-19T14:51:36.000000Z"
+                                ];
 
-                               
+                                $data['subCategoriesList']->push($additionalSubCategory);
                             } else {
                                 $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
                                 foreach ($data['subCategoriesList'] as $cat) {

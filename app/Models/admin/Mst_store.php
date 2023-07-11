@@ -33,7 +33,7 @@ class Mst_store extends Authenticatable
         'subadmin_id', 'place', 'town', 'store_commision_amount', 'store_mobile',
         'order_number_prefix',
         'online_status', 'store_qrcode', 'profile_image', 'upi_id',
-        'longitude', 'latitude', 'place_id', 'service_area', 'is_pgActivated', 'gst','store_referral_id'
+        'longitude', 'latitude', 'place_id', 'service_area', 'is_pgActivated', 'gst','store_referral_id','product_upload_limit'
 
     ];
 
