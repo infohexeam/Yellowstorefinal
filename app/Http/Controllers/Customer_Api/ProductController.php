@@ -3857,6 +3857,7 @@ class ProductController extends Controller
                                     
                                    
                                     $subcat_first= Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->first();
+                                    //dd($subcat_first);
                                     if($subcat_first)
                                     {
                                         $productData = $productData->where('mst_store_products.sub_category_id', $subcat_first->sub_category_id);
@@ -3949,8 +3950,37 @@ class ProductController extends Controller
                             $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                                 ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
-                            if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
-                                $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                            // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                            //     $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                            // }
+                            if (isset($request->sub_category_id)) {
+                           
+                                if($request->sub_category_id>=0)
+                                {
+                                    $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+    
+                                }
+                                else
+                                {
+                                    
+                                   
+                                    $subcat_first= Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->first();
+                                    if($subcat_first)
+                                    {
+                                        $allProducts = $allProducts->where('mst_store_products.sub_category_id', $subcat_first->sub_category_id);
+    
+    
+                                    }
+                        
+    
+                                  
+    
+                                   }
+                                   
+    
+    
+                            
+                                
                             }
 
 
