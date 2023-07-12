@@ -2,11 +2,18 @@
 @section('content')
 <div class="row" id="user-profile">
    <div class="col-lg-12">
+
       <div class="card">
+        @if ($message2 = Session::get('status-error'))
+                  <div class="alert alert-danger">
+                     <p>{{ $message2 }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+                  </div>
+                  @endif
          <div class="card-body">
             <div class="wideget-user">
           <h4>{{$pageTitle}}</h4>
                      <div class="row">
+                    
                   <div class="col-lg-6 col-md-12">
                      <div class="wideget-user-desc d-sm-flex">
                         <div class="wideget-user-img">

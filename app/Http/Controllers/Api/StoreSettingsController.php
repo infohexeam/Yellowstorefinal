@@ -90,6 +90,8 @@ class StoreSettingsController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
+                $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
+                $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
                 if ($data['defaultStoreSettingsDetails']['service_amount']  = Trn_store_setting::where('store_id', $store_id)->get()) {
                     foreach($data['defaultStoreSettingsDetails']['service_amount'] as $sa)
                     {
@@ -132,7 +134,8 @@ class StoreSettingsController extends Controller
                     $data['defaultStoreSettingsDetails']['store_qrcode'] = $store_data->store_qrcode;
                     $data['defaultStoreSettingsDetails']['subadmin_phone'] = Helper::storeSubadminPhone($request->store_id);
                     $data['defaultStoreSettingsDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
-
+                    $data['defaultStoreSettingsDetails']['product_upload_limit'] = $product_upload_limit;
+                    $data['defaultStoreSettingsDetails']['total_products_uploaded'] = $product_count;
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);

@@ -867,7 +867,29 @@ class StoreController extends Controller
   {
     //dd($request->all());
     $store_id =  Auth::guard('store')->user()->store_id;
+    $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
+    $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
+    $varCnt=0;
+   
+    if($product_count+1>$product_upload_limit)
+    {
+      return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
 
+    }
+    else
+    {
+      foreach ($request->variant_name as  $Name) 
+      {
+        $varCnt++;
+      }
+      $product_count=$product_count+1;
+      $product_count=$product_count+$varCnt;
+      if($product_count>$product_upload_limit)
+      {
+        return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
+  
+      }
+    }
     // if(isset($request->product_name))
     // {
     //   $s = DB::table('mst_store_products')
@@ -1572,7 +1594,20 @@ class StoreController extends Controller
     //     return redirect()->back()->withErrors(['store' => 'Product name already exist'])->withInput();
     //   }
     // }
+    $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
+    $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
+    $varCnt=0;
+    foreach ($request->variant_name as  $Name) 
+    {
+      $varCnt++;                    
+    }
+    //$product_count=$product_count+1;
+    $product_count=$product_count+$varCnt;
+    if($product_count>$product_upload_limit)
+    {
+      return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
 
+    }
     $validator = Validator::make(
       $request->all(),
       [
@@ -4666,6 +4701,7 @@ class StoreController extends Controller
         ->orderBy('product_id', 'DESC')
         ->pluck('global_product_id')
         ->toArray();
+       // dd(1);
       $category = Mst_categories::where('category_status', 1)->get();
 
       $global_product = Mst_GlobalProducts::whereNotIn('global_product_id', $products_global_products_id)
@@ -4716,6 +4752,15 @@ class StoreController extends Controller
       $global_product = Mst_GlobalProducts::find($global_product_id);
       // dd($global_product);
       $store_id =  Auth::guard('store')->user()->store_id;
+      $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
+    $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
+    
+   
+    if($product_count+1>$product_upload_limit)
+    {
+      return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
+
+    }
 
 
       // $product = Mst_store_product::where('store_id','=',$user_id)->get()->count();
@@ -4911,13 +4956,22 @@ class StoreController extends Controller
 
     try {
 
+      $store_id =  Auth::guard('store')->user()->store_id;
+      $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
+      $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
+      $gp_cnt=count($request->global_product_idz);
+      if($product_count+$gp_cnt>$product_upload_limit)
+      {
+        return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
+  
+      }
       foreach ($request->global_product_idz as $global_product_id) {
 
 
 
         $global_product = Mst_GlobalProducts::find($global_product_id);
         // dd($global_product);
-        $store_id =  Auth::guard('store')->user()->store_id;
+        
         
 
         $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
