@@ -2592,7 +2592,8 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->product_id) && Mst_store_product::find($request->product_id)) {
-                $store_id=$request->store_id;
+                $pr=Mst_store_product::find($request->product_id);
+                $store_id=$pr->store_id;
                 $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
                 $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
                 $gp_cnt=1;
