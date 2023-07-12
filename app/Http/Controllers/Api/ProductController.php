@@ -2149,13 +2149,7 @@ class ProductController extends Controller
                 $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
                 $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
                 $gp_cnt=1;
-                if($product_count+$gp_cnt>$product_upload_limit)
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Unable to add product.Product Upload Limit Exceeds.";
-                    return response($data);    
-            
-                }
+                
 
                 $validator = Validator::make(
                     $request->all(),
@@ -2203,6 +2197,13 @@ class ProductController extends Controller
                         
 
                         if ($request->product_id == 0) {
+                            if($product_count+$gp_cnt>$product_upload_limit)
+                                {
+                                    $data['status'] = 0;
+                                    $data['message'] = "Unable to add product.Product Upload Limit Exceeds.";
+                                    return response($data);    
+                            
+                                }
                             $product = new Mst_store_product;
     
                             $product->product_name           = $request->product_name;
@@ -2595,13 +2596,7 @@ class ProductController extends Controller
                 $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
                 $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
                 $gp_cnt=1;
-                if($product_count+$gp_cnt>$product_upload_limit)
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Unable to add product.Product Upload Limit Exceeds.";
-                    return response($data);    
-            
-                }
+                
                 $validator = Validator::make(
                     $request->all(),
                     [
@@ -2619,6 +2614,13 @@ class ProductController extends Controller
 
                 if (!$validator->fails()) {
                     if ($request->product_varient_id == 0) { //new varient 
+                        if($product_count+$gp_cnt>$product_upload_limit)
+                        {
+                            $data['status'] = 0;
+                            $data['message'] = "Unable to add product.Product Upload Limit Exceeds.";
+                            return response($data);    
+                    
+                        }
                         $productVar = new Mst_store_product_varient;
 
                         $productData = Mst_store_product::find($request->product_id);
