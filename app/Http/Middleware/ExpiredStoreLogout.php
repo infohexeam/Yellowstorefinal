@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\admin\Trn_StoreAdmin;
+use App\User;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Support\Facades\Auth;
@@ -26,13 +27,22 @@ class ExpiredStoreLogout
 
                 if($admin->store_account_status == 0)
                 {
+                    $sadmin = User::where('id','=', 1)->first();
+                    if ($admin->role_id != 0)
+                    {
+                        $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$admin->store_id)->where('role_id',"=",0)->first();
+    
+                        $phoneNumber = $getStoreAdmin->store_mobile;
+                    }else{
+                        $phoneNumber = $sadmin->phone_number;
+                    }
                 $admin->is_logged_in=0;
                 $admin->last_active_at=Carbon::now();
                 $admin->login_will_expire_at=null;
                 $admin->update();
                             
                 Auth::guard('store')->logout();
-                return redirect()->to('/store-login')->with('danger','Store is inactive ,Contact admin');
+                return redirect()->to('/store-login')->with('danger','Store is inactive,Please Contact admin '.$phoneNumber);
 
                 }
                 
@@ -64,9 +74,18 @@ class ExpiredStoreLogout
                 $admin->last_active_at=Carbon::now();
                 $admin->login_will_expire_at=null;
                 $admin->update();
+                $sadmin = User::where('id','=', 1)->first();
+                if ($admin->role_id != 0)
+                {
+                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$admin->store_id)->where('role_id',"=",0)->first();
+
+                    $phoneNumber = $getStoreAdmin->store_mobile;
+                }else{
+                    $phoneNumber = $sadmin->phone_number;
+                }
                         
                 Auth::guard('store')->logout();
-                return redirect()->to('/store-login')->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($parentExpiryDate)));
+                return redirect()->to('/store-login')->with('danger','Profile has been Expired on '.date('d-M-Y',strtotime($parentExpiryDate)).' Contact admin '.$phoneNumber);
                             
                 }
                 
