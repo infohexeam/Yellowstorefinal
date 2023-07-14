@@ -581,9 +581,18 @@ class StoreController extends Controller
                     if (Hash::check($passChk, $custCheck->password)) {
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
                     if($today>$parentStore->expiry_date)
-                    {                
+                    {
+                        $sadmin = User::where('id','=', 1)->first();
+                        if ($custCheck->role_id != 0)
+                        {
+                            $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
+        
+                            $phoneNumber = $getStoreAdmin->store_mobile;
+                        }else{
+                            $phoneNumber = $sadmin->phone_number;
+                        }                        
                     $data['status'] = 8;
-                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin".$phoneNumber;
                     return response($data);
                     }
                   
@@ -713,9 +722,19 @@ class StoreController extends Controller
             $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
             //return $parentStore->expiry_date;
             if($today>$parentStore->expiry_date)
-            {                
+            {
+                $sadmin = User::where('id','=', 1)->first();
+                if ($custCheck->role_id != 0)
+                {
+                    $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
+
+                    $phoneNumber = $getStoreAdmin->store_mobile;
+                }else{
+                    $phoneNumber = $sadmin->phone_number;
+                }        
+                               
             $data['status'] = 8;
-            $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+            $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin".$phoneNumber;
             return response($data);
             }
             
@@ -788,9 +807,18 @@ class StoreController extends Controller
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
                     //return $parentStore->expiry_date;
                     if($today>$parentStore->expiry_date)
-                    {                
+                    {   
+                        $sadmin = User::where('id','=', 1)->first();
+                        if ($custCheck->role_id != 0)
+                        {
+                            $getStoreAdmin =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();
+        
+                            $phoneNumber = $getStoreAdmin->store_mobile;
+                        }else{
+                            $phoneNumber = $sadmin->phone_number;
+                        }             
                     $data['status'] = 8;
-                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin ";
+                    $data['message'] = "Profile not Activated/Profile Expired.Please contact Admin".$phoneNumber;
                     return response($data);
                     }
                     
