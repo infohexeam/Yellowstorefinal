@@ -270,7 +270,7 @@ class StoreController extends Controller
 
 
     $delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
-    $business_types = Mst_business_types::withTrashed()->get();
+    $business_types = Mst_business_types::all();
 
 
 

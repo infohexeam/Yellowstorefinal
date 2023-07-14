@@ -1001,7 +1001,7 @@ class SettingController extends Controller
 		}
 
 		$delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
-		$business_types = Mst_business_types::withTrashed()->get();
+		$business_types = Mst_business_types::all();
 		$subadmins = User::where('user_role_id', '!=', 0)->get();
 
 		$products = Mst_store_product::where('store_id', $store_id)->orderBy('product_id', 'DESC')
