@@ -1200,6 +1200,22 @@ class ProductController extends Controller
                         $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
 
                     }
+                    $in_cart2=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$row->product_varient_id)->where('remove_status',0)->first();
+                    if($in_cart)
+                    {
+                        $cartCount2=$in_cart->quantity;
+                        $cartId2=$in_cart2->cart_id;
+
+
+                    }
+                    else
+                    {
+                        $cartCount2=0;
+                        $cartId2=0;
+
+                    }
+                    $row->cartCount = (int)$cartCount2;
+                    $row->cartId = (int)$cartId2;
                     
                     
                     $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
