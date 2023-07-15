@@ -1201,9 +1201,9 @@ class ProductController extends Controller
 
                     }
                     $in_cart2=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$row->product_varient_id)->where('remove_status',0)->first();
-                    if($in_cart)
+                    if($in_cart2)
                     {
-                        $cartCount2=$in_cart->quantity;
+                        $cartCount2=$in_cart2->quantity;
                         $cartId2=$in_cart2->cart_id;
 
 
