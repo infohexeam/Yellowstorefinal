@@ -758,7 +758,17 @@ class ProductController extends Controller
       $product = Mst_store_product::find($product_id);
 
       if ($product->show_in_home_screen == 0) {
+        if($product->product_price_offer<$product->product_price)
+        {
+        
         Mst_store_product::where('product_id', $product_id)->update(['show_in_home_screen' => 1]);
+        }
+        else
+        {
+          return redirect()->back()->withErrors(['Offer price should not be equals to MRP!'])->withInput();
+          //return redirect()->back()->with('status', ' ');
+
+        }
 
         return redirect()->back()->with('status', 'Offer product updated successfully.');
       } else {
