@@ -4586,7 +4586,7 @@ class ProductController extends Controller
 
                             $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
                             $countRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->count();
-                            $in_cart=Trn_Cart::where('customer_id',$customer_id)->where('product_varient_id',$allProduct->product_varient_id)->where('remove_status',0)->first();
+                            $in_cart=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$allProduct->product_varient_id)->where('remove_status',0)->first();
                             if($in_cart)
                             {
                                 $cartCount=$in_cart->quantity;
