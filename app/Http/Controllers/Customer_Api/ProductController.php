@@ -746,6 +746,8 @@ class ProductController extends Controller
 
                     $productData->ratingData = number_format((float)$ratingData, 2, '.', '');
                     $productData->ratingCount = $countRating;
+                    
+
 
 
                     $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)
@@ -1042,6 +1044,23 @@ class ProductController extends Controller
 
                         $productData->ratingData = number_format((float)$ratingData, 2, '.', '');
                         $productData->ratingCount = $countRating;
+                        $in_cart=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$productVarientId)->where('remove_status',0)->first();
+                        if($in_cart)
+                        {
+                            $cartCount=$in_cart->quantity;
+                            $cartId=$in_cart->cart_id;
+
+
+                        }
+                        else
+                        {
+                            $cartCount=0;
+                            $cartId=0;
+
+                        }
+                        $productData->cartCount = (int)$cartCount;
+                        $productData->cartId = (int)$cartId;
+
 
                         $varIds = Mst_store_product_varient::where('product_id', $productData->product_id)
                             ->where('is_removed', 0)->pluck('product_varient_id')->toArray();
