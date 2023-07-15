@@ -4609,7 +4609,7 @@ class ProductController extends Controller
 
                             $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
                             $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
-                            $allProduct->cartCount=$cartCount;
+                            $allProduct->cartCount=(int)$cartCount;
                         }
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
