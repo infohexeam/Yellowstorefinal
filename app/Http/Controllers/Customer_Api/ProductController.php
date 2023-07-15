@@ -4063,6 +4063,22 @@ class ProductController extends Controller
 
                                 $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
                                 $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
+                                $in_cart=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$allProduct->product_varient_id)->where('remove_status',0)->first();
+                                if($in_cart)
+                                {
+                                    $cartCount=$in_cart->quantity;
+                                    $cartId=$in_cart->cart_id;
+    
+    
+                                }
+                                else
+                                {
+                                    $cartCount=0;
+                                    $cartId=0;
+    
+                                }
+                                $allProduct->cartCount=(int)$cartCount;
+                                $allProduct->cartId=(int)$cartId;
                             }
 
                             $data['listProducts'] =$allProducts->where('variant_stock_count','>',0);
