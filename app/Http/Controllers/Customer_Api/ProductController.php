@@ -120,8 +120,8 @@ class ProductController extends Controller
                         $cartId=0;
 
                     }
-                    $row->cartCount=$cartCount;
-                    $row->cartId=$cartId;
+                    $row->cartCount=(int)$cartCount;
+                    $row->cartId=(int)$cartId;
 
                     
                     
