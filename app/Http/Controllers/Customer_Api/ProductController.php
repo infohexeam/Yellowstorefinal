@@ -105,6 +105,24 @@ class ProductController extends Controller
                         }
 
                     }
+                    $in_cart=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$row->product_varient_id)->where('remove_status',0)->first();
+                    if($in_cart)
+                    {
+                        $cartCount=$in_cart->quantity;
+                        $cartId=$in_cart->cart_id;
+
+
+                    }
+
+                    else
+                    {
+                        $cartCount=0;
+                        $cartId=0;
+
+                    }
+                    $row->cartCount=$cartCount;
+                    $row->cartId=$cartId;
+
                     
                     
                     $attributesData = Trn_ProductVariantAttribute::select('attr_group_id', 'attr_value_id')->where('product_varient_id', $row->product_varient_id)->get();
