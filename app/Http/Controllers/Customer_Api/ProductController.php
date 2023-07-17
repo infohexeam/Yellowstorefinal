@@ -155,7 +155,7 @@ class ProductController extends Controller
                     return response($data);
 
                 }
-                $productData->stock_count=$base_varient_stock;
+                $productData->stock_count_base=$base_varient_stock;
 
                 $data['productData'] = $productData;
 
