@@ -78,7 +78,7 @@ class ProductController extends Controller
 
             if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
 
-
+            $base_varient_stock=0;
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
                     ->where('stock_count', '>', 0)
@@ -103,6 +103,7 @@ class ProductController extends Controller
                             $row->variant_status="0";
 
                         }
+                        $base_varient_stock=$row->st0ck_count;
 
                     }
                     $in_cart=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$row->product_varient_id)->where('remove_status',0)->first();
@@ -154,6 +155,7 @@ class ProductController extends Controller
                     return response($data);
 
                 }
+                $productData->stock_count=$base_varient_stock;
 
                 $data['productData'] = $productData;
 
