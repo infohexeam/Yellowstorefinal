@@ -103,7 +103,7 @@ class ProductController extends Controller
                             $row->variant_status="0";
 
                         }
-                        $base_varient_stock=$row->st0ck_count;
+                        $base_varient_stock=$row->stock_count;
 
                     }
                     $in_cart=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$row->product_varient_id)->where('remove_status',0)->first();
@@ -155,7 +155,7 @@ class ProductController extends Controller
                     return response($data);
 
                 }
-                $productData->stock_count_base=$base_varient_stock;
+                $productData->stock_count=$base_varient_stock;
 
                 $data['productData'] = $productData;
 
