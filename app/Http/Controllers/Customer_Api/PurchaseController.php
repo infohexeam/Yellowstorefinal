@@ -3288,9 +3288,16 @@ public function addToCartTest(Request $request)
                             ->update(['remove_status' =>  1]); //1=deleted
                     } else {
                         $cart = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id);
+
                         $cart->update(['quantity' =>  $request->quantity]);
                     }
                 }
+                if(Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count() > 0)
+                {
+                    $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
+                }else{
+                    $data['CurrentCartCount'] = 0; 
+                }                   
 
                 $data['status'] = 1;
                 $data['message'] = "Item removed";
