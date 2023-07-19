@@ -3797,7 +3797,7 @@ class ProductController extends Controller
                         $page=$request->page??1;
                         $offset = ($page - 1) * $perPage;
                         $roWc=count(collect($data['listProducts'] )->values());
-                        //$data['allProductCount']=$roWc;
+                        $data['allProductCount']=$roWc;
                         $products = collect($data['listProducts'] )->slice($offset, $perPage)->values();
                         //
                         $data['listProducts']=$products;
@@ -4136,7 +4136,7 @@ class ProductController extends Controller
                             $page=$request->page??1;
                             $offset = ($page - 1) * $perPage;
                             $roWc=count(collect($data['listProducts'] )->values());
-                            //$data['allProductCount']=$roWc;
+                            $data['allProductCount']=$roWc;
                             $products = collect($data['listProducts'] )->slice($offset, $perPage)->values();
                             //
                             $data['listProducts']=$products;
