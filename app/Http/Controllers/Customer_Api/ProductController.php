@@ -3788,6 +3788,7 @@ class ProductController extends Controller
                             $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                             $allProduct->cartCount=0;
                             $allProduct->cartId=0;
+                            $allProduct->cartStoreId=0;
                         }
 
                         $data['listProducts']  = $allProducts->where('variant_stock_count','>',0);
@@ -4115,6 +4116,7 @@ class ProductController extends Controller
                                 {
                                     $cartCount=$in_cart->quantity;
                                     $cartId=$in_cart->cart_id;
+                                    $cartStoreId=$in_cart->store_id;
     
     
                                 }
@@ -4122,10 +4124,12 @@ class ProductController extends Controller
                                 {
                                     $cartCount=0;
                                     $cartId=0;
+                                    $cartStoreId=0;
     
                                 }
                                 $allProduct->cartCount=(int)$cartCount;
                                 $allProduct->cartId=(int)$cartId;
+                                $allProduct->cartStoreId=(int)$cartStoreId;
                             }
 
                             $data['listProducts'] =$allProducts->where('variant_stock_count','>',0);

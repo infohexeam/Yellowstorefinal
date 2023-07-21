@@ -1540,6 +1540,7 @@ class StoreController extends Controller
       } else {
         $product_var_id = 0;
       }
+      //Mst_product_image::where('product_id',$product)->where('product_varient_id')->c
 
       if ($request->hasFile('var_image')) {
         $allowedfileExtension = ['jpg', 'png', 'jpeg',];
