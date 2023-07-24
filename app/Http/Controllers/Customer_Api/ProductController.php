@@ -4649,7 +4649,7 @@ class ProductController extends Controller
                             // ->groupBy('trn__recently_visited_products.product_id')
                             ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
                             ->orderBy('trn__recently_visited_products.created_at', 'DESC')
-
+                            ->limit(10)
                             ->get();
                         $recentlyVisited = collect($recentlyVisitedProducts);
                         $recentlyVisitedS = $recentlyVisited->unique('product_id');
@@ -4805,7 +4805,8 @@ class ProductController extends Controller
                         $PurproductData = $PurproductData->where('trn_store_orders.customer_id', $request->customer_id)
                             ->where('mst_store_products.store_id', $request->store_id)
                             ->where('trn_store_orders.store_id', $request->store_id)
-                            ->orderBy('trn_order_items.order_item_id', 'DESC');
+                            ->orderBy('trn_order_items.order_item_id', 'DESC')
+                            ->limit(10);
 
 
                         $PurproductData = $PurproductData->get();
