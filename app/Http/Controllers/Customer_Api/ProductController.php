@@ -4112,11 +4112,22 @@ class ProductController extends Controller
                                 $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
                                 $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                                 $in_cart=Trn_Cart::where('customer_id',$request->customer_id)->where('product_varient_id',$allProduct->product_varient_id)->where('remove_status',0)->first();
+                                $getlatestCart =  Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status',0)->first();
+                                if($getlatestCart)
+                                {
+                                    $cartStoreId=$getlatestCart->store_id;
+
+                                }
+                                else
+                                {
+                                    $cartStoreId=0;
+
+                                }
                                 if($in_cart)
                                 {
                                     $cartCount=$in_cart->quantity;
                                     $cartId=$in_cart->cart_id;
-                                    $cartStoreId=$in_cart->store_id;
+                                    
     
     
                                 }
@@ -4124,7 +4135,6 @@ class ProductController extends Controller
                                 {
                                     $cartCount=0;
                                     $cartId=0;
-                                    $cartStoreId=0;
     
                                 }
                                 $allProduct->cartCount=(int)$cartCount;
