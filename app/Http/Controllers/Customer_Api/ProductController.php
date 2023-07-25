@@ -2883,7 +2883,7 @@ class ProductController extends Controller
                             
                         }
                         
-                       
+                       return $OutStockProduct;
                     if(!empty($OutStockProduct))
                     {
                         Trn_Cart::where('customer_id',$customer_id)->whereIn($OutStockProduct)->update(['remove_status'=>1]);
