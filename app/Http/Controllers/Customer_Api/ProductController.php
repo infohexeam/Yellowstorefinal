@@ -2833,6 +2833,95 @@ class ProductController extends Controller
             return response($response);
         }
     }
+    public function CartOutOfStockDelete(Request $request)
+    {
+        $data = array();
+        try {
+            if ($request->customer_id == 0) {
+                $data['status'] = 0;
+                $data['message'] = "No Customer ";
+                return response($data);
+            } else {
+                if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                    $customer_id = $request->customer_id;
+                    $OutStockProduct=[];
+
+                    if ($cartDatas = Trn_Cart::join('mst_store_products', 'mst_store_products.product_id', '=', 'trn__carts.product_id')
+                        ->join('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn__carts.product_varient_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'trn__carts.store_id')
+                        ->select(
+                            'mst_store_products.product_id',
+                            'mst_store_products.product_name',
+                            'mst_store_products.product_code',
+                            'mst_store_products.product_base_image',
+                            'mst_store_products.show_in_home_screen',
+                            'mst_store_products.product_status',
+                            'mst_store_product_varients.product_varient_id',
+                            'mst_store_product_varients.variant_name',
+                            'mst_store_product_varients.product_varient_price',
+                            'mst_store_product_varients.product_varient_offer_price',
+                            'mst_store_product_varients.product_varient_base_image',
+                            'mst_store_product_varients.stock_count',
+                            'mst_store_product_varients.is_base_variant',
+                            'mst_store_product_varients.variant_status',
+                            'mst_stores.store_name',
+                            'mst_stores.store_id',
+                            'trn__carts.quantity',
+                            'trn__carts.remove_status'
+                        )
+                        ->where('trn__carts.customer_id', $customer_id)
+                        ->where('trn__carts.remove_status', 0)
+                        ->where('mst_store_product_varients.variant_status','=',1)
+                        ->get()
+                    ) {
+                        foreach ($cartDatas as $cartData) {
+                            if($cartData->stock_count<=0)
+                            {
+                                array_push($OutStockProduct,$cartData->product_varient_id);
+
+                            }
+                            
+                        }
+                        
+                       
+                    if(!empty($OutStockProduct))
+                    {
+                        Trn_Cart::where('customer_id',$customer_id)->whereIn($OutStockProduct)->update(['remove_status'=>1]);
+                        
+                        $data['status'] = 1;
+                        $data['message'] = "success";
+                        return response($data);
+                    }
+                    else
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                        return response($data);
+
+                    }
+                           
+                    } 
+                    else 
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                       
+                        return response($data);
+                    }
+                } else {
+                    $data['status'] = 2;
+                    $data['message'] = "Customer not found ";
+                    return response($data);
+                }
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
     public function viewProduct(Request $request)
     {
         $data = array();

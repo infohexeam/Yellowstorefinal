@@ -438,6 +438,8 @@ Route::get('customer/search-product', 'Customer_Api\ProductController@searchProd
 Route::get('customer/search-store', 'Customer_Api\ProductController@searchStore');
 
 Route::get('customer/cart-page', 'Customer_Api\ProductController@viewCart');
+Route::get('customer/cart-bulk-delete', 'Customer_Api\ProductController@CartOutOfStockDelete');
+
 
 Route::get('customer/wallet-page', 'Customer_Api\ProductController@walletPage');
 Route::get('customer/raise-issues', 'Customer_Api\ProductController@raiseIssuesPage');

@@ -66,6 +66,11 @@
       </div>
       <input type="hidden" name="store_id" value="{{$store->store_id}}">
       <div class="card">
+      @if ($message = Session::get('error'))
+                  <div class="alert alert-danger">
+                     <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+                  </div>
+      @endif
        @if ($message = Session::get('status'))
                   <div class="alert alert-success">
                      <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
