@@ -1325,5 +1325,38 @@ public static function deliveryBoyCommission($order_id,$dbid)
 
 
 }
+public static function getProductBrandsByStore($storeId)
+{
+
+    $allProducts = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+    ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+    // Add your other joins, conditions, and select as needed
+    ->where('mst_store_products.display_flag', 1)
+    ->where('mst_store_products.store_id', $storeId)
+    ->where('mst_store_product_varients.is_removed', 0)
+    ->where('mst_store_products.is_removed', 0)
+    ->where('mst_store_product_varients.is_base_variant', 1)
+    ->get();
+
+// Calculate the variant_stock_count for each product and store it in the collection
+$allProducts->each(function ($product) {
+    $product->variant_stock_count = Mst_store_product_varient::where('product_id', $product->product_id)
+        ->where('is_removed', 0)
+        ->where('stock_count', '>', 0)
+        ->sum('stock_count');
+});
+
+// Filter distinct product brands based on variant_stock_count and not null values
+$distinctProductBrands = $allProducts
+    ->filter(function ($product) {
+        return $product->variant_stock_count > 0 && isset($product->product_brand);
+    })
+    ->pluck('product_brand')
+    ->unique()
+    ->values()
+    ->toArray();
+
+return $distinctProductBrands;
+}
 
 }

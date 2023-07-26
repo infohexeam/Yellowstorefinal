@@ -4340,6 +4340,7 @@ class ProductController extends Controller
                     foreach ($data['categoriesList'] as $cat) {
                         $cat->category_icon = '/assets/uploads/category/icons/' . $cat->category_icon;
                     }
+                    $data['storeBrandList']= Helper::getProductBrandsByStore($store_id);
 
 
 
@@ -4642,6 +4643,7 @@ class ProductController extends Controller
                         foreach ($data['categoriesList'] as $cat) {
                             $cat->category_icon = '/assets/uploads/category/icons/' . $cat->category_icon;
                         }
+                       $data['storeBrandList']= Helper::getProductBrandsByStore($store_id);
 
 
 
@@ -4814,6 +4816,12 @@ class ProductController extends Controller
                             $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                             $allProduct->cartCount=(int)$cartCount;
                             $allProduct->cartId=(int)$cartId;
+                        }
+                        $brand_name=$request->product_brand;
+                        if(isset($brand_name))
+                        {
+                            $allProducts=$allProducts->where('product_brand',$brand_name);
+
                         }
 
                         $data['allProducts']  = $allProducts->where('variant_stock_count','>',0);
