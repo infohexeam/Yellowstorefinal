@@ -4281,7 +4281,7 @@ class ProductController extends Controller
                    
                     $allProducts = $allProducts->where('mst_store_products.display_flag', 1)
                         ->where('mst_store_products.store_id', $store_id)
-                        ->where('st_store_products.product_brand',$brand_name)
+                        ->where('mst_store_products.product_brand',$brand_name)
                         //->where('mst_store_product_varients.stock_count', '>', 0)
                         ->where('mst_store_product_varients.is_removed', 0)
                         ->where('mst_store_products.is_removed', 0)
