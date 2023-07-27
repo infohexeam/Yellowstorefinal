@@ -3596,7 +3596,7 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                if (isset($request->category_id)) {
+                if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
                     $category_id = $request->category_id;
                     $store_id = $request->store_id;
 
@@ -3844,18 +3844,7 @@ class ProductController extends Controller
                             
                                 
                             }
-                            if($category_id==-2)
-                            {
-                                if(isset($request->brand_name))
-                                {
-                                    $allProducts=$allProducts->where('mst_store_products.product_brand',$request->brand_name);
-
-                                }
-                            }
-                        if($category_id!=-2)
-                        {
-                            $allProducts=$allProducts->where('mst_store_products.product_cat_id', $category_id);
-                        }
+                           
 
                         $allProducts = $allProducts->where('mst_store_products.display_flag', 1)
                             ->where('mst_store_products.store_id', $store_id)
@@ -3863,7 +3852,7 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
-                           // ->where('mst_store_products.product_cat_id', $category_id)
+                            ->where('mst_store_products.product_cat_id', $category_id)
                             ->get();
 
                         foreach ($allProducts as $allProduct) {
@@ -4180,18 +4169,7 @@ class ProductController extends Controller
                             
                                 
                             }
-                            if($category_id==-2)
-                            {
-                                if(isset($request->brand_name))
-                                {
-                                    $allProducts=$allProducts->where('mst_store_products.product_brand',$request->brand_name);
-
-                                }
-                            }
-                        if($category_id!=-2)
-                        {
-                            $allProducts=$allProducts->where('mst_store_products.product_cat_id', $category_id);
-                        }
+                           
 
 
 
@@ -4282,8 +4260,84 @@ class ProductController extends Controller
                         }
                     }
                 } else {
+                    if($request->category_id!=0)
+                    {
                     $data['message'] = 'Category not found';
                     $data['status'] = 0;
+                    }
+                    else
+                    {
+                        $category_id=$request->category_id;
+                        $store_id=$request->store_id;
+                        
+                        $brand_name=$request->brand_name??'tset';
+
+                        
+                        $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+
+                        
+                       
+                   
+                    $allProducts = $allProducts->where('mst_store_products.display_flag', 1)
+                        ->where('mst_store_products.store_id', $store_id)
+                        ->where('st_store_products.product_brand',$brand_name)
+                        //->where('mst_store_product_varients.stock_count', '>', 0)
+                        ->where('mst_store_product_varients.is_removed', 0)
+                        ->where('mst_store_products.is_removed', 0)
+                        ->where('mst_store_product_varients.is_base_variant', 1)
+                       // ->where('mst_store_products.product_cat_id', $category_id)
+                        ->get();
+
+                    foreach ($allProducts as $allProduct) {
+                        $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
+                        $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
+                        $storeData = Mst_store::find($allProduct->store_id);
+                        $allProduct->store_name = $storeData->store_name;
+
+                        $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->sum('rating');
+                        $countRating = Trn_ReviewsAndRating::where('product_varient_id', $allProduct->product_varient_id)->where('isVisible', 1)->count();
+
+                        if ($countRating == 0) {
+                            $ratingData = $sumRating / 1;
+                        } else {
+                            $ratingData = $sumRating / $countRating;
+                        }
+
+                        $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                        $allProduct->ratingCount = $countRating;
+
+                        $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                        $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
+                        $allProduct->cartCount=0;
+                        $allProduct->cartId=0;
+                        $allProduct->cartStoreId=0;
+                    }
+
+                    $data['listProducts']  = $allProducts->where('variant_stock_count','>',0);
+                    // $products = collect($data['listProducts'] )->values();
+                    //
+                    $perPage = 10;
+                    $page=$request->page??1;
+                    $offset = ($page - 1) * $perPage;
+                    $roWc=count(collect($data['listProducts'] )->values());
+                    $data['allProductCount']=$roWc;
+                    $products = collect($data['listProducts'] )->slice($offset, $perPage)->values();
+                    //
+                    $data['listProducts']=$products;
+                    if ($roWc >9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
+                     } else {
+                         $data['pageCount'] = 1;
+                     }
+
+
+
+
+                    $data['message'] = 'success';
+                    $data['status'] = 1;
+                    }
                 }
             } else {
                 $data['message'] = 'Store not found';
