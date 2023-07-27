@@ -4271,7 +4271,7 @@ class ProductController extends Controller
                         $store_id=$request->store_id;
                         
                         $brand_name=$request->brand_name??'tset';
-                        $data['categoryInfo'] = collect([]);
+                        $data['categoryInfo'] = (object)[];
                         $data['storeInfo'] = Mst_store::find($store_id);
 
 
