@@ -3596,7 +3596,7 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
+                if (isset($request->category_id)) {
                     $category_id = $request->category_id;
                     $store_id = $request->store_id;
 
