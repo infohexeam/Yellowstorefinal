@@ -404,9 +404,18 @@ class StoreController extends Controller
 
       $json = json_decode($sendrJson);
 
-      $sendLat = $json->results[0]->geometry->location->lat;
-      $sendLong = $json->results[0]->geometry->location->lng;
-      $sendPlaceId = $json->results[0]->place_id;
+      if ($json->status === "OK") {
+				$sendLat = $json->results[0]->geometry->location->lat;
+			$sendLong = $json->results[0]->geometry->location->lng;
+			$sendPlaceId = $json->results[0]->place_id;
+
+			$store->latitude          = $sendLat;
+			$store->longitude          = $sendLong;
+			$store->place_id          = $sendPlaceId;
+				// Other data like formatted address, place ID, etc. can also be accessed similarly
+			} else {
+				return redirect()->back()->with('errStatus','Not able to locate geo coordinates with Map API..Kindly update with  a valid store place')->withInput();
+			}
 
       //dd($json,$sendLat,$sendLong,$sendPlaceId);
       //     dd($request->store_place);
