@@ -2550,7 +2550,92 @@ class StoreOrderController extends Controller
     }
     
 
-    public function orderHistory(Request $request)
+public function orderHistory(Request $request)
+{
+    try {
+        if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+            $customer_id = $request->customer_id;
+            $query = Trn_store_order::select(
+                'order_id',
+                'order_number',
+                'store_id',
+                'created_at',
+                'status_id',
+                'customer_id',
+                'product_total_amount',
+                'is_split_data_saved',
+                'referenceId',
+                'txTime',
+                'txMsg',
+                'orderAmount',
+                'txStatus',
+                'isRefunded',
+                'refundStatus',
+                'refundId'
+            )->where('customer_id', $request->customer_id)->orderBy('created_at', 'DESC');
+
+            $perPage = 10;
+            $page = $request->page ?? 1;
+            $offset = ($page - 1) * $perPage;
+            $inventoryDatassss = collect($query->get());
+            $roWc = count($inventoryDatassss);
+            $dataReViStoreSS = $inventoryDatassss->slice($offset, $perPage)->values()->all();
+
+            $data['orderHistory'] = $dataReViStoreSS;
+            if ($roWc > 9) {
+                $data['pageCount'] = ceil($roWc / 10);
+            } else {
+                $data['pageCount'] = 1;
+            }
+
+            foreach ($data['orderHistory'] as $order) {
+                $storeData = Mst_store::withTrashed()->find($order->store_id);
+                if ($storeData != NULL) {
+                    $order->store_name = @$storeData->store_name;
+                } else {
+                    $order->store_name = 'Store not exists(Removed)';
+                }
+
+                if (isset($order->customer_id)) {
+                    $customerData = Trn_store_customer::find($order->customer_id);
+                    $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
+                    $order->customer_mobile_number = @$customerData->customer_mobile_number;
+                } else {
+                    $order->customer_name = null;
+                }
+
+                if (isset($order->status_id)) {
+                    $statusData = Sys_store_order_status::find(@$order->status_id);
+                    $order->status_name = @$statusData->status;
+                } else {
+                    $order->status_name = null;
+                }
+
+                $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
+                $order->invoice_link = url('get/invoice/' . Crypt::encryptString($order->order_id));
+            }
+
+            $data['status'] = 1;
+            $data['currentPage'] = $page;
+            $data['message'] = "success";
+            return response($data);
+        } else {
+            $data['status'] = 0;
+            $data['message'] = "Customer not found";
+            return response($data);
+        }
+    } catch (\Exception $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    } catch (\Throwable $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    }
+}
+
+    
+
+    public function orderHistory8(Request $request)
     {
         $data = array();
         try {

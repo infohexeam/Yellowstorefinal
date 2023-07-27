@@ -92,7 +92,7 @@ class InventoryController extends Controller
                                     $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                                     $product->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_varient_base_image;
                                 }
-                                $inventoryDatassss = collect($inventoryData);
+                $inventoryDatassss = collect($inventoryData);
                 $perPage = 15;
                 $page=$request->page??1;
                 $offset = ($page - 1) * $perPage;
