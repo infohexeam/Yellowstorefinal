@@ -71,7 +71,83 @@ class OrderController extends Controller
         Trn_store_customer::where('customer_id', 3)->update(['customer_first_name' => 'Store Customer', 'customer_last_name' => null, 'customer_mobile_number' => '000000000']);
         echo "done";
     }
+    
     public function listOrders(Request $request)
+    {
+        try {
+            if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $store_id = $request->store_id;
+                $query = Trn_store_order::select(
+                    'order_id',
+                    'order_number',
+                    'delivery_address',
+                    'created_at',
+                    'status_id',
+                    'customer_id',
+                    'product_total_amount',
+                    'order_type',
+                    'isRefunded',
+                    'refundStatus',
+                    'refundId'
+                )->where('store_id', $request->store_id);
+
+                if (isset($request->order_number)) {
+                    $query->where('order_number', 'LIKE', "%{$request->order_number}%");
+                }
+                if (isset($request->from) && isset($request->to)) {
+                    $query->whereDate('created_at', '>=', $request->from)->whereDate('created_at', '<=', $request->to);
+                }
+                if (isset($request->from) && !isset($request->to)) {
+                    $query->whereDate('created_at', '>=', $request->from);
+                }
+                if (!isset($request->from) && isset($request->to)) {
+                    $query->whereDate('created_at', '<=', $request->to);
+                }
+
+                $perPage = 10;
+                $page = $request->page ?? 1;
+                $data['orderDetails'] = $query->orderBy('created_at', 'DESC')->paginate($perPage, ['*'], 'page', $page);
+
+                foreach ($data['orderDetails'] as $order) {
+                    $customerData = Trn_store_customer::find($order->customer_id);
+                    if ($order->order_type == 'POS') {
+                        $order->customer_name = 'Store Customer';
+                    } else {
+                        $cusAdd = Trn_customerAddress::find($order->delivery_address);
+                        $order->customer_name = @$cusAdd->name;
+                        if (!isset($cusAdd->name))
+                            $order->customer_name = @$customerData->customer_first_name . " " . @$customerData->customer_last_name;
+                    }
+
+                    if (isset($order->status_id)) {
+                        $statusData = Sys_store_order_status::find(@$order->status_id);
+                        $order->status_name = @$statusData->status;
+                    } else {
+                        $order->status_name = null;
+                    }
+
+                    $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
+                    $order->invoice_link = url('get/invoice/' . Crypt::encryptString($order->order_id));
+                    $order->item_list_link = url('item/list/' . Crypt::encryptString($order->order_id));
+                }
+                $data['status'] = 1;
+                $data['message'] = "success";
+                return response($data);
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Store not found";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+
+    public function listOrders2(Request $request)
     {
         $data = array();
         try {
