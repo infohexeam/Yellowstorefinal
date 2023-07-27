@@ -4271,6 +4271,212 @@ class ProductController extends Controller
                         $store_id=$request->store_id;
                         
                         $brand_name=$request->brand_name??'tset';
+                        $data['categoryInfo'] = [];
+                        $data['storeInfo'] = Mst_store::find($store_id);
+
+
+
+                        $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id', '=', $store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
+                        $data['categoriesList'] = Mst_categories::whereIn('category_id', $storeProductData)->where('category_status', 1)->get();
+                        foreach ($data['categoriesList'] as $cat) {
+                            $cat->category_icon = '/assets/uploads/category/icons/' . $cat->category_icon;
+                        }
+
+
+                        if ($request->sub_category_id == 0) {
+                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                            foreach ($data['subCategoriesList'] as $cat) {
+                                if (isset($cat->sub_category_icon)) {
+                                    $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
+                                } else {
+                                    $cat->sub_category_icon =  Helper::default_subcat_image();
+                                }
+                            }
+                            $additionalSubCategory = (object) [
+                                "sub_category_id" => 0,
+                                "category_id" => $request->category_id,
+                                "sub_category_name" => "",
+                                "sub_category_name_slug"=> "otherss",
+                                "sub_category_icon" =>'/assets/uploads/others.png',
+                                "sub_category_description" => "Others",
+                                "sub_category_status"=>"1",
+                                "deleted_at"=>null,
+                                "created_at"=> "2023-06-19T14:51:36.000000Z",
+                                "updated_at"=> "2023-06-19T14:51:36.000000Z"
+                            ];
+
+                            $data['subCategoriesList']->push($additionalSubCategory);
+                           
+                        } else {
+                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                            foreach ($data['subCategoriesList'] as $cat) {
+                                if (isset($cat->sub_category_icon)) {
+                                    $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
+                                } else {
+                                    $cat->sub_category_icon =  Helper::default_subcat_image();
+                                }
+                            }
+                        }
+
+
+
+                        $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                            ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+                        // ->select(
+                        //     'mst_store_products.product_id',
+                        //     'mst_store_products.product_type',
+                        //     'mst_store_products.service_type',
+                        //     'mst_store_products.product_name',
+                        //     'mst_store_products.product_code',
+                        //     'mst_store_products.product_base_image',
+                        //     'mst_store_products.show_in_home_screen',
+                        //     'mst_store_products.product_status',
+                        //     'mst_store_product_varients.product_varient_id',
+                        //     'mst_store_product_varients.variant_name',
+                        //     'mst_store_product_varients.product_varient_price',
+                        //     'mst_store_product_varients.product_varient_offer_price',
+                        //     'mst_store_product_varients.product_varient_base_image',
+                        //     'mst_store_product_varients.stock_count',
+                        //     'mst_store_product_varients.store_id'
+                        // );
+                        if (isset($latitude) && ($longitude)) {
+                            $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                                    * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                                    + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                            $productData = $productData->orderBy('distance');
+                        }
+                        //return $request->sub_category_id;
+                        if (isset($request->sub_category_id)) {
+                           
+                            if($request->sub_category_id>=0)
+                            {
+                                $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+
+                            }
+                            else
+                            {
+                                
+                               
+                                $subcat_first= Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->first();
+                                if($subcat_first)
+                                {
+                                    $productData = $productData->where('mst_store_products.sub_category_id', $subcat_first->sub_category_id);
+
+
+                                }
+                    
+
+                              
+
+                               }
+                               
+
+
+                        
+                            
+                        }
+
+                        $productData = $productData->where('mst_store_products.display_flag', 1)
+                            ->where('mst_store_product_varients.stock_count', '>', 0)
+                            ->where('mst_store_products.product_brand', $brand_name)
+                            ->where('mst_store_products.is_removed', 0)
+                            ->where('mst_store_product_varients.is_removed', 0)
+                            ->where('mst_store_products.store_id', $store_id)
+                            ->where('mst_store_product_varients.is_base_variant', 1)
+                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                        $productDataFinal = array();
+                        foreach ($productData as $offerProduct) {
+                            $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                            $offerProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_varient_base_image;
+                            $storeData = Mst_store::find($offerProduct->store_id);
+                            $offerProduct->store_name = $storeData->store_name;
+                            $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->sum('rating');
+                            $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->count();
+                            if ($countRating == 0) {
+                                $countRating = 1;
+                            }
+                            $ratingData = $sumRating / $countRating;
+                            $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
+                            $offerProduct->ratingCount = $countRating;
+                            $productDataFinal[] =   $offerProduct;
+                        }
+                        $data['offerProducts']  =    $productDataFinal;
+
+
+
+                        // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+
+
+                        // if (isset($latitude) && ($longitude)) {
+                        //     $productData = $productData->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
+                        //                                 * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
+                        //                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
+                        //     $productData = $productData->orderBy('distance');
+                        // }
+
+                        // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                        //     $productData = $productData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                        // }
+
+                        // $productData = $productData->where('mst_store_products.product_status', 1)
+                        //     ->where('mst_store_products.store_id', $store_id)
+                        //     ->where('mst_store_products.product_cat_id', $category_id)
+                        //     ->where('mst_store_products.show_in_home_screen', 1)->get();
+                        // $productDataFinal = array();
+                        // $stockCount = 0;
+                        // foreach ($productData as $offerProduct) {
+
+                        //     if (Helper::productStock($offerProduct->product_id) > 0) {
+                        //         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
+                        //         $storeData = Mst_store::find($offerProduct->store_id);
+                        //         $offerProduct->store_name = $storeData->store_name;
+                        //         $offerProduct->rating = Helper::productRating($offerProduct->product_id);
+                        //         $offerProduct->ratingCount = Helper::productRatingCount($offerProduct->product_id);
+                        //         $offerProduct->productStock = Helper::productStock($offerProduct->product_id);
+                        //         $offerProduct->variantCount = Helper::variantCount($offerProduct->product_id);
+                        //         $offerProduct->isBaseVariant = Helper::isBaseVariant($offerProduct->product_id);
+                        //         $offerProduct->attrCount = Helper::attrCount($offerProduct->product_id);
+
+                        //         $productDataFinal[] =   $offerProduct;
+                        //     }
+                        // }
+                        // $data['offerProducts']  =    $productDataFinal;
+
+
+                        // $allProducts = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
+
+                        // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
+                        //     $allProducts = $allProducts->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                        // }
+
+                        // $allProducts = $allProducts->where('mst_store_products.product_status', 1)
+                        //     ->where('mst_store_products.product_cat_id', $category_id)
+                        //     ->where('mst_store_products.store_id', $store_id)
+                        //     ->get();
+
+                        // $allProductDataFinal = array();
+
+                        // foreach ($allProducts as $allProduct) {
+                        //     if (Helper::productStock($allProduct->product_id) > 0) {
+                        //         $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
+                        //         $storeData = Mst_store::find($allProduct->store_id);
+                        //         $allProduct->store_name = $storeData->store_name;
+                        //         $allProduct->rating = Helper::productRating($allProduct->product_id);
+                        //         $allProduct->ratingCount = Helper::productRatingCount($allProduct->product_id);
+                        //         $allProduct->varAttrStatus =  Helper::varAttrStatus($allProduct->product_id);
+
+                        //         $allProduct->product_varient_id =  Helper::findServiceVariant($allProduct->product_id);
+                        //         $allProduct->productStock = Helper::productStock($allProduct->product_id);
+
+                        //         $allProduct->variantCount = Helper::variantCount($allProduct->product_id);
+                        //         $allProduct->isBaseVariant = Helper::isBaseVariant($allProduct->product_id);
+                        //         $allProduct->attrCount = Helper::attrCount($allProduct->product_id);
+
+                        //         $allProductDataFinal[] =   $allProduct;
+                        //     }
+                        // }
+
+                        // $data['listProducts']  = $allProductDataFinal;
 
                         
                         $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
