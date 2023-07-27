@@ -2477,7 +2477,7 @@ class StoreOrderController extends Controller
     }
     
     
-    public function orderHistory(Request $request)
+    public function orderHistorynew(Request $request)
     {
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
@@ -2550,7 +2550,7 @@ class StoreOrderController extends Controller
     }
     
 
-    public function orderHistory2(Request $request)
+    public function orderHistory(Request $request)
     {
         $data = array();
         try {
