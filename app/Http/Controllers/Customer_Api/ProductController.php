@@ -3732,6 +3732,7 @@ class ProductController extends Controller
                             $productDataFinal[] =   $offerProduct;
                         }
                         $data['offerProducts']  =    $productDataFinal;
+                        $data['storeBrandList']= Helper::getProductBrandsByStore($store_id);
 
 
 
@@ -3918,6 +3919,7 @@ class ProductController extends Controller
 
                             $data['categoryInfo'] = Mst_categories::find($category_id);
                             $data['storeInfo'] = Mst_store::find($store_id);
+                            $data['storeBrandList']= Helper::getProductBrandsByStore($store_id);
 
                             $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id', '=', $store_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
                             $data['categoriesList'] = Mst_categories::whereIn('category_id', $storeProductData)->where('category_status', 1)->get();
@@ -4269,10 +4271,12 @@ class ProductController extends Controller
                     {
                         $category_id=$request->category_id;
                         $store_id=$request->store_id;
+
                         
                         $brand_name=$request->brand_name??'tset';
                         $data['categoryInfo'] = (object)[];
                         $data['storeInfo'] = Mst_store::find($store_id);
+                        $data['storeBrandList']= Helper::getProductBrandsByStore($store_id);
 
 
 
