@@ -145,6 +145,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('admin/store', 'SettingController@addStore')->name('admin.store');
         Route::post('admin/store/destroy/{store}', 'SettingController@destroyStore')->name('admin.destroy_store');
         Route::post('admin/store/status/{store_id}', 'SettingController@statusStore')->name('admin.status_store');
+        Route::post('admin/store/otp-status/{store_id}', 'SettingController@otpStatusStore')->name('admin.otp_status_store');
         Route::get('admin/store/edit/{id}', 'SettingController@editStore')->name('admin.edit_store');
         Route::post('admin/store/update/{store_id}', 'SettingController@updateStore')->name('admin.update_store');
         Route::get('admin/store/view/{id}', 'SettingController@viewStore')->name('admin.view_store');

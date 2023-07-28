@@ -195,7 +195,8 @@ use App\Models\admin\Trn_StoreBankData;
 
                                     @endif
 
-                                    <th class="wd-20p">{{__('Status')}}</th>
+                                    <th class="wd-20p">{{__('Profile')}}</br>{{__('Status')}}</th>
+                                     <th class="wd-20p">{{__('OTP')}}</br>{{__('Status')}}</th>
                                     <th class="wd-15p">{{__('Action')}}</th>
                                  </tr>
                               </thead>
@@ -317,6 +318,18 @@ use App\Models\admin\Trn_StoreBankData;
                                     <p style="font-size:9px">This account expires in <b style="font-size:11px"> {{ @$remDays }}</b> Days</p> --}}
                                     
                                     </td>
+                                    <td>
+                                       @if(@$adminData->store_otp_verify_status == 0) 
+                                        <form action="{{route('admin.otp_status_store',$store->store_id)}}" method="POST">
+                                          @csrf
+                                          @method('POST')
+                                         <button type="submit"  onclick="return confirm('Do you want to change OTP verification status?');" class="btn btn-sm btn-danger"><i class="fa fa-close"></i> Not Verified</button> 
+                                        </form>
+                                        
+                                       @else 
+                                        <button type="button"   class="btn btn-sm btn-outline-success" disabled> <i class="fa fa-check"></i> Verified</button> 
+                                       @endif
+                                     </td>
                                     <td>
                                        <form action="{{route('admin.destroy_store',$store->store_id)}}" method="POST">
                                        @if(auth()->user()->user_role_id == 0)

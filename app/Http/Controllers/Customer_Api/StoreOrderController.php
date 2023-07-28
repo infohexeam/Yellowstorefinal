@@ -430,7 +430,7 @@ class StoreOrderController extends Controller
                     {
                             
                         $data['status'] = 0;
-                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You cannot place an order';
                         return response($data);          
                     }
                     
@@ -821,7 +821,7 @@ class StoreOrderController extends Controller
                     {
                             
                          $data['status'] = 0;
-                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You cannot place an order';
                         return response($data);          
                     }
                     
@@ -1497,7 +1497,7 @@ class StoreOrderController extends Controller
                     {
                             
                         $data['status'] = 0;
-                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You cannot place an order';
                         return response($data);          
                     }
                     
@@ -2156,7 +2156,7 @@ class StoreOrderController extends Controller
                     {
                             
                         $data['status'] = 6;
-                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You can not place an order';
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You cannot place an order';
                         return response($data);          
                     }
                     
@@ -3134,7 +3134,7 @@ public function orderHistory(Request $request)
                     if($orderData->status_id!=1)
                     {
                         $data['status'] = 0;
-                        $data['message'] = "Order is already confirmed..You can not cancel order now";
+                        $data['message'] = "Order is already confirmed..You cannot cancel order now";
                         return response($data);
                     }
 

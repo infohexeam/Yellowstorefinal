@@ -104,6 +104,70 @@ class StoreController extends Controller
             return response($response);
         }
     }
+    public function storeVideoListNew(Request $request)
+{
+    $data = array();
+    try {
+        $storeVids = Mst_Video::where('status', 1);
+
+        if (isset($request->store_id)) {
+            $storeTownData = Mst_store::find($request->store_id);
+            $storeVids = $storeVids->where(function ($query) use ($storeTownData) {
+                $query->where('town_id', $storeTownData->town_id)->orWhereNull('town_id');
+            });
+        } else {
+            $storeVids = $storeVids->where(function ($query) {
+                $query->whereNull('town_id');
+            });
+        }
+
+        $storeVids = $storeVids->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+
+        $data['videos'] = $storeVids;
+
+        foreach ($data['videos'] as $v) {
+            $linkCode = ' ';
+
+            if ($v->platform == 'Youtube') {
+                $revLink = strrev($v->video_code);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                $linkCode = strrev($revLinkCode);
+
+                if ($linkCode == "") {
+                    $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                    $linkCode = strrev($revLinkCode);
+                }
+            }
+
+            if (!isset($v->video_discription)) {
+                $v->video_discription = '';
+            }
+
+            if ($v->platform == 'Vimeo') {
+                $revLink = strrev($v->video_code);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                $linkCode = strrev($revLinkCode);
+            }
+
+            $v->link_code = @$linkCode;
+
+            if ($v->video_image) {
+                $v->video_image = '/assets/uploads/video_images/' . $v->video_image;
+            } else {
+                $v->video_image = Helper::default_video_image();
+            }
+        }
+
+        return response($data);
+    } catch (\Exception $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    } catch (\Throwable $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    }
+}
+
 
     public function customerVideoList(Request $request)
     {
@@ -167,6 +231,70 @@ class StoreController extends Controller
             return response($response);
         }
     }
+    public function customerVideoListNew(Request $request)
+{
+    $data = array();
+    try {
+        $cusVids = Mst_Video::where('status', 1)->where('visibility', 2);
+
+        if (isset($request->customer_id)) {
+            $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
+            $cusVids = $cusVids->where(function ($query) use ($cusTownId) {
+                $query->where('town_id', $cusTownId)->orWhereNull('town_id');
+            });
+        } else {
+            $cusVids = $cusVids->where(function ($query) {
+                $query->whereNull('town_id');
+            });
+        }
+
+        $cusVids = $cusVids->orderBy('video_id', 'DESC')->get();
+
+        $data['videos'] = $cusVids;
+
+        foreach ($data['videos'] as $v) {
+            $linkCode = '';
+
+            if ($v->platform == 'Youtube') {
+                $revLink = strrev($v->video_code);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                $linkCode = strrev($revLinkCode);
+
+                if ($linkCode == "") {
+                    $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                    $linkCode = strrev($revLinkCode);
+                }
+            }
+
+            if (!isset($v->video_discription)) {
+                $v->video_discription = '';
+            }
+
+            if ($v->platform == 'Vimeo') {
+                $revLink = strrev($v->video_code);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                $linkCode = strrev($revLinkCode);
+            }
+
+            $v->link_code = @$linkCode;
+
+            if ($v->video_image) {
+                $v->video_image = '/assets/uploads/video_images/' . $v->video_image;
+            } else {
+                $v->video_image = Helper::default_video_image();
+            }
+        }
+
+        return response($data);
+    } catch (\Exception $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    } catch (\Throwable $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    }
+}
+
 
     public function deliveryBoyVideoList(Request $request)
     {
@@ -230,6 +358,71 @@ class StoreController extends Controller
             return response($response);
         }
     }
+
+    public function deliveryBoyVideoListNew(Request $request)
+{
+    $data = array();
+    try {
+        $dboyVid = Mst_Video::where('status', 1)->where('visibility', 3);
+
+        if (isset($request->delivery_boy_id)) {
+            $dbTownId = Mst_delivery_boy::find($request->delivery_boy_id)->town_id;
+            $dboyVid = $dboyVid->where(function ($query) use ($dbTownId) {
+                $query->where('town_id', $dbTownId)->orWhereNull('town_id');
+            });
+        } else {
+            $dboyVid = $dboyVid->where(function ($query) {
+                $query->whereNull('town_id');
+            });
+        }
+
+        $dboyVid = $dboyVid->orderBy('video_id', 'DESC')->get();
+
+        $data['videos'] = $dboyVid;
+
+        foreach ($data['videos'] as $v) {
+            $linkCode = '';
+
+            if ($v->platform == 'Youtube') {
+                $revLink = strrev($v->video_code);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                $linkCode = strrev($revLinkCode);
+
+                if ($linkCode == "") {
+                    $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                    $linkCode = strrev($revLinkCode);
+                }
+            }
+
+            if (!isset($v->video_discription)) {
+                $v->video_discription = '';
+            }
+
+            if ($v->platform == 'Vimeo') {
+                $revLink = strrev($v->video_code);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                $linkCode = strrev($revLinkCode);
+            }
+
+            $v->link_code = @$linkCode;
+
+            if ($v->video_image) {
+                $v->video_image = '/assets/uploads/video_images/' . $v->video_image;
+            } else {
+                $v->video_image = Helper::default_video_image();
+            }
+        }
+
+        return response($data);
+    } catch (\Exception $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    } catch (\Throwable $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    }
+}
+
 
 
 

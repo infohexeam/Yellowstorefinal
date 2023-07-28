@@ -1320,6 +1320,43 @@ class SettingController extends Controller
 
 		return redirect('admin/store/list')->with('status', 'Store status changed successfully');
 	}
+	public function otpStatusStore(Request $request, Mst_store $store, $store_id)
+	{
+
+		$cat_id = $request->store_id;
+
+		$store = Mst_store::Find($cat_id);
+
+		$status = $store->store_otp_verify_status;
+		$today = Carbon::now()->toDateString();
+		$getDate = Trn_StoreAdmin::where('store_id', $store_id)->first();
+
+		if ($status == 0 ) {
+			$store->store_otp_verify_status  = 1;
+			$storeAdmin['store_otp_verify_status'] = 1;
+			
+			if($today >= $getDate->expiry_date)
+			{
+				//$storeAdmin['expiry_date'] = Carbon::now()->addYears(5)->toDateString();
+			}
+		} else {
+			$storeAdmin['store_account_status'] = 0;
+
+			$store->store_otp_verify_status  = 0;
+			if($today > $getDate->expiry_date)
+			{
+				$storeAdmin['store_otp_verify_status'] =1;
+				$store->store_otp_verify_status  = 1;
+				//$storeAdmin['expiry_date'] = Carbon::now()->addYears(5)->toDateString();
+			}
+
+		}
+		$store->update();
+
+		Trn_StoreAdmin::where('store_id', $store_id)->update($storeAdmin);
+
+		return redirect('admin/store/list')->with('status', 'Store OTP verification status changed successfully');
+	}
 
 
 
@@ -4309,7 +4346,7 @@ class SettingController extends Controller
 			//dd($balance_commision,$request->commision_paid);
 			if($balance_commision<$request->commision_paid)
 			{
-				return redirect()->back()->with('error', 'Commision amount given can not be exceeded balance commision to be paid');
+				return redirect()->back()->with('error', 'Commision amount given cannot be exceeded balance commision to be paid');
 
 			}
 
