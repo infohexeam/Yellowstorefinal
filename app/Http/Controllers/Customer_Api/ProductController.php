@@ -5311,7 +5311,7 @@ class ProductController extends Controller
                     $offerProduct->ratingCount = $countRating;
                     $productDataFinal[] =   $offerProduct;
                 }
-                $data['offerProducts']  =    $productDataFinal;
+                $data['offerProducts']  = [];   //$productDataFinal;
 
                 // $productData = Mst_store_product::join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                 //     ->select(
@@ -5650,7 +5650,7 @@ class ProductController extends Controller
                             $productDataFinal[] = $offerProduct;
                         }
                     }
-                    $data['offerProducts']  = $productDataFinal;
+                    $data['offerProducts']  = [];//$productDataFinal;
 
 
 
