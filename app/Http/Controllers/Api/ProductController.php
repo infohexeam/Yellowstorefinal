@@ -3064,6 +3064,11 @@ class ProductController extends Controller
                         $product['product_cat_id'] = $global_product->product_cat_id;
                     else
                         $product['product_cat_id'] = 0;
+                    
+                    if (isset($global_product->sub_category_id))
+                        $product['sub_category_id'] = $global_product->sub_category_id;
+                    else
+                        $product['sub_category_id'] = 0;
 
                     if (isset($global_product->regular_price))
                         $product['product_price'] = $global_product->regular_price;
