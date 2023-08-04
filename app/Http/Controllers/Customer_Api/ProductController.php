@@ -3629,6 +3629,15 @@ class ProductController extends Controller
                                     ->where('mst_store_products.product_cat_id', $category_id);
                             })
                             ->get();
+                            $data['subCategoriesList']->each(function ($subcategory) {
+                                $subcategory->products->each(function ($product) {
+                                    $product->variant_stock_count = Mst_store_product_varient::where('product_id', $product->product_id)
+                                        ->where('is_removed', 0)
+                                        ->where('stock_count', '>', 0)
+                                        ->sum('stock_count');
+                                });
+                            });
+                           
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -3666,6 +3675,14 @@ class ProductController extends Controller
             ->where('mst_store_products.product_cat_id', $category_id);
     })
     ->get();
+    $data['subCategoriesList']->each(function ($subcategory) {
+        $subcategory->products->each(function ($product) {
+            $product->variant_stock_count = Mst_store_product_varient::where('product_id', $product->product_id)
+                ->where('is_removed', 0)
+                ->where('stock_count', '>', 0)
+                ->sum('stock_count');
+        });
+    });
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -4008,6 +4025,14 @@ class ProductController extends Controller
             ->where('mst_store_products.product_cat_id', $category_id);
     })
     ->get();
+    $data['subCategoriesList']->each(function ($subcategory) {
+        $subcategory->products->each(function ($product) {
+            $product->variant_stock_count = Mst_store_product_varient::where('product_id', $product->product_id)
+                ->where('is_removed', 0)
+                ->where('stock_count', '>', 0)
+                ->sum('stock_count');
+        });
+    });
                                 foreach ($data['subCategoriesList'] as $cat) {
                                     if (isset($cat->sub_category_icon)) {
                                         $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -4044,6 +4069,14 @@ class ProductController extends Controller
             ->where('mst_store_products.product_cat_id', $category_id);
     })
     ->get();
+    $data['subCategoriesList']->each(function ($subcategory) {
+        $subcategory->products->each(function ($product) {
+            $product->variant_stock_count = Mst_store_product_varient::where('product_id', $product->product_id)
+                ->where('is_removed', 0)
+                ->where('stock_count', '>', 0)
+                ->sum('stock_count');
+        });
+    });
                                 foreach ($data['subCategoriesList'] as $cat) {
                                     if (isset($cat->sub_category_icon)) {
                                         $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -4416,6 +4449,14 @@ class ProductController extends Controller
             ->where('mst_store_products.product_cat_id', $category_id);
     })
     ->get();
+    $data['subCategoriesList']->each(function ($subcategory) {
+        $subcategory->products->each(function ($product) {
+            $product->variant_stock_count = Mst_store_product_varient::where('product_id', $product->product_id)
+                ->where('is_removed', 0)
+                ->where('stock_count', '>', 0)
+                ->sum('stock_count');
+        });
+    });
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -4453,6 +4494,14 @@ class ProductController extends Controller
                                 ->where('mst_store_products.product_cat_id', $category_id);
                         })
                         ->get();
+                        $data['subCategoriesList']->each(function ($subcategory) {
+                            $subcategory->products->each(function ($product) {
+                                $product->variant_stock_count = Mst_store_product_varient::where('product_id', $product->product_id)
+                                    ->where('is_removed', 0)
+                                    ->where('stock_count', '>', 0)
+                                    ->sum('stock_count');
+                            });
+                        });
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
