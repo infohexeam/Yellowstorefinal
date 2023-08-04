@@ -3615,7 +3615,20 @@ class ProductController extends Controller
 
 
                         if ($request->sub_category_id == 0) {
-                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)
+                            ->where('sub_category_status', 1)
+                            ->whereIn('sub_category_id', function ($query) use ($store_id, $category_id) {
+                                $query->select('sub_category_id')
+                                    ->from('mst_store_products')
+                                    ->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                                    ->where('mst_store_products.display_flag', 1)
+                                    ->where('mst_store_products.store_id', $store_id)
+                                    ->where('mst_store_product_varients.is_removed', 0)
+                                    ->where('mst_store_products.is_removed', 0)
+                                    ->where('mst_store_product_varients.is_base_variant', 1)
+                                    ->where('mst_store_products.product_cat_id', $category_id);
+                            })
+                            ->get();
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -3639,7 +3652,20 @@ class ProductController extends Controller
                             $data['subCategoriesList']->push($additionalSubCategory);
                            
                         } else {
-                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)
+    ->where('sub_category_status', 1)
+    ->whereIn('sub_category_id', function ($query) use ($store_id, $category_id) {
+        $query->select('sub_category_id')
+            ->from('mst_store_products')
+            ->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+            ->where('mst_store_products.display_flag', 1)
+            ->where('mst_store_products.store_id', $store_id)
+            ->where('mst_store_product_varients.is_removed', 0)
+            ->where('mst_store_products.is_removed', 0)
+            ->where('mst_store_product_varients.is_base_variant', 1)
+            ->where('mst_store_products.product_cat_id', $category_id);
+    })
+    ->get();
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -3944,7 +3970,20 @@ class ProductController extends Controller
 
 
                             if ($request->sub_category_id == 0) {
-                                $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                                $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)
+    ->where('sub_category_status', 1)
+    ->whereIn('sub_category_id', function ($query) use ($store_id, $category_id) {
+        $query->select('sub_category_id')
+            ->from('mst_store_products')
+            ->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+            ->where('mst_store_products.display_flag', 1)
+            ->where('mst_store_products.store_id', $store_id)
+            ->where('mst_store_product_varients.is_removed', 0)
+            ->where('mst_store_products.is_removed', 0)
+            ->where('mst_store_product_varients.is_base_variant', 1)
+            ->where('mst_store_products.product_cat_id', $category_id);
+    })
+    ->get();
                                 foreach ($data['subCategoriesList'] as $cat) {
                                     if (isset($cat->sub_category_icon)) {
                                         $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -3967,7 +4006,20 @@ class ProductController extends Controller
 
                                 $data['subCategoriesList']->push($additionalSubCategory);
                             } else {
-                                $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                                $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)
+    ->where('sub_category_status', 1)
+    ->whereIn('sub_category_id', function ($query) use ($store_id, $category_id) {
+        $query->select('sub_category_id')
+            ->from('mst_store_products')
+            ->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+            ->where('mst_store_products.display_flag', 1)
+            ->where('mst_store_products.store_id', $store_id)
+            ->where('mst_store_product_varients.is_removed', 0)
+            ->where('mst_store_products.is_removed', 0)
+            ->where('mst_store_product_varients.is_base_variant', 1)
+            ->where('mst_store_products.product_cat_id', $category_id);
+    })
+    ->get();
                                 foreach ($data['subCategoriesList'] as $cat) {
                                     if (isset($cat->sub_category_icon)) {
                                         $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -4302,7 +4354,20 @@ class ProductController extends Controller
 
 
                         if ($request->sub_category_id == 0) {
-                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)
+    ->where('sub_category_status', 1)
+    ->whereIn('sub_category_id', function ($query) use ($store_id, $category_id) {
+        $query->select('sub_category_id')
+            ->from('mst_store_products')
+            ->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+            ->where('mst_store_products.display_flag', 1)
+            ->where('mst_store_products.store_id', $store_id)
+            ->where('mst_store_product_varients.is_removed', 0)
+            ->where('mst_store_products.is_removed', 0)
+            ->where('mst_store_product_varients.is_base_variant', 1)
+            ->where('mst_store_products.product_cat_id', $category_id);
+    })
+    ->get();
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
@@ -4326,7 +4391,20 @@ class ProductController extends Controller
                             $data['subCategoriesList']->push($additionalSubCategory);
                            
                         } else {
-                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)->where('sub_category_status', 1)->get();
+                            $data['subCategoriesList'] = Mst_SubCategory::where('category_id', $request->category_id)
+                        ->where('sub_category_status', 1)
+                        ->whereIn('sub_category_id', function ($query) use ($store_id, $category_id) {
+                            $query->select('sub_category_id')
+                                ->from('mst_store_products')
+                                ->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                                ->where('mst_store_products.display_flag', 1)
+                                ->where('mst_store_products.store_id', $store_id)
+                                ->where('mst_store_product_varients.is_removed', 0)
+                                ->where('mst_store_products.is_removed', 0)
+                                ->where('mst_store_product_varients.is_base_variant', 1)
+                                ->where('mst_store_products.product_cat_id', $category_id);
+                        })
+                        ->get();
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;
