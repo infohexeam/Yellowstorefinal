@@ -265,6 +265,15 @@
                        <br> <a class="mt-2 btn btn-sm btn-orange" href="{{url('store/product/variant/list/'.$product->product_id)}}">Product Variant</a> 
                         @endif
                       </form> 
+                      <br>
+                      <a href="{{url('store/product/home-screen/'.$product->product_id)}}" onclick="return confirm('Are you sure?');"  class="mt-2 btn btn-sm @if($product->show_in_home_screen == 0) btn-green @else btn-warning   @endif">
+                      @if($product->show_in_home_screen == 0)
+                        Show in Home Screen
+                      @else
+                        Remove From Home Screen
+                      @endif
+                      </a>      
+                                                                                    
 
                         </td> 
                         

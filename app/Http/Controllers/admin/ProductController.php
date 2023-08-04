@@ -770,10 +770,10 @@ class ProductController extends Controller
 
         }
 
-        return redirect()->back()->with('status', 'Offer product updated successfully.');
+        return redirect()->back()->with('status', 'Offer product added to home screen successfully.');
       } else {
         Mst_store_product::where('product_id', $product_id)->update(['show_in_home_screen' => 0]);
-        return redirect()->back()->with('status', 'Offer product removed successfully.');
+        return redirect()->back()->with('status', 'Offer product removed from home screen successfully.');
       }
     } catch (\Exception $e) {
       // return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();

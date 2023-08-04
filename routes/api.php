@@ -120,7 +120,7 @@ Route::group(['prefix' => 'store'], function () {
 
     Route::post('product/add', 'Api\ProductController@addProductn');
     Route::post('product-vartiants/add', 'Api\ProductController@addProductVariants');
-
+    Route::get('product/show-in-home', 'Api\ProductController@showInHome');
 
     // TAX 
     Route::get('tax/list', 'Api\ProductController@listTax');

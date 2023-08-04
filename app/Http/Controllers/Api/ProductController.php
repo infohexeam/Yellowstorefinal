@@ -3535,4 +3535,54 @@ class ProductController extends Controller
             return response($response);
         }
     }
+public function showInHome(Request $request)
+  {
+    $data=[];
+    try {
+      $product_id=$request->product_id;
+      $product = Mst_store_product::find($product_id);
+      if(!$product)
+      {
+        $data['status'] = 0;
+        $data['message'] = "Product does not exist!";
+        return response($data);
+
+      }
+
+      if ($product->show_in_home_screen == 0) 
+      {
+        if($product->product_price_offer<$product->product_price)
+        {
+        Mst_store_product::where('product_id', $product_id)->update(['show_in_home_screen' => 1]);
+        $data['status'] = 1;
+        $data['message'] = "Offer product added to home screen successfully.";
+        return response($data);
+        }
+        else
+        {
+            $data['status'] = 0;
+            $data['message'] = "Offer price should not be equals to MRP!";
+            return response($data);
+        }
+       
+      } 
+      else 
+      {
+        Mst_store_product::where('product_id', $product_id)->update(['show_in_home_screen' => 0]);
+        $data['status'] = 1;
+        $data['message'] = "Offer product removed from home screen successfully.";
+        return response($data);
+      }
+    } catch (\Exception $e) {
+      // return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();
+
+      $response = ['status' => '0', 'message' => $e->getMessage()];
+      return response($response);
+  } catch (\Throwable $e) {
+      $response = ['status' => '0', 'message' => $e->getMessage()];
+      return response($response);
+  }
+    }
+  
+
 }
