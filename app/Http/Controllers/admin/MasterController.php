@@ -31,6 +31,7 @@ use App\Models\admin\Country;
 use App\Models\admin\State;
 use App\Models\admin\District;
 use App\Models\admin\Town;
+use Illuminate\Database\Eloquent\Builder;
 
 class MasterController extends Controller
 {
@@ -384,16 +385,26 @@ class MasterController extends Controller
     }
 
 //
-    public function listSubCategory()
+    public function listSubCategory(Request $request)
     {
         if(Auth::user()->user_role_id != 0 )
 	    {
 	        return redirect('home');
 	    }else{
             $pageTitle = "List Product Sub Category";
-        $sub_category = Mst_SubCategory::orderBy('sub_category_id','DESC')->get();
+            $business_types = Mst_business_types::where('business_type_status', 1)->get();
+        $sub_category = Mst_SubCategory::orderBy('sub_category_id','DESC');
+        if($request->business_type_id)
+        {
+            $btype_id=$request->business_type_id;
+            $sub_category=$sub_category->whereHas('business_type', function (Builder $qry)use($btype_id)  {
+                return $qry->where('business_type_id',$btype_id);
+              });
+
+        }
+        $sub_category=$sub_category->get();
       //  dd($sub_category);
-        return view('admin.masters.sub_category.list',compact('sub_category','pageTitle'));
+        return view('admin.masters.sub_category.list',compact('business_types','sub_category','pageTitle'));
         }
         
     }

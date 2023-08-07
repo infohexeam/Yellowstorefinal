@@ -29,7 +29,38 @@
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                      </div>
                       
-                     <div class="card-body">
+                     <div class="card-body border">
+                     <form action="{{route('admin.sub_category')}}" method="GET"
+                enctype="multipart/form-data">
+          @csrf
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="form-group">
+                     <label class="form-label">Business Type</label>
+                      <select class="form-control" name="business_type_id">
+                        <option value=""> Select Business Type </option>
+
+                                 @foreach ($business_types as $key)
+
+                                 <option {{request()->input('business_type_id') == $key->business_type_id ? 'selected':''}} value=" {{ $key->business_type_id}} "> {{ $key->business_type_name }}
+                                 </option>
+                                 @endforeach
+
+                           </select>
+                  </div>
+               </div>
+                     <div class="col-md-12">
+                     <div class="form-group">
+                           <center>
+                           <button type="submit" class="btn btn-raised btn-primary" style="border: none;">
+                           <i class="fa fa-check-square-o"></i> Filter</button>
+                           {{-- <button type="reset" class="btn btn-raised btn-success">Reset</button> --}}
+                          <a href="{{route('admin.sub_category')}}"  class="btn btn-info">Cancel</a>
+                           </center>
+                        </div>
+                  </div>
+    </div>
+       </form>
                         <a href=" {{route('admin.create_sub_category')}}" class="btn btn-block btn-info">
                            <i class="fa fa-plus"></i>
                            Create Product Sub Category
