@@ -260,7 +260,7 @@
                          <img  src="{{asset('/assets/uploads/store_images/images/'.$store->profile_image)}}"  width="70" >
                          @endif
                         <div class="form-group">
-                           <label class="form-label"> Store Profile Image</label>
+                           <label class="form-label"> Store Image</label>
                            <input type="file"  class="form-control imgValidation" accept="image/x-png,image/jpg,image/jpeg" name="profile_image"  placeholder="Image">
                         </div>
                      </div>
@@ -358,7 +358,7 @@
                    <br>
                     <div class="card-body border">
                       <div class="card-header">
-                  <h3 class="mb-0 card-title">Add Store Images</h3>
+                  <h3 class="mb-0 card-title">Add Banner Images</h3>
                     </div>
                    <div class="card-body">
                   <div class="row">

@@ -3630,7 +3630,6 @@ class ProductController extends Controller
                             })
                             ->get();
                             
-                           
                             foreach ($data['subCategoriesList'] as $cat) {
                                 if (isset($cat->sub_category_icon)) {
                                     $cat->sub_category_icon = '/assets/uploads/category/icons/' . $cat->sub_category_icon;

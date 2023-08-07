@@ -184,7 +184,7 @@
                    <br>
                     <div class="card-body border">
                       <div class="card-header">
-                  <h3 class="mb-0 card-title">Add Store Images</h3>
+                  <h3 class="mb-0 card-title">Add Banner Images</h3>
                     </div>
                    <div class="card-body">
                   <div class="row">

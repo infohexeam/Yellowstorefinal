@@ -352,7 +352,7 @@
                   <!--</div>-->
                   <!--  </div>-->
 
-              <h3 class="mb-0 card-title">Add Store Images</h3>
+              <h3 class="mb-0 card-title">Add Banner Images</h3>
                    <div class="card-body">
                   <div class="row">
 

@@ -1325,6 +1325,7 @@ public static function deliveryBoyCommission($order_id,$dbid)
 
 
 }
+
 public static function getProductBrandsByStore($storeId)
 {
 
