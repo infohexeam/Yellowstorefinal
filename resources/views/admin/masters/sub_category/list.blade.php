@@ -34,16 +34,29 @@
                 enctype="multipart/form-data">
           @csrf
             <div class="row">
-               <div class="col-md-12">
+               <div class="col-md-6">
                   <div class="form-group">
                      <label class="form-label">Business Type</label>
-                      <select class="form-control" name="business_type_id">
+                      <select class="form-control" name="business_type_id" id="businessType" onchange="fetchSubCategories()">
                         <option value=""> Select Business Type </option>
 
                                  @foreach ($business_types as $key)
 
                                  <option {{request()->input('business_type_id') == $key->business_type_id ? 'selected':''}} value=" {{ $key->business_type_id}} "> {{ $key->business_type_name }}
                                  </option>
+                                 @endforeach
+
+                           </select>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group">
+                     <label class="form-label">Categories</label>
+                      <select class="form-control" name="product_cat_id" id="CategoryDropdown">
+                        <option value=""> Select Categories </option>
+
+                                 @foreach($categories as $key)
+                                 <option {{old('product_cat_id',request()->input('product_cat_id')) == $key->category_id ? 'selected':''}} value="{{ @$key->category_id }}">{{ @$key->category_name }}</option>
                                  @endforeach
 
                            </select>
@@ -216,5 +229,38 @@
            
            } );
            </script>
+           <script>
+    // AJAX function to fetch sub-categories based on selected Business Type and Category
+    /*function fetchSubCategories() {
+      alert('fetching sub categories');
+        var businessTypeId = $('#businessType').val();
+
+        $.ajax({
+            url: '/admin/sub/category/list', // Replace with the actual URL of your route
+            method: 'GET',
+            data: {
+                business_type_id: businessTypeId,
+            },
+            success: function(response) {
+                var Categories = response.category;
+                var CategoryDropdown = $('#CategoryDropdown');
+
+                CategoryDropdown.empty();
+                CategoryDropdown.append('<option value="">Select Categories</option>');
+                
+                // Add sub-categories to the dropdown
+                $.each(Categories, function(index,Category) {
+                    subCategoryDropdown.append('<option value="' + Category.category_id + '">' + Category.category_name + '</option>');
+                });
+            },
+            error: function(error) {
+                console.log('Error fetching categories:', error);
+            }
+        });
+    }*/
+
+    // Initialize sub-category dropdown on page load
+   
+</script>
 
             @endsection

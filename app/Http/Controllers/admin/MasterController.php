@@ -393,18 +393,35 @@ class MasterController extends Controller
 	    }else{
             $pageTitle = "List Product Sub Category";
             $business_types = Mst_business_types::where('business_type_status', 1)->get();
-        $sub_category = Mst_SubCategory::orderBy('sub_category_id','DESC');
-        if($request->business_type_id)
-        {
-            $btype_id=$request->business_type_id;
-            $sub_category=$sub_category->whereHas('business_type', function (Builder $qry)use($btype_id)  {
-                return $qry->where('business_type_id',$btype_id);
-              });
+            $categories = Mst_categories::orderBy('mst_store_categories.category_id', 'DESC');
+            $sub_category = Mst_SubCategory::orderBy('sub_category_id','DESC');
+            if($request->business_type_id)
+            {
+                $btype_id=$request->business_type_id;
+                $sub_category=$sub_category->whereHas('business_type', function (Builder $qry)use($btype_id)  {
+                    return $qry->where('business_type_id',$btype_id);
+                });
+             //$categories=$categories->join('trn__category_business_types', 'trn__category_business_types.category_id', '=', 'mst_store_categories.category_id')->where('trn__category_business_types.business_type_id',$btype_id);
 
-        }
-        $sub_category=$sub_category->get();
-      //  dd($sub_category);
-        return view('admin.masters.sub_category.list',compact('business_types','sub_category','pageTitle'));
+            }
+            if($request->product_cat_id)
+            {
+                $category_id=$request->product_cat_id;
+                $sub_category=$sub_category->whereHas('categories', function (Builder $qry)use($category_id)  {
+                    return $qry->where('category_id',$category_id);
+                });
+
+            }
+            if ($request->ajax()) {
+                return response()->json([
+                    'categories' => $categories,
+                ]);
+            }
+
+            $sub_category=$sub_category->get();
+            $categories=$categories->get();
+        //  dd($sub_category);
+            return view('admin.masters.sub_category.list',compact('business_types','sub_category','pageTitle','categories'));
         }
         
     }

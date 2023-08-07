@@ -1549,7 +1549,12 @@ class StoreController extends Controller
       } else {
         $product_var_id = 0;
       }
-      //Mst_product_image::where('product_id',$product)->where('product_varient_id')->c
+      $Image_count=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$request->product_varient_id)->count();
+      if($Image_count>=1)
+      {
+        return redirect()->back()->withErrors(['Maximum Image upload should not exceed one for the given varient!'])->withInput();
+
+      }
 
       if ($request->hasFile('var_image')) {
         $allowedfileExtension = ['jpg', 'png', 'jpeg',];
@@ -1572,7 +1577,7 @@ class StoreController extends Controller
           Mst_product_image::insert($data1);
         }
       }
-      return redirect()->back()->with('status', 'Image upadted successfully.');
+      return redirect()->back()->with('status', 'Image updated successfully.');
     } catch (\Exception $e) {
 
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
@@ -1768,12 +1773,15 @@ class StoreController extends Controller
               'product_image'      => $filename,
               'product_id' => $product_id,
               'product_varient_id' => @$baseVar->product_varient_id,
-              'image_flag'         => 0,
+              'image_flag'         => 1,
               'created_at'         => $date,
               'updated_at'         => $date,
             ],
           ];
-
+          $data9=['product_base_image'=>$filename];
+          @$baseVar->product_varient_base_image=$filename;
+          DB::table('mst_store_products')->where('product_id', $product_id)->update($data9);
+          Mst_product_image::where('product_id', $product_id)->where('product_varient_id',@$baseVar->product_varient_id)->delete();
           Mst_product_image::insert($data1);
         }
       }
@@ -4887,24 +4895,25 @@ class StoreController extends Controller
 
       foreach ($global_product_images as $file) {
 
-        $date = Carbon::now();
+        
+
+        $proImg_Id = DB::getPdo()->lastInsertId();
+
+        if ($global_product->product_base_image == $file->image_name) {
+          $date = Carbon::now();
         $data1 = [
           [
             'product_image'      => $file->image_name,
             'product_id' => $id,
             'product_varient_id' => 0,
-            'image_flag'         => 0,
+            'image_flag'         => 1,
             'created_at'         => $date,
             'updated_at'         => $date,
           ],
         ];
 
         Mst_product_image::insert($data1);
-
-        $proImg_Id = DB::getPdo()->lastInsertId();
-
-        if ($global_product->product_base_image == $file->image_name) {
-          DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+          //DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
         }
       }
 
@@ -4928,24 +4937,25 @@ class StoreController extends Controller
 
       foreach ($global_product_images as $file) {
 
-        $date = Carbon::now();
-        $data1 = [
-          [
-            'product_image'      => $file->image_name,
-            'product_id' => $id,
-            'product_varient_id' => $vari_id,
-            'image_flag'         => 0,
-            'created_at'         => $date,
-            'updated_at'         => $date,
-          ],
-        ];
+       
 
-        Mst_product_image::insert($data1);
-
-        $proImg_Id = DB::getPdo()->lastInsertId();
+        //$proImg_Id = DB::getPdo()->lastInsertId();
 
         if ($global_product->product_base_image == $file->image_name) {
-          DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+          $date = Carbon::now();
+          $data1 = [
+            [
+              'product_image'      => $file->image_name,
+              'product_id' => $id,
+              'product_varient_id' => $vari_id,
+              'image_flag'         => 1,
+              'created_at'         => $date,
+              'updated_at'         => $date,
+            ],
+          ];
+  
+          Mst_product_image::insert($data1);
+          //DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
         }
       }
 
