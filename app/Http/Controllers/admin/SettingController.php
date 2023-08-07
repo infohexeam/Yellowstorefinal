@@ -1326,30 +1326,18 @@ class SettingController extends Controller
 		$cat_id = $request->store_id;
 
 		$store = Mst_store::Find($cat_id);
+		$adminData =DB::table('trn__store_admins')->where('store_id',$store->store_id)
+                                            ->where('role_id',0)->first();
 
-		$status = $store->store_otp_verify_status;
-		$today = Carbon::now()->toDateString();
-		$getDate = Trn_StoreAdmin::where('store_id', $store_id)->first();
-
-		if ($status == 0 ) {
+		$status = $adminData->store_otp_verify_status;
+		if ($status == 0 )
+		 {
 			$store->store_otp_verify_status  = 1;
 			$storeAdmin['store_otp_verify_status'] = 1;
 			
-			if($today >= $getDate->expiry_date)
-			{
-				//$storeAdmin['expiry_date'] = Carbon::now()->addYears(5)->toDateString();
-			}
 		} else {
-			$storeAdmin['store_account_status'] = 0;
-
-			$store->store_otp_verify_status  = 0;
-			if($today > $getDate->expiry_date)
-			{
-				$storeAdmin['store_otp_verify_status'] =1;
-				$store->store_otp_verify_status  = 1;
-				//$storeAdmin['expiry_date'] = Carbon::now()->addYears(5)->toDateString();
-			}
-
+			$store->store_otp_verify_status  = 0;	
+			$storeAdmin['store_otp_verify_status'] =0;
 		}
 		$store->update();
 

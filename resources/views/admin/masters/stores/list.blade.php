@@ -327,7 +327,11 @@ use App\Models\admin\Trn_StoreBankData;
                                         </form>
                                         
                                        @else 
-                                        <button type="button"   class="btn btn-sm btn-outline-success" disabled> <i class="fa fa-check"></i> Verified</button> 
+                                        <form action="{{route('admin.otp_status_store',$store->store_id)}}" method="POST">
+                                         @csrf
+                                       @method('POST')
+                                        <button type="submit" onclick="return confirm('Do you want to change OTP verification status?');"   class="btn btn-sm btn-outline-success"> <i class="fa fa-check"></i> Verified</button> 
+                                        </form>
                                        @endif
                                      </td>
                                     <td>
