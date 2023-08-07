@@ -29,9 +29,47 @@
                      <div class="card-header">
                         <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
                      </div>
-                    {{-- <div class="card-body border">
+                    <div class="card-body border">
+                    <form action="{{route('admin.global_products')}}" method="GET"  enctype="multipart/form-data">
+                                 @csrf
 
-                </div> --}}
+                                 <div class="row">
+
+                                      <div class="col-md-6">
+                  <div class="form-group">
+                     <label class="form-label">Product Name</label>
+                       <input type="text" class="form-control" 
+                       name="product_name"  value="{{ request()->input('product_name') }}" placeholder="Product Name">
+
+                  </div>
+               </div>
+
+                                    <div class="col-md-6">
+                                       <div class="form-group">
+                                           <label class="form-label" >Product Category  </label>
+                                           <select name="product_cat_id"  id="category" class="form-control"  >
+                                                <option value="">-Select-</option>
+                                                @foreach($category as $key)
+                                                <option {{old('product_cat_id',request()->input('product_cat_id')) == $key->category_id ? 'selected':''}} value="{{ @$key->category_id }}">{{ @$key->category_name }}</option>
+                                                @endforeach
+                                             </select>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                       <center>
+                                       <button type="submit" class="btn btn-raised btn-primary">
+                                       <i class="fa fa-check-square-o"></i> Filter</button>
+                                       {{-- <button type="reset" class="btn btn-raised btn-success">Reset</button> --}}
+                                       <a href="{{route('admin.global_products')}}"  class="btn btn-info">Cancel</a>
+                                       </center>
+                                    </div>
+                                 </div>
+                           </form>
+
+                </div>
 
                     <div class="card-body">
                         <a href="  {{route('admin.create_global_product')}} " class="btn btn-block btn-info">

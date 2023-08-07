@@ -45,6 +45,7 @@ use App\Models\admin\Sys_store_order_status;
 
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_Cart;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductController extends Controller
 {
@@ -145,11 +146,22 @@ class ProductController extends Controller
 
   // Global Products
 
-  public function listGlobalProducts()
+  public function listGlobalProducts(Request $request)
   {
     $pageTitle = "List Global Products";
-    $global_product = Mst_GlobalProducts::orderBy('global_product_id', 'DESC')->get();
-    return view('admin.masters.global_product.list', compact('global_product', 'pageTitle'));
+    $category = Mst_categories::where('category_status', 1)->get();
+    $global_product = Mst_GlobalProducts::whereHas('product_cat', function (Builder $qry)  {
+      return $qry->whereNull('deleted_at');
+    });
+    if ($request->product_cat_id) {
+      $global_product = $global_product->where('product_cat_id', $request->product_cat_id);
+    }
+
+    if (isset($request->product_name)) {
+      $global_product = $global_product->where('product_name', 'LIKE', '%' . $request->product_name . '%');
+    }
+    $global_product=$global_product->orderBy('global_product_id', 'DESC')->get();
+    return view('admin.masters.global_product.list', compact('category','global_product', 'pageTitle'));
   }
 
   public function createGlobalProduct()
