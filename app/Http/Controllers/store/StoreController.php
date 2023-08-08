@@ -1572,17 +1572,26 @@ class StoreController extends Controller
             ],
           ];
           Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_var_id)->delete();
+          $pvarient=Mst_store_product_varient::find($product_var_id);
+          if($pvarient->is_base_variant==1)
+          {
+            $pvarient->product_varient_base_image=$filename;
+            $pvarient->update();
+            $producT=Mst_store_product::where('product_id',$product_id)->first();
+            $producT->product_base_image=$filename;
+            $producT->update();
+          }
           Mst_product_image::insert($data1);
         }
           $c++;
         }
       }
       $Image_count=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$request->product_varient_id)->count();
-      if($Image_count>=1)
+      /*if($Image_count>=1)
       {
         return redirect()->back()->withErrors(['Maximum Image upload should not exceed one for the given varient!'])->withInput();
 
-      }
+      }*/
 
       return redirect()->back()->with('status', 'Image updated successfully.');
     } catch (\Exception $e) {
