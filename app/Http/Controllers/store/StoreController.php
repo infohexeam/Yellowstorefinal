@@ -1575,12 +1575,13 @@ class StoreController extends Controller
           $pvarient=Mst_store_product_varient::find($product_var_id);
           if($pvarient->is_base_variant==1)
           {
-            $pvarient->product_varient_base_image=$filename;
-            $pvarient->update();
+           
             $producT=Mst_store_product::where('product_id',$product_id)->first();
             $producT->product_base_image=$filename;
             $producT->update();
           }
+          $pvarient->product_varient_base_image=$filename;
+          $pvarient->update();
           Mst_product_image::insert($data1);
         }
           $c++;
