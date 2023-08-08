@@ -1492,6 +1492,7 @@ class ProductController extends Controller
                                                 'created_at'         => Carbon::now(),
                                                 'updated_at'         => Carbon::now(),
                                             ];
+                                            Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id', @$product_variant['product_varient_id'])->delete();
                                             Mst_product_image::insert($imageData1);
 
                                             if ($c == 1) {
@@ -1505,7 +1506,7 @@ class ProductController extends Controller
                                 }
                             }
                             $data['status'] = 1;
-                            $data['message'] = "Product updated successfully........";
+                            $data['message'] = "Product updated successfully.";
                             return response($data);
                         } else {
                             $data['status'] = 0;
