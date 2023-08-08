@@ -1505,7 +1505,7 @@ class ProductController extends Controller
                                 }
                             }
                             $data['status'] = 1;
-                            $data['message'] = "Product updated successfully.";
+                            $data['message'] = "Product updated successfully........";
                             return response($data);
                         } else {
                             $data['status'] = 0;
