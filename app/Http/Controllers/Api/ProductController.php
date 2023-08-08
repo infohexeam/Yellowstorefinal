@@ -1762,7 +1762,7 @@ class ProductController extends Controller
 
                 $removeProductVar = array();
                 $removeProductVar['is_removed'] = 1;
-                $removeProductVar['stock_count'] = 0;
+                //$removeProductVar['stock_count'] = 0;
 
 
 
