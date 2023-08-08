@@ -2690,7 +2690,7 @@ class ProductController extends Controller
                                         'updated_at'         => Carbon::now(),
                                     ];
 
-                                    Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$varId)->delete();
+                                    Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$Varid)->delete();
                                     Mst_product_image::insert($imageData);
                                     $proImg_Id = DB::getPdo()->lastInsertId();
 
