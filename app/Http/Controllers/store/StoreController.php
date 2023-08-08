@@ -1549,17 +1549,14 @@ class StoreController extends Controller
       } else {
         $product_var_id = 0;
       }
-      $Image_count=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$request->product_varient_id)->count();
-      if($Image_count>=1)
-      {
-        return redirect()->back()->withErrors(['Maximum Image upload should not exceed one for the given varient!'])->withInput();
-
-      }
-
+     
       if ($request->hasFile('var_image')) {
+        $c=1;
         $allowedfileExtension = ['jpg', 'png', 'jpeg',];
         $files = $request->file('var_image');
         foreach ($files as $file) {
+          if($c==1)
+          {
           $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
           $extension = $file->getClientOriginalExtension();
           $file->move('assets/uploads/products/base_product/base_image', $filename);
@@ -1569,14 +1566,24 @@ class StoreController extends Controller
               'product_image'      => $filename,
               'product_id' => $product_id,
               'product_varient_id' => $product_var_id,
-              'image_flag'         => 0,
+              'image_flag'         => 1,
               'created_at'         => $date,
               'updated_at'         => $date,
             ],
           ];
+          Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$product_var_id)->delete();
           Mst_product_image::insert($data1);
         }
+          $c++;
+        }
       }
+      $Image_count=Mst_product_image::where('product_id',$product_id)->where('product_varient_id',$request->product_varient_id)->count();
+      if($Image_count>=1)
+      {
+        return redirect()->back()->withErrors(['Maximum Image upload should not exceed one for the given varient!'])->withInput();
+
+      }
+
       return redirect()->back()->with('status', 'Image updated successfully.');
     } catch (\Exception $e) {
 
