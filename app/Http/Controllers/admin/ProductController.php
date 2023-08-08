@@ -2528,7 +2528,7 @@ public function showInventoryReport(Request $request)
 
       ->where('mst_store_products.product_type', 1)
       //   ->where('mst_store_products.is_removed', 0)
-      //->where('mst_store_product_varients.is_removed', 0)
+      ->where('mst_store_product_varients.is_removed', 0)
 
       ->select(
         'mst_store_products.product_id',
