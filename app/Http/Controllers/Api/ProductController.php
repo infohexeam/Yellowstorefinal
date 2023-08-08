@@ -2685,20 +2685,21 @@ class ProductController extends Controller
                                         'product_image'      => $filename,
                                         'product_id'         => $request->product_id,
                                         'product_varient_id' => $Varid,
-                                        'image_flag'         => 0,
+                                        'image_flag'         => 1,
                                         'created_at'         => Carbon::now(),
                                         'updated_at'         => Carbon::now(),
                                     ];
 
+                                    Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$varId)->delete();
                                     Mst_product_image::insert($imageData);
                                     $proImg_Id = DB::getPdo()->lastInsertId();
 
-                                    if ($c == 1) {
+                                   
                                         DB::table('mst_store_product_varients')->where('product_varient_id', $Varid)
                                             ->update(['product_varient_base_image' => $filename]);
                                         $c++;
-                                        DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-                                    }
+                                        //DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+                                   
                                 }
                             }
 
