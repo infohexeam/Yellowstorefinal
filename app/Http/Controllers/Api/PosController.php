@@ -489,13 +489,6 @@ class PosController extends Controller
 
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
-                       
-                        Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
-
-                        if (!isset($value['discount_amount'])) {
-                            $value['discount_amount'] = 0;
-                        }
-
                         $negStock = -1 * abs($value['quantity']);
 
                         $sd = new Mst_StockDetail;
@@ -507,6 +500,14 @@ class PosController extends Controller
                         $sd->save();
                         $product_detail = Mst_store_product::where('product_id', '=',$productVarOlddata->product_id)->first();
                         $taxData = Mst_Tax::find($product_detail->tax_id);
+                       
+                        Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
+
+                        if (!isset($value['discount_amount'])) {
+                            $value['discount_amount'] = 0;
+                        }
+
+                       
                         Trn_pos_lock::where('product_varient_id',$value['product_varient_id'])->where('order_uid',$order_uid)->update(['status'=>0]);
 
 
