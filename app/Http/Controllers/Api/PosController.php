@@ -496,7 +496,7 @@ class PosController extends Controller
                         $sd->product_id = $value['product_id'];
                         $sd->stock = $negStock;
                         $sd->product_varient_id = $value['product_varient_id'];
-                        $sd->prev_stock = $productVarOlddata->stock_count-$negStock;
+                        $sd->prev_stock = $productVarOlddata->stock_count+$value['quantity'];
                         $sd->save();
                         $product_detail = Mst_store_product::where('product_id', '=',$productVarOlddata->product_id)->first();
                         $taxData = Mst_Tax::find($product_detail->tax_id);
