@@ -2481,7 +2481,7 @@ class ProductController extends Controller
                                             ];
     
                                             //Mst_product_image::insert($imageData);
-                                            $proImg_Id = DB::getPdo()->lastInsertId();
+                                            //$proImg_Id = DB::getPdo()->lastInsertId();
                                             $proData = Mst_store_product::where('product_id', $request->product_id)->first();
                                             if (!isset($proData->product_base_image)) {
                                                 if ($c == 1) {
