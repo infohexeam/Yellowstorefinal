@@ -2758,6 +2758,8 @@ class ProductController extends Controller
                             $filename = "";
                             if ($files = $request->file('variant_images')) {
                                 foreach ($files as $file) {
+                                    if($c==1)
+                                    {
                                     $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
                                     $file->move('assets/uploads/products/base_product/base_image', $filename);
                                     $imageData = [
@@ -2779,6 +2781,8 @@ class ProductController extends Controller
                                         DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)
                                             ->update(['product_varient_base_image' => $filename]);
                                         //$c++;
+                                }
+                                $c++;
                                 }
                             }
 
