@@ -2475,20 +2475,24 @@ class ProductController extends Controller
                                                 'product_image'      => $filename,
                                                 'product_id' => $request->product_id,
                                                 'product_varient_id' => $baseVari->product_varient_id,
-                                                'image_flag'         => 0,
+                                                'image_flag'         => 1,
                                                 'created_at'         => Carbon::now(),
                                                 'updated_at'         => Carbon::now(),
                                             ];
     
-                                            Mst_product_image::insert($imageData);
+                                            //Mst_product_image::insert($imageData);
                                             $proImg_Id = DB::getPdo()->lastInsertId();
                                             $proData = Mst_store_product::where('product_id', $request->product_id)->first();
                                             if (!isset($proData->product_base_image)) {
                                                 if ($c == 1) {
+                                                    Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$baseVari->product_varient_id)->delete();
+                                                    Mst_product_image::insert($imageData);
                                                     DB::table('mst_store_products')->where('product_id', $request->product_id)
                                                         ->update(['product_base_image' => $filename]);
+                                                DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
+                                                        ->update(['product_varient_base_image' => $filename]);
                                                     $c++;
-                                                    DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
+                                                   // DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                                 }
                                             }
                                             else
@@ -2498,8 +2502,12 @@ class ProductController extends Controller
                                                     {
                                                     if($filename="")
                                                     {
-                                                    DB::table('mst_store_products')->where('product_id', $request->product_id)
-                                                        ->update(['product_base_image' => $proData->product_base_image]);
+                                                        Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$baseVari->product_varient_id)->delete();
+                                                        Mst_product_image::insert($imageData);
+                                                        DB::table('mst_store_products')->where('product_id', $request->product_id)
+                                                            ->update(['product_base_image' => $filename]);
+                                                    DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
+                                                            ->update(['product_varient_base_image' => $filename]);
                                                     $c++;
                                                     }
                                                 }
@@ -2770,7 +2778,7 @@ class ProductController extends Controller
                                         'created_at'         => Carbon::now(),
                                         'updated_at'         => Carbon::now(),
                                     ];
-                                    Mst_product_image::insert($imageData);
+                                    //Mst_product_image::insert($imageData);
                                     
 
                                     Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$product_varient_id)->delete();
