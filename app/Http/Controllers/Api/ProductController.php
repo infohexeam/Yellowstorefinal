@@ -2491,9 +2491,10 @@ class ProductController extends Controller
                                                         ->update(['product_base_image' => $filename]);
                                                 DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
                                                         ->update(['product_varient_base_image' => $filename]);
-                                                    $c++;
+                                                   
                                                    // DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                                 }
+                                                $c++;
                                             }
                                             else
                                             {
@@ -2508,13 +2509,16 @@ class ProductController extends Controller
                                                             ->update(['product_base_image' => $filename]);
                                                     DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
                                                             ->update(['product_varient_base_image' => $filename]);
-                                                    $c++;
+                                                   
                                                     }
                                                 }
+                                                
                                                     //DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                                 }
+                                                $c++;
 
                                             }
+                                           
                                         }
                                     }
     
