@@ -117,6 +117,16 @@
                $(this).val('');
          };
       });
+	   $('.imgValidationBanner').bind('change', function() {
+         var a=(this.files[0].size);
+		 //alert(a)
+         //return true; oooyi?? 300 kb mathiyooiii
+         if(a > 51200) {
+               alert('Image size should not exceed 50KB!');
+
+               $(this).val('');
+         };
+      });
    });
          
 		 

@@ -376,10 +376,7 @@ class StoreController extends Controller
       $img_validate = Validator::make(
         $request->all(),
         [
-          'store_image.*' => 'required|dimensions:min_width=1000,min_height=800',
-        ],
-        [
-          'store_image.*.dimensions' => 'store image dimensions invalid',
+          'store_image.*' => 'required',
         ]
       );
       if ($img_validate->fails()) {

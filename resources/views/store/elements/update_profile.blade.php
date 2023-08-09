@@ -126,13 +126,24 @@
                            <label class="form-label">State *</label>
 
                            @php
-                               @$states_data = \DB::table('sys_states')->where('country_id',@$store->store_country_id)->get();
+                           if(old('store_state_id'))
+                           {
+                              @$states_data = \DB::table('sys_states')->where('country_id',@old('store_country_id'))->get();
+
+                           }
+                           else
+                           {
+                              @$states_data = \DB::table('sys_states')->where('country_id',@$store->store_country_id)->get();
+
+                           }
+                               
+                  
                            @endphp
                             <select name="store_state_id" required="" class="form-control" id="state" >
                                                                                     <option  value=""> State</option>
 
                              @foreach ($states_data as $value)
-                                <option  @if ($store->store_state_id == $value->state_id)  selected  @endif  value="{{@$value->state_id}}">  {{@$value->state_name}}</option>
+                                <option   {{old('store_state_id',$store->store_state_id) == $value->state_id ? 'selected':''}}  value="{{@$value->state_id}}">  {{@$value->state_name}}</option>
                              @endforeach
                             </select>
                            </div>
@@ -141,13 +152,23 @@
                         <div class="form-group">
                            <label class="form-label">District *</label>
                                 @php
-                               @$district_data = \DB::table('mst_districts')->where('state_id',@$store->store_state_id)->get();
+                              if(old('store_district_id'))
+                              {
+                                  @$district_data = \DB::table('mst_districts')->where('state_id',@old('store_state_id'))->get();
+
+                              }
+                              else
+                              {
+                                 @$district_data = \DB::table('mst_districts')->where('state_id',@$store->store_state_id)->get();
+
+                              }
+                               
                            @endphp
                            <select name="store_district_id" required="" class="form-control" id="city">
                                                     <option  value=""> District</option>
 
                            @foreach (@$district_data as $value)
-                                <option @if ($store->store_district_id == $value->district_id)  selected  @endif  value="{{@$value->district_id}}">  {{@$value->district_name}}</option>
+                                <option   {{old('store_district_id',$store->store_district_id) == $value->district_id ? 'selected':''}}   value="{{@$value->district_id}}">  {{@$value->district_name}}</option>
 
                              @endforeach
 
@@ -157,11 +178,38 @@
                          <div class="col-md-6">
                          <div class="form-group">
                               <label class="form-label">Pincode *</label>
+                              
                               <select name="store_town" required="" class="form-control" id="town">
                                   @if(isset($store->town_id))
-                                 <option   value="{{$store->town_id}}">  {{@$store->town['town_name']}}</option>
+                                   @php
+                           $town_data = \DB::table('mst_towns')->where('district_id',@$store->store_district_id)->whereNull('deleted_at')->get();
+                           //dd($town_data);
+                           @endphp
+                            @foreach (@$town_data as $value)
+
+                                <option  @if($store->town_id == $value->town_id) selected @endif   value="{{@$value->town_id}}">  {{@$value->town_name}} </option>
+
+                             @endforeach
+                                 
                                  @else
+                           @php
+                           //dd(old('store_town'));
+                           @endphp
+                           @if(old('store_town'))
+                           @php
+                           $town_data = \DB::table('mst_towns')->where('district_id',old('store_district_id'))->whereNull('deleted_at')->get();
+                           //dd($town_data);
+                           @endphp
+                            @foreach (@$town_data as $value)
+
+                                <option  @if(old('store_town') == $value->town_id) selected @endif   value="{{@$value->town_id}}">  {{@$value->town_name}} </option>
+
+                             @endforeach
+
+                           @else
+
                             <option  value=""> Pincode</option>
+                            @endif
                             @endif
 
                               </select>
@@ -260,7 +308,7 @@
                          <img  src="{{asset('/assets/uploads/store_images/images/'.$store->profile_image)}}"  width="70" >
                          @endif
                         <div class="form-group">
-                           <label class="form-label"> Store Image</label>
+                           <label class="form-label"> Store image</label>
                            <input type="file"  class="form-control imgValidation" accept="image/x-png,image/jpg,image/jpeg" name="profile_image"  placeholder="Image">
                         </div>
                      </div>
@@ -365,8 +413,8 @@
                      <div class="col-md-6">
                         <div class="form-group">
                            <div id="teamArea">
-                           <label class="form-label">Images (1000*800 above)</label>
-                           <input type="file" class="form-control imgValidation" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]"  placeholder="Images">
+                           <label class="form-label">Images </label>
+                           <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]"  placeholder="Images">
                         </div>
                      </div>
                     </div>
@@ -1024,7 +1072,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div> <br>  <input type="file" class="form-control imgValidation" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div> <br>  <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
 
   });
 
