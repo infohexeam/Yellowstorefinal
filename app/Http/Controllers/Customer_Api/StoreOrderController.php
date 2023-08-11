@@ -1385,7 +1385,7 @@ class StoreOrderController extends Controller
                             $w_log=Trn_wallet_log::find($request->wallet_id);
                             $w_log->order_id=$order_id;
                             $w_log->update();
-                            if (isset($request->reward_points_used) && ($request->reward_points_used != 0)) {
+                            if (isset($request->reward_points_used_store) && ($request->reward_points_used_store != 0)) {
     
                                 foreach ($customerDevice as $cd) {
     
