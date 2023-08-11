@@ -114,6 +114,7 @@ class WalletController extends Controller
         $store_id=Auth::guard('store')->user()->store_id;
 		$customer_rewards = Trn_customer_reward::leftjoin('trn_store_customers', 'trn_store_customers.customer_id', 'trn_customer_rewards.customer_id')
         ->where('store_id',$store_id)
+		->orderBy('reward_id', 'DESC')
 		//->whereNull('order_id')
         ->get();
 		if ($_GET) {
