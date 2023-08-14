@@ -1389,14 +1389,15 @@ class StoreOrderController extends Controller
                         }
                         if (isset($request->reward_points_used_store) && ($request->reward_points_used_store != 0)) {
                             ///reward_points_used_store
-                            foreach ($customerDevice as $cds) {
+                            
+                        }
+                        foreach ($customerDevice as $cds) {
 
-                                $title = 'Store Points Deducted';
-                                $body = $request->reward_points_used_store . ' points deducted from your wallet';
-                                $clickAction = "MyWalletFragment";
-                                $type = "wallet";
-                                $data['response'] =  $this->customerNotification($cds->customer_device_token, $title, $body,$clickAction,$type);
-                            }
+                            $title = 'Store Points Deducted';
+                            $body = $request->reward_points_used_store . ' points deducted from your wallet';
+                            $clickAction = "MyWalletFragment";
+                            $type = "wallet";
+                            $data['response'] =  $this->customerNotification($cds->customer_device_token, $title, $body,$clickAction,$type);
                         }
     
                         foreach ($storeDevice as $sd) {
