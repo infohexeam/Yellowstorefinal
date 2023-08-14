@@ -1385,16 +1385,17 @@ class StoreOrderController extends Controller
                             $w_log=Trn_wallet_log::find($request->wallet_id);
                             $w_log->order_id=$order_id;
                             $w_log->update();
-                            if (isset($request->reward_points_used_store) && ($request->reward_points_used_store != 0)) {
-    
-                                foreach ($customerDevice as $cd) {
-    
-                                    $title = 'Store Points Deducted';
-                                    $body = $request->reward_points_used_store . ' points deducted from your wallet';
-                                    $clickAction = "MyWalletFragment";
-                                    $type = "wallet";
-                                    $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                                }
+                           
+                        }
+                        if (isset($request->reward_points_used_store) && ($request->reward_points_used_store != 0)) {
+                            ///reward_points_used_store
+                            foreach ($customerDevice as $cds) {
+
+                                $title = 'Store Points Deducted';
+                                $body = $request->reward_points_used_store . ' points deducted from your wallet';
+                                $clickAction = "MyWalletFragment";
+                                $type = "wallet";
+                                $data['response'] =  $this->customerNotification($cds->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
     
