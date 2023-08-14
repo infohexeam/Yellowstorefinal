@@ -1419,13 +1419,13 @@ class StoreOrderController extends Controller
     
     
     
-                       /* foreach ($customerDevice as $cd) {
+                        foreach ($customerDevice as $cd) {
                             $title = 'Order Placed';
                             $body = 'Order placed with order id ' . $orderdatas->order_number;
                             $clickAction = "OrderListFragment";
                             $type = "order";
                             $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                        }*/
+                        }
     
     
                         if ($request->status_id != 5) {
