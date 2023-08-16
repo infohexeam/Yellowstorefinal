@@ -1393,11 +1393,11 @@ class StoreOrderController extends Controller
                                     $body = $request->reward_points_used_store . ' points deducted from your wallet';
                                     $clickAction = "MyWalletFragment";
                                     $type = "wallet";
-                                    $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                    $data['responseStoreDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                 }
                             }
                         }
-    
+                       
                         foreach ($storeDevice as $sd) {
                             $title = 'New order arrived';
                             $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
@@ -1437,7 +1437,7 @@ class StoreOrderController extends Controller
                                     $body = $request->reward_points_used . ' points deducted from your wallet';
                                     $clickAction = "MyWalletFragment";
                                     $type = "wallet";
-                                    $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                    $data['responseAppDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                 }
                             }
                         }
