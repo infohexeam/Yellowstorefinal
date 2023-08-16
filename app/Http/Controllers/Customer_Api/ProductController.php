@@ -5535,7 +5535,7 @@ class ProductController extends Controller
                     $stores          =       $stores->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
                                                 * cos(radians(mst_stores.latitude)) * cos(radians(mst_stores.longitude) - radians(" . $longitude . "))
                                                 + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
-                    $stores          =       $stores->having('distance', '<', 10);
+                    //$stores          =       $stores->having('distance', '<', 10);
                     $stores          =       $stores->orderBy('distance', 'asc');
                     //$listedStores    = $stores->get();
                     $listedStores =Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
