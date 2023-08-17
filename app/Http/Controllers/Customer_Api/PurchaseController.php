@@ -1249,6 +1249,8 @@ class PurchaseController extends Controller
                     {
                         $data['status']=0;
                         $data['message']="The order amount should be greater than amount ".$storeConfigPoints->minimum_order_amount." to use wallet points";
+                        return response($data);
+
                     }
                     $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
