@@ -4880,6 +4880,7 @@ class SettingController extends Controller
 				'joiner_points'          => 'numeric|gte:0',
 				'redeem_percentage'          => 'numeric|gte:0',
 				'max_redeem_amount'          => 'numeric|gte:0',
+				'minimum_order_amount'          => 'numeric|gt:0',
 				//'points'          => 'required',
 			],
 			[
@@ -4910,7 +4911,7 @@ class SettingController extends Controller
 				$points->redeem_percentage = $request->redeem_percentage;
 				$points->max_redeem_amount = $request->max_redeem_amount;
 				$points->joiner_points = $request->joiner_points;
-
+				$points->minimum_order_amount = $request->minimum_order_amount;
 				$points->update();
 			} else {
 				$points = new Trn_configure_points;
@@ -4924,7 +4925,7 @@ class SettingController extends Controller
 				$points->redeem_percentage = $request->redeem_percentage;
 				$points->max_redeem_amount = $request->max_redeem_amount;
 				$points->joiner_points = $request->joiner_points;
-
+				$points->minimum_order_amount = $request->minimum_order_amount;
 				$points->save();
 			}
 			return redirect('admin/configure_points/list')->with('status', 'Configure points updated successfully.');

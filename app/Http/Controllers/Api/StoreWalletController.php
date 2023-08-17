@@ -54,6 +54,7 @@ class StoreWalletController extends Controller
 				'rupee'          => 'required',
 				'order_points'          => 'required',
 				'order_amount'          => 'required',
+                'minimum_order_amount'        => 'numeric|gt:0',
                 //'redeem_percentage'    => 'numeric|max:100',
 
 				//'points'          => 'required',
@@ -95,7 +96,7 @@ class StoreWalletController extends Controller
 				$points->redeem_percentage = $request->redeem_percentage;
 				$points->max_redeem_amount = $request->max_redeem_amount;
 				$points->joiner_points = $request->joiner_points;
-
+                $points->minimum_order_amount = $request->minimum_order_amount;
 				$points->update();
                 $data['status']=1;
                 $data['message']="Points updated";
@@ -114,7 +115,7 @@ class StoreWalletController extends Controller
 				$points->redeem_percentage = $request->redeem_percentage;
 				$points->max_redeem_amount = $request->max_redeem_amount;
 				$points->joiner_points = $request->joiner_points;
-
+                $points->minimum_order_amount = $request->minimum_order_amount;
 				$points->save();
                 $data['status']=1;
                 $data['message']="Points added";

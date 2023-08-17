@@ -121,6 +121,12 @@
                            <input type="number"  min="0" oninput="validity.valid||(value='');" class="form-control" name="max_redeem_amount" value="{{old('max_redeem_amount',@$configure_points->max_redeem_amount)}}" placeholder="Maximum redeem amount per order">
                         </div>
                         </div>
+                         <div class="col-md-6">
+                        <div class="form-group">
+                           <label class="form-label">Minimum Order Amount</label>
+                           <input type="number"  min="1" oninput="validity.valid||(value='');" class="form-control" name="minimum_order_amount" value="{{old('minimum_order_amount',@$configure_points->minimum_order_amount)}}" placeholder="Maximum redeem amount per order">
+                        </div>
+                        </div>
 
                     </div>
 
