@@ -1254,7 +1254,7 @@ class PurchaseController extends Controller
                     if($request->order_amount<$storeConfigPoints->minimum_order_amount)
                     {
                         $data['status']=0;
-                        $data['message']="The order amount should be greater than amount ".$storeConfigPoints->minimum_order_amount." to use wallet points";
+                        $data['message']="The order amount should be greater than ₹".$storeConfigPoints->minimum_order_amount." to use wallet points";
                         return response($data);
 
                     }
