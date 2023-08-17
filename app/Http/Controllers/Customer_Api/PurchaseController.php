@@ -1020,6 +1020,7 @@ class PurchaseController extends Controller
                 $orderAmount=$request->order_amount;
             if($request->admin_points==1&&$request->store_points==1) 
             { 
+
                 if($redeem_preference==1)
                 {
                     $adminConfigPoints = Trn_configure_points::first();
@@ -1244,6 +1245,11 @@ class PurchaseController extends Controller
                     $c=$storeConfigPoints->rupee / $storeConfigPoints->rupee_points; // points to rupee ratio(C)
                     //$g=Trn_customer_reward::where('customer_id',$request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');//store wallet balance(G)
                     //$g=50;
+                    if($request->order_amount<$storeConfigPoints->minimum_order_amount)
+                    {
+                        $data['status']=0;
+                        $data['message']="The order amount should be greater than amount ".$storeConfigPoints->minimum_order_amount." to use wallet points";
+                    }
                     $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
                     $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
                     $g=$wallet_log_credited-$wallet_log_redeemed;//Trn_wallet_log::where('customer_id',$request->customer_id)->where('store_id',$store_id)->sum('points_credited');
