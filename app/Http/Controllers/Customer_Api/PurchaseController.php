@@ -1116,6 +1116,12 @@ class PurchaseController extends Controller
                 {
                    
                     $adminConfigPoints = Trn_configure_points::first();
+                    if($request->order_amount<$adminConfigPoints->minimum_order_amount)
+                    {
+                        $data['status']=0;
+                        $data['message']="The order amount should be greater than amount ".$adminConfigPoints->minimum_order_amount." to use wallet points";
+                        return response($data);
+                    }
                     $d=$adminConfigPoints->redeem_percentage;//% of Wallet Amount Redeemable(D)
                     $e=$adminConfigPoints->max_redeem_amount;//Max. Amount Redeemable (E)
                     $f=$adminConfigPoints->rupee / $adminConfigPoints->rupee_points; // points to rupee ratio(F)
