@@ -1403,7 +1403,7 @@ class StoreOrderController extends Controller
                             $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                             $clickAction = "OrdersFragment";
                             $type = "order";
-                            $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                            $data['responseOrderApp'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                         }
     
     
@@ -1413,7 +1413,7 @@ class StoreOrderController extends Controller
                             $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
                             $clickAction = "OrderListFragment";
                             $type = "order";
-                            $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+                            $data['responseOrderWeb'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                         }
     
     
