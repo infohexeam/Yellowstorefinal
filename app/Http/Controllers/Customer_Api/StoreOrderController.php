@@ -1393,7 +1393,6 @@ class StoreOrderController extends Controller
                                     $body = $request->reward_points_used_store . ' points deducted from your wallet';
                                     $clickAction = "MyWalletFragment";
                                     $type = "wallet";
-                                    sleep(3);
                                     $data['responseStoreDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                 }
                             }
@@ -1418,7 +1417,7 @@ class StoreOrderController extends Controller
                         }
     
     
-    
+                        sleep(3);
     
                         foreach ($customerDevice as $cd) {
                             $title = 'Order Placed';
