@@ -49,6 +49,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
                 
             </div>
             </div>
+            </div>
             
 
 
@@ -106,7 +107,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
             icon: payload.notification.icon,
         };
         // Play the alarm sound when a notification is received
-        const alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/alaram.wav');
+        const alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/Alaram.wav');
         alarmSound.play();
         new Notification(noteTitle, noteOptions);
     });
@@ -114,6 +115,10 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 </script>
 <script>
 var newOrders = [];
+document.addEventListener("DOMContentLoaded", function() {
+    var button = document.getElementById('activateBtn');
+    button.click(); // Simulate the button click event
+});
   getData();
 
   setInterval(function(){ getData(); }, 4000);

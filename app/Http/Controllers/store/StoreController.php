@@ -2401,7 +2401,7 @@ class StoreController extends Controller
     $status = Sys_store_order_status::all();
     $store = Mst_store::all();
     $product = Mst_store_product::where('store_id', '=', $store_id)->get();
-
+    $order_not_seen=Trn_store_order::where('store_id', '=', $store_id)->whereNull('TEST')->orderBy('order_id', 'DESC')->update(['TEST'=>1]);
     $delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
       ->select("mst_delivery_boys.*")->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
 
