@@ -689,6 +689,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 
         Route::get('store/home', 'StoreController@index')->name('store_home');
+        Route::get('store/new-orders', 'StoreController@newOrders')->name('store_new_orders');
         Route::get('store-login', 'Auth\LoginController@showLoginForm')->name('store.login');
         Route::post('to-store-login', 'Auth\LoginController@redirectStoreLogin')->name('store.tologin');
         Route::post('store/login', 'Auth\LoginController@usrlogin')->name('store_login');

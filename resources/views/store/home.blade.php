@@ -16,9 +16,31 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 
 
 @endphp
+<style>
+    @keyframes blink {
+      0%, 100% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+    .blink {
+      animation: blink 5s linear infinite;
+    }
+  </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- ROW-1 -->
+ <div class="row">
+ <div class="col-12">
+ <div class="row">
+ <button type="button" id="activateBtn" style="display:none;"></button>
+  <div class="card-body " id="newOrders">
+      </div>
+</div>
+</div>
+</div>
 @if(count($banners) > 0)
 
 <div class="row" >
@@ -53,6 +75,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 @endif
 
    <div class="col-lg-12 col-md-12 col-sm-12 col-xl-6">
+    
       <div class="row">
 
 
@@ -72,9 +95,9 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
                </a>
             </div>
         </div> --}}
-
-
+      
          <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
+
             <div class="card">
                <a href="{{ route('store.list_product') }}">
                     <div class="card-body text-center statistics-info">
@@ -334,7 +357,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 </div>
 
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
 <script>
@@ -391,5 +414,56 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
     });
    
 </script>
+<script>
+var newOrders = [];
+  getData();
 
+  setInterval(function(){ getData(); }, 4000);
+
+  function getData(){
+   //alert(123);
+    $.ajax({
+      type: 'get',
+      url: "{{ route('store_new_orders') }}",
+      dataType: 'json',
+      contentType: false,
+      cache: false,
+      processData:false,
+
+      success: function(response){ 
+        newOrders = response.newOrders;
+        var ordersCount = newOrders.length;
+        console.log(newOrders,ordersCount)
+         //alert(123);
+
+         if(ordersCount>0)
+        {
+         playNotificationSound();
+
+        }
+        RenderNewOrders();
+       
+        
+      },
+      
+    })
+  }
+   function RenderNewOrders() {
+    $('.neworder').remove();
+    $.each(newOrders, function(index, value){
+      if (value.TEST == 0) {
+        //NotifyNewOrder(value.id);
+         
+      }
+      var html='<div class="card neworder blink col-lg-3 col-md-3 col-sm-3 col-xl-3"><div class="card-header bg-info text-white">Notification</div><div class="card-body"><h3 class="card-title">New Order('+value.order_number+') Received</h3><p class="card-text">'+value.updated_at+'</p><p class="card-text">Total:&#8377;'+value.total+'</p><a href="{{ url('store/order/view') }}/' + value.order_id + '">View Order</a></div></div>';
+      $('#newOrders').append(html);
+    });
+  }
+  function playNotificationSound() {
+    var alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/alaram.wav');
+    alarmSound.play();
+  }
+
+  
+  </script>
 @endsection

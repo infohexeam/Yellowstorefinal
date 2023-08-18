@@ -83,6 +83,7 @@ use App\Trn_pos_lock;
 use App\Trn_store_referrals;
 use App\Trn_wallet_log;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Crypt as FacadesCrypt;
 
 class StoreController extends Controller
 {
@@ -189,6 +190,20 @@ class StoreController extends Controller
       'recentvisitCountWeek',
       'recentvisitCountMonth'
     ));
+  }
+  public function newOrders()
+  {
+    $newOrders=Trn_store_order::whereDate('created_at', Carbon::today())->where('store_id',Auth::guard('store')->user()->store_id)->where('status_id',1)->whereNull('TEST')->latest()->limit(4)->get()->map(function($data){
+      //$subdata=json_decode($data->data);
+      $qry['order_id']= Crypt::encryptString($data->order_id);
+      $qry['order_number']=$data->order_number;
+      $qry['TEST']= 0;
+      $qry['total']= (float)$data->product_total_amount;
+      $qry['updated_at']= $data->updated_at->diffForHumans();
+      return $qry;
+    });
+    return response()->json(['newOrders'=>$newOrders]);
+
   }
 
   public function changePassword()
@@ -2472,6 +2487,8 @@ class StoreController extends Controller
       $decrId  = Crypt::decryptString($id);
       //dd($decrId);
       $order = Trn_store_order::Find($decrId);
+      $order->TEST=1;
+      $order->update();
       $order_items = Trn_store_order_item::where('order_id', $decrId)->get();
       //dd($order_items);
 
