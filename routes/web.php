@@ -690,6 +690,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('store/home', 'StoreController@index')->name('store_home');
         Route::get('store/new-orders', 'StoreController@newOrders')->name('store_new_orders');
+        Route::get('store/new-orders-all', 'StoreController@newOrdersAll')->name('store_new_orders_all');
         Route::get('store-login', 'Auth\LoginController@showLoginForm')->name('store.login');
         Route::post('to-store-login', 'Auth\LoginController@redirectStoreLogin')->name('store.tologin');
         Route::post('store/login', 'Auth\LoginController@usrlogin')->name('store_login');
@@ -904,6 +905,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/order/list', 'StoreController@listOrder')->name('store.list_order');
         Route::get('store/today-order/list', 'StoreController@listTodaysOrder')->name('store.list_todays_order');
         Route::get('store/order/view/{id}', 'StoreController@viewOrder')->name('store.view_order');
+        Route::get('store/order/live-orders', 'StoreController@liveOrders')->name('store.live_orders');
         Route::post('store/order/update/{id}', 'StoreController@')->name('store.update_order');
         Route::get('store/order/invoice/{id}', 'StoreController@viewInvoice')->name('store.invoice_order');
         Route::post('store/order/status/{order_id}', 'StoreController@OrderStatus')->name('store.order_status');
