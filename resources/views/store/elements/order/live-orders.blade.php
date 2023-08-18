@@ -40,6 +40,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
                     <div class="col-12">
                         <div class="row">
                             <div class=card>
+                            <button type="button" style="display:none" id="activateBtn"></button>
                             <div class="card-body " id="newOrders">
                             </div>
                             </div>
@@ -135,7 +136,10 @@ var newOrders = [];
 
          if(ordersCount>0)
         {
-         playNotificationSound();
+           
+        playNotificationSound();
+        $('#newOrders').html("");
+
 
         }
         else
