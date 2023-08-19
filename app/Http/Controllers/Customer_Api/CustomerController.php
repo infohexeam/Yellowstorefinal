@@ -451,6 +451,8 @@ class CustomerController extends Controller
     {
         $data = array();
         try {
+            $jid=NULL;
+            $srid=NULL;
 
             $validator = Helper::validateCustomer($request->all());
             if (!$validator->fails()) {
@@ -631,6 +633,10 @@ class CustomerController extends Controller
                     $store_referral->referral_points=$referal_points;
                     $store_referral->fop=$fop;
                     $store_referral->save();
+                    $jid=$stringRefer;
+                    $srid=$request->store_referral_number;
+
+                    
                     // $data['status'] = 1;
                     // $data['message'] = "Success..Store Referral initiated";
                     // return response($data);
@@ -754,7 +760,10 @@ class CustomerController extends Controller
                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
                 }
-            
+                if($jid!=NULL && $srid!=NULL)
+                {
+                Helper::manageReferralNew($jid,$srid);
+                }
                 
 
                 $data['customer_id'] = $customer_id;
