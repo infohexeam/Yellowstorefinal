@@ -119,7 +119,7 @@
                         @endif
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_name" type="store_name" name="store_name" placeholder="Store Name *" value="{{ old('store_name') }}" required autocomplete="store_name" >
                                                                <span id="error_username"></span>
@@ -142,6 +142,17 @@
                                     <span id="error_store_mobile"></span>
 
                                     {{-- @error('store_mobile')
+                                    <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror --}}
+                                </div>
+                            </div>
+                           <div class="col-md-6">
+                                <div class="wrap-input100 validate-input">
+                                    <input class="input100" id="store_contact_person_phone_number" type="text" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  name="store_contact_person_phone_number" placeholder="Contact Person Number *" value="{{ old('store_contact_person_phone_number') }}" required autocomplete="store_username" >
+                                     <span id="error_cmob" style="color:red;" ></span>
+                                    {{-- @error('store_contact_person_phone_number')
+                                    <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror --}}
@@ -548,6 +559,8 @@ var firebaseConfig = {
       var sName = $('#store_name').val();
       var sPhone = $('#store_mobile').val();
       var sBusinessType = $('#business_type_id').val();
+       var sContactNumber = $('#store_contact_person_phone_number').val();
+      
       var sPass = $('#password').val();
       var sConfPass = $('#confirm_password').val();
       var sTC = $('#tc').val();
@@ -562,6 +575,11 @@ var firebaseConfig = {
           $('#error_smob').text('Store mobile reqired');
       }else{
           $('#error_smob').text('');
+      }
+       if(sContactNumber == ''){
+          $('#error_cmob').text('Store contact person phone number required ');
+      }else{
+          $('#error_cmob').text('');
       }
       
       if(sBusinessType == ''){
@@ -587,7 +605,7 @@ var firebaseConfig = {
       
       
        
-          if(sName != '' && sPhone != '' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){
+          if(sName != '' && sPhone != '' && sContactNumber!='' && sBusinessType != '' && sPass != '' && sConfPass != '' && sTC != ''){
           }
           else{
                 return false;

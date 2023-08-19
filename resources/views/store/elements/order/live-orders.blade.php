@@ -107,7 +107,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
             icon: payload.notification.icon,
         };
         // Play the alarm sound when a notification is received
-        const alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/Alaram.wav');
+        const alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/alaram.wav');
         alarmSound.play();
         new Notification(noteTitle, noteOptions);
     });
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
            
         playNotificationSound();
         $('#newOrders').html("");
-
+        
 
         }
         else
