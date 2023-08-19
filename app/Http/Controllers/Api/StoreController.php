@@ -652,7 +652,7 @@ class StoreController extends Controller
             if (!$validator->fails()) {
                 $store->store_name            = $request->store_name;
                 $store->store_name_slug       = Str::of($request->store_name)->slug('-');
-                //	$store->store_contact_person_phone_number = $request->store_contact_person_phone_number;
+                $store->store_contact_person_phone_number = $request->store_contact_person_phone_number;
                 $store->store_mobile   = $request->store_mobile;
                 $store->store_added_by        = 0;
                 $store->password              = Hash::make($request->password);
