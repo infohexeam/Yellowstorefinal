@@ -2822,6 +2822,7 @@ public function orderHistory(Request $request)
                         else
                             $data['orderDetails']->gst = "";
                         $data['orderDetails']->store_primary_address = @$storeData->store_primary_address;
+                        $data['orderDetails']->store_contact_person_phone_number = @$storeData->store_contact_person_phone_number;
                         $data['orderDetails']->store_mobile = @$storeData->store_mobile;
 
 
