@@ -470,7 +470,7 @@ class CustomerController extends Controller
                 $customer->longitude   = $request->longitude;
                 $customer->customer_pincode   = $request->pincode;
                 $customer->place   = $request->place;
-                $request->referral_id='48sath123405';
+
                 if (isset($request->referral_id)) {
                     $refById = Trn_store_customer::select('customer_id')->where('referral_id', $request->referral_id)->first();
                     //dd($refById);
@@ -488,7 +488,7 @@ class CustomerController extends Controller
                 $stt = Str::of($request->customer_name)->slug('-');
                 $st4 = substr($stt, 0, 4);
                 $stringRefer = $customer_id . $st4 . $customer_otp;
-                Trn_store_customer::where('customer_id', $customer_id)->update(['referral_id' => '55as225577']);
+                Trn_store_customer::where('customer_id', $customer_id)->update(['referral_id' => $stringRefer]);
 
 
                 $customer_otp_expirytime = Carbon::now()->addMinute(10);
@@ -507,7 +507,6 @@ class CustomerController extends Controller
                     //     return response($data);
     
                     // }
-                $request->store_referral_number='64be49138af87';
                 if($request->store_referral_number)
                 {
                 $check_reference_exists=Trn_store_referrals::where('joined_by_number',$stringRefer)->where('refered_by_number',$request->referral_id)->where('store_referral_number',$request->store_referral_number)->first();
@@ -628,13 +627,13 @@ class CustomerController extends Controller
                     $store_referral->refered_by_id=$request->referred_customer_id??0;
                     $store_referral->refered_by_number=$request->referral_id;
                     $store_referral->joined_by_id=$customer_id;
-                    $store_referral->joined_by_number='55as225577';
+                    $store_referral->joined_by_number=$stringRefer;
                     $store_referral->reference_status=0;
                     $store_referral->joiner_points=$joiner_points;
                     $store_referral->referral_points=$referal_points;
                     $store_referral->fop=$fop;
                     $store_referral->save();
-                    $jid='55as225577';
+                    $jid=$stringRefer;
                     $srid=$request->store_referral_number;
 
                     
@@ -754,7 +753,7 @@ class CustomerController extends Controller
 
                     foreach ($customerDevice as $cd) {
                         $title = 'Registration points credited';
-                        $body = $configPoint->registraion_points . ' points credited to your wallet..!'.$jid.'.'.$srid.' Verify your account and Login now';
+                        $body = $configPoint->registraion_points . ' points credited to your wallet..! Verify your account and Login now';
                         $clickAction = "MyWalletFragment";
                         $type = "wallet";
                         //   $body = 'Registration points credited successully..';
