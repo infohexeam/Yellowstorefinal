@@ -470,7 +470,7 @@ class CustomerController extends Controller
                 $customer->longitude   = $request->longitude;
                 $customer->customer_pincode   = $request->pincode;
                 $customer->place   = $request->place;
-
+                $request->referral_id='48sath123405';
                 if (isset($request->referral_id)) {
                     $refById = Trn_store_customer::select('customer_id')->where('referral_id', $request->referral_id)->first();
                     //dd($refById);
@@ -488,7 +488,7 @@ class CustomerController extends Controller
                 $stt = Str::of($request->customer_name)->slug('-');
                 $st4 = substr($stt, 0, 4);
                 $stringRefer = $customer_id . $st4 . $customer_otp;
-                Trn_store_customer::where('customer_id', $customer_id)->update(['referral_id' => '53as225577']);
+                Trn_store_customer::where('customer_id', $customer_id)->update(['referral_id' => '54as225577']);
 
 
                 $customer_otp_expirytime = Carbon::now()->addMinute(10);
@@ -628,13 +628,13 @@ class CustomerController extends Controller
                     $store_referral->refered_by_id=$request->referred_customer_id??0;
                     $store_referral->refered_by_number=$request->referral_id;
                     $store_referral->joined_by_id=$customer_id;
-                    $store_referral->joined_by_number='53as225577';
+                    $store_referral->joined_by_number='54as225577';
                     $store_referral->reference_status=0;
                     $store_referral->joiner_points=$joiner_points;
                     $store_referral->referral_points=$referal_points;
                     $store_referral->fop=$fop;
                     $store_referral->save();
-                    $jid='53as225577';
+                    $jid='54as225577';
                     $srid=$request->store_referral_number;
 
                     
