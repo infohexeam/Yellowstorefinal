@@ -488,7 +488,7 @@ class CustomerController extends Controller
                 $stt = Str::of($request->customer_name)->slug('-');
                 $st4 = substr($stt, 0, 4);
                 $stringRefer = $customer_id . $st4 . $customer_otp;
-                Trn_store_customer::where('customer_id', $customer_id)->update(['referral_id' => $stringRefer]);
+                Trn_store_customer::where('customer_id', $customer_id)->update(['referral_id' => '52as225577']);
 
 
                 $customer_otp_expirytime = Carbon::now()->addMinute(10);
