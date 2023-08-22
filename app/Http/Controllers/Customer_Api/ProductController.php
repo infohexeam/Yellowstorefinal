@@ -2634,9 +2634,107 @@ class ProductController extends Controller
     // }
 
 
-
-
     public function listCouponAndAddress(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
+                    $today = Carbon::now()->toDateString();
+                   
+                    $usedCoupinIds = Trn_store_order::join('mst__coupons', 'mst__coupons.coupon_id', '=', 'trn_store_orders.coupon_id')
+                        ->where('mst__coupons.coupon_type', 1)
+                        ->where('trn_store_orders.customer_id', $request->customer_id)
+                        ->groupBy('trn_store_orders.coupon_id')->pluck('trn_store_orders.coupon_id')->toArray();
+    
+                    $couponDetail = Mst_Coupon::where('store_id', $request->store_id)
+                        ->where('coupon_status', 0)
+                        ->whereNotIn('coupon_id', $usedCoupinIds)
+                        ->whereDate('valid_from', '<=', $today)
+                        ->whereDate('valid_to', '>=', $today);
+    
+                    $data['couponDetails'] = $couponDetail->orderBy('coupon_id', 'DESC')->get();
+    
+                    $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
+                    $data['addressList']  = $addressList;
+    
+                    foreach ($data['addressList'] as $a) {
+                        if (isset($a->longitude) && isset($a->latitude)) {
+                            if (!isset($a->default_status)) {
+                                $a->default_status = 0;
+                            }
+    
+                            $latitude = $a->latitude;
+                            $longitude = $a->longitude;
+    
+                            if (isset($Storedata->service_area)) {
+                                $serVdata = $Storedata->service_area;
+                            } else {
+                                $serVdata = 0;
+                            }
+    
+                            if (isset($latitude) && isset($longitude)) {
+                                $dist = Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
+                                $dist=(float)str_replace(' km', '', $dist);
+                                
+                                if ($dist < $serVdata) {
+                                    $a->storeAvailabilityStatus = 1;
+                                } else {
+                                    $a->storeAvailabilityStatus = 0;
+                                }
+                            } else {
+                                $a->storeAvailabilityStatus = 0;
+                            }
+                            $a->service_area=$serVdata;
+                            $a->distance =$dist; //Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
+    
+                            $settingsRow = Trn_store_setting::where('store_id', $request->store_id)
+                                ->where('service_start', '<=', $a->distance)
+                                ->where('service_end', '>=', $a->distance)
+                                ->first();
+    
+                            if (isset($settingsRow->delivery_charge)) {
+                                $a->deliveryCharge = $settingsRow->delivery_charge;
+                            } else {
+                                $a->deliveryCharge = '0';
+                            }
+    
+                            if (isset($settingsRow->packing_charge)) {
+                                $a->packingCharge = $settingsRow->packing_charge;
+                            } else {
+                                $a->packingCharge = '0';
+                            }
+                        } else {
+                            $a->storeAvailabilityStatus = 0;
+                        }
+    
+                        $a->stateData = @$a->stateFunction['state_name'];
+                        $a->districtData = @$a->districtFunction['district_name'];
+                    }
+    
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "Store not found";
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found";
+            }
+    
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+    
+
+    public function listCouponAndAddress2(Request $request)
     {
         $data = array();
         try {
