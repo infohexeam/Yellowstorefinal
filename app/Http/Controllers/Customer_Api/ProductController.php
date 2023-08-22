@@ -2634,7 +2634,7 @@ class ProductController extends Controller
     // }
 
 
-    public function listCouponAndAddressNew(Request $request)
+    public function listCouponAndAddress(Request $request)
     {
         $data = array();
         try {
@@ -2734,7 +2734,7 @@ class ProductController extends Controller
     }
     
 
-    public function listCouponAndAddress(Request $request)
+    public function listCouponAndAddress2(Request $request)
     {
         $data = array();
         try {
