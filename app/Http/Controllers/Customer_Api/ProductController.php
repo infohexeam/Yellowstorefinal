@@ -2674,9 +2674,9 @@ class ProductController extends Controller
                             }
     
                             if (isset($latitude) && isset($longitude)) {
-                                $dist = Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
+                                $dist = Helper::haversineGreatCircleDistanceNew($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
                                 //$dist=(float)str_replace(' km', '', $dist);
-                                
+                                $serVdata=$serVdata*1000;
                                 if ($dist < $serVdata) {
                                     $a->storeAvailabilityStatus = 1;
                                 } else {
@@ -2689,9 +2689,9 @@ class ProductController extends Controller
                             $a->distance =$dist; //Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
     
                             $settingsRow = Trn_store_setting::where('store_id', $request->store_id)
-                                ->where('service_start', '<=', $a->distance)
-                                ->where('service_end', '>=', $a->distance)
-                                ->first();
+                            ->whereRaw('service_start * 1000 <= ?', [$a->distance]) // Convert km to meters
+                            ->whereRaw('service_end * 1000 >= ?', [$a->distance])   // Convert km to meters
+                            ->first();
     
                             if (isset($settingsRow->delivery_charge)) {
                                 $a->deliveryCharge = $settingsRow->delivery_charge;
