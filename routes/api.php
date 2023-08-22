@@ -211,7 +211,8 @@ Route::group(['prefix' => 'store'], function () {
     //STORE SETTINGS
     Route::get('store-settings/list', 'Api\StoreSettingsController@listDefaultSettings');
     Route::post('store-settings/update', 'Api\StoreSettingsController@updateSettings');
-
+    //Live orders
+    Route::get('live-orders', 'Api\StoreSettingsController@newOrdersAll');
     Route::get('remove-banner', 'Api\StoreSettingsController@removeBanner');
 
     //WORKING DAYS
