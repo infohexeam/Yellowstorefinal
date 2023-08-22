@@ -2675,7 +2675,7 @@ class ProductController extends Controller
     
                             if (isset($latitude) && isset($longitude)) {
                                 $dist = Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
-                                $dist=(float)str_replace(' km', '', $dist);
+                                //$dist=(float)str_replace(' km', '', $dist);
                                 
                                 if ($dist < $serVdata) {
                                     $a->storeAvailabilityStatus = 1;
