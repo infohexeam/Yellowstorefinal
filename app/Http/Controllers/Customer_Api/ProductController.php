@@ -2675,6 +2675,7 @@ class ProductController extends Controller
     
                             if (isset($latitude) && isset($longitude)) {
                                 $dist = Helper::haversineGreatCircleDistanceNew($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
+                               $dist_with_units= Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
                                 //$dist=(float)str_replace(' km', '', $dist);
                                 $serVdata=$serVdata*1000;
                                 if ($dist < $serVdata) {
@@ -2686,7 +2687,9 @@ class ProductController extends Controller
                                 $a->storeAvailabilityStatus = 0;
                             }
                             $a->service_area=$serVdata;
-                            $a->distance =$dist; //Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
+                            $a->distance =$dist;
+                            $a->dist_with_units=$dist_with_units;
+                             //Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
     
                             $settingsRow = Trn_store_setting::where('store_id', $request->store_id)
                             ->whereRaw('service_start * 1000 <= ?', [$a->distance]) // Convert km to meters
