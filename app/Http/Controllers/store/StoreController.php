@@ -2883,9 +2883,10 @@ class StoreController extends Controller
             //dd($cust->referral_id,$st_uid,$order);
             $fop_store=Helper::checkFop($order);
             $fop_app=Helper::checkFopApp($order);
-            $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
-            $ref_id_App=Helper::manageAppReferral($cust->referral_id,$order);
+            //$ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
+            //$ref_id_App=Helper::manageAppReferral($cust->referral_id,$order);
             //dd($ref_id,$st_uid);
+            $ref_id=0;
 
             if($ref_id!=0)
             {

@@ -865,7 +865,7 @@ class DeliveryBoyOrderController extends Controller
                        
                        
                         
-                        $ref_id_app=Helper::manageAppReferral($cust->referral_id,$order);
+                        //$ref_id_app=Helper::manageAppReferral($cust->referral_id,$order);
                        /* if($ref_id!=0)
                         {*/
                 //               //if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {

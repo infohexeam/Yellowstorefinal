@@ -1326,6 +1326,120 @@ public static function manageAppReferral($joiner_uid,$order)
 
    
 }
+public static function manageAppReferralNew($joiner_uid)
+{
+    //$sref=Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('store_referral_number',$store_uid);
+    if(Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('reference_status',0)->whereNull('store_referral_number')->count()>0)
+    {
+        
+        $fetchFirstRef=Trn_store_referrals::where('joined_by_number',$joiner_uid)->whereNull('store_referral_number')->where('reference_status','=',0)->first();
+        //Joiner ponts
+        //dd($joiner_uid,$store_uid);
+
+        // $joiner_wallet_log=new Trn_wallet_log();
+        // $joiner_wallet_log->store_id=$order->store_id;
+        // $joiner_wallet_log->customer_id=$order->customer_id;
+        // $joiner_wallet_log->order_id=$order->order_id;
+        // $joiner_wallet_log->type='credit';
+        // $joiner_wallet_log->points_debited=null;
+        // $joiner_wallet_log->points_credited=$fetchFirstRef->joiner_points;
+        // $joiner_wallet_log->description='Joiner Points';  
+        // $joiner_wallet_log->save();
+        if(Trn_customer_reward::where('customer_id',$fetchFirstRef->joined_by_id)->where('discription','App Joiner Points')->count() == 0)
+        {
+
+            $jscr = new Trn_customer_reward;
+            $jscr->transaction_type_id = 0;
+            $jscr->store_id==null;
+            $jscr->reward_points_earned = $fetchFirstRef->joiner_points;
+            $jscr->customer_id = $fetchFirstRef->joined_by_id;
+            $jscr->order_id = 0;
+            $jscr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $jscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $jscr->reward_point_status = 1;
+            $jscr->discription = 'App Joiner Points';
+            $jscr->save();
+        }
+        else
+        {
+            return 0;
+        }
+
+        //Referal ponts
+        // $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
+        // $ref_wallet_log=new Trn_wallet_log();
+        // $ref_wallet_log->store_id=$order->store_id;
+        // $ref_wallet_log->customer_id=$refer_by->customer_id;
+        // $ref_wallet_log->order_id=$order->order_id;
+        // $ref_wallet_log->type='credit';
+        // $ref_wallet_log->points_debited=null;
+        // $ref_wallet_log->points_credited=$fetchFirstRef->referral_points;
+        // $ref_wallet_log->description='App Referral Points';  
+        // $ref_wallet_log->save();
+        $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
+        if(Trn_customer_reward::where('customer_id',$refer_by->customer_id)->where('discription','App Referral Points')->count() == 0)
+        {
+            $rscr = new Trn_customer_reward;
+            $rscr->transaction_type_id = 0;
+            $rscr->store_id==null;
+            $rscr->reward_points_earned = $fetchFirstRef->referral_points;
+            $rscr->customer_id = $refer_by->customer_id;
+            $rscr->order_id = 0;
+            $rscr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $rscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $rscr->reward_point_status = 1;
+            $rscr->discription = 'App Referral Points';
+            $rscr->save();
+        }
+        else
+        {
+            return 0;
+        }
+        
+        
+        
+       //First Order Points
+      
+    //    $ref_wallet_log=new Trn_wallet_log();
+    //    $ref_wallet_log->store_id=$order->store_id;
+    //    $ref_wallet_log->customer_id=$order->customer_id;
+    //    $ref_wallet_log->order_id=$order->order_id;
+    //    $ref_wallet_log->type='credit';
+    //    $ref_wallet_log->points_debited=null;
+    //    $ref_wallet_log->points_credited=$fetchFirstRef->fop;
+    //    $ref_wallet_log->description='First Order Points';  
+    //    $ref_wallet_log->save();
+
+    //    $fscr = new Trn_customer_reward;
+    //    $fscr->transaction_type_id = 0;
+    //    $fscr->store_id==$order->store_id;
+    //    $fscr->reward_points_earned = $fetchFirstRef->fop;
+    //    $fscr->customer_id = $order->customer_id;
+    //    $fscr->order_id = $order->order_id;
+    //    $fscr->reward_approved_date = Carbon::now()->format('Y-m-d');
+    //    $fscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+    //    $fscr->reward_point_status = 1;
+    //    $fscr->discription = 'store points';
+    //    $fscr->save();
+
+       $fetchFirstRef->reference_status=1;
+       $fetchFirstRef->order_id=0;
+       $fetchFirstRef->update();
+
+       return $refer_by->customer_id;
+         
+        
+       
+
+    }
+    else
+    {
+        return 0;
+
+    }
+
+   
+}
 public static function checkFop($order)
 {
     if(Trn_store_order::where('customer_id',$order->customer_id)->where('store_id',$order->store_id)->where('status_id',9)->count() == 0)

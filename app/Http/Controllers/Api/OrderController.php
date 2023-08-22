@@ -1105,14 +1105,14 @@ class OrderController extends Controller
                                         }
                                         
                                         //dd($st_uid,1);
-                                        $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz);
+                                        //$ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$orderDataz);
                                        
                                        
                                        
                                         }
                                         
                                         
-                                        $ref_id_app=Helper::manageAppReferral($cust->referral_id,$orderDataz);
+                                        //$ref_id_app=Helper::manageAppReferral($cust->referral_id,$orderDataz);
                                       
 
                                        

@@ -763,7 +763,14 @@ class CustomerController extends Controller
                 if($jid!=NULL && $srid!=NULL)
                 {
                 Helper::manageReferralNew($jid,$srid);
+
                 }
+                if (isset($request->referral_id)) {
+                if($request->refer_type=='APP')
+                {
+                Helper::manageAppReferralNew($stringRefer);
+                }
+            }
                 
 
                 $data['customer_id'] = $customer_id;
