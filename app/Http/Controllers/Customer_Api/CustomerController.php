@@ -750,7 +750,8 @@ class CustomerController extends Controller
                 $cr->discription = 'Registration points';
                 if ($cr->save()) {
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
-
+                if($configPoint->registraion_points!=0)
+                {
                     foreach ($customerDevice as $cd) {
                         $title = 'Registration points credited';
                         $body = $configPoint->registraion_points . ' points credited to your wallet..! Verify your account and Login now';
@@ -759,6 +760,7 @@ class CustomerController extends Controller
                         //   $body = 'Registration points credited successully..';
                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
+                }
                 }
                 if($jid!=NULL && $srid!=NULL)
                 {
