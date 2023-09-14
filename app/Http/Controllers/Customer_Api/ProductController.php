@@ -1455,26 +1455,35 @@ class ProductController extends Controller
                 $data['status'] = 0;
                 $data['message'] = "No Customer ";
                 return response($data);
-            } else {
+            } 
+            else {
 
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                     if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                         $customer_id = $request->customer_id;
+                        $storeData =  Mst_store::find($request->store_id);
 
                         // $data['deliveryAddress']  =  Trn_customerAddress::where('customer_id',$request->customer_id)->where('default_status',1)->first();
                         $data['sloatDelivery']  = [
                             [
                                 'slot_id' => 1,
-                                'slot' => "Immediate"
+                                'slot' => "Immediate",
+                                'delivery_option_status'=>$storeData->delivery_option_immediate
                             ],
                             [
                                 'slot_id' => 2,
-                                'slot' => "Slot"
+                                'slot' => "Slot",
+                                'delivery_option_status'=>$storeData->delivery_option_slot
+                            ],
+                            [
+                                'slot_id' => 3,
+                                'slot' => "Future",
+                                'delivery_option_status'=>$storeData->delivery_option_future
                             ]
 
                         ];
 
-                        $storeData =  Mst_store::find($request->store_id);
+                        
                         $cusData =  Trn_store_customer::find($request->customer_id);
                         $data['customer_name']  = @$cusData->customer_first_name . "" . @$cusData->customer_last_name;
                         $data['customer_mobile_number']  = @$cusData->customer_mobile_number;

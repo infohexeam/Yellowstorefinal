@@ -949,7 +949,7 @@ class CustomerController extends Controller
 
                 $customer_id = $mobCheck->customer_id;
                 $customer_mobile_number = $mobCheck->customer_mobile_number;
-
+                
                 $validator = Validator::make(
                     $request->all(),
                     [

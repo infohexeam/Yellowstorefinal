@@ -1105,6 +1105,33 @@ class SettingController extends Controller
 		}
 
 		if (!$validator->fails()) {
+			if(is_null($request->immediate_delivery))
+			{
+			$immediate_delivery=0;
+
+			}
+			else
+			{
+			$immediate_delivery=1;
+			}
+			if(is_null($request->slot_delivery))
+			{
+			$slot_delivery=0;
+
+			}
+			else
+			{
+			$slot_delivery=1;
+			}
+			if(is_null($request->future_delivery))
+			{
+			$future_delivery=0;
+
+			}
+			else
+			{
+			$future_delivery=1;
+			}
 			$data = $request->except('_token');
 
 
@@ -1127,6 +1154,9 @@ class SettingController extends Controller
 			$store->business_type_id   	     	= $request->business_type_id;
 			$store->store_username               = $request->store_username;
 			$store->product_upload_limit               = $request->product_limit;
+			$store->delivery_option_immediate          =$immediate_delivery;
+			$store->delivery_option_slot           =$slot_delivery;
+			$store->delivery_option_future           =$future_delivery;
 
 			if (auth()->user()->user_role_id == 0) {
 				$store->subadmin_id          = $request->subadmin_id??2;

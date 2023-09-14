@@ -99,15 +99,31 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        <tr>
                                           <td><strong>Delivery Type: </strong> </td> 
                                           <td>
+                                              @if($order->delivery_option==NULL)
                                              @if (isset($order->time_slot) && ($order->time_slot != 0)) 
                                              @php
                                                  $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($order->time_slot);
-                                                 
                                              @endphp
                                                 Time Slot Delivery ({{ @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end }})
                                              @else
                                                 Immediate Delivery
                                              @endif
+                                          @else
+                                             @if($order->delivery_option==1)
+                                               Immediate Delivery
+                                             @endif
+                                             @if($order->delivery_option==2)
+                                                @php
+                                                 $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($order->time_slot);
+                                             @endphp
+                                                Time Slot Delivery ({{ @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end }})
+                                             @endif
+                                             @if($order->delivery_option==3)
+                                               Future Delivery
+                                             @endif
+                                             
+
+                                          @endif
                                           </td>
                                        </tr>
 

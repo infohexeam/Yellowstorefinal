@@ -210,6 +210,15 @@ class StoreSettingsController extends Controller
 
                     if (isset($request->order_number_prefix))
                         $data2['order_number_prefix'] = $request->order_number_prefix;
+                    
+                    if (isset($request->immediate_delivery))
+                        $data2['delivery_option_immediate'] = $request->immediate_delivery;
+
+                    if (isset($request->slot_delivery))
+                        $data2['delivery_option_slot'] = $request->slot_delivery;
+                        
+                    if (isset($request->future_delivery))
+                        $data2['delivery_option_future'] = $request->future_delivery;
 
                     Mst_store::where('store_id', $store_id)->update($data2);
                     // echo "here";die;

@@ -4440,6 +4440,33 @@ class StoreController extends Controller
     $delivery_charge = $request->delivery_charge;
     $packing_charge = $request->packing_charge;
     $service_error_count=0;
+    if(is_null($request->immediate_delivery))
+    {
+      $immediate_delivery=0;
+
+    }
+    else
+    {
+      $immediate_delivery=1;
+    }
+    if(is_null($request->slot_delivery))
+    {
+      $slot_delivery=0;
+
+    }
+    else
+    {
+      $slot_delivery=1;
+    }
+    if(is_null($request->future_delivery))
+    {
+      $future_delivery=0;
+
+    }
+    else
+    {
+      $future_delivery=1;
+    }
 
     $data = [
 
@@ -4448,8 +4475,13 @@ class StoreController extends Controller
       // 'town_id' => $request->service_town,
       'business_type_id' => $request->business_type_id,
       'order_number_prefix' => $request->order_number_prefix,
+      'delivery_option_immediate'=>$immediate_delivery,
+      'delivery_option_slot'=>$slot_delivery,
+      'delivery_option_future'=>$future_delivery,
+
 
     ];
+    //dd($request->immediate_delivery,$request->slot_delivery,$request->future_delivery);
 
     Mst_store::where('store_id', Auth::guard('store')->user()->store_id)->update($data);
 

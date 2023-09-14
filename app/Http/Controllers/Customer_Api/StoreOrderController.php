@@ -190,6 +190,7 @@ class StoreOrderController extends Controller
                     $store_order->packing_charge =  $request->packing_charge;
 
                     $store_order->time_slot =  $request->time_slot;
+                    $store_order->delivery_option =  $request->delivery_option;
 
 
 
@@ -551,6 +552,7 @@ class StoreOrderController extends Controller
                     $store_order->packing_charge =  $request->packing_charge;
 
                     $store_order->time_slot =  $request->time_slot;
+                    $store_order->delivery_option =  $request->delivery_option;
 
 
 
@@ -1092,6 +1094,8 @@ class StoreOrderController extends Controller
                         $store_order->packing_charge =  $request->packing_charge;
     
                         $store_order->time_slot =  $request->time_slot;
+
+                        $store_order->delivery_option=$request->delivery_option;
     
     
     
@@ -1702,6 +1706,7 @@ class StoreOrderController extends Controller
                         $store_order->packing_charge =  $request->packing_charge;
     
                         $store_order->time_slot =  $request->time_slot;
+                        $store_order->delivery_option =  $request->delivery_option;
     
     
     
@@ -2825,7 +2830,8 @@ public function orderHistory(Request $request)
                         $data['orderDetails']->store_contact_person_phone_number = @$storeData->store_contact_person_phone_number;
                         $data['orderDetails']->store_mobile = @$storeData->store_mobile;
 
-
+                    if($data['orderDetails']->delivery_option==NULL)
+                    {
                         if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
                             $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
                             $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
@@ -2836,6 +2842,31 @@ public function orderHistory(Request $request)
                             $data['orderDetails']->delivery_type = 1; // immediate delivery
                             $data['orderDetails']->time_slot = '';
                         }
+                    }
+                    else
+                    {
+                        if($data['orderDetails']->delivery_option==1)
+                        {
+                            $data['orderDetails']->delivery_type = 1; // immediate delivery
+                            $data['orderDetails']->time_slot = '';
+
+                        }
+                        if($data['orderDetails']->delivery_option==2)
+                        {
+                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                            $data['orderDetails']->delivery_type = 2; //slot delivery
+                            
+                        }
+                        if($data['orderDetails']->delivery_option==3)
+                        {
+                            $data['orderDetails']->delivery_type = 3; // Future delivery
+                            $data['orderDetails']->time_slot = '';
+                            
+                        }
+                        
+
+                    }
 
                         $data['orderDetails']->delivery_date = Carbon::parse($data['orderDetails']->delivery_date)->format('d-m-Y');
                         //$data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->updated_at)->format('h:i');

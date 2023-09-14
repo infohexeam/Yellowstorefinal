@@ -280,6 +280,39 @@
                            name="product_limit" value="{{$store->product_upload_limit}}" placeholder="Product Upload Limit">
                         </div>
                      </div>
+                        <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Immediate Delivery
+                         
+														<input type="checkbox" name="immediate_delivery" @if ($store->delivery_option_immediate == 1) checked @endif    class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
+                             <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Slot Delivery(Same Day)
+                         
+														<input type="checkbox" name="slot_delivery"   @if ($store->delivery_option_slot == 1) checked @endif       class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
+                     <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Future Delivery
+                         
+														<input type="checkbox" name="future_delivery"   @if ($store->delivery_option_future == 1) checked @endif    class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
 
 
                          <div class="col-md-6">

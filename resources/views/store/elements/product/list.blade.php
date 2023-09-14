@@ -219,7 +219,7 @@
                           @csrf
                           @method('POST')
                           	<label class="custom-switch">
-                                                       <input type="hidden" name="status" value=0 /> 
+                            <input type="hidden" name="status" value=0 /> 
 														<input type="checkbox" name="display_flag"  @if ($product->display_flag == 1) checked @endif  value="1" class="custom-switch-input" onclick="changeDisplay({{$product->product_id}})">
 														<span class="custom-switch-indicator"></span>
 														<span class="custom-switch-description"></span>

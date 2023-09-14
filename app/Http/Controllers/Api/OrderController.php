@@ -450,16 +450,43 @@ class OrderController extends Controller
 
                         
 
-                        if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
-                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
-                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
-                            $data['orderDetails']->delivery_type = 2; //slot delivery
-
-                        } else // timeslot null or zero
-                        {
-                            $data['orderDetails']->delivery_type = 1; // immediate delivery
-                            $data['orderDetails']->time_slot = '';
-                        }
+                            if($data['orderDetails']->delivery_option==NULL)
+                            {
+                                if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
+                                    $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                                    $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                                    $data['orderDetails']->delivery_type = 2; //slot delivery
+        
+                                } else // timeslot null or zero
+                                {
+                                    $data['orderDetails']->delivery_type = 1; // immediate delivery
+                                    $data['orderDetails']->time_slot = '';
+                                }
+                            }
+                            else
+                            {
+                                if($data['orderDetails']->delivery_option==1)
+                                {
+                                    $data['orderDetails']->delivery_type = 1; // immediate delivery
+                                    $data['orderDetails']->time_slot = '';
+        
+                                }
+                                if($data['orderDetails']->delivery_option==2)
+                                {
+                                    $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                                    $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                                    $data['orderDetails']->delivery_type = 2; //slot delivery
+                                    
+                                }
+                                if($data['orderDetails']->delivery_option==3)
+                                {
+                                    $data['orderDetails']->delivery_type = 3; // Future delivery
+                                    $data['orderDetails']->time_slot = '';
+                                    
+                                }
+                                
+        
+                            }
                         
                         if ($data['orderDetails']->order_type == 'POS' && $data['orderDetails']->store_admin_id != NULL) {
 

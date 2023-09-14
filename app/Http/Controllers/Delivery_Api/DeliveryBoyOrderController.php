@@ -344,7 +344,7 @@ class DeliveryBoyOrderController extends Controller
                     $delivery_boy_id = $request->delivery_boy_id;
                     // dd(Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
 
-                    if ($data['orderDetails']  = Trn_store_order::select('order_id', 'service_order', 'service_booking_order', 'time_slot', 'delivery_accept', 'delivery_address', 'delivery_date', 'delivery_time', 'store_id', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'delivery_charge')->where('order_id', $order_id)->where('delivery_boy_id', $delivery_boy_id)->first()) {
+                    if ($data['orderDetails']  = Trn_store_order::select('order_id', 'service_order', 'service_booking_order', 'time_slot', 'delivery_accept', 'delivery_address', 'delivery_date', 'delivery_time', 'store_id', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'delivery_charge','delivery_option')->where('order_id', $order_id)->where('delivery_boy_id', $delivery_boy_id)->first()) {
 
                         if (!isset($data['orderDetails']->delivery_accept))
                             $data['orderDetails']->delivery_accept = "0";
@@ -477,16 +477,43 @@ class DeliveryBoyOrderController extends Controller
                         
 
                         
-
-                        if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
-                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
-                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
-                            $data['orderDetails']->delivery_type = 2; //slot delivery
-                        } else // timeslot null or zero
-                        {
-                            $data['orderDetails']->delivery_type = 1; // immediate delivery
-                            $data['orderDetails']->time_slot = '';
-                        }
+                               if($data['orderDetails']->delivery_option==NULL)
+                               {
+                                   if (isset($data['orderDetails']->time_slot) && ($data['orderDetails']->time_slot != 0)) {
+                                       $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                                       $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                                       $data['orderDetails']->delivery_type = 2; //slot delivery
+           
+                                   } else // timeslot null or zero
+                                   {
+                                       $data['orderDetails']->delivery_type = 1; // immediate delivery
+                                       $data['orderDetails']->time_slot = '';
+                                   }
+                               }
+                               else
+                               {
+                                   if($data['orderDetails']->delivery_option==1)
+                                   {
+                                       $data['orderDetails']->delivery_type = 1; // immediate delivery
+                                       $data['orderDetails']->time_slot = '';
+           
+                                   }
+                                   if($data['orderDetails']->delivery_option==2)
+                                   {
+                                       $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                                       $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                                       $data['orderDetails']->delivery_type = 2; //slot delivery
+                                       
+                                   }
+                                   if($data['orderDetails']->delivery_option==3)
+                                   {
+                                       $data['orderDetails']->delivery_type = 3; // Future delivery
+                                       $data['orderDetails']->time_slot = '';
+                                       
+                                   }
+                                   
+           
+                               }
 
                         $data['orderDetails']->delivery_date = Carbon::parse($data['orderDetails']->delivery_date)->format('d-m-Y');
                         $data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->delivery_date)->format('h:i');
