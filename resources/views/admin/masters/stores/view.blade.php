@@ -71,6 +71,11 @@
                                   <tr>
                                     <td><strong> Store Commission Percentage (Per Order):</strong> {{ @$store->store_commision_percentage}}</td>
                                  </tr>
+                                 @if($store->delivery_start_time!=NULL)
+                                 <tr>
+                                    <td><strong> Delivery Hours:</strong> {{ date('h:i A',strtotime(@$store->delivery_start_time))}}-{{ date('h:i A',strtotime(@$store->delivery_end_time))}}</td>
+                                 </tr>
+                                 @endif
 
                                   {{-- <tr>
                                     <td><strong> Store Commision Percentage Per Order:</strong> {{ $store->store_commision_percentage}}%</td>

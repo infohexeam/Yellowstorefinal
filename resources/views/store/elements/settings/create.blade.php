@@ -128,6 +128,20 @@
                         <span style="color:red" id="prefixErr" ></span>
                       </div>
                    </div>
+                     <div class="col-md-6">
+                      <div class="form-group">
+                         <label class="form-label">Delivery Start Time</label>
+                         <input type="time"  value="{{$store->delivery_start_time??'07:00'}}"   class="form-control"   name="delivery_start_time">
+                        <span style="color:red" id="prefixErr" ></span>
+                      </div>
+                   </div>
+                   <div class="col-md-6">
+                      <div class="form-group">
+                         <label class="form-label">Delivery End Time</label>
+                         <input type="time"   value="{{$store->delivery_end_time??'19:00'}}"   class="form-control"  " name="delivery_end_time">
+                        <span style="color:red" id="prefixErr" ></span>
+                      </div>
+                   </div>
                     <div class="col-md-4">
                       <div class="form-group">
                    <label class="form-group custom-switch">

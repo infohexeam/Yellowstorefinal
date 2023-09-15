@@ -488,6 +488,16 @@ class OrderController extends Controller
                                 
         
                             }
+
+                        if($data['orderDetails']->is_collect_from_store==1)
+                        {
+                            $data['orderDetails']->collection_type='Collect From Store';
+                        }
+                        else
+                        {
+                            $data['orderDetails']->collection_type='Pay After Delivery';
+
+                        }
                         
                         if ($data['orderDetails']->order_type == 'POS' && $data['orderDetails']->store_admin_id != NULL) {
 

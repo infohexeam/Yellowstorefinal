@@ -4427,6 +4427,18 @@ class StoreController extends Controller
     if (isset($request->start) < 1) {
       return redirect()->back()->with('error', 'Store settings cannot be update without data.');
     }
+    //dd($request->delivery_start_time);
+    $validator = Validator::make($request->all(), [
+      'delivery_start_time' => 'required',
+      'delivery_end_time' => 'required|after:delivery_start_time',
+  ], [
+      'delivery_end_time.after' => 'Delivery end time should be after delivery start time.'
+  ]);
+
+  if ($validator->fails()) {
+      return redirect()->back()->withErrors($validator)->withInput();
+  }
+
 
     $s_count = Trn_store_setting::where('store_id', Auth::guard('store')->user()->store_id)->count();
 
@@ -4478,6 +4490,8 @@ class StoreController extends Controller
       'delivery_option_immediate'=>$immediate_delivery,
       'delivery_option_slot'=>$slot_delivery,
       'delivery_option_future'=>$future_delivery,
+      'delivery_start_time'=>$request->delivery_start_time,
+      'delivery_end_time'=>$request->delivery_end_time,
 
 
     ];

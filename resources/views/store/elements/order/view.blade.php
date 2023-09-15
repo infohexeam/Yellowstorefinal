@@ -123,6 +123,16 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
 
                                           @endif
                                           </td>
+                                          </tr>
+                                          <tr>
+                                          <td><strong>Delivery Type:</strong></td>
+                                          <td>
+                                          @if(@$order->is_collect_from_store==NULL||@$order->is_collect_from_store==0)
+                                           Pay After Delivery
+                                          @else
+                                           Collect From Store
+                                          @endif
+                                          </td>
                                        </tr>
 
                                         @if(@$order->order_type == 'POS')

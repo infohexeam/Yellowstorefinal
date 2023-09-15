@@ -1462,7 +1462,16 @@ class ProductController extends Controller
                     if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                         $customer_id = $request->customer_id;
                         $storeData =  Mst_store::find($request->store_id);
-
+                        $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                        $data['is_delivery_available']=$flag;
+                        if($flag==1)
+                        {
+                            $data['is_collect_from_store']=0;
+                        }
+                        else
+                        {
+                            $data['is_collect_from_store']=1;
+                        }
                         // $data['deliveryAddress']  =  Trn_customerAddress::where('customer_id',$request->customer_id)->where('default_status',1)->first();
                         $data['sloatDelivery']  = [
                             [
@@ -1483,6 +1492,15 @@ class ProductController extends Controller
 
                         ];
 
+                        $filteredArray = [];
+
+                        foreach ($data['sloatDelivery'] as $element) {
+                            if ($element['delivery_option_status'] === "1") {
+                                $filteredArray[] = $element;
+                            }
+                        }
+
+                        $data['sloatDelivery'] =$filteredArray;
                         
                         $cusData =  Trn_store_customer::find($request->customer_id);
                         $data['customer_name']  = @$cusData->customer_first_name . "" . @$cusData->customer_last_name;
@@ -1552,6 +1570,27 @@ class ProductController extends Controller
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
+    }
+    public function checkDeliveryHours(Request $request)
+    {
+        
+        $data = array();
+        try {
+        $store_id=$request->store_id;
+        $flag=Helper::checkStoreDeliveryHours($store_id);
+        $data['status']=1;
+        $data['message']="Data Fetched";
+        $data['is_delivery_available']=$flag;
+        return response($data);
+        }
+    catch (\Exception $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    } catch (\Throwable $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    }
+
     }
 
 
@@ -3711,6 +3750,16 @@ class ProductController extends Controller
                 if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
                     $category_id = $request->category_id;
                     $store_id = $request->store_id;
+                    $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                    $data['is_delivery_available']=$flag;
+                    if($flag==1)
+                    {
+                        $data['is_collect_from_store']=0;
+                    }
+                    else
+                    {
+                        $data['is_collect_from_store']=1;
+                    }
 
                     if ($request->customer_id == 0) {
 
@@ -4850,6 +4899,16 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
+                $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                $data['is_delivery_available']=$flag;
+                if($flag==1)
+                {
+                    $data['is_collect_from_store']=0;
+                }
+                else
+                {
+                    $data['is_collect_from_store']=1;
+                }
                 if ($request->customer_id == 0) {
                     $store_id = $request->store_id;
 
@@ -4857,7 +4916,7 @@ class ProductController extends Controller
                     $longitude = $request->longitude;
 
 
-
+                    
 
                     $data['storeInfo'] = Mst_store::find($store_id);
                     $sCount = 0;
@@ -4892,6 +4951,7 @@ class ProductController extends Controller
                     } else {
                         $data['storeAvailabilityStatus'] = 0;
                     }
+                    
 
 
                     $data['sliderImages'] =  Mst_store_images::where('store_id', $store_id)->get();

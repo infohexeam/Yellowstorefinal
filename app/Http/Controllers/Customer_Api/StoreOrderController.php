@@ -190,7 +190,7 @@ class StoreOrderController extends Controller
                     $store_order->packing_charge =  $request->packing_charge;
 
                     $store_order->time_slot =  $request->time_slot;
-                    $store_order->delivery_option =  $request->delivery_option;
+                    $store_order->delivery_option =  $request->delivery_option??1;
 
 
 
@@ -552,7 +552,7 @@ class StoreOrderController extends Controller
                     $store_order->packing_charge =  $request->packing_charge;
 
                     $store_order->time_slot =  $request->time_slot;
-                    $store_order->delivery_option =  $request->delivery_option;
+                    $store_order->delivery_option =  $request->delivery_option??1;
 
 
 
@@ -1095,7 +1095,7 @@ class StoreOrderController extends Controller
     
                         $store_order->time_slot =  $request->time_slot;
 
-                        $store_order->delivery_option=$request->delivery_option;
+                        $store_order->delivery_option=$request->delivery_option??1;
     
     
     
@@ -2865,6 +2865,15 @@ public function orderHistory(Request $request)
                             
                         }
                         
+
+                    }
+                    if($data['orderDetails']->is_collect_from_store==1)
+                    {
+                        $data['orderDetails']->collection_type='Collect From Store';
+                    }
+                    else
+                    {
+                        $data['orderDetails']->collection_type='Pay After Delivery';
 
                     }
 
