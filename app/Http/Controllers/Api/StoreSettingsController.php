@@ -139,6 +139,8 @@ class StoreSettingsController extends Controller
                     $data['defaultStoreSettingsDetails']['immediate_option_status'] = $store_data->delivery_option_immediate;
                     $data['defaultStoreSettingsDetails']['slot_option_status'] = $store_data->delivery_option_slot;
                     $data['defaultStoreSettingsDetails']['future_option_status'] = $store_data->delivery_option_future;
+                    $data['defaultStoreSettingsDetails']['delivery_start_time'] = $store_data->delivery_start_time;
+                    $data['defaultStoreSettingsDetails']['delivery_end_time'] = $store_data->delivery_end_time;
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
