@@ -77,6 +77,7 @@ class OrderController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
+                $order_not_seen=Trn_store_order::where('store_id', '=', $store_id)->whereNull('TEST')->orderBy('order_id', 'DESC')->update(['TEST'=>1]);
                 $query = Trn_store_order::select(
                     'order_id',
                     'order_number',
