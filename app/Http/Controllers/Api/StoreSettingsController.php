@@ -136,6 +136,9 @@ class StoreSettingsController extends Controller
                     $data['defaultStoreSettingsDetails']['superadmin_phone'] = Helper::storeSuperadminPhone($request->store_id);
                     $data['defaultStoreSettingsDetails']['product_upload_limit'] = $product_upload_limit;
                     $data['defaultStoreSettingsDetails']['total_products_uploaded'] = $product_count;
+                    $data['defaultStoreSettingsDetails']['immediate_option_status'] = $store_data->delivery_option_immediate;
+                    $data['defaultStoreSettingsDetails']['slot_option_status'] = $store_data->delivery_option_slot;
+                    $data['defaultStoreSettingsDetails']['future_option_status'] = $store_data->delivery_option_future;
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
