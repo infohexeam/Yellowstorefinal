@@ -1097,7 +1097,7 @@ class StoreOrderController extends Controller
 
                         $store_order->delivery_option=$request->delivery_option??1;
                         $store_order->future_delivery_date=$request->future_delivery_date??NULL;
-    
+                        $store_order->is_collect_from_store=$request->is_collect_from_store;
     
                         $store_order->delivery_address =  $request->delivery_address;
     
