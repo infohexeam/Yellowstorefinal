@@ -1501,6 +1501,27 @@ class ProductController extends Controller
                         }
 
                         $data['sloatDelivery'] =$filteredArray;
+                        $delivery_types=DB::table('sys_delivery_types')->where('status',1)->select('delivery_type_id','delivery_type_name')->get();
+                        $data['delivery_types']=$delivery_types;
+                        foreach($data['delivery_types'] as $dtype )
+                        {
+                            if($dtype->delivery_type_id==1)
+                            {
+                                $dtype->delivery_type_status = $storeData->pay_delivery_status;
+                            }
+                            else
+                            {
+                                $dtype->delivery_type_status = $storeData->collect_store_status;
+                            }
+                          
+                        }
+                        $fArr=[];
+                        foreach ($data['delivery_types'] as $element) {
+                            if ($element->delivery_type_status === "1") {
+                                $fArr[] = $element;
+                            }
+                        }
+                        $data['delivery_types']=$fArr;
                         
                         $cusData =  Trn_store_customer::find($request->customer_id);
                         $data['customer_name']  = @$cusData->customer_first_name . "" . @$cusData->customer_last_name;

@@ -481,9 +481,11 @@ class OrderController extends Controller
                                 }
                                 if($data['orderDetails']->delivery_option==3)
                                 {
+                                    $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
                                     $data['orderDetails']->delivery_type = 3; // Future delivery
-                                    $data['orderDetails']->time_slot = '';
-                                    
+                                    $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                        
+                        
                                 }
                                 
         
@@ -513,7 +515,14 @@ class OrderController extends Controller
                         $invoice_data = \DB::table('trn_order_invoices')->where('order_id', $order_id)->first();
                         $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
                         $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
-
+                        $orderAddress = Trn_customerAddress::find($data['orderDetails']->delivery_address);
+                        if (isset($orderAddress)) {
+                            $orderAddress->stateData = @$orderAddress->stateFunction['state_name'];
+                            $orderAddress->districtData = @$orderAddress->districtFunction['district_name'];
+                            $data['orderDetails']->orderAddress =  $orderAddress;
+                        } else {
+                            $data['orderDetails']->orderAddress = $orderAddress;
+                        }
 
                         if (isset($data['orderDetails']->status_id)) {
                             $statusData = Sys_store_order_status::find($data['orderDetails']->status_id);

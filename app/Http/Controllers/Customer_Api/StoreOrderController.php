@@ -1096,7 +1096,7 @@ class StoreOrderController extends Controller
                         $store_order->time_slot =  $request->time_slot;
 
                         $store_order->delivery_option=$request->delivery_option??1;
-    
+                        $store_order->future_delivery_date=$request->future_delivery_date??NULL;
     
     
                         $store_order->delivery_address =  $request->delivery_address;
@@ -2860,8 +2860,9 @@ public function orderHistory(Request $request)
                         }
                         if($data['orderDetails']->delivery_option==3)
                         {
+                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
                             $data['orderDetails']->delivery_type = 3; // Future delivery
-                            $data['orderDetails']->time_slot = '';
+                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
                             
                         }
                         
