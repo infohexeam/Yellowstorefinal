@@ -2886,7 +2886,14 @@ public function orderHistory(Request $request)
                         $data['orderDetails']->invoice_id = @$invoice_data->invoice_id;
                         $data['orderDetails']->invoice_date = @$invoice_data->invoice_date;
 
-
+                        $orderAddress = Trn_customerAddress::find($data['orderDetails']->delivery_address);
+                        if (isset($orderAddress)) {
+                            $orderAddress->stateData = @$orderAddress->stateFunction['state_name'];
+                            $orderAddress->districtData = @$orderAddress->districtFunction['district_name'];
+                            $data['orderDetails']->orderAddress =  $orderAddress;
+                        } else {
+                            $data['orderDetails']->orderAddress = $orderAddress;
+                        }
                         if (isset($data['orderDetails']->status_id)) {
                             $statusData = Sys_store_order_status::find($data['orderDetails']->status_id);
                             $data['orderDetails']->status_name = @$statusData->status;
