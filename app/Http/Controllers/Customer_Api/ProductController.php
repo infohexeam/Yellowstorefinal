@@ -1506,13 +1506,13 @@ class ProductController extends Controller
 
 
                         foreach ($data['sloatDelivery'] as $element) {
-                            if($element['slot_id']=="1" ||$element['slot_id']=="2" )
+                            /*if($element['slot_id']=="1" ||$element['slot_id']=="2" )
                             {
                                 if($data['is_delivery_available']==0)
                                 {
                                     $element['delivery_option_status']=0;
                                 }
-                            }
+                            }*/
                             if ($element['delivery_option_status'] === "1") {
                                 
                                 $filteredArray[] = $element;
