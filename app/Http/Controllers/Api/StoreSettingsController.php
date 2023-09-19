@@ -238,7 +238,7 @@ class StoreSettingsController extends Controller
                     {
                         $data2['pay_delivery_status']=$request->pay_delivery_status;
                     }
-                    if (isset($request->pay_delivery_status))
+                    if (isset($request->collect_store_status))
                     {
                         $data2['collect_store_status']=$request->collect_store_status;
                     }
