@@ -2682,9 +2682,12 @@ class StoreController extends Controller
 
       if ($request->status_id == 8) {
         if ($order->order_type == 'APP') {
+          if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
+          {
          if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
             return redirect()->back()->withErrors(['delivery boy not assigned']);
           }
+        }
         }
       }
       if (($request->status_id == 9)) {
@@ -2692,9 +2695,12 @@ class StoreController extends Controller
         $order->delivery_date = Carbon::now()->format('Y-m-d');
         $order->delivery_time = Carbon::now()->format('H:i');
         if ($order->order_type == 'APP') {
+          if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
+          {
         if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
             return redirect()->back()->withErrors(['delivery boy not assigned']);
           }
+        }
         }
 
         $configPoint = Trn_configure_points::find(1);
@@ -4479,6 +4485,22 @@ class StoreController extends Controller
     {
       $future_delivery=1;
     }
+    if(is_null($request->pay_delivery_status))
+    {
+       $pad=0;
+    }
+    else
+    {
+      $pad=1;
+    }
+    if(is_null($request->collect_store_status))
+    {
+       $css=0;
+    }
+    else
+    {
+      $css=1;
+    }
 
     $data = [
 
@@ -4492,6 +4514,9 @@ class StoreController extends Controller
       'delivery_option_future'=>$future_delivery,
       'delivery_start_time'=>$request->delivery_start_time,
       'delivery_end_time'=>$request->delivery_end_time,
+      'pay_delivery_status'=>$pad,
+      'collect_store_status'=>$css
+
 
 
     ];

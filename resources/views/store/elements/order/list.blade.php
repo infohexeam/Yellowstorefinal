@@ -209,8 +209,10 @@ use App\Models\admin\Mst_store_product;
 @if($order->status_id == 4 )
 <!--<a class=" btn btn-sm btn-secondary text-white mt-1"   data-toggle="modal" data-target="#ShareItemlist{{$order->order_id}}">Share Items List</a>-->
 @endif
+@if($order->is_collect_from_store!=1)
 @if($order->status_id == 7 )
 <a class=" btn btn-sm btn-cyan text-white mt-1" data-toggle="modal" onclick="findAvailableDBoys({{$order->order_id}})" data-target="#AssignDesliveryBoy{{$order->order_id}}" >Assign Delivery Boy</a>
+@endif
 @endif
 
 @endif

@@ -1132,6 +1132,22 @@ class SettingController extends Controller
 			{
 			$future_delivery=1;
 			}
+			if(is_null($request->pay_delivery_status))
+			{
+			$pad=0;
+			}
+			else
+			{
+			$pad=1;
+			}
+			if(is_null($request->collect_store_status))
+			{
+			$css=0;
+			}
+			else
+			{
+			$css=1;
+			}
 			$data = $request->except('_token');
 
 
@@ -1157,6 +1173,8 @@ class SettingController extends Controller
 			$store->delivery_option_immediate          =$immediate_delivery;
 			$store->delivery_option_slot           =$slot_delivery;
 			$store->delivery_option_future           =$future_delivery;
+			$store->pay_delivery_status           =$pad;
+			$store->collect_store_status           =$css;
 
 			if (auth()->user()->user_role_id == 0) {
 				$store->subadmin_id          = $request->subadmin_id??2;

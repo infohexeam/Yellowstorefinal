@@ -128,17 +128,39 @@
                         <span style="color:red" id="prefixErr" ></span>
                       </div>
                    </div>
+                      <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Pay After Delivery
+                         
+														<input type="checkbox" name="pay_delivery_status" @if ($store->pay_delivery_status == 1) checked @endif    class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
+                             <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                 Collect From Store
+                         
+														<input type="checkbox" name="collect_store_status"   @if ($store->collect_store_status == 1) checked @endif       class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
                      <div class="col-md-6">
                       <div class="form-group">
                          <label class="form-label">Delivery Start Time</label>
-                         <input type="time"  value="{{$store->delivery_start_time??'07:00'}}"   class="form-control"   name="delivery_start_time">
+                         <input type="time"  value="{{$store->delivery_start_time}}" required  class="form-control"   name="delivery_start_time">
                         <span style="color:red" id="prefixErr" ></span>
                       </div>
                    </div>
                    <div class="col-md-6">
                       <div class="form-group">
                          <label class="form-label">Delivery End Time</label>
-                         <input type="time"   value="{{$store->delivery_end_time??'19:00'}}"   class="form-control"  " name="delivery_end_time">
+                         <input type="time"   value="{{$store->delivery_end_time}}" required   class="form-control"  " name="delivery_end_time">
                         <span style="color:red" id="prefixErr" ></span>
                       </div>
                    </div>

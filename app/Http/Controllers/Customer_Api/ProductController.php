@@ -1466,11 +1466,11 @@ class ProductController extends Controller
                         $data['is_delivery_available']=$flag;
                         if($flag==1)
                         {
-                            $data['is_collect_from_store']=0;
+                            $data['is_only_collect_from_store']=0;
                         }
                         else
                         {
-                            $data['is_collect_from_store']=1;
+                            $data['is_only_collect_from_store']=1;
                         }
                         // $data['deliveryAddress']  =  Trn_customerAddress::where('customer_id',$request->customer_id)->where('default_status',1)->first();
                         $data['sloatDelivery']  = [
@@ -1493,9 +1493,28 @@ class ProductController extends Controller
                         ];
 
                         $filteredArray = [];
+                       /* foreach ($data['sloatDelivery'] as $element) {
+                            if($element['slot_id']=="1" ||$element['slot_id']=="2" )
+                            {
+                                if($data['is_delivery_available']==0)
+                                {
+                                    $element['delivery_option_status']=0;
+                                }
+                            }
+
+                        }*/
+
 
                         foreach ($data['sloatDelivery'] as $element) {
+                            if($element['slot_id']=="1" ||$element['slot_id']=="2" )
+                            {
+                                if($data['is_delivery_available']==0)
+                                {
+                                    $element['delivery_option_status']=0;
+                                }
+                            }
                             if ($element['delivery_option_status'] === "1") {
+                                
                                 $filteredArray[] = $element;
                             }
                         }
@@ -1508,6 +1527,10 @@ class ProductController extends Controller
                             if($dtype->delivery_type_id==1)
                             {
                                 $dtype->delivery_type_status = $storeData->pay_delivery_status;
+                                if($data['is_delivery_available']==0)
+                                {
+                                    $dtype->delivery_type_status=0;
+                                }
                             }
                             else
                             {

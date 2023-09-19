@@ -914,11 +914,14 @@ class OrderController extends Controller
                             $orderDataz = Trn_store_order::Find($order_id);
 
                             if ($orderDataz->order_type == 'APP') {
+                                if($orderDataz->is_collect_from_store==NULL || $orderDataz->is_collect_from_store==0 )
+                                {
                                 if (($orderDataz->delivery_boy_id == 0) || !isset($orderDataz->delivery_boy_id)) {
                                     $data['status'] = 0;
                                     $data['message'] = "Delivery boy not assigned";
                                     return response($data);
                                 }
+                            }
                             }
 
                             // reward points 

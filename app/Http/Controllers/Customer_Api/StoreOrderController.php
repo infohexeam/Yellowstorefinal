@@ -1111,7 +1111,8 @@ class StoreOrderController extends Controller
                             $store_order->amount_reduced_by_rp =  $request->amount_reduced_by_rp;
                             $store_order->amount_reduced_by_rp_store =  $request->amount_reduced_by_rp_store;
                             
-                        } else {
+                        } else
+                         {
                             $store_order->reward_points_used =  0;
                             $store_order->reward_points_used_store = 0;
                             $store_order->amount_before_applying_rp =  0;
