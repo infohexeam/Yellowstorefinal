@@ -173,7 +173,7 @@
                                            <td>
                                             @php
                                                  //$discountAmt = $order_item->quantity * (@$order_item->product_varient->product_varient_price - @$order_item->product_varient->product_varient_offer_price);
-                                                $discountAmt=@$order_item->discount_amount ;
+                                                $discountAmt=@$order_item->quantity*@$order_item->discount_amount ;
                                               @endphp
                                             {{ number_format((float)$discountAmt, 2, '.', '') }}  
                                              </td>
