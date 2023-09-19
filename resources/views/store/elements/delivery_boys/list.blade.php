@@ -40,6 +40,16 @@
                         <div class="media-heading">
                            <h5><strong>Delivery Boys</strong></h5>
                         </div><br>
+                         <a href="#" class="btn btn-block btn-info">
+                           <i class="fa fa-plus"></i>
+                           Create Delivery Boy
+                        </a>
+                       
+                        <br/>
+                        <a href="#" class=" text-white btn btn-block btn-danger">
+                           <i class="fa fa-recycle"></i>
+                          Restore Delivery Boy
+                        </a><br/>
                         <div class="table-responsive ">
                            <table  id="example1" class="table table-striped table-bordered">
                               <thead>

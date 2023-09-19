@@ -234,6 +234,15 @@ class StoreSettingsController extends Controller
                     {
                         $data2['delivery_end_time']=$request->delivery_end_time??'19:00';
                     }
+                    if (isset($request->pay_delivery_status))
+                    {
+                        $data2['pay_delivery_status']=$request->pay_delivery_status;
+                    }
+                    if (isset($request->pay_delivery_status))
+                    {
+                        $data2['collect_store_status']=$request->collect_store_status;
+                    }
+
                     Mst_store::where('store_id', $store_id)->update($data2);
                     // echo "here";die;
                     Trn_store_setting::where('store_id', $store_id)->delete();
