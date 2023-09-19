@@ -118,11 +118,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @endif
                                              @if($order->delivery_option==3)
                                                Future Delivery<br>{{date('d-M-Y',strtotime(@$order->future_delivery_date))}}
-                                                @php
-                                                 $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($order->time_slot);
-                                             @endphp
-                                             <br>
-                                               (Slot: {{ @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end }})
+                                               
                                              @endif
                                              
 

@@ -481,9 +481,9 @@ class OrderController extends Controller
                                 }
                                 if($data['orderDetails']->delivery_option==3)
                                 {
-                                    $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                                    //$deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
                                     $data['orderDetails']->delivery_type = 3; // Future delivery
-                                    $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                                    $data['orderDetails']->time_slot = '';//@$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
                         
                         
                                 }
