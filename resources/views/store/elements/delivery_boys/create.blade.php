@@ -274,7 +274,7 @@
                            <i class="fa fa-check-square-o"></i> Add</button>
                            <button type="reset" class="btn btn-raised btn-success">
                            Reset</button>
-                           <a class="btn btn-danger" href="{{ route('admin.list_delivery_boy') }}">Cancel</a>
+                           <a class="btn btn-danger" href="{{ route('store.list_boys') }}">Cancel</a>
                            </center>
                         </div>
                </form>
