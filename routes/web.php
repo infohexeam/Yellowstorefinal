@@ -968,6 +968,13 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/delivery-boys/list', 'StoreController@listDeliveryBoys')->name('store.list_boys');
         Route::get('store/delivery-boys/create', 'StoreController@createDelivery_boy')->name('store.create_delivery_boy');
         Route::post('store/delivery-boys/store', 'StoreController@storeDelivery_boy')->name('store.store_delivery_boy');
+        Route::get('store/delivery_boy/edit/{id}', 'StoreController@editDelivery_boy')->name('store.edit_delivery_boy');
+        Route::post('store/delivery_boy/update/{delivery_boy_id}', 'StoreController@updateDelivery_boy')->name('store.update_delivery_boy');
+        Route::post('store/delivery_boy/destroy/{delivery_boy}', 'StoreController@destroyDelivery_boy')->name('store.destroy_delivery_boy');
+        Route::get('store/delivery_boy/trash', 'StoreController@restoreDelivery_boy')->name('store.restore_delivery_boy');
+        Route::get('store/delivery_boy/restore/{dbid?}', 'StoreController@restoreDelivery_boySave')->name('store.restore_delivery_boy_save');
+        Route::get('store/delivery_boy/view/{id}', 'StoreController@viewDelivery_boy')->name('store.view_delivery_boy');
+        Route::post('store/delivery_boy/status/{delivery_boy_id}', 'StoreController@changedBoyStatus')->name('store.status_delivery_boy');
         Route::get('store/delivery-boys/location/{delivery_boy_id}', 'StoreController@showLocation')->name('store.delivery_boy_location');
 
         Route::get('store/delivery-order/view/{id}', 'StoreController@viewDeliveryOrder')->name('store.view_delivery_order');

@@ -5921,7 +5921,8 @@ class StoreController extends Controller
       $pageTitle = "Delivery Boys";
       $store_id  = Auth::guard('store')->user()->store_id;
       $delivery_boys = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
-        ->select('mst_delivery_boys.town_id', 'mst_delivery_boys.delivery_boy_id', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_mobile','mst_delivery_boys.is_added_by_store')
+        ->select('mst_delivery_boys.town_id', 'mst_delivery_boys.delivery_boy_id', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_mobile','mst_delivery_boys.is_added_by_store','mst_delivery_boys.deleted_at','mst_delivery_boys.delivery_boy_status')
+        ->whereNull('mst_delivery_boys.deleted_at')
         ->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
 
       $assigned_delivery_boys = [];
@@ -6224,6 +6225,267 @@ class StoreController extends Controller
 
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
+	}
+  public function editDelivery_boy(Request $request, $id)
+	{
+		$pageTitle = "Edit Delivery Boy";
+
+		$decrId  = Crypt::decryptString($id);
+		$delivery_boy = Mst_delivery_boy::Find($decrId);
+		$countries = Country::all();
+		
+		$states=DB::table('sys_states')->where('country_id',101)->get();
+		//dd($delivery_boy->district_id);
+		$districts=DB::table('mst_districts')->where('state_id',$delivery_boy->state_id)->get();
+		$towns=DB::table('mst_towns')->where('district_id',$delivery_boy->district_id)->get();
+		$vehicle_types = Sys_vehicle_type::all();
+		$availabilities = Sys_delivery_boy_availability::all();
+
+		return view('store.elements.delivery_boys.edit', compact('pageTitle', 'delivery_boy', 'countries', 'vehicle_types', 'availabilities','states','districts','towns'));
+	}
+  public function updateDelivery_boy(Request $request, Mst_delivery_boy $delivery_boy, $delivery_boy_id)
+	{
+		$boy_Id = $request->delivery_boy_id;
+		$delivery_boy = Mst_delivery_boy::Find($boy_Id);
+    //dd($request->all());
+    if($request->password==NULL || $request->password_confirmation==NULL )
+    {
+      $val_rules=	[
+				'delivery_boy_name'       			=> 'required',
+				'delivery_boy_mobile'           	=> 'required|unique:mst_delivery_boys,delivery_boy_mobile,' . $delivery_boy_id . ',delivery_boy_id',
+				//'delivery_boy_email'=> 'required',
+				'delivery_boy_address'          	=> 'required',
+				'vehicle_number'        	    	=> 'required',
+				'vehicle_type_id'					=> 'required',
+				//	'delivery_boy_availability_id'  	=> 'required',
+				//'store_id'        	        		=> 'required',
+				'country_id'			    		=> 'required',
+				'state_id'       		    		=> 'required',
+				'town_id'       		    		=> 'required',
+				'district_id'               		=> 'required',
+				'delivery_boy_commision'            => 'required|gte:0',
+				'delivery_boy_commision_amount'            => 'required|gte:0',
+				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
+				
+	
+
+			];
+      $val_messages=[
+				'delivery_boy_name.required'           => 'Delivery boy name required',
+				'delivery_boy_mobile.required'     	   => 'Mobile required',
+				//'delivery_boy_email.required' 		   => 'Email required',
+				'delivery_boy_address.required'        => 'Address required',
+				'vehicle_type_id.required'        	   => 'Vehicle type required',
+				'delivery_boy_availability_id.required' => 'Availability required',
+				//'store_id.required'               	   => 'Store required',
+				'country_id.required'         		   => 'Country required',
+				'state_id.required'        			   => 'State required',
+				'town_id.required'        			   => 'Pincode required',
+				'district_id.required'        		   => 'District  required',
+				'delivery_boy_username.required'       => 'Username required',
+				
+				
+
+
+			];
+
+
+    }
+    else
+    {
+      $val_rules=	[
+				'delivery_boy_name'       			=> 'required',
+				'delivery_boy_mobile'           	=> 'required|unique:mst_delivery_boys,delivery_boy_mobile,' . $delivery_boy_id . ',delivery_boy_id',
+				//'delivery_boy_email'=> 'required',
+				'delivery_boy_address'          	=> 'required',
+				'vehicle_number'        	    	=> 'required',
+				'vehicle_type_id'					=> 'required',
+				//	'delivery_boy_availability_id'  	=> 'required',
+				//'store_id'        	        		=> 'required',
+				'country_id'			    		=> 'required',
+				'state_id'       		    		=> 'required',
+				'town_id'       		    		=> 'required',
+				'district_id'               		=> 'required',
+				'delivery_boy_commision'            => 'required|gte:0',
+				'delivery_boy_commision_amount'            => 'required|gte:0',
+				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
+				'password'  => 'sometimes|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+	
+
+			];
+      $val_messages=[
+				'delivery_boy_name.required'           => 'Delivery boy name required',
+				'delivery_boy_mobile.required'     	   => 'Mobile required',
+				//'delivery_boy_email.required' 		   => 'Email required',
+				'delivery_boy_address.required'        => 'Address required',
+				'vehicle_type_id.required'        	   => 'Vehicle type required',
+				'delivery_boy_availability_id.required' => 'Availability required',
+				//'store_id.required'               	   => 'Store required',
+				'country_id.required'         		   => 'Country required',
+				'state_id.required'        			   => 'State required',
+				'town_id.required'        			   => 'Pincode required',
+				'district_id.required'        		   => 'District  required',
+				'delivery_boy_username.required'       => 'Username required',
+        'password.required'	   => 'Password required',
+				'password.regex'=>'Password must include at least one upper case letter, lower case letter, number, and special character'
+				
+				
+
+
+			];
+
+    }
+
+
+		$validator = Validator::make(
+			$request->all(),
+			$val_rules,          
+			$val_messages
+		);
+
+		if (!$validator->fails()) {
+			$data = $request->except('_token');
+			//	$data['delivery_boy_availability_id'] = implode(',', $data['delivery_boy_availability_id']);
+			// $data->delivery_boy_availability_id = implode($data->delivery_boy_availability_id);
+			//dd($data);
+
+			$delivery_boy->delivery_boy_name 	 = $request->delivery_boy_name;
+			$delivery_boy->delivery_boy_mobile   = $request->delivery_boy_mobile;
+			$delivery_boy->delivery_boy_email    = $request->delivery_boy_email;
+			$delivery_boy->delivery_boy_address  = $request->delivery_boy_address;
+			$delivery_boy->vehicle_number 		 = $request->vehicle_number;
+			$delivery_boy->vehicle_type_id   	 = $request->vehicle_type_id;
+			//	$delivery_boy->delivery_boy_availability_id  = $data['delivery_boy_availability_id'];
+			//$delivery_boy->store_id               = $request->store_id;
+			$delivery_boy->country_id             = $request->country_id;
+			$delivery_boy->state_id  		      = $request->state_id;
+			$delivery_boy->district_id   	      = $request->district_id;
+			$delivery_boy->town_id   	      = $request->town_id;
+
+			$delivery_boy->delivery_boy_commision = $request->delivery_boy_commision??0;
+			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount??0;
+
+			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
+			//	$delivery_boy->delivery_boy_status   = 0;
+			if (isset($request->password)) {
+				$delivery_boy->password = Hash::make($request->password);
+			}
+
+
+
+			if ($request->hasFile('delivery_boy_image')) {
+				/*	$delivery_boy_image = $request->file('delivery_boy_image');
+
+
+			$filename = time().'.'.$delivery_boy_image->getClientOriginalExtension();
+
+			$location = public_path('assets/uploads/delivery_boy/images/'.$filename);
+
+			Image::make($delivery_boy_image)->save($location);
+			$delivery_boy->delivery_boy_image = $filename;*/
+
+				$photo = $request->file('delivery_boy_image');
+				$old_delivery_boy_image = 'assets/uploads/company/logos/' . $delivery_boy->delivery_boy_image;
+				if (is_file($old_delivery_boy_image)) {
+					unlink($old_delivery_boy_image);
+				}
+				$filename = time() . '.' . $photo->getClientOriginalExtension();
+				$destinationPath = 'assets/uploads/delivery_boy/images';
+				$thumb_img = Image::make($photo->getRealPath());
+				$thumb_img->save($destinationPath . '/' . $filename, 80);
+				$delivery_boy->delivery_boy_image = $filename;
+			}
+
+			$delivery_boy->update();
+			return redirect('store/delivery-boys/list')->with('status', 'Delivery boy updated successfully.');
+		} else {
+
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
+	}
+  public function destroyDelivery_boy(Request $request, mst_delivery_boy $delivery_boy)
+	{
+  
+
+		$delete = $delivery_boy->delete();
+
+		return redirect('store/delivery-boys/list')->with('status', 'Delivery boy deleted successfully');;
+	}
+	public function restoreDelivery_boy(Request $request)
+	{
+
+		$pageTitle = "Restore Delivery Boys";
+		$store_id  = Auth::guard('store')->user()->store_id;
+			$delivery_boys = Mst_delivery_boy::onlyTrashed()->orderBy('delivery_boy_id', 'DESC')->where('store_id',$store_id)->where('is_added_by_store',1)->get();
+		
+
+		
+		
+
+		return view('store.elements.delivery_boys.restore', compact('delivery_boys', 'pageTitle'));
+	}
+	public function restoreDelivery_boySave(Request $request,$dbid)
+	{
+
+		$pageTitle = "Restore Delivery Boys";
+		
+        $db=Mst_delivery_boy::withTrashed()->find($dbid);
+        $db->restore();
+         return redirect('store/delivery_boy/trash')->with('status', 'Delivery boy Restored Successfully');
+
+		
+		
+
+		//return view('store.elements.delivery_boys.restore', compact('delivery_boys', 'pageTitle'));
+	}
+  public function changedBoyStatus(Request $request, Mst_delivery_boy $delivery_boy, $delivery_boy_id)
+	{
+
+
+		$delivery_boy = Mst_delivery_boy::Find($delivery_boy_id);
+
+		$status = $delivery_boy->delivery_boy_status;
+
+		if ($status == 0) {
+			$delivery_boy->delivery_boy_status  = 1;
+		} else {
+
+			$delivery_boy->delivery_boy_status  = 0;
+		}
+		$delivery_boy->update();
+
+		return redirect()->back()->with('status', 'Status changed successfully');
+	}
+  public function viewDelivery_boy(Request $request, $id)
+	{
+		$pageTitle = "View Delivery Boy";
+
+		$decrId  = Crypt::decryptString($id);
+		$delivery_boy = Mst_delivery_boy::Find($decrId);
+		$delivery_boy_id = $delivery_boy->delivery_boy_id;
+		$countries = Country::all();
+
+		if (auth()->user()->user_role_id  == 0) {
+			$stores = Mst_store::all();
+		} else {
+			$stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+			//  dd($store);
+		}
+
+
+
+		$vehicle_types = Sys_vehicle_type::all();
+		$assigned_stores = Mst_store_link_delivery_boy::where('delivery_boy_id', '=', $delivery_boy_id)->get();
+		//dd($assigned_stores);
+		$availabilities = Sys_delivery_boy_availability::all();
+
+
+		$delivery_boy_orders = Trn_store_order::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+			->join('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id')->where('trn_store_orders.delivery_boy_id', $delivery_boy_id)
+			->orderBy('trn_store_orders.order_id', 'DESC')->get();
+
+
+		return view('store.elements.delivery_boys.view', compact('delivery_boy_orders', 'pageTitle', 'delivery_boy', 'countries', 'stores', 'vehicle_types', 'availabilities', 'assigned_stores'));
 	}
 
 

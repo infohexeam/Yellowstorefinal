@@ -10,6 +10,16 @@
          </div>
 
          <div class="border-top">
+           @if ($message = Session::get('status'))
+            <div class="alert alert-success">
+              <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+            </div>
+            @endif
+             @if ($message = Session::get('err_status'))
+            <div class="alert alert-danger">
+              <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+            </div>
+            @endif
             <div class="wideget-user-tab">
                <div class="tab-menu-heading">
                   <div class="tabs-menu1">
@@ -46,7 +56,7 @@
                         </a>
                        
                         <br/>
-                        <a href="#" class=" text-white btn btn-block btn-danger">
+                        <a href="{{route('store.restore_delivery_boy')}}" class=" text-white btn btn-block btn-danger">
                            <i class="fa fa-recycle"></i>
                           Restore Delivery Boy
                         </a><br/>
@@ -58,6 +68,7 @@
                                    <th class="wd-15p">{{ __('Name') }}</th>
                                    <th class="wd-15p">{{ __('Mobile') }}</th>
                                      <th class="wd-15p">{{ __('Pincode') }}</th>
+                                     <th class="wd-15p">{{ __('Status') }}</th>
 
                                      <th  class="wd-20p">{{__('Action')}}</th>
                                  </tr>
@@ -69,25 +80,37 @@
                                 @foreach ($delivery_boys as $delivery_boy)
                                 <tr>
                                   <td>{{ ++$i }}</td>
-                                  <td>{{$delivery_boy->delivery_boy_name}} @if($delivery_boy->is_added_by_store==1)@endif</td>
+                                  <td>{{$delivery_boy->delivery_boy_name}} @if($delivery_boy->is_added_by_store==1) <br><span class="badge badge-info">Created by store</span>@endif</td>
                                   <td>{{$delivery_boy->delivery_boy_mobile}}</td>
+                                 
                                     @php
                                     $towns =  \DB::table('mst_towns')->where('town_id', @$delivery_boy->town_id)->first();
                                     // dd($towns);
                                     @endphp
                                   <td>{{@$towns->town_name}}</td>
-                                   <td> <form action="{{route('admin.destroy_delivery_boy',$delivery_boy->delivery_boy_id)}}" method="POST">
+                                   <td>
+                                       <form action="{{route('store.status_delivery_boy',$delivery_boy->delivery_boy_id)}}" method="POST">
+
+                                          @csrf
+                                          @method('POST')
+                                          <button type="submit" @if($delivery_boy->is_added_by_store!=1) disabled @endif onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
+                                          @if($delivery_boy->delivery_boy_status == 0) btn-danger @else btn-success @endif"> @if($delivery_boy->delivery_boy_status == 0)
+                                          Inactive
+                                          @else
+                                          Active
+                                          @endif</button>
+                                       </form>
+                                    </td>
+                                   <td> <form action="{{route('store.destroy_delivery_boy',$delivery_boy->delivery_boy_id)}}" method="POST">
 
                     @csrf
                       @method('POST')
                       
                      @if($delivery_boy->is_added_by_store==1)
-                       <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/edit/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">Edit</a>
-                     @endif
-                       
-                       <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/view/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">View</a>
+                       <a class="btn btn-sm btn-cyan" href="{{url('store/delivery_boy/edit/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">Edit</a>
+           
+                       <a class="btn btn-sm btn-cyan" href="{{url('store/delivery_boy/view/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">View</a>
                          
-                     @if($delivery_boy->is_added_by_store==1)
                         <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
                      @endif
                          </form>

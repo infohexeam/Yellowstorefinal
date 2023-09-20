@@ -996,11 +996,12 @@ class SettingController extends Controller
 		$delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
 
 		if (auth()->user()->user_role_id  == 0) {
-			$all_delivery_boys = Mst_delivery_boy::all();
+			$all_delivery_boys = Mst_delivery_boy::whereNull('is_added_by_store')->get();
 		} else {
 			$all_delivery_boys = \DB::table('mst_delivery_boys')
 				->join('mst_stores', 'mst_stores.store_id', '=', 'mst_delivery_boys.store_id')
 				->where('mst_stores.subadmin_id', auth()->user()->id)
+				->whereNull('mst_delivery_boys.is_added_by_store')
 				->get();
 		}
 

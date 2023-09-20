@@ -701,7 +701,7 @@
                                  @endphp
                                  <tr>
                                     <td>{{$i}}</td>
-                                    <td>{{ @$delivery_boy->delivery_boy['delivery_boy_name']}}</td>
+                                    <td>{{ @$delivery_boy->delivery_boy['delivery_boy_name']}}<br>@if($delivery_boy->delivery_boy['is_added_by_store']==1) <br><span class="badge badge-sm badge-info">Created by store</span>@endif</td>
                                     <td>{{ @$delivery_boy->delivery_boy['delivery_boy_mobile']}}</td>
                                    <td>
 
@@ -709,7 +709,7 @@
 
                                     @csrf
                                     @method('POST')
-                                    <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                    <button type="submit" @if($delivery_boy->delivery_boy['is_added_by_store']==1) disabled @endif onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
                                     </form>
                                     </td>
                                  </tr>
@@ -908,7 +908,7 @@
                  @csrf
                   <div class="modal-body">
 
-
+   
                     <input type="hidden" name="store_id" value="{{$store->store_id}}">
                     <input type="hidden" name="store_name" value="{{$store->store_name}}">
 
@@ -923,8 +923,7 @@
 
                                 @endforeach
                             </select>
-                        </div>
-
+                        </div
                         <div class="form-group">
                            <label class="form-label">Add more</label>
                             <button type="button" id="addStore" class="btn btn-raised btn-success"> Add More</button>

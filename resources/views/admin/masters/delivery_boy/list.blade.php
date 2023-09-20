@@ -143,6 +143,7 @@
                        @foreach ($stores__data as $s)
                                                    {{ $s->store_name }} <br>
                        @endforeach
+                       @if($delivery_boy->is_added_by_store==1) <br><span class="badge badge-info">Created by store</span>@endif
 
                         </td>
                         
@@ -152,7 +153,7 @@
 
                                           @csrf
                                           @method('POST')
-                                          <button type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
+                                          <button @if($delivery_boy->is_added_by_store==1) disabled @endif type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
                                           @if($delivery_boy->delivery_boy_status == 0) btn-danger @else btn-success @endif"> @if($delivery_boy->delivery_boy_status == 0)
                                           Inactive
                                           @else
@@ -166,13 +167,19 @@
 
                     @csrf
                       @method('POST')
+                      @if($delivery_boy->is_added_by_store!=1)
                        <a class="btn btn-sm btn-info" href="{{url('admin/delivery_boy/assign_store/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">Assign Store</a>
+                       @endif
                        @if(auth()->user()->user_role_id == 0)
+                        @if($delivery_boy->is_added_by_store!=1)
                        <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/edit/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">Edit</a>
+                       @endif
                        @endif
                        <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/view/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">View</a>
                        @if(auth()->user()->user_role_id == 0)
+                        @if($delivery_boy->is_added_by_store!=1)
                         <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                        @endif
                         @endif
                          </form>
 
