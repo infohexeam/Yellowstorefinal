@@ -966,6 +966,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         //store delivery boys
         Route::get('store/delivery-boys/list', 'StoreController@listDeliveryBoys')->name('store.list_boys');
+        Route::get('store/delivery-boys/create', 'StoreController@createDelivery_boy')->name('store.create_delivery_boy');
+        Route::post('store/delivery-boys/store', 'StoreController@storeDelivery_boy')->name('store.store_delivery_boy');
         Route::get('store/delivery-boys/location/{delivery_boy_id}', 'StoreController@showLocation')->name('store.delivery_boy_location');
 
         Route::get('store/delivery-order/view/{id}', 'StoreController@viewDeliveryOrder')->name('store.view_delivery_order');

@@ -40,7 +40,7 @@
                         <div class="media-heading">
                            <h5><strong>Delivery Boys</strong></h5>
                         </div><br>
-                         <a href="#" class="btn btn-block btn-info">
+                         <a href=" {{route('store.create_delivery_boy')}}" class="btn btn-block btn-info">
                            <i class="fa fa-plus"></i>
                            Create Delivery Boy
                         </a>
@@ -69,14 +69,29 @@
                                 @foreach ($delivery_boys as $delivery_boy)
                                 <tr>
                                   <td>{{ ++$i }}</td>
-                                  <td>{{$delivery_boy->delivery_boy_name}}</td>
+                                  <td>{{$delivery_boy->delivery_boy_name}} @if($delivery_boy->is_added_by_store==1)@endif</td>
                                   <td>{{$delivery_boy->delivery_boy_mobile}}</td>
                                     @php
                                     $towns =  \DB::table('mst_towns')->where('town_id', @$delivery_boy->town_id)->first();
                                     // dd($towns);
                                     @endphp
                                   <td>{{@$towns->town_name}}</td>
-                                   <td>
+                                   <td> <form action="{{route('admin.destroy_delivery_boy',$delivery_boy->delivery_boy_id)}}" method="POST">
+
+                    @csrf
+                      @method('POST')
+                      
+                     @if($delivery_boy->is_added_by_store==1)
+                       <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/edit/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">Edit</a>
+                     @endif
+                       
+                       <a class="btn btn-sm btn-cyan" href="{{url('admin/delivery_boy/view/'.Crypt::encryptString($delivery_boy->delivery_boy_id))}}">View</a>
+                         
+                     @if($delivery_boy->is_added_by_store==1)
+                        <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                     @endif
+                         </form>
+                         <br>
                                     <a class="btn btn-sm btn-success text-white" href="tel:{{ $delivery_boy->delivery_boy_mobile }}"><i class="fa fa-phone text-white"></i> Call</a>
                                     <a class="btn btn-sm btn-primary text-white" href="{{ url('store/delivery-boys/location/'.$delivery_boy->delivery_boy_id)}}">Got to Map</a>
 

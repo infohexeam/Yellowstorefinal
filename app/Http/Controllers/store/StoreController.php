@@ -77,6 +77,8 @@ use PDF;
 
 
 use App\Models\admin\Mst_StockDetail;
+use App\Models\admin\Sys_delivery_boy_availability;
+use App\Models\admin\Sys_vehicle_type;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_StoreBankData;
 use App\Trn_pos_lock;
@@ -5918,7 +5920,7 @@ class StoreController extends Controller
       $pageTitle = "Delivery Boys";
       $store_id  = Auth::guard('store')->user()->store_id;
       $delivery_boys = Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
-        ->select('mst_delivery_boys.town_id', 'mst_delivery_boys.delivery_boy_id', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_mobile')
+        ->select('mst_delivery_boys.town_id', 'mst_delivery_boys.delivery_boy_id', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_name', 'mst_delivery_boys.delivery_boy_mobile','mst_delivery_boys.is_added_by_store')
         ->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
 
       $assigned_delivery_boys = [];
@@ -6077,6 +6079,151 @@ class StoreController extends Controller
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
   }
+  public function createDelivery_boy()
+	{
+
+		$pageTitle = "Create Delivery Boy";
+		$delivery_boy = Mst_delivery_boy::all();
+		$countries   = Country::all();
+
+		
+		$vehicle_types = Sys_vehicle_type::all();
+		$availabilities = Sys_delivery_boy_availability::all();
+		//dd($availabilities);
+		return view('store.elements.delivery_boys.create', compact('pageTitle', 'delivery_boy', 'countries', 'vehicle_types', 'availabilities'));
+	}
+  public function storeDelivery_boy(Request $request, Mst_delivery_boy $delivery_boy)
+	{
+
+		$validator = Validator::make(
+			$request->all(),
+			[
+				'delivery_boy_name'       			=> 'required',
+				'delivery_boy_mobile' => 'required|unique:mst_delivery_boys',
+				//'delivery_boy_email'=> 'required',
+				'delivery_boy_address'          	=> 'required',
+				'vehicle_number'        	    	=> 'required',
+				'vehicle_type_id'					=> 'required',
+				//	'delivery_boy_availability_id'  	=> 'required',
+				//'store_id'        	        		=> 'required',
+				'country_id'			    		=> 'required',
+				'state_id'       		    		=> 'required',
+				'town_id'       		    		=> 'required',
+				'district_id'               		=> 'required',
+				'delivery_boy_commision'            => 'required|gte:0',
+				'delivery_boy_commision_amount'            => 'required|gte:0',
+				'delivery_boy_username' => 'required|unique:mst_delivery_boys',
+				'delivery_boy_password'  => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:1024'
+
+
+			],
+			[
+				'delivery_boy_name.required'           => 'Delivery boy name required',
+				'delivery_boy_mobile.required'     	   => 'Mobile required',
+				//'delivery_boy_email.required' 		   => 'Email required',
+				'delivery_boy_address.required'        => 'Address required',
+				'vehicle_type_id.required'        	   => 'Vehicle type required',
+				//	'delivery_boy_availability_id.required' => 'Availability required',
+				//'store_id.required'               	   => 'Store required',
+				'country_id.required'         		   => 'Country required',
+				'state_id.required'        			   => 'State required',
+				'town_id.required'        			   => 'Town required',
+				'district_id.required'        		   => 'District  required',
+				'delivery_boy_username.required'       => 'Username required',
+				'delivery_boy_password.required'	   => 'Password required',
+				//'delivery_boy_image.required'		   =>'Image Required',
+				'delivery_boy_image.dimensions'		   => 'Image dimensions invalid',
+				'delivery_boy_commision.required'	   => 'Delivery boy commision percentage required',
+				'delivery_boy_commision_amount.required'	=> 'Delivery boy commision percentage required',
+
+			]
+		);
+
+		if (!$validator->fails()) {
+      $store_id  = Auth::guard('store')->user()->store_id;
+			$data = $request->except('_token');
+			//	$data['delivery_boy_availability_id'] = implode(',', $data['delivery_boy_availability_id']);
+			//dd($data);
+
+			$delivery_boy->delivery_boy_name 	 = $request->delivery_boy_name;
+			$delivery_boy->delivery_boy_mobile   = $request->delivery_boy_mobile;
+			$delivery_boy->delivery_boy_email    = $request->delivery_boy_email;
+			$delivery_boy->delivery_boy_address  = $request->delivery_boy_address;
+			$delivery_boy->vehicle_number 		 = $request->vehicle_number;
+			$delivery_boy->vehicle_type_id   	 = $request->vehicle_type_id;
+			//	$delivery_boy->delivery_boy_availability_id  = $data['delivery_boy_availability_id'];
+			$delivery_boy->store_id               = $store_id;
+
+
+
+
+
+			$delivery_boy->country_id             = $request->country_id;
+			$delivery_boy->state_id  		      = $request->state_id;
+			$delivery_boy->district_id   	      = $request->district_id;
+			$delivery_boy->town_id   	      = $request->town_id;
+
+
+			/*if (auth()->user()->user_role_id  != 0) {
+				$delivery_boy->subadmin_id = auth()->user()->id;
+			}*/
+
+			$delivery_boy->delivery_boy_commision = $request->delivery_boy_commision??0;
+			$delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount??0;
+
+			$delivery_boy->delivery_boy_username  = $request->delivery_boy_username;
+			$delivery_boy->password  = Hash::make($request->delivery_boy_password);
+			$delivery_boy->delivery_boy_status   = 0;
+      $delivery_boy->is_added_by_store=1;
+
+
+			if ($request->hasFile('delivery_boy_image')) {
+				/*	$delivery_boy_image = $request->file('delivery_boy_image');
+
+
+			$filename = time().'.'.$delivery_boy_image->getClientOriginalExtension();
+
+			$location = public_path('assets/uploads/delivery_boy/images/'.$filename);
+
+			Image::make($delivery_boy_image)->save($location);
+			$delivery_boy->delivery_boy_image = $filename;*/
+
+				$photo = $request->file('delivery_boy_image');
+
+				$filename = time() . '.' . $photo->getClientOriginalExtension();
+				$destinationPath = 'assets/uploads/delivery_boy/images';
+				$thumb_img = Image::make($photo->getRealPath());
+				$thumb_img->save($destinationPath . '/' . $filename, 80);
+				$delivery_boy->delivery_boy_image = $filename;
+			}
+
+			$delivery_boy->save();
+			if (isset($store_id)) {
+
+				$last_insert_id = DB::getPdo()->lastInsertId();
+
+				$date =  Carbon::now();
+
+				$dataz = [
+					'store_id' => $store_id,
+					'delivery_boy_id' => $last_insert_id,
+					'created_at' => $date,
+					'updated_at' => $date,
+
+				];
+
+				Mst_store_link_delivery_boy::insert($dataz);
+			}
+
+
+
+			return redirect('store/delivery-boys/list')->with('status', 'Delivery boy added successfully.');
+		} else {
+
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
+	}
 
 
   public function viewDeliveryOrder(Request $request, $id)
