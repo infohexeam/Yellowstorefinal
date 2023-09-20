@@ -143,6 +143,7 @@ class StoreSettingsController extends Controller
                     $data['defaultStoreSettingsDetails']['delivery_end_time'] = $store_data->delivery_end_time;
                     $data['defaultStoreSettingsDetails']['pay_delivery_status'] = $store_data->pay_delivery_status;
                     $data['defaultStoreSettingsDetails']['collect_store_status'] = $store_data->collect_store_status;
+                    $data['defaultStoreSettingsDetails']['immediate_delivery_text'] = $store_data->immediate_delivery_text;
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
@@ -241,6 +242,10 @@ class StoreSettingsController extends Controller
                     if (isset($request->collect_store_status))
                     {
                         $data2['collect_store_status']=$request->collect_store_status;
+                    }
+                    if (isset($request->immediate_delivery_text))
+                    {
+                        $data2['immediate_delivery_text']=$request->immediate_delivery_text;
                     }
 
                     Mst_store::where('store_id', $store_id)->update($data2);
