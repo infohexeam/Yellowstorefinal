@@ -108,7 +108,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @endif
                                           @else
                                              @if($order->delivery_option==1)
-                                               Immediate Delivery
+                                               Immediate Delivery @if($order->immediate_store_text)({{@$order->immediate_store_text}}) @endif
                                              @endif
                                              @if($order->delivery_option==2)
                                                 @php
