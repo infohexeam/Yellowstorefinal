@@ -16,7 +16,7 @@ class Trn_store_order extends Model
     'shipping_landmark', 'shipping_pincode', 'service_order', 'delivery_address',
     'coupon_discount_percentage', 'delivery_date', 'payment_type_id', 'service_booking_order',
     'status_id', 'order_type', 'delivery_accept', 'delivery_time', 'trn_id', 'amount_reduced_by_coupon',
-    'is_split_data_saved', 'referenceId', 'txTime', 'txMsg', 'orderAmount', 'txStatus', 'isRefunded', 'refundStatus', 'refundId','store_admin_id','TEST','delivery_option','is_collect_from_store','future_delivery_date'
+    'is_split_data_saved', 'referenceId', 'txTime', 'txMsg', 'orderAmount', 'txStatus', 'isRefunded', 'refundStatus', 'refundId','store_admin_id','TEST','delivery_option','is_collect_from_store','future_delivery_date','immediate_store_text'
   ];
 
   public function store()

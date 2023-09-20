@@ -4517,7 +4517,8 @@ class StoreController extends Controller
       'delivery_start_time'=>$request->delivery_start_time,
       'delivery_end_time'=>$request->delivery_end_time,
       'pay_delivery_status'=>$pad,
-      'collect_store_status'=>$css
+      'collect_store_status'=>$css,
+      'immediate_delivery_text'=>$request->immediate_delivery_text
 
 
 

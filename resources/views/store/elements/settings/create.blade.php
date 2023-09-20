@@ -169,7 +169,7 @@
                    <label class="form-group custom-switch">
                    Immediate Delivery
                          
-														<input type="checkbox" name="immediate_delivery" @if ($store->delivery_option_immediate == 1) checked @endif    class="custom-switch-input">
+														<input type="checkbox" name="immediate_delivery" @if ($store->delivery_option_immediate == 1) checked @endif id="imD"   class="custom-switch-input">
 														<span class="custom-switch-indicator"></span>
 														<span class="custom-switch-description"></span>
 													</label>
@@ -197,7 +197,12 @@
 													</label>
                           </div>
                           </div>
-                   
+                   <div class="col-md-12" id="immediate_delivery_text">
+                      <div class="form-group">
+                         <label class="form-label">Immediate Delivery Text</label>
+                         <input type="text"  class="form-control"  name="immediate_delivery_text"  value="{{old('immediate_delivery_text',$store->immediate_delivery_text)}}" placeholder="">
+                      </div>
+                   </div>
                      <div class="col-md-12">
                       <div class="form-group">
                          <label class="form-label">Qrcode</label>
@@ -318,6 +323,25 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
 <script>
+
+$(document).ready(function() {
+    // Check if the checkbox is initially checked
+    if ($('#imD').is(':checked')) {
+        $('#immediate_delivery_text').show(); // Show the input field
+    } else {
+        $('#immediate_delivery_text').hide(); // Hide the input field
+    }
+
+    // Add an event listener to the checkbox
+    $('#imD').change(function() {
+        if ($(this).is(':checked')) {
+            $('#immediate_delivery_text').show(); // Show the input field if checkbox is checked
+        } else {
+            $('#immediate_delivery_text').hide(); // Hide the input field if checkbox is not checked
+        }
+    });
+});
+
 
 function checkUnique(prefix){
     var _token= $('input[name="_token"]').val();

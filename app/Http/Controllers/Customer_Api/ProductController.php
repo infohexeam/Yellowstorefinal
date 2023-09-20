@@ -1545,6 +1545,7 @@ class ProductController extends Controller
                             }
                         }
                         $data['delivery_types']=$fArr;
+                        $data['immediate_delivery_text']=$storeData->immediate_delivery_text;
                         
                         $cusData =  Trn_store_customer::find($request->customer_id);
                         $data['customer_name']  = @$cusData->customer_first_name . "" . @$cusData->customer_last_name;
