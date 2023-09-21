@@ -344,7 +344,7 @@ class DeliveryBoyOrderController extends Controller
                     $delivery_boy_id = $request->delivery_boy_id;
                     // dd(Trn_store_order::select('order_id','delivery_boy_id','order_note','payment_type_id','order_number','created_at','status_id','customer_id','product_total_amount')->where('order_id',$order_id)->where('store_id',$store_id)->first());
 
-                    if ($data['orderDetails']  = Trn_store_order::select('order_id', 'service_order', 'service_booking_order', 'time_slot', 'delivery_accept', 'delivery_address', 'delivery_date', 'delivery_time', 'store_id', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'delivery_charge','delivery_option')->where('order_id', $order_id)->where('delivery_boy_id', $delivery_boy_id)->first()) {
+                    if ($data['orderDetails']  = Trn_store_order::select('order_id', 'service_order', 'service_booking_order', 'time_slot', 'delivery_accept', 'delivery_address', 'delivery_date', 'delivery_time', 'store_id', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount', 'delivery_charge','delivery_option','is_collect_from_store','future_delivery_date','immediate_store_text')->where('order_id', $order_id)->where('delivery_boy_id', $delivery_boy_id)->first()) {
 
                         if (!isset($data['orderDetails']->delivery_accept))
                             $data['orderDetails']->delivery_accept = "0";
