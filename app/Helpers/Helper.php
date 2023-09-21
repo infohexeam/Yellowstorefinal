@@ -1642,6 +1642,37 @@ public static function checkStoreDeliveryHours($storeId)
         return 0; // Return -1 if store is not found
     }
 }
+public static function validateDeliveryBoy($valid)
+    {
+        $validate = Validator::make(
+            $valid,
+                [
+                    'delivery_boy_name'            => 'required',
+                    'delivery_boy_mobile'          => 'required|unique:mst_delivery_boys',
+                    'delivery_boy_address'         => 'required',
+                    'vehicle_number'               => 'required',
+                    'vehicle_type_id'              => 'required',
+                    'delivery_boy_username'        => 'required|unique:mst_delivery_boys',
+                    'delivery_boy_password'        => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+                   
+                ],
+                [
+                    'delivery_boy_name.required'           => 'Delivery boy name required',
+                    'delivery_boy_mobile.required'         => 'Mobile required',
+                    'delivery_boy_address.required'        => 'Address required',
+                    'vehicle_number.required'              => 'Vehicle number required',
+                    'vehicle_type_id.required'             => 'Vehicle type required',
+                    'delivery_boy_username.required'        => 'Username required',
+                    'delivery_boy_password.required'        => 'Password required',
+                    'delivery_boy_password.min'            => 'Password must be at least 8 characters long',
+                    'delivery_boy_password.same'           => 'Passwords do not match',
+                    'delivery_boy_password.regex'          => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+                    
+                ]
+        );
+        return $validate;
+    }
+
 
 
 }

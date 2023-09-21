@@ -490,7 +490,9 @@ Route::get('delivery-boy/logout', 'Delivery_Api\DeliveryBoyController@logout');
 });
 
 Route::post('delivery-boy/login', 'Delivery_Api\DeliveryBoyController@loginDelivery');
-
+//Delivery boy registration
+Route::post('delivery-boy/save', 'Delivery_Api\DeliveryBoyController@saveDeliveryBoy');
+Route::post('delivery-boy/register-verify-otp', 'Delivery_Api\DeliveryBoyController@verifyOtp');
 //Forgot Password - dboy
 Route::get('delivery-boy/forgot-password/verify_mobile', 'Delivery_Api\DeliveryBoyController@FpverifyMobile');
 Route::get('delivery-boy/forgot-password/verify_otp', 'Delivery_Api\DeliveryBoyController@FpverifyOTP');

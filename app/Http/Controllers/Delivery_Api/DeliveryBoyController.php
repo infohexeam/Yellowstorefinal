@@ -28,6 +28,7 @@ use App\Models\admin\Trn_DeliveryBoyDeviceToken;
 
 use App\Models\admin\State;
 use App\Models\admin\Country;
+use App\Models\admin\Trn_delivery_boy_otp_verify;
 
 class DeliveryBoyController extends Controller
 {
@@ -105,7 +106,24 @@ class DeliveryBoyController extends Controller
                 $today = Carbon::now()->toDateString();
 
                 if ($custCheck) {
+                    
                     if (Hash::check($passChk, $custCheck->password)) {
+                       if($custCheck->delivery_boy_otp_verify_status != 1)
+                       {
+                            $data['status']=2;
+                            $db_otp =  rand (100000,999999);
+                            $db_otp_expirytime = Carbon::now()->addMinute(10);
+                            $otp_verify=new Trn_delivery_boy_otp_verify();
+                            $otp_verify->delivery_boy_id                 = $custCheck->delivery_boy_id;
+                            $otp_verify->delivery_boy_otp_expirytime     = $db_otp_expirytime;
+                            $otp_verify->delivery_boy_otp                 = $db_otp;
+                            $otp_verify->save();
+                            $data['delivery_boy_id']=$custCheck->delivery_boy_id;
+                            $data['message']='Please verify otp to login!';
+                            $res=Helper::sendOtp($phone,$db_otp,2);
+                            $data['otp_session_id']=$res['session_id'];
+                            return response($data);
+                       }
                         if ($custCheck->delivery_boy_status != 0) {
                             if (Auth::guard('delivery')->attempt(['delivery_boy_mobile' => request('delivery_boy_mobile'), 'password' => request('password')])) {
                                 $user = Mst_delivery_boy::find(auth()->guard('delivery')->user()->delivery_boy_id);
@@ -154,6 +172,149 @@ class DeliveryBoyController extends Controller
             return response($response);
         }
     }
+    public function saveDeliveryBoy(Request $request)
+    {
+        $data = array();
+        try {
+            $validator = Helper::validateDeliveryBoy($request->all());
+            if (!$validator->fails())
+             {
+                $delivery_boy=new Mst_delivery_boy();
+                $delivery_boy->delivery_boy_name = $request->delivery_boy_name;
+                $delivery_boy->delivery_boy_mobile = $request->delivery_boy_mobile;
+                $delivery_boy->delivery_boy_email = $request->delivery_boy_email;
+                $delivery_boy->delivery_boy_address = $request->delivery_boy_address;
+                $delivery_boy->vehicle_number = $request->vehicle_number;
+                $delivery_boy->vehicle_type_id = $request->vehicle_type_id;
+                //$delivery_boy->store_id = $store_id;
+                //$delivery_boy->country_id = $request->country_id;
+                //$delivery_boy->state_id = $request->state_id;
+                //$delivery_boy->district_id = $request->district_id;
+                //$delivery_boy->town_id = $request->town_id;
+                //$delivery_boy->is_added_by_store=1;
+                $delivery_boy->latitude=$request->latitude;
+                $delivery_boy->longitude=$request->longitude;
+                $delivery_boy->delivery_boy_username = $request->delivery_boy_username;
+                $delivery_boy->password  = Hash::make($request->delivery_boy_password);
+                $delivery_boy->delivery_boy_status = 0;
+                $delivery_boy->delivery_boy_otp_verify_status = 0;
+                $delivery_boy->save();
+                $db_id = DB::getPdo()->lastInsertId();
+                $data['status']=1;
+                $db_otp =  rand (100000,999999);
+                $db_otp_expirytime = Carbon::now()->addMinute(10);
+                $otp_verify=new Trn_delivery_boy_otp_verify();
+                $otp_verify->delivery_boy_id                 = $db_id;
+                $otp_verify->delivery_boy_otp_expirytime     = $db_otp_expirytime;
+                $otp_verify->delivery_boy_otp                 = $db_otp;
+                $otp_verify->save();
+                $data['delivery_boy_id']=$db_id;
+                $data['message']='Delivery boy registration successful';
+                $res=Helper::sendOtp($delivery_boy->delivery_boy_mobile,$db_otp,2);
+                $data['otp_session_id']=$res['session_id'];
+                return response($data);
+            }
+            else
+            {
+                $data['status']=0;
+                $data['message'] ='Validation failed.';
+                $data['errors'] = $validator->errors();
+                return response($data);
+
+            }
+           
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+
+    }
+    public function verifyOtp(Request $request)
+    {
+        $data = array();
+        try {
+            $otp = $request->delivery_boy_otp;
+
+            $delivery_boy_id = $request->delivery_boy_id;
+
+            if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
+                //$otp = $request->otp_status;
+                $session_id=$request->otp_session_id;
+
+                $res=Helper::verifyOtp($session_id,$otp,1);
+                if($res['status']=="success")
+               {
+
+                    $delivery_boy_id = $request->delivery_boy_id;
+                    $delivery_boy = Mst_delivery_boy::Find($delivery_boy_id);
+                    $delivery_boy->delivery_boy_otp_verify_status = 1;
+
+                    if ($delivery_boy->update()) {
+                        $data['status'] = 1;
+                        $data['message'] = "success";
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "failed";
+                    }
+                }
+                else {
+                    $data['status'] = 3;
+                    $data['message'] = "OTP Mismatched"; 
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "customer not found";
+            }
+
+            //  $otp_verify =  Trn_store_customer_otp_verify::where('customer_id', '=', $customer_id)->latest()->first();
+
+            //   if($otp_verify)
+            //          {
+            //           $customer_otp_expirytime = $otp_verify->customer_otp_expirytime;
+            //           $current_time = Carbon::now()->toDateTimeString();
+            //           $customer_otp =  $otp_verify->customer_otp;
+
+            //           if($customer_otp == $request->customer_otp)
+            //               {
+            //                   if($current_time < $customer_otp_expirytime)
+            //                   {
+            //                          $customer = Trn_store_customer::Find($customer_id);
+            //                       $customer->customer_profile_status = 1;
+            //                       $customer->customer_otp_verify_status = 1;
+            //                       $customer->update();
+
+            //                         $data['status'] = 1;
+            //                       $data['message'] = "OTP Verifiction Success";
+
+            //                   } else{
+            //                       $data['status'] = 2;
+            //                       $data['message'] = "OTP expired.click on resend OTP";	
+            //                   }
+
+            //                   }else{
+            //                       $data['status'] = 3;
+            //                       $data['message'] = "Incorrect OTP entered. Please enter a valid OTP.";
+            //                   }
+            //                   }else{
+            //                       $data['status'] = 3;
+            //                       $data['message'] = "OTP not found. Please click on resend OTP.";
+            //                   }
+
+
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => 'Invalid OTP...Try Again'];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => 'Invalid OTP...Try Again'];
+            return response($response);
+        }
+    }
+
 
 
     public function viewProfile(Request $request)
