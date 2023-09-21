@@ -175,7 +175,10 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('order/view', 'Api\OrderController@viewOrder'); // show single order
     Route::get('delivery-boys/list', 'Api\OrderController@listDeliveryBoys'); // delivery boys
     Route::get('delivery-boys/active-list', 'Api\OrderController@activeDelievryBoysList'); // old delivery boys
-
+    Route::get('delivery-boys/get-vehicle-types', 'Api\OrderController@getVehicleTypes');//getting vehicle types
+    Route::get('delivery-boys/get-delivery-boy', 'Api\OrderController@getDeliveryBoy');//getting a delivery boy details
+    Route::post('delivery-boys/store-delivery-boy', 'Api\OrderController@storeDelivery_boy');//creating a delivery boy
+    Route::post('delivery-boys/update-delivery-boy', 'Api\OrderController@updateDelivery_boy');//updating a delivery boy
     Route::get('order-status/list', 'Api\OrderController@listOrderStatus'); // order status
     Route::post('order/update', 'Api\OrderController@updateOrder'); // order update
     Route::get('order/invoice', 'Api\OrderController@orderInvoice'); // order 

@@ -45,6 +45,7 @@ use App\Models\admin\Sys_DeliveryStatus;
 use App\Models\admin\Mst_delivery_boy;
 use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Mst_StockDetail;
+use App\Models\admin\Sys_vehicle_type;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_CustomerDeviceToken;
@@ -780,7 +781,9 @@ class OrderController extends Controller
                         'mst_delivery_boys.delivery_boy_name',
                         'mst_delivery_boys.delivery_boy_name',
                         'mst_delivery_boys.delivery_boy_name',
-                        'mst_delivery_boys.delivery_boy_mobile'
+                        'mst_delivery_boys.delivery_boy_mobile',
+                        'mst_delivery_boys.is_added_by_store',
+
                     )
                     ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
                     //->where('mst_delivery_boys.delivery_boy_status', 1)
@@ -795,7 +798,8 @@ class OrderController extends Controller
                     $data['message'] = "failed";
                     return response($data);
                 }
-            } else {
+            } 
+            else {
                 $data['status'] = 0;
                 $data['message'] = "Store not found ";
                 return response($data);
@@ -808,6 +812,331 @@ class OrderController extends Controller
             return response($response);
         }
     }
+    public function getVehicleTypes()
+    {
+        
+        $data = array();
+        try {
+            $vehicle_types = Sys_vehicle_type::all();
+            
+             $data['vehicle_types']  =$vehicle_types; 
+             $data['status']=1;
+             $data['message']="Vehicle types fetched";
+            return response($data);
+           
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+    public function getDeliveryBoy(Request $request)
+    {
+        $data = array();
+        try {
+            $dbid=$request->delivery_boy_id;
+            $delivery_boy =Mst_delivery_boy::Find($dbid);
+            if($delivery_boy)
+            {
+                $data['details']  =$delivery_boy; 
+                $data['status']=1;
+                $data['message']="Details fetched";
+
+            }
+            else
+            {
+                $data['details']  =[]; 
+                $data['status']=0;
+                $data['message']="Details not fetched";
+
+            }
+             
+            return response($data);
+           
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+
+    }
+    public function storeDelivery_boy(Request $request, Mst_delivery_boy $delivery_boy)
+{
+    $data = array();
+    try {
+    $validator = Validator::make(
+        $request->all(),
+        [
+            'delivery_boy_name'            => 'required',
+            'delivery_boy_mobile'          => 'required|unique:mst_delivery_boys',
+            'delivery_boy_address'         => 'required',
+            'vehicle_number'               => 'required',
+            'vehicle_type_id'              => 'required',
+            'country_id'                   => 'required',
+            'state_id'                     => 'required',
+            'town_id'                      => 'required',
+            'district_id'                  => 'required',
+            'delivery_boy_commision'       => 'required|gte:0',
+            'delivery_boy_commision_amount' => 'required|gte:0',
+            'delivery_boy_username'        => 'required|unique:mst_delivery_boys',
+            'delivery_boy_password'        => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+            'delivery_boy_image'           => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:1024'
+        ],
+        [
+            'delivery_boy_name.required'           => 'Delivery boy name required',
+            'delivery_boy_mobile.required'         => 'Mobile required',
+            'delivery_boy_address.required'        => 'Address required',
+            'vehicle_number.required'              => 'Vehicle number required',
+            'vehicle_type_id.required'             => 'Vehicle type required',
+            'country_id.required'                  => 'Country required',
+            'state_id.required'                    => 'State required',
+            'town_id.required'                     => 'Town required',
+            'district_id.required'                 => 'District  required',
+            'delivery_boy_commision.required'      => 'Delivery boy commission percentage required',
+            'delivery_boy_commision_amount.required' => 'Delivery boy commission amount required',
+            'delivery_boy_username.required'        => 'Username required',
+            'delivery_boy_password.required'        => 'Password required',
+            'delivery_boy_password.min'            => 'Password must be at least 8 characters long',
+            'delivery_boy_password.same'           => 'Passwords do not match',
+            'delivery_boy_password.regex'          => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+            'delivery_boy_image.mimes'             => 'Invalid image format. Only JPEG, PNG, JPG, GIF, and SVG allowed',
+            'delivery_boy_image.dimensions'        => 'Image dimensions are invalid. Minimum width and height should be 150 pixels.',
+            'delivery_boy_image.max'               => 'Maximum image size allowed is 1024 KB'
+        ]
+    );
+
+    if (!$validator->fails()) {
+        $store_id = $request->store_id;
+        $data = $request->except('_token');
+
+        $delivery_boy->delivery_boy_name = $request->delivery_boy_name;
+        $delivery_boy->delivery_boy_mobile = $request->delivery_boy_mobile;
+        $delivery_boy->delivery_boy_email = $request->delivery_boy_email;
+        $delivery_boy->delivery_boy_address = $request->delivery_boy_address;
+        $delivery_boy->vehicle_number = $request->vehicle_number;
+        $delivery_boy->vehicle_type_id = $request->vehicle_type_id;
+        $delivery_boy->store_id = $store_id;
+        $delivery_boy->country_id = $request->country_id;
+        $delivery_boy->state_id = $request->state_id;
+        $delivery_boy->district_id = $request->district_id;
+        $delivery_boy->town_id = $request->town_id;
+        $delivery_boy->is_added_by_store=1;
+
+       
+
+        $delivery_boy->delivery_boy_commision = $request->delivery_boy_commision ?? 0;
+        $delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount ?? 0;
+        $delivery_boy->delivery_boy_username = $request->delivery_boy_username;
+        $delivery_boy->password  = Hash::make($request->delivery_boy_password);
+        $delivery_boy->delivery_boy_status = 0;
+
+        if ($request->hasFile('delivery_boy_image')) {
+            $photo = $request->file('delivery_boy_image');
+            $filename = time() . '.' . $photo->getClientOriginalExtension();
+            $destinationPath = 'assets/uploads/delivery_boy/images';
+            $thumb_img = Image::make($photo->getRealPath());
+            $thumb_img->save($destinationPath . '/' . $filename, 80);
+            $delivery_boy->delivery_boy_image = $filename;
+        }
+
+        $delivery_boy->save();
+
+        if (isset($store_id)) {
+            $last_insert_id = DB::getPdo()->lastInsertId();
+            $date =  Carbon::now();
+            $dataz = [
+                'store_id' => $store_id,
+                'delivery_boy_id' => $last_insert_id,
+                'created_at' => $date,
+                'updated_at' => $date,
+            ];
+            Mst_store_link_delivery_boy::insert($dataz);
+        }
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Delivery boy added successfully.'
+        ]);
+    } else {
+        return response()->json([
+            'status' => 0,
+            'message' => 'Validation failed.',
+            'errors' => $validator->errors()
+        ]);
+    }
+} catch (\Exception $e) {
+    $response = ['status' => '0', 'message' => $e->getMessage()];
+    return response($response);
+} catch (\Throwable $e) {
+    $response = ['status' => '0', 'message' => $e->getMessage()];
+    return response($response);
+}
+}
+public function updateDelivery_boy(Request $request)
+{
+    // Initialize an empty array to hold data
+    $data = array();
+
+    try {
+        // Retrieve the delivery boy ID from the request
+        $boy_Id = $request->delivery_boy_id;
+        $delivery_boy_id=$boy_Id;
+
+        // Find the delivery boy by ID
+        $delivery_boy = Mst_delivery_boy::find($boy_Id);
+
+
+        // Check if password fields are empty
+        if($request->password==NULL || $request->password_confirmation==NULL )
+        {
+            // Validation rules when password fields are empty
+            $val_rules = [
+                'delivery_boy_name'            => 'required',
+                'delivery_boy_mobile'          => 'required|unique:mst_delivery_boys,delivery_boy_mobile,' . $delivery_boy_id . ',delivery_boy_id',
+                'delivery_boy_address'         => 'required',
+                'vehicle_number'               => 'required',
+                'vehicle_type_id'              => 'required',
+                'country_id'                   => 'required',
+                'state_id'                     => 'required',
+                'town_id'                      => 'required',
+                'district_id'                  => 'required',
+                'delivery_boy_commision'       => 'required|gte:0',
+                'delivery_boy_commision_amount' => 'required|gte:0',
+                'delivery_boy_username'        => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
+            ];
+
+            // Custom error messages for validation rules
+            $val_messages = [
+                'delivery_boy_name.required'           => 'Delivery boy name required',
+                'delivery_boy_mobile.required'         => 'Mobile required',
+                'delivery_boy_address.required'        => 'Address required',
+                'vehicle_number.required'              => 'Vehicle number required',
+                'vehicle_type_id.required'             => 'Vehicle type required',
+                'country_id.required'                  => 'Country required',
+                'state_id.required'                    => 'State required',
+                'town_id.required'                     => 'Town required',
+                'district_id.required'                 => 'District  required',
+                'delivery_boy_commision.required'      => 'Delivery boy commission percentage required',
+                'delivery_boy_commision_amount.required' => 'Delivery boy commission amount required',
+                'delivery_boy_username.required'        => 'Username required',
+            ];
+        }
+        else
+        {
+            // Validation rules when password fields are provided
+            $val_rules = [
+                'delivery_boy_name'            => 'required',
+                'delivery_boy_mobile'          => 'required|unique:mst_delivery_boys,delivery_boy_mobile,' . $delivery_boy_id . ',delivery_boy_id',
+                'delivery_boy_address'         => 'required',
+                'vehicle_number'               => 'required',
+                'vehicle_type_id'              => 'required',
+                'country_id'                   => 'required',
+                'state_id'                     => 'required',
+                'town_id'                      => 'required',
+                'district_id'                  => 'required',
+                'delivery_boy_commision'       => 'required|gte:0',
+                'delivery_boy_commision_amount' => 'required|gte:0',
+                'delivery_boy_username'        => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
+                'password'  => 'sometimes|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+            ];
+
+            // Custom error messages for validation rules when password fields are provided
+            $val_messages = [
+                'delivery_boy_name.required'           => 'Delivery boy name required',
+                'delivery_boy_mobile.required'         => 'Mobile required',
+                'delivery_boy_address.required'        => 'Address required',
+                'vehicle_number.required'              => 'Vehicle number required',
+                'vehicle_type_id.required'             => 'Vehicle type required',
+                'country_id.required'                  => 'Country required',
+                'state_id.required'                    => 'State required',
+                'town_id.required'                     => 'Town required',
+                'district_id.required'                 => 'District  required',
+                'delivery_boy_commision.required'      => 'Delivery boy commission percentage required',
+                'delivery_boy_commision_amount.required' => 'Delivery boy commission amount required',
+                'delivery_boy_username.required'        => 'Username required',
+                'password.required'                    => 'Password required',
+                'password.regex'                        => 'Password must include at least one upper case letter, lower case letter, number, and special character'
+            ];
+        }
+
+        // Create a validator instance
+        $validator = Validator::make(
+            $request->all(),
+            $val_rules,
+            $val_messages
+        );
+
+        // Check if validation passes
+        if (!$validator->fails()) {
+            // Extract request data excluding the CSRF token
+
+            // Update the delivery boy's properties with values from the request
+            $delivery_boy->delivery_boy_name       = $request->delivery_boy_name;
+            $delivery_boy->delivery_boy_mobile     = $request->delivery_boy_mobile;
+            $delivery_boy->delivery_boy_email      = $request->delivery_boy_email;
+            $delivery_boy->delivery_boy_address    = $request->delivery_boy_address;
+            $delivery_boy->vehicle_number          = $request->vehicle_number;
+            $delivery_boy->vehicle_type_id         = $request->vehicle_type_id;
+            $delivery_boy->country_id              = $request->country_id;
+            $delivery_boy->state_id                = $request->state_id;
+            $delivery_boy->district_id             = $request->district_id;
+            $delivery_boy->town_id                 = $request->town_id;
+            $delivery_boy->delivery_boy_commision  = $request->delivery_boy_commision ?? 0;
+            $delivery_boy->delivery_boy_commision_amount = $request->delivery_boy_commision_amount ?? 0;
+            $delivery_boy->delivery_boy_username   = $request->delivery_boy_username;
+            
+            // If a password is provided, update it
+            if (isset($request->password)) {
+                $delivery_boy->password = Hash::make($request->password);
+            }
+
+            // Handle uploaded image (if any)
+            if ($request->hasFile('delivery_boy_image')) {
+                // Handle image upload...
+                $photo = $request->file('delivery_boy_image');
+                $old_delivery_boy_image = 'assets/uploads/company/logos/' . $delivery_boy->delivery_boy_image;
+                if (is_file($old_delivery_boy_image)) {
+                    unlink($old_delivery_boy_image);
+                }
+                $filename = time() . '.' . $photo->getClientOriginalExtension();
+                $destinationPath = 'assets/uploads/delivery_boy/images';
+                $thumb_img = Image::make($photo->getRealPath());
+                $thumb_img->save($destinationPath . '/' . $filename, 80);
+                $delivery_boy->delivery_boy_image = $filename;
+            }
+
+            // Save the updated delivery boy object
+            $delivery_boy->update();
+
+            // Return a success JSON response
+            return response()->json([
+                'status'  => 1,
+                'message' => 'Delivery boy updated successfully.'
+            ]);
+        } else {
+            // If validation fails, return JSON response with validation errors
+            return response()->json([
+                'status'  => 0,
+                'message' => 'Validation failed.',
+                'errors'  => $validator->errors()
+            ]);
+        }
+    } catch (\Exception $e) {
+        // Handle exceptions and return an error JSON response
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response()->json($response, 500);
+    } catch (\Throwable $e) {
+        // Handle throwables and return an error JSON response
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response()->json($response, 500);
+    }
+}
+
+
 
 
     public function listOrderStatus(Request $request)
