@@ -181,6 +181,8 @@ Route::group(['prefix' => 'store'], function () {
     Route::post('delivery-boys/update-delivery-boy', 'Api\OrderController@updateDelivery_boy');//updating a delivery boy
     Route::post('delivery-boys/delete-delivery-boy', 'Api\OrderController@destroyDelivery_boy');//deleting a delivery boy
     Route::get('delivery-boys/trashed-list', 'Api\OrderController@restoreDelivery_boy');//trahsed list of delivery boys
+    Route::get('delivery-boys/restore-delivery-boy', 'Api\OrderController@restoreDelivery_boySave');//restore trashed  delivery boys
+    Route::get('delivery-boys/change-deliveryboy-status', 'Api\OrderController@changedBoyStatus');//restore trashed  delivery boys
     
     Route::get('order-status/list', 'Api\OrderController@listOrderStatus'); // order status
     Route::post('order/update', 'Api\OrderController@updateOrder'); // order update

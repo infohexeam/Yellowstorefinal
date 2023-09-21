@@ -1098,7 +1098,7 @@ class StoreOrderController extends Controller
                         $store_order->delivery_option=$request->delivery_option??1;
                         $store_order->future_delivery_date=$request->future_delivery_date??NULL;
                         $store_order->is_collect_from_store=$request->is_collect_from_store;
-                        $store_order->immediate_store_text=$request->immediate_delivery_text;
+                        $store_order->immediate_store_text=$orderStoreData->immediate_delivery_text;
                         $store_order->delivery_address =  $request->delivery_address;
     
                         $store_order->coupon_id =  $request->coupon_id;
@@ -2861,9 +2861,9 @@ public function orderHistory(Request $request)
                         }
                         if($data['orderDetails']->delivery_option==3)
                         {
-                           // $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
                             $data['orderDetails']->delivery_type = 3; // Future delivery
-                            $data['orderDetails']->time_slot = '';//@$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
                             
                         }
                         

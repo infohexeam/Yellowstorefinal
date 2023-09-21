@@ -482,9 +482,9 @@ class OrderController extends Controller
                                 }
                                 if($data['orderDetails']->delivery_option==3)
                                 {
-                                    //$deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                                    $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
                                     $data['orderDetails']->delivery_type = 3; // Future delivery
-                                    $data['orderDetails']->time_slot = '';//@$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                                    $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
                         
                         
                                 }
@@ -783,6 +783,7 @@ class OrderController extends Controller
                         'mst_delivery_boys.delivery_boy_name',
                         'mst_delivery_boys.delivery_boy_mobile',
                         'mst_delivery_boys.is_added_by_store',
+                        'mst_delivery_boys.delivery_boy_status'
 
                     )
                     ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
@@ -1194,6 +1195,66 @@ public function destroyDelivery_boy(Request $request)
 
 		
 		
+
+		
+	}
+    public function restoreDelivery_boySave(Request $request)
+	{
+        try
+        {
+        $data=array();
+		$dbid=$request->delivery_boy_id;
+        $db=Mst_delivery_boy::onlyTrashed()->find($dbid);
+        if(!$db)
+        {
+            $data['status']=0;
+            $data['message']="Delivery boy not fetched";
+            return response($data);
+
+        }
+        $db->restore();
+        $data['status']=1;
+        $data['message']="Delivery boy restored";
+        return response($data);
+        }
+        catch (\Throwable $e) {
+            // Handle throwables and return an error JSON response
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response()->json($response, 500);
+        }
+
+         
+	}
+    public function changedBoyStatus(Request $request)
+	{
+        try
+        {
+            $data=array();
+            $delivery_boy_id=$request->delivery_boy_id;
+
+            $delivery_boy = Mst_delivery_boy::Find($delivery_boy_id);
+
+            $status = $delivery_boy->delivery_boy_status;
+
+            if ($status == 0) {
+                $delivery_boy->delivery_boy_status  = 1;
+            } else {
+
+                $delivery_boy->delivery_boy_status  = 0;
+            }
+            $delivery_boy->update();
+
+            $data['status']=1;
+            $data['message']="Delivery boy status changed";
+            return response($data);
+
+        }
+        catch (\Throwable $e) {
+            // Handle throwables and return an error JSON response
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response()->json($response, 500);
+        }
+        
 
 		
 	}
