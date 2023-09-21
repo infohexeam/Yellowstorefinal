@@ -515,6 +515,15 @@ class DeliveryBoyOrderController extends Controller
                                    
            
                                }
+                               if($data['orderDetails']->is_collect_from_store==1)
+                               {
+                                   $data['orderDetails']->collection_type='Collect From Store';
+                               }
+                               else
+                               {
+                                   $data['orderDetails']->collection_type='Pay After Delivery';
+       
+                               }
 
                         $data['orderDetails']->delivery_date = Carbon::parse($data['orderDetails']->delivery_date)->format('d-m-Y');
                         $data['orderDetails']->delivery_time =  Carbon::parse($data['orderDetails']->delivery_date)->format('h:i');
