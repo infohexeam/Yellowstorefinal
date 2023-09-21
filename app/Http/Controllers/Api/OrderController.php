@@ -787,6 +787,7 @@ class OrderController extends Controller
                     )
                     ->where('mst_store_link_delivery_boys.store_id', $request->store_id)
                     //->where('mst_delivery_boys.delivery_boy_status', 1)
+                    ->whereNull('deleted_at')
                     ->get()
                 ) {
 
@@ -1135,8 +1136,67 @@ public function updateDelivery_boy(Request $request)
         return response()->json($response, 500);
     }
 }
+public function destroyDelivery_boy(Request $request)
+	{
+        try{
+            $data=array();
+            $delivery_boy_id=$request->delivery_boy_id;
+            $delivery_boy=Mst_delivery_boy::find($delivery_boy_id);
+            if($delivery_boy)
+            {
+                $delete = $delivery_boy->delete();
+                $data['status']=1;
+                $data['message']="Delivery boy deleted successfully";
+                return response($data);
 
+            }
+            else
+            {
+                $data['status']=0;
+                $data['message']="Delivery boy not exist";
+                return response($data);
 
+            }
+            
+
+        }catch (\Throwable $e) {
+            // Handle throwables and return an error JSON response
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response()->json($response, 500);
+        }
+        
+
+		
+	}
+
+    public function restoreDelivery_boy(Request $request)
+	{
+
+		
+        try{
+            $data=array();
+            $store_id  = $request->store_id;
+		    $delivery_boys = Mst_delivery_boy::onlyTrashed()->orderBy('delivery_boy_id', 'DESC')->where('store_id',$store_id)->where('is_added_by_store',1)->get();
+           
+            $data['status']=1;
+            $data['trashed_delivery_boys']=$delivery_boys;
+            $data['message']="Delivery boy Trash list fetched";
+            return response($data);
+
+          
+            
+
+        }catch (\Throwable $e) {
+            // Handle throwables and return an error JSON response
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response()->json($response, 500);
+        }
+
+		
+		
+
+		
+	}
 
 
     public function listOrderStatus(Request $request)
