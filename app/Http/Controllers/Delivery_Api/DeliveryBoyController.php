@@ -113,10 +113,10 @@ class DeliveryBoyController extends Controller
                             $data['status']=2;
                             $db_otp =  rand (100000,999999);
                             $db_otp_expirytime = Carbon::now()->addMinute(10);
-                            $otp_verify=new Trn_delivery_boy_otp_verify();
-                            $otp_verify->delivery_boy_id                 = $custCheck->delivery_boy_id;
-                            $otp_verify->delivery_boy_otp_expirytime     = $db_otp_expirytime;
-                            $otp_verify->delivery_boy_otp                 = $db_otp;
+                            $otp_verify=new Trn_StoreDeliveryBoyOtpVerify();
+                            $otp_verify->delivery_boy_id   = $custCheck->delivery_boy_id;
+                            $otp_verify->otp_expirytime     = $db_otp_expirytime;
+                            $otp_verify->otp                 = $db_otp;
                             $otp_verify->save();
                             $data['delivery_boy_id']=$custCheck->delivery_boy_id;
                             $data['message']='Please verify otp to login!';
@@ -203,10 +203,10 @@ class DeliveryBoyController extends Controller
                 $data['status']=1;
                 $db_otp =  rand (100000,999999);
                 $db_otp_expirytime = Carbon::now()->addMinute(10);
-                $otp_verify=new Trn_delivery_boy_otp_verify();
+                $otp_verify=new Trn_StoreDeliveryBoyOtpVerify();
                 $otp_verify->delivery_boy_id                 = $db_id;
-                $otp_verify->delivery_boy_otp_expirytime     = $db_otp_expirytime;
-                $otp_verify->delivery_boy_otp                 = $db_otp;
+                $otp_verify->otp_expirytime     = $db_otp_expirytime;
+                $otp_verify->otp                 = $db_otp;
                 $otp_verify->save();
                 $data['delivery_boy_id']=$db_id;
                 $data['message']='Delivery boy registration successful';
