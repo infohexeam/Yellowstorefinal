@@ -226,7 +226,9 @@ Route::group(['prefix' => 'store'], function () {
     //WORKING DAYS
     Route::get('working-days/list', 'Api\StoreSettingsController@listWorkingDays');
     Route::post('working-days/update', 'Api\StoreSettingsController@updateWorkingDays');
-
+   //STORE REFERRALS
+   Route::get('store-level-referrals', 'Api\StoreController@getStoreReferrals');
+ 
     //STORE PROFILE
     Route::get('store-info/list', 'Api\StoreSettingsController@listStoreInfo');
     Route::post('store-info/update', 'Api\StoreSettingsController@updateStoreInfo');

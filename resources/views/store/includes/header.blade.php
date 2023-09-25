@@ -84,12 +84,17 @@
          $store_id =   Auth::guard('store')->user()->store_id;
          $storeData = App\Models\admin\Mst_store::find($store_id);
          $storeAdmData = App\Models\admin\Trn_StoreAdmin::where('store_id',$store_id)->where('role_id',0)->first();
+         $storeRefId=$storeData->store_referral_id;
+         if($storeRefId!=NULL)
+         {
+            $dynamic_link=App\Helpers\Helper::generateDynamicLink($storeRefId);
+         }
          $today = Carbon\Carbon::now()->addDays(3);
-            $now = Carbon\Carbon::now();
-            $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
-            $diff = $dateExp->diffInDays($now) + 1; //14
+         $now = Carbon\Carbon::now();
+         $dateExp = Carbon\Carbon::parse(@$storeAdmData->expiry_date);
+         $diff = $dateExp->diffInDays($now) + 1; //14
             
-            $todayDate =  Carbon\Carbon::now()->toDateString();
+         $todayDate =  Carbon\Carbon::now()->toDateString();
 
             if(@$diff == 1){
                $dayString = 'day';
@@ -129,6 +134,18 @@
                     </a> 
                 </li>
             @endif
+            @php
+
+
+            @endphp
+
+             @if(isset($dynamic_link))
+               <li class="nav-item" >
+                    <a href="whatsapp://send?text={{$dynamic_link}}" target="_blank">
+    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+Refer your store
+</a> </li>
+          @endif
              
              <li class="nav-item" data-toggle="tooltip" data-placement="top" title=" @if ($storeData->online_status == 1) Go Offline @else Go Online @endif">
                <a class="nav-link text-center m-2" href="{{ route('store.switchStatus') }}" >

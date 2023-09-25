@@ -99,6 +99,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
          <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
 
             <div class="card">
+             
                <a href="{{ route('store.list_product') }}">
                     <div class="card-body text-center statistics-info">
                         <div class="counter-icon bg-primary mb-0 box-primary-shadow">

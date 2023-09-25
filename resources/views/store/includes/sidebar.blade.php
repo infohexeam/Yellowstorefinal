@@ -174,6 +174,7 @@
           {{--<li><a class="slide-item" href="{{route('admin.list_points_to_customer')}}">Reward Points of<br> Non-existing Customer</a></li>--}}
         </ul>
       </li>
+      
 
     
 
@@ -183,7 +184,12 @@
           <span class="side-menu__label"> {{ __('Delivery Boys') }}</span>
         </a>
       </li>
-
+ <li class="slide">
+       <a class="side-menu__item" href="{{route('store.list_referrals')}}" >
+     <i class="side-menu__icon ti ti ti-share"></i>
+      <span class="side-menu__label"> {{ __('Referrals') }}</span>
+     </a>
+      </li>
 
       <li><h3>General</h3></li>
 

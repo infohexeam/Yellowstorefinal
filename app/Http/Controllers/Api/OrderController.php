@@ -823,6 +823,7 @@ class OrderController extends Controller
             
              $data['vehicle_types']  =$vehicle_types; 
              $data['status']=1;
+             //$data['dlink']=Helper::generateDynamicLink();
              $data['message']="Vehicle types fetched";
             return response($data);
            

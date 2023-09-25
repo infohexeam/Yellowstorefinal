@@ -1155,7 +1155,7 @@ public static function manageReferral($joiner_uid,$store_uid,$order)
 
    
 }
-public static function manageReferralNew($joiner_uid,$store_uid)
+public static function manageReferralNew($joiner_uid,$store_uid,$isStoreLevelReferral)
 {
     //$sref=Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('store_referral_number',$store_uid);
     if(Trn_store_referrals::where('joined_by_number',$joiner_uid)->where('store_referral_number',$store_uid)->where('reference_status',0)->count()>0)
@@ -1166,51 +1166,54 @@ public static function manageReferralNew($joiner_uid,$store_uid)
         //Joiner ponts
         //dd($joiner_uid,$store_uid);
 
-        $joiner_wallet_log=new Trn_wallet_log();
-        $joiner_wallet_log->store_id=$fetchFirstRef->store_id;
-        $joiner_wallet_log->customer_id=$fetchFirstRef->joined_by_id;
-        $joiner_wallet_log->order_id=0;
-        $joiner_wallet_log->type='credit';
-        $joiner_wallet_log->points_debited=null;
-        $joiner_wallet_log->points_credited=$fetchFirstRef->joiner_points;
-        $joiner_wallet_log->description='Joiner Points';  
-        $joiner_wallet_log->save();
+            $joiner_wallet_log=new Trn_wallet_log();
+            $joiner_wallet_log->store_id=$fetchFirstRef->store_id;
+            $joiner_wallet_log->customer_id=$fetchFirstRef->joined_by_id;
+            $joiner_wallet_log->order_id=0;
+            $joiner_wallet_log->type='credit';
+            $joiner_wallet_log->points_debited=null;
+            $joiner_wallet_log->points_credited=$fetchFirstRef->joiner_points;
+            $joiner_wallet_log->description='Joiner Points';  
+            $joiner_wallet_log->save();
 
-        $jscr = new Trn_customer_reward;
-        $jscr->transaction_type_id = 0;
-        $jscr->store_id==$fetchFirstRef->store_id;
-        $jscr->reward_points_earned = $fetchFirstRef->joiner_points;
-        $jscr->customer_id = $fetchFirstRef->joined_by_id;
-        $jscr->order_id = 0;
-        $jscr->reward_approved_date = Carbon::now()->format('Y-m-d');
-        $jscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-        $jscr->reward_point_status = 1;
-        $jscr->discription = 'store points';
-        $jscr->save();
+            $jscr = new Trn_customer_reward;
+            $jscr->transaction_type_id = 0;
+            $jscr->store_id==$fetchFirstRef->store_id;
+            $jscr->reward_points_earned = $fetchFirstRef->joiner_points;
+            $jscr->customer_id = $fetchFirstRef->joined_by_id;
+            $jscr->order_id = 0;
+            $jscr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $jscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $jscr->reward_point_status = 1;
+            $jscr->discription = 'store points';
+            $jscr->save();
 
         //Referal ponts
-        $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
-        $ref_wallet_log=new Trn_wallet_log();
-        $ref_wallet_log->store_id=$fetchFirstRef->store_id;
-        $ref_wallet_log->customer_id=$refer_by->customer_id;
-        $ref_wallet_log->order_id=0;
-        $ref_wallet_log->type='credit';
-        $ref_wallet_log->points_debited=null;
-        $ref_wallet_log->points_credited=$fetchFirstRef->referral_points;
-        $ref_wallet_log->description='Referral Points';  
-        $ref_wallet_log->save();
+        if($isStoreLevelReferral==0)
+        {
+            $refer_by=Trn_store_customer::where('referral_id',$fetchFirstRef->refered_by_number)->first();
+            $ref_wallet_log=new Trn_wallet_log();
+            $ref_wallet_log->store_id=$fetchFirstRef->store_id;
+            $ref_wallet_log->customer_id=$refer_by->customer_id;
+            $ref_wallet_log->order_id=0;
+            $ref_wallet_log->type='credit';
+            $ref_wallet_log->points_debited=null;
+            $ref_wallet_log->points_credited=$fetchFirstRef->referral_points;
+            $ref_wallet_log->description='Referral Points';  
+            $ref_wallet_log->save();
 
-        $rscr = new Trn_customer_reward;
-        $rscr->transaction_type_id = 0;
-        $rscr->store_id==$fetchFirstRef->store_id;
-        $rscr->reward_points_earned = $fetchFirstRef->referral_points;
-        $rscr->customer_id = $refer_by->customer_id;
-        $rscr->order_id = 0;
-        $rscr->reward_approved_date = Carbon::now()->format('Y-m-d');
-        $rscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
-        $rscr->reward_point_status = 1;
-        $rscr->discription = 'store points';
-        $rscr->save();
+            $rscr = new Trn_customer_reward;
+            $rscr->transaction_type_id = 0;
+            $rscr->store_id==$fetchFirstRef->store_id;
+            $rscr->reward_points_earned = $fetchFirstRef->referral_points;
+            $rscr->customer_id = $refer_by->customer_id;
+            $rscr->order_id = 0;
+            $rscr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $rscr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $rscr->reward_point_status = 1;
+            $rscr->discription = 'store points';
+            $rscr->save();
+        }
         
         
         
@@ -1241,8 +1244,14 @@ public static function manageReferralNew($joiner_uid,$store_uid)
        $fetchFirstRef->reference_status=1;
        $fetchFirstRef->order_id=0;
        $fetchFirstRef->update();
-
+       if($isStoreLevelReferral==0)
+       {
        return $refer_by->customer_id;
+       }
+       else
+       {
+        return $fetchFirstRef->store_id;
+       }
         }
         else
         {
@@ -1671,6 +1680,28 @@ public static function validateDeliveryBoy($valid)
                 ]
         );
         return $validate;
+    }
+public static function generateDynamicLink($store_referral_number)
+{
+        // Define the base URL for the dynamic link
+        $baseUrl = "https://yellowstorecustomer.page.link/";
+
+        // Define the parameters for the dynamic link
+        $destinationLink = "http://yellowstore.hexeam.org/?invitedStore=".$store_referral_number."/invitedCustomer%3D".$store_referral_number; // Your destination link
+        $androidPackageName = "com.example.android"; // Android app package name
+        $iosBundleId = "com.example.ios"; // iOS app bundle ID
+
+        // Construct the dynamic link
+        $dynamicLink = $baseUrl . "?link=" . urlencode($destinationLink);
+
+        // Add Android package name (optional)
+        //dynamicLink .= "&apn=" . $androidPackageName;
+
+        // Add iOS bundle ID (optional)
+        //$dynamicLink .= "&ibi=" . $iosBundleId;
+
+        // Output the dynamic link
+        return $dynamicLink;
     }
 
 

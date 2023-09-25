@@ -509,6 +509,7 @@ class CustomerController extends Controller
                     // }
                 if($request->store_referral_number)
                 {
+                
                 $check_reference_exists=Trn_store_referrals::where('joined_by_number',$stringRefer)->where('refered_by_number',$request->referral_id)->where('store_referral_number',$request->store_referral_number)->first();
                 if($check_reference_exists==NULL)  
                 {
@@ -621,10 +622,19 @@ class CustomerController extends Controller
                     //     //dd(3);
     
                     // }
+                    if($request->is_store_level_referral==1)
+                    {
+                        $islr=$request->store_referral_number;
+
+                    }
+                    else
+                    {
+                        $islr=0;
+                    }
                     $store_referral=new Trn_store_referrals();
                     $store_referral->store_referral_number=$request->store_referral_number;
                     $store_referral->store_id=$store_id;
-                    $store_referral->refered_by_id=$request->referred_customer_id??0;
+                    $store_referral->refered_by_id=$islr;
                     $store_referral->refered_by_number=$request->referral_id;
                     $store_referral->joined_by_id=$customer_id;
                     $store_referral->joined_by_number=$stringRefer;
@@ -764,7 +774,17 @@ class CustomerController extends Controller
                 }
                 if($jid!=NULL && $srid!=NULL)
                 {
-                Helper::manageReferralNew($jid,$srid);
+                //To check referal comes from store lvel
+                
+                if($request->is_store_level_referral==1)
+                {
+                    $isStoreLevelReferral=1;
+                }
+                else
+                {
+                    $isStoreLevelReferral=0;
+                }
+                Helper::manageReferralNew($jid,$srid,$isStoreLevelReferral);
 
                 }
                 if (isset($request->referral_id)) {

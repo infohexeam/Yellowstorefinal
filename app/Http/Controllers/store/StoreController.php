@@ -131,6 +131,14 @@ class StoreController extends Controller
     $pageTitle = "Store";
 
     $user_id =   Auth::guard('store')->user()->store_id;
+   if(Auth::guard('store')->user()->store_referral_id!=NULL)
+   {
+    $dynamic_link=Helper::generateDynamicLink(Auth::guard('store')->user()->store_referral_id);
+
+   }
+   
+
+   
 
 
     $storeProductData = Mst_store_product::select('product_cat_id')->where('store_id', '=', $user_id)->orderBy('product_id', 'DESC')->get()->unique('product_cat_id')->pluck('product_cat_id')->toArray();
@@ -190,7 +198,7 @@ class StoreController extends Controller
       'order',
       'agency',
       'recentvisitCountWeek',
-      'recentvisitCountMonth'
+      'recentvisitCountMonth',
     ));
   }
   public function newOrders()
@@ -6677,4 +6685,25 @@ public function showInHome(Request $request, $product_id)
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
   }
+  public function listReferrals()
+  {
+    try
+      {
+        $store_id  = Auth::guard('store')->user()->store_id;
+        $pageTitle="Successful Referrals";
+
+        $referrals=Trn_store_referrals::where('store_id',$store_id)->where('refered_by_id','!=',0)->get();
+        return view('store.elements.referrals.list', compact('pageTitle','referrals'
+          
+        ));
+
+
+      }
+    catch (\Exception $e) {
+      // return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();
+
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+  }
+  
 }

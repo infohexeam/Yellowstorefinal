@@ -31,6 +31,7 @@ use App\Models\admin\Sys_store_order_status;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use App\Models\admin\Trn_store_order_item;
+use App\Trn_store_referrals;
 use File;
 use App\User;
 
@@ -3922,5 +3923,26 @@ class StoreController extends Controller
 			
   
 	}
+    public function getStoreReferrals(Request $request)
+    {
+        try{
+            $data=array();
+            $store_id=$request->store_id;
+            $data['status']=1;
+            $data['message']="Store level referrals fetched";
+            $data['store_level_referrals']=Trn_store_referrals::leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_referrals.joined_by_id')
+            ->where('store_id',$store_id)->where('refered_by_id','!=',0)->get();
+            return response($data);
+
+        }
+        catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+
+            return response($response);
+        }
+    }
 
 }
