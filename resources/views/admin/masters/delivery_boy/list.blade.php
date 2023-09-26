@@ -107,7 +107,7 @@
                       @foreach ($delivery_boys as $delivery_boy)
                       <tr>
                         <td>{{ ++$i }}</td>
-                        <td>{{$delivery_boy->delivery_boy_name}}</td>
+                        <td>{{$delivery_boy->delivery_boy_name}}<br> @if($delivery_boy->is_added_by_store==1) <br><span class="badge badge-info">Created by store</span>@elseif($delivery_boy->is_registered==1) <br><span class="badge badge-warning">Registered through App</span>@else<br><span class="badge badge-success">Created by Admin</span> @endif</td>
                         <td>{{$delivery_boy->delivery_boy_mobile}}</td>
                         <td>
                           @if (isset($delivery_boy->delivery_boy_email))
@@ -143,7 +143,7 @@
                        @foreach ($stores__data as $s)
                                                    {{ $s->store_name }} <br>
                        @endforeach
-                       @if($delivery_boy->is_added_by_store==1) <br><span class="badge badge-info">Created by store</span>@endif
+                      
 
                         </td>
                         

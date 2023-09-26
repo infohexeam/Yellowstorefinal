@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer_Api;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -3184,11 +3185,24 @@ public function addToCartTest(Request $request)
 
     public function cartItems(Request $request)
     {
-        $data = array();
+        $data = array();    
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $customer_id = $request->customer_id;
-
+                if($request->store_id)
+                {
+                $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                $data['is_delivery_available']=$flag;
+                if($flag==1)
+                {
+                    $data['is_only_collect_from_store']=0;
+                }
+                else
+                { 
+                    $data['is_only_collect_from_store']=1;
+                }
+            }
+        
                 // $cartData = Trn_Cart::select('product_varient_id')
                 // ->where('customer_id','=',$customer_id)
                 // ->orderBy('cart_id','DESC')

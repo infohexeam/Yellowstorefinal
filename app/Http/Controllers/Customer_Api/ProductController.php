@@ -1469,7 +1469,7 @@ class ProductController extends Controller
                             $data['is_only_collect_from_store']=0;
                         }
                         else
-                        {
+                        {    
                             $data['is_only_collect_from_store']=1;
                         }
                         // $data['deliveryAddress']  =  Trn_customerAddress::where('customer_id',$request->customer_id)->where('default_status',1)->first();

@@ -1703,6 +1703,50 @@ public static function generateDynamicLink($store_referral_number)
         // Output the dynamic link
         return $dynamicLink;
     }
+    public static function hasMinimumStockProducts($store_id)
+    {
+       
+
+    $min_stock_products = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+      ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+
+      ->where('mst_store_products.store_id', $store_id)
+      ->where('mst_store_products.product_type', 1)
+      ->where('mst_store_products.is_removed', 0)
+      ->where('mst_store_categories.category_status',1)
+      ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+      ->where('mst_store_product_varients.is_removed', 0)
+      ->whereColumn('mst_store_product_varients.stock_count','<=','mst_store_products.min_stock')
+      ->count();
+      if($min_stock_products>0)
+      {
+        return 1;
+      }
+      else
+      {
+        return 0;
+      }
+
+    }
+    public static function minimumStockProducts($store_id)
+    {
+        $min_stock_products = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+      ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+
+      ->where('mst_store_products.store_id', $store_id)
+      ->where('mst_store_products.product_type', 1)
+      ->where('mst_store_products.is_removed', 0)
+      ->where('mst_store_categories.category_status',1)
+      ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+      ->where('mst_store_product_varients.is_removed', 0)
+      ->whereColumn('mst_store_product_varients.stock_count','<=','mst_store_products.min_stock')
+      ->get();
+
+      return $min_stock_products;
+
+     
+
+    }
 
 
 

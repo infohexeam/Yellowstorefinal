@@ -3708,6 +3708,8 @@ class StoreController extends Controller
 
   public function listInventory(Request $request)
   {
+    $c=Helper::minimumStockProducts(10);
+    dd($c);
     $pageTitle = "Inventory Management";
     $store_id =  Auth::guard('store')->user()->store_id;
 

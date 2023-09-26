@@ -187,11 +187,11 @@ class DeliveryBoyController extends Controller
                 $delivery_boy->vehicle_number = $request->vehicle_number;
                 $delivery_boy->vehicle_type_id = $request->vehicle_type_id;
                 //$delivery_boy->store_id = $store_id;
-                //$delivery_boy->country_id = $request->country_id;
-                //$delivery_boy->state_id = $request->state_id;
-                //$delivery_boy->district_id = $request->district_id;
-                //$delivery_boy->town_id = $request->town_id;
-                //$delivery_boy->is_added_by_store=1;
+                $delivery_boy->country_id = $request->country_id;
+                $delivery_boy->state_id = $request->state_id;
+                $delivery_boy->district_id = $request->district_id;
+                $delivery_boy->town_id = $request->town_id;
+                $delivery_boy->is_registered=1;
                 $delivery_boy->latitude=$request->latitude;
                 $delivery_boy->longitude=$request->longitude;
                 $delivery_boy->delivery_boy_username = $request->delivery_boy_username;
