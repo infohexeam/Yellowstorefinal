@@ -4526,7 +4526,8 @@ class StoreController extends Controller
       'delivery_end_time'=>$request->delivery_end_time,
       'pay_delivery_status'=>$pad,
       'collect_store_status'=>$css,
-      'immediate_delivery_text'=>$request->immediate_delivery_text
+      'immediate_delivery_text'=>$request->immediate_delivery_text,
+      'minimum_order_amount'=>$request->minimum_order_amount
 
 
 
@@ -4536,8 +4537,8 @@ class StoreController extends Controller
     Mst_store::where('store_id', Auth::guard('store')->user()->store_id)->update($data);
 
   
-
-
+    
+  
 
     foreach ($request->start as $s) {
       
@@ -4552,6 +4553,11 @@ class StoreController extends Controller
       if($end[$i]<$start[$i])
       {
         return redirect()->back()->with('error', 'Ending KM should be greater than starting KM');
+
+      }
+      if($delivery_charge[$i]>$request->minimum_order_amount)
+      {
+        return redirect()->back()->with('error', 'Delivery charge should not exceed minimum order amount '.$request->minimum_order_amount);
 
       }
 

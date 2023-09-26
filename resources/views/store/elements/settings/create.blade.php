@@ -203,7 +203,13 @@
                          <input type="text"  class="form-control"  name="immediate_delivery_text"  value="{{old('immediate_delivery_text',$store->immediate_delivery_text)}}" placeholder="">
                       </div>
                    </div>
-                     <div class="col-md-12">
+                   <div class="col-md-6" id="moa">
+                      <div class="form-group">
+                         <label class="form-label">Minimum Order Amount</label>
+                         <input type="number" step="0.01"  class="form-control"  name="minimum_order_amount"  value="{{old('minium_order_amount',$store->minimum_order_amount)}}" placeholder="">
+                      </div>
+                   </div>
+                     <div class="col-md-6">
                       <div class="form-group">
                          <label class="form-label">Qrcode</label>
                          <input type="text" readonly class="form-control"  name="store_qrcode"  value="{{old('store_qrcode',$store->store_qrcode)}}" placeholder="">
