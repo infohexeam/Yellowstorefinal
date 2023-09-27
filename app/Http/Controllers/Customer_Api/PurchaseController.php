@@ -3191,17 +3191,17 @@ public function addToCartTest(Request $request)
                 $customer_id = $request->customer_id;
                 if($request->store_id)
                 {
-                $flag=Helper::checkStoreDeliveryHours($request->store_id);
-                $data['is_delivery_available']=$flag;
-                if($flag==1)
-                {
-                    $data['is_only_collect_from_store']=0;
-                }
-                else
-                { 
-                    $data['is_only_collect_from_store']=1;
-                }
-            }
+                    $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                    $data['is_delivery_available']=$flag;
+                    if($flag==1)
+                    {
+                        $data['is_only_collect_from_store']=0;
+                    }
+                    else
+                    { 
+                        $data['is_only_collect_from_store']=1;
+                    }
+               }
         
                 // $cartData = Trn_Cart::select('product_varient_id')
                 // ->where('customer_id','=',$customer_id)

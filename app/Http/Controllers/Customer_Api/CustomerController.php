@@ -1124,6 +1124,19 @@ class CustomerController extends Controller
 
         try {
             if (isset($request->customer_id) && $cData = Trn_store_customer::find($request->customer_id)) {
+                if($request->store_id)
+                {
+                    $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                    $data['is_delivery_available']=$flag;
+                    if($flag==1)
+                    {
+                        $data['is_only_collect_from_store']=0;
+                    }
+                    else
+                    { 
+                        $data['is_only_collect_from_store']=1;
+                    }
+               }
                 if (isset($request->country)) {
                     $contryId = Country::where('country_name', 'LIKE', "%{$request->country}%")->first()->country_id;
                 }
