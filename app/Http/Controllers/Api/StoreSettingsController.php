@@ -1054,4 +1054,45 @@ class StoreSettingsController extends Controller
       
   
     }
+    public function getMinimumStockProducts(Request $request)
+    {
+        $dataRes = array();
+
+        try {
+            $store_id=$request->store_id;
+            $products=Helper::minimumStockProducts($store_id);
+            $minStockProducts=$products->map(function($data){
+            $var=Mst_store_product_varient::where('product_varient_id',$data['product_varient_id'])->first();
+
+            $product['product_name']=$data['variant_name'];
+            $product['prodcut_id']=$data['product_id'];
+            $product['product_varient_id']=$data['product_varient_id'];
+            $product['stock_count']=$var['stock_count'];
+            $product['minimum_stock']=$data['min_stock']??0;
+            return $product;
+    });
+            if(count($minStockProducts)>0)
+            {
+                $dataRes['status']=1;
+                $dataRes['minimumStockProducts']=$minStockProducts;
+                return response($dataRes);
+                
+            }
+            else
+            {
+                $dataRes['status']=1;
+                $dataRes['minimumStockProducts']=[];
+                return response($dataRes);
+
+            }
+        }
+        catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+
+    }
 }

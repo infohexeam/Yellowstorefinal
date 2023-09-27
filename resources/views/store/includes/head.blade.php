@@ -47,7 +47,36 @@
 		<!-- TABS STYLES -->
 <link href="{{URL::to('/assets/plugins/tabs/tabs.css')}}" rel="stylesheet"/>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<style>
+/* Custom CSS for Toastify */
+.toastify {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  border-radius: 10px;
+  padding: 15px 20px;
+  min-width: 240px; /* Set your desired width here */
+  max-width: 300px; /* Set your desired max width here */
+}
 
+/* Custom CSS for the close button */
+.toastify button.toastify-close {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #333;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Custom CSS for the notification text */
+.toastify p.toastify-text {
+  margin: 0;
+  color: #333;
+}
+
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="{{URL::to('/assets/js/lan.js')}}"></script>

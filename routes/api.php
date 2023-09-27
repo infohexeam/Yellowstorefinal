@@ -221,6 +221,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::post('store-settings/update', 'Api\StoreSettingsController@updateSettings');
     //Live orders
     Route::get('live-orders', 'Api\StoreSettingsController@newOrdersAll');
+    Route::get('miniumum-stock-products', 'Api\StoreSettingsController@getMinimumStockProducts');
     Route::get('remove-banner', 'Api\StoreSettingsController@removeBanner');
 
     //WORKING DAYS

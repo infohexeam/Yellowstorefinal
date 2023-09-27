@@ -229,6 +229,26 @@ class StoreController extends Controller
     return response()->json(['newOrders'=>$newOrders]);
 
   }
+  public function getMinimumStockProducts()
+  {
+    $products=Helper::minimumStockProducts(Auth::guard('store')->user()->store_id);
+    $minStockProducts=$products->map(function($data){
+      $var=Mst_store_product_varient::where('product_varient_id',$data['product_varient_id'])->first();
+
+      $product['product_name']=$data['variant_name'];
+      $product['stock_count']=$var['stock_count'];
+      $product['minimum_stock']=$data['min_stock']??0;
+      return $product;
+
+
+    });
+    return response()->json(['minimumStockProducts'=>$minStockProducts]);
+
+  }
+  public function minimumStockNotifications(){
+    $pageTitle = "Minimum Stock Reached Products";
+    return view('store.elements.product.minimum_stock_products',compact('pageTitle'));
+  }
 
   public function changePassword()
   {

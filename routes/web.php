@@ -691,6 +691,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/home', 'StoreController@index')->name('store_home');
         Route::get('store/new-orders', 'StoreController@newOrders')->name('store_new_orders');
         Route::get('store/new-orders-all', 'StoreController@newOrdersAll')->name('store_new_orders_all');
+        Route::get('store/get-minimum-stock-products', 'StoreController@getMinimumStockProducts')->name('store_get_minimum_stock_products');
         Route::get('store-login', 'Auth\LoginController@showLoginForm')->name('store.login');
         Route::post('to-store-login', 'Auth\LoginController@redirectStoreLogin')->name('store.tologin');
         Route::post('store/login', 'Auth\LoginController@usrlogin')->name('store_login');
@@ -797,8 +798,12 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/product/restore', 'StoreController@restoreProduct')->name('store.restore-products');
         
         Route::get('store/restore-product/{id}','StoreController@restoreProductSave')->name('store.restore-products-save');
+       //Minium stock Products Notifications
+       Route::get('store/minimumstock-reached-products', 'StoreController@minimumStockNotifications')->name('store.minimum-stock-notifications');
+
 
         // get parent cat and sub cat by ajax
+
 
         Route::get('store/product/ajax/get_category', 'StoreController@GetCategory');
 

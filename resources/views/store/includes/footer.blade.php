@@ -96,6 +96,9 @@
 	<!--- TABS JS -->
 		<script src="{{URL::to('/assets/plugins/tabs/jquery.multipurpose_tabcontent.js')}}"></script>
 		<script src="{{URL::to('/assets/plugins/tabs/tab-content.js')}}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+      
+
 
 <script type="text/javascript">
    $('#err_msg').fadeOut(5000);
@@ -127,7 +130,82 @@
 
 </script>
 
+<script>
+var lastToastTime = 0;
+getMiniumStockProducts();
+setInterval(function(){ getMiniumStockProducts();}, 10000);
+function getMiniumStockProducts(){
+   //alert(123);
+    $.ajax({
+      type: 'get',
+      url: "{{ route('store_get_minimum_stock_products') }}",
+      dataType: 'json',
+      contentType: false,
+      cache: false,
+      processData:false,
 
+      success: function(response){ 
+        minProducts = response.minimumStockProducts;
+        var productCount = minProducts.length;
+        console.log(minProducts,productCount)
+         //alert(123);
+
+         if(productCount>0)
+        {
+          var currentTime = Date.now();
+          var timeDiff = currentTime - lastToastTime;
+         //alert(1);
+         //playNotificationSound();
+         $('#newProducts').html("");
+        if (timeDiff > 5000) { // Allow toast every 10 seconds
+        playNotificationSound();
+         
+                  Toastify({
+                     text: "Minimum stock reached! Some Products current stock has reached the minimum stock in your store. <a class='btn btn-warning' href='{{route('store.minimum-stock-notifications')}}'>View Products</a>",
+                     position: "right",
+                     duration: 5000, // 5 seconds
+                     gravity: "bottom",
+                     close: true,
+                     stopOnDuplicate: true, // Add this line
+                     backgroundColor: "red", // Set background color to red
+                     stopOnFocus: false, // Stop on focus
+                      escapeMarkup: false,
+                    
+                  }).showToast();
+                  lastToastTime = currentTime;
+                  
+                  
+               }           
+
+        }
+        else
+        {
+         $('#newProducts').html("<div class='alert alert-info'><h4>NO PRODUCTS TO SHOW!!!</h4></div>");
+
+        }
+        //RenderNewOrders();
+        RenderMiniumStockProducts();
+       
+        
+      },
+      
+    })
+
+  }
+  function RenderMiniumStockProducts()
+  {
+      $('.newProduct').remove();
+    $.each(minProducts, function(index, value){
+     
+      var html='<div class="card newProduct blink col-lg-3 col-md-3 col-sm-3 col-xl-3"><div class="card-header bg-info text-white">'+value.product_name+'</div><div class="card-body"><p class="card-text" style="color:red;">Current Stock:'+value.stock_count+'</p><p class="card-text">Minimum Stock:'+value.minimum_stock+'</p><a href="{{ url('store/inventory/list') }}?product_name=' + value.product_name + '">Manage Stock</a></div></div>';
+      $('#newProducts').append(html);
+    });
+  }
+   function playNotificationSound() {
+    var alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/stock-voice.mp3');
+    alarmSound.play();
+  }
+</script>
 
 {{-- @section('footerSection')
 @show
