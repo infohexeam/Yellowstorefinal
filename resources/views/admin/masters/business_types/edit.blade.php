@@ -45,6 +45,17 @@
                     <img src="{{asset('/assets/uploads/business_type/icons/'.$business_type->business_type_icon)}}"  width="100" style="height:60px" "width :50px">
                   </div>
                 </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Is it just a product listing?
+                         
+														<input type="checkbox" name="is_product_listed" @if($business_type->is_product_listed==1) checked @endif   class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
 
 
                   <div class="col-md-12">

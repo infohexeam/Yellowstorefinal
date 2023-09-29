@@ -215,6 +215,17 @@
                          <input type="text" readonly class="form-control"  name="store_qrcode"  value="{{old('store_qrcode',$store->store_qrcode)}}" placeholder="">
                       </div>
                    </div>
+                   <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Minium stock alert notification
+                         
+														<input type="checkbox" name="minimum_stock_alert_status"   @if ($store->minimum_stock_alert_status == 1) checked @endif    class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
 
 
                      <table id="first" class="table">

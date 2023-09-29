@@ -144,6 +144,8 @@ class StoreSettingsController extends Controller
                     $data['defaultStoreSettingsDetails']['pay_delivery_status'] = $store_data->pay_delivery_status;
                     $data['defaultStoreSettingsDetails']['collect_store_status'] = $store_data->collect_store_status;
                     $data['defaultStoreSettingsDetails']['immediate_delivery_text'] = $store_data->immediate_delivery_text;
+                    $data['defaultStoreSettingsDetails']['minimum_order_amount'] = $store_data->minimum_order_amount;
+                    $data['defaultStoreSettingsDetails']['minimum_stock_alert_status'] = $store_data->minimum_stock_alert_status;
                     $data['status'] = 1;
                     $data['message'] = "success";
                     return response($data);
@@ -247,6 +249,15 @@ class StoreSettingsController extends Controller
                     {
                         $data2['immediate_delivery_text']=$request->immediate_delivery_text;
                     }
+                    if (isset($request->minimum_order_amount))
+                    {
+                        $data2['minimum_order_amount']=$request->minimum_order_amount;
+                    }
+                    if (isset($request->minimum_stock_alert_status))
+                    {
+                        $data2['minimum_stock_alert_status']=$request->minimum_stock_alert_status;
+                    }
+                    
 
                     Mst_store::where('store_id', $store_id)->update($data2);
                     // echo "here";die;

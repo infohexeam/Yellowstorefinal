@@ -52,11 +52,11 @@
 /* Custom CSS for Toastify */
 .toastify {
   font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   border-radius: 10px;
   padding: 15px 20px;
-  min-width: 240px; /* Set your desired width here */
-  max-width: 300px; /* Set your desired max width here */
+  min-width: 220px; /* Set your desired width here */
+  max-width: 295px; /* Set your desired max width here */
 }
 
 /* Custom CSS for the close button */

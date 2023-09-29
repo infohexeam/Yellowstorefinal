@@ -161,7 +161,7 @@ function getMiniumStockProducts(){
         playNotificationSound();
          
                   Toastify({
-                     text: "Minimum stock reached! Some Products current stock has reached the minimum stock in your store. <a class='btn btn-warning' href='{{route('store.minimum-stock-notifications')}}'>View Products</a>",
+                     text: "Low Stock Alert:Minimum Stock Level Reached for Some Products <a class='btn btn-warning' href='{{route('store.minimum-stock-notifications')}}'>View Products("+productCount+")</a>",
                      position: "right",
                      duration: 5000, // 5 seconds
                      gravity: "bottom",
@@ -176,10 +176,12 @@ function getMiniumStockProducts(){
                   
                   
                }           
-
+           $('#mspDiv').show();
+           $('#mspCount').html(productCount);
         }
         else
         {
+         $('#mspDiv').hide();
          $('#newProducts').html("<div class='alert alert-info'><h4>NO PRODUCTS TO SHOW!!!</h4></div>");
 
         }
@@ -196,13 +198,14 @@ function getMiniumStockProducts(){
   {
       $('.newProduct').remove();
     $.each(minProducts, function(index, value){
-     
-      var html='<div class="card newProduct blink col-lg-3 col-md-3 col-sm-3 col-xl-3"><div class="card-header bg-info text-white">'+value.product_name+'</div><div class="card-body"><p class="card-text" style="color:red;">Current Stock:'+value.stock_count+'</p><p class="card-text">Minimum Stock:'+value.minimum_stock+'</p><a href="{{ url('store/inventory/list') }}?product_name=' + value.product_name + '">Manage Stock</a></div></div>';
+     var slNo=index+1;
+    var html='<div class="card newProduct blink col-lg-3 col-md-3 col-sm-3 col-xl-3"><div class="card-header bg-info text-white">'+value.product_name+'</div><div class="card-body"><p class="card-text" style="color:red;">Current Stock:'+value.stock_count+'</p><p class="card-text">Minimum Stock:'+value.minimum_stock+'</p><a href="{{ url('store/inventory/list') }}?product_name=' + value.product_name + '">Manage Stock</a></div></div>';
+     //var html='<tr class="newProduct"><td>'+slNo+'</td><td>'+value.product_name+'</td><td>'+value.stock_count+'</td><td>'+value.minimum_stock+'</td><td><a href="{{ url('store/inventory/list') }}?product_name=' + value.product_name + '">Manage Stock</a></td></tr>';
       $('#newProducts').append(html);
     });
   }
    function playNotificationSound() {
-    var alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/stock-voice.mp3');
+    var alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/stock-voice-simple.mp3');
     alarmSound.play();
   }
 </script>

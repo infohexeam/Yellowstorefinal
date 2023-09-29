@@ -231,6 +231,21 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
             </div>
         </div>
 
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6" id="mspDiv">
+            <div class="card">
+               <a href="{{route('store.minimum-stock-notifications')}}">
+                  <div class="card-body text-center statistics-info">
+                     <div class="counter-icon bg-danger mb-0 box-info-shadow">
+													<i class="fa fa-comments text-white"></i>
+							</div>
+                        <h6 class="mt-4 mb-1">{{ __(' Minimum Stock Products') }}</h6>
+                        <h2 class="mb-2 number-font" id="mspCount"></h2>
+                        <p class="text-muted">{{ __('Minimum Stock Products') }}</p>
+                    </div>
+               </a>
+            </div>
+        </div>
+
 
 
 

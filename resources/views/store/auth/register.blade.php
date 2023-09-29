@@ -566,13 +566,13 @@ var firebaseConfig = {
       var sTC = $('#tc').val();
       
       if(sName == ''){
-          $('#error_sname').text('Store name reqired');
+          $('#error_sname').text('Store name required');
       }else{
           $('#error_sname').text('');
       }
       
        if(sPhone == ''){
-          $('#error_smob').text('Store mobile reqired');
+          $('#error_smob').text('Store mobile required');
       }else{
           $('#error_smob').text('');
       }
@@ -583,13 +583,13 @@ var firebaseConfig = {
       }
       
       if(sBusinessType == ''){
-          $('#error_bti').text('Business type reqired');
+          $('#error_bti').text('Business type required');
       }else{
           $('#error_bti').text('');
       }
       
       if(sPass == ''){
-          $('#error_pass').text('Password reqired');
+          $('#error_pass').text('Password required');
       }else{
           $('#error_pass').text('');
       }

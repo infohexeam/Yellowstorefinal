@@ -4533,6 +4533,15 @@ class StoreController extends Controller
     {
       $css=1;
     }
+    
+    if(is_null($request->minimum_stock_alert_status))
+    {
+       $min_stock_alert=0;
+    }
+    else
+    {
+      $min_stock_alert=1;
+    }
 
     $data = [
 
@@ -4549,7 +4558,8 @@ class StoreController extends Controller
       'pay_delivery_status'=>$pad,
       'collect_store_status'=>$css,
       'immediate_delivery_text'=>$request->immediate_delivery_text,
-      'minimum_order_amount'=>$request->minimum_order_amount
+      'minimum_order_amount'=>$request->minimum_order_amount,
+      'minimum_stock_alert_status'=>$min_stock_alert
 
 
 

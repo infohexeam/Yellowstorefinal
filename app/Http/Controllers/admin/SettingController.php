@@ -387,6 +387,15 @@ class SettingController extends Controller
 
 		if (!$validator->fails()) {
 			$data = $request->except('_token');
+			if(is_null($request->is_product_listed))
+			{
+			$product_listed=0;
+
+			}
+			else
+			{
+			$product_listed=1;
+			}
 
 
 			$business_type->business_type_name 		= $request->business_type_name;
@@ -409,6 +418,8 @@ class SettingController extends Controller
 			}
 
 			$business_type->business_type_status 		= 1;
+
+			$business_type->is_product_listed=   $product_listed;
 
 
 			$business_type->save();
@@ -460,6 +471,15 @@ class SettingController extends Controller
 
 		if (!$validator->fails()) {
 			$data = $request->except('_token');
+			if(is_null($request->is_product_listed))
+			{
+			$product_listed=0;
+
+			}
+			else
+			{
+			$product_listed=1;
+			}
 
 
 			$business_type->business_type_name 		= $request->business_type_name;
@@ -488,6 +508,8 @@ class SettingController extends Controller
 			}
 
 			$business_type->business_type_status 		= 1;
+
+			$business_type->is_product_listed=$product_listed;
 
 
 			$business_type->update();
