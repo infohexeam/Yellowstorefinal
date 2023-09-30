@@ -3195,17 +3195,22 @@ public function addToCartTest(Request $request)
                 {
                     if($firstCartData->store_id!=NULL)
                     {
-                    $flag=Helper::checkStoreDeliveryHours($firstCartData->store_id);
-                    $data['is_delivery_available']=$flag;
-                    if($flag==1)
-                    {
-                        $data['is_only_collect_from_store']=0;
+                        $flag=Helper::checkStoreDeliveryHours($firstCartData->store_id);
+                        $data['is_delivery_available']=$flag;
+                        if($flag==1)
+                        {
+                            $data['is_only_collect_from_store']=0;
+                        }
+                        else
+                        { 
+                            $data['is_only_collect_from_store']=1;
+                        }
+                        $data['store_id']=$firstCartData->store_id;
                     }
-                    else
-                    { 
-                        $data['is_only_collect_from_store']=1;
-                    }
-                }
+               }
+               else
+               {
+                $data['store_id']=0;
                }
         
                 // $cartData = Trn_Cart::select('product_varient_id')
