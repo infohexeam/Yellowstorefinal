@@ -64,6 +64,7 @@
                             <button type="button" id="addStore" class="btn btn-raised btn-success"> Add More</button>
                         </div>
                      </div>
+                     
 
 
                        {{--  <div class="col-md-6">
@@ -96,6 +97,19 @@
                            <label class="form-label">Category Description</label>
                            <textarea class="form-control" id="category_description" name="category_description" rows="4" placeholder="Category Description">{{old('category_description')}}</textarea>
                         </div>
+                     </div>
+                     <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Is it just a product listing?
+                         
+														<input type="checkbox" name="is_product_listed"     class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
+                      <div class="col-md-12">
                         <div class="form-group">
                            <center>
                            <button type="submit" class="btn btn-raised btn-primary">
@@ -106,6 +120,8 @@
                            </center>
                         </div>
                      </div>
+                      
+                     
                   </div>
                   <script src="{{ asset('vendor\unisharp\laravel-ckeditor/ckeditor.js')}}"></script>
                   <script>CKEDITOR.replace('category_description');</script>

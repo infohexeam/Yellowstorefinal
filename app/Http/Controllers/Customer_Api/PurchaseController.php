@@ -3189,9 +3189,13 @@ public function addToCartTest(Request $request)
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $customer_id = $request->customer_id;
-                if($request->store_id)
+                $firstCartData = Trn_Cart::where('customer_id', $customer_id)->where('remove_status', 0)->first();
+
+                if($firstCartData)
                 {
-                    $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                    if($firstCartData->store_id!=NULL)
+                    {
+                    $flag=Helper::checkStoreDeliveryHours($firstCartData->store_id);
                     $data['is_delivery_available']=$flag;
                     if($flag==1)
                     {
@@ -3201,6 +3205,7 @@ public function addToCartTest(Request $request)
                     { 
                         $data['is_only_collect_from_store']=1;
                     }
+                }
                }
         
                 // $cartData = Trn_Cart::select('product_varient_id')

@@ -344,8 +344,18 @@
                             <input type="text"  class="form-control" name="product_brand" id="product_brand" value="{{old('product_brand',$product->product_brand)}}" placeholder="Product Brand">
                         </div>
                     </div>
-                    
-  
+                     <div class="col-md-6">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Is it just a product listing?
+                         
+														<input type="checkbox" name="is_product_listed" @if($product->is_product_listed_by_product==1) checked   @endif class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
+   
 
                       <div class="col-md-12">
                    <div class="form-group">

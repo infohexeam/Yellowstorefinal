@@ -149,12 +149,22 @@ class SettingController extends Controller
 		if (!$validator->fails()) {
 
 			$data = $request->except('_token');
+			if(is_null($request->is_product_listed))
+			{
+			 $product_listed=0;
+
+			}
+			else
+			{
+			 $product_listed=1;
+			}
 
 			$category->category_name 		= $request->category_name;
 			$category->category_name_slug  	= Str::of($request->category_name)->slug('-');
 			$category->category_description = $request->category_description;
 			$category->business_type_id = 0;
 			$category->parent_id 		= 0;
+			$category->is_product_listed_by_category=$product_listed;
 
 			if ($request->hasFile('category_icon')) {
 
@@ -239,6 +249,15 @@ class SettingController extends Controller
 
 		if (!$validator->fails()) {
 			$data = $request->except('_token');
+			if(is_null($request->is_product_listed))
+			{
+			$product_listed=0;
+
+			}
+			else
+			{
+			$product_listed=1;
+			}
 
 
 			$category->category_name = $request->category_name;
@@ -246,6 +265,8 @@ class SettingController extends Controller
 
 			$category->category_description = $request->category_description;
 			$category->business_type_id = 0;
+			$category->is_product_listed_by_category=$product_listed;
+
 
 
 			if ($request->hasFile('category_icon')) {

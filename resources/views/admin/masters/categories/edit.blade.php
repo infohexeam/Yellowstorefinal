@@ -102,6 +102,17 @@
                     <textarea class="form-control"
                     name="category_description" rows="4" id="category_description" placeholder="Category Description">{{old('category_description',$category->category_description)}}</textarea>
                   </div>
+                  <div class="col-md-4">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Is it just a product listing?
+                         
+														<input type="checkbox" name="is_product_listed"  @if($category->is_product_listed_by_category==1) checked @endif     class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div>
                   <div class="col-md-12">
                     <div  class="form-group">
                       <center>
