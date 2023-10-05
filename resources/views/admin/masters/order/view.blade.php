@@ -155,6 +155,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           <tr>
                                           <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}} @if(@$order->status->status_id == 9) ( {{ \Carbon\Carbon::parse(@$order->delivery_date)->format('d-m-Y')}} {{ @$order->delivery_time }}  ) @endif </td>
                                        </tr>
+                                    @if($order->is_collect_from_store!=1)
                                        @php
                                        $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                                      @endphp
@@ -192,7 +193,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        </td>
                                      </tr>
 
-                                     
+                                     @endif
                                     
                                       
                                     </tbody>

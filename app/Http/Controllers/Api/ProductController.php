@@ -2194,7 +2194,15 @@ class ProductController extends Controller
 
                 if (!$validator->fails()) {
 
-                        
+                    if(is_null($request->is_product_listed))
+                    {
+                        $product_listed=0;
+            
+                    }
+                    else
+                    {
+                        $product_listed=1;
+                    }
                         
 
                         if ($request->product_id == 0) {
@@ -2205,6 +2213,7 @@ class ProductController extends Controller
                                     return response($data);    
                             
                                 }
+                          
                             $product = new Mst_store_product;
     
                             $product->product_name           = $request->product_name;
@@ -2257,6 +2266,7 @@ class ProductController extends Controller
                                 $product->timeslot_end_time=NULL;
                       
                             }
+                            $product->is_product_listed_by_product=$product_listed;
     
     
                             if ($product->save()) {
@@ -2420,6 +2430,7 @@ class ProductController extends Controller
                                 $productData['product_brand'] = $request->product_brand;
                                 $productData['product_status'] = $request->product_status;
                                 $productData['display_flag'] = $request->display_flag;
+                                $productData['is_product_listed_by_product']=$product_listed;
                                 if($request->timeslot_based_product==1)
                                 {
                                   $productData['is_timeslot_based_product']=1;

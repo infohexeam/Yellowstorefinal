@@ -168,7 +168,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('product/inventory/list', 'Api\InventoryController@listInventoryProducts');
     Route::post('product/inventory/update-stock', 'Api\InventoryController@updateInventory');
     Route::get('product/inventory/reset-stock', 'Api\InventoryController@resetStock');
-
+    Route::get('product/inventory/change-low-alert-status', 'Api\InventoryController@updateInclusionstatus');//change status wheter to included on low alert or not
 
     //----------- ORDER API ----------------
     Route::get('order/list', 'Api\OrderController@listOrders'); // order list

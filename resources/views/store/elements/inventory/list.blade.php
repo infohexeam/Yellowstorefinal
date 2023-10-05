@@ -84,6 +84,7 @@
                         <th class="wd-15p">Current<br>Stock</th>
 
                        <th class="wd-15p">{{__('Action')}}</th>
+                       <th class="wd-15p">{{__('Low stock Alert')}}<br>{{('Inclusion')}}</th>
 
                       </tr>
                     </thead>
@@ -133,7 +134,13 @@
                            <span id="status_msg{{$product->product_varient_id}}"></span>
                         </td>
 
-
+                      <td> <a href="{{url('store/inventory/update-inclusion/'.$product->product_varient_id)}}" onclick="return confirm('Do you want to update low stock alert status?');"  class="mt-2 btn btn-sm @if($product->included_in_low_stock_alert == 1) btn-green @else btn-warning   @endif">
+                      @if($product->included_in_low_stock_alert == 0)
+                        Excluded
+                      @else
+                        Included
+                      @endif
+                      </a>      </td>
 
                       </tr>
                       @endforeach

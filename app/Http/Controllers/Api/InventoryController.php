@@ -84,6 +84,7 @@ class InventoryController extends Controller
                                     'mst_store_product_varients.product_varient_offer_price',
                                     'mst_store_product_varients.product_varient_base_image',
                                     'mst_store_product_varients.stock_count',
+                                    'mst_store_product_varients.included_in_low_stock_alert',
                                     'mst_store_categories.category_id',
                                     'mst_store_categories.category_name'
                                 )->get()
@@ -139,6 +140,7 @@ class InventoryController extends Controller
                                     'mst_store_product_varients.product_varient_offer_price',
                                     'mst_store_product_varients.product_varient_base_image',
                                     'mst_store_product_varients.stock_count',
+                                    'mst_store_product_varients.included_in_low_stock_alert',
                                     'mst_store_categories.category_id',
                                     'mst_store_categories.category_name'
                                 )
@@ -361,6 +363,31 @@ class InventoryController extends Controller
         } catch (\Throwable $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
         }
+    }
+    public function updateInclusionstatus(Request $request)
+    {
+     $data=array();
+      try {    
+        $pvarient=Mst_store_product_varient::find($request->product_varient_id);
+        if($pvarient->included_in_low_stock_alert==0)
+        {
+          $status=1;
+  
+        }
+        else
+        {
+          $status=0;
+        }
+        Mst_store_product_varient::where('product_varient_id', $request->product_varient_id)->update(['included_in_low_stock_alert' => $status]);
+        $data['status']=1;
+        $data['message']="Status updated successfully";
+        return response($data);
+      } catch (\Exception $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    } catch (\Throwable $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+    }
     }
     
 }

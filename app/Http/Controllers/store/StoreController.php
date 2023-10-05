@@ -1066,8 +1066,17 @@ class StoreController extends Controller
       // $product->product_specification  = $request->product_specification;  // removed
       $product->store_id               = $store_id;
       $product->global_product_id               =  @$request->global_product_id; // new
+      
+      if(is_null($request->is_product_listed))
+			{
+			 $product_listed=0;
 
-
+			}
+			else
+			{
+			 $product_listed=1;
+			}
+      $product->is_product_listed_by_product=$product_listed;
       $product->product_type               =  @$request->product_type; // new
       if ($request->product_type == 2)
         $product->service_type               =  @$request->service_type; // new
@@ -1771,6 +1780,16 @@ class StoreController extends Controller
       $product['tax_id']                 = $request->tax_id; // new
       $product['stock_count']                = $request->min_stock; // stock count
       $product['product_code']          = $request->product_code;
+      if(is_null($request->is_product_listed))
+			{
+			 $product_listed=0;
+
+			}
+			else
+			{
+			 $product_listed=1;
+			}
+      $product['is_product_listed_by_product']=$product_listed;
       if (isset($request->business_type_id))
         $product['business_type_id']       = $request->business_type_id; // product type
       else
@@ -3764,7 +3783,8 @@ class StoreController extends Controller
         'mst_store_product_varients.product_varient_price',
         'mst_store_product_varients.product_varient_offer_price',
         'mst_store_product_varients.product_varient_base_image',
-        'mst_store_product_varients.stock_count'
+        'mst_store_product_varients.stock_count',
+        'mst_store_product_varients.included_in_low_stock_alert'
       )
       ->paginate(10);
     $category = Mst_categories::where('category_status', 1)->get();
@@ -3856,6 +3876,33 @@ class StoreController extends Controller
       return response()->json($s);
     } else {
       echo "error";
+    }
+  }
+  //Inventory products inclusion on low stock alerts
+  public function updateInclusionstatus(Request $request,$pvid)
+  {
+    try {
+
+     
+      $pvarient=Mst_store_product_varient::find($pvid);
+      if($pvarient->included_in_low_stock_alert==0)
+      {
+        $status=1;
+
+      }
+      else
+      {
+        $status=0;
+      }
+      Mst_store_product_varient::where('product_varient_id', $pvid)->update(['included_in_low_stock_alert' => $status]);
+      return redirect()->back()->with('status', 'Status updated successfully successfully.');
+        
+      
+    
+    } catch (\Exception $e) {
+       //return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();
+
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
   }
 
@@ -4489,6 +4536,8 @@ class StoreController extends Controller
     $end = $request->end;
     $delivery_charge = $request->delivery_charge;
     $packing_charge = $request->packing_charge;
+    $minimum_order_amount = $request->minimum_order_amount;
+    $reduction_percentage = $request->reduction_percentage;
     $service_error_count=0;
     if(is_null($request->immediate_delivery))
     {
@@ -4580,6 +4629,8 @@ class StoreController extends Controller
         'service_end' =>  $end[$i],
         'delivery_charge' => $delivery_charge[$i],
         'packing_charge' => $packing_charge[$i],
+        'minimum_order_amount'=>$minimum_order_amount[$i],
+        'reduction_percentage'=>$reduction_percentage[$i],
 
       ];
       if($end[$i]<$start[$i])
@@ -4587,11 +4638,11 @@ class StoreController extends Controller
         return redirect()->back()->with('error', 'Ending KM should be greater than starting KM');
 
       }
-      if($delivery_charge[$i]>$request->minimum_order_amount)
-      {
-        return redirect()->back()->with('error', 'Delivery charge should not exceed minimum order amount '.$request->minimum_order_amount);
+      // if($delivery_charge[$i]>$request->minimum_order_amount)
+      // {
+      //   return redirect()->back()->with('error', 'Delivery charge should not exceed minimum order amount '.$request->minimum_order_amount);
 
-      }
+      // }
 
       Trn_store_setting::insert($info);
       $i++;

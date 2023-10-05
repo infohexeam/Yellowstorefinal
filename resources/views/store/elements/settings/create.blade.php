@@ -203,13 +203,13 @@
                          <input type="text"  class="form-control"  name="immediate_delivery_text"  value="{{old('immediate_delivery_text',$store->immediate_delivery_text)}}" placeholder="">
                       </div>
                    </div>
-                   <div class="col-md-6" id="moa">
+                   <div class="col-md-6" id="moa" style="display:none;"> 
                       <div class="form-group">
                          <label class="form-label">Minimum Order Amount</label>
                          <input type="number" step="0.01"  class="form-control"  name="minimum_order_amount"  value="{{old('minium_order_amount',$store->minimum_order_amount)}}" placeholder="">
                       </div>
                    </div>
-                     <div class="col-md-6">
+                     <div class="col-md-12">
                       <div class="form-group">
                          <label class="form-label">Qrcode</label>
                          <input type="text" readonly class="form-control"  name="store_qrcode"  value="{{old('store_qrcode',$store->store_qrcode)}}" placeholder="">
@@ -236,6 +236,8 @@
                            <th>Ending(km)</th>
                            <th>Delivery Charges</th>
                            <th>Packing Charges</th>
+                           <th>Min Order<br> Amt</th>
+                           <th>Reduction<br>Percentage</th>
                          </tr>
                        </thead>
                        <tbody id="table_body">
@@ -262,6 +264,12 @@
                               </td>
                               <td>
                                 <input type="number" min="0" step="1" oninput="validity.valid||(value='');" required value="{{ $data->packing_charge }}"  id="packing_charge0" class="form-control"  name="packing_charge[]">
+                              </td>
+                              <td>
+                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');" required value="{{ $data->minimum_order_amount }}" id="minimum_order_amount0" class="form-control"  name="minimum_order_amount[]">
+                              </td>
+                              <td>
+                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');" required value="{{ $data->reduction_percentage }}"  id="reduction_percentage0" class="form-control"  name="reduction_percentage[]">
                               </td>
                               @if($loop->last)
                                <td>
@@ -300,6 +308,12 @@
                               </td>
                               <td>
                                 <input type="number" min="0" step="1" oninput="validity.valid||(value='');" required   id="packing_charge0" class="form-control"  name="packing_charge[]">
+                              </td>
+                               <td>
+                                <input type="number" min="1" step="1" oninput="validity.valid||(value='');" required value="{{ $data->minimum_order_amount}}" id="minimum_order_amount0" class="form-control"  name="minimum_order_amount[]">
+                              </td>
+                              <td>
+                                <input type="number" min="1" step="1" oninput="validity.valid||(value='');" required value="{{ $data->reduction_percentage }}"  id="reduction_percentage0" class="form-control"  name="reduction_percentage[]">
                               </td>
                              <td>
                                  <a id="r" onclick="startKMChanged(this.id,0)" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
@@ -448,12 +462,12 @@ $(document).ready(function() {
                 x++; 
                 if(x==0)
                 {
-                  $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input min="0" step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="0.0"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" min="0" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0.0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]" min="0"></td><td><input type="number" min="0" min="0" step="1" oninput="validity.valid||(value=0);" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
+                  $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input min="0" step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="0.0"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" min="0" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0.0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]" min="0"></td><td><input type="number" min="0" min="0" step="1" oninput="validity.valid||(value=0);" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="minimum_order_amount'+x+'" class="form-control"  name="minimum_order_amount[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="reduction_percentage'+x+'" class="form-control"  name="reduction_percentage[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
 
                 }
                 else
                 {
-                  $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input min="0" step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" min="0" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]" min="0"></td><td><input type="number" min="0" min="0" step="1" oninput="validity.valid||(value=0);" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
+                  $(wrapper).append(' <tr class="trClass" id="trSec'+x+'" ><td><input min="0" step="0.1" required readonly onchange="endKMChanged(this.id)"  type="number" id="start'+x+'" value="'+lastEndValuePlus+'"  class="form-control endingKm" name="start[]"></td><td class="text-center"> - </td><td class="endcls" ><input step="0.1" min="0" oninput="startKMChanged(this.id,'+x+')" required type="number" value="0"  id="end'+x+'" class="endkm form-control startingKm"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="delivery_charge'+x+'" class="form-control"  name="delivery_charge[]" min="0"></td><td><input type="number" min="0" min="0" step="1" oninput="validity.valid||(value=0);" required   id="packing_charge'+x+'" class="form-control"  name="packing_charge[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="minimum_order_amount'+x+'" class="form-control"  name="minimum_order_amount[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="reduction_percentage'+x+'" class="form-control"  name="reduction_percentage[]"></td><td><a id="r" onclick="startKMChanged(this.id,'+x+')" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a></td></tr>'); //add input box
 
                 }
                 
@@ -557,7 +571,7 @@ function findKM_(km)
      var v2 = i * 5;
      var v1 = (v2 - 4.9);
     
-      $('#table_body').append('<tr><td><input type="number" readonly step="0.1" id="start'+i+'" value="'+v1.toFixed(1)+'" class="form-control" name="start[]"></td><td class="text-center"> - </td><td><input readonly type="number" id="end'+i+'" step="0.1"  value="'+v2+'"  class="form-control"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" id="delivery_charge'+i+'" class="form-control" required name="delivery_charge[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" id="packing_charge'+i+'" required class="form-control"  name="packing_charge[]"></td></tr>');
+      $('#table_body').append('<tr><td><input type="number" readonly step="0.1" id="start'+i+'" value="'+v1.toFixed(1)+'" class="form-control" name="start[]"></td><td class="text-center"> - </td><td><input readonly type="number" id="end'+i+'" step="0.1"  value="'+v2+'"  class="form-control"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" id="delivery_charge'+i+'" class="form-control" required name="delivery_charge[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" id="packing_charge'+i+'" required class="form-control"  name="packing_charge[]"></td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="minimum_order_amount'+i+'" class="form-control"  name="minimum_order_amount[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="reduction_percentage'+i+'" class="form-control"  name="reduction_percentage[]"></td></tr>');
     }
 
     if((km % 5) > 0)
@@ -570,7 +584,7 @@ function findKM_(km)
 
       }
 
-      $('#table_body').append('<tr><td><input readonly type="number" step="0.1" id="start'+i+'" value="'+v1.toFixed(1)+'" class="form-control" name="start[]"></td><td class="text-center"> - </td><td><input readonly type="number" id="end'+i+'" step="0.1"  value="'+v4+'"  class="form-control"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" id="delivery_charge'+i+'" class="form-control" required  name="delivery_charge[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required id="packing_charge'+i+'" class="form-control"  name="packing_charge[]"></td></tr>');
+      $('#table_body').append('<tr><td><input readonly type="number" step="0.1" id="start'+i+'" value="'+v1.toFixed(1)+'" class="form-control" name="start[]"></td><td class="text-center"> - </td><td><input readonly type="number" id="end'+i+'" step="0.1"  value="'+v4+'"  class="form-control"   name="end[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" id="delivery_charge'+i+'" class="form-control" required  name="delivery_charge[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required id="packing_charge'+i+'" class="form-control"  name="packing_charge[]"></td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="minimum_order_amount'+i+'" class="form-control"  name="minimum_order_amount[]"></td><td><input type="number" min="0" step="1" oninput="validity.valid||(value=0);" required  id="reduction_percentage'+i+'" class="form-control"  name="reduction_percentage[]"></td></tr>');
     }
   //}
 }

@@ -787,7 +787,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store/product/variant/attr/add', 'StoreController@addProductVariantAttr')->name('store.add_attr_to_variant');
         Route::get('store/product/variant/list/{product_id}', 'StoreController@listProductVariant');
         Route::get('store/product/home-screen/{product_id}', 'StoreController@showInHome')->name('store.show_in_home_screen');
-
+        Route::get('store/inventory/update-inclusion/{pvid}', 'StoreController@updateInclusionstatus')->name('store.inclusion_status');
         Route::get('ajax/product-variant/attr-remove', 'StoreController@GetVarAttr_Remove');
         Route::get('ajax/product-variant/attr-count', 'StoreController@GetVarAttr_Count');
 

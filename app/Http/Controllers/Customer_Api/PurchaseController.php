@@ -3234,6 +3234,7 @@ public function addToCartTest(Request $request)
                                 'mst_store_products.is_timeslot_based_product',
                                 'mst_store_products.timeslot_start_time',
                                 'mst_store_products.timeslot_end_time',
+                                'mst_store_products.is_product_listed_by_product',
                                 'mst_store_product_varients.product_varient_id',
                                 'mst_store_product_varients.variant_name',
                                 'mst_store_product_varients.product_varient_price',
@@ -3246,6 +3247,7 @@ public function addToCartTest(Request $request)
                                 
                             )
                             ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)
+                            ->where('mst_store_products.is_product_listed_by_product','=',0)
                             ->whereNotNull('mst_store_product_varients.product_varient_price')
                             ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
                             ->first();

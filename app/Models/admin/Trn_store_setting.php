@@ -10,7 +10,7 @@ class Trn_store_setting extends Model
     protected $table = "trn_store_settings";
 
     protected $fillable = [
-    					    'store_id','service_start','service_end','delivery_charge','packing_charge'
+    					    'store_id','service_start','service_end','delivery_charge','packing_charge','minimum_order_amount','reduction_percentage'
                         ];
                                                    
     public function store()

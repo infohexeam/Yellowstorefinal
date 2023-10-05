@@ -183,7 +183,7 @@ class ProductController extends Controller
         $data = array();
         try {
 
-            if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
+            if (isset($request->product_id) && $productData = Mst_store_product::with('categories')->find($request->product_id)) {
 
                 if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                     $rvs = new Trn_RecentlyVisitedProducts;
@@ -199,7 +199,7 @@ class ProductController extends Controller
                     $rvs->save();
                 }
 
-
+                
                 $productData->product_description =   strip_tags(@$productData->product_description);
                 $productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . $productData->product_base_image;
                 $productData->rating = Helper::productRating($productData->product_id);
@@ -211,7 +211,12 @@ class ProductController extends Controller
                 $productData->variantCount = Helper::variantCount($productData->product_id);
                 $productData->isBaseVariant = Helper::isBaseVariant($productData->product_id);
                 $productData->attrCount = Helper::attrCount($productData->product_id);
+                $productData->is_only_view=0;
+                if($productData->is_product_listed_by_product==1||$productData->categories->is_product_listed_by_category==1)
+                {
+                    $productData->is_only_view=1;
 
+                }
                 $data['productdata'] = $productData;
 
                 $productVartiantdata  = Mst_store_product_varient::where('product_id', $productData->product_id)
@@ -691,7 +696,7 @@ class ProductController extends Controller
 
                 // dd($varAv);
                 if ($request->customer_id == 0) {
-                    $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                    $productData = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                         ->select(
                             'mst_store_products.product_id',
@@ -712,6 +717,7 @@ class ProductController extends Controller
                             'mst_store_products.product_type',
                             'mst_store_products.product_brand',
                             'mst_store_products.service_type',
+                            'mst_store_products.is_product_listed_by_product',
                             'mst_store_product_varients.product_varient_id',
                             'mst_store_product_varients.variant_name',
                             'mst_store_product_varients.product_varient_price',
@@ -754,7 +760,12 @@ class ProductController extends Controller
                     $productData->attrCount = Helper::attrCount($productData->product_id);
                     $productData->display_flag=$productData->display_flag;
 
+                    $productData->is_only_view=0;
+                    if($productData->is_product_listed_by_product==1||$productData->categories->is_product_listed_by_category==1)
+                    {
+                        $productData->is_only_view=1;
 
+                    }
                     $sumRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->sum('rating');
                     $countRating = Trn_ReviewsAndRating::where('product_varient_id', $productVarientId)->where('isVisible', 1)->count();
 
@@ -972,7 +983,7 @@ class ProductController extends Controller
 
 
 
-                        $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        $productData = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                             ->select(
                                 'mst_store_products.product_id',
@@ -993,6 +1004,7 @@ class ProductController extends Controller
                                 'mst_store_products.product_type',
                                 'mst_store_products.product_brand',
                                 'mst_store_products.service_type',
+                                'mst_store_products.is_product_listed_by_product',
                                 'mst_store_product_varients.product_varient_id',
                                 'mst_store_product_varients.variant_name',
                                 'mst_store_product_varients.product_varient_price',
@@ -1027,6 +1039,12 @@ class ProductController extends Controller
                         {
                             $productData->product_varient_base_image = $productData->product_base_image;
     
+                        }
+                        $productData->is_only_view=0;
+                        if($productData->is_product_listed_by_product==1||$productData->categories->is_product_listed_by_category==1)
+                        {
+                            $productData->is_only_view=1;
+
                         }
 
 
@@ -3124,7 +3142,7 @@ class ProductController extends Controller
         try {
             if (isset($request->product_varient_id) && Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('variant_status','=',1)->first()) {
                 if ($request->customer_id == 0) {
-                    $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                    $productData = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                         ->select(
                             'mst_store_products.product_id',
@@ -3145,6 +3163,7 @@ class ProductController extends Controller
                             'mst_store_products.product_type',
                             'mst_store_products.product_brand',
                             'mst_store_products.service_type',
+                            'mst_store_products.is_product_listed_by_product',
                             'mst_store_product_varients.product_varient_id',
                             'mst_store_product_varients.variant_name',
                             'mst_store_product_varients.product_varient_price',
@@ -3305,7 +3324,7 @@ class ProductController extends Controller
                         else
                             $data['feedbackAddedStatus'] = 1;
 
-                        $productData = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        $productData = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                             ->select(
                                 'mst_store_products.product_id',
@@ -3324,7 +3343,7 @@ class ProductController extends Controller
                                 'mst_store_products.show_in_home_screen',
                                 'mst_store_products.product_type',
                                 'mst_store_products.product_brand',
-                                'mst_store_products.service_type',
+                                'mst_store_products.service_type',                         
                                 'mst_store_product_varients.product_varient_id',
                                 'mst_store_product_varients.variant_name',
                                 'mst_store_product_varients.product_varient_price',
@@ -4072,7 +4091,7 @@ class ProductController extends Controller
 
 
 
-                        $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        $allProducts  = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
                             if (isset($request->sub_category_id)) {
@@ -4141,6 +4160,12 @@ class ProductController extends Controller
                                 $ratingData = $sumRating / 1;
                             } else {
                                 $ratingData = $sumRating / $countRating;
+                            }
+                            $allProduct->is_only_view=0;
+                            if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
+                            {
+                                $allProduct->is_only_view=1;
+        
                             }
 
                             $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
@@ -4445,7 +4470,7 @@ class ProductController extends Controller
 
 
 
-                            $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                            $allProducts  = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                                 ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
                             // if (isset($request->sub_category_id) && ($request->sub_category_id != 0)) {
@@ -4519,6 +4544,12 @@ class ProductController extends Controller
                                     $ratingData = $sumRating / 1;
                                 } else {
                                     $ratingData = $sumRating / $countRating;
+                                }
+                                $allProduct->is_only_view=0;
+                                if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
+                                {
+                                    $allProduct->is_only_view=1;
+            
                                 }
 
                                 $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
@@ -4856,7 +4887,7 @@ class ProductController extends Controller
                         // $data['listProducts']  = $allProductDataFinal;
 
                         
-                        $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        $allProducts  = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id');
 
                         
@@ -4896,6 +4927,12 @@ class ProductController extends Controller
                         $allProduct->cartCount=0;
                         $allProduct->cartId=0;
                         $allProduct->cartStoreId=0;
+                        $allProduct->is_only_view=0;
+                        if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
+                        {
+                            $allProduct->is_only_view=1;
+    
+                        }
                     }
 
                     $data['listProducts']  = $allProducts->where('variant_stock_count','>',0);
@@ -5130,6 +5167,12 @@ class ProductController extends Controller
                             $ratingData = $sumRating / 1;
                         } else {
                             $ratingData = $sumRating / $countRating;
+                        }
+                        $allProduct->is_only_view=0;
+                        if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
+                        {
+                            $allProduct->is_only_view=1;
+    
                         }
 
                         $allProduct->rating = number_format((float)$ratingData, 2, '.', '');
@@ -5441,7 +5484,7 @@ class ProductController extends Controller
                         $data['recentlyVisitedProducts'] = $recentlyVisitedProductsArr;
                        //Mst_store_product_varient::where()
 
-                        $allProducts  = Mst_store_product::join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
+                        $allProducts  = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                             ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
                             // ->select('mst_stores.business_type_id', 'mst_store_products.product_id', 'mst_store_products.product_type', 'mst_store_products.service_type', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_base_image', 'mst_store_products.show_in_home_screen', 'mst_store_products.product_status', 'mst_store_product_varients.product_varient_id', 'mst_store_product_varients.variant_name', 'mst_store_product_varients.product_varient_price', 'mst_store_product_varients.product_varient_offer_price', 'mst_store_product_varients.product_varient_base_image', 'mst_store_product_varients.stock_count', 'mst_store_product_varients.store_id')
                             ->where('mst_store_products.display_flag', 1)
@@ -5489,6 +5532,12 @@ class ProductController extends Controller
                             $allProduct->attrCount = Helper::varAttrCount($allProduct->product_varient_id);
                             $allProduct->cartCount=(int)$cartCount;
                             $allProduct->cartId=(int)$cartId;
+                            $allProduct->is_only_view=0;
+                            if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
+                            {
+                                $allProduct->is_only_view=1;
+        
+                            }
                         }
                         $brand_name=$request->product_brand;
                         if(isset($brand_name))
