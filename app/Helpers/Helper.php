@@ -1750,7 +1750,20 @@ public static function generateDynamicLink($store_referral_number)
      
 
     }
+public static function calculateDeliveryCharge($delivery_charge,$reduction_percentage,$min_order_amt,$order_amount)
+{
+   if($order_amount>$min_order_amt)//If order amount is grater than minimum order amount
+   {
+    $reducted_delivery_charge=$delivery_charge*($reduction_percentage/100);
+    $delivery_charge=$delivery_charge-$reducted_delivery_charge;
+    return number_format($delivery_charge,2);
+   }
+   else
+   {
+    return number_format($delivery_charge,2);
 
+   }
+}
 
 
 }

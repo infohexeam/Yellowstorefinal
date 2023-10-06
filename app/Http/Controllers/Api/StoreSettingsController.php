@@ -144,7 +144,7 @@ class StoreSettingsController extends Controller
                     $data['defaultStoreSettingsDetails']['pay_delivery_status'] = $store_data->pay_delivery_status;
                     $data['defaultStoreSettingsDetails']['collect_store_status'] = $store_data->collect_store_status;
                     $data['defaultStoreSettingsDetails']['immediate_delivery_text'] = $store_data->immediate_delivery_text;
-                    $data['defaultStoreSettingsDetails']['minimum_order_amount'] = $store_data->minimum_order_amount;
+                    $data['defaultStoreSettingsDetails']['minimum_order_amount'] = Helper::calculateDeliveryCharge("75","50","500","450");
                     $data['defaultStoreSettingsDetails']['minimum_stock_alert_status'] = $store_data->minimum_stock_alert_status;
                     $data['status'] = 1;
                     $data['message'] = "success";
@@ -271,6 +271,8 @@ class StoreSettingsController extends Controller
                         $ss->service_end = $val['service_end'];
                         $ss->delivery_charge = $val['delivery_charge'];
                         $ss->packing_charge = $val['packing_charge'];
+                        $ss->minimum_order_amount = $val['minimum_order_amount'];
+                        $ss->reduction_percentage = $val['reduction_percentage'];
                         $ss->save();
 
                         //     $data5 = [

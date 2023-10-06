@@ -2752,6 +2752,17 @@ class ProductController extends Controller
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
                     $today = Carbon::now()->toDateString();
+
+                    $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                    $data['is_delivery_available']=$flag;
+                    if($flag==1)
+                    {
+                        $data['is_only_collect_from_store']=0;
+                    }
+                    else
+                    { 
+                        $data['is_only_collect_from_store']=1;
+                    }
                    
                     $usedCoupinIds = Trn_store_order::join('mst__coupons', 'mst__coupons.coupon_id', '=', 'trn_store_orders.coupon_id')
                         ->where('mst__coupons.coupon_type', 1)
@@ -2809,6 +2820,18 @@ class ProductController extends Controller
     
                             if (isset($settingsRow->delivery_charge)) {
                                 $a->deliveryCharge = $settingsRow->delivery_charge;
+                                $a->minimumOrderAmount=$settingsRow->minimum_order_amount;
+                                $a->reductionPercentage=$settingsRow->reduction_percentage;
+                                if(isset($request->order_total))
+                                {
+                                    $a->deliveryCharge=Helper::calculateDeliveryCharge($settingsRow->delivery_charge,$settingsRow->reduction_percentage,$settingsRow->minimum_order_amount,$request->order_total);
+
+                                }
+                                if($data['is_delivery_available']==0)
+                                {
+                                    $a->deliveryCharge = '0';
+
+                                }
                             } else {
                                 $a->deliveryCharge = '0';
                             }
@@ -2924,9 +2947,23 @@ class ProductController extends Controller
                             ->first();
                         //dd($settingsRow);
                         if (isset($settingsRow->delivery_charge))
+                        {
                             $a->deliveryCharge = $settingsRow->delivery_charge;
+                            if(isset($request->order_total))
+                            {
+                                $a->deliveryCharge=Helper::calculateDeliveryCharge($settingsRow->delivery_charge,$settingsRow->reduction_percentage,$settingsRow->minimum_order_amount,$request->order_amount);
+
+                            }
+                           
+
+                        }
+                            
                         else
+                        {
                             $a->deliveryCharge = '0';
+                            
+                        }
+                            
 
                         if (isset($settingsRow->packing_charge))
                             $a->packingCharge = $settingsRow->packing_charge;
