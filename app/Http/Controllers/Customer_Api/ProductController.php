@@ -1538,11 +1538,11 @@ class ProductController extends Controller
                         }
 
                         $data['sloatDelivery'] =$filteredArray;
-                        $delivery_types=DB::table('sys_delivery_types')->where('status',1)->select('delivery_type_id','delivery_type_name')->get();
+                        $delivery_types=DB::table('sys_delivery_types')->where('status',1)->where('delivery_type_id',1)->select('delivery_type_id','delivery_type_name')->get();
                         $data['delivery_types']=$delivery_types;
                         foreach($data['delivery_types'] as $dtype )
                         {
-                            if($dtype->delivery_type_id==1)
+                            /*if($dtype->delivery_type_id==1)
                             {
                                 $dtype->delivery_type_status = $storeData->pay_delivery_status;
                                 if($data['is_delivery_available']==0)
@@ -1553,16 +1553,16 @@ class ProductController extends Controller
                             else
                             {
                                 $dtype->delivery_type_status = $storeData->collect_store_status;
-                            }
+                            }*/
                           
                         }
-                        $fArr=[];
+                       /* $fArr=[];
                         foreach ($data['delivery_types'] as $element) {
                             if ($element->delivery_type_status === "1") {
                                 $fArr[] = $element;
                             }
                         }
-                        $data['delivery_types']=$fArr;
+                        $data['delivery_types']=$fArr;*/
                         $data['immediate_delivery_text']=$storeData->immediate_delivery_text;
                         
                         $cusData =  Trn_store_customer::find($request->customer_id);
@@ -2825,11 +2825,6 @@ class ProductController extends Controller
                                 if(isset($request->order_total))
                                 {
                                     $a->deliveryCharge=Helper::calculateDeliveryCharge($settingsRow->delivery_charge,$settingsRow->reduction_percentage,$settingsRow->minimum_order_amount,$request->order_total);
-
-                                }
-                                if($data['is_delivery_available']==0)
-                                {
-                                    $a->deliveryCharge = '0';
 
                                 }
                             } else {
