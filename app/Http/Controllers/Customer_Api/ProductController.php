@@ -2751,6 +2751,7 @@ class ProductController extends Controller
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
+                    
                     $today = Carbon::now()->toDateString();
 
                     $flag=Helper::checkStoreDeliveryHours($request->store_id);
@@ -2822,6 +2823,7 @@ class ProductController extends Controller
                                 $a->deliveryCharge = $settingsRow->delivery_charge;
                                 $a->minimumOrderAmount=$settingsRow->minimum_order_amount;
                                 $a->reductionPercentage=$settingsRow->reduction_percentage;
+                                $order_total=Helper::cartTotal($request->customer_id);
                                 if(isset($request->order_total))
                                 {
                                     $a->deliveryCharge=Helper::calculateDeliveryCharge($settingsRow->delivery_charge,$settingsRow->reduction_percentage,$settingsRow->minimum_order_amount,$request->order_total);

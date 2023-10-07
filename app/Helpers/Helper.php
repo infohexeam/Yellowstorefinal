@@ -20,6 +20,7 @@ use App\Models\admin\Mst_Subadmin_Detail;
 use App\Models\admin\Trn_StoreTimeSlot;
 use App\Models\admin\Trn_ProductVariantAttribute;
 use App\Models\admin\Mst_store_product_varient;
+use App\Models\admin\Trn_Cart;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_points_redeemed;
@@ -1764,6 +1765,48 @@ public static function calculateDeliveryCharge($delivery_charge,$reduction_perce
 
    }
 }
+public static function cartTotal($customer_id)
+{
+    $cart_total=0;
+    if ($cartDatas = Trn_Cart::where('customer_id', $customer_id)->where('remove_status', 0)->get()) {
+        foreach ($cartDatas as $cartData) {
+            $cartData->productData =  Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                            ->select(
+                                'mst_store_products.product_id',
+                                'mst_store_products.product_name',
+                                'mst_store_products.product_type',
+                                'mst_store_products.service_type',
+                                'mst_store_products.product_code',
+                                'mst_store_products.product_base_image',
+                                'mst_store_products.show_in_home_screen',
+                                'mst_store_products.product_status',
+                                'mst_store_products.display_flag',
+                                'mst_store_products.is_timeslot_based_product',
+                                'mst_store_products.timeslot_start_time',
+                                'mst_store_products.timeslot_end_time',
+                                'mst_store_products.is_product_listed_by_product',
+                                'mst_store_product_varients.product_varient_id',
+                                'mst_store_product_varients.variant_name',
+                                'mst_store_product_varients.product_varient_price',
+                                'mst_store_product_varients.product_varient_offer_price',
+                                'mst_store_product_varients.product_varient_base_image',
+                                'mst_store_product_varients.stock_count',
+                                'mst_store_product_varients.store_id',
+                                'mst_store_product_varients.is_base_variant',
+                                'mst_store_product_varients.variant_status',
+                                
+                            )
+                            ->where('mst_store_product_varients.product_varient_id', $cartData->product_varient_id)
+                            ->where('mst_store_products.is_product_listed_by_product','=',0)
+                            ->whereNotNull('mst_store_product_varients.product_varient_price')
+                            ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
+                            ->first();
+            $cart_total+=$cartData->quantity*$cartData->productData->product_varient_offer_price;
 
+        }
+    }
+    return $cart_total;
+
+}
 
 }

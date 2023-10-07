@@ -192,8 +192,8 @@ class DeliveryBoyController extends Controller
                 $delivery_boy->district_id = $request->district_id;
                 $delivery_boy->town_id = $request->town_id;
                 $delivery_boy->is_registered=1;
-                $delivery_boy->latitude=$request->latitude;
-                $delivery_boy->longitude=$request->longitude;
+                //$delivery_boy->latitude=$request->latitude;
+                //$delivery_boy->longitude=$request->longitude;
                 $delivery_boy->delivery_boy_username = $request->delivery_boy_username;
                 $delivery_boy->password  = Hash::make($request->delivery_boy_password);
                 $delivery_boy->delivery_boy_status = 0;
