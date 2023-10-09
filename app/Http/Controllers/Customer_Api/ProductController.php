@@ -7390,30 +7390,52 @@ class ProductController extends Controller
     }
     public function createEnquiry(Request $request)
     {
-     $data=array();  
         try
         {
-            $enquiry=new Trn_customer_enquiry();
-            $enquiry->product_varient_id=$request->product_varient_id;
-            $enquiry->customer_id=$request->customer_id;
-            $enquiry->store_id=$request->store_id;
-            $enquiry->visited_date=date('Y-m-d');
+            $customer_id = $request->input('customer_id');
+            $product_variant_id = $request->input('product_varient_id');
+            $store_id = $request->input('store_id');
+    
+            if(!$customer_id || !$product_variant_id || !$store_id) {
+                return response(['status' => 0, 'message' => 'Invalid request parameters']);
+            }
+    
+            $enquiry = Trn_customer_enquiry::firstOrNew([
+                'customer_id' => $customer_id,
+                'product_varient_id' => $product_variant_id,
+                'visited_date' => date('Y-m-d')
+            ]);
+    
+            if ($enquiry->exists) {
+                return response(['status' => 0, 'message' => 'Enquiry limit reached. Unable to submit enquiry']);
+            }
+    
+            $enquiry->store_id = $store_id;
             $enquiry->save();
-            $data['status']=1;
-            $data['message']="Enquiry created"; 
-            return response($data);
-
-
-
-
-        }catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
+    
+            return response(['status' => 1, 'message' => 'Enquiry created']);
         }
-        
-
+        catch (\Exception $e) {
+            return response(['status' => 0, 'message' => $e->getMessage()]);
+        }
     }
+    
+
+    public function listEnquiries(Request $request)
+    {
+        try {
+            $enquiries = Trn_customer_enquiry::with(['store', 'varient'])->where('customer_id',$request->customer_id)->get();
+            // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
+    
+            $data['status'] = 1;
+            $data['message'] = "Enquiries retrieved successfully";
+            $data['enquiries'] = $enquiries;
+    
+            return response($data);
+        } catch (\Exception $e) {
+            return response(['status' => 0, 'message' => $e->getMessage()]);
+        }
+    }
+    
+    
 }

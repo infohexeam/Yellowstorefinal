@@ -28,6 +28,7 @@ use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Mst_store_link_delivery_boy;
 use App\Models\admin\Mst_SubCategory;
 use App\Models\admin\Sys_store_order_status;
+use App\Models\admin\Trn_customer_enquiry;
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
 use App\Models\admin\Trn_store_order_item;
@@ -3942,6 +3943,21 @@ class StoreController extends Controller
             $response = ['status' => '0', 'message' => $e->getMessage()];
 
             return response($response);
+        }
+    }
+    public function listEnquiries(Request $request)
+    {
+        try {
+            $enquiries = Trn_customer_enquiry::with(['customer', 'varient'])->where('store_id',$request->store_id)->get();
+            // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
+    
+            $data['status'] = 1;
+            $data['message'] = "Enquiries retrieved successfully";
+            $data['enquiries'] = $enquiries;
+    
+            return response($data);
+        } catch (\Exception $e) {
+            return response(['status' => 0, 'message' => $e->getMessage()]);
         }
     }
 

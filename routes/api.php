@@ -229,6 +229,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::post('working-days/update', 'Api\StoreSettingsController@updateWorkingDays');
    //STORE REFERRALS
    Route::get('store-level-referrals', 'Api\StoreController@getStoreReferrals');
+   Route::get('list-enquiries', 'Api\StoreController@listEnquiries');
  
     //STORE PROFILE
     Route::get('store-info/list', 'Api\StoreSettingsController@listStoreInfo');
@@ -463,6 +464,7 @@ Route::get('customer/address-coupon-list', 'Customer_Api\ProductController@listC
 Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
 Route::get('customer/check-delivery-hours', 'Customer_Api\ProductController@checkDeliveryHours');
 Route::post('customer/create-enquiry', 'Customer_Api\ProductController@createEnquiry');
+Route::get('customer/list-enquiries', 'Customer_Api\ProductController@listEnquiries');
 //Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');

@@ -9,7 +9,7 @@ class Trn_customer_enquiry extends Model
     protected $table="trn_customer_enquiry";
     
     protected $primaryKey = "enquiry_id";
-
+   protected $fillable=['customer_id','product_varient_id','visited_date','store_id'];
     public $timestamps=true;
 
  public function customer()
