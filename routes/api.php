@@ -462,7 +462,7 @@ Route::get('customer/store-wallet-transactions', 'Customer_Api\ProductController
 Route::get('customer/address-coupon-list', 'Customer_Api\ProductController@listCouponAndAddress');
 Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
 Route::get('customer/check-delivery-hours', 'Customer_Api\ProductController@checkDeliveryHours');
-
+Route::post('customer/create-enquiry', 'Customer_Api\ProductController@createEnquiry');
 //Route::get('customer/checkout-page', 'Customer_Api\ProductController@checkOutPage');
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');
 //Route::get('customer/reduce-reward-point', 'Customer_Api\PurchaseController@reduceRewardPoint');

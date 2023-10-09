@@ -61,6 +61,7 @@ use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_CustomerFeedback;
 use App\Models\admin\Trn_RecentlyVisitedProductCategory;
 use App\Models\admin\Mst_FeedbackQuestion;
+use App\Models\admin\Trn_customer_enquiry;
 use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreAdmin;
@@ -4026,7 +4027,10 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.is_base_variant', 1)
-                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                            ->where('mst_store_products.show_in_home_screen', 1)
+                            ->inRandomOrder()
+                            ->limit(20)
+                            ->get();
                         $productDataFinal = array();
                         foreach ($productData as $offerProduct) {
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -4440,7 +4444,10 @@ class ProductController extends Controller
                                 ->where('mst_store_product_varients.is_removed', 0)
                                 ->where('mst_store_products.is_removed', 0)
                                 ->where('mst_store_product_varients.is_base_variant', 1)
-                                ->where('mst_store_products.show_in_home_screen', 1)->get();
+                                ->where('mst_store_products.show_in_home_screen', 1)
+                                ->inRandomOrder()
+                                ->limit(20)
+                                ->get();
                             $productDataFinal = array();
                             foreach ($productData as $offerProduct) {
                                 $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -4825,7 +4832,10 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.is_base_variant', 1)
-                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                            ->where('mst_store_products.show_in_home_screen', 1)
+                            ->inRandomOrder()
+                            ->limit(20)
+                            ->get();
                         $productDataFinal = array();
                         foreach ($productData as $offerProduct) {
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -5101,7 +5111,10 @@ class ProductController extends Controller
                         ->where('mst_store_products.is_removed', 0)
 
                         ->where('mst_store_product_varients.is_base_variant', 1)
-                        ->where('mst_store_products.show_in_home_screen', 1)->get();
+                        ->where('mst_store_products.show_in_home_screen', 1)
+                        ->inRandomOrder()
+                        ->limit(20)
+                        ->get();
 
                     foreach ($data['offerProducts'] as $offerProduct) {
                         $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -5407,7 +5420,10 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
-                            ->where('mst_store_products.show_in_home_screen', 1)->get();
+                            ->where('mst_store_products.show_in_home_screen', 1)
+                            ->inRandomOrder()
+                            ->limit(20)
+                            ->get();
 
                         foreach ($data['offerProducts'] as $offerProduct) {
                             $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -5688,7 +5704,8 @@ class ProductController extends Controller
                             $countRating = Trn_ReviewsAndRating::where('product_varient_id', $offerProduct->product_varient_id)->where('isVisible', 1)->count();
                             if ($countRating == 0) {
                                 $ratingData = $sumRating / 1;
-                            } else {
+                            } 
+                            else {
                                 $ratingData = $sumRating / $countRating;
                             }
                             $offerProduct->rating = number_format((float)$ratingData, 2, '.', '');
@@ -5761,7 +5778,10 @@ class ProductController extends Controller
                     ->where('mst_store_products.is_removed', 0)
                     ->where('mst_store_product_varients.is_base_variant', 1)
                     ->where('mst_store_product_varients.variant_status', 1)
-                    ->where('mst_store_products.show_in_home_screen', 1)->get();
+                    ->where('mst_store_products.show_in_home_screen', 1)
+                    ->inRandomOrder()
+                    ->limit(20)
+                    ->get();
                 $productDataFinal = array();
                 foreach ($productData as $offerProduct) {
                     $offerProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $offerProduct->product_base_image;
@@ -6086,7 +6106,7 @@ class ProductController extends Controller
                         $productData = $productData->orderBy('distance');
                     }
 
-                    $productData = $productData->get();
+                    $productData = $productData->inRandomOrder()->limit(20)->get();
 
                     $productDataFinal = array();
 
@@ -7367,5 +7387,33 @@ class ProductController extends Controller
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
         }
+    }
+    public function createEnquiry(Request $request)
+    {
+     $data=array();  
+        try
+        {
+            $enquiry=new Trn_customer_enquiry();
+            $enquiry->product_varient_id=$request->product_varient_id;
+            $enquiry->customer_id=$request->customer_id;
+            $enquiry->store_id=$request->store_id;
+            $enquiry->visited_date=date('Y-m-d');
+            $enquiry->save();
+            $data['status']=1;
+            $data['message']="Enquiry created"; 
+            return response($data);
+
+
+
+
+        }catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+        
+
     }
 }

@@ -1966,7 +1966,8 @@ class ProductController extends Controller
                             'display_flag',
                             'is_timeslot_based_product',
                             'timeslot_start_time',
-                            'timeslot_end_time'
+                            'timeslot_end_time',
+                            'is_product_listed_by_product'
                         )
                         ->first()
                     ) {
@@ -2194,7 +2195,7 @@ class ProductController extends Controller
 
                 if (!$validator->fails()) {
 
-                    if(is_null($request->is_product_listed))
+                    if(is_null($request->is_product_listed)||$request->is_product_listed==0)
                     {
                         $product_listed=0;
             
