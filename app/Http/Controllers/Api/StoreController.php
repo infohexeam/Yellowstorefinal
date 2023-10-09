@@ -3948,12 +3948,16 @@ class StoreController extends Controller
     public function listEnquiries(Request $request)
     {
         try {
-            $enquiries = Trn_customer_enquiry::with(['customer', 'varient'])->where('store_id',$request->store_id)->get();
+            $enquiries = Trn_customer_enquiry::with(['customer', 'varient'])->where('store_id',$request->store_id);
             // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
     
             $data['status'] = 1;
             $data['message'] = "Enquiries retrieved successfully";
-            $data['enquiries'] = $enquiries;
+            if (isset($request->page)) {
+                $data['enquiries'] = $enquiries->paginate(10, ['*'], 'page', $request->page);
+            } else {
+                $data['enquiries'] = $enquiries->paginate(10);
+            }
     
             return response($data);
         } catch (\Exception $e) {
