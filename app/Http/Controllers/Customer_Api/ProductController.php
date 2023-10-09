@@ -7412,8 +7412,11 @@ class ProductController extends Controller
     
             $enquiry->store_id = $store_id;
             $enquiry->save();
+
+            $store=Mst_store::find($store_id);
+
     
-            return response(['status' => 1, 'message' => 'Enquiry created']);
+            return response(['status' => 1, 'message' => 'Enquiry created','store_mobile'=>$store->store_mobile,'store_contact_person_number'=>$store->store_contact_person_phone_number]);
         }
         catch (\Exception $e) {
             return response(['status' => 0, 'message' => $e->getMessage()]);
