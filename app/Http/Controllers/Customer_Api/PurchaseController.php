@@ -3197,14 +3197,9 @@ public function addToCartTest(Request $request)
                     {
                         $flag=Helper::checkStoreDeliveryHours($firstCartData->store_id);
                         $data['is_delivery_available']=$flag;
-                        if($flag==1)
-                        {
-                            $data['is_only_collect_from_store']=0;
-                        }
-                        else
-                        { 
-                            $data['is_only_collect_from_store']=1;
-                        }
+                        $st=Mst_store::where('store_id',$firstCartData->store_id)->first();                   
+                        $data['is_only_collect_from_store']=$st->collect_store_status;                      
+                        //$data['is_only_collect_from_store']=1;   
                         $data['store_id']=$firstCartData->store_id;
                     }
                }

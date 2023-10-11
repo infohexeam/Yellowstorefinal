@@ -1,7 +1,25 @@
 @extends('store.layouts.app')
 @section('content')
 
+ <style>
+        .info-text {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1;
+            width: 300px;
+        }
+        
+        .fa-info-circle:hover + .info-text {
+            display: block;
+        }
+    </style>
+    <div class="info-text">
 
+  Percentage of the amount that shall be reduced from the delivery charge if the minimum order value is satisfied by the customer
+</div>
 <div class="container">
    <div class="row">
       <div class="col-md-12">
@@ -237,7 +255,7 @@
                            <th>Delivery Charges</th>
                            <th>Packing Charges</th>
                            <th>Min Order<br> Amt</th>
-                           <th>Reduction<br>Percentage</th>
+                           <th>Reduction<br>Percentage<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Percentage of the amount that shall be reduced from the delivery charge if the minimum order value is satisfied by the customer"></i></th>
                          </tr>
                        </thead>
                        <tbody id="table_body">
@@ -326,8 +344,10 @@
                        </tbody>
                      </table>
 
-                   
+                  
                     <div class="col-md-12">
+                   
+
                       <div class="form-group">
                         <center>
                                 <a id="addDoc" class="text-white mb-2 btn btn-block btn-gray">Add Row</a>
