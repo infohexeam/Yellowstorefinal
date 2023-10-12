@@ -1649,6 +1649,18 @@ class StoreController extends Controller
 
                 $data['online_status'] = $statusStore->online_status;
                 $data['status'] = 1;
+                $products=Helper::minimumStockProducts($request->store_id);
+                $minStockProducts=$products->map(function($data){
+                    $var=Mst_store_product_varient::where('product_varient_id',$data['product_varient_id'])->first();
+        
+                    $product['product_name']=$data['variant_name'];
+                    $product['prodcut_id']=$data['product_id'];
+                    $product['product_varient_id']=$data['product_varient_id'];
+                    $product['stock_count']=$var['stock_count'];
+                    $product['minimum_stock']=$data['min_stock']??0;
+                    return $product;
+            });
+                $data['minimumStockProducts']=$minStockProducts;
                 $data['message'] = "Success";
             } else {
                 $data['status'] = 0;

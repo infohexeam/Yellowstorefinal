@@ -843,6 +843,12 @@ class OrderController extends Controller
             $delivery_boy =Mst_delivery_boy::Find($dbid);
             if($delivery_boy)
             {
+                $delivery_boy->country_name=DB::table('sys_countries')->where('country_id',$delivery_boy->country_id)->first()->country_name;
+                $delivery_boy->state_name=DB::table('sys_states')->where('state_id',$delivery_boy->state_id)->first()->state_name;
+                $delivery_boy->district_name=DB::table('mst_districts')->where('district_id',$delivery_boy->district_id)->first()->district_name;
+                $delivery_boy->vechicle_type_name=DB::table('sys_vehicle_types')->where('vehicle_type_id',$delivery_boy->vehicle_type_id)->first()->vehicle_type_name;
+                $destinationPath = 'assets/uploads/delivery_boy/images';
+                $delivery_boy->delivery_boy_image_path=$destinationPath;
                 $data['details']  =$delivery_boy; 
                 $data['status']=1;
                 $data['message']="Details fetched";

@@ -89,13 +89,13 @@ use App\User;
                               <tbody class="col-lg-12 col-xl-6 p-0">
 
                                  <tr>
-                                    <td><strong>Country :</strong>{{ $delivery_boy->country['country_name']}}</td>
+                                    <td><strong>Country :</strong>{{ @$delivery_boy->country['country_name']}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>State :</strong> {{ $delivery_boy->state['state_name']}}</td>
+                                    <td><strong>State :</strong> {{ @$delivery_boy->state['state_name']}}</td>
                                  </tr>
                                  <tr>
-                                    <td><strong>District :</strong> {{ $delivery_boy->district['district_name']}}</td>
+                                    <td><strong>District :</strong> {{ @$delivery_boy->district['district_name']}}</td>
                                  </tr>
                                   <tr>
                                   @php

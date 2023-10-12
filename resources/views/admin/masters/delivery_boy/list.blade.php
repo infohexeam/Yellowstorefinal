@@ -153,7 +153,7 @@
 
                                           @csrf
                                           @method('POST')
-                                          <button @if($delivery_boy->is_added_by_store==1) disabled @endif type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
+                                          <button  type="submit" onclick="return confirm('Do you want to Change status?');" class="btn btn-sm
                                           @if($delivery_boy->delivery_boy_status == 0) btn-danger @else btn-success @endif"> @if($delivery_boy->delivery_boy_status == 0)
                                           Inactive
                                           @else
