@@ -151,7 +151,7 @@
                    <label class="form-group custom-switch">
                    Pay After Delivery
                          
-														<input type="checkbox" name="pay_delivery_status" @if ($store->pay_delivery_status == 1) checked @endif    class="custom-switch-input">
+														<input type="checkbox" name="pay_delivery_status" checked disabled    class="custom-switch-input" readonly>
 														<span class="custom-switch-indicator"></span>
 														<span class="custom-switch-description"></span>
 													</label>

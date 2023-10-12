@@ -4568,7 +4568,7 @@ class StoreController extends Controller
     }
     if(is_null($request->pay_delivery_status))
     {
-       $pad=0;
+       $pad=1;
     }
     else
     {
