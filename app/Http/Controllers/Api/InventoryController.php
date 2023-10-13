@@ -84,7 +84,7 @@ class InventoryController extends Controller
                                     'mst_store_product_varients.product_varient_offer_price',
                                     'mst_store_product_varients.product_varient_base_image',
                                     'mst_store_product_varients.stock_count',
-                                    'mst_store_product.min_stock',
+                                    'mst_store_products.min_stock',
                                     'mst_store_product_varients.included_in_low_stock_alert',
                                     'mst_store_categories.category_id',
                                     'mst_store_categories.category_name'
