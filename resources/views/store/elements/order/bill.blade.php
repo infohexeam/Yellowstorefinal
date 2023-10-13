@@ -85,6 +85,7 @@
           <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right"> 
               <div>
                   <br>
+                  @if($order->is_collect_from_store!=1)
                   @if (isset($order->delivery_address))
                     @php 
                      $cAddr =  \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
@@ -118,6 +119,12 @@
                 Pincode: {{$order->customer['customer_pincode']}}<br>
                 Phone: {{@$order->customer['customer_mobile_number']}}<br>
                   @endif
+                @else
+                  {{@$order->customer['customer_first_name']}} {{@$order->customer['customer_last_name']??''}} <br>
+                Pincode: {{$order->customer['customer_pincode']}}<br>
+                Phone: {{@$order->customer['customer_mobile_number']}}<br>
+
+                @endif
                
                
               </div>
