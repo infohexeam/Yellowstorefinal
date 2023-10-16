@@ -2804,6 +2804,10 @@ class ProductController extends Controller
                                 $serVdata=$serVdata*1000;
                                 if ($dist < $serVdata) {
                                     $a->storeAvailabilityStatus = 1;
+                                    if($dist=="")
+                                    {
+                                        $a->storeAvailabilityStatus = 0;
+                                    }
                                 } else {
                                     $a->storeAvailabilityStatus = 0;
                                 }
