@@ -2843,7 +2843,7 @@ class ProductController extends Controller
                         } else {
                             $a->storeAvailabilityStatus = 0;
                         }
-                        if($dist=""||$dist_with_units=="")
+                        if($dist=="")
                         {
                             $a->distance ="0";
                             $a->dist_with_units="0";
