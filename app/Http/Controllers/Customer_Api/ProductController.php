@@ -2807,9 +2807,12 @@ class ProductController extends Controller
                                     if($dist=="")
                                     {
                                         $a->storeAvailabilityStatus = 0;
+                                        $dist=0;
+                                        $dist_with_units=0;
                                     }
                                 } else {
                                     $a->storeAvailabilityStatus = 0;
+                                    
                                 }
                             } else {
                                 $a->storeAvailabilityStatus = 0;
