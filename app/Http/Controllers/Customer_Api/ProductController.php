@@ -2821,6 +2821,7 @@ class ProductController extends Controller
                             ->first();
     
                             if (isset($settingsRow->delivery_charge)) {
+                                $a->actualDeliveryCharge = $settingsRow->delivery_charge;
                                 $a->deliveryCharge = $settingsRow->delivery_charge;
                                 $a->minimumOrderAmount=$settingsRow->minimum_order_amount;
                                 $a->reductionPercentage=$settingsRow->reduction_percentage;
@@ -2831,6 +2832,7 @@ class ProductController extends Controller
 
                                 }
                             } else {
+                                $a->actualDeliveryCharge = '0';
                                 $a->deliveryCharge = '0';
                             }
     
