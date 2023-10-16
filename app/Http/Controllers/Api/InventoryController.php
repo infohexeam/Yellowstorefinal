@@ -58,37 +58,38 @@ class InventoryController extends Controller
                     if ($request->category_id == 0  ||   Mst_categories::find($request->category_id)) {
                        
                         if ($request->category_id == 0) {
-                            if ($inventoryData  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-                                ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-                                ->where('mst_store_products.store_id', $request->store_id)
-                                ->where('mst_store_products.is_removed', 0)
-                                ->where('mst_store_categories.category_status', 1)
-                                ->where('mst_store_product_varients.is_removed', 0)
-                                ->where('mst_store_products.product_type', 1)
-                                ->where('mst_store_product_varients.variant_name', 'LIKE', '%' . $request->product_name . '%')
-                                //->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")
-                                // ->orhere('mst_store_product_varients.variant_name', 'LIKE', "%{$request->product_name}%")
-                                ->orderBy('mst_store_product_varients.stock_count', 'ASC')
-                                ->select(
-                                    'mst_store_products.product_id',
-                                    'mst_store_products.product_name',
-                                    'mst_store_products.product_code',
-                                    'mst_store_products.product_cat_id',
-                                    'mst_store_products.product_base_image',
-                                    'mst_store_products.product_status',
-                                    'mst_store_products.product_brand',
-                                    'mst_store_products.tax_id',
-                                    'mst_store_product_varients.product_varient_id',
-                                    'mst_store_product_varients.variant_name',
-                                    'mst_store_product_varients.product_varient_price',
-                                    'mst_store_product_varients.product_varient_offer_price',
-                                    'mst_store_product_varients.product_varient_base_image',
-                                    'mst_store_product_varients.stock_count',
-                                    'mst_store_products.stock_count as minimum_stock',
-                                    'mst_store_product_varients.included_in_low_stock_alert',
-                                    'mst_store_categories.category_id',
-                                    'mst_store_categories.category_name'
-                                )->get()
+                            if ($inventoryData = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+                            ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+                            ->where('mst_store_products.store_id', $request->store_id)
+                            ->where('mst_store_products.is_removed', 0)
+                            ->where('mst_store_categories.category_status', 1)
+                            ->where('mst_store_product_varients.is_removed', 0)
+                            ->where('mst_store_products.product_type', 1)
+                            ->where('mst_store_product_varients.variant_name', 'LIKE', '%' . $request->product_name . '%')
+                            ->select(
+                                'mst_store_products.product_id',
+                                'mst_store_products.product_name',
+                                'mst_store_products.product_code',
+                                'mst_store_products.product_cat_id',
+                                'mst_store_products.product_base_image',
+                                'mst_store_products.product_status',
+                                'mst_store_products.product_brand',
+                                'mst_store_products.tax_id',
+                                'mst_store_product_varients.product_varient_id',
+                                'mst_store_product_varients.variant_name',
+                                'mst_store_product_varients.product_varient_price',
+                                'mst_store_product_varients.product_varient_offer_price',
+                                'mst_store_product_varients.product_varient_base_image',
+                                'mst_store_product_varients.stock_count',
+                                'mst_store_products.stock_count as minimum_stock',
+                                'mst_store_product_varients.included_in_low_stock_alert',
+                                'mst_store_categories.category_id',
+                                'mst_store_categories.category_name'
+                            )
+                            ->orderByRaw('CASE WHEN mst_store_product_varients.stock_count <= mst_store_products.stock_count THEN 0 ELSE 1 END')
+                            ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+                            ->get()
+                        
                             ) {    
                                 foreach ($inventoryData as $product) {
                                     $product->less_or_equal_min_stock=0;
@@ -138,6 +139,7 @@ class InventoryController extends Controller
                                     'mst_store_products.product_code',
                                     'mst_store_products.product_cat_id',
                                     //'mst_store_products.tax_id',
+                                    'mst_store_products.stock_count as minimum_stock',
                                     'mst_store_products.product_base_image',
                                     'mst_store_products.product_status',
                                     'mst_store_products.product_brand',
@@ -174,7 +176,8 @@ class InventoryController extends Controller
 
 
 
-                                $data['productDetails'] = $query->orderBy('mst_store_product_varients.updated_at', 'DESC')->get();
+                                $data['productDetails'] = $query->orderByRaw('CASE WHEN mst_store_product_varients.stock_count <= mst_store_products.stock_count THEN 0 ELSE 1 END')
+                                ->orderBy('mst_store_product_varients.stock_count', 'ASC')->get();
 
                                 foreach ($data['productDetails'] as $product) {
                                     $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
