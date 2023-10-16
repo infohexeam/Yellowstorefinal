@@ -86,7 +86,7 @@ class InventoryController extends Controller
                                 'mst_store_categories.category_id',
                                 'mst_store_categories.category_name'
                             )
-                            ->orderByRaw('CASE WHEN mst_store_product_varients.stock_count <= mst_store_products.stock_count THEN 0 ELSE 1 END')
+                            ->orderByRaw('mst_store_product_varients.included_in_low_stock_alert DESC,CASE WHEN mst_store_product_varients.stock_count <= mst_store_products.stock_count THEN 0 ELSE 1 END')
                             ->orderBy('mst_store_product_varients.stock_count', 'ASC')
                             ->get()
                         
@@ -176,7 +176,7 @@ class InventoryController extends Controller
 
 
 
-                                $data['productDetails'] = $query->orderByRaw('CASE WHEN mst_store_product_varients.stock_count <= mst_store_products.stock_count THEN 0 ELSE 1 END')
+                                $data['productDetails'] = $query->orderByRaw('mst_store_product_varients.included_in_low_stock_alert DESC,CASE WHEN mst_store_product_varients.stock_count <= mst_store_products.stock_count THEN 0 ELSE 1 END')
                                 ->orderBy('mst_store_product_varients.stock_count', 'ASC')->get();
 
                                 foreach ($data['productDetails'] as $product) {
