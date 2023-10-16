@@ -2853,6 +2853,12 @@ class ProductController extends Controller
                             $a->packingCharge = "0";
 
                         }
+                        else
+                        {
+                            $a->distance =$dist;
+                            $a->dist_with_units=$dist_with_units;
+
+                        }
                         $a->stateData = @$a->stateFunction['state_name'];
                         $a->districtData = @$a->districtFunction['district_name'];
                     }
