@@ -84,15 +84,15 @@ class InventoryController extends Controller
                                     'mst_store_product_varients.product_varient_offer_price',
                                     'mst_store_product_varients.product_varient_base_image',
                                     'mst_store_product_varients.stock_count',
-                                    'mst_store_products.min_stock',
+                                    'mst_store_products.stock_count as minimum_stock',
                                     'mst_store_product_varients.included_in_low_stock_alert',
                                     'mst_store_categories.category_id',
                                     'mst_store_categories.category_name'
                                 )->get()
-                            ) {
+                            ) {    
                                 foreach ($inventoryData as $product) {
                                     $product->less_or_equal_min_stock=0;
-                                    if($product->stock_count<=$product->min_stock)
+                                    if($product->stock_count<=$product->minimum_stock)
                                     {
                                         $product->less_or_equal_min_stock=1;
 

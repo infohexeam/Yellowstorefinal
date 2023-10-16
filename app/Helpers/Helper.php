@@ -1743,7 +1743,7 @@ public static function generateDynamicLink($store_referral_number)
       ->orderBy('mst_store_product_varients.stock_count', 'ASC')
       ->where('mst_store_product_varients.is_removed', 0)
       ->where('mst_store_product_varients.included_in_low_stock_alert',1)
-      ->whereColumn('mst_store_product_varients.stock_count','<=','mst_store_products.min_stock')
+      ->whereColumn('mst_store_product_varients.stock_count','<=','mst_store_products.stock_count')
       ->get();
 
       return $min_stock_products;

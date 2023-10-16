@@ -237,7 +237,7 @@ class StoreController extends Controller
 
       $product['product_name']=$data['variant_name'];
       $product['stock_count']=$var['stock_count'];
-      $product['minimum_stock']=$data['min_stock']??0;
+      $product['minimum_stock']=$data['stock_count']??0;
       return $product;
 
 
@@ -1812,7 +1812,7 @@ class StoreController extends Controller
 
       $product['product_name_slug']      = Str::of($request->product_name)->slug('-');
       $product['store_id']               = $store_id;
-
+      //$request->min_stock=1111;
       if ($request['min_stock'] == 0) {
         $product['stock_status'] = 0;
       } else {

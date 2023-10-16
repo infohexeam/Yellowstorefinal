@@ -1556,7 +1556,7 @@ class StoreController extends Controller
                     $product['prodcut_id']=$data['product_id'];
                     $product['product_varient_id']=$data['product_varient_id'];
                     $product['stock_count']=$var['stock_count'];
-                    $product['minimum_stock']=$data['min_stock']??0;
+                    $product['minimum_stock']=$data['stock_count']??0;
                     return $product;
             });
                 $data['minimumStockProducts']=$minStockProducts;
@@ -1669,7 +1669,7 @@ class StoreController extends Controller
                     $product['prodcut_id']=$data['product_id'];
                     $product['product_varient_id']=$data['product_varient_id'];
                     $product['stock_count']=$var['stock_count'];
-                    $product['minimum_stock']=$data['min_stock']??0;
+                    $product['minimum_stock']=$data['stock_count']??0;
                     return $product;
             });
                 $data['minimumStockProducts']=$minStockProducts;

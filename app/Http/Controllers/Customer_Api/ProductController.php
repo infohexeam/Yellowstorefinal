@@ -2867,7 +2867,28 @@ class ProductController extends Controller
             return response($response);
         }
     }
-    
+    public function listOnlyAddress(Request $request)
+    {
+        $data=array();
+        try{
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
+                $data['status']=1;
+                $data['message']="Address Fetched";
+                $data['addressList']  = $addressList;
+                return response($data);
+                
+            }
+
+        }catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+
+    }
 
     public function listCouponAndAddress2(Request $request)
     {

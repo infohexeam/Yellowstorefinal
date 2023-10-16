@@ -2223,7 +2223,7 @@ class ProductController extends Controller
                             $product->product_price_offer    = $request->sale_price;
                             $product->tax_id                 = $request->tax_id; // new
     
-                            $product->stock_count                 = $request->min_stock; // stock count
+                            $product->stock_count                 = $request->stock_count; // stock count
                             $product->product_code           = $request->product_code;
                             $product->product_type       = $request->product_type; // product type
                             $product->service_type       = $request->service_type; // new type
