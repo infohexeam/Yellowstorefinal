@@ -2811,8 +2811,8 @@ class ProductController extends Controller
                                 $a->storeAvailabilityStatus = 0;
                             }
                             $a->service_area=$serVdata;
-                            
-
+                            $a->distance =$dist;
+                            $a->dist_with_units=$dist_with_units;
                              //Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
     
                             $settingsRow = Trn_store_setting::where('store_id', $request->store_id)
@@ -2821,7 +2821,6 @@ class ProductController extends Controller
                             ->first();
     
                             if (isset($settingsRow->delivery_charge)) {
-                                $a->actualDeliveryCharge=$settingsRow->delivery_charge;
                                 $a->deliveryCharge = $settingsRow->delivery_charge;
                                 $a->minimumOrderAmount=$settingsRow->minimum_order_amount;
                                 $a->reductionPercentage=$settingsRow->reduction_percentage;
@@ -2843,20 +2842,7 @@ class ProductController extends Controller
                         } else {
                             $a->storeAvailabilityStatus = 0;
                         }
-                        if($dist=="")
-                        {
-                            $a->distance ="0";
-                            $a->dist_with_units="0";
-                            $a->storeAvailabilityStatus = 0;
-                          
-
-                        }
-                        else
-                        {
-                            $a->distance =$dist;
-                            $a->dist_with_units=$dist_with_units;
-
-                        }
+    
                         $a->stateData = @$a->stateFunction['state_name'];
                         $a->districtData = @$a->districtFunction['district_name'];
                     }
