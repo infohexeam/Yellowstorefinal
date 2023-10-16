@@ -2845,12 +2845,12 @@ class ProductController extends Controller
                         }
                         if($dist=""||$dist_with_units=="")
                         {
-                            $a->distance =0;
-                            $a->dist_with_units=0;
+                            $a->distance ="0";
+                            $a->dist_with_units="0";
                             $a->storeAvailabilityStatus = 0;
-                            $a->actualDeliveryCharge=0;
-                            $a->deliveryCharge = 0;
-                            $a->packingCharge = 0;
+                            $a->actualDeliveryCharge="0";
+                            $a->deliveryCharge = "0";
+                            $a->packingCharge = "0";
 
                         }
                         $a->stateData = @$a->stateFunction['state_name'];
