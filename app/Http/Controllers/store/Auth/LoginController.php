@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -116,6 +117,19 @@ class LoginController extends Controller
             $admin->last_active_at=Carbon::now();
             $admin->login_will_expire_at=Carbon::now()->addHour();
             $admin->update();
+
+            $userIpAddress = $request->ip();
+            $userType = 'store'; // You may need to customize this based on your application's logic
+            $storeId = $admin->store_id; // You may need to set a specific store ID based on your application
+    
+            DB::table('trn_user_logs')->insert([
+                'user_ip_address' => $userIpAddress,
+                'user_type' => $userType,
+                'store_id' => $storeId,
+                'store_admin_id' => $admin->store_admin_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             return $this->sendLoginResponse($request);
         }

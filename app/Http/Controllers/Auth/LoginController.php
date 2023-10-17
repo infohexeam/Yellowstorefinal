@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 
@@ -100,6 +101,17 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
+            $userIpAddress = $request->ip();
+            $userType = 'admin'; // You may need to customize this based on your application's logic
+            $storeId = null; // You may need to set a specific store ID based on your application
+    
+            DB::table('trn_user_logs')->insert([
+                'user_ip_address' => $userIpAddress,
+                'user_type' => $userType,
+                'store_id' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             return $this->sendLoginResponse($request);
         }
 
