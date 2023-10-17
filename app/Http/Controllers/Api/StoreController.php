@@ -33,9 +33,7 @@ use App\Models\admin\Trn_OrderSplitPayments;
 use App\Models\admin\Trn_store_order_item;
 use File;
 use App\User;
-
-
-
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class StoreController extends Controller
 {
@@ -1079,6 +1077,19 @@ class StoreController extends Controller
                                 $divTok = $divTok - 1;
                                 if ($divTok > 0) {
                                     $data['login_status '] = 1;
+                                    $userIpAddress = $request->ip();
+                                    $userType = 'store'; // You may need to customize this based on your application's logic
+                                    $storeId = $custCheck->store_id; // You may need to set a specific store ID based on your application
+                            
+                                    DB::table('trn_user_logs')->insert([
+                                        'user_ip_address' => $userIpAddress,
+                                        'user_type' => $userType,
+                                        'store_id' => $storeId,
+                                        'store_admin_id' => $custCheck->store_admin_id,
+                                        'created_at' => now(),
+                                        'updated_at' => now(),
+                                    ]);
+                                    
                                 } else {
                                     $data['login_status '] = 0;
                                 }
