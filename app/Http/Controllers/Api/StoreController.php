@@ -792,6 +792,19 @@ class StoreController extends Controller
                             if ($custCheck->store_otp_verify_status != 0) {
                                 $data['status'] = 1;
                                 $data['message'] = "Success";
+                                $data['login_status '] = 1;
+                                    $userIpAddress = $request->ip();
+                                    $userType = 'store'; // You may need to customize this based on your application's logic
+                                    $storeId = $custCheck->store_id; // You may need to set a specific store ID based on your application
+                            
+                                    DB::table('trn_user_logs')->insert([
+                                        'user_ip_address' => $userIpAddress,
+                                        'user_type' => $userType,
+                                        'store_id' => $storeId,
+                                        'store_admin_id' => $custCheck->store_admin_id,
+                                        'created_at' => now(),
+                                        'updated_at' => now(),
+                                    ]);
 
                                 $storeData = Mst_store::find($custCheck->store_id);
 
