@@ -109,8 +109,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/town-name-list', 'ProductController@listTownNames');
         Route::get('admin/product-name-list', 'ProductController@listProductNames');
         Route::get('admin/sub-category-list', 'ProductController@listSubCategoryNames');
-
-
+        Route::get('admin/user-log-list', 'MasterController@listUserLogs');
+      
 
         Route::get('admin/categories/list', 'SettingController@listCategory')->name('admin.list_category');
         Route::get('admin/categories/create', 'SettingController@createCategory')->name('admin.create_category');
@@ -867,7 +867,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/settings', 'StoreController@settings')->name('store.settings');
         Route::post('store/settings/update', 'StoreController@updateStoreSettings')->name('store.update_store_settings');
 
-
+        //store user logs 
+        Route::get('store/user-logs-list', 'StoreController@listUserLogs')->name('store.list_user_logs');
         //store_admins
 
         Route::get('store/admin/list', 'StoreController@listStoreAdmin')->name('store.store_admin');

@@ -32,6 +32,7 @@ use App\Models\admin\State;
 use App\Models\admin\District;
 use App\Models\admin\Town;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class MasterController extends Controller
 {
@@ -751,6 +752,13 @@ class MasterController extends Controller
 
         return redirect()->back()->with('status','Deleted successfully.');
     
+    }
+    public function listUserLogs()
+    {
+        $pageTitle="User Logs";
+        $user_logs=DB::table('trn_user_logs')->orderBy('trn_user_logs.created_at','DESC')->get();
+                   //dd($user_logs);
+        return view('admin.masters.user_logs.list',compact('user_logs','pageTitle'));
     }
 
     

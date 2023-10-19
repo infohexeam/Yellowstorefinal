@@ -6794,5 +6794,14 @@ public function showInHome(Request $request, $product_id)
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
   }
+
+  public function listUserLogs()
+    {
+        $pageTitle="User Logs";
+        $store_id  = Auth::guard('store')->user()->store_id;
+        $user_logs=DB::table('trn_user_logs')->where('store_id',$store_id)->orderBy('trn_user_logs.created_at','DESC')->get();
+                   //dd($user_logs);
+        return view('admin.masters.user_logs.list',compact('user_logs','pageTitle'));
+    }
   
 }
