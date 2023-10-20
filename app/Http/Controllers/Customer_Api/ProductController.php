@@ -3174,7 +3174,7 @@ class ProductController extends Controller
                     else
                     {
                         $data['status'] = 0;
-                        $data['message'] = "failed";
+                        $data['message'] = "failed-1";
                         return response($data);
 
                     }
@@ -3183,7 +3183,7 @@ class ProductController extends Controller
                     else 
                     {
                         $data['status'] = 0;
-                        $data['message'] = "failed";
+                        $data['message'] = "failed-2";
                        
                         return response($data);
                     }
