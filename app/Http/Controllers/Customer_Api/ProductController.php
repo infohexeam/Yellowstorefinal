@@ -3162,7 +3162,7 @@ class ProductController extends Controller
                             
                         }
                         
-                       return $OutStockProduct;
+                      // return $OutStockProduct;
                     if(!empty($OutStockProduct))
                     {
                         Trn_Cart::where('customer_id',$customer_id)->whereIn('product_varient_id',$OutStockProduct)->where('remove_status',0)->update(['remove_status'=>1]);
