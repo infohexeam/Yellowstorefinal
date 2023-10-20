@@ -3173,8 +3173,10 @@ class ProductController extends Controller
                     }
                     else
                     {
-                        $data['status'] = 0;
-                        $data['message'] = "failed-1";
+                        Trn_Cart::where('customer_id',$customer_id)->where('remove_status',0)->update(['remove_status'=>1]);
+                        
+                        $data['status'] = 1;
+                        $data['message'] = "success";
                         return response($data);
 
                     }

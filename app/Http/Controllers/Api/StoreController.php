@@ -3980,7 +3980,7 @@ class StoreController extends Controller
             $data['status']=1;
             $data['message']="Store level referrals fetched";
             $data['store_level_referrals']=Trn_store_referrals::leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_referrals.joined_by_id')
-            ->where('store_id',$store_id)->where('refered_by_id','!=',0)->get();
+            ->where('store_id',$store_id)->get();
             return response($data);
 
         }
