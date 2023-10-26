@@ -216,6 +216,7 @@ class ProductController extends Controller
                 if($productData->is_product_listed_by_product==1||$productData->categories->is_product_listed_by_category==1)
                 {
                     $productData->is_only_view=1;
+                    //$productData->variant_stock_count=1;
 
                 }
                 $data['productdata'] = $productData;
@@ -4236,6 +4237,8 @@ class ProductController extends Controller
                             if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
                             {
                                 $allProduct->is_only_view=1;
+                                $allProduct->variant_stock_count=1;
+                                
         
                             }
 
@@ -4623,6 +4626,7 @@ class ProductController extends Controller
                                 if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
                                 {
                                     $allProduct->is_only_view=1;
+                                    $allProduct->variant_stock_count=1;
             
                                 }
 
@@ -5008,6 +5012,7 @@ class ProductController extends Controller
                         if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
                         {
                             $allProduct->is_only_view=1;
+                            $allProduct->variant_stock_count=1;
     
                         }
                     }
@@ -5252,6 +5257,7 @@ class ProductController extends Controller
                         if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
                         {
                             $allProduct->is_only_view=1;
+                            $allProduct->variant_stock_count=1;
     
                         }
 
@@ -5619,6 +5625,7 @@ class ProductController extends Controller
                             if($allProduct->is_product_listed_by_product==1||$allProduct->categories->is_product_listed_by_category==1)
                             {
                                 $allProduct->is_only_view=1;
+                                $allProduct->variant_stock_count=1;
         
                             }
                         }
