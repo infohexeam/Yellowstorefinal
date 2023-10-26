@@ -2754,7 +2754,8 @@ class ProductController extends Controller
                 if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
                     
                     $today = Carbon::now()->toDateString();
-
+                   $cus=Trn_store_customer::find($request->customer_id);
+                   $data['registered_mobile_number']=$cus->customer_mobile_number;
                     $flag=Helper::checkStoreDeliveryHours($request->store_id);
                     $data['is_delivery_available']=$flag;
                     if($flag==1)
@@ -7439,7 +7440,7 @@ class ProductController extends Controller
             ]);
     
             if ($enquiry->exists) {
-                return response(['status' => 0, 'message' => 'Enquiry limit reached. Unable to submit enquiry']);
+                return response(['status' => 0, 'message' => 'You have already submitted an enquiry. We will get back to you soon.']);
             }
     
             $enquiry->store_id = $store_id;
