@@ -220,6 +220,7 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('store-settings/list', 'Api\StoreSettingsController@listDefaultSettings');
     Route::post('store-settings/update', 'Api\StoreSettingsController@updateSettings');
     //Live orders
+    Route::get('new-orders', 'Api\StoreSettingsController@newOrders');
     Route::get('live-orders', 'Api\StoreSettingsController@newOrdersAll');
     Route::get('miniumum-stock-products', 'Api\StoreSettingsController@getMinimumStockProducts');
     Route::get('remove-banner', 'Api\StoreSettingsController@removeBanner');

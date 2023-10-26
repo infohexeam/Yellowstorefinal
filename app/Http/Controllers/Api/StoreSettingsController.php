@@ -1038,6 +1038,38 @@ class StoreSettingsController extends Controller
             return response($response);
         }
     }
+    public function newOrders(Request $request)
+    {
+        $dataRes=array();
+        $store_id=$request->store_id;
+      $newOrders=Trn_store_order::whereDate('created_at', Carbon::today())->where('store_id',$store_id)->where('status_id',1)->whereNull('TEST')->latest()->limit(4)->get()->map(function($data){
+        //$subdata=json_decode($data->data);
+        $qry['order_id']= $data->order_id;
+        $qry['order_number']=$data->order_number;
+        $qry['TEST']= 0;
+        $qry['total']= (float)$data->product_total_amount;
+        $qry['updated_at']= $data->updated_at->diffForHumans();
+        return $qry;
+      });
+      if(count($newOrders)>0)
+      {
+        $dataRes['status']=1;
+        $dataRes['message']="Orders fetched";
+        $dataRes['newOrders']=$newOrders;
+        return response($dataRes);
+
+      }
+      else
+      {
+        $dataRes['status']=0;
+        $dataRes['message']="No Orders fetched";
+        $dataRes['newOrders']=[];
+        return response($dataRes);
+
+      }
+  
+    }
+
     public function newOrdersAll(Request $request)
     {
       $dataRes=array();

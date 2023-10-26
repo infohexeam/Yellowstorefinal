@@ -935,7 +935,7 @@ class StoreController extends Controller
     $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
     $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
     $varCnt=0;
-   
+   //dd($product_count);
     if($product_count+1>$product_upload_limit)
     {
       return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
@@ -947,8 +947,18 @@ class StoreController extends Controller
       {
         $varCnt++;
       }
-      $product_count=$product_count+1;
-      $product_count=$product_count+$varCnt;
+      if($varCnt<2)
+      {
+        $product_count=$product_count+1;
+
+      }
+      else
+      {
+        $product_count=$product_count+$varCnt;
+
+      }
+      
+      //dd($product_count,$varCnt,$product_upload_limit);
       if($product_count>$product_upload_limit)
       {
         return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
