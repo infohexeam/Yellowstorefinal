@@ -354,7 +354,7 @@ Route::get('customer/remove-store-cart-items','Customer_Api\PurchaseController@r
 Route::post('customer/update-qty', 'Customer_Api\PurchaseController@updateQty');
 Route::post('customer/address-edit', 'Customer_Api\PurchaseController@editAddress');
 
-Route::post('customer/add-address', 'Customer_Api\PurchaseController@addAddress');
+//Route::post('customer/add-address', 'Customer_Api\PurchaseController@addAddress');
 // ALTER TABLE `trn_store_customers` ADD `address_2` TEXT NULL AFTER `customer_address`;
 
 Route::post('customer/update-amount', 'Customer_Api\PurchaseController@upateAmount');
