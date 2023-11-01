@@ -629,7 +629,8 @@ class StoreSettingsController extends Controller
                         'profile_image',
                         'place',
                         'longitude',
-                        'latitude'
+                        'latitude',
+                        'store_referral_id'
                     )
                     ->first()
                 ) {
