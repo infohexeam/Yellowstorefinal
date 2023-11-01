@@ -2843,6 +2843,8 @@ class ProductController extends Controller
                             } else {
                                 $a->actualDeliveryCharge = '0';
                                 $a->deliveryCharge = '0';
+                                $a->minimumOrderAmount='0';
+                                $a->reductionPercentage='0';
                             }
     
                             if (isset($settingsRow->packing_charge)) {
