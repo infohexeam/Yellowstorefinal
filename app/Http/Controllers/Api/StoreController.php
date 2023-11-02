@@ -772,7 +772,17 @@ class StoreController extends Controller
                     //here
                    
                     if (Hash::check($passChk, $custCheck->password)) {
+                    
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
+                    $st_check=Mst_store::where('store_id',$custCheck->store_id)->first();
+                    if($st_check)
+                    {
+                        $data['store_referral_id']=$st_check->store_referral_id;
+                    }
+                    else
+                    {
+                        $data['store_referral_id']=0; 
+                    }
                     if($today>$parentStore->expiry_date)
                     {
                         $sadmin = User::where('id','=', 1)->first();
@@ -1010,6 +1020,15 @@ class StoreController extends Controller
                 if ($custCheck) {  
                     
                     if (Hash::check($passChk, $custCheck->password)) {
+                        $st_check=Mst_store::where('store_id',$custCheck->store_id)->first();
+                        if($st_check)
+                        {
+                            $data['store_referral_id']=$st_check->store_referral_id;
+                        }
+                        else
+                        {
+                            $data['store_referral_id']=0; 
+                        }
                     $parentStore =   Trn_StoreAdmin::where('store_id','=',$custCheck->store_id)->where('role_id',"=",0)->first();  
                     //return $parentStore->expiry_date;
                     if($today>$parentStore->expiry_date)
