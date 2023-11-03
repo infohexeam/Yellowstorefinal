@@ -327,7 +327,7 @@ class DeliveryBoyOrderController extends Controller
     {
         $data = array();
 
-      
+        try {
             if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
                 $validator = Validator::make(
                     $request->all(),
@@ -633,7 +633,13 @@ class DeliveryBoyOrderController extends Controller
                 $data['message'] = "Delivery boy not found ";
                 return response($data);
             }
-       
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
     }
 
 
