@@ -1827,8 +1827,19 @@ class CustomerController extends Controller
         }
                
             } else {
-                $data['status'] = 0;
-                $data['message'] = "Customer not found ";
+                $data['status'] = 1;
+                $stre=Mst_store::where('store_referral_id',$request->store_referral_number)->first();
+                if($stre)
+                {
+                    $stre_uid=$stre->store_id;
+                    $data['store_id']=$stre_uid;
+
+
+                }
+                else{
+                    $data['store_id']=0;
+                }
+                $data['message'] = "Customer not logged";
                 return response($data);
             }
         } catch (\Exception $e) {
