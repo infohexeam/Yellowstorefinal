@@ -129,11 +129,12 @@ class InventoryController extends Controller
                             if ($query  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                                 ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
                                 ->where('mst_store_products.product_type', 1)
-
+                                ->where('mst_store_products.is_product_listed_by_product',0)
                                 ->where('mst_store_products.is_removed', 0)
                                 ->where('mst_store_categories.category_status', 1)
                                 ->where('mst_store_product_varients.is_removed', 0)
                                 ->where('mst_store_product_varients.store_id',$request->store_id)
+                                
                                 ->select(
                                     'mst_store_products.product_id',
                                     'mst_store_products.product_name',
