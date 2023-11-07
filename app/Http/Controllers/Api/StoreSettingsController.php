@@ -762,16 +762,22 @@ class StoreSettingsController extends Controller
                     $store = Mst_store::find($store_id);
                     $filenamePro = $store->profile_image;
 
-                    if ($request->hasFile('profile_image')) {
+                    /*if ($request->hasFile('profile_image')) {
 
                         $filePro = $request->file('profile_image');
                         $filenamePro = $filePro->getClientOriginalName();
+                        $filePro->move('assets/uploads/store_images/images', $filenamePro);
+                    }*/
+                    if ($request->hasFile('profile_image')) {
+                        $filePro = $request->file('profile_image');
+                        $extensionPro = $filePro->getClientOriginalExtension();
+                        $filenamePro = uniqid('store_profile_image_') . '.' . $extensionPro;
                         $filePro->move('assets/uploads/store_images/images', $filenamePro);
                     }
                     $data2['profile_image'] = @$filenamePro;
 
                     if (Mst_store::where('store_id', $store_id)->update($data2)) {
-                        if ($files = $request->file('store_images')) {
+                        /*if ($files = $request->file('store_images')) {
                             $filename = "";
 
                             //   Mst_store_images::where('store_id', $store_id)->delete();
@@ -786,7 +792,23 @@ class StoreSettingsController extends Controller
                                 ];
                                 Mst_store_images::insert($info);
                             }
+                        }*/
+                        if ($files = $request->file('store_images')) {
+                            // Mst_store_images::where('store_id', $store_id)->delete();
+                        
+                            foreach ($files as $file) {
+                                $extension = $file->getClientOriginalExtension();
+                                $filename = uniqid('store_image_') . '.' . $extension;
+                                $file->move('assets/uploads/store_images/images/', $filename);
+                                $info = [
+                                    'store_id' => $store_id,
+                                    'store_image' =>  $filename,
+                                    'default_image' =>  0,
+                                ];
+                                Mst_store_images::insert($info);
+                            }
                         }
+                        
                     }
 
                     $storeImgs = Mst_store_images::where('store_id', $store_id)->get();
