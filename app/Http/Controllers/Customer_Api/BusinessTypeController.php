@@ -712,6 +712,7 @@ class BusinessTypeController extends Controller
                         ->where('mst_stores.online_status', 1)
                         ->where('trn__store_admins.store_account_status', 1)
                         ->orderBy('mst_stores.store_id', 'DESC')->get();
+                        $expiredStoresOthers=[];
                         foreach($listedStoresOthers as $store)
                         {
                             $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
