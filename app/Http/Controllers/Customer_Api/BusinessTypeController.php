@@ -707,15 +707,32 @@ class BusinessTypeController extends Controller
                         // dd($nearStoreArray);
 
                         $data['nearByStores'] = $nearByStoreFinal;
-
+                        $listedStoresOthers= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                        ->where('trn__store_admins.role_id', 0)
+                        ->where('mst_stores.online_status', 1)
+                        ->where('trn__store_admins.store_account_status', 1)
+                        ->orderBy('mst_stores.store_id', 'DESC')->get();
+                        foreach($listedStoresOthers as $store)
+                        {
+                            $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                            if($getParentExpiry)
+                            {
+                                $parentExpiryDate = $getParentExpiry->expiry_date;
+                                if($today>=$parentExpiryDate)
+                                {
+                                    array_push($expiredStoresOthers,$store->store_id);
+                                }
+                            
+                            }
+                        }
 
                         $otherStores =  Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
                             ->where('trn__store_admins.role_id', 0)->where('mst_stores.online_status', 1)
                             ->where('mst_stores.business_type_id', $business_type_id)
                             ->where('trn__store_admins.store_account_status', 1)
                             ->whereNotIn('mst_stores.store_id', $nearStoreArray)
-                            ->whereNotIn('mst_stores.store_id', $recentStoreArray);
-
+                            ->whereNotIn('mst_stores.store_id', $recentStoreArray)
+                            ->whereNotIn('mst_stores.store_id',$expiredStoresOthers);
 
                         if (isset($latitude) && ($longitude)) {
                             $otherStores = $otherStores->select("*", DB::raw("6371 * acos(cos(radians(" . $latitude . "))
