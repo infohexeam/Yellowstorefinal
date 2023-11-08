@@ -1789,26 +1789,53 @@ class CouponController extends Controller
         $tot_prev_count[0]=0;
         $tot_now_count[0]=0;
         $prev_amount[0]=0;
-        foreach($data->reverse() as $d)
-        {
-          $i++;
+        // foreach($data->reverse() as $d)
+        // {
+        //   $i++;
         
-        array_push($check_array,$d->order_id);
+        // array_push($check_array,$d->order_id);
 
-        $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
-        $orlink=Mst_order_link_delivery_boy::where('order_id',$d->order_id)->where('delivery_boy_id',@$d->delivery_boy_id)->first();
-        $tot_now_count[$i]=$total_count;
-        $tot_prev_count[$i]=$tot_now_count[$i]-1;
-        $cm=$orlink->commision_per_month;
-        $co=$orlink->commision_per_order;
-        $d->previous_amount=$prev_amount[$i-1];
-        $d->new_amount=$prev_amount[$i-1]+@$co;
-        $prev_amount[$i]=$d->new_amount;
-        $d->c_month= $cm;
-        $d->c_order=$co;
+        // $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
+        // $orlink=Mst_order_link_delivery_boy::where('order_id',$d->order_id)->where('delivery_boy_id',@$d->delivery_boy_id)->first();
+        // $tot_now_count[$i]=$total_count;
+        // $tot_prev_count[$i]=$tot_now_count[$i]-1;
+        // $cm=$orlink->commision_per_month;
+        // $co=$orlink->commision_per_order;
+        // $d->previous_amount=$prev_amount[$i-1];
+        // $d->new_amount=$prev_amount[$i-1]+@$co;
+        // $prev_amount[$i]=$d->new_amount;
+        // $d->c_month= $cm;
+        // $d->c_order=$co;
     
           
-        }
+        // }
+        foreach ($data->reverse() as $d) {
+          $i++;
+          array_push($check_array, $d->order_id);
+      
+          $total_count = Trn_store_order::whereIn('order_id', $check_array)
+              ->where('delivery_boy_id', @$d->delivery_boy_id)
+              ->orderBy('order_id', 'DESC')
+              ->count();
+      
+          $orlink = Mst_order_link_delivery_boy::where('order_id', $d->order_id)
+              ->where('delivery_boy_id', @$d->delivery_boy_id)
+              ->first();
+      
+          $tot_now_count[$i] = $total_count;
+          $tot_prev_count[$i] = $tot_now_count[$i] - 1;
+      
+          $cm = (float)$orlink->commision_per_month;
+          $co = (float)$orlink->commision_per_order;
+      
+          $d->previous_amount = $prev_amount[$i - 1];
+          $d->new_amount = $prev_amount[$i - 1] + @$co;
+          $prev_amount[$i] = $d->new_amount;
+      
+          $d->c_month = $cm;
+          $d->c_order = $co;
+      }
+      
 
 
       return view('store.elements.reports.deliveryboy_payout_report', compact('subadmins','orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','tot_now_count','tot_prev_count','check_array','tot_pre','tot_now','total_count'));
