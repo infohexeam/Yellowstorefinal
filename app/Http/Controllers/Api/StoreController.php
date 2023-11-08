@@ -3359,7 +3359,7 @@ class StoreController extends Controller
     }
     public function deliveryBoyPayoutReport(Request $request)
     {
-        try {
+      
 
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
@@ -3559,13 +3559,7 @@ class StoreController extends Controller
                 $data['message'] = "Store does not exist";
             }
             return response($data);
-        } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        }
+        
     }
 
     public function refundReport(Request $request)
