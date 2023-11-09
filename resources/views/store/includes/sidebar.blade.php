@@ -32,7 +32,7 @@
                 @if(Auth::guard('store')->user()->role_id != 0)
                 
                     @php
-                      $dataName =   Mst_store::find(Auth::guard('store')->user()->store_id)->store_name;
+                      $dataName =   Mst_store::find(Auth::guard('store')->user()->store_id)->store_mobile;
                     @endphp
     
                   <span class="text-muted app-sidebar__user-name text-sm"> {{ @$dataName }}</span>

@@ -1060,6 +1060,7 @@ class DeliveryBoyOrderController extends Controller
                     
                     }
                     }
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
                     foreach ($customerDevice as $cd) {
                         $title = 'Order delivered';
                         $body = 'Order delivered with order id ' . $order->order_number;

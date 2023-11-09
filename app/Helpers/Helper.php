@@ -845,7 +845,9 @@ class Helper
             $storeData = Mst_store::find($storeAdminData->store_id);
             return $storeData->store_name;
         } else {
-            return $storeAdminData->admin_name;
+            //return $storeAdminData->admin_name;
+            $storeData = Mst_store::find($storeAdminData->store_id);
+            return $storeData->store_name;
         }
     }
 
