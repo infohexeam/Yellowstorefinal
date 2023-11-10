@@ -3158,7 +3158,7 @@ class ProductController extends Controller
                         ->get()
                     ) {
                         foreach ($cartDatas as $cartData) {
-                            if($cartData->stock_count<=0 || $cartData->product_status==0 )
+                            if($cartData->stock_count<=$cartData->quantity || $cartData->product_status==0 )
                             {
                                 array_push($OutStockProduct,$cartData->product_varient_id);
 
