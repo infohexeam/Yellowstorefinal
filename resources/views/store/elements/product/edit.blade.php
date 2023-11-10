@@ -151,7 +151,7 @@
                    <div class="col-md-6">
                      
                       
-                          <label class="form-label">Is time slot based product? *</label>
+                          <label class="form-label">Is time slot based product?</label>
                           <div class="form-group">
                           <label class="form-label" for="tsb_product_yes">Yes:</label>
                             <input type="radio" required class="tsb_product" name="timeslot_based_product" @if($product->is_timeslot_based_product=="1")  checked @endif id="tsb_product_yes" onclick="isTSBProduct(this.value)"  value="1" >
