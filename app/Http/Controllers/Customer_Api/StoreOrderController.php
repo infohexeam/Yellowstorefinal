@@ -2228,7 +2228,7 @@ class StoreOrderController extends Controller
                       }
                        if ($proData->service_type != 2) {
 
-                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
+                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0) {
 
                            
                                     $data['product_name'] = @$varProdu->variant_name;
