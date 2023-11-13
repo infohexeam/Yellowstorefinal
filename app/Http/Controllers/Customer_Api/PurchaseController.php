@@ -3225,6 +3225,7 @@ public function addToCartTest(Request $request)
                                 'mst_store_products.product_base_image',
                                 'mst_store_products.show_in_home_screen',
                                 'mst_store_products.product_status',
+                                'mst_store_products.is_removed',
                                 'mst_store_products.display_flag',
                                 'mst_store_products.is_timeslot_based_product',
                                 'mst_store_products.timeslot_start_time',
