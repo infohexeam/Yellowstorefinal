@@ -2127,9 +2127,20 @@ class StoreOrderController extends Controller
     public function stockAvailability(Request $request)
     {
         $data = array();
-        $OutStockProduct=[];
+        $unAvailableProduct=[];
         try {
-            
+            if(isset($request->store_id))
+            {
+            foreach ($request->product_variants as $value) {
+
+                $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
+                $proData = Mst_store_product::find($varProdu->product_id);
+                if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
+                    array_push($unAvailableProduct,$varProdu->product_varient_id); 
+                }
+            }
+            $data['unAvailableProducts']=$unAvailableProduct;
+        }
         // if (isset($request->store_id) && $storestatus = Mst_store::find($request->store_id)) {
         //     //check status of the store 
         //     Mst_store::where('store_id','=',$request->store_id)->where('store_account_status','=',1)
@@ -2172,7 +2183,15 @@ class StoreOrderController extends Controller
             }
 
             if(isset($request->store_id))
-            
+            foreach ($request->product_variants as $value) {
+
+                $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
+                $proData = Mst_store_product::find($varProdu->product_id);
+                if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
+                    array_push($unAvailableProduct,$varProdu->product_varient_id); 
+                }
+            }
+            $data['unAvailableProducts']=$unAvailableProduct;
             
             foreach ($request->product_variants as $value) {
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
@@ -2239,7 +2258,7 @@ class StoreOrderController extends Controller
                                     $data['noStockProducts'] = $noStockProducts;
                                     $data['message'] = 'Stock unavailable';
                                     $data['status'] = 2;
-                                    //array_push($OutStockProduct,$varProdu->product_varient_id);      
+                                         
                                     
         
                                 
@@ -2289,7 +2308,7 @@ class StoreOrderController extends Controller
                     $data['status'] = 1;
                  
                 }
-            $data['unAvailableProducts']=$OutStockProduct;
+            
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
