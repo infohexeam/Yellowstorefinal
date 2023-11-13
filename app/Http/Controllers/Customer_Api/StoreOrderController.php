@@ -2127,6 +2127,7 @@ class StoreOrderController extends Controller
     public function stockAvailability(Request $request)
     {
         $data = array();
+        $OutStockProduct=[];
         try {
             
         // if (isset($request->store_id) && $storestatus = Mst_store::find($request->store_id)) {
@@ -2228,7 +2229,7 @@ class StoreOrderController extends Controller
                       }
                        if ($proData->service_type != 2) {
 
-                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0) {
+                        if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
 
                            
                                     $data['product_name'] = @$varProdu->variant_name;
@@ -2238,6 +2239,8 @@ class StoreOrderController extends Controller
                                     $data['noStockProducts'] = $noStockProducts;
                                     $data['message'] = 'Stock unavailable';
                                     $data['status'] = 2;
+                                    //array_push($OutStockProduct,$varProdu->product_varient_id);      
+                                    
         
                                 
         
@@ -2286,6 +2289,7 @@ class StoreOrderController extends Controller
                     $data['status'] = 1;
                  
                 }
+            $data['unAvailableProducts']=$OutStockProduct;
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
