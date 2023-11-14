@@ -3155,7 +3155,7 @@ class ProductController extends Controller
                         )
                         ->where('trn__carts.customer_id', $customer_id)
                         ->where('trn__carts.remove_status', 0)
-                        ->where('mst_store_product_varients.variant_status','=',1)
+                        //->where('mst_store_product_varients.variant_status','=',1)
                         ->get()
                     ) {
                         foreach ($cartDatas as $cartData) {
