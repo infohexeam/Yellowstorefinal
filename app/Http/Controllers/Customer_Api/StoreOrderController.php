@@ -2190,8 +2190,13 @@ class StoreOrderController extends Controller
                 if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
                     array_push($unAvailableProduct,$varProdu->product_varient_id); 
                 }
+                if ($value['quantity'] > $varProdu->stock_count) {
+                    array_push($noStockProducts,$varProdu->product_varient_id); 
+                }
+                
             }
             $data['unAvailableProducts']=$unAvailableProduct;
+            $data['noStockProducts'] = $noStockProducts;
             
             foreach ($request->product_variants as $value) {
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
@@ -2229,8 +2234,8 @@ class StoreOrderController extends Controller
                        
                         $data['product_name'] = @$varProdu->variant_name;
 
-                        $noStockProducts[] = $varProdu->product_varient_id;
-                        $data['noStockProducts'] = $noStockProducts; // first commented.  uncommented to solve unexpected error in cart proceed due to product unavailability.
+                        //$noStockProducts[] = $varProdu->product_varient_id;
+                        //$data['noStockProducts'] = $noStockProducts; // first commented.  uncommented to solve unexpected error in cart proceed due to product unavailability.
                         $data['message'] = 'Product unavailable';
                         $data['status'] = 2;
                         return response($data);
@@ -2239,9 +2244,9 @@ class StoreOrderController extends Controller
                     {
                     $data['product_name'] = @$varProdu->variant_name;
 
-                     $noStockProducts[] = @$varProdu->product_varient_id;
+                    // $noStockProducts[] = @$varProdu->product_varient_id;
 
-                    $data['noStockProducts'] = $noStockProducts;
+                    //$data['noStockProducts'] = $noStockProducts;
                     $data['message'] = 'Product unavailable';
                     $data['status'] = 2;
                     return response($data);
@@ -2253,9 +2258,9 @@ class StoreOrderController extends Controller
                            
                                     $data['product_name'] = @$varProdu->variant_name;
 
-                                    $noStockProducts[] = $varProdu->product_varient_id;
+                                    //$noStockProducts[] = $varProdu->product_varient_id;
         
-                                    $data['noStockProducts'] = $noStockProducts;
+                                    //$data['noStockProducts'] = $noStockProducts;
                                     $data['message'] = 'Stock unavailable';
                                     $data['status'] = 2;
                                          
@@ -2275,9 +2280,9 @@ class StoreOrderController extends Controller
                             if ($varProdu->product_varient_offer_price != $value['price']) {
                                 $data['product_name'] = @$varProdu->variant_name;
 
-                                $noStockProducts[] = $varProdu->product_varient_id;
+                                //$noStockProducts[] = $varProdu->product_varient_id;
 
-                                $data['noStockProducts'] = $noStockProducts;
+                                $//data['noStockProducts'] = $noStockProducts;
                                 $data['message'] = 'Stock unavailable..';
                                 $data['price'] = @$value['price'];
                                 $data['currentPrice'] = @$varProdu->product_varient_offer_price;
