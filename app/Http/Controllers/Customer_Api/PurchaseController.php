@@ -3247,17 +3247,26 @@ public function addToCartTest(Request $request)
                             ->whereNotNull('mst_store_product_varients.product_varient_price')
                             ->whereNotNull('mst_store_product_varients.product_varient_offer_price')
                             ->first();
+                            if($cartData->productData->product_status==0)
+                            {
+                                if($cartData->productData->is_base_variant==1)
+                                {
+                                    $cartData->productData->variant_status=0;
+     
+                                }
+     
+                            }
                         @$cartData->productData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_base_image;
-                    if(@$cartData->productData->product_varient_base_image!=NULL)
-                    {
-                        @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_varient_base_image;
+                        if(@$cartData->productData->product_varient_base_image!=NULL)
+                        {
+                            @$cartData->productData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$cartData->productData->product_varient_base_image;
 
-                    }
-                    else
-                    {
-                        @$cartData->productData->product_varient_base_image =@$cartData->productData->product_base_image;
+                        }
+                        else
+                        {
+                            @$cartData->productData->product_varient_base_image =@$cartData->productData->product_base_image;
 
-                    }
+                        }
                         
                         $storeData = Mst_store::find(@$cartData->productData->store_id);
                         @$cartData->productData->store_name = @$storeData->store_name;
