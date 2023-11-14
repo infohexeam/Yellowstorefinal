@@ -2138,6 +2138,9 @@ class StoreOrderController extends Controller
                 if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
                     array_push($unAvailableProduct,$varProdu->product_varient_id); 
                 }
+                if ($value['quantity'] > $varProdu->stock_count) {
+                    array_push($noStockProducts,$varProdu->product_varient_id); 
+                }
             }
             $data['unAvailableProducts']=$unAvailableProduct;
         }
@@ -2183,18 +2186,7 @@ class StoreOrderController extends Controller
             }
 
             if(isset($request->store_id))
-            foreach ($request->product_variants as $value) {
-
-                $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
-                $proData = Mst_store_product::find($varProdu->product_id);
-                if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
-                    array_push($unAvailableProduct,$varProdu->product_varient_id); 
-                }
-                if ($value['quantity'] > $varProdu->stock_count) {
-                    array_push($noStockProducts,$varProdu->product_varient_id); 
-                }
-                
-            }
+           
             $data['unAvailableProducts']=$unAvailableProduct;
             $data['noStockProducts'] = $noStockProducts;
             
