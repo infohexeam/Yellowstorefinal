@@ -2136,7 +2136,16 @@ class StoreOrderController extends Controller
 
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
                 $proData = Mst_store_product::find($varProdu->product_id);
-                if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1) {
+                if($proData->product_status==0)
+                       {
+                           if($varProdu->is_base_variant==1)
+                           {
+                               $varProdu->variant_status=0;
+
+                           }
+
+                       }
+                if ($value['quantity'] > $varProdu->stock_count || $proData->product_status==0||$proData->is_removed==1||$varProdu->variant_status==0) {
                     array_push($unAvailableProduct,$varProdu->product_varient_id); 
                 }
                 if ($value['quantity'] > $varProdu->stock_count) {
