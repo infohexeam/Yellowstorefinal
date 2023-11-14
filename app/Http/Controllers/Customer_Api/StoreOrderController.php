@@ -2128,6 +2128,7 @@ class StoreOrderController extends Controller
     {
         $data = array();
         $unAvailableProduct=[];
+        $noStockProducts = array();
         try {
             if(isset($request->store_id))
             {
@@ -2156,7 +2157,7 @@ class StoreOrderController extends Controller
         //             }
 
 
-            $noStockProducts = array();
+            
             $remCount=0;
             if($request->store_id)
             {
