@@ -3159,7 +3159,17 @@ class ProductController extends Controller
                         ->get()
                     ) {
                         foreach ($cartDatas as $cartData) {
-                            if($cartData->stock_count<=$cartData->quantity || $cartData->product_status==0 ||$cartData->is_removed==1 )
+                            if($cartData->product_status==0)
+                            {
+                                if($cartData->is_base_variant==1)
+                                {
+                                    $cartData->variant_status=0;
+     
+                                }
+     
+                            }
+
+                            if($cartData->stock_count<=$cartData->quantity||$cartData->is_removed==1 || $cartData->variant_status==0)
                             {
                                 array_push($OutStockProduct,$cartData->product_varient_id);
 
@@ -3178,7 +3188,7 @@ class ProductController extends Controller
                     }
                     else
                     {
-                        Trn_Cart::where('customer_id',$customer_id)->where('remove_status',0)->update(['remove_status'=>1]);
+                        //Trn_Cart::where('customer_id',$customer_id)->where('remove_status',0)->update(['remove_status'=>1]);
                         
                         $data['status'] = 1;
                         $data['message'] = "success";
