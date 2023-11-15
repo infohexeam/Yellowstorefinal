@@ -156,7 +156,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        </tr>
 @else
  <tr>
-                                          <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}} @if(@$order->status->status_id == 9)( {{ \Carbon\Carbon::parse(@$order->created_at)->format('d-M-Y')}} ) @endif </td>
+                                          <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}} @if(@$order->status->status_id == 9) @endif </td>
                                        </tr>
 @endif
                               @if($order->is_collect_from_store!=1)
