@@ -150,9 +150,15 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                           <td><strong>Order Type: </strong> </td> <td>{{ @$order->order_type}}</td>
                                        </tr>
 
+ @if(@$order->order_type != 'POS')
                                           <tr>
                                           <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}} @if(@$order->status->status_id == 9) ( {{ \Carbon\Carbon::parse(@$order->delivery_date)->format('d-m-Y')}} {{ @$order->delivery_time }}  ) @endif </td>
                                        </tr>
+@else
+ <tr>
+                                          <td><strong>Order Status: </strong> </td> <td>{{ @$order->status->status}} @if(@$order->status->status_id == 9)( {{ \Carbon\Carbon::parse(@$order->created_at)->format('d-M-Y')}} ) @endif </td>
+                                       </tr>
+@endif
                               @if($order->is_collect_from_store!=1)
                                        @php
                                        $oredrAddr = \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
