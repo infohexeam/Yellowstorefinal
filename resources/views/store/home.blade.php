@@ -37,7 +37,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
  <div class="row">
  <button type="button" id="activateBtn" style="display:none;"></button>
   <div class="card-body " id="newOrders">
-      </div>
+   </div>
 </div>
 </div>
 </div>
