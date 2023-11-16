@@ -454,7 +454,7 @@ var newOrders = [];
 
          if(ordersCount>0)
         {
-         playNotificationSound();
+         playNotificationSoundOrder();
 
         }
         RenderNewOrders();
@@ -475,7 +475,7 @@ var newOrders = [];
       $('#newOrders').append(html);
     });
   }
-  function playNotificationSound() {
+  function playNotificationSoundOrder() {
     var alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/alaram.wav');
     alarmSound.play();
   }
