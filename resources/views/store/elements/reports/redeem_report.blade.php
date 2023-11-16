@@ -148,10 +148,10 @@
                                             @php
                                              $item_price=DB::table('trn_order_items')->where('order_id',$d->order_id)->sum('total_amount');
         //$w->amount_before_applying_rp=$item_price+$$w->amount_reduced_by_rp??0+$w->packing_charge??0+$w->delivery_charge??0+$w->amount_reduced_by_rp_store??0+$w->amount_reduced_by_coupon??0;
-        //$d->amount_before_applying_rp=strval(number_format($item_price+$w->packing_charge+$w->delivery_charge,2));
+        //$d->amount_before_applying_rp=strval(number_format($item_price+$w->packing_charge+$w->delivery_charge,2));number_format($item_price-$d->packing_charge-$d->delivery_charge-$d->amount_reduced_by_coupon??0,2) }}
 
                                             @endphp
-                                            <td>{{ number_format($item_price+$d->packing_charge+$d->delivery_charge+$d->amount_reduced_by_coupon??0,2) }}</td>
+                                            <td>{{ number_format($item_price,2) }}</td>
                                            
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ @$d->customer_mobile_number }}</td>
