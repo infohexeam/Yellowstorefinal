@@ -316,7 +316,7 @@
                                     <td>{{$product->product_name}}</td>  
                                     <td>{{@$product->categories->category_name}}</td>
                                     <td>{{$product->product_code}}</td>
-                                    <td>{{$product->product_price}}</td>
+                                    <td>{{$product->product_price_offer}}</td>
 
                                     <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" ></td>
                                  </tr>
