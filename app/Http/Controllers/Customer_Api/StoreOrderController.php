@@ -173,7 +173,7 @@ class StoreOrderController extends Controller
                     $store_order->service_booking_order =  $request->service_booking_order;
                     $store_order->product_varient_id =  $request->product_varient_id;
 
-                    $store_order->order_number = $orderNumberPrefix . @$orderNumber;
+                    $store_order->order_number =$orderNumberPrefix .substr(str_shuffle(str_repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4)), 0, 4). @$orderNumber; //$orderNumberPrefix . @$orderNumber;
                     // $store_order->order_number = 'ORDRYSTR'.@$orderNumber;
                     $store_order->customer_id = $request->customer_id;
                     $store_order->store_id =  $request->store_id;
