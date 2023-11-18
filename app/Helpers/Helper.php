@@ -434,12 +434,9 @@ class Helper
 
     public static function storeSuperadminPhone($store_id)
     {
-        return '0101010101';
+        $admin=DB::table('users')->where('id',1)->first();
+        return $admin->phone_number;
     }
-
-
-
-
     public static function storeRating($store_id)
     {
         $sumRating = Trn_ReviewsAndRating::where('store_id', $store_id)->where('isVisible', 1)->sum('rating');
