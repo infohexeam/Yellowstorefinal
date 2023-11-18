@@ -31,6 +31,7 @@ use App\Models\admin\Trn_StoreBankData;
 use App\Trn_store_referrals;
 use App\Trn_wallet_log;
 use Auth;
+use DB;
 
 class Helper
 {
