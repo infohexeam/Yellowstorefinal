@@ -3359,7 +3359,7 @@ class StoreController extends Controller
     }
     public function deliveryBoyPayoutReport(Request $request)
     {
-       
+        try {
 
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
@@ -3496,7 +3496,11 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
                     $sd->previous_commission=number_format((float)$prev_amount[$i-1]);
                     $sd->commission_after_order= $prev_amount_numeric+$commission_order_numeric;
                     $prev_amount[$i]=$sd->commission_after_order;
-                    $sd->previous_commission=$sd->previous_commission+$sd->commission_month;
+                    //$sd->previous_commission=$sd->previous_commission+$sd->commission_month;
+                    $previous_commission_numeric = is_numeric($sd->previous_commission) ? (float) $sd->previous_commission : 0;
+                    $commission_month_numeric = is_numeric($sd->commission_month) ? (float) $sd->commission_month : 0;
+                    $sd->previous_commission = $previous_commission_numeric + $commission_month_numeric;
+
                     $sd->commission_after_order=$sd->commission_after_order+$sd->commission_month;
 
                     //////////////////////////////////////////////
@@ -3563,7 +3567,13 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
                 $data['message'] = "Store does not exist";
             }
             return response($data);
-      
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
     }
 
     public function refundReport(Request $request)
