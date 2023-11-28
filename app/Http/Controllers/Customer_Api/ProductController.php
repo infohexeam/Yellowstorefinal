@@ -7480,7 +7480,23 @@ class ProductController extends Controller
     public function listEnquiries(Request $request)
     {
         try {
-            $enquiries = Trn_customer_enquiry::with(['store', 'varient'])->where('customer_id',$request->customer_id);
+            $enquiries = Trn_customer_enquiry::leftjoin('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn_customer_enquiry.product_varient_id')
+            ->leftjoin('mst_stores','mst_stores.store_id','=','trn_customer_enquiry.store_id')
+            ->leftjoin('mst_store_products','mst_store_products.product_id','=','mst_store_product_varients.product_id')
+            ->select('trn_customer_enquiry.enquiry_id',
+            'trn_customer_enquiry.product_varient_id',
+            'trn_customer_enquiry.customer_id',
+            'trn_customer_enquiry.visited_date',
+            'mst_store_products.product_name',
+            'mst_store_product_varients.variant_name',
+            'mst_store_product_varients.product_id',
+            'mst_stores.store_id',
+            'mst_stores.store_name',
+            'mst_stores.store_mobile'
+
+
+            )
+            ->where('trn_customer_enquiry.customer_id',$request->customer_id);
             // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
     
             $data['status'] = 1;
