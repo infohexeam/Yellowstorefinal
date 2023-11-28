@@ -7501,7 +7501,7 @@ class ProductController extends Controller
     
             $data['status'] = 1;
             $data['message'] = "Enquiries retrieved successfully";
-            $data['enquiries'] = $enquiries;
+            $data['enquiries'] = $enquiries->latest();
             if (isset($request->page)) {
                 $data['enquiries'] = $enquiries->paginate(10, ['*'], 'page', $request->page);
             } else {
