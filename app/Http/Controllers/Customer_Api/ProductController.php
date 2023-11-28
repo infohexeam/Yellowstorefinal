@@ -7486,7 +7486,7 @@ class ProductController extends Controller
             ->select('trn_customer_enquiry.enquiry_id',
             'trn_customer_enquiry.product_varient_id',
             'trn_customer_enquiry.customer_id',
-            'trn_customer_enquiry.visited_date',
+            'trn_customer_enquiry.visited_date as enquiry_date',
             'mst_store_products.product_name',
             'mst_store_product_varients.variant_name',
             'mst_store_product_varients.product_id',
