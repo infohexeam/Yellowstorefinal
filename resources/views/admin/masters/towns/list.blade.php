@@ -14,6 +14,11 @@
                                 <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
                             </div>
                             @endif
+                             @if ($message = Session::get('error'))
+                            <div class="alert alert-danger">
+                                <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+                            </div>
+                            @endif
                             @if ($errors->any())
                             <div class="alert alert-danger">
                                 <strong>Whoops!</strong> There were some problems with your input.<br><br>

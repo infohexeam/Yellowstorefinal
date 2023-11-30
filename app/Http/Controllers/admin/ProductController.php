@@ -532,6 +532,11 @@ class ProductController extends Controller
 
   public function removeGlobalProduct(Request $request, $global_product_id)
   {
+    $count_product=Mst_store_product::where('global_product_id',$global_product_id)->count();
+    if($count_product>0)
+    {
+      return redirect()->back()->with('error', 'Global products cannot be removed as store products exist.');
+    }
     Mst_GlobalProducts::where('global_product_id', $global_product_id)->delete();
 
     return redirect()->back()->with('status', 'Global product deleted successfully.');

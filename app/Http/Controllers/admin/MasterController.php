@@ -30,6 +30,8 @@ use Auth;
 use App\Models\admin\Country;
 use App\Models\admin\State;
 use App\Models\admin\District;
+use App\Models\admin\Mst_GlobalProducts;
+use App\Models\admin\Mst_store_product;
 use App\Models\admin\Town;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB as FacadesDB;
@@ -567,6 +569,12 @@ class MasterController extends Controller
 
     public function removeSubCategory(Request $request,Mst_SubCategory $sub_category,$sub_category_id)
     {
+        $gp_count=Mst_GlobalProducts::where('sub_category_id',$sub_category->sub_category_id)->count();
+        $sp_count=Mst_store_product::where('sub_category_id',$sub_category->sub_category_id)->count();
+        if($gp_count>0||$sp_count>0)
+        {
+            return redirect()->back()->with('error', 'Sub Category cannot be removed as products exist.');
+        }
         Mst_SubCategory::where('sub_category_id',$sub_category_id)->delete();
 
         

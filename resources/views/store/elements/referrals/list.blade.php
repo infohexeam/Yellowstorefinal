@@ -117,19 +117,23 @@ $date = Carbon\Carbon::now();
                                        
 
                                     <td>
-                                    @if(@$reference->reference_status==1)
+                                   {{-- @if(@$reference->reference_status==1)
                                     {{ \Carbon\Carbon::parse($joined_by->created_at)->format('M d, Y H:i')}}
                                     @else
                                     Not Completed
 
-                                    @endif
+                                    @endif--}}
+                                    {{ date('M d, Y H:i', strtotime(@$reference->created_at)) }}
                                     </td>
 
                                    
-                                    <td>@if($joined_by) {{@$joined_by->customer_first_name}} {{@$joined_by->customer_last_name}} @endif</td>
+                                    <td>
+                                   {{-- @if($joined_by) {{@$joined_by->customer_first_name}} {{@$joined_by->customer_last_name}} @endif --}}
+                                   {{@$reference->customer_first_name}}
+                                    </td>
             
                                   
-                                   <td>{{@$joined_by->customer_mobile_number}}</td>
+                                   <td>{{@$reference->customer_mobile_number}}</td>
                       
 
                                     {{-- <td>{{ $dispute->discription}}</td> --}}

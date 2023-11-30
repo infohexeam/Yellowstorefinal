@@ -442,6 +442,21 @@ class AdminController extends Controller
     public function removeTown(Request $request, $town_id, Town $town)
     {
         $town = Town::find($town_id);
+        $count_stores=Mst_store::where('town_id',$town_id)->count();
+        $count_customers=Trn_store_customer::where('town_id',$town_id)->count();
+        $count_dboys=Mst_delivery_boy::where('town_id',$town_id)->count();
+        if($count_stores>0)
+        {
+            return redirect()->back()->with('error', 'Pincode cannot be removed as stores exists.');
+        }
+        if($count_customers>0)
+        {
+            return redirect()->back()->with('error', 'Pincode cannot be removed as customers exists.');
+        }
+        if($count_dboys>0)
+        {
+            return redirect()->back()->with('error', 'Pincode cannot be removed as delivery boys exists.');
+        }
         $delete = $town->delete();
 
         return redirect('admin/pincode/list')->with('status', 'Pincode deleted successfully');
@@ -607,9 +622,14 @@ class AdminController extends Controller
 
     public function removeVehicleTypes(Request $request, Sys_vehicle_type $vehicle_type, $vehicle_type_id)
     {
+        $delivery_boy_count=Mst_delivery_boy::where('vehicle_type_id',$vehicle_type_id)->count();
+        if($delivery_boy_count>0)
+        {
+            return redirect()->back()->with('error', 'Vehicle type cannot be removed as delivery boys exist with this vehicle type.');
+
+        }
         $vehicle_type = Sys_vehicle_type::find($vehicle_type_id);
         $vehicle_type->delete();
-
         return redirect()->back()->with('status', 'Vehicle type removed successfully.');
     }
 
@@ -673,6 +693,13 @@ class AdminController extends Controller
 
     public function removeTax(Request $request, Mst_Tax $tax, $tax_id)
     {
+        $gp_count=Mst_GlobalProducts::where('tax_id',$tax_id)->count();
+        $sp_count=Mst_store_product::where('tax_id',$tax_id)->count();
+        if($gp_count>0||$sp_count>0)
+        {
+            return redirect()->back()->with('error', 'Tax cannot be removed as products exist.');
+        }
+
         $tax = Mst_Tax::where('tax_id', $tax_id)->update(['is_removed' => 1]);
 
         return redirect()->back()->with('status', 'Tax removed successfully.');

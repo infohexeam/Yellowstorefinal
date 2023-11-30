@@ -27,6 +27,7 @@ use App\Models\admin\Mst_attribute_value;
 use App\Models\admin\Mst_product_image;
 use App\Models\admin\Trn_store_customer_otp_verify;
 use App\Models\admin\Mst_delivery_boy;
+use App\Models\admin\Mst_GlobalProducts;
 use App\Models\admin\Sys_delivery_boy_availability;
 use App\Models\admin\Mst_store_link_delivery_boy;
 use App\Models\admin\Trn_delivery_boy_order;
@@ -72,6 +73,7 @@ use App\Models\admin\Trn_customerAddress;
 
 use App\Models\admin\Trn_OrderPaymentTransaction;
 use App\Models\admin\Trn_OrderSplitPayments;
+use App\Models\admin\Trn_ProductVariantAttribute;
 use Illuminate\Support\Facades\DB as FacadesDB;
 
 class SettingController extends Controller
@@ -338,6 +340,14 @@ class SettingController extends Controller
 
 	public function destroyCategory(Request $request, Mst_categories $category)
 	{
+		$gp_count=Mst_GlobalProducts::where('product_cat_id',$category->category_id)->count();
+        $sp_count=Mst_store_product::where('product_cat_id',$category->category_id)->count();
+		//$count_btype=Trn_CategoryBusinessType::where('business_type_id',$business_type->business_type_id)->where('status',1)->count();
+        if($gp_count>0||$sp_count>0)
+        {
+            return redirect()->back()->with('error', 'Category cannot be removed as products exist.');
+        }
+
 
 		$delete = $category->delete();
 
@@ -544,11 +554,22 @@ class SettingController extends Controller
 	public function destroyBusiness(Request $request, Mst_business_types $business_type)
 	{
 		$count_store=Mst_store::where('business_type_id',$business_type->business_type_id)->count();
+		$count_btype=Trn_CategoryBusinessType::where('business_type_id',$business_type->business_type_id)->where('status',1)->count();
+		$count_sub_cat=Mst_SubCategory::where('business_type_id',$business_type->business_type_id)->count();
 		//dd($count_store);
 		if($count_store>0)
 		{
 			return  redirect()->back()->with('error', 'Business type cannot be deleted since it is already assigned to stores');
 		}
+		if($count_btype>0)
+		{
+			return  redirect()->back()->with('error', 'Business type cannot be deleted since it is already assigned to categories');
+		}
+		if($count_sub_cat>0)
+		{
+			return  redirect()->back()->with('error', 'Business type cannot be deleted since it is assigned to sub category');
+		}
+
 
 		$delete = $business_type->delete();
 
@@ -6546,7 +6567,12 @@ class SettingController extends Controller
 	}
 	public function destroyAttr_Value(Request $request, Mst_attribute_value $attribute_value)
 	{
+		$av_count=Trn_ProductVariantAttribute::where('attr_value_id',$attribute_value->attr_value_id)->count();
+		if($av_count>0)
+		{
+			return redirect()->back()->with('error', 'Attribute value cannot be removed as products are associated with this value');
 
+		}
 		$delete = $attribute_value->delete();
 
 
@@ -6554,7 +6580,18 @@ class SettingController extends Controller
 	}
 	public function destroyAttr_Group(Request $request, Mst_attribute_group $attribute_group)
 	{
+		$ag_count=Trn_ProductVariantAttribute::where('attr_group_id',$attribute_group->attr_group_id)->count();
+		$ag_master_count=Mst_attribute_value::where('attribute_group_id',$attribute_group->attr_group_id)->count();
+		if($ag_master_count>0)
+		{
+			return redirect()->back()->with('error', 'Attribute group cannot be removed as attribute values are associated with this group');
 
+		}
+        if($ag_count>0)
+		{
+			return redirect()->back()->with('error', 'Attribute group cannot be removed as products are associated with this group');
+
+		}
 		$delete = $attribute_group->delete();
 
 

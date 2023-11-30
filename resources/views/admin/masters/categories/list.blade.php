@@ -18,6 +18,11 @@ use App\Models\admin\Trn_CategoryBusinessType;
                      <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
                   </div>
                   @endif
+                  @if ($message = Session::get('error'))
+               <div class="alert alert-danger">
+                  <p>{{ $message }}</p>
+               </div>
+         @endif
                   <div class="col-lg-12">
                      @if ($errors->any())
                      <div class="alert alert-danger">
