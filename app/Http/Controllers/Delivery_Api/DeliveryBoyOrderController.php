@@ -885,13 +885,13 @@ class DeliveryBoyOrderController extends Controller
                         if(is_null($str->store_referral_id))
                         {
                             $st_uid=$str->store_id;
-                            $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
+                            //$ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
 
                         }
                         else
                         {
                             $st_uid=$str->store_referral_id;
-                            $ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
+                            //$ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
                         }
                         
                         //dd($st_uid,1);
