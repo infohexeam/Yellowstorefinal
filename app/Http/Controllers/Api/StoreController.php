@@ -4034,8 +4034,25 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
     public function listEnquiries(Request $request)
     {
         try {
-            $enquiries = Trn_customer_enquiry::with(['customer', 'varient'])->where('store_id',$request->store_id);
+            //$enquiries = Trn_customer_enquiry::with(['customer', 'varient'])->where('store_id',$request->store_id);
             // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
+            $enquiries = Trn_customer_enquiry::leftjoin('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn_customer_enquiry.product_varient_id')
+            ->leftjoin('trn_store_customers','trn_store_customers.customer_id','=','trn_customer_enquiry.customer_id')
+            ->leftjoin('mst_store_products','mst_store_products.product_id','=','mst_store_product_varients.product_id')
+            ->select('trn_customer_enquiry.enquiry_id',
+            'trn_customer_enquiry.product_varient_id',
+            'trn_customer_enquiry.customer_id',
+            'trn_customer_enquiry.visited_date',
+            'trn_customer_enquiry.created_at',
+            'mst_store_products.product_name',
+            'mst_store_product_varients.variant_name',
+            'mst_store_product_varients.product_id',
+            'trn_store_customers.customer_first_name',
+            'trn_store_customers.customer_mobile_number',
+            'trn_customer_enquiry.store_id'
+
+
+        )->where('trn_customer_enquiry.store_id',$request->store_id)->latest();
     
             $data['status'] = 1;
             $data['message'] = "Enquiries retrieved successfully";
@@ -4043,6 +4060,59 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
                 $data['enquiries'] = $enquiries->paginate(10, ['*'], 'page', $request->page);
             } else {
                 $data['enquiries'] = $enquiries->paginate(10);
+            }
+    
+            return response($data);
+        } catch (\Exception $e) {
+            return response(['status' => 0, 'message' => $e->getMessage()]);
+        }
+    }
+    public function enquiryReports(Request $request)
+    {
+        
+        try {
+            //$enquiries = Trn_customer_enquiry::with(['customer', 'varient'])->where('store_id',$request->store_id);
+            // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
+            $enquiries = Trn_customer_enquiry::leftjoin('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn_customer_enquiry.product_varient_id')
+            ->leftjoin('trn_store_customers','trn_store_customers.customer_id','=','trn_customer_enquiry.customer_id')
+            ->leftjoin('mst_store_products','mst_store_products.product_id','=','mst_store_product_varients.product_id')
+            ->select('trn_customer_enquiry.enquiry_id',
+            'trn_customer_enquiry.product_varient_id',
+            'trn_customer_enquiry.customer_id',
+            'trn_customer_enquiry.visited_date',
+            'trn_customer_enquiry.created_at',
+            'mst_store_products.product_name',
+            'mst_store_product_varients.variant_name',
+            'mst_store_product_varients.product_id',
+            'trn_store_customers.customer_first_name',
+            'trn_store_customers.customer_mobile_number',
+            'trn_customer_enquiry.store_id'
+
+
+        )->where('trn_customer_enquiry.store_id',$request->store_id);
+        //dd(request('start_date'));
+        if (request('start_date')!=NULL && request('end_date')!=NULL) {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+
+            $enquiries->whereBetween('trn_customer_enquiry.visited_date', [$start_date, $end_date]);
+        }
+        if (request('customer_name')!=NULL) {
+            $enquiries->where('trn_store_customers.customer_first_name', 'like', '%' . request('customer_name') . '%');
+        }
+        if (request('customer_mobile')!=NULL) {
+            $enquiries->where('trn_store_customers.customer_mobile_number', 'like', '%' . request('customer_mobile') . '%');
+        }
+        if (request('product_name')!=NULL) {
+            $enquiries->where('mst_store_products.product_name', 'like', '%' . request('product_name') . '%')->orWhere('mst_store_product_varients.variant_name', 'like', '%' . request('product_name') . '%');
+        }
+        
+            $data['status'] = 1;
+            $data['message'] = "Enquiries retrieved successfully";
+            if (isset($request->page)) {
+                $data['enquiries'] = $enquiries->latest()->paginate(10, ['*'], 'page', $request->page);
+            } else {
+                $data['enquiries'] = $enquiries->latest()->paginate(10);
             }
     
             return response($data);

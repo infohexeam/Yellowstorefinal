@@ -231,6 +231,7 @@ Route::group(['prefix' => 'store'], function () {
    //STORE REFERRALS
    Route::get('store-level-referrals', 'Api\StoreController@getStoreReferrals');
    Route::get('list-enquiries', 'Api\StoreController@listEnquiries');
+   Route::get('enquiry-reports', 'Api\StoreController@enquiryReports');
  
     //STORE PROFILE
     Route::get('store-info/list', 'Api\StoreSettingsController@listStoreInfo');

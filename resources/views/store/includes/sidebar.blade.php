@@ -140,6 +140,7 @@
               <li><a class="slide-item" href="{{url('store/incoming-payments')}}">{{ __('Incoming Payments Reports') }}</a></li>
               <li><a class="slide-item" href="{{url('store/refund-reports')}}">{{ __('Refund Reports') }}</a></li>
               <li><a class="slide-item" href="{{url('store/wallet-redeem-reports')}}">{{ __('Wallet Redeem Reports') }}</a></li>
+              <li><a class="slide-item" href="{{url('store/enquiries-report')}}">{{ __('Enquiry Reports') }}</a></li>
             </ul>
         </li>
       @if(Auth::guard('store')->user()->role_id == 0)
@@ -188,6 +189,12 @@
        <a class="side-menu__item" href="{{route('store.list_referrals')}}" >
      <i class="side-menu__icon ti ti ti-share"></i>
       <span class="side-menu__label"> {{ __('Referrals') }}</span>
+     </a>
+      </li>
+      <li class="slide">
+       <a class="side-menu__item" href="{{route('store.list_enquiries')}}" >
+     <i class="side-menu__icon ti ti ti-user"></i>
+      <span class="side-menu__label"> {{ __('Enquiries') }}</span>
      </a>
       </li>
 
