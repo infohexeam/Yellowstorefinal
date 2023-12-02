@@ -60,13 +60,14 @@ $date = Carbon\Carbon::now();
                                             <input type="text" class="form-control" name="customer_mobile" id="customer_mobile" value="{{ request()->input('customer_mobile') }}" placeholder="Customer Mobile">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
+                                    <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Product Name</label>
                                         <input type="text" class="form-control" name="product_name" id="product_name" value="{{ request()->input('product_name') }}" placeholder="Product Name">
                                     </div>
                                 </div>
+                                </div>
+                               
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <center>
@@ -85,10 +86,11 @@ $date = Carbon\Carbon::now();
                                     <thead>
                                         <tr>
                                             <th class="wd-15p">SL.No</th>
+                                             <th class="wd-15p">Enquiry Number</th>
                                             <th class="wd-15p">Product Name</th>
                                             <th class="wd-15p">Customer Name</th>
                                             <th class="wd-15p">Customer Mobile</th>
-                                            <th class="wd-15p">Visited Date</th>
+                                             <th class="wd-15p">Enquiry Date & Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -98,11 +100,12 @@ $date = Carbon\Carbon::now();
                                         @foreach ($enquiries as $enquiry)
                                         <tr>
                                             <td>{{ ++$i }}</td>
+                                            <td>ENQ-{{$enquiry->enquiry_id}}</td>
                                             <td>{{$enquiry->variant_name}}</td>
                                             <td>{{$enquiry->customer_first_name}}</td>
                                             <td>{{$enquiry->customer_mobile_number}}</td>
                                             <td>
-                                                {{ date('M d, Y', strtotime(@$enquiry->visited_date)) }}
+                                              {{ date('M d Y,h:i A', strtotime(@$enquiry->created_at)) }}
                                             </td>
                                         </tr>
                                         @endforeach
@@ -128,7 +131,7 @@ $date = Carbon\Carbon::now();
                         title: 'Customer Enquiries',
                         footer: true,
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
+                            columns: [0, 1, 2, 3, 4, 5]
                         }
                     },
                     {
@@ -136,7 +139,7 @@ $date = Carbon\Carbon::now();
                         title: 'Customer Enquiries',
                         footer: true,
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
+                            columns: [0, 1, 2, 3, 4, 5]
                         }
                     }
                 ]

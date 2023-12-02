@@ -89,10 +89,11 @@ $date = Carbon\Carbon::now();
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
+                                     <th class="wd-15p">Enquiry Number</th>
                                     <th class="wd-15p">Product Name</th>
                                     <th class="wd-15p">Customer Name</th>
                                     <th class="wd-15p">Customer Mobile</th>
-                                    <th class="wd-15p">Visited Date</th>
+                                    <th class="wd-15p">Enquiry Date & Time</th>
     
                                     
                                     
@@ -105,12 +106,13 @@ $date = Carbon\Carbon::now();
                                  @foreach ($enquiries as $enquiry)
                                  <tr>
                                     <td>{{ ++$i }}</td>
+                                    <td>ENQ-{{$enquiry->enquiry_id}}</td>
                                     <td>{{$enquiry->variant_name}}</td>
-                                    <td>{{$enquiry->customer_first_name}}</td>
+                                    <td>{{$enquiry->customer_first_name}}{{$enquiry->customer_last_name}}</td>
                                     <td>{{$enquiry->customer_mobile_number}}</td>
                                     <td>
                                  
-                                    {{ date('M d, Y', strtotime(@$enquiry->visited_date)) }}
+                                    {{ date('M d Y,h:i A', strtotime(@$enquiry->created_at)) }}
                                     </td>  
                                  </tr>
                                  @endforeach

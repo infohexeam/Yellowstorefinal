@@ -71,7 +71,7 @@ use App\Models\admin\Trn_points_redeemed;
                                   
                                    @if(isset($customers->town['town_name'])) 
                                 <tr>
-                                    <td><strong>Current Location Pincode :</strong> {{ @$customers->town['town_name']}}</td>
+                                    <td><strong>Pincode :</strong> {{ @$customers->town['town_name']}}</td>
                                  </tr>
                                   @endif
                                  

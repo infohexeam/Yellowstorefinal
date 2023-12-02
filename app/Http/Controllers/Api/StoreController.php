@@ -4052,6 +4052,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             'trn_store_customers.customer_last_name',
             'trn_store_customers.customer_mobile_number',
             'trn_customer_enquiry.store_id',
+            'trn_customer_enquiry.created_at',
             'mst_stores.store_name'
 
 
@@ -4092,7 +4093,8 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             'trn_store_customers.customer_last_name',
             'trn_store_customers.customer_mobile_number',
             'trn_customer_enquiry.store_id',
-            'mst_stores.store_name'
+            'mst_stores.store_name',
+            'trn_customer_enquiry.created_at',
 
 
         )->where('trn_customer_enquiry.store_id',$request->store_id);
