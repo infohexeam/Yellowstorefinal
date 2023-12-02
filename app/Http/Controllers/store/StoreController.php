@@ -6913,7 +6913,7 @@ public function showInHome(Request $request, $product_id)
       $start_date = $request->input('start_date');
       $end_date = $request->input('end_date');
 
-      $enquiries->whereBetween('trn_customer_enquiry.visited_date', [$start_date, $end_date]);
+      $enquiries->whereBetween('trn_customer_enquiry.created_at', [$start_date, $end_date]);
   }
   if (request('customer_name')!=NULL) {
       $enquiries->where('trn_store_customers.customer_first_name', 'like', '%' . request('customer_name') . '%');
