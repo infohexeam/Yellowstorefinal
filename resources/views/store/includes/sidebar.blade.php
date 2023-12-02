@@ -102,6 +102,12 @@
           <span class="side-menu__label"> {{ __('Orders') }}</span>
         </a>
       </li>
+      <li class="slide">
+       <a class="side-menu__item" href="{{route('store.list_enquiries')}}" >
+     <i class="side-menu__icon ti ti ti-user"></i>
+      <span class="side-menu__label"> {{ __('Enquiries') }}</span>
+     </a>
+      </li>
       
       <!--  <li class="slide">-->
       <!--  <a class="side-menu__item" href="" >-->
@@ -191,12 +197,7 @@
       <span class="side-menu__label"> {{ __('Referrals') }}</span>
      </a>
       </li>
-      <li class="slide">
-       <a class="side-menu__item" href="{{route('store.list_enquiries')}}" >
-     <i class="side-menu__icon ti ti ti-user"></i>
-      <span class="side-menu__label"> {{ __('Enquiries') }}</span>
-     </a>
-      </li>
+     
 
       <li><h3>General</h3></li>
 

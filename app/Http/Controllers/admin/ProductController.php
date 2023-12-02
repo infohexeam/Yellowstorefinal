@@ -2340,24 +2340,38 @@ class ProductController extends Controller
       $prev_amount[0]=0;
     
       
-      foreach($data->reverse() as $d)
-      {
+      foreach ($data->reverse() as $d) {
         $i++;
-        $total_count=Trn_store_order::whereIn('order_id',$check_array)->where('delivery_boy_id',@$d->delivery_boy_id)->orderBy('order_id','DESC')->count();
-        $orlink=Mst_order_link_delivery_boy::where('order_id',$d->order_id)->where('delivery_boy_id',@$d->delivery_boy_id)->first();
-        $tot_now_count[$i]=$total_count;
-        $tot_prev_count[$i]=$tot_now_count[$i]-1;
-        $cm=0;
-        $cm=$orlink->commision_per_month;
-        $co=$orlink->commision_per_order;
-        $d->previous_amount=$prev_amount[$i-1];
-        $d->new_amount=$prev_amount[$i-1]+@$co;
-        $prev_amount[$i]=$d->new_amount;
-        $d->c_month= $cm;
-        $d->c_order=$co;
-  
+        $total_count = Trn_store_order::whereIn('order_id', $check_array)
+            ->where('delivery_boy_id', @$d->delivery_boy_id)
+            ->orderBy('order_id', 'DESC')
+            ->count();
+    
+        $orlink = Mst_order_link_delivery_boy::where('order_id', $d->order_id)
+            ->where('delivery_boy_id', @$d->delivery_boy_id)
+            ->first();
+    
+        $tot_now_count[$i] = $total_count;
+        $tot_prev_count[$i] = $tot_now_count[$i] - 1;
+        $cm = 0;
+        $co = 0;
+    
+        if ($orlink) {
+            $cm = $orlink->commision_per_month;
+            $co = $orlink->commision_per_order;
+        }
+    
+        $d->previous_amount = $prev_amount[$i-1];
         
-      }
+        // Check if values are numeric before performing operations
+        $prev_amount_numeric = is_numeric($prev_amount[$i-1]) ? (float) $prev_amount[$i-1] : 0;
+        $co_numeric = is_numeric($co) ? (float) $co : 0;
+    
+        $d->new_amount = $prev_amount_numeric + $co_numeric;
+        $prev_amount[$i] = $d->new_amount;
+        $d->c_month = $cm;
+        $d->c_order = $co;
+    }
     //dd($check_array,$tot_now_count,$tot_prev_count);
 
 
