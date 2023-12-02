@@ -2915,6 +2915,12 @@ class SettingController extends Controller
 	}
 	public function destroySubadmin(Request $request, User $user)
 	{
+		$store_count=Mst_store::where('subadmin_id',$user->id)
+		->count();
+		if($store_count>0||$user->id==2)
+		{
+			return redirect()->back()->with('error', 'Subadmin cannot be removed as stores are assigned to this subadmin');
+		}
 
 		$delete = $user->delete();
 
@@ -3385,6 +3391,18 @@ class SettingController extends Controller
 
 	public function destroyDelivery_boy(Request $request, mst_delivery_boy $delivery_boy)
 	{
+		$db_count=Mst_store_link_delivery_boy::where('delivery_boy_id',$delivery_boy->delivery_boy_id)->count();
+        if($db_count)
+		{
+			return redirect()->back()->with('error', 'Delivery boy cannot be removed as linked to stores');
+			
+		}
+		$order_count=Trn_store_order::where('delivery_boy_id',$delivery_boy->delivery_boy_id)->count();
+		if($order_count)
+		{
+			return redirect()->back()->with('error', 'Delivery boy cannot be removed as orders are exist');
+			
+		}
 
 		$delete = $delivery_boy->delete();
 

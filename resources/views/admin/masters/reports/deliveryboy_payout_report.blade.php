@@ -113,9 +113,9 @@
                                             <th class="wd-15p">Packing Charge</th>
                                             <th class="wd-15p">Admin<br>Points Used</th>
                                             <th class="wd-15p">Store<br>Points Used</th>
-                                            <th class="wd-15p">Commision/Month</th>
-                                            <th class="wd-15p">Commision/Order</th>
-                                             <th class="wd-15p">Previous Commision</th>
+                                            <th class="wd-15p">Commission/Month</th>
+                                            <th class="wd-15p">Commission/Order</th>
+                                             <th class="wd-15p">Previous Commission</th>
                                             <th class="wd-15p">Commission After order</th>
 
                                            

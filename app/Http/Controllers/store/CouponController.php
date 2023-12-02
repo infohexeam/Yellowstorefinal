@@ -368,7 +368,12 @@ class CouponController extends Controller
   {
     try {
       //  $coupon_id  = Crypt::decryptString($coupon_id);
-      Mst_Coupon::where('coupon_id', $coupon_id)->delete();
+      $coupon_count=Trn_store_order::where('coupon_id',$coupon_id)->count();
+      if($coupon_count>0)
+      {
+        return redirect()->back()->with('error', 'Coupon cannot be removed as orders are exist');
+      }
+      Mst_Coupon::where('coupon_id',$coupon_id)->delete();
       return redirect()->route('store.list_coupon')->with('status', 'Coupon deleted successfully');
     } catch (\Exception $e) {
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();

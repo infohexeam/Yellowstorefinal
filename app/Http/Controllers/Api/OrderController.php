@@ -1156,6 +1156,14 @@ public function destroyDelivery_boy(Request $request)
             $delivery_boy=Mst_delivery_boy::find($delivery_boy_id);
             if($delivery_boy)
             {
+                $order_count=Trn_store_order::where('delivery_boy_id',$delivery_boy->delivery_boy_id)->count();
+                if($order_count)
+                {
+                    $data['status']=0;
+                    $data['message']="Delivery boy cannot be removed as orders are exist";
+                    return response($data);
+                    
+                }
                 $delete = $delivery_boy->delete();
                 $data['status']=1;
                 $data['message']="Delivery boy deleted successfully";

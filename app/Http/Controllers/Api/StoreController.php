@@ -4038,6 +4038,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
             $enquiries = Trn_customer_enquiry::leftjoin('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn_customer_enquiry.product_varient_id')
             ->leftjoin('trn_store_customers','trn_store_customers.customer_id','=','trn_customer_enquiry.customer_id')
+            ->leftjoin('mst_stores','mst_stores.store_id','=','trn_customer_enquiry.store_id')
             ->leftjoin('mst_store_products','mst_store_products.product_id','=','mst_store_product_varients.product_id')
             ->select('trn_customer_enquiry.enquiry_id',
             'trn_customer_enquiry.product_varient_id',
@@ -4048,8 +4049,10 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             'mst_store_product_varients.variant_name',
             'mst_store_product_varients.product_id',
             'trn_store_customers.customer_first_name',
+            'trn_store_customers.customer_last_name',
             'trn_store_customers.customer_mobile_number',
-            'trn_customer_enquiry.store_id'
+            'trn_customer_enquiry.store_id',
+            'mst_stores.store_name'
 
 
         )->where('trn_customer_enquiry.store_id',$request->store_id)->latest();
@@ -4075,6 +4078,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             // The 'with' method loads the relationships (customer, store, varient) to avoid additional queries.
             $enquiries = Trn_customer_enquiry::leftjoin('mst_store_product_varients','mst_store_product_varients.product_varient_id','=','trn_customer_enquiry.product_varient_id')
             ->leftjoin('trn_store_customers','trn_store_customers.customer_id','=','trn_customer_enquiry.customer_id')
+            ->leftjoin('mst_stores','mst_stores.store_id','=','trn_customer_enquiry.store_id')
             ->leftjoin('mst_store_products','mst_store_products.product_id','=','mst_store_product_varients.product_id')
             ->select('trn_customer_enquiry.enquiry_id',
             'trn_customer_enquiry.product_varient_id',
@@ -4085,8 +4089,10 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             'mst_store_product_varients.variant_name',
             'mst_store_product_varients.product_id',
             'trn_store_customers.customer_first_name',
+            'trn_store_customers.customer_last_name',
             'trn_store_customers.customer_mobile_number',
-            'trn_customer_enquiry.store_id'
+            'trn_customer_enquiry.store_id',
+            'mst_stores.store_name'
 
 
         )->where('trn_customer_enquiry.store_id',$request->store_id);

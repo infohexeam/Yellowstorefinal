@@ -44,7 +44,7 @@ use App\Models\admin\Trn_store_order;
 use App\Models\admin\Trn_GlobalProductVideo;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_store_customer;
-
+use App\Models\admin\Trn_store_order_item;
 
 class ProductController extends Controller
 {
@@ -1548,6 +1548,13 @@ class ProductController extends Controller
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
+                    $item_count=Trn_store_order_item::where('product_id',$request->product_id)->count();
+                    if($item_count>0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Product cannot be removed as orders are exist with this product";
+                        return response($data);
+                    }
                     $removeProduct = array();
                     $removeProduct['is_removed'] = 1;
                     $removeProduct['product_status'] = 0;

@@ -34,6 +34,7 @@ use App\Models\admin\Mst_product_image;
 use App\Models\admin\Mst_store_product_varient;
 
 use App\Models\admin\Mst_Coupon;
+use App\Models\admin\Trn_store_order;
 
 class CouponController extends Controller
 {
@@ -523,7 +524,13 @@ class CouponController extends Controller
                             {
                                 $coupon_id = $request->coupon_id;
                                 $store_id = $request->store_id;
-                               
+                                $coupon_count=Trn_store_order::where('coupon_id',$coupon_id)->count();
+                                if($coupon_count>0)
+                                {
+                                  $data['status'] = 0;
+                                  $data['message'] = "Coupon cannot be removed as orders are exist";
+                                  return response($data);
+                                }
                                     if(Mst_Coupon::where('coupon_id',$coupon_id)->where('store_id',$store_id)->delete())
                                     {
                                         $data['status'] = 1;
