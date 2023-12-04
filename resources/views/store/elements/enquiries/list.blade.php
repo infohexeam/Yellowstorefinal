@@ -108,7 +108,7 @@ $date = Carbon\Carbon::now();
                                     <td>{{ ++$i }}</td>
                                     <td>ENQ-{{$enquiry->enquiry_id}}</td>
                                     <td>{{$enquiry->variant_name}}</td>
-                                    <td>{{$enquiry->customer_first_name}}{{$enquiry->customer_last_name}}</td>
+                                    <td>{{$enquiry->customer_first_name}} {{$enquiry->customer_last_name}}</td>
                                     <td>{{$enquiry->customer_mobile_number}}</td>
                                     <td>
                                  

@@ -6902,6 +6902,7 @@ public function showInHome(Request $request, $product_id)
         'mst_store_product_varients.variant_name',
         'mst_store_product_varients.product_id',
         'trn_store_customers.customer_first_name',
+        'trn_store_customers.customer_last_name',
         'trn_store_customers.customer_mobile_number',
         'trn_customer_enquiry.store_id',
         'mst_stores.store_name',
