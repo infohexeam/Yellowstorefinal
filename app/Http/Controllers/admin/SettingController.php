@@ -1556,9 +1556,16 @@ class SettingController extends Controller
         ->where('mst_store_products.store_id', $store_id)
         ->where('mst_store_products.is_removed', 0)
         ->orderBy('mst_store_products.product_id', 'DESC')->get();
+		$store_product_varients  =Mst_store_product_varient::leftjoin('mst_store_products','mst_store_products.product_id','=','mst_store_product_varients.product_id')
+		->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->where('mst_store_products.store_id', $store_id)
+        ->where('mst_store_products.is_removed', 0)
+		->where('mst_store_product_varients.is_removed', 0)
+        ->orderBy('mst_store_products.product_id', 'DESC')->get();
+		//dd($store_product_varients);
 		$store_images = Mst_store_images::where('store_id', '=', $store_id)->get();
 		//dd($store_documents);
-		return view('admin.masters.stores.view', compact('delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'store_products'));
+		return view('admin.masters.stores.view', compact('store_product_varients','delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'store_products'));
 	}
 
 	// ajax check for email existance

@@ -306,19 +306,19 @@
                                  @php
                                  $i = 0;
                                  @endphp
-                                @if(!$store_products->isEmpty())
-                                 @foreach ($store_products as $product)
+                                @if(!$store_product_varients->isEmpty())
+                                 @foreach ($store_product_varients as $product)
                                  @php
                                  $i++;
                                  @endphp
                                  <tr>
                                     <td>{{$i}}</td>
-                                    <td>{{$product->product_name}}</td>  
-                                    <td>{{@$product->categories->category_name}}</td>
+                                    <td>{{$product->variant_name}}</td>  
+                                    <td>{{@$product->category_name}}</td>
                                     <td>{{$product->product_code}}</td>
-                                    <td>{{$product->product_price_offer}}</td>
+                                    <td>{{$product->product_varient_offer_price}}</td>
 
-                                    <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" ></td>
+                                    <td><img src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_varient_base_image)}}"  width="50" ></td>
                                  </tr>
                                  @endforeach
                                  @else
