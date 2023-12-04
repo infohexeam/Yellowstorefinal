@@ -1001,7 +1001,7 @@ class DeliveryBoyOrderController extends Controller
                     $crrr->reward_point_status = 1;
                     $crrr->discription = 'admin points';
                     $crrr->save(); 
-                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
                     foreach ($customerDevice as $cd) {
 
                         $title = 'App Order Points Credited';

@@ -213,7 +213,7 @@ input[type="file"] {
 
                                 <div class="col-md-6">
                                   <div class="form-group">
-                                    <label class="form-label">Attribute* </label>
+                                    <label class="form-label">Attribute </label>
                                     <select name="attr_group_id[500][]" onchange="findValue('500a0')"  id="attr_group500a0" class="attr_group form-control attrGroup500 proVariant" >
                                       <option value="">Attribute</option>
                                       @foreach($attr_groups as $key)
@@ -224,7 +224,7 @@ input[type="file"] {
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Value* </label>
+                                        <label class="form-label">Value </label>
                                         <select name="attr_value_id[500][]"   id="attr_value500a0" class="attr_value form-control proVariant" >
                                           <option value="">Value</option>
                                         </select>
@@ -316,7 +316,7 @@ input[type="file"] {
 
                                 <div class="col-md-6">
                                   <div class="form-group">
-                                    <label class="form-label">Attribute* </label>
+                                    <label class="form-label">Attribute </label>
                                     <select name="attr_group_id[0][]" onchange="findValue('0a0')"  id="attr_group0a0" class="attr_group form-control attrGroup0 proVariant" >
                                       <option value="">Attribute</option>
                                       @foreach($attr_groups as $key)
@@ -327,7 +327,7 @@ input[type="file"] {
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="form-label">Value* </label>
+                                        <label class="form-label">Value </label>
                                         <select name="attr_value_id[0][]"   id="attr_value0a0" class="attr_value form-control proVariant" >
                                           <option value="">Value</option>
                                         </select>
@@ -1008,7 +1008,7 @@ else
         {
           $('#tslot').show();
           $('#tsb_product_st').val("00:00");
-           $('#tsb_product_et').val("01:00");
+           $('#tsb_product_et').val("00:00");
           $(".tsb_product_ts").attr("required", true);
           $('#et_msg').html('');
         }

@@ -12,6 +12,7 @@
     
     @php
     use App\Models\admin\Mst_store;
+    use App\Models\admin\Trn_StoreAdmin;
 
     @endphp
 
@@ -27,16 +28,29 @@
 
         <div class="user-info">
 
-          <h6 class=" mb-0 text-dark">{{ (new \App\Helpers\Helper)->adminName(Auth::guard('store')->user()->store_admin_id) }}</h6>
+         
                 
                 @if(Auth::guard('store')->user()->role_id != 0)
+               
                 
                     @php
-                      $dataName =   Mst_store::find(Auth::guard('store')->user()->store_id)->store_mobile;
+                    $storeName=   Mst_store::find(Auth::guard('store')->user()->store_id)->store_name;
+                      $storeMobile =   Mst_store::find(Auth::guard('store')->user()->store_id)->store_mobile;
+                      $admin_name=Trn_StoreAdmin::find(Auth::guard('store')->user()->store_admin_id)->admin_name;
+                      $admin_mobile=Trn_StoreAdmin::find(Auth::guard('store')->user()->store_admin_id)->store_mobile;
                     @endphp
-    
-                  <span class="text-muted app-sidebar__user-name text-sm"> {{ @$dataName }}</span>
-              
+                  <h6 class=" mb-0 text-dark">{{$admin_name}}</h6>
+                  <span class="text-muted app-sidebar__user-name text-sm"> {{ @$storeName }}</span><br>
+                  <span class="text-muted app-sidebar__user-name text-sm"> {{ @$admin_mobile }}</span>
+              @else
+               @php
+                    $storeName=   Mst_store::find(Auth::guard('store')->user()->store_id)->store_name;
+                      $storeMobile =   Mst_store::find(Auth::guard('store')->user()->store_id)->store_mobile;
+                      $admin_name=Trn_StoreAdmin::find(Auth::guard('store')->user()->store_admin_id)->admin_name;
+                    @endphp
+                  <h6 class=" mb-0 text-dark">{{$storeName}}</h6>
+                  <span class="text-muted app-sidebar__user-name text-sm"> {{ @$storeMobile }}</span>
+
               @endif
               
         </div>

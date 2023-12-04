@@ -156,7 +156,7 @@ class RegisterController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'store_name'                       => 'required|unique:mst_stores',
+                'store_name'                       => 'required',
                 'store_contact_person_phone_number'=> 'required',
                 'business_type_id'                  => 'required',
                 //'email'                            => 'required|unique:mst_stores',
@@ -166,7 +166,7 @@ class RegisterController extends Controller
 
             ],
             [
-                'store_name.unique'                => 'Store name exists',
+                //'store_name.unique'                => 'Store name exists',
                 'store_name.required'                => 'Store name required',
                 'business_type_id.required'         => 'Business type is required',
                 'store_contact_person_phone_number.required' => 'Contact Person Number required',
