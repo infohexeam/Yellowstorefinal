@@ -113,12 +113,17 @@ input[type="file"] {
                               </select>
                         </div>
                     </div>
+                    
                      <div class="col-md-6">
                         <div class="form-group">
-                          <label class="form-label">Min Stock *</label>
-                          <input type="number" required class="form-control" onkeypress="preventNonNumericalInput(event)"  name="min_stock" id="min_stock" value="{{old('min_stock' )}}" placeholder="Min Stock">               
+                          <label class="form-label">Product Type *</label>
+                           <select onchange="proTypeChanged(this.value)" name="product_type" required id="product_type" class="form-control"  >
+                            <option value="">Product Type</option>
+                                 <option value="1"> Product</option>
+                                 <option value="2"> Service</option>
+                              </select>
                         </div>
-                    </div>
+                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
@@ -127,16 +132,14 @@ input[type="file"] {
                         <p id="productCodeMsg" style="color:red"></p>
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                     <div class="col-md-6" id="minStockDiv">
                         <div class="form-group">
-                          <label class="form-label">Product Type *</label>
-                           <select onchange="proTypeChanged(this.value)" name="product_type" required id="product_type" class="form-control"  >
-                                 <option value="1"> Product</option>
-                                 <option value="2"> Service</option>
-                              </select>
+                          <label class="form-label">Min Stock *</label>
+                          <input type="number" required class="form-control" onkeypress="preventNonNumericalInput(event)"  name="min_stock" id="min_stock" value="{{old('min_stock' )}}" placeholder="Min Stock">               
                         </div>
-                     </div>
+                    </div>
+
+                   
                       <div class="col-md-6">
                      
                       
@@ -810,7 +813,12 @@ function proTypeChanged(val)
 {
   if(val == 2){
     $("div#service_type_id").show();
+    
+    
     $(".proVariant").prop('required',false); 
+     $("div#minStockDiv").hide();
+    $("#min_stock").prop('required',false); 
+    $("#min_stock").val(0); 
     $("#service_type_input").prop('required',true);
     $("div#attSec").hide();
     $('#service_type_input').prop('selectedIndex',0);
@@ -819,6 +827,9 @@ function proTypeChanged(val)
   }
   else{
     $(".proVariant").prop('required',false); // edited after call
+    $("div#minStockDiv").show();
+     $("#min_stock").prop('required',true); 
+     $("#min_stock").val(null); 
     $("#service_type_input").prop('required',false);
     $("div#service_type_id").hide();
     $("div#attSec").show();

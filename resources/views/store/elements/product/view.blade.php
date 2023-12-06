@@ -140,10 +140,11 @@
                                     <td><strong>Image:</strong> <img data-toggle="modal" data-target="#viewSingleProduct" src="{{asset('/assets/uploads/products/base_product/base_image/'.$product->product_base_image)}}"  width="50" ></td>
                                  </tr>
 
-                                
+                                @if(@$product->product_type == 1)
                                 <tr>
                                      <td><strong>Minimum Stock Count:</strong> {{ @$product->stock_count}}</td>
                                 </tr>
+                                @endif
                                  
                               </tbody>
                            </table>

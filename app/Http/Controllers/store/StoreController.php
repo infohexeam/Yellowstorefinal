@@ -1006,7 +1006,11 @@ class StoreController extends Controller
         'regular_price'   => 'required|gt:0',
         'sale_price'   => 'required|gt:0',
         'tax_id'   => 'required',
-        'min_stock'   => 'required|gte:0',
+        'min_stock'           => [
+          'required',
+          'gte:0',
+          'required_if:product_type,1',
+      ],
         'product_code'   => 'required',
         // 'business_type_id'   => 'required',
         //'attr_group_id'   => 'required',
