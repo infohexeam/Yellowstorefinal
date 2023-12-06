@@ -144,11 +144,12 @@
                     </div>
                     <div class="col-md-6" id="minStockDiv">
                         <div class="form-group">
+                       
                           <label class="form-label">Min Stock *</label>
-                          <input type="number" required onkeypress="preventNonNumericalInput(event)" class="form-control"  name="min_stock" id="min_stock" value="{{old('min_stock',$product->stock_count )}}" placeholder="Min Stock">               
+                          <input type="text" required onkeypress="preventNonNumericalInput(event)" class="form-control"  name="min_stock" id="min_stock" value="{{old('min_stock',$product->stock_count )}}" placeholder="Min Stock">               
                         </div>
                     </div>
-
+                  <input type="hidden" name="mStock" id="mStock" value="{{$product->stock_count??0}}">
                   
                    <div class="col-md-6">
                      
@@ -1443,7 +1444,8 @@ function proTypeChanged(val)
     $("#service_type_input").prop('required',false);
      $("div#minStockDiv").show();
      $("#min_stock").prop('required',true); 
-     $("#min_stock").val(null); 
+     var mStockValue=$('#mStock').val();
+    $("#min_stock").val(mStockValue); 
     $("div#service_type_id").hide();
     $("div#attSec").show();
         $('#service_type_input').prop('selectedIndex',0);

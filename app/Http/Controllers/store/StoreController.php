@@ -1503,6 +1503,7 @@ class StoreController extends Controller
     $pageTitle = "Edit Product";
 
     $product = Mst_store_product::where('product_id', '=', $id)->first();
+    //dd($product);
     $product_id = $product->product_id;
     $videos = Trn_ProductVideo::where('product_id', '=', $id)->get();
 
