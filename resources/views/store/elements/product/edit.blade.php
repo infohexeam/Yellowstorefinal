@@ -1411,11 +1411,25 @@ $(document).ready(function () {
     
    var product_type = $('#product_type').val();
 
+
    if(product_type == 2){
       $("div#service_type_id").hide();
       $("div#minStockDiv").hide();
       $("#min_stock").prop('required',false); 
       $("#min_stock").val(0); 
+      var ser_type = $('#service_type_input').val();
+      //alert(ser_type);
+      if(ser_type==2)
+      {
+         //alert(1);
+      $("div#minStockDiv").show();
+      $("#min_stock").prop('required',true); 
+
+      }
+      else
+      {
+         
+      }
    }
    else{
       $("div#service_type_id").hide();
@@ -1436,6 +1450,21 @@ function proTypeChanged(val)
     $("#service_type_input").prop('required',true);
     $("div#attSec").hide();
     //$('#service_type_input').prop('selectedIndex',0);
+    var ser_type = $('#service_type_input').val();
+      //alert(ser_type);
+      if(ser_type==2)
+      {
+         //alert(1);
+      $("div#minStockDiv").show();
+      $("#min_stock").prop('required',true); 
+       var mStockValue=$('#mStock').val();
+    $("#min_stock").val(mStockValue); 
+
+      }
+      else
+      {
+         
+      }
 
 
   }
@@ -1459,12 +1488,19 @@ function servTypeChanged(v){
       $("div#attSec").hide();
 
       $(".proVariant").prop('required',false);
+       $("div#minStockDiv").hide();
+       $("#min_stock").prop('required',false); 
+       $("#min_stock").val(0); 
    
 
     }
     else{
       $("div#attSec").show();
       $(".proVariant").prop('required',false);
+        $("div#minStockDiv").show();
+     $("#min_stock").prop('required',true); 
+       var mStockValue=$('#mStock').val();
+    $("#min_stock").val(mStockValue); 
 
     }
   }

@@ -845,6 +845,9 @@ function servTypeChanged(v){
       $("#btnAddVar").hide();
 
       $(".proVariant").prop('required',false);
+       $("div#minStockDiv").hide();
+    $("#min_stock").prop('required',false); 
+    $("#min_stock").val(0); 
    
 
     }
@@ -852,6 +855,9 @@ function servTypeChanged(v){
       $("div#attSec").show();
       $(".proVariant").prop('required',false);  // edited after call
       $("#btnAddVar").show();
+       $("div#minStockDiv").show();
+     $("#min_stock").prop('required',true); 
+     $("#min_stock").val(null); 
 
     }
   }

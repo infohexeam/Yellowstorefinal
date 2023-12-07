@@ -95,13 +95,13 @@ $date = Carbon\Carbon::now();
                               <thead>
                                  <tr>
                                     <th class="wd-15p">SL.No</th>
-                                    <th class="wd-10p">Dispute<br>Date</th>
-                                    <th class="wd-15p">Issue<br>Type</th>
-                                    <th class="wd-15p">Order<br>Date</th>
-                                    <th class="wd-15p">Order<br>Number</th>
+                                    <th class="wd-10p">Dispute<br> Date</th>
+                                    <th class="wd-15p">Issue<br> Type</th>
+                                    <th class="wd-15p">Order<br> Date</th>
+                                    <th class="wd-15p">Order<br> Number</th>
                                     {{-- <th class="wd-15p">Store<br>Name</th> --}}
-                                    <th class="wd-10p">Sub<br>Admin</th>
-                                    <th class="wd-20p">Dispute<br>status</th>
+                                    <th class="wd-10p">Sub<br> Admin</th>
+                                    <th class="wd-20p">Dispute<br> status</th>
                                     <th class="wd-10p">Action</th>
                                  </tr>
                               </thead>

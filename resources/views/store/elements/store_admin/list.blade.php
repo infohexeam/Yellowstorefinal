@@ -107,7 +107,7 @@
                <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h5 class="modal-title" id="example-Modal3">{{$pageTitle}}</h5>
+                        <h5 class="modal-title" id="example-Modal3">View Store Admin</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -172,7 +172,7 @@
         buttons: [
             {
                 extend: 'pdf',
-                title: 'StoerAdmin',
+                title: 'Store Admin',
                 footer: true,
                 exportOptions: {
                      columns: [0,1,2,3,4,5]
@@ -182,7 +182,7 @@
             },
             {
                 extend: 'excel',
-                title: 'StoerAdmin',
+                title: 'Store Admin',
                 footer: true,
                 exportOptions: {
                      columns: [0,1,2,3,4,5]
