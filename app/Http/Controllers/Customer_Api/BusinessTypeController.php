@@ -173,7 +173,7 @@ class BusinessTypeController extends Controller
                         $offerProduct->ratingCount = $countRating;
                         $productDataFinal[] =   $offerProduct;
                     }
-                    $data['offerProducts']  =    $productDataFinal;
+                    $data['offerProducts'] = array_slice($productDataFinal, 0, 10);
 
 
 
@@ -329,7 +329,7 @@ class BusinessTypeController extends Controller
                     }
                 
                     
-                    $otherStoress = $otherStores->whereNotIn('mst_stores.store_id',$expiredStoresOthers)->get();
+                    $otherStoress = $otherStores->whereNotIn('mst_stores.store_id',$expiredStoresOthers)->inRandomOrder()->take(20)->get();
                     $otherStoresTwo = array();
 
 
@@ -367,7 +367,9 @@ class BusinessTypeController extends Controller
                             $otherStoresTwo[] = $otherStores;
                         }
                     }
-                    $data['otherStores']  = $otherStoresTwo;
+                    //$data['otherStores']  = $otherStoresTwo;
+                    shuffle($otherStoresTwo); // Shuffle the array randomly
+                    $data['otherStores'] = array_slice($otherStoresTwo, 0, 20); // Limit to 20 elements
 
                     $data['message'] = 'success';
                     $data['status'] = 1;
@@ -496,7 +498,7 @@ class BusinessTypeController extends Controller
                             $offerProduct->ratingCount = $countRating;
                             $productDataFinal[] =   $offerProduct;
                         }
-                        $data['offerProducts']  =    $productDataFinal;
+                        $data['offerProducts'] = array_slice($productDataFinal, 0, 10);
 
 
 
@@ -635,7 +637,7 @@ class BusinessTypeController extends Controller
                                 
                                 }
                             }
-                            $nearByStoresData = $stores->whereNotIn('mst_stores.store_id',$expiredStores)->get();
+                            $nearByStoresData = $stores->whereNotIn('mst_stores.store_id',$expiredStores)->limit(10)->get();
                         } else {
                             $listedStores =Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
                     ->where('trn__store_admins.role_id', 0)
@@ -658,7 +660,7 @@ class BusinessTypeController extends Controller
                             $nearByStoresData  = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
                                 ->where('trn__store_admins.role_id', 0)->where('mst_stores.online_status', 1)
                                 ->where('mst_stores.business_type_id', $business_type_id)
-                                ->where('trn__store_admins.store_account_status', 1)->whereNotIn('mst_stores.store_id',$expiredStores)->orderBy('mst_stores.store_id', 'ASC')->limit(3)->get();
+                                ->where('trn__store_admins.store_account_status', 1)->whereNotIn('mst_stores.store_id',$expiredStores)->orderBy('mst_stores.store_id', 'ASC')->limit(10)->get();
                         }
 
                         $nearStoreArray[] = 0;
@@ -782,7 +784,9 @@ class BusinessTypeController extends Controller
                             }
                         }
 
-                        $data['otherStores'] = $otherStoresFinal;
+                        shuffle($otherStoresFinal); // Shuffle the array randomly
+                        $data['otherStores'] = array_slice($otherStoresFinal, 0, 20); // Limit to 20 elements
+
                         $data['message'] = 'success';
                         $data['status'] = 1;
                     } else {
