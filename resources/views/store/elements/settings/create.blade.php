@@ -128,7 +128,7 @@
                      <div class="col-md-6">
                       <div class="form-group">
                          <label class="form-label">Order Number Prefix</label>
-                         <input type="text"  class="form-control" oninput="checkUnique(this.value)" name="order_number_prefix"  value="{{old('order_number_prefix',$store->order_number_prefix)}}" placeholder="Order Number Prefix">
+                         <input type="text"  class="form-control" oninput="checkUnique(this.value)" name="order_number_prefix"  value="{{old('order_number_prefix',$store->order_number_prefix)}}" placeholder="Order Number Prefix" required>
                         <span style="color:red" id="prefixErr" ></span>
                       </div>
                    </div>
@@ -397,12 +397,22 @@ $(document).ready(function() {
 function checkUnique(prefix){
     var _token= $('input[name="_token"]').val();
     $('#updateBtn').prop('disabled',true);
+    if(prefix=="")
+    {
+      $('#prefixErr').text("");
+      $('#updateBtn').prop('disabled',false);
+
+    }
+
+    if(prefix!="")
+    {
 
         $.ajax({
           type:"GET",
           url:"{{ url('ajax/stre-order/prefix-unique') }}?prefix="+prefix,
           success:function(res){
             if(res == 'exist'){
+              //alert(prefix);
                 $('#prefixErr').text("Prefix already taken");
                 $('#updateBtn').prop('disabled',true);
             }else{
@@ -411,6 +421,7 @@ function checkUnique(prefix){
             }
           }
         });
+    }
 }
 
 function makeValue(val)
