@@ -30,7 +30,7 @@
                              </div>
                              
                               <div class="card-body border">
-                                <form action="{{route('store.delivery_boy_payout_reports')}}" method="GET" enctype="multipart/form-data">
+                                <form action="{{route('admin.delivery_boy_payout_reports')}}" method="GET" enctype="multipart/form-data">
                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6">
@@ -47,17 +47,40 @@
                                             </div>
                                          </div>
                                          
+                                          @if(auth()->user()->user_role_id  == 0) 
+                                            <div class="col-md-6">
+                                              <div class="form-group">
+                                                 <label class="form-label">Sub Admin</label>
+                                                 <div id="subadminl"></div>
+                                                       <select  name="subadmin_id" id="subadminId" class="form-control select2-show-search" data-placeholder="Sub Admin" >
+                                                          <option value="">Sub Admin</option>
+                                                             @foreach($subadmins as $key)
+                                                             <option {{request()->input('subadmin_id') == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
+                                                             @endforeach
+                                                       </select>
+                                              </div>
+                                           </div>
+                                        @endif
                                          
-                                         
-                                        
+                                        {{-- <div class="col-md-6">
+                                            <div class="form-group">
+                                              <label class="form-label">Store </label>
+                                               <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
+                                                     <option value="">Store</option>
+                                                    @foreach($stores as $key)
+                                                    <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
+                                                    @endforeach
+                                                  </select>
+                                            </div>
+                                         </div>
                                       
-                                         
+                                         --}}
                                          <div class="col-md-12">
                                             <div class="form-group">
                                                 <center>
                                                    <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
                                                    {{-- <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button> --}}
-                                                   <a href="{{route('store.delivery_boy_payout_reports')}}"  class="btn btn-info">Cancel</a>
+                                                   <a href="{{route('admin.delivery_boy_payout_reports')}}"  class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
                                           </div>
@@ -77,7 +100,7 @@
                                             <th class="wd-15p">Date</th>
                                             <th class="wd-15p">Order Number</th>
                                             
-                                           
+                                            <th class="wd-15p">Store</th>
                                             <th class="wd-15p">Delivery Boy</th>
                                            
                                             <th class="wd-15p">Subadmin</th>
@@ -88,10 +111,13 @@
                                             <th class="wd-15p">Total Amount</th>
                                             <th class="wd-15p">Delivery Charge</th>
                                             <th class="wd-15p">Packing Charge</th>
+                                            <th class="wd-15p">Admin<br>Points Used</th>
+                                            <th class="wd-15p">Store<br>Points Used</th>
                                             <th class="wd-15p">Commission/Month</th>
                                             <th class="wd-15p">Commission/Order</th>
                                              <th class="wd-15p">Previous Commission</th>
                                             <th class="wd-15p">Commission After order</th>
+
                                            
                                             
                                            
@@ -104,16 +130,27 @@
                                       <tbody>
                                           
                                         @php
-                                        $i = 0;
+                                       
+                                        //dd($total_count);
+                                        $i=0;
                                         @endphp
                                         @foreach ($data as $d)
+                                       
                                         <tr>
                                             <td>{{ ++$i }}</td>
+                                             @php
+                                       
+                                    
+                                        
+                                        
+                                       
+
+                                        @endphp
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
 
                                             <td>{{ $d->order_number }}</td>
                                             
-                                           
+                                             <td>{{ $d->store_name }}</td>
                                                <td>
                                                 @if(isset($d->delivery_boy_name))
                                                  {{ $d->delivery_boy_name }}
@@ -126,11 +163,24 @@
                                             <td>{{ $d->product_total_amount }}</td>
                                             <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
                                              <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->c_month,2)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->c_order,2)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->previous_amount+@$d->c_month)??0.00 }}</td>
-                                            <td>{{ number_format(@$d->new_amount+@$d->c_month)??0.00 }}</td>
-
+                                             <td>
+                                                @if(isset($d->reward_points_used))
+                                                {{ $d->reward_points_used }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($d->reward_points_used))
+                                                {{ $d->reward_points_used_store }}
+                                                @else
+                                                ---
+                                                @endif
+                                            </td>
+                                            <td>{{ @$d->c_month??0.00 }}</td>
+                                            <td>{{ @$d->c_order??0.00 }}</td>
+                                            <td>{{ @$d->previous_amount+@$d->c_month??0.00 }}</td>
+                                            <td>{{ @$d->new_amount+@$d->c_month??0.00 }}</td>
 
                                           
                                             
@@ -142,8 +192,8 @@
 
                                         </tr>
                                         @endforeach
-                               
-                                    
+                              
+                                   
                                       </tbody>
                                    </table>
                                 </div>
@@ -166,17 +216,17 @@
                 title: 'Delivery Boy Payout Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
                  },
                  orientation : 'landscape',
-                pageSize : 'A4',
+                pageSize : 'LEGAL',
             },
             {
                 extend: 'excel',
                 title: 'Delivery Boy Payout Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
                  }
             }
          ]

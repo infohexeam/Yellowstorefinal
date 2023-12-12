@@ -2339,8 +2339,8 @@ class ProductController extends Controller
       $tot_now_count[0]=0;
       $prev_amount[0]=0;
     
-      
-      foreach ($data->reverse() as $d) {
+      $prev_amount = []; // Use an associative array to store previous amounts for each delivery boy
+     /* foreach ($data->reverse() as $d) {
         $i++;
         $total_count = Trn_store_order::whereIn('order_id', $check_array)
             ->where('delivery_boy_id', @$d->delivery_boy_id)
@@ -2371,7 +2371,46 @@ class ProductController extends Controller
         $prev_amount[$i] = $d->new_amount;
         $d->c_month = $cm;
         $d->c_order = $co;
-    }
+    }*/
+    foreach ($data->reverse() as $d) {
+      $i++;
+      $delivery_boy_id = $d->delivery_boy_id;
+  
+      // Use the delivery boy ID as the key in the associative array
+      if (!isset($prev_amount[$delivery_boy_id])) {
+          $prev_amount[$delivery_boy_id] = 0;
+      }
+  
+      $total_count = Trn_store_order::whereIn('order_id', $check_array)
+          ->where('delivery_boy_id', $delivery_boy_id)
+          ->orderBy('order_id', 'DESC')
+          ->count();
+  
+      $orlink = Mst_order_link_delivery_boy::where('order_id', $d->order_id)
+          ->where('delivery_boy_id', $delivery_boy_id)
+          ->first();
+  
+      $tot_now_count[$i] = $total_count;
+      $tot_prev_count[$i] = $tot_now_count[$i] - 1;
+      $cm = 0;
+      $co = 0;
+  
+      if ($orlink) {
+          $cm = $orlink->commision_per_month;
+          $co = $orlink->commision_per_order;
+      }
+  
+      $d->previous_amount = $prev_amount[$delivery_boy_id];
+  
+      // Check if values are numeric before performing operations
+      $prev_amount_numeric = is_numeric($prev_amount[$delivery_boy_id]) ? (float) $prev_amount[$delivery_boy_id] : 0;
+      $co_numeric = is_numeric($co) ? (float) $co : 0;
+  
+      $d->new_amount = $prev_amount_numeric + $co_numeric;
+      $prev_amount[$delivery_boy_id] = $d->new_amount;
+      $d->c_month = $cm;
+      $d->c_order = $co;
+  }
     //dd($check_array,$tot_now_count,$tot_prev_count);
 
 

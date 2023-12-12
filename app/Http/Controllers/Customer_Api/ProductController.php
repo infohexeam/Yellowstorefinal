@@ -1771,7 +1771,7 @@ class ProductController extends Controller
                 if($getParentExpiry)
                {
                     $parentExpiryDate = $getParentExpiry->expiry_date;
-                    if($today>=$parentExpiryDate)
+                    if($today>$parentExpiryDate)
                    {
                        array_push($expiredStores,$store->store_id);
                     }
@@ -5922,7 +5922,7 @@ class ProductController extends Controller
                         if($getParentExpiry)
                         {
                             $parentExpiryDate = $getParentExpiry->expiry_date;
-                            if($today>=$parentExpiryDate)
+                            if($today>$parentExpiryDate)
                             {
                                 array_push($expiredStores,$store->store_id);
                             }
@@ -6007,7 +6007,7 @@ class ProductController extends Controller
                         if($getParentExpiry)
                         {
                             $parentExpiryDate = $getParentExpiry->expiry_date;
-                            if($today>=$parentExpiryDate)
+                            if($today>$parentExpiryDate)
                             {
                                 array_push($expiredStoresOthers,$store->store_id);
                             }
@@ -6267,7 +6267,7 @@ class ProductController extends Controller
                         if($getParentExpiry)
                         {
                             $parentExpiryDate = $getParentExpiry->expiry_date;
-                            if($today>=$parentExpiryDate)
+                            if($today>$parentExpiryDate)
                             {
                                 array_push($expiredStores,$store->store_id);
                             }
@@ -6384,7 +6384,7 @@ class ProductController extends Controller
                         if($getParentExpiry)
                         {
                             $parentExpiryDate = $getParentExpiry->expiry_date;
-                            if($today>=$parentExpiryDate)
+                            if($today>$parentExpiryDate)
                             {
                                 array_push($expiredStores,$store->store_id);
                             }
@@ -6404,7 +6404,7 @@ class ProductController extends Controller
                         if($getParentExpiry)
                         {
                             $parentExpiryDate = $getParentExpiry->expiry_date;
-                            if($today>=$parentExpiryDate)
+                            if($today>$parentExpiryDate)
                             {
                                 array_push($expiredStores,$store->store_id);
                             }
@@ -7149,7 +7149,7 @@ class ProductController extends Controller
                 if($getParentExpiry)
                 {
                     $parentExpiryDate = $getParentExpiry->expiry_date;
-                    if($today>=$parentExpiryDate)
+                    if($today>$parentExpiryDate)
                     {
                         array_push($expiredStores,$store->store_id);
                     }

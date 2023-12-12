@@ -155,7 +155,7 @@
                         <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">Country *</label>
-                            <select name="store_country_id" required="" class="form-control" id="country" >
+                            <select name="store_country_id" required="" class="form-control select2-show-search" id="country" >
                                  <option value=""> Select Country</option>
                                 @foreach($countries as $key)
                                 <option {{old('store_country_id',$store->store_country_id) == $key->country_id ? 'selected':''}} value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -171,7 +171,7 @@
                                @$states_data = \DB::table('sys_states')->where('country_id',@$store->store_country_id)->get();
                                //dd($store->store_state_id);
                            @endphp
-                            <select name="store_state_id" required="" class="form-control" id="state" >
+                            <select name="store_state_id" required="" class="form-control select2-show-search" id="state" >
                              @foreach ($states_data as $value)
                           
                                 <option  @if($store->store_state_id)@if ($store->store_state_id == $value->state_id)  selected  @endif @endif  value="{{@$value->state_id}}">  {{@$value->state_name}}</option>
@@ -185,7 +185,7 @@
                           @php
                                @$district_data = \DB::table('mst_districts')->where('state_id',@$store->store_state_id)->get();
                            @endphp
-                           <select name="store_district_id" required="" class="form-control" id="city">
+                           <select name="store_district_id" required="" class="form-control select2-show-search" id="city">
                            @foreach (@$district_data as $value)
                                 <option @if($store->store_district_id) @if ($store->store_district_id == $value->district_id)  selected  @endif @endif  value="{{@$value->district_id}}">  {{@$value->district_name}}</option>
 
@@ -197,7 +197,7 @@
                          <div class="col-md-6">
                          <div class="form-group">
                               <label class="form-label">Pincode *</label>
-                              <select name="store_town" required="" class="form-control" id="town">
+                              <select name="store_town" required="" class="form-control select2-show-search" id="town">
                                  <option  selected="" value="{{$store->town_id}}">  {{@$store->town['town_name']}}</option>
                               </select>
                            </div>
@@ -246,7 +246,7 @@
 
                         <div class="form-group">
                            <label class="form-label">Sub Admin</label>
-                             <select required name="subadmin_id"  class="form-control"  >
+                             <select required name="subadmin_id"  class="form-control select2-show-search"  >
                                   <option value=""> Select Sub Admin</option>
                                  @foreach($subadmins as $key)
                                  <option {{old('subadmin_id',$store->subadmin_id) == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
@@ -368,7 +368,7 @@
                       <div class="col-md-6">
                            <div class="form-group">
                     <label class="form-label">Business Type *</label>
-                    <select name="business_type_id" required="" class="form-control" >
+                    <select name="business_type_id" required="" class="form-control select2-show-search" >
                                  <option value=""> Select Business Type</option>
                                 @foreach($business_types as $key)
                                 <option {{old('business_type_id',$store->business_type_id) == $key->business_type_id ? 'selected':''}} value="{{$key->business_type_id}}"> {{$key->business_type_name }} </option>
@@ -389,7 +389,7 @@
                        <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">Expiration Date</label>
-                          <input type="date" id="expdate"  required name="expiry_date" class="form-control" placeholder="Expiration Date" value="{{old('expiry_date',@$store_admin->expiry_date)}}">
+                          <input type="date" id="expdate"  required name="expiry_date" class="form-control" placeholder="Expiration Date" value="{{old('expiry_date',@$store_admin->expiry_date)}}" min="{{ \Carbon\Carbon::now()->toDateString() }}">
                         </div>
 
                      </div>
@@ -914,7 +914,7 @@
 
                          <div id="store">
                            <label class="form-label">Delivery Boy</label>
-                           <select name="delivery_boy_id[]" required="" class="form-control" >
+                           <select name="delivery_boy_id[]" required="" class="form-control select2-show-search" >
                                  <option value=""> Select Delivery Boy</option>
                                 @foreach($all_delivery_boys as $key)
  @if (!in_array($key->delivery_boy_id, $all_assigned_dboys))
@@ -1126,7 +1126,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div>  <br>   <label class="form-label">Delivery Boy</label><select name="delivery_boy_id[]" required="" class="form-control" >  <option value=""> Select Delivery Boy</option>@foreach($all_delivery_boys as $key) @if (!in_array($key->delivery_boy_id, $all_assigned_dboys))<option {{old('delivery_boy_id') == $key->delivery_boy_id ? 'selected':''}} value="{{$key->delivery_boy_id}}"> {{$key->delivery_boy_name }} </option> @endif @endforeach</select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div>  <br>   <label class="form-label">Delivery Boy</label><select name="delivery_boy_id[]" required="" class="form-control select2-show-search" >  <option value=""> Select Delivery Boy</option>@foreach($all_delivery_boys as $key) @if (!in_array($key->delivery_boy_id, $all_assigned_dboys))<option {{old('delivery_boy_id') == $key->delivery_boy_id ? 'selected':''}} value="{{$key->delivery_boy_id}}"> {{$key->delivery_boy_name }} </option> @endif @endforeach</select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
 
   });
 

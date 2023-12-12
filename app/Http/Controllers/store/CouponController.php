@@ -1670,6 +1670,224 @@ class CouponController extends Controller
   public function deliveryBoyPayoutReport(Request $request)
   {
     // echo "working...";die;
+    try {
+
+      $pageTitle = "Delivery Boy Payout Reports";
+      $datefrom = '';
+      $dateto = '';
+      $total_count=0;
+      $store_id = Auth::guard('store')->user()->store_id;
+
+
+      if (auth()->user()->user_role_id  == 0) {
+        $stores = Mst_store::orderby('store_id', 'DESC')->get();
+      } else {
+        $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+      }
+
+      $subadmins = User::where('user_role_id', '!=', 0)->get();
+
+      $customers = Trn_store_customer::all();
+
+      $deliveryBoys =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+        ->get();
+
+      $orderStatus = Sys_store_order_status::all();
+
+
+
+      $data = Trn_store_order::select(
+
+        'trn_store_orders.order_id',
+        'trn_store_orders.order_number',
+        'trn_store_orders.customer_id',
+        'trn_store_orders.store_id',
+        'trn_store_orders.subadmin_id',
+        'trn_store_orders.product_total_amount',
+        'trn_store_orders.delivery_charge',
+        'trn_store_orders.packing_charge',
+        'trn_store_orders.payment_type_id',
+        'trn_store_orders.status_id',
+        'trn_store_orders.payment_status',
+        'trn_store_orders.delivery_status_id',
+        'trn_store_orders.delivery_boy_id',
+        'trn_store_orders.coupon_id',
+        'trn_store_orders.coupon_code',
+        'trn_store_orders.reward_points_used',
+        'trn_store_orders.reward_points_used_store',
+        'trn_store_orders.amount_before_applying_rp',
+        'trn_store_orders.trn_id',
+        'trn_store_orders.created_at',
+        'trn_store_orders.amount_reduced_by_coupon',
+        'trn_store_orders.order_type',
+
+        'trn_store_customers.customer_id',
+        'trn_store_customers.customer_first_name',
+        'trn_store_customers.customer_last_name',
+        'trn_store_customers.customer_mobile_number',
+        'trn_store_customers.place',
+
+        'mst_stores.store_id',
+        'mst_stores.store_name',
+        'mst_stores.store_mobile',
+
+        'mst_delivery_boys.delivery_boy_name',
+        'mst_delivery_boys.delivery_boy_mobile',
+        'mst_delivery_boys.delivery_boy_commision',
+        'mst_delivery_boys.delivery_boy_commision_amount'
+
+
+
+
+      )
+        ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+        ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+        ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+
+      
+      $data = $data->where('trn_store_orders.delivery_status_id', '=', 3)
+                    ->whereNotNull('mst_delivery_boys.delivery_boy_name');
+
+      if ($_GET) {
+        $datefrom = $request->date_from;
+        $dateto = $request->date_to;
+
+        $a1 = Carbon::parse($request->date_from)->startOfDay();
+        $a2  = Carbon::parse($request->date_to)->endOfDay();
+
+        if (isset($request->date_from)) {
+          $data = $data->whereDate('trn_store_orders.created_at', '>=', $a1);
+        }
+
+        if (isset($request->date_to)) {
+          $data = $data->whereDate('trn_store_orders.created_at', '<=', $a2);
+        }
+
+
+        if (isset($request->customer_id)) {
+          $data = $data->where('trn_store_orders.customer_id', '=', $request->customer_id);
+        }
+
+        if (isset($request->delivery_boy_id)) {
+          $data = $data->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
+        }
+
+        if (isset($request->status_id)) {
+          $data = $data->where('trn_store_orders.status_id', '=', $request->status_id);
+        }
+
+        if (isset($request->order_type)) {
+          $data = $data->where('trn_store_orders.order_type', '=', $request->order_type);
+        }
+
+        if (isset($request->subadmin_id)) {
+          $data = $data->where('trn_store_orders.subadmin_id', '=', $request->subadmin_id);
+        }
+
+        if (isset($request->store_id)) {
+          $data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
+        }
+      }
+    
+      $data = $data->where('trn_store_orders.store_id', $store_id)->orderBy('trn_store_orders.order_id','DESC')->get();
+      $check_array=[];
+      $i = 0;
+      $tot_pre=[];
+      $tot_now=[];
+      $tot_prev_count=[];
+      $tot_now_count=[];
+      // $cm=[];
+      // $co=[];
+      //dd(count($data));
+      $tot_prev_count[0]=0;
+      $tot_now_count[0]=0;
+      $prev_amount[0]=0;
+    
+      $prev_amount = []; // Use an associative array to store previous amounts for each delivery boy
+     /* foreach ($data->reverse() as $d) {
+        $i++;
+        $total_count = Trn_store_order::whereIn('order_id', $check_array)
+            ->where('delivery_boy_id', @$d->delivery_boy_id)
+            ->orderBy('order_id', 'DESC')
+            ->count();
+    
+        $orlink = Mst_order_link_delivery_boy::where('order_id', $d->order_id)
+            ->where('delivery_boy_id', @$d->delivery_boy_id)
+            ->first();
+    
+        $tot_now_count[$i] = $total_count;
+        $tot_prev_count[$i] = $tot_now_count[$i] - 1;
+        $cm = 0;
+        $co = 0;
+    
+        if ($orlink) {
+            $cm = $orlink->commision_per_month;
+            $co = $orlink->commision_per_order;
+        }
+    
+        $d->previous_amount = $prev_amount[$i-1];
+        
+        // Check if values are numeric before performing operations
+        $prev_amount_numeric = is_numeric($prev_amount[$i-1]) ? (float) $prev_amount[$i-1] : 0;
+        $co_numeric = is_numeric($co) ? (float) $co : 0;
+    
+        $d->new_amount = $prev_amount_numeric + $co_numeric;
+        $prev_amount[$i] = $d->new_amount;
+        $d->c_month = $cm;
+        $d->c_order = $co;
+    }*/
+    foreach ($data->reverse() as $d) {
+      $i++;
+      $delivery_boy_id = $d->delivery_boy_id;
+  
+      // Use the delivery boy ID as the key in the associative array
+      if (!isset($prev_amount[$delivery_boy_id])) {
+          $prev_amount[$delivery_boy_id] = 0;
+      }
+  
+      $total_count = Trn_store_order::whereIn('order_id', $check_array)
+          ->where('delivery_boy_id', $delivery_boy_id)
+          ->orderBy('order_id', 'DESC')
+          ->count();
+  
+      $orlink = Mst_order_link_delivery_boy::where('order_id', $d->order_id)
+          ->where('delivery_boy_id', $delivery_boy_id)
+          ->first();
+  
+      $tot_now_count[$i] = $total_count;
+      $tot_prev_count[$i] = $tot_now_count[$i] - 1;
+      $cm = 0;
+      $co = 0;
+  
+      if ($orlink) {
+          $cm = $orlink->commision_per_month;
+          $co = $orlink->commision_per_order;
+      }
+  
+      $d->previous_amount = $prev_amount[$delivery_boy_id];
+  
+      // Check if values are numeric before performing operations
+      $prev_amount_numeric = is_numeric($prev_amount[$delivery_boy_id]) ? (float) $prev_amount[$delivery_boy_id] : 0;
+      $co_numeric = is_numeric($co) ? (float) $co : 0;
+  
+      $d->new_amount = $prev_amount_numeric + $co_numeric;
+      $prev_amount[$delivery_boy_id] = $d->new_amount;
+      $d->c_month = $cm;
+      $d->c_order = $co;
+  }
+    //dd($check_array,$tot_now_count,$tot_prev_count);
+
+
+    return view('store.elements.reports.deliveryboy_payout_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','tot_now_count','tot_prev_count','check_array','tot_pre','tot_now','total_count'));
+      //return view('admin.masters.reports.deliveryboy_payout_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','tot_now_count','tot_prev_count','check_array','tot_pre','tot_now','total_count'));
+    } catch (\Exception $e) {
+      return redirect()->back()->withErrors([$e->getMessage()])->withInput();
+      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+  }
+  /*public function deliveryBoyPayoutReport(Request $request)
+  {
+    // echo "working...";die;
    
 
       $pageTitle = "Delivery Boy Payout Reports";
@@ -1845,5 +2063,150 @@ class CouponController extends Controller
 
       return view('store.elements.reports.deliveryboy_payout_report', compact('subadmins','orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle','tot_now_count','tot_prev_count','check_array','tot_pre','tot_now','total_count'));
   
+  }*/
+  /*public function deliveryBoyPayoutReport(Request $request)
+  {
+      $pageTitle = "Delivery Boy Payout Reports";
+      $datefrom = '';
+      $dateto = '';
+      $total_count = 0;
+      $store_id = Auth::guard('store')->user()->store_id;
+  
+      $subadmins = User::where('user_role_id', '!=', 0)->get();
+      $customers = Trn_store_customer::all();
+      $deliveryBoys =  Mst_store_link_delivery_boy::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'mst_store_link_delivery_boys.delivery_boy_id')
+          ->get();
+      $orderStatus = Sys_store_order_status::all();
+  
+      $data = Trn_store_order::select(
+          'trn_store_orders.order_id',
+          'trn_store_orders.order_number',
+          'trn_store_orders.customer_id',
+          'trn_store_orders.store_id',
+          'trn_store_orders.subadmin_id',
+          'trn_store_orders.product_total_amount',
+          'trn_store_orders.delivery_charge',
+          'trn_store_orders.packing_charge',
+          'trn_store_orders.payment_type_id',
+          'trn_store_orders.status_id',
+          'trn_store_orders.payment_status',
+          'trn_store_orders.delivery_status_id',
+          'trn_store_orders.delivery_boy_id',
+          'trn_store_orders.coupon_id',
+          'trn_store_orders.coupon_code',
+          'trn_store_orders.reward_points_used',
+          'trn_store_orders.amount_before_applying_rp',
+          'trn_store_orders.trn_id',
+          'trn_store_orders.created_at',
+          'trn_store_orders.amount_reduced_by_coupon',
+          'trn_store_orders.order_type',
+          'trn_store_customers.customer_id',
+          'trn_store_customers.customer_first_name',
+          'trn_store_customers.customer_last_name',
+          'trn_store_customers.customer_mobile_number',
+          'trn_store_customers.place',
+          'mst_stores.store_id',
+          'mst_stores.store_name',
+          'mst_stores.store_mobile',
+          'mst_delivery_boys.delivery_boy_name',
+          'mst_delivery_boys.delivery_boy_mobile',
+          'mst_delivery_boys.delivery_boy_commision',
+          'mst_delivery_boys.delivery_boy_commision_amount'
+      )
+          ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_orders.customer_id')
+          ->leftjoin('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
+          ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_store_orders.store_id');
+  
+      if (auth()->user()->user_role_id  != 0) {
+          $data = $data->where('trn_store_orders.subadmin_id', '=', auth()->user()->id);
+      }
+  
+      $data = $data->where('trn_store_orders.delivery_status_id', '=', 3)
+          ->whereNotNull('mst_delivery_boys.delivery_boy_name');
+  
+      if ($_GET) {
+          $datefrom = $request->date_from;
+          $dateto = $request->date_to;
+  
+          $a1 = Carbon::parse($request->date_from)->startOfDay();
+          $a2  = Carbon::parse($request->date_to)->endOfDay();
+  
+          if (isset($request->date_from)) {
+              $data = $data->whereDate('trn_store_orders.created_at', '>=', $a1);
+          }
+  
+          if (isset($request->date_to)) {
+              $data = $data->whereDate('trn_store_orders.created_at', '<=', $a2);
+          }
+  
+          if (isset($request->customer_id)) {
+              $data = $data->where('trn_store_orders.customer_id', '=', $request->customer_id);
+          }
+  
+          if (isset($request->delivery_boy_id)) {
+              $data = $data->where('trn_store_orders.delivery_boy_id', '=', $request->delivery_boy_id);
+          }
+  
+          if (isset($request->status_id)) {
+              $data = $data->where('trn_store_orders.status_id', '=', $request->status_id);
+          }
+  
+          if (isset($request->order_type)) {
+              $data = $data->where('trn_store_orders.order_type', '=', $request->order_type);
+          }
+  
+          if (isset($request->subadmin_id)) {
+              $data = $data->where('trn_store_orders.subadmin_id', '=', $request->subadmin_id);
+          }
+  
+          if (isset($request->store_id)) {
+              $data = $data->where('trn_store_orders.store_id', '=', $request->store_id);
+          }
+      }
+  
+      $data = $data->where('trn_store_orders.store_id', $store_id)->orderBy('trn_store_orders.order_id', 'DESC')->get();
+      $check_array = [];
+      $i = 0;
+      $tot_pre = [];
+      $tot_now = [];
+      $tot_prev_count = [];
+      $tot_now_count = [];
+      $tot_prev_count[0] = 0;
+      $tot_now_count[0] = 0;
+      $prev_amount[0] = 0;
+      $prev_amount = [];
+  
+      foreach ($data->reverse() as $d) {
+          $i++;
+          array_push($check_array, $d->order_id);
+          $total_count = Trn_store_order::whereIn('order_id', $check_array)
+              ->where('delivery_boy_id', @$d->delivery_boy_id)
+              ->orderBy('order_id', 'DESC')
+              ->count();
+          $orlink = Mst_order_link_delivery_boy::where('order_id', $d->order_id)
+              ->where('delivery_boy_id', @$d->delivery_boy_id)
+              ->first();
+              $delivery_boy_id = $d->delivery_boy_id;
+  
+              // Use the delivery boy ID as the key in the associative array
+              if (!isset($prev_amount[$delivery_boy_id])) {
+                  $prev_amount[$delivery_boy_id] = 0;
+              }
+          $tot_now_count[$i] = $total_count;
+          $tot_prev_count[$i] = $tot_now_count[$i] - 1;
+          $cm = (float)$orlink->commision_per_month;
+          $co = (float)$orlink->commision_per_order;
+          $d->previous_amount = $prev_amount[$delivery_boy_id];
+          $d->new_amount = $d->previous_amount + @$co;
+          $prev_amount[$delivery_boy_id] = $d->new_amount;
+          $d->c_month = $cm;
+          $d->c_order = $co;
+      }
+  
+      return view('store.elements.reports.deliveryboy_payout_report', compact('subadmins', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle', 'tot_now_count', 'tot_prev_count', 'check_array', 'tot_pre', 'tot_now', 'total_count'));
   }
+  */
+  
+  
+
 }

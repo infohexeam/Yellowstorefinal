@@ -3469,13 +3469,14 @@ class StoreController extends Controller
         $tot_now_count[0]=0;
         $prev_amount[0]=0;
         $month_commision[0]=0;
+        $prev_amount = []; // Use an associative array to store previous amounts for each delivery boy
         
         
 
 
 
                 foreach ($deliveryReport->reverse() as $sd) {
-                    $i++;
+                   /* $i++;
           
                     array_push($check_array,$sd->order_id);
                     $orlink=Mst_order_link_delivery_boy::where('order_id',$sd->order_id)->where('delivery_boy_id',@$sd->delivery_boy_id)->first();
@@ -3501,7 +3502,39 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
                     $commission_month_numeric = is_numeric($sd->commission_month) ? (float) $sd->commission_month : 0;
                     $sd->previous_commission = $previous_commission_numeric + $commission_month_numeric;
 
-                    $sd->commission_after_order=$sd->commission_after_order+$sd->commission_month;
+                    $sd->commission_after_order=$sd->commission_after_order+$sd->commission_month;*/
+                    $i++;
+                    array_push($check_array, $sd->order_id);
+                    $orlink = Mst_order_link_delivery_boy::where('order_id', $sd->order_id)->where('delivery_boy_id', @$sd->delivery_boy_id)->first();
+                    $total_count = Trn_store_order::whereIn('order_id', $check_array)->where('delivery_boy_id', @$sd->delivery_boy_id)->orderBy('order_id', 'DESC')->count();
+                    $tot_now_count[$i] = $total_count;
+                    $tot_prev_count[$i] = $tot_now_count[$i] - 1;
+                    $sd->orderTotalDiscount = Helper::orderTotalDiscount($sd->order_id);
+                    $sd->orderTotalTax = Helper::orderTotalTax($sd->order_id);
+                    $sd->subadmin_name = Helper::subAdminName($sd->subadmin_id) ?? '';
+                    $sd->subadmin_phone = $sd->subadmindetail->phone ?? '';
+                    $month_commision[$i] = $orlink->commision_per_month;
+                    $sd->commission_month = $orlink->commision_per_month ?? $sd->delivery_boy_commision;
+                    $sd->commission_order = $orlink->commision_per_order ?? $sd->delivery_boy_commision_amount;
+    
+                    $delivery_boy_id = $sd->delivery_boy_id;
+    
+                    if (!isset($prev_amount[$delivery_boy_id])) {
+                        $prev_amount[$delivery_boy_id] = 0;
+                    }
+    
+                    $prev_amount_numeric = is_numeric($prev_amount[$delivery_boy_id]) ? (float) $prev_amount[$delivery_boy_id] : 0;
+                    $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->commission_order : 0;
+    
+                    $sd->previous_commission = number_format($prev_amount_numeric);
+                    $sd->commission_after_order = $prev_amount_numeric + $commission_order_numeric;
+                    $prev_amount[$delivery_boy_id] = $sd->commission_after_order;
+    
+                    $previous_commission_numeric = is_numeric($sd->previous_commission) ? (float) $sd->previous_commission : 0;
+                    $commission_month_numeric = is_numeric($sd->commission_month) ? (float) $sd->commission_month : 0;
+    
+                    $sd->previous_commission = $previous_commission_numeric + $commission_month_numeric;
+                    $sd->commission_after_order = $sd->commission_after_order + $sd->commission_month;
 
                     //////////////////////////////////////////////
         //             $cm=$orlink->commision_per_month;

@@ -118,7 +118,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Country *</label>
-                            <select name="store_country_id" required="" onchange=" @if(old('store_country_id'))  @else findCountry(this.value) @endif" class="form-control" id="country" >
+                            <select name="store_country_id" required="" onchange=" @if(old('store_country_id'))  @else findCountry(this.value) @endif" class="form-control select2-show-search" id="country" >
                                  <option value=""> Select Country</option>
                                 @foreach( @$countries as $key)
                                 <option {{old('store_country_id') == $key->country_id ? 'selected':''}} value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -130,7 +130,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">State *</label>
-                            <select name="store_state_id" required=""  onchange=" @if(old('store_state_id'))  @else findCity(this.value) @endif  "  class="form-control" id="state" >
+                            <select name="store_state_id" required=""  onchange=" @if(old('store_state_id'))  @else findCity(this.value) @endif  "  class="form-control select2-show-search" id="state" >
                             @if(old('store_state_id'))
                                 @php
                                     $town = \DB::table('sys_states')->where('state_id',old('store_state_id'))->first();
@@ -146,7 +146,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">District *</label>
-                          <select name="store_district_id" required="" onchange=" @if(old('store_state_id'))  @else findTown(this.value) @endif " class="form-control" id="city">
+                          <select name="store_district_id" required="" onchange=" @if(old('store_state_id'))  @else findTown(this.value) @endif " class="form-control select2-show-search" id="city">
                                  @if(old('store_district_id'))
                                 @php
                                     $town = \DB::table('mst_districts')->where('district_id',old('store_district_id'))->first();
@@ -162,7 +162,7 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="form-label">Pincode *</label>
-                              <select name="store_town" required="" class="form-control" id="town">
+                              <select name="store_town" required="" class="form-control select2-show-search" id="town">
                              @if(old('store_town'))
                                 @php
                                     $town = \DB::table('mst_towns')->where('town_id',old('store_town'))->first();

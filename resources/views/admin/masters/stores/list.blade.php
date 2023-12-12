@@ -41,7 +41,7 @@ use App\Models\admin\Trn_StoreBankData;
                   <div class="form-group">
                      <label class="form-label">Country</label>
                                              <div id="countryl"></div>
-<select name="store_country_id"  class="form-control" id="country" >
+<select name="store_country_id"  class="form-control select2-show-search" id="country" >
                                  <option value=""> Select Country</option>
                                 @foreach($countries as $key)
                                 <option {{request()->input('store_country_id') == $key->country_id ? 'selected':''}} value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -52,7 +52,7 @@ use App\Models\admin\Trn_StoreBankData;
                 <div class="col-md-3">
                   <div class="form-group">
                      <label class="form-label">State</label>
-                      <select name="store_state_id"  class="form-control" id="state" >
+                      <select name="store_state_id"  class="form-control select2-show-search" id="state" >
                        <option {{request()->input('store_state_id')}} value=""> Select State</option>
                                @if (request()->input('store_state_id'))
                                     @foreach(@$states as $key)
@@ -65,7 +65,7 @@ use App\Models\admin\Trn_StoreBankData;
                 <div class="col-md-3">
                   <div class="form-group">
                      <label class="form-label">District</label>
-                     <select name="store_district_id" class="form-control" id="city">
+                     <select name="store_district_id" class="form-control select2-show-search" id="city">
                              <option value="">Select District</option>
                                @if (request()->input('store_district_id'))
                                   @foreach(@$districts as $key)
@@ -79,7 +79,7 @@ use App\Models\admin\Trn_StoreBankData;
                 <div class="col-md-3">
                   <div class="form-group">
                      <label class="form-label">Pincode</label>
-                     <select name="store_town_id" class="form-control" id="town">
+                     <select name="store_town_id" class="form-control select2-show-search" id="town">
                              <option value="">Select Pincode</option>
                                @if (request()->input('store_town_id'))
                                  @foreach(@$town as $key)
@@ -122,7 +122,7 @@ use App\Models\admin\Trn_StoreBankData;
                       <div class="col-md-6">
                           <div class="form-group">
                            <label class="form-label">Sub Admin</label>
-                             <select name="subadmin_id"  class="form-control"  >
+                             <select name="subadmin_id"  class="form-control select2-show-search"  >
                                   <option value=""> Select Sub Admin</option>
                                  @foreach(@$subadmins as $key)
                                  <option {{request()->input('subadmin_id') == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
