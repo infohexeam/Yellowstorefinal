@@ -778,7 +778,7 @@ class SettingController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'store_name'       				   => 'required',
+				'store_name'       				   => 'required|unique:mst_stores',
 				'store_contact_person_name'        => 'required',
 				'store_contact_person_phone_number' => 'required',
 				'store_pincode'				       => 'required',
@@ -803,6 +803,7 @@ class SettingController extends Controller
 			],
 			[
 				'store_name.required'         				 => 'Store name required',
+				'store_name.unique'         				 => 'Store name already exists',
 				'store_mobile.required'         				 => 'Store name required',
 				'store_mobile.unique'         				 => 'Store mobile number already exists',
 				// 'email.required'         				 => 'Email required',
