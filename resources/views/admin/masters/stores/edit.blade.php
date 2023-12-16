@@ -197,8 +197,15 @@
                          <div class="col-md-6">
                          <div class="form-group">
                               <label class="form-label">Pincode *</label>
+                           @php
+                               @$pin_data = \DB::table('mst_towns')->where('district_id',@$store->store_district_id)->get();
+                           @endphp
                               <select name="store_town" required="" class="form-control select2-show-search" id="town">
-                                 <option  selected="" value="{{$store->town_id}}">  {{@$store->town['town_name']}}</option>
+                                
+                                  @foreach (@$pin_data as $value)
+                                <option @if($store->town_id) @if ($store->town_id == $value->town_id)  selected  @endif @endif  value="{{@$value->town_id}}">  {{@$value->town_name}}</option>
+
+                                 @endforeach
                               </select>
                            </div>
                         </div>

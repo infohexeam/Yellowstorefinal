@@ -175,7 +175,7 @@
                        
                           <label class="form-label">Time slot</label>
                           <div class="form-group">
-                           <label class="form-label">start Time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_start_time" id="tsb_product_st"  onclick="checkTimeSlot()" @if($product->timeslot_start_time) value="{{$product->timeslot_start_time}}" @endif>
+                           <label class="form-label">Start time:</label> <input type="time" required class="tsb_product_ts form-control" name="timeslot_start_time" id="tsb_product_st"  onclick="checkTimeSlot()" @if($product->timeslot_start_time) value="{{$product->timeslot_start_time}}" @endif>
                             <span style="color:red" id="st_msg"> </span>
                            </div>
                              <div class="form-group">
@@ -1604,7 +1604,7 @@ var date2 = new Date("01/01/2023 " + time2);
 
  if (date1 >= date2) {
     //alert(time1 + " is later than " + time2);
-     $('#et_msg').html('starting time cannot be greater than endtime');
+     $('#et_msg').html('Starting time cannot be greater than endtime');
      $("#submit").prop("disabled", true);
 }
 else
