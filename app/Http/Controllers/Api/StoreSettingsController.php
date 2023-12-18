@@ -708,6 +708,7 @@ class StoreSettingsController extends Controller
                         'place'          => 'required',
                         'store_pincode'          => 'required',
                         'store_primary_address'          => 'required',
+                        'profile_description'          => 'required',
                         'store_images.*.store_image'          => 'required',
                         'store_images.*.default_image'          => 'required',
 
@@ -756,6 +757,7 @@ class StoreSettingsController extends Controller
                     $data2['latitude'] = $request->latitude;
                     $data2['longitude'] = $request->longitude;
                     $data2['place'] = $request->place;
+                    $data2['profile_description']=$request->profile_description;
 
 
 

@@ -93,6 +93,13 @@
                                 <input type="text" maxlength="10" required onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" name="store_mobile" class="form-control"  value="{{old('store_mobile')}}" placeholder="Store Mobile Number ">
                             </div>
                         </div>
+                       <div class="col-md-12">
+                        <div class="form-group">
+                           <label class="form-label">Store Profile Description *</label>
+                           <textarea class="form-control"  name="store_profile_description" required
+                           rows="4" placeholder="Store Profile Description">{{old('store_profile_description')}}</textarea>
+                        </div>
+                     </div>
 
                      <div class="col-md-6">
                          <div class="form-group">
@@ -311,6 +318,7 @@
                            rows="4" placeholder="Store Address">{{old('store_primary_address')}}</textarea>
                         </div>
                      </div>
+                     
 
 
                   </div>

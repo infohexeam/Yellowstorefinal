@@ -127,6 +127,13 @@
                                 <input type="text" readonly="" maxlength="10" name="store_mobile" class="form-control"  value="{{old('store_mobile',$store->store_mobile)}}" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  placeholder="Store Mobile Number">
                             </div>
                         </div>
+                         <div class="col-md-12">
+                        <div class="form-group">
+                           <label class="form-label">Store Profile Description *</label>
+                           <textarea class="form-control"  name="store_profile_description" required
+                           rows="4" placeholder="Store Profile Description">{{old('store_profile_description',$store->profile_description)}}</textarea>
+                        </div>
+                     </div>
 
                       <div class="col-md-6">
                          <div class="form-group">
@@ -393,6 +400,7 @@
                         </div>
 
                      </div>
+                     
                        <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">Expiration Date</label>

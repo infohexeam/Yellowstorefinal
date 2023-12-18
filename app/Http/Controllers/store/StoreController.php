@@ -376,6 +376,7 @@ class StoreController extends Controller
         'store_contact_person_phone_number' => 'required',
         'store_town'               => 'required',
         'store_primary_address'            => 'required',
+        'store_profile_description'            => 'required',
         'store_country_id'             => 'required',
         //	'profile_image'			       => 'required',
         'store_state_id'                  => 'required',
@@ -505,6 +506,7 @@ class StoreController extends Controller
         //'store_qrcode' => $request->store_qrcode,
         'upi_id' => $request->upi_id,
          'gst' => $request->gst,
+         'profile_description'=>$request->store_profile_description
 
       ];
 

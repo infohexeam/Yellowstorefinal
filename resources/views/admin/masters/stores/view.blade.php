@@ -44,6 +44,14 @@
                                  <tr>
                                     <td><strong>Store Name:</strong> {{ @$store->store_name}}</td>
                                  </tr>
+                                   <tr>
+                                     <td><strong>Store Profile Description :</strong>
+                                     <span style="display: inline-flex;" > <?php
+                                        echo nl2br(@$store->profile_description);
+                                        ?> </span>
+                                     </td>
+
+                                 </tr>
                                  <tr>
                                     <td><strong>Contact Person Name:</strong> {{ @$store->store_contact_person_name}}</td>
                                  </tr>
@@ -125,6 +133,7 @@
                                      </td>
 
                                  </tr>
+
                               </tbody>
                            </table>
 

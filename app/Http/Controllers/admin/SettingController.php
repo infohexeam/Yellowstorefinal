@@ -783,6 +783,7 @@ class SettingController extends Controller
 				'store_contact_person_phone_number' => 'required',
 				'store_pincode'				       => 'required',
 				'store_primary_address'            => 'required',
+				'store_profile_description'            => 'required',
 				'store_country_id'			       => 'required',
 				'store_state_id'       		       => 'required',
 				'business_type_id' 					=> 'required',
@@ -884,6 +885,7 @@ class SettingController extends Controller
 			$store->product_upload_limit         = $request->product_limit;
 			$store->password                     = Hash::make($request->password);
 			$store->store_otp_verify_status       = 0;
+			$store->profile_description=$request->store_profile_description;
 			if ($store_added_by == 0) {
 				$store->store_account_status         = 1;
 			} else {
@@ -1099,6 +1101,7 @@ class SettingController extends Controller
 				'store_contact_person_phone_number' => 'required',
 				'store_town'				       => 'required',
 				'store_primary_address'            => 'required',
+				'store_profile_description'            => 'required',
 				'store_country_id'			       => 'required',
 				'store_state_id'       		       => 'required',
 				'product_limit' 					=> 'required|numeric|gte:0',
@@ -1241,6 +1244,7 @@ class SettingController extends Controller
 			$store->delivery_option_future           =$future_delivery;
 			$store->pay_delivery_status           =$pad;
 			$store->collect_store_status           =$css;
+			$store->profile_description=$request->store_profile_description;
 
 			if (auth()->user()->user_role_id == 0) {
 				$store->subadmin_id          = $request->subadmin_id??2;
