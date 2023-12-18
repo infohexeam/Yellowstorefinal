@@ -630,7 +630,8 @@ class StoreSettingsController extends Controller
                         'place',
                         'longitude',
                         'latitude',
-                        'store_referral_id'
+                        'store_referral_id',
+                        'profile_description'
                     )
                     ->first()
                 ) {
