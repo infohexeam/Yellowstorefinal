@@ -211,6 +211,12 @@
       <span class="side-menu__label"> {{ __('Referrals') }}</span>
      </a>
       </li>
+    <li class="slide">
+       <a class="side-menu__item" href="{{route('store.add_youtube_videos')}}" >
+     <i class="side-menu__icon ti fa fa-youtube"></i>
+      <span class="side-menu__label"> {{ __('Youtube Promotional Links') }}</span>
+     </a>
+      </li>
      
 
       <li><h3>General</h3></li>

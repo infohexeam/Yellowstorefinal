@@ -2017,11 +2017,11 @@ class SettingController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'youtube_link'    					=> 'required',
+				'youtube_link.*'    					=> 'required',
 
 			],
 			[
-				'youtube_link.required'       => 'Youtube link required',
+				'youtube_link.*.required'       => 'Youtube link required',
 
 
 

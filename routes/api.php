@@ -232,6 +232,9 @@ Route::group(['prefix' => 'store'], function () {
    Route::get('store-level-referrals', 'Api\StoreController@getStoreReferrals');
    Route::get('list-enquiries', 'Api\StoreController@listEnquiries');
    Route::get('enquiry-reports', 'Api\StoreController@enquiryReports');
+   Route::get('list-youtube-videos', 'Api\StoreController@listYoutubeVideos');
+   Route::get('store-youtube-videos', 'Api\StoreController@storeYoutubeVideos');
+   Route::post('remove-youtube-videos', 'Api\StoreController@removeYoutubeVideos');
  
     //STORE PROFILE
     Route::get('store-info/list', 'Api\StoreSettingsController@listStoreInfo');

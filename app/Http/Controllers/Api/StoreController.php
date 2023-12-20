@@ -4163,5 +4163,95 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             return response(['status' => 0, 'message' => $e->getMessage()]);
         }
     }
+    public function listYoutubeVideos(Request $request)
+    {
+          $store_id=$request->store_id;
+         $store= Mst_store::find($store_id);
+         if($store)
+         {
+            $links=DB::table('trn_store_youtube_videos')->where('store_id',$store_id)->get();
 
+         }
+         else
+         {
+            $links=[];
+         }
+           
+    
+            return response()->json([
+                'status' => 1,
+                'message' => 'Youtube links fetched successfully.',
+                'data'=>$links
+            ], 200);
+        
+    }
+    public function storeYoutubeVideos(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'youtube_link.*' => 'required',
+            ],
+            [
+                'youtube_link.*.required' => 'Youtube link required',
+            ]
+        );
+    
+        if (!$validator->fails()) {
+            $data = $request->except('_token');
+    
+            $date = Carbon::now();
+            $values = $request->youtube_link;
+    
+            $responseData = [];
+    
+            foreach ($values as $value) {
+                $videoData = [
+                    'youtube_link' => $value,
+                    'store_id' => $request->store_id,
+                    'youtube_title' => $value,
+                    'youtube_status' => 1,
+                ];
+    
+                DB::table('trn_store_youtube_videos')->insert($videoData);
+    
+                $responseData[] = $videoData;
+            }
+    
+            return response()->json([
+                'status' => 1,
+                'message' => 'Youtube links added successfully.',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+    }
+    public function RemoveYoutubeVideos(Request $request)
+	{
+        $link_id=$request->link_id;
+		$ytvideo = DB::table('trn_store_youtube_videos')->where('youtube_link_id',$link_id);
+		if($ytvideo->first())
+		{
+			$ytvideo->delete();
+            return response()->json([
+                'status' => 1,
+                'message' => 'Youtube links deleted successfully.',
+            ], 200);
+
+		}
+        else
+        {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Youtube links not exist.',
+            ], 200);
+
+        }
+		
+		return redirect()->back()->with('status', 'Youtube video removed');
+	}
 }

@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('store.layouts.app')
 @section('content')
 <div class="container">
    <div class="row" style="min-height:70vh;">
@@ -31,7 +31,7 @@
                            <td><a href="{{$link->youtube_link}}" target="_blank">{{$link->youtube_link}}</a></td>
                           
                            <td>
-                              <a class="btn btn-small btn-danger" href="{{ url('admin/store/remove_youtube/'.$link->youtube_link_id) }}">Remove</a>
+                              <a class="btn btn-small btn-danger" href="{{ url('store/remove_youtube/'.$link->youtube_link_id) }}">Remove</a>
                            </td>                    
                         </tr>
                         @endif
@@ -53,17 +53,17 @@
                   </ul>
                </div>
                @endif
-               <form action="{{route('admin.store_youtube_videos',$store->store_id)}}" method="POST"
+               <form action="{{route('store.store_youtube_videos')}}" method="POST"
                   enctype="multipart/form-data">
                   @csrf
                   <div class="row">
                      <div class="col-md-10">
                         <div class="form-group">
                           
-                          <input type="hidden" name="store_id" value="{{$store->store_id}}">
+                         
                          <div id="agency">
                            <label class="form-label">Youtube Links </label>
-                           <input type="text" required name="youtube_link[]" class="form-control">
+                           <input type="text" name="youtube_link[]" class="form-control" required>
                          
                         </div>
                      </div>
@@ -113,7 +113,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div> <br> <label class="form-label">Youtube Links </label><input required type="text" name="youtube_link[]" class="form-control"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div> <br> <label class="form-label">Youtube Links </label><input type="text" required name="youtube_link[]" class="form-control"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
     
   });
 

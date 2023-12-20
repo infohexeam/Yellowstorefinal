@@ -6956,5 +6956,73 @@ public function showInHome(Request $request, $product_id)
                    //dd($user_logs);
         return view('admin.masters.user_logs.list',compact('user_logs','pageTitle'));
     }
+    public function addYoutubeVideos(Request $request)
+	{
+
+		$pageTitle = "Add Youtube Videos";
+		$youtube_links=DB::table('trn_store_youtube_videos')->where('store_id',Auth::guard('store')->user()->store_id)->get();
+    $store=Mst_store::findOrFail(Auth::guard('store')->user()->store_id);
+		
+		//dd($agencies);
+		return view('store.elements.add_youtube', compact('store', 'pageTitle','youtube_links'));
+	}
+	public function storeYoutubeVideos(Request $request)
+	{
+		$validator = Validator::make(
+			$request->all(),
+			[
+				'youtube_link.*'    					=> 'required',
+
+			],
+			[
+				'youtube_link.*.required'       => 'Youtube link required',
+
+
+
+			]
+		);
+
+		if (!$validator->fails()) {
+			$data = $request->except('_token');
+
+
+			$date =  Carbon::now();
+			$values = $request->youtube_link;
+			//dd($values);
+			foreach ($values as $value) {
+
+				$data = [
+					[
+						'youtube_link' => $value,
+						'store_id' => Auth::guard('store')->user()->store_id,
+						'youtube_title' => $value,
+						'youtube_status' => 1,
+
+
+					],
+				];
+
+				DB::table('trn_store_youtube_videos')->insert($data);
+			}
+
+			return redirect()->back()->with('status', 'Youtube links added successfully.');
+		} else {
+
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
+
+		
+	}
+	public function RemoveYoutubeVideos($link_id)
+	{
+		$ytvideo = DB::table('trn_store_youtube_videos')->where('youtube_link_id',$link_id);
+		if($ytvideo)
+		{
+			$ytvideo->delete();
+
+		}
+		
+		return redirect()->back()->with('status', 'Youtube video removed');
+	}
   
 }

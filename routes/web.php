@@ -196,7 +196,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('admin/store/add_youtube/{id}', 'SettingController@addYoutubeVideos')->name('admin.add_youtube_videos');
         Route::post('admin/store/store_youtube/{store_id}', 'SettingController@storeYoutubeVideos')->name('admin.store_youtube_videos');
-        Route::get('admin/store/remove_youtube/{link_id}', 'SettingController@RemoveYoutubeVideos')->name('admin.store_youtube_videos');
+        Route::get('admin/store/remove_youtube/{link_id}', 'SettingController@RemoveYoutubeVideos')->name('admin.remove_youtube_videos');
         
         ////////////////////////
         Route::get('admin/store/assign_delivery_boy/{id}', 'SettingController@assignDelivery_boy')->name('admin.assign_delivery_boy_store');
@@ -995,7 +995,13 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/delivery-order/view/{id}', 'StoreController@viewDeliveryOrder')->name('store.view_delivery_order');
 
         Route::get('store/switch=status', 'StoreController@switchStatus')->name('store.switchStatus');
-
+  //Youtube videos
+   //assign youtube videos
+   Route::get('store/add_youtube','StoreController@addYoutubeVideos')->name('store.add_youtube_videos');
+   Route::post('store/store_youtube','StoreController@storeYoutubeVideos')->name('store.store_youtube_videos');
+   Route::get('store/remove_youtube/{link_id}', 'StoreController@RemoveYoutubeVideos')->name('admin.remove_youtube_videos');
+   
+   ////////////////////////
         // video gallery
         Route::get('store/video-gallery', 'StoreController@videoGallery')->name('store.video_gallery');
        //configure points
