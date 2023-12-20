@@ -192,7 +192,13 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::post('admin/store/destroy/agency/{agency}', 'SettingController@destroyStore_Agency')->name('admin.destroy_store_agency');
 
+        //assign youtube videos
 
+        Route::get('admin/store/add_youtube/{id}', 'SettingController@addYoutubeVideos')->name('admin.add_youtube_videos');
+        Route::post('admin/store/store_youtube/{store_id}', 'SettingController@storeYoutubeVideos')->name('admin.store_youtube_videos');
+        Route::get('admin/store/remove_youtube/{link_id}', 'SettingController@RemoveYoutubeVideos')->name('admin.store_youtube_videos');
+        
+        ////////////////////////
         Route::get('admin/store/assign_delivery_boy/{id}', 'SettingController@assignDelivery_boy')->name('admin.assign_delivery_boy_store');
 
         Route::post('admin/store/assign/delivery_boy{store_link_delivery_boy_id}', 'SettingController@addStoreDelivery_boy')->name('admin.add_store_delivery_boy');

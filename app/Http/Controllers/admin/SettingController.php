@@ -1952,6 +1952,7 @@ class SettingController extends Controller
 		return view('admin.masters.stores.assign_agency', compact('linked_agencies', 'store', 'pageTitle', 'agencies'));
 	}
 
+
 	public function addStoreAgency(Request $request, Mst_store_link_agency $link_agency)
 	{
 
@@ -1997,6 +1998,77 @@ class SettingController extends Controller
 
 			return redirect()->back()->withErrors($validator)->withInput();
 		}
+	}
+	public function addYoutubeVideos(Request $request, $id)
+	{
+
+		$pageTitle = "Add Youtube Videos";
+
+		$store = Mst_store::where('store_name_slug', '=', $id)->first();
+
+		$youtube_links=DB::table('trn_store_youtube_videos')->where('store_id',@$store->store_id)->get();
+
+		
+		//dd($agencies);
+		return view('admin.masters.stores.add_youtube', compact('store', 'pageTitle','youtube_links'));
+	}
+	public function storeYoutubeVideos(Request $request, $id)
+	{
+		$validator = Validator::make(
+			$request->all(),
+			[
+				'youtube_link'    					=> 'required',
+
+			],
+			[
+				'youtube_link.required'       => 'Youtube link required',
+
+
+
+			]
+		);
+
+		if (!$validator->fails()) {
+			$data = $request->except('_token');
+
+
+			$date =  Carbon::now();
+			$values = $request->youtube_link;
+			//dd($values);
+			foreach ($values as $value) {
+
+				$data = [
+					[
+						'youtube_link' => $value,
+						'store_id' => $id,
+						'youtube_title' => $value,
+						'youtube_status' => 1,
+
+
+					],
+				];
+
+				DB::table('trn_store_youtube_videos')->insert($data);
+			}
+
+			return redirect('admin/store/list')->with('status', 'Youtube links added successfully.');
+		} else {
+
+			return redirect()->back()->withErrors($validator)->withInput();
+		}
+
+		
+	}
+	public function RemoveYoutubeVideos($link_id)
+	{
+		$ytvideo = DB::table('trn_store_youtube_videos')->where('youtube_link_id',$link_id);
+		if($ytvideo)
+		{
+			$ytvideo->delete();
+
+		}
+		
+		return redirect()->back()->with('status', 'Youtube video removed');
 	}
 	public function listCompany(Request $request)
 	{

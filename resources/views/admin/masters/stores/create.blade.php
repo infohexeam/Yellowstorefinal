@@ -96,8 +96,9 @@
                        <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">Store Profile Description *</label>
-                           <textarea class="form-control"  name="store_profile_description" required
+                           <textarea id="storeProfileDescription" class="form-control"  name="store_profile_description" required
                            rows="4" placeholder="Store Profile Description">{{old('store_profile_description')}}</textarea>
+                           <!-- <p id="wordCount">Words left: 100</p>-->
                         </div>
                      </div>
 
@@ -565,7 +566,35 @@ function validatePassLength() {
 }
 </script>
 
+ <script>
+        $(document).ready(function () {
+            var textarea = $('#storeProfileDescription');
+            var wordCountDisplay = $('#wordCount');
+            var maxWords = 100;
 
+            textarea.on('input', function () {
+                var words = textarea.val().split(/\s+/).filter(function (word) {
+                    return word.length > 0;
+                });
+
+                var remainingWords = maxWords - words.length;
+
+                if (remainingWords < 0) {
+                    // Trim excess words
+                    textarea.val(words.slice(0, maxWords).join(' '));
+                    remainingWords = 0;
+                }
+
+                wordCountDisplay.text('Words left: ' + remainingWords);
+
+                // Prevent further input if the word limit is reached
+                if (remainingWords === 0) {
+                    var currentVal = textarea.val();
+                    textarea.val(currentVal.substring(0, currentVal.lastIndexOf(' ')));
+                }
+            });
+        });
+    </script>
 
 
 

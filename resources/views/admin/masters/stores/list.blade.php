@@ -345,6 +345,10 @@ use App\Models\admin\Trn_StoreBankData;
                                            <a class="btn btn-sm btn-info"
                                              href="{{url('admin/store/assign_agency/'.
                                           $store->store_name_slug)}}"> Agency</a> 
+                                          <a class="btn btn-sm btn-danger" href="{{ url('admin/store/add_youtube/' . $store->store_name_slug) }}">
+                                             <i class="fa fa-youtube"></i> Videos
+                                          </a>
+
                                          {{--   <a class="btn btn-sm btn-info"
                                              href="{{url('admin/store/assign_delivery_boy/'.
                                           $store->store_name_slug)}}">Delivery Boy</a>  --}}
