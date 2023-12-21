@@ -2613,7 +2613,12 @@ class StoreController extends Controller
                    }
 
                 }
-                $inventoryData=$inventoryData->orderBy('updated_time','DESC');
+                $inventoryData = $inventoryData->sortByDesc(function ($item) {
+                    return $item->updated_time;
+                });
+                
+                // If you want to maintain the original keys after sorting, you can use values() to reset the keys:
+                $inventoryData = $inventoryData->values();
                 $inventoryDatasss = collect($inventoryData);
                 $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
                 $perPage = 15;
