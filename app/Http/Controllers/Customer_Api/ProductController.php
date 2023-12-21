@@ -7449,6 +7449,7 @@ class ProductController extends Controller
             $customer_id = $request->input('customer_id');
             $product_variant_id = $request->input('product_varient_id');
             $store_id = $request->input('store_id');
+            $store=Mst_store::where('store_id',$store_id)->first();
     
             if(!$customer_id || !$product_variant_id || !$store_id) {
                 return response(['status' => 0, 'message' => 'Invalid request parameters']);
@@ -7464,7 +7465,7 @@ class ProductController extends Controller
             foreach ($customerDevice as $cd) {
     
                 $title = 'Product Enquiry submitted';
-                $body = 'A product enquiry has been submited';
+                $body = 'A product enquiry has been submited to '.$store->store_name;
                 $clickAction = "MyWalletFragment";
                 $type = "wallet";
                 $data['responseStoreDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
