@@ -62,6 +62,7 @@ use App\Models\admin\Trn_CustomerFeedback;
 use App\Models\admin\Trn_RecentlyVisitedProductCategory;
 use App\Models\admin\Mst_FeedbackQuestion;
 use App\Models\admin\Trn_customer_enquiry;
+use App\Models\admin\Trn_CustomerDeviceToken;
 use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreAdmin;
@@ -7458,7 +7459,16 @@ class ProductController extends Controller
                 'product_varient_id' => $product_variant_id,
                 'visited_date' => date('Y-m-d')
             ]);
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+            foreach ($customerDevice as $cd) {
     
+                $title = 'Product Enquiry submitted';
+                $body = 'A product enquiry has been submited';
+                $clickAction = "MyWalletFragment";
+                $type = "wallet";
+                $data['responseStoreDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
             if ($enquiry->exists) {
                 return response(['status' => 0, 'message' => 'You have already submitted an enquiry. We will get back to you soon.']);
             }
