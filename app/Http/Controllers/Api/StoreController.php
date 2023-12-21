@@ -2608,7 +2608,7 @@ class StoreController extends Controller
                     $da->stock=$stock_info->stock;
                     $da->prev_stock=(string)$da->prev_stock;
                     $da->stock=(string)$da->stock;
-                    $da->updated_time = Carbon::parse($stock_info->created_at)->format('d M Y H:i');
+                    $da->updated_time = Carbon::parse($stock_info->created_at)->format('Y-m-d H:i:s');
 
                    }
 
