@@ -1177,7 +1177,15 @@ class StoreOrderController extends Controller
                                     return response($data);
     
                                 }
+                                if($stockDiffernece==0)
+                                {
+                                    DB::table('mst__stock_details')->where('product_varient_id', $value['product_varient_id'])->update(['created_at' => Carbon::now()]);
+                                    $s = DB::table('mst_store_product_varients')->where('product_varient_id', $value['product_varient_id'])->pluck("stock_count");
+                                    Db::table('empty_stock_log')->where('product_varient_id',$value['product_varient_id'])->delete();
+                                    DB::table('empty_stock_log')->insert(['product_varient_id'=>$value['product_varient_id'],'created_time' => Carbon::now()]);
+                                }
                             }
+
                             
     
                             if ($proData->service_type != 2) {
