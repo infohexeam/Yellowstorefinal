@@ -1084,10 +1084,17 @@ class CouponController extends Controller
         $da->stock=$stock_info->stock;
         $da->prev_stock=(string)$da->prev_stock;
         $da->stock=(string)$da->stock;
+        $da->updated_time = Carbon::parse($stock_info->created_at)->format('Y-m-d H:i:s');
 
        }
 
     }
+    $inventoryData = $inventoryData->sortByDesc(function ($item) {
+      return $item->updated_time;
+  });
+  
+  // If you want to maintain the original keys after sorting, you can use values() to reset the keys:
+  $inventoryData = $inventoryData->values();
 
     $inventoryData = collect($inventoryData);
     $inventoryDatas = $inventoryData->unique('product_varient_id');
