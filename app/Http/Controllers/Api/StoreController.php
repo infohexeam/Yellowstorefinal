@@ -2615,7 +2615,7 @@ class StoreController extends Controller
                 }
 
                 $inventoryDatasss = collect($inventoryData);
-                $inventoryDatassss=$inventoryDatasss->unique('product_varient_id');
+                $inventoryDatassss=$inventoryDatasss->unique('product_varient_id')->orderBy('updated_time','DESC');
                 $perPage = 15;
                 $page=$request->page??1;
                 $offset = ($page - 1) * $perPage;
