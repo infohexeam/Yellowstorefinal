@@ -367,6 +367,44 @@
                 
 
                  <br>
+                   <div class="card-body border">
+                    <div class="card-header">
+                        <h3 class="mb-0 card-title">Social Media Link</h3>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   <label class="form-label">Youtube </label>
+                                   <input type="text"  value="{{old('youtube_account_link',$store->youtube_account_link)}}"   class="form-control" name="youtube_account_link"  placeholder="Youtube Channel Link">
+                                 </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                   <label class="form-label">Facebook </label>
+                                   <input type="text" class="form-control" value="{{old('facebook_account_link',$store->facebook_account_link)}}"   class="form-control" name="facebook_account_link" placeholder="Facebook Account Link">
+                                 </div>
+                            </div>
+                             <div class="col-md-6">
+                                <div class="form-group">
+                                   <label class="form-label">Instagram </label>
+                                   <input type="text" class="form-control" value="{{old('instagram_account_link',$store->instagram_account_link)}}"    name="instagram_account_link" placeholder="Instagram Account Link">
+                                 </div>
+                            </div>
+                             <div class="col-md-6">
+                                <div class="form-group">
+                                   <label class="form-label">Snapchat </label>
+                                   <input type="text" class="form-control" value="{{old('snapchat_account_link',$store->snapchat_account_link)}}"    name="snapchat_account_link" placeholder="Snapchat Account Link">
+                                 </div>
+                            </div>
+                            
+                            
+
+                        </div>
+                    </div>
+                </div>
 
                  <!--    <div class="card-body border">-->
                  <!--      <div class="card-header">-->

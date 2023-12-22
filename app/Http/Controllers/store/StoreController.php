@@ -508,7 +508,12 @@ class StoreController extends Controller
         //'store_qrcode' => $request->store_qrcode,
         'upi_id' => $request->upi_id,
          'gst' => $request->gst,
-         'profile_description'=>$request->store_profile_description
+         'profile_description'=>$request->store_profile_description,
+         'youtube_account_link'=>$request->youtube_account_link,
+         'facebook_account_link'=>$request->facebook_account_link,
+         'instagram_account_link'=>$request->instagram_account_link,
+         'snapchat_account_link'=>$request->snapchat_account_link,
+
 
       ];
 
