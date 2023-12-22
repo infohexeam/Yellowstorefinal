@@ -151,6 +151,7 @@ class StoreController extends Controller
 
 
     $store = Mst_store::where('store_id', '=', $user_id)->get();
+    $storeDetails=Mst_store::where('store_id', '=', $user_id)->first();
     $product = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_products.store_id', $user_id)
@@ -200,6 +201,7 @@ class StoreController extends Controller
       'agency',
       'recentvisitCountWeek',
       'recentvisitCountMonth',
+      'storeDetails'
     ));
   }
   public function newOrders()

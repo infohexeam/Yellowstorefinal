@@ -31,6 +31,7 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
   </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ 
 <!-- ROW-1 -->
  <div class="row">
  <div class="col-12">
@@ -95,6 +96,15 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
                </a>
             </div>
         </div> --}}
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
+        <input type="hidden" id="storeLat" value="{{$storeDetails->latitude}}">
+         <input type="hidden" id="storeLon" value="{{$storeDetails->longitude}}">
+
+            <div class="card gmap">
+            <div id="googleMap" style="width:100%;height:300px;"></div>
+
+            </div>
+            </div>
       
          <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
 
@@ -376,6 +386,30 @@ $banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-messaging.js"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ&callback=initMap" async defer></script>
+<script>
+  // Function to initialize the Google Map
+
+
+  function initMap() {
+    var Store_Latitude=document.getElementById("storeLat").value;
+ var Store_Longitude=document.getElementById("storeLon").value;
+    var mapOptions = {
+      center: new google.maps.LatLng(Store_Latitude, Store_Longitude),
+      zoom: 14,
+    };
+
+    // Create a new map in the gmap div
+    var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+
+    // You can add markers or customize the map as needed
+    var marker = new google.maps.Marker({
+       position: new google.maps.LatLng(Store_Latitude, Store_Longitude),
+       map: map,
+       title: "Your store",
+     });
+  }
+</script>
 <script>
   var firebaseConfig = {
      apiKey: "AIzaSyABJjLKVYHKL020Zdi8pbHsNS2ZLQ1Ka4Q",
