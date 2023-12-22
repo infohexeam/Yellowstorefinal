@@ -631,7 +631,11 @@ class StoreSettingsController extends Controller
                         'longitude',
                         'latitude',
                         'store_referral_id',
-                        'profile_description'
+                        'profile_description',
+                        'youtube_account_link',
+                        'facebook_account_link',
+                        'instagram_account_link',
+                        'snapchat_account_link'
                     )
                     ->first()
                 ) {
@@ -759,6 +763,10 @@ class StoreSettingsController extends Controller
                     $data2['longitude'] = $request->longitude;
                     $data2['place'] = $request->place;
                     $data2['profile_description']=$request->profile_description;
+                    $data2['youtube_account_link']=$request->youtube_account_link;
+                    $data2['facebook_account_link']=$request->facebook_account_link;
+                    $data2['instagram_account_link']=$request->instagram_account_link;
+                    $data2['snapchat_account_link']=$request->snapchat_account_link;
 
 
 
