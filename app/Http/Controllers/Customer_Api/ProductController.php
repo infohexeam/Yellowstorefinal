@@ -7461,6 +7461,10 @@ class ProductController extends Controller
                 'visited_date' => date('Y-m-d')
             ]);
 
+           
+            if ($enquiry->exists) {
+                return response(['status' => 0, 'message' => 'You have already submitted an enquiry. We will get back to you soon.']);
+            }
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
             foreach ($customerDevice as $cd) {
     
@@ -7469,9 +7473,6 @@ class ProductController extends Controller
                 $clickAction = "MyWalletFragment";
                 $type = "wallet";
                 $data['responseStoreDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-            }
-            if ($enquiry->exists) {
-                return response(['status' => 0, 'message' => 'You have already submitted an enquiry. We will get back to you soon.']);
             }
     
             $enquiry->store_id = $store_id;

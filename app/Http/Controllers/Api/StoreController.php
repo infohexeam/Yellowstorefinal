@@ -1614,6 +1614,16 @@ class StoreController extends Controller
                   });
                   $data['newOrders']=$newOrders;
 
+            /*$newEnquiries=Trn_customer_enquiry::whereDate('created_at', Carbon::today())->where('store_id',$request->store_id)->latest()->limit(4)->get()->map(function($data){
+                //$subdata=json_decode($data->data);
+                $enq['order_id']= $data->order_id;
+                $qry['order_number']=$data->order_number;
+                $qry['TEST']= 0;
+                $qry['total']= (float)$data->product_total_amount;
+                $qry['updated_at']= $data->updated_at->diffForHumans();
+                return $qry;
+              });*/
+
             } else {
                 $data['status'] = 0;
                 $data['message'] = "Store does not exist";
