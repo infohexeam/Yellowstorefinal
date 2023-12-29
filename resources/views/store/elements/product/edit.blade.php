@@ -347,6 +347,7 @@
                             <input type="text"  class="form-control" name="product_brand" id="product_brand" value="{{old('product_brand',$product->product_brand)}}" placeholder="Product Brand">
                         </div>
                     </div>
+                     @if($store_Data->product_supply_type==3)
                      <div class="col-md-6">
                       <div class="form-group">
                    <label class="form-group custom-switch">
@@ -358,6 +359,7 @@
 													</label>
                           </div>
                           </div>
+                        @endif
    
 
                       <div class="col-md-12">

@@ -886,6 +886,7 @@ class SettingController extends Controller
 			$store->password                     = Hash::make($request->password);
 			$store->store_otp_verify_status       = 0;
 			$store->profile_description=$request->store_profile_description;
+			$store->product_supply_type=$request->product_distribution_type;
 			if ($store_added_by == 0) {
 				$store->store_account_status         = 1;
 			} else {
@@ -1245,6 +1246,7 @@ class SettingController extends Controller
 			$store->pay_delivery_status           =$pad;
 			$store->collect_store_status           =$css;
 			$store->profile_description=$request->store_profile_description;
+			$store->product_supply_type=$request->product_distribution_type;
 
 			if (auth()->user()->user_role_id == 0) {
 				$store->subadmin_id          = $request->subadmin_id??2;

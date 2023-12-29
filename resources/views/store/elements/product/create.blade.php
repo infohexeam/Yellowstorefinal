@@ -274,6 +274,7 @@ input[type="file"] {
                               </select>
                         </div>
                      </div>
+              @if($store_Data->product_supply_type==3)
                 <div class="col-md-6">
                       <div class="form-group">
                    <label class="form-group custom-switch">
@@ -285,6 +286,7 @@ input[type="file"] {
 													</label>
                           </div>
                           </div>
+              @endif
 
                 <div class="col-md-12">
                    <div class="form-group">

@@ -319,6 +319,17 @@
                            rows="4" placeholder="Store Address">{{old('store_primary_address')}}</textarea>
                         </div>
                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                           <label class="form-label">Product Distribution Type *</label>
+                            <select name="product_distribution_type" required=""  class="form-control" id="distType" >
+                                 <option value=""> Select Product Distribution Type</option>
+                                 <option value="1">Only Purchase Products</option>
+                                 <option value="2">Only Listing Products</option>
+                                 <option value="3">Both(Purchase Products And Listing Products)</option>
+                              </select>
+                        </div>
+                    </div>
                      
 
 

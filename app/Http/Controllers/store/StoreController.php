@@ -909,8 +909,9 @@ class StoreController extends Controller
 
     $business_types = Mst_business_types::all();
     $store = Mst_store::all();
+    $store_Data=Mst_store::find($store_id);
 
-    return view('store.elements.product.create', compact('category', 'global_product', 'agencies', 'colors', 'tax', 'products', 'pageTitle', 'attr_groups', 'store', 'business_types'));
+    return view('store.elements.product.create', compact('category', 'global_product', 'agencies', 'colors', 'tax', 'products', 'pageTitle', 'attr_groups', 'store', 'business_types','store_Data'));
   }
 
   public function GetAttr_Value(Request $request)
@@ -1108,7 +1109,9 @@ class StoreController extends Controller
       // $product->product_specification  = $request->product_specification;  // removed
       $product->store_id               = $store_id;
       $product->global_product_id               =  @$request->global_product_id; // new
-      
+     $store_Data=Mst_store::find($store_id);
+     if($store_Data->product_supply_type==3)
+     {
       if(is_null($request->is_product_listed))
 			{
 			 $product_listed=0;
@@ -1118,6 +1121,17 @@ class StoreController extends Controller
 			{
 			 $product_listed=1;
 			}
+
+     }
+     if($store_Data->product_supply_type==2)
+     {
+      $product_listed=1;
+     }
+     if($store_Data->product_supply_type==1)
+     {
+      $product_listed=0;
+     }
+      
       $product->is_product_listed_by_product=$product_listed;
       $product->product_type               =  @$request->product_type; // new
       if ($request->product_type == 2)
@@ -1515,6 +1529,8 @@ class StoreController extends Controller
     //dd($product);
     $product_id = $product->product_id;
     $videos = Trn_ProductVideo::where('product_id', '=', $id)->get();
+    $store_id =  Auth::guard('store')->user()->store_id;
+    $store_Data=Mst_store::find($store_id);
 
     $product_varients = Mst_store_product_varient::where('product_id', $id)
       ->where('is_base_variant', '!=', 1)
@@ -1570,7 +1586,8 @@ class StoreController extends Controller
       'store',
       'product_images',
       'business_types',
-      'videos'
+      'videos',
+      'store_Data'
     ));
   }
 
@@ -1823,15 +1840,28 @@ class StoreController extends Controller
       $product['tax_id']                 = $request->tax_id; // new
       $product['stock_count']                = $request->min_stock; // stock count
       $product['product_code']          = $request->product_code;
-      if(is_null($request->is_product_listed))
-			{
-			 $product_listed=0;
-
-			}
-			else
-			{
-			 $product_listed=1;
-			}
+      $store_Data=Mst_store::find($store_id);
+      if($store_Data->product_supply_type==3)
+      {
+       if(is_null($request->is_product_listed))
+       {
+        $product_listed=0;
+ 
+       }
+       else
+       {
+        $product_listed=1;
+       }
+ 
+      }
+      if($store_Data->product_supply_type==2)
+      {
+       $product_listed=1;
+      }
+      if($store_Data->product_supply_type==1)
+      {
+       $product_listed=0;
+      }
       $product['is_product_listed_by_product']=$product_listed;
       if (isset($request->business_type_id))
         $product['business_type_id']       = $request->business_type_id; // product type

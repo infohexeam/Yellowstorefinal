@@ -400,6 +400,17 @@
                         </div>
 
                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                           <label class="form-label">Product Distribution Type *</label>
+                            <select name="product_distribution_type" required=""  class="form-control" id="distType" >
+                                 <option value=""> Select Product Distribution Type</option>
+                                 <option value="1"  @if($store->product_supply_type==1) selected @endif>Only Purchase Products</option>
+                                 <option value="2"  @if($store->product_supply_type==2) selected @endif>Only Listing Products</option>
+                                 <option value="3"  @if($store->product_supply_type==3) selected @endif>Both(Purchase Products And Listing Products)</option>
+                              </select>
+                        </div>
+                    </div>
                      
                        <div class="col-md-12">
                         <div class="form-group">
