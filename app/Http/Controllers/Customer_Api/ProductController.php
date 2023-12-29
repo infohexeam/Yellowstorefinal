@@ -7471,7 +7471,7 @@ class ProductController extends Controller
                 $title = 'Product Enquiry submitted';
                 $body = 'A product enquiry has been submited to '.$store->store_name;
                 $clickAction = "MyWalletFragment";
-                $type = "wallet";
+                $type = "Enquiry";
                 $data['responseStoreDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
             }
     
