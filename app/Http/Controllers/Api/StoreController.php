@@ -4206,10 +4206,10 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
         $validator = Validator::make(
             $request->all(),
             [
-                'youtube_link.*' => 'required',
+                'youtube_link' => 'required',
             ],
             [
-                'youtube_link.*.required' => 'Youtube link required',
+                'youtube_link.required' => 'Youtube link required',
             ]
         );
     
