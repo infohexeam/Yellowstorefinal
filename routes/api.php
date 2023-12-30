@@ -233,7 +233,7 @@ Route::group(['prefix' => 'store'], function () {
    Route::get('list-enquiries', 'Api\StoreController@listEnquiries');
    Route::get('enquiry-reports', 'Api\StoreController@enquiryReports');
    Route::get('list-youtube-videos', 'Api\StoreController@listYoutubeVideos');
-   Route::get('store-youtube-videos', 'Api\StoreController@storeYoutubeVideos');
+   Route::post('store-youtube-videos', 'Api\StoreController@storeYoutubeVideos');
    Route::post('remove-youtube-videos', 'Api\StoreController@removeYoutubeVideos');
  
     //STORE PROFILE
