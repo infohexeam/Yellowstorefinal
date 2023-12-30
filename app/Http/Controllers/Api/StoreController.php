@@ -4203,18 +4203,19 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
     }
     public function storeYoutubeVideos(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'youtube_link' => 'required',
-            ],
-            [
-                'youtube_link.required' => 'Youtube link required',
-            ]
-        );
+        // $validator = Validator::make(
+        //     $request->all(),
+        //     [
+        //         'youtube_link' => 'required',
+        //     ],
+        //     [
+        //         'youtube_link.required' => 'Youtube link required',
+        //     ]
+        // );
     
-        if (!$validator->fails()) {
-            $data = $request->except('_token');
+        //if (!$validator->fails()) {
+            //$data = $request->except('_token');
+            $values=[];
     
             $date = Carbon::now();
             $values = $request->youtube_link;
@@ -4238,13 +4239,13 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
                 'status' => 1,
                 'message' => 'Youtube links added successfully.',
             ], 200);
-        } else {
-            return response()->json([
-                'status' => 0,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
+        // } else {
+        //     return response()->json([
+        //         'status' => 0,
+        //         'message' => 'Validation failed',
+        //         'errors' => $validator->errors(),
+        //     ], 422);
+        // }
     }
     public function RemoveYoutubeVideos(Request $request)
 	{
