@@ -4220,7 +4220,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             $values = $request->youtube_link;
     
             $responseData = [];
-    
+            return $values ;
             foreach ($values as $value) {
                 $videoData = [
                     'youtube_link' => $value,
