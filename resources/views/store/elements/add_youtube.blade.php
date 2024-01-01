@@ -29,7 +29,9 @@
                            <td>{{ ++$i }} </td>
                            
                            <td><a href="{{$link->youtube_link}}" target="_blank">{{$link->youtube_link}}</a></td>
-                          
+                          <td>
+                          <img src="{{asset('assets/uploads/video_images/')}}/{{$link->youtube_link_thumbnail}}">
+                          </td>
                            <td>
                               <a class="btn btn-small btn-danger" href="{{ url('store/remove_youtube/'.$link->youtube_link_id) }}">Remove</a>
                            </td>                    
@@ -57,13 +59,24 @@
                   enctype="multipart/form-data">
                   @csrf
                   <div class="row">
-                     <div class="col-md-10">
+                     <div class="col-md-6">
                         <div class="form-group">
                           
                          
                          <div id="agency">
-                           <label class="form-label">Youtube Links </label>
+                           <label class="form-label">Youtube Links * </label>
                            <input type="text" name="youtube_link[]" class="form-control" required>
+                         
+                        </div>
+                     </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                          
+                         
+                         <div id="agency">
+                           <label class="form-label">Youtube Thumbnail * </label>
+                           <input type="file" name="youtube_thumbnail[]" class="form-control" required>
                          
                         </div>
                      </div>
@@ -113,7 +126,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div> <br> <label class="form-label">Youtube Links </label><input type="text" required name="youtube_link[]" class="form-control"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div class="row col-md-12" > <br> <label class="form-label">Youtube Links * </label><input type="text" required name="youtube_link[]" class="form-control"><label class="form-label">Youtube Thumbnail * </label><input type="file" required name="youtube_thumbnail[]" class="form-control"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
     
   });
 

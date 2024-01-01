@@ -7020,26 +7020,29 @@ public function showInHome(Request $request, $product_id)
 		);
 
 		if (!$validator->fails()) {
-			$data = $request->except('_token');
+		
 
+        ///////////////////////////////////////
+        $youtubeLinks = $request->youtube_link;
+        $thumbnails = $request->file('youtube_thumbnail');
 
-			$date =  Carbon::now();
-			$values = $request->youtube_link;
-			//dd($values);
-			foreach ($values as $value) {
+        $responseData = [];
+        //return $thumbnails ;
+        foreach ($youtubeLinks as $key => $youtubeLink) {
+            $thumbnailFile = $thumbnails[$key];
+            $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
+            $thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
+            $videoData = [
+                'youtube_link' => $youtubeLink,
+                'store_id' => Auth::guard('store')->user()->store_id,
+                'youtube_title' => $youtubeLink,
+                'youtube_status' => 1,
+                'youtube_link_thumbnail'=>$thumbnailFilename
+            ];
 
-				$data = [
-					[
-						'youtube_link' => $value,
-						'store_id' => Auth::guard('store')->user()->store_id,
-						'youtube_title' => $value,
-						'youtube_status' => 1,
+            DB::table('trn_store_youtube_videos')->insert($videoData);
 
-
-					],
-				];
-
-				DB::table('trn_store_youtube_videos')->insert($data);
+        ////////////////////////////////////////
 			}
 
 			return redirect()->back()->with('status', 'Youtube links added successfully.');
