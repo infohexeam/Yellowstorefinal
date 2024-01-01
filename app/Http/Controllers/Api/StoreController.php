@@ -4218,16 +4218,21 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             $values=[];
     
             $date = Carbon::now();
-            $values = $request->youtube_link;
+            $youtubeLinks = $request->youtube_link;
+            $thumbnails = $request->file('youtube_thumbnail');
     
             $responseData = [];
-            //return $values ;
-            foreach ($values as $value) {
+            //return $thumbnails ;
+            foreach ($youtubeLinks as $key => $youtubeLink) {
+                $thumbnailFile = $thumbnails[$key];
+                $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
+                $thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
                 $videoData = [
-                    'youtube_link' => $value,
+                    'youtube_link' => $youtubeLink,
                     'store_id' => $request->store_id,
-                    'youtube_title' => $value,
+                    'youtube_title' => $youtubeLink,
                     'youtube_status' => 1,
+                    'youtube_link_thumbnail'=>$thumbnailFilename
                 ];
     
                 DB::table('trn_store_youtube_videos')->insert($videoData);
