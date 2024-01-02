@@ -5077,7 +5077,20 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
-                $ytVideos=DB::table('trn_store_youtube_videos')->where('store_id',$request->store_id)->get(['youtube_link_id','youtube_link_thumbnail','youtube_link']);
+                $ytVideos=DB::table('trn_store_youtube_videos')->where('store_id',$request->store_id)->get();
+                foreach($ytVideos as $link)
+                {
+                    $link->youtube_link_thumbnail='/assets/uploads/video_images/' .$link->youtube_link_thumbnail;
+                    $revLink = strrev($link->youtube_link);
+                    $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                    $linkCode = strrev($revLinkCode);
+    
+                    if ($linkCode == "") {
+                        $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                        $linkCode = strrev($revLinkCode);
+                    }
+                    $link->link_code=$linkCode;
+                }
                 $data['youtube_videos']=$ytVideos;
                 $flag=Helper::checkStoreDeliveryHours($request->store_id);
                 $data['is_delivery_available']=$flag;

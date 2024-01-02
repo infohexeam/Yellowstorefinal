@@ -4189,6 +4189,15 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             foreach($links as $link)
             {
                 $link->youtube_link_thumbnail='/assets/uploads/video_images/' .$link->youtube_link_thumbnail;
+                $revLink = strrev($link->youtube_link);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                $linkCode = strrev($revLinkCode);
+
+                if ($linkCode == "") {
+                    $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                    $linkCode = strrev($revLinkCode);
+                }
+                $link->link_code=$linkCode;
             }
 
          }
