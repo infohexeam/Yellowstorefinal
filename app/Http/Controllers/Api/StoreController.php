@@ -4256,6 +4256,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             return response()->json([
                 'status' => 1,
                 'message' => 'Youtube links added successfully.',
+                'video_data'=>$responseData
             ], 200);
         } else {
             return response()->json([
