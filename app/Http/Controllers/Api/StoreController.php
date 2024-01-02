@@ -4186,6 +4186,10 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
          if($store)
          {
             $links=DB::table('trn_store_youtube_videos')->where('store_id',$store_id)->get();
+            foreach($links as $link)
+            {
+                $link->youtube_link_thumbnail='/assets/uploads/video_images/' .$link->youtube_link_thumbnail;
+            }
 
          }
          else
