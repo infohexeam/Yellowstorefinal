@@ -4215,61 +4215,65 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
         
     }
     public function storeYoutubeVideos(Request $request)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'youtube_link' => 'required',
-            ],
-            [
-                'youtube_link.required' => 'Youtube link required',
-            ]
-        );
-    
-        if (!$validator->fails()) {
-            //$data = $request->except('_token');
-            $values=[];
-    
-            $date = Carbon::now();
-            $youtubeLinks = $request->youtube_link;
-            $thumbnails = $request->file('youtube_thumbnail');
-    
-            $responseData = [];
-            //return $thumbnails ;
-            foreach ($youtubeLinks as $key => $youtubeLink) {
-                $thumbnailFile = $thumbnails[$key];
-                $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
-                $thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
-                $videoData = [
-                    'youtube_link' => $youtubeLink,
-                    'store_id' => $request->store_id,
-                    'youtube_title' => $youtubeLink,
-                    'youtube_status' => 1,
-                    'youtube_link_thumbnail'=>$thumbnailFilename
-                ];
-    
-                DB::table('trn_store_youtube_videos')->insert($videoData);
-    
-                $responseData[] = $videoData;
-            }
-            foreach($responseData as &$rData)
-            {
-                $rData['youtube_link_thumbnail'] = '/assets/uploads/video_images/' . $rData['youtube_link_thumbnail'];
-            }
-    
-            return response()->json([
-                'status' => 1,
-                'message' => 'Youtube links added successfully.',
-                'video_data'=>$responseData
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 0,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
+{
+    $validator = Validator::make(
+        $request->all(),
+        [
+            'youtube_link' => 'required',
+        ],
+        [
+            'youtube_link.required' => 'Youtube link required',
+        ]
+    );
+
+    if (!$validator->fails()) {
+        //$data = $request->except('_token');
+        $values=[];
+
+        $date = Carbon::now();
+        $youtubeLinks = $request->youtube_link;
+        $thumbnails = $request->file('youtube_thumbnail');
+
+        $responseData = [];
+        //return $thumbnails ;
+        foreach ($youtubeLinks as $key => $youtubeLink) {
+            $thumbnailFile = $thumbnails[$key];
+            $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
+            $thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
+            $videoData = [
+                'youtube_link' => $youtubeLink,
+                'store_id' => $request->store_id,
+                'youtube_title' => $youtubeLink,
+                'youtube_status' => 1,
+                'youtube_link_thumbnail' => $thumbnailFilename
+            ];
+
+            $videoId = DB::table('trn_store_youtube_videos')->insertGetId($videoData);
+
+            $responseData[] = [
+                'youtube_link_id' => $videoId,
+                'youtube_link' => $youtubeLink,
+                'store_id' => $request->store_id,
+                'youtube_title' => $youtubeLink,
+                'youtube_status' => 1,
+                'youtube_link_thumbnail' => '/assets/uploads/video_images/' . $thumbnailFilename
+            ];
         }
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Youtube links added successfully.',
+            'video_data' => $responseData
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => 0,
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
     }
+}
+
     public function RemoveYoutubeVideos(Request $request)
 	{
         $link_id=$request->link_id;
