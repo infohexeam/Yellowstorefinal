@@ -4252,6 +4252,10 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
     
                 $responseData[] = $videoData;
             }
+            foreach($responseData as &$rData)
+            {
+                $rData['youtube_link_thumbnail'] = '/assets/uploads/video_images/' . $rData['youtube_link_thumbnail'];
+            }
     
             return response()->json([
                 'status' => 1,
