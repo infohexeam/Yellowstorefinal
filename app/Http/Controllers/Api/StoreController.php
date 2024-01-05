@@ -1572,7 +1572,7 @@ class StoreController extends Controller
 
                 $data['message'] = "Success";
 
-                $statusStore = Mst_store::select('online_status')->where('store_id', $request->store_id)->first();
+                $statusStore = Mst_store::select('online_status','product_supply_type')->where('store_id', $request->store_id)->first();
                 $custCheck = Trn_StoreAdmin::where('store_id', '=', $request->store_id)->where('role_id', 0)->first();
                 $today = Carbon::now()->toDateString();
                 if (($custCheck->store_account_status != 0) || (($custCheck->store_account_status == 0) && ($today <= $custCheck->expiry_date))) {
@@ -1590,6 +1590,7 @@ class StoreController extends Controller
 
 
                 $data['online_status'] = $statusStore->online_status;
+                $data['product_supply_type']=$statusStore->product_supply_type;
                 $data['status'] = 1;
                 $products=Helper::minimumStockProducts($request->store_id);
                 $minStockProducts=$products->map(function($data){
