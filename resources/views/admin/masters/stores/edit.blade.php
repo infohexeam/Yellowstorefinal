@@ -727,15 +727,34 @@
                                  @endphp
                                  <tr>
                                     <td>{{$i}}</td>
-                                    <td>{{ @$delivery_boy->delivery_boy['delivery_boy_name']}}<br>@if($delivery_boy->delivery_boy['is_added_by_store']==1) <br><span class="badge badge-sm badge-info">Created by store</span>@endif</td>
-                                    <td>{{ @$delivery_boy->delivery_boy['delivery_boy_mobile']}}</td>
+                                   <td>
+    @if(isset($delivery_boy) && isset($delivery_boy->delivery_boy['delivery_boy_name']))
+        {{ $delivery_boy->delivery_boy['delivery_boy_name'] }}<br>
+        @if($delivery_boy->delivery_boy['is_added_by_store'] == 1)
+            <span class="badge badge-sm badge-info">Created by store</span>
+        @endif
+    @endif
+</td>
+<td>
+    @if(isset($delivery_boy) && isset($delivery_boy->delivery_boy['delivery_boy_mobile']))
+        {{ $delivery_boy->delivery_boy['delivery_boy_mobile'] }}
+    @endif
+</td>
                                    <td>
 
                                     <form action="{{route('admin.store_link_delivery_boy',$delivery_boy->store_link_delivery_boy_id )}}" method="POST">
 
                                     @csrf
                                     @method('POST')
-                                    <button type="submit" @if($delivery_boy->delivery_boy['is_added_by_store']==1) disabled @endif onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                               <button type="submit" 
+        @if(isset($delivery_boy) && isset($delivery_boy->delivery_boy) && $delivery_boy->delivery_boy['is_added_by_store'] == 1) 
+            disabled 
+        @endif 
+        onclick="return confirm('Do you want to delete this item?');"  
+        class="btn btn-sm btn-danger">Delete
+</button>
+
+
                                     </form>
                                     </td>
                                  </tr>
