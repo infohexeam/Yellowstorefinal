@@ -4228,6 +4228,61 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
     );
 
     if (!$validator->fails()) {
+        $values = [];
+
+        $date = Carbon::now();
+        $youtubeLink = $request->youtube_link;
+        $thumbnailFile = $request->file('youtube_thumbnail');
+
+        $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
+        $thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
+
+        $videoData = [
+            'youtube_link' => $youtubeLink,
+            'store_id' => $request->store_id,
+            'youtube_title' => $youtubeLink,
+            'youtube_status' => 1,
+            'youtube_link_thumbnail' => $thumbnailFilename
+        ];
+
+        $videoId = DB::table('trn_store_youtube_videos')->insertGetId($videoData);
+
+        $responseData = [
+            'youtube_link_id' => $videoId,
+            'youtube_link' => $youtubeLink,
+            'store_id' => $request->store_id,
+            'youtube_title' => $youtubeLink,
+            'youtube_status' => 1,
+            'youtube_link_thumbnail' => '/assets/uploads/video_images/' . $thumbnailFilename
+        ];
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Youtube link added successfully.',
+            'video_data' => $responseData
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => 0,
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+}
+
+public function storeYoutubeVideosOld(Request $request)
+{
+    $validator = Validator::make(
+        $request->all(),
+        [
+            'youtube_link' => 'required',
+        ],
+        [
+            'youtube_link.required' => 'Youtube link required',
+        ]
+    );
+
+    if (!$validator->fails()) {
         //$data = $request->except('_token');
         $values=[];
 
