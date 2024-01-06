@@ -1637,6 +1637,10 @@ public static function checkStoreDeliveryHours($storeId)
     $store = Mst_store::find($storeId);
 
     if ($store) {
+        if($store->pay_delivery_status==0)
+        {
+            return 0;
+        }
         $currentTime = now()->format('H:i:s'); // Get the current time in 'H:i:s' format
 
         $deliveryStartTime = $store->delivery_start_time;
@@ -1644,6 +1648,7 @@ public static function checkStoreDeliveryHours($storeId)
 
         // Compare the current time with delivery start and end times
         if ($currentTime >= $deliveryStartTime && $currentTime <= $deliveryEndTime) {
+
             return 1;
         } else {
             return 0;
