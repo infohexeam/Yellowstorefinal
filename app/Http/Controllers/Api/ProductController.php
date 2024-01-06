@@ -2209,15 +2209,15 @@ class ProductController extends Controller
                     $store_Data=Mst_store::find($store_id);
                     if($store_Data->product_supply_type==3)
                     {
-                     if(is_null($request->is_product_listed))
-                           {
-                            $product_listed=0;
+                     if($request->is_product_listed==1)
+                    {
+                        $product_listed=1;
                
-                           }
-                           else
-                           {
-                            $product_listed=1;
-                           }
+                    }
+                    else
+                    {
+                        $product_listed=0;
+                    }
                
                     }
                     if($store_Data->product_supply_type==2)
