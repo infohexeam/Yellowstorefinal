@@ -1484,6 +1484,7 @@ class ProductController extends Controller
                         $customer_id = $request->customer_id;
                         $storeData =  Mst_store::find($request->store_id);
                         $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                        $data['delivery_home_pay_status']=$storeData->pay_delivery_status;
                         $data['is_delivery_available']=$flag;
                         if($flag==1)
                         {
