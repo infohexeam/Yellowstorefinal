@@ -2206,14 +2206,27 @@ class ProductController extends Controller
 
                 if (!$validator->fails()) {
 
-                    if(is_null($request->is_product_listed)||$request->is_product_listed==0)
+                    $store_Data=Mst_store::find($store_id);
+                    if($store_Data->product_supply_type==3)
                     {
-                        $product_listed=0;
-            
+                     if(is_null($request->is_product_listed))
+                           {
+                            $product_listed=0;
+               
+                           }
+                           else
+                           {
+                            $product_listed=1;
+                           }
+               
                     }
-                    else
+                    if($store_Data->product_supply_type==2)
                     {
-                        $product_listed=1;
+                     $product_listed=1;
+                    }
+                    if($store_Data->product_supply_type==1)
+                    {
+                     $product_listed=0;
                     }
                         
 
