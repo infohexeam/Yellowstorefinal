@@ -1143,7 +1143,7 @@ class CouponController extends Controller
       ->where('mst_store_product_varients.stock_count', '<=', 0)
       ->where('mst_store_products.is_removed', 0)
       ->where('mst_store_product_varients.is_removed', 0)
-      ->orderBy('mst__stock_details.created_at', 'DESC')
+     // ->orderBy('mst__stock_details.created_at', 'DESC')
       ->whereNotNull('empty_stock_log.created_time')
 
       ->select(
@@ -1213,7 +1213,7 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->orderBy('mst__stock_details.created_at', 'DESC')->get();
+    $inventoryData = $inventoryData->orderBy('empty_stock_log.created_time', 'DESC')->get();
 
     //  dd($inventoryData);
 

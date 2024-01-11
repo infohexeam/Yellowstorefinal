@@ -2031,28 +2031,29 @@ class SettingController extends Controller
 		);
 
 		if (!$validator->fails()) {
-			$data = $request->except('_token');
-
-
-			$date =  Carbon::now();
-			$values = $request->youtube_link;
-			//dd($values);
-			foreach ($values as $value) {
-
-				$data = [
-					[
-						'youtube_link' => $value,
-						'store_id' => $id,
-						'youtube_title' => $value,
-						'youtube_status' => 1,
-
-
-					],
+			$youtubeLinks = $request->youtube_link;
+			$thumbnails = $request->file('youtube_thumbnail');
+	
+			$responseData = [];
+			//return $thumbnails ;
+			foreach ($youtubeLinks as $key => $youtubeLink) {
+				$thumbnailFile = $thumbnails[$key];
+				$thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
+				$thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
+				$videoData = [
+					'youtube_link' => $youtubeLink,
+					'store_id' => $id,
+					'youtube_title' => $youtubeLink,
+					'youtube_status' => 1,
+					'youtube_link_thumbnail'=>$thumbnailFilename
 				];
-
-				DB::table('trn_store_youtube_videos')->insert($data);
-			}
-
+	
+				DB::table('trn_store_youtube_videos')->insert($videoData);
+	
+			////////////////////////////////////////
+				}
+	
+				
 			return redirect('admin/store/list')->with('status', 'Youtube links added successfully.');
 		} else {
 
