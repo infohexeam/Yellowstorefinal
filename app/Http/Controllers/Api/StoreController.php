@@ -4048,7 +4048,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
       {
         $item_price=Trn_store_order_item::where('order_id',$w->order_id)->sum('total_amount');
         //$w->amount_before_applying_rp=$item_price+$$w->amount_reduced_by_rp??0+$w->packing_charge??0+$w->delivery_charge??0+$w->amount_reduced_by_rp_store??0+$w->amount_reduced_by_coupon??0;
-        $w->amount_before_applying_rp=strval(number_format($item_price+$w->delivery_charge??0.00+$w->packing_charge??0.00,2));
+        $w->amount_before_applying_rp=strval(number_format($item_price+$w->delivery_charge+$w->packing_charge,2));
 
       }
       
