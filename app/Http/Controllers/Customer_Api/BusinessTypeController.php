@@ -510,6 +510,9 @@ class BusinessTypeController extends Controller
                         ->orderBy('mst_stores.store_id', 'DESC')->get();
                         foreach($listedStores as $store)
                         {
+
+
+                            
                             $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
                             if($getParentExpiry)
                             {
