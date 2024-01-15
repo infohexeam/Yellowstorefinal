@@ -3150,6 +3150,7 @@ class ProductController extends Controller
                             'mst_store_product_varients.stock_count',
                             'mst_store_product_varients.is_base_variant',
                             'mst_store_product_varients.variant_status',
+                            'mst_store_product_varients.is_removed as varient_remove_status',
                             'mst_stores.store_name',
                             'mst_stores.store_id',
                             'trn__carts.quantity',
@@ -3171,7 +3172,7 @@ class ProductController extends Controller
      
                             }
 
-                            if($cartData->stock_count<=$cartData->quantity||$cartData->is_removed==1 || $cartData->variant_status==0)
+                            if($cartData->stock_count<=$cartData->quantity||$cartData->is_removed==1 || $cartData->variant_status==0||$cartData->varient_remove_status)
                             {
                                 array_push($OutStockProduct,$cartData->product_varient_id);
 
