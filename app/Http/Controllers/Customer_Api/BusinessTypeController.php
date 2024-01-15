@@ -149,13 +149,31 @@ class BusinessTypeController extends Controller
                                         + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                         $productData = $productData->orderBy('distance');
                     }
+                    $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                    ->where('trn__store_admins.role_id', 0)
+                    ->where('mst_stores.online_status', 1)
+                    ->where('trn__store_admins.store_account_status', 1)
+                    ->orderBy('mst_stores.store_id', 'DESC')->get();
+                    foreach($listedStores as $store)
+                    {
+                        $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                        if($getParentExpiry)
+                        {
+                            $parentExpiryDate = $getParentExpiry->expiry_date;
+                            if($today>=$parentExpiryDate)
+                            {
+                                array_push($expiredStores,$store->store_id);
+                            }
+                        
+                        }
+                    }
                     $productData = $productData->where('mst_store_products.product_status', 1)
                         ->where('mst_store_product_varients.stock_count', '>', 0)
                         ->where('mst_store_product_varients.is_removed', 0)
                         ->where('mst_store_products.is_removed', 0)
                         ->where('mst_store_product_varients.is_base_variant', 1)
                         ->where('mst_stores.business_type_id', $business_type_id)
-
+                        ->whereNotIn('mst_stores.store_id',$expiredStores)
                         ->where('mst_store_products.show_in_home_screen', 1)->get();
                     $productDataFinal = array();
                     foreach ($productData as $offerProduct) {
@@ -473,6 +491,27 @@ class BusinessTypeController extends Controller
                                                         + sin(radians(" . $latitude . ")) * sin(radians(mst_stores.latitude))) AS distance"));
                             $productData = $productData->orderBy('distance');
                         }
+                        $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                        ->where('trn__store_admins.role_id', 0)
+                        ->where('mst_stores.online_status', 1)
+                        ->where('trn__store_admins.store_account_status', 1)
+                        ->orderBy('mst_stores.store_id', 'DESC')->get();
+                        foreach($listedStores as $store)
+                        {
+
+
+                            
+                            $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                            if($getParentExpiry)
+                            {
+                                $parentExpiryDate = $getParentExpiry->expiry_date;
+                                if($today>=$parentExpiryDate)
+                                {
+                                    array_push($expiredStores,$store->store_id);
+                                }
+                            
+                            }
+                        }
 
                         $productData = $productData->where('mst_store_products.product_status', 1)
                             ->where('mst_store_product_varients.stock_count', '>', 0)
@@ -480,7 +519,7 @@ class BusinessTypeController extends Controller
                             ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
                             ->where('mst_stores.business_type_id', $business_type_id)
-
+                            ->whereNotIn('mst_stores.store_id',$expiredStores)
                             ->where('mst_store_products.show_in_home_screen', 1)->get();
                         $productDataFinal = array();
                         foreach ($productData as $offerProduct) {
@@ -503,27 +542,27 @@ class BusinessTypeController extends Controller
 
 
 
-                        $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
-                        ->where('trn__store_admins.role_id', 0)
-                        ->where('mst_stores.online_status', 1)
-                        ->where('trn__store_admins.store_account_status', 1)
-                        ->orderBy('mst_stores.store_id', 'DESC')->get();
-                        foreach($listedStores as $store)
-                        {
+                        // $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+                        // ->where('trn__store_admins.role_id', 0)
+                        // ->where('mst_stores.online_status', 1)
+                        // ->where('trn__store_admins.store_account_status', 1)
+                        // ->orderBy('mst_stores.store_id', 'DESC')->get();
+                        // foreach($listedStores as $store)
+                        // {
 
 
                             
-                            $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
-                            if($getParentExpiry)
-                            {
-                                $parentExpiryDate = $getParentExpiry->expiry_date;
-                                if($today>=$parentExpiryDate)
-                                {
-                                    array_push($expiredStores,$store->store_id);
-                                }
+                        //     $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$store->store_id)->where('role_id','=',0)->first();
+                        //     if($getParentExpiry)
+                        //     {
+                        //         $parentExpiryDate = $getParentExpiry->expiry_date;
+                        //         if($today>=$parentExpiryDate)
+                        //         {
+                        //             array_push($expiredStores,$store->store_id);
+                        //         }
                             
-                            }
-                        }
+                        //     }
+                        // }
 
                         $recentlyVisited  = Trn_RecentlyVisitedStore::join('mst_stores', 'mst_stores.store_id', '=', 'trn__recently_visited_stores.store_id')
                             ->join('trn__store_admins', 'trn__store_admins.store_id', '=', 'trn__recently_visited_stores.store_id')
