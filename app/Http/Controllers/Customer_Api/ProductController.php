@@ -3172,7 +3172,7 @@ class ProductController extends Controller
      
                             }
 
-                            if($cartData->stock_count<=$cartData->quantity||$cartData->is_removed==1 || $cartData->variant_status==0||$cartData->varient_remove_status)
+                            if($cartData->stock_count<=$cartData->quantity||$cartData->is_removed==1 || $cartData->variant_status==0||$cartData->varient_remove_status==1)
                             {
                                 array_push($OutStockProduct,$cartData->product_varient_id);
 
