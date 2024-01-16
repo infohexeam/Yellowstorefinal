@@ -190,7 +190,7 @@ class RegisterController extends Controller
             $store->store_added_by        = 0;
             $store->password              = Hash::make($request->password);
             $store->store_account_status       = 1;
-            $store->store_otp_verify_status    = 1;
+            $store->store_otp_verify_status    = 0;
 
             $store->store_contact_person_name            = $request->store_contact_person_name;
             $store->store_primary_address            = $request->store_contact_address;
