@@ -222,7 +222,7 @@ class RegisterController extends Controller
             $insert['store_mobile'] = $request->store_mobile;
             $insert['role_id'] = 0;
             $insert['store_account_status'] = 1;
-            $insert['store_otp_verify_status'] = 1;
+            $insert['store_otp_verify_status'] = 0;
             $insert['expiry_date'] = Carbon::now()->addDays(30)->toDateString();
 
             $insert['password'] = Hash::make($request->password);
