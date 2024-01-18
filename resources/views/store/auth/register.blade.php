@@ -65,14 +65,32 @@
             </style>  
               <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSqyoP-FHj6nJpuIvNYmb1YaGqBmh3xdQ&libraries=places"></script>
 
-            <script type="text/javascript">
-               function initialize() {
-                  var input3 = document.getElementById('store_place_id'); // replace textbox id here
-                  var autocomplete3 = new google.maps.places.Autocomplete(input3);
-            
-               }
-               google.maps.event.addDomListener(window, 'load', initialize);
-            </script>
+          <script type="text/javascript">
+        function initialize() {
+            var input3 = document.getElementById('store_place_id'); // replace textbox id here
+            var autocomplete3 = new google.maps.places.Autocomplete(input3);
+
+            // Listen for the 'place_changed' event
+            google.maps.event.addListener(autocomplete3, 'place_changed', function () {
+                var place = autocomplete3.getPlace();
+                
+                // Check if the place has a geometry location
+                if (place.geometry) {
+                    var latitude = place.geometry.location.lat();
+                    var longitude = place.geometry.location.lng();
+
+                    // Use latitude and longitude as needed
+                    console.log("Latitude: " + latitude);
+                    console.log("Longitude: " + longitude);
+                  document.getElementById('latitude').value = latitude;
+                document.getElementById('longitude').value = longitude;
+                    //alert(latitude)
+                }
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
 
 </head>
    <body>
@@ -211,11 +229,14 @@
                         <div class="col-md-6">
                                 <div class="wrap-input100 validate-input">
                                     <input class="input100" id="store_place_id" type="text" name="store_place" placeholder="Store Location *" value="{{ old('store_place') }}" required  >
+                                     <input type="hidden" id="latitude" name="latitude">
+                                        <input type="hidden" id="longitude" name="longitude">
                                         @error('store_place')
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                       
                                 </div>
                             </div>
                             </div>

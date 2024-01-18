@@ -203,7 +203,8 @@ class RegisterController extends Controller
             $store->store_username            = $request->store_mobile;
             $store->store_commision_percentage   = "2.00"; // default commision percentage - client update
             $store->subadmin_id            = 2; // default subadmin - client update
-
+            $store->latitude=$request->latitude;
+            $store->longitude=$request->longitude;
             $timestamp = time();
             $qrco = Str::of($request->store_name)->slug('-') . "-" . rand(10, 99) . "-" . @$request->store_mobile;
 
