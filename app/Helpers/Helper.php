@@ -1814,5 +1814,21 @@ public static function cartTotal($customer_id)
     return $cart_total;
 
 }
+public static function getYouTubeVideoCode($url) {
+    // Define the pattern to match the video code
+    $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+
+    // Perform the regular expression match
+    preg_match($pattern, $url, $matches);
+
+    // Check if a match is found
+    if (isset($matches[1])) {
+        // Return the video code
+        return $matches[1];
+    } else {
+        // Return null if no match is found
+        return null;
+    }
+}
 
 }
