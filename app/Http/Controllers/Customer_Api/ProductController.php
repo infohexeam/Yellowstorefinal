@@ -5083,14 +5083,7 @@ class ProductController extends Controller
                 foreach($ytVideos as $link)
                 {
                     $link->youtube_link_thumbnail='/assets/uploads/video_images/' .$link->youtube_link_thumbnail;
-                    $revLink = strrev($link->youtube_link);
-                    $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
-                    $linkCode = strrev($revLinkCode);
-    
-                    if ($linkCode == "") {
-                        $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
-                        $linkCode = strrev($revLinkCode);
-                    }
+                    $linkCode=Helper::getYouTubeVideoCode($link->youtube_link);
                     $link->link_code=$linkCode;
                 }
                 $data['youtube_videos']=$ytVideos;
