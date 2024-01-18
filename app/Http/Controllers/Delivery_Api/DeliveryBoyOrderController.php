@@ -1074,7 +1074,7 @@ class DeliveryBoyOrderController extends Controller
                         $clickAction = "OrderListFragment";
                         $body = 'Order delivered with order id ' . $order->order_number;
                         $type = "order";
-                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                        $data['responseDelivered'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     }
 
 
@@ -1084,7 +1084,7 @@ class DeliveryBoyOrderController extends Controller
                         $body = 'Order delivered with order id ' . $order->order_number;
                         $clickAction = "OrderListFragment";
                         $type = "order";
-                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+                        $data['responseDeliveredWeb'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                     }
 
 

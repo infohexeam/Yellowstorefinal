@@ -1580,7 +1580,7 @@ public function destroyDelivery_boy(Request $request)
                                         $clickAction = "OrderListFragment";
                                         $body = 'Order delivered with order id ' . $orderDataz->order_number;
                                         $type = "order";
-                                        $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+                                        $data['responseDelivered'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                                     }
 
 
@@ -1590,7 +1590,7 @@ public function destroyDelivery_boy(Request $request)
                                         $body = 'Order delivered with order id ' . $orderDataz->order_number;
                                         $clickAction = "OrderListFragment";
                                         $type = "order";
-                                        $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+                                        $data['responseDeliveredWeb'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
                                     }
                                     
                                     
