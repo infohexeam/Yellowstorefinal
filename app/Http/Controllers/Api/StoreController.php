@@ -129,14 +129,15 @@ class StoreController extends Controller
             $linkCode = ' ';
 
             if ($v->platform == 'Youtube') {
-                $revLink = strrev($v->video_code);
-                $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
-                $linkCode = strrev($revLinkCode);
+                // $revLink = strrev($v->video_code);
+                // $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                // $linkCode = strrev($revLinkCode);
 
-                if ($linkCode == "") {
-                    $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
-                    $linkCode = strrev($revLinkCode);
-                }
+                // if ($linkCode == "") {
+                //     $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                //     $linkCode = strrev($revLinkCode);
+                // }
+                $linkCode=Helper::getYouTubeVideoCode($v->video_code);
             }
 
             if (!isset($v->video_discription)) {
@@ -256,14 +257,15 @@ class StoreController extends Controller
             $linkCode = '';
 
             if ($v->platform == 'Youtube') {
-                $revLink = strrev($v->video_code);
-                $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
-                $linkCode = strrev($revLinkCode);
+                // $revLink = strrev($v->video_code);
+                // $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                // $linkCode = strrev($revLinkCode);
 
-                if ($linkCode == "") {
-                    $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
-                    $linkCode = strrev($revLinkCode);
-                }
+                // if ($linkCode == "") {
+                //     $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                //     $linkCode = strrev($revLinkCode);
+                // }
+                $linkCode=Helper::getYouTubeVideoCode($v->video_code);
             }
 
             if (!isset($v->video_discription)) {
