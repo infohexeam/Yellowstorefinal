@@ -3009,6 +3009,7 @@ public function orderHistory(Request $request)
 
                         $data['orderDetails']->serviceData = new \stdClass();
                         if ($data['orderDetails']->service_booking_order == 1) {
+
                             $serviceData = Mst_store_product_varient::find(@$data['orderDetails']->product_varient_id);
                             @$serviceData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$serviceData->product_varient_base_image;
                             $baseProductDetail = Mst_store_product::find(@$serviceData->product_id);
