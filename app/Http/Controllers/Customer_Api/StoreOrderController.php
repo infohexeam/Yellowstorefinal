@@ -1414,7 +1414,7 @@ class StoreOrderController extends Controller
                         foreach ($storeDevice as $sd) {
                             $title = 'New order arrived';
                             $body = 'New order with order id ' . $orderdatas->order_number . ' has been saved successully..';
-                            $clickAction = "OrdersFragment";
+                            $clickAction = "OrderListFragment";
                             $type = "order";
                             $data['responseOrderApp'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                         }
