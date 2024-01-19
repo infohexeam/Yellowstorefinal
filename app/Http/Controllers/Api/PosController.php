@@ -568,6 +568,7 @@ class PosController extends Controller
                     ->where('mst_store_products.display_flag', 1)
                     ->where('mst_store_products.product_type', 1)
                     ->where('mst_store_products.is_removed', 0)
+                     ->where('mst_store_products.is_product_listed_by_product', 0)
                     ->where('mst_store_product_varients.is_removed', 0)
                     ->where('mst_store_product_varients.variant_status', 1)
                     ->where('mst_store_product_varients.stock_count', '>', 0)
@@ -591,7 +592,7 @@ class PosController extends Controller
                         'mst_store_product_varients.product_varient_base_image',
                         'mst_store_product_varients.is_base_variant',
                         'mst_store_product_varients.variant_status',
-                        
+                        'mst_store_products.is_product_listed_by_product',
                         'mst_store_product_varients.stock_count'
                     )->get()
                 ) {
