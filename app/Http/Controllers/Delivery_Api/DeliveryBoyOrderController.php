@@ -1071,7 +1071,7 @@ class DeliveryBoyOrderController extends Controller
                   
                     foreach ($storeDevice as $sd) {
                         $title = 'Order Delivered';
-                        $clickAction = "OrderListFragment";
+                        $clickAction = "OrdersFragment";
                         $body = 'Order delivered with order id ' . $order->order_number;
                         $type = "order";
                         $data['responseDelivered'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
