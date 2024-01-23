@@ -6745,9 +6745,21 @@ class StoreController extends Controller
       $pageTitle = 'Videos';
       $store_id  = Auth::guard('store')->user()->store_id;
       
-        $storeTownData = Mst_store::find($store_id);
+        //$storeTownData = Mst_store::find($store_id);
 
-        $videos = Mst_Video::where('town_id',$storeTownData->town_id)->orWhere('town_id','=',NULL)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+        //$videos = Mst_Video::where('town_id',$storeTownData->town_id)->orWhere('town_id','=',NULL)->where('status', 1)->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+        //////////////////////////////////////////
+        $videos = Mst_Video::where('status', 1);
+       
+          $storeTownData = Mst_store::find($store_id);
+          $videos = $videos->where(function ($query) use ($storeTownData) {
+              $query->where('town_id', $storeTownData->town_id)->orWhereNull('town_id');
+          });
+     
+
+          $videos = $videos->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
+
+        ///////////////////////////////////////
 
         //check if town/pincode exist
         // if(Mst_Video::where('status', 1)->where('visibility', 1)->where('town_id','=',NULL)->count() > 0)
