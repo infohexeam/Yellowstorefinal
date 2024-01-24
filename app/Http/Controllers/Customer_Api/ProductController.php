@@ -167,9 +167,10 @@ class ProductController extends Controller
                 $productData->time_slot_available_message='';
                 if ($productData->is_timeslot_based_product==1)
                 {
+                    $productData->time_slot_available_flag=1;
                     if($currTime<$start || $currTime>$end)
                     {
-                        $productData->time_slot_available_flag=1;
+                        $productData->time_slot_available_flag=0;
                        $productData->time_slot_available_message= 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
                        
                     }
