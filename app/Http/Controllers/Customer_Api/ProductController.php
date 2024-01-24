@@ -160,6 +160,21 @@ class ProductController extends Controller
                 $productData->stock_count=$base_varient_stock;
 
                 $data['productData'] = $productData;
+                $currTime = date("G:i");
+                $start = $productData->timeslot_start_time; //init the start time
+                $end = $productData->timeslot_end_time;
+                $productData->time_slot_available_flag=0;
+                $productData->time_slot_available_message='';
+                if ($productData->is_timeslot_based_product==1)
+                {
+                    if($currTime<$start || $currTime>$end)
+                    {
+                        $productData->time_slot_available_flag=1;
+                       $productData->time_slot_available_message= 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
+                       
+                    }
+                   
+                }
 
 
                 $data['message'] = 'Success';
