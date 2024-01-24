@@ -2095,7 +2095,7 @@ class ProductController extends Controller
 
                         foreach ($data['prouctDetails']->prouctVariantDetails as $key) {
                             @$key->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$key->product_varient_base_image;
-                            @$key->variantAttributes = Trn_ProductVariantAttribute::where('product_varient_id', $key->product_varient_id)->get();
+                            @$key->variantAttributes = Trn_ProductVariantAttribute::where('product_varient_id', $key->product_varient_id)->whereNotNull('attr_group_id')->whereNotNull('attr_value_id')->get();
                             foreach (@$key->variantAttributes as $v) {
                                 $aG  = Mst_attribute_group::find(@$v->attr_group_id);
                                 $aV = Mst_attribute_value::find(@$v->attr_value_id);

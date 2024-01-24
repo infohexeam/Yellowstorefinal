@@ -7005,7 +7005,7 @@ public function showInHome(Request $request, $product_id)
                    //dd($user_logs);
         return view('admin.masters.user_logs.list',compact('user_logs','pageTitle'));
     }
-    public function addYoutubeVideos(Request $request)
+  public function addYoutubeVideos(Request $request)
 	{
 
 		$pageTitle = "Add Youtube Videos";
