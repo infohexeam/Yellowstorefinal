@@ -789,7 +789,7 @@ class ProductController extends Controller
                     // dd($varIds);
 
                     // $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', $varIds)->groupBy('attr_group_id')->get();
-                    $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', [$request->product_varient_id])->groupBy('attr_group_id')->get();
+                    $attributesData = Trn_ProductVariantAttribute::select('attr_group_id')->whereIn('product_varient_id', [$request->product_varient_id])->whereNotNull('attr_group_id')->whereNotNull('attr_value_id')->groupBy('attr_group_id')->get();
 
                     foreach ($attributesData as $j) {
                         $datas = Mst_attribute_group::where('attr_group_id', $j->attr_group_id)->first();
