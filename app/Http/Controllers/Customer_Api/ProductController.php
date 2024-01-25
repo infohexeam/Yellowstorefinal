@@ -163,7 +163,7 @@ class ProductController extends Controller
                 $currTime = date("G:i");
                 $start = $productData->timeslot_start_time; //init the start time
                 $end = $productData->timeslot_end_time;
-                $productData->time_slot_available_flag=0;
+                $productData->time_slot_available_flag=1;
                 $productData->time_slot_available_message='';
                 if ($productData->is_timeslot_based_product==1)
                 {
