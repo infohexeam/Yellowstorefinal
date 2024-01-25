@@ -171,7 +171,7 @@ class ProductController extends Controller
                     if($currTime<$start || $currTime>$end)
                     {
                         $productData->time_slot_available_flag=0;
-                        $productData->time_slot_available_message= 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
+                       $productData->time_slot_available_message= 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
                        
                     }
                    
@@ -3951,7 +3951,6 @@ class ProductController extends Controller
                                     ->where('mst_store_products.store_id', $store_id)
                                     ->where('mst_store_product_varients.is_removed', 0)
                                     ->where('mst_store_products.is_removed', 0)
-                                    ->where('mst_store_products.product_status', 1)
                                     ->where('mst_store_product_varients.is_base_variant', 1)
                                     ->where('mst_store_products.product_cat_id', $category_id);
                             })
@@ -3990,7 +3989,6 @@ class ProductController extends Controller
             ->where('mst_store_products.store_id', $store_id)
             ->where('mst_store_product_varients.is_removed', 0)
             ->where('mst_store_products.is_removed', 0)
-            ->where('mst_store_products.product_status', 1)
             ->where('mst_store_product_varients.is_base_variant', 1)
             ->where('mst_store_products.product_cat_id', $category_id);
     })
@@ -4067,11 +4065,8 @@ class ProductController extends Controller
                                         ->where('mst_store_products.store_id', $store_id)
                                         ->where('mst_store_product_varients.is_removed', 0)
                                         ->where('mst_store_products.is_removed', 0)
-                                        ->where('mst_store_products.product_status', 1)
                                         ->where('mst_store_product_varients.is_base_variant', 1)
-                                        ->where('mst_store_products.product_status', 1)
                                         ->where('mst_store_products.product_cat_id', $category_id);
-                                        
                                 })->first();
                                 if($subcat_first)
                                 {
@@ -4098,9 +4093,7 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.is_base_variant', 1)
-                            ->where('mst_store_products.product_status', 1)
                             ->where('mst_store_products.show_in_home_screen', 1)
-                            ->where('mst_store_products.product_status', 1)
                             ->inRandomOrder()
                             ->limit(20)
                             ->get();
@@ -4227,9 +4220,7 @@ class ProductController extends Controller
                                         ->where('mst_store_product_varients.is_removed', 0)
                                         ->where('mst_store_products.is_removed', 0)
                                         ->where('mst_store_product_varients.is_base_variant', 1)
-                                        ->where('mst_store_products.product_status', 1)
                                         ->where('mst_store_products.product_cat_id', $category_id);
-                                        
                                 })->first();
                                     if($subcat_first)
                                     {
@@ -4257,7 +4248,6 @@ class ProductController extends Controller
                             ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
                             ->where('mst_store_products.product_cat_id', $category_id)
-                            ->where('mst_store_products.product_status', 1)
                             ->get();
 
                         foreach ($allProducts as $allProduct) {
@@ -4352,7 +4342,6 @@ class ProductController extends Controller
             ->where('mst_store_products.store_id', $store_id)
             ->where('mst_store_product_varients.is_removed', 0)
             ->where('mst_store_products.is_removed', 0)
-            ->where('mst_store_products.product_status', 1)
             ->where('mst_store_product_varients.is_base_variant', 1)
             ->where('mst_store_products.product_cat_id', $category_id);
     })
@@ -4389,7 +4378,6 @@ class ProductController extends Controller
             ->where('mst_store_products.store_id', $store_id)
             ->where('mst_store_product_varients.is_removed', 0)
             ->where('mst_store_products.is_removed', 0)
-            ->where('mst_store_products.product_status', 1)
             ->where('mst_store_product_varients.is_base_variant', 1)
             ->where('mst_store_products.product_cat_id', $category_id);
     })
@@ -4496,7 +4484,6 @@ class ProductController extends Controller
                                         ->where('mst_store_product_varients.is_removed', 0)
                                         ->where('mst_store_products.is_removed', 0)
                                         ->where('mst_store_product_varients.is_base_variant', 1)
-                                        ->where('mst_store_products.product_status', 1)
                                         ->where('mst_store_products.product_cat_id', $category_id);
                                 })->first();
                                     //dd($subcat_first);
@@ -4526,7 +4513,6 @@ class ProductController extends Controller
                                 ->where('mst_store_products.is_removed', 0)
                                 ->where('mst_store_product_varients.is_base_variant', 1)
                                 ->where('mst_store_products.show_in_home_screen', 1)
-                                ->where('mst_store_products.product_status', 1)
                                 ->inRandomOrder()
                                 ->limit(20)
                                 ->get();
@@ -4620,7 +4606,6 @@ class ProductController extends Controller
                                         ->where('mst_store_products.store_id', $store_id)
                                         ->where('mst_store_product_varients.is_removed', 0)
                                         ->where('mst_store_products.is_removed', 0)
-                                        ->where('mst_store_products.product_status', 1)
                                         ->where('mst_store_product_varients.is_base_variant', 1)
                                         ->where('mst_store_products.product_cat_id', $category_id);
                                 })->first();
@@ -4649,7 +4634,6 @@ class ProductController extends Controller
                                 ->where('mst_store_products.store_id', $store_id)
                                 //->where('mst_store_product_varients.stock_count', '>', 0)
                                 ->where('mst_store_product_varients.is_removed', 0)
-                                ->where('mst_store_products.product_status', 1)
                                 ->where('mst_store_products.is_removed', 0)
                                 ->where('mst_store_product_varients.is_base_variant', 1)
                                 ->where('mst_store_products.product_cat_id', $category_id)
@@ -4776,7 +4760,6 @@ class ProductController extends Controller
             ->where('mst_store_products.store_id', $store_id)
             ->where('mst_store_product_varients.is_removed', 0)
             ->where('mst_store_products.is_removed', 0)
-            ->where('mst_store_products.product_status', 1)
             ->where('mst_store_product_varients.is_base_variant', 1)
             ->where('mst_store_products.product_cat_id', $category_id);
     })
@@ -4814,7 +4797,6 @@ class ProductController extends Controller
                                 ->where('mst_store_products.store_id', $store_id)
                                 ->where('mst_store_product_varients.is_removed', 0)
                                 ->where('mst_store_products.is_removed', 0)
-                                ->where('mst_store_products.product_status', 1)
                                 ->where('mst_store_product_varients.is_base_variant', 1)
                                 ->where('mst_store_products.product_cat_id', $category_id);
                         })
@@ -4892,7 +4874,6 @@ class ProductController extends Controller
                                         ->where('mst_store_product_varients.is_removed', 0)
                                         ->where('mst_store_products.is_removed', 0)
                                         ->where('mst_store_product_varients.is_base_variant', 1)
-                                        ->where('mst_store_products.product_status', 1)
                                         ->where('mst_store_products.product_cat_id', $category_id);
                                 })->first();
                                 if($subcat_first)
@@ -4920,7 +4901,6 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.store_id', $store_id)
                             ->where('mst_store_product_varients.is_base_variant', 1)
-                            ->where('mst_store_products.product_status', 1)
                             ->where('mst_store_products.show_in_home_screen', 1)
                             ->inRandomOrder()
                             ->limit(20)
@@ -5033,7 +5013,6 @@ class ProductController extends Controller
                         ->where('mst_store_product_varients.is_removed', 0)
                         ->where('mst_store_products.is_removed', 0)
                         ->where('mst_store_product_varients.is_base_variant', 1)
-                        ->where('mst_store_products.product_status', 1)
                        // ->where('mst_store_products.product_cat_id', $category_id)
                         ->get();
 
