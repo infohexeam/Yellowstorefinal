@@ -5581,10 +5581,10 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.is_removed', 0)
                             ->where('mst_store_products.is_removed', 0)
                             ->where('mst_store_product_varients.is_base_variant', 1)
-                            ->when(true, function ($query) {
-                                return $query->where('mst_store_products.is_product_listed_by_product', 1)
-                                             ->where('mst_store_products.product_status', 1);
-                            })
+                            // ->when(true, function ($query) {
+                            //     return $query->where('mst_store_products.is_product_listed_by_product', 1)
+                            //                  ->where('mst_store_products.product_status', 1);
+                            // })
                             // ->groupBy('trn__recently_visited_products.product_id')
                             ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
                             ->orderBy('trn__recently_visited_products.created_at', 'DESC')
