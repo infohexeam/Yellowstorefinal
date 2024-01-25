@@ -152,7 +152,7 @@ class BusinessTypeController extends Controller
                     $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
                     ->where('trn__store_admins.role_id', 0)
                     ->where('mst_stores.online_status', 1)
-                    ->where('trn__store_admins.store_account_status', 1)
+                    //->where('trn__store_admins.store_account_status', 1)
                     ->orderBy('mst_stores.store_id', 'DESC')->get();
                     foreach($listedStores as $store)
                     {
@@ -164,6 +164,12 @@ class BusinessTypeController extends Controller
                             {
                                 array_push($expiredStores,$store->store_id);
                             }
+                            if($getParentExpiry->store_account_status==0)
+                            {
+                                array_push($expiredStores,$store->store_id);
+                            }
+
+                            
                         
                         }
                     }
@@ -494,7 +500,7 @@ class BusinessTypeController extends Controller
                         $listedStores= Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
                         ->where('trn__store_admins.role_id', 0)
                         ->where('mst_stores.online_status', 1)
-                        ->where('trn__store_admins.store_account_status', 1)
+                        //->where('trn__store_admins.store_account_status', 1)
                         ->orderBy('mst_stores.store_id', 'DESC')->get();
                         foreach($listedStores as $store)
                         {
@@ -506,6 +512,10 @@ class BusinessTypeController extends Controller
                             {
                                 $parentExpiryDate = $getParentExpiry->expiry_date;
                                 if($today>=$parentExpiryDate)
+                                {
+                                    array_push($expiredStores,$store->store_id);
+                                }
+                                if($getParentExpiry->store_account_status==0)
                                 {
                                     array_push($expiredStores,$store->store_id);
                                 }
