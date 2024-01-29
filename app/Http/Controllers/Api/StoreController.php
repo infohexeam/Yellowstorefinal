@@ -179,11 +179,7 @@ class StoreController extends Controller
 
             if (isset($request->customer_id)) {
                 $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
-                if($cusTownId!=NULL)
-                {
-                    $cusVids = $cusVids->where('town_id', $cusTownId);//->orWhere('town_id','=',NULL);
-                }
-                
+                $cusVids = $cusVids->where('town_id', $cusTownId)->orWhere('town_id','=',NULL);
             }
 
             $cusVids = $cusVids->orderBy('video_id', 'DESC')->get();
