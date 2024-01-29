@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\admin\Mst_store;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_customer_reward;
+use App\Models\admin\Trn_CustomerDeviceToken;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order;
 use App\Trn_wallet_log;
@@ -315,6 +318,18 @@ class StoreWalletController extends Controller
 			$wallet_log->points_credited=$request->reward_points;
             $wallet_log->description=$request->reward_discription;
 			$wallet_log->save();
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
+           $store_name=Mst_store::find($store_id)->store_name;
+            foreach ($customerDevice as $cd)
+		   {
+                $title = 'Rewards points credited';
+                //  $body = 'First order points credited successully..';
+                $body = $request->reward_points . ' points credited to your wallet from store '.$store_name;
+                $clickAction = "MyWalletFragment";
+                $type = "wallet";
+                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
             
             $data['status']=1;
             $data['message']="Customer reward added successfully";
