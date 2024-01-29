@@ -179,7 +179,10 @@ class StoreController extends Controller
 
             if (isset($request->customer_id)) {
                 $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
+                $cusStateId = Trn_store_customer::find($request->customer_id)->state_id;
+                $cusDistId = Trn_store_customer::find($request->customer_id)->district_id;
                 $cusVids = $cusVids->where('town_id', $cusTownId)->orWhere('town_id','=',NULL);
+                $cusVids=$cusVids->where('state_id',$cusStateId)->where('district_id',$cusDistId);
             }
 
             $cusVids = $cusVids->orderBy('video_id', 'DESC')->get();
