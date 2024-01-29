@@ -2477,7 +2477,7 @@ class ProductController extends Controller
                 $data['totalBalancePoints']= "0.00";
 
                }
-               $perPage = 3;
+               $perPage = 10;
                $page=$request->page??1;
                $offset = ($page - 1) * $perPage;
                $roWc=count(collect($data['logs'] )->values());
