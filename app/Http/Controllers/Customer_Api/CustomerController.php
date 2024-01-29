@@ -129,9 +129,9 @@ class CustomerController extends Controller
                                     {
                                     if($user->referral_id == $request->referral_id)
                                     {
-                                        $data['status'] = 0;
-                                        $data['message'] = "Invalid Reference.Cannot initiate a reference created by yourselves";
-                                        return response($data);
+                                        // /$data['status'] = 0;
+                                        // $data['message'] = "Invalid Reference.Cannot initiate a reference created by yourselves";
+                                        // return response($data);
 
                                     }
                                     
