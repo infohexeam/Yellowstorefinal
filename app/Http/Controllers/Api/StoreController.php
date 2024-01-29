@@ -181,7 +181,7 @@ class StoreController extends Controller
                 $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
                 $cusStateId = Trn_store_customer::find($request->customer_id)->state_id;
                 $cusDistId = Trn_store_customer::find($request->customer_id)->district_id;
-                $cusVids = $cusVids->where('town_id', $cusTownId)->orWhere('town_id','=',NULL);
+                $cusVids = $cusVids->where('town_id', $cusTownId);
                 $cusVids=$cusVids->where('state_id',$cusStateId)->where('district_id',$cusDistId);
             }
 
