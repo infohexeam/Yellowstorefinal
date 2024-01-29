@@ -179,8 +179,9 @@ class StoreController extends Controller
 
             if (isset($request->customer_id)) {
                 $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
-                $cusVids = $cusVids->where(function ($query) use ($cusTownId) {
-                    $query->where('town_id', $cusTownId)->orWhereNull('town_id');
+                $cust=Trn_store_customer::find($request->customer_id);
+                $cusVids = $cusVids->where(function ($query) use ($cust) {
+                    $query->where('town_id', $cust->town_id)->where('state_id', $cust->state_id)->where('district_id', $cust->district_id);//->orWhereNull('town_id');
                 });
             } else {
                 $cusVids = $cusVids->where(function ($query) {
