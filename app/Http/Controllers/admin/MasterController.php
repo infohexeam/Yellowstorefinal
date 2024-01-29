@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -33,6 +34,7 @@ use App\Models\admin\District;
 use App\Models\admin\Mst_GlobalProducts;
 use App\Models\admin\Mst_store_product;
 use App\Models\admin\Town;
+use App\Models\admin\Trn_CustomerDeviceToken;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB as FacadesDB;
 
@@ -77,6 +79,17 @@ class MasterController extends Controller
             $reward->reward_point_status  	= 1;
             $reward->discription  	= $request->reward_discription;
             $reward->save(); 
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $request->customer_id)->get();
+           
+            foreach ($customerDevice as $cd)
+		   {
+                $title = 'Rewards points credited';
+                //  $body = 'First order points credited successully..';
+                $body = $request->reward_points . ' points credited to your wallet from admin';
+                $clickAction = "MyWalletFragment";
+                $type = "wallet";
+                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
             }
             else
             {
