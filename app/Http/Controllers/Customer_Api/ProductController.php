@@ -2520,7 +2520,7 @@ class ProductController extends Controller
                         );
 
                     $productData = $productData->where('mst_store_products.display_flag', 1)
-                        ->where('mst_store_product_varients.stock_count', '>', 0)
+                        //->where('mst_store_product_varients.stock_count', '>', 0)
 
                         ->where('mst_store_products.store_id', $request->store_id)
                         //  ->orWhere('mst_store_products.product_type',2)
