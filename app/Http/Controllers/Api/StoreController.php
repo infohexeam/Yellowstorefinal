@@ -387,14 +387,18 @@ class StoreController extends Controller
         $dboyVid = Mst_Video::where('status', 1)->where('visibility', 3);
 
         if (isset($request->delivery_boy_id)) {
-            $dbTownId = Mst_delivery_boy::find($request->delivery_boy_id)->town_id;
-            $dboyVid = $dboyVid->where(function ($query) use ($dbTownId) {
-                $query->where('town_id', $dbTownId)->orWhereNull('town_id');
-            });
+            // $dbTownId = Mst_delivery_boy::find($request->delivery_boy_id)->town_id;
+            // $dboyVid = $dboyVid->where(function ($query) use ($dbTownId) {
+            //     $query->where('town_id', $dbTownId)->orWhereNull('town_id');
+            // });
+            $db = Mst_delivery_boy::find($request->delivery_boy_id);
+            $dboyVid =$dboyVid->where('town_id', $db->town_id)->where('state_id', $db->state_id)->where('district_id', $db->district_id);//->orWhereNull('town_id');
+
         } else {
-            $dboyVid = $dboyVid->where(function ($query) {
-                $query->whereNull('town_id');
-            });
+            // $dboyVid = $dboyVid->where(function ($query) {
+            //     $query->whereNull('town_id');
+            // });
+            $dboyVid =$dboyVid->whereNull('town_id')->whereNull('state_id')->whereNull('district_id');
         }
 
         $dboyVid = $dboyVid->orderBy('video_id', 'DESC')->get();
