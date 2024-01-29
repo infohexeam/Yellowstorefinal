@@ -1520,7 +1520,7 @@ public function destroyDelivery_boy(Request $request)
                                         $body = $orderPointAmount . ' points credited to your wallet';
                                         $clickAction = "MyWalletFragment";
                                         $type = "wallet";
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                        $data['responseAdminCredit'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
 
                                     }
@@ -1568,7 +1568,7 @@ public function destroyDelivery_boy(Request $request)
                                         $body = $storeOrderPointAmount . ' points credited to your store wallet';
                                         $clickAction = "MyWalletFragment";
                                         $type = "wallet";
-                                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                        $data['responseStoreCredit'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                                     }
 
                                     }
