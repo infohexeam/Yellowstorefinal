@@ -1054,7 +1054,7 @@ class DeliveryBoyOrderController extends Controller
                         $body = $storeOrderPointAmount . ' points credited to your store wallet';
                         $clickAction = "MyWalletFragment";
                         $type = "wallet";
-                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                        $data['responseStoreCredit'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
 
                     
