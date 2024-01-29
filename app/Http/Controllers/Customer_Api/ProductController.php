@@ -2484,7 +2484,7 @@ class ProductController extends Controller
                $data['allTransactionCount']=$roWc;
                $transactions = collect($data['logs'] )->slice($offset, $perPage)->values();
                $data['logs']=$transactions; 
-               if ($roWc >9) {
+               if ($roWc>9) {
                 $data['pageCount'] = ceil(@$roWc /2);
              } else {
                  $data['pageCount'] = 1;
