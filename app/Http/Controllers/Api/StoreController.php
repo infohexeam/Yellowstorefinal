@@ -104,7 +104,7 @@ class StoreController extends Controller
             return response($response);
         }
     }
-    public function storeVideoListNew(Request $request)
+  /*  public function storeVideoListNew(Request $request)
 {
     $data = array();
     try {
@@ -171,7 +171,92 @@ class StoreController extends Controller
         $response = ['status' => '0', 'message' => $e->getMessage()];
         return response($response);
     }
+}*/
+public function storeVideoListNew(Request $request)
+{
+    $data = array();
+    try {
+        $storeVids = Mst_Video::where('status', 1);
+
+        if (isset($request->store_id)) {
+            $storeTownData = Mst_store::find($request->store_id);
+
+            // Add conditions to match state_id and district_id
+            $storeVids = $storeVids
+                ->where(function ($query) use ($storeTownData) {
+                    $query
+                        ->where('state_id', $storeTownData->store_state_id)
+                        ->orWhereNull('state_id');
+                })
+                ->where(function ($query) use ($storeTownData) {
+                    $query
+                        ->where('district_id', $storeTownData->store_district_id)
+                        ->orWhereNull('district_id');
+                })
+                ->where(function ($query) use ($storeTownData) {
+                    $query
+                        ->where('town_id', $storeTownData->town_id)
+                        ->orWhereNull('town_id');
+                });
+        } else {
+            // If store_id is not provided, match records where state_id, district_id, and town_id are null
+            $storeVids = $storeVids
+                ->whereNull('state_id')
+                ->whereNull('district_id')
+                ->whereNull('town_id');
+        }
+
+        $storeVids = $storeVids
+            ->where('visibility', 1)
+            ->orderBy('video_id', 'DESC')
+            ->get();
+
+        $data['videos'] = $storeVids;
+
+        foreach ($data['videos'] as $v) {
+            $linkCode = ' ';
+
+            if ($v->platform == 'Youtube') {
+                // $revLink = strrev($v->video_code);
+                // $revLinkCode = substr($revLink, 0, strpos($revLink, '='));
+                // $linkCode = strrev($revLinkCode);
+
+                // if ($linkCode == "") {
+                //     $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                //     $linkCode = strrev($revLinkCode);
+                // }
+                $linkCode=Helper::getYouTubeVideoCode($v->video_code);
+            }
+
+            if (!isset($v->video_discription)) {
+                $v->video_discription = '';
+            }
+
+            if ($v->platform == 'Vimeo') {
+                $revLink = strrev($v->video_code);
+                $revLinkCode = substr($revLink, 0, strpos($revLink, '/'));
+                $linkCode = strrev($revLinkCode);
+            }
+
+            $v->link_code = @$linkCode;
+
+            if ($v->video_image) {
+                $v->video_image = '/assets/uploads/video_images/' . $v->video_image;
+            } else {
+                $v->video_image = Helper::default_video_image();
+            }
+        }
+
+        return response($data);
+    } catch (\Exception $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    } catch (\Throwable $e) {
+        $response = ['status' => '0', 'message' => $e->getMessage()];
+        return response($response);
+    }
 }
+
 
 
     public function customerVideoList(Request $request)
