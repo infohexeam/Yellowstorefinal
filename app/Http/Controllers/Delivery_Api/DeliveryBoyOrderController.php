@@ -1008,7 +1008,7 @@ class DeliveryBoyOrderController extends Controller
                         $body = $orderPointAmount . ' points credited to your wallet';
                         $clickAction = "MyWalletFragment";
                         $type = "wallet";
-                        $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                        $data['responseAppCredit'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
                     }
                    
                     }
@@ -1047,7 +1047,7 @@ class DeliveryBoyOrderController extends Controller
                     //     $type = "wallet";
                     //     $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     // }
-                    /*$customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+                    $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
                     foreach ($customerDevice as $cd) {
 
                         $title = 'Store Order Points Credited';
@@ -1055,7 +1055,7 @@ class DeliveryBoyOrderController extends Controller
                         $clickAction = "MyWalletFragment";
                         $type = "wallet";
                         $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                    }*/
+                    }
 
                     
                     }
