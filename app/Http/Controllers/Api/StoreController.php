@@ -175,16 +175,23 @@ class StoreController extends Controller
         $data = array();
         try {
 
-            $cusVids = Mst_Video::where('status', 1)->where('visibility', 2);
+            $cusVids = Mst_Video::where('status', 1);
 
             if (isset($request->customer_id)) {
                 $cusTownId = Trn_store_customer::find($request->customer_id)->town_id;
-                $cusVids = $cusVids->where('town_id', $cusTownId)->orWhere('town_id','=',NULL);
+                $cusVids = $cusVids->where(function ($query) use ($cusTownId) {
+                    $query->where('town_id', $cusTownId)->orWhereNull('town_id');
+                });
+            } else {
+                $cusVids = $cusVids->where(function ($query) {
+                    $query->whereNull('town_id');
+                });
             }
-
-            $cusVids = $cusVids->orderBy('video_id', 'DESC')->get();
-
+            
+            $cusVids = $cusVids->where('visibility', 2)->orderBy('video_id', 'DESC')->get();
+            
             $data['videos'] = $cusVids;
+            
 
             foreach ($data['videos'] as $v) {
                 $linkCode = '';
