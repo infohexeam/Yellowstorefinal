@@ -185,7 +185,7 @@ class StoreController extends Controller
                 });
             } else {
                 $cusVids = $cusVids->where(function ($query) {
-                    $query->whereNull('town_id');
+                    $query->whereNull('town_id')->whereNull('state_id')->whereNull('district_id');
                 });
             }
             
