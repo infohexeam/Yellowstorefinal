@@ -1048,14 +1048,14 @@ class DeliveryBoyOrderController extends Controller
                     //     $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
                     // }
                     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
-                    foreach ($customerDevice as $cd) {
+                        foreach ($customerDevice as $cd) {
 
-                        $title = 'Store Order Points Credited';
-                        $body = $storeOrderPointAmount . ' points credited to your store wallet';
-                        $clickAction = "MyWalletFragment";
-                        $type = "wallet";
-                        $data['responseStoreCredit'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
-                    }
+                            $title = 'Store Order Points Credited';
+                            $body = $storeOrderPointAmount . ' points credited to your store wallet';
+                            $clickAction = "MyWalletFragment";
+                            $type = "wallet";
+                            $data['responseStoreCredit'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                        }
 
                     
                     }

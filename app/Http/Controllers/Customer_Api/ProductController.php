@@ -2317,7 +2317,7 @@ class ProductController extends Controller
                         
                        
                        
-                    }
+                      }
 
                     }
 
@@ -2367,6 +2367,146 @@ class ProductController extends Controller
             return response($response);
         }
     }
+    public function customerStoreWalletTransactionsNew(Request $request)
+    {
+        $data = array();
+        $wallet_logs=array();
+                
+        try {
+            $type1="debit";
+            $type2="credit";
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                $wallet_logs=Trn_wallet_log::Where('trn_wallet_logs.customer_id',$request->customer_id)
+                ->leftjoin('trn_store_orders','trn_wallet_logs.order_id', '=','trn_store_orders.order_id')
+                ->leftjoin('mst_stores','trn_wallet_logs.store_id', '=','mst_stores.store_id')
+                ->leftjoin('trn_configure_points','trn_configure_points.store_id', '=','mst_stores.store_id')
+                ->select(
+                
+                    'trn_wallet_logs.order_id',
+                    'trn_wallet_logs.customer_id',
+                    'trn_wallet_logs.type',
+                    'trn_wallet_logs.points_credited',
+                    'trn_wallet_logs.points_debited',
+                    'trn_wallet_logs.created_at',
+                    'trn_wallet_logs.description',
+                    'trn_store_orders.order_number',
+                    'mst_stores.store_id',
+                    'trn_wallet_logs.store_id as stid',
+                    'mst_stores.store_name',
+                DB::raw("(SELECT SUM(trn_wallet_logs.points_credited) FROM trn_wallet_logs
+
+                WHERE trn_wallet_logs.store_id = ".$request->store_id." AND trn_wallet_logs.customer_id =".$request->customer_id."
+
+                GROUP BY stid) as store_points_credited")
+            ,
+            DB::raw("(SELECT SUM(trn_wallet_logs.points_debited) FROM trn_wallet_logs
+
+            WHERE trn_wallet_logs.store_id = ".$request->store_id." AND  trn_wallet_logs.customer_id =".$request->customer_id." 
+
+             GROUP BY stid ) as store_points_debited"),
+
+            )
+                //->where('trn_wallet_logs.points_debited','!=',0.00)
+               /* ->when($type1, function ($query) use ($type1) {
+                    return $query->where('trn_wallet_logs.type', $type1)->whereNotNull('trn_wallet_logs.order_id');
+                })
+                ->orWhen($type2, function ($query) use ($type2) {
+                    return $query->where('trn_wallet_logs.type', $type2);
+                })*/
+                ->where('trn_wallet_logs.store_id',$request->store_id)
+                ->orderBy('trn_wallet_logs.wallet_log_id','DESC')
+                ->get();
+                $wallet_log_credited=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->where('store_id',$request->store_id)->sum('points_credited');
+                $wallet_log_redeemed=Trn_wallet_log::where('customer_id',$request->customer_id)->whereNotNull('store_id')->whereNotNull('order_id')->where('store_id',$request->store_id)->sum('points_debited');
+                $available_points=$wallet_log_credited-$wallet_log_redeemed;              
+                $data['logs']=$wallet_logs; 
+                $debited=0; 
+                foreach($data['logs'] as $log)
+                {
+                    if($log->type=='debit')
+                    {
+                        $o_check=Trn_store_order::where('order_id',$log->order_id)->first();
+                        if($o_check!=NULL)
+                        {
+                        if($o_check->reward_points_used_store>$log->points_debited)
+                        {
+                            $log->points_debited=$o_check->reward_points_used_store;
+
+                        }
+                        $debited=$debited+$log->points_debited;
+                       
+                        if($log->order_id==NULL)
+                        {
+                            //$debited=$debited-$log->points_debited;
+                            continue;
+                        }
+                        
+                       
+                       
+                      }
+
+                    }
+
+                    $log->store_points_balance=number_format($log->store_points_credited-$log->store_points_debited,2);
+                    if($log->description==NULL)
+                    {
+                        $log->description='Order Points';
+                    }
+                    if($log->order_number==NULL)
+                    {
+                        $log->order_number='Gift Credit(Non order)';
+                    }
+                }            
+                if ($wallet_log_credited >= 0)
+                    $data['totalCreditedPoints']  =number_format($wallet_log_credited,2);
+                else
+                    $data['totalcreditedPoints']  = '0';
+
+                if ($wallet_log_redeemed >= 0)
+                    $data['totalRedeemedPoints']  = number_format($wallet_log_redeemed,2);
+                else
+                    $data['totalRedeemedPoints']  = '0';
+               
+               if($available_points>=0)
+               {
+                $data['totalBalancePoints']= number_format($available_points,2);
+
+               }
+               else
+               {
+                $data['totalBalancePoints']= "0.00";
+
+               }
+               $perPage = 3;
+               $page=$request->page??1;
+               $offset = ($page - 1) * $perPage;
+               $roWc=count(collect($data['logs'] )->values());
+               $data['allTransactionCount']=$roWc;
+               $transactions = collect($data['logs'] )->slice($offset, $perPage)->values();
+               $data['logs']=$transactions; 
+               if ($roWc >9) {
+                $data['pageCount'] = ceil(@$roWc /2);
+             } else {
+                 $data['pageCount'] = 1;
+             }
+                $data['status'] = 1;
+                $data['message'] = "Success";
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found ";
+            }
+
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+    
+
 
     public function searchProduct(Request $request)
     {
