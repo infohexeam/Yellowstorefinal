@@ -112,13 +112,17 @@ class StoreController extends Controller
 
         if (isset($request->store_id)) {
             $storeTownData = Mst_store::find($request->store_id);
-            $storeVids = $storeVids->where(function ($query) use ($storeTownData) {
-                $query->where('town_id', $storeTownData->town_id)->orWhereNull('town_id');
-            });
+            // $storeVids = $storeVids->where(function ($query) use ($storeTownData) {
+            //     $query->where('town_id', $storeTownData->town_id)->orWhereNull('town_id');
+            // });
+            
+            $storeVids = $storeVids->where('town_id', $storeTownData->town_id)->where('state_id', $storeTownData->store_state_id)->where('district_id', $storeTownData->store_district_id);//->orWhereNull('town_id');
+            
         } else {
-            $storeVids = $storeVids->where(function ($query) {
-                $query->whereNull('town_id');
-            });
+            // $storeVids = $storeVids->where(function ($query) {
+            //     $query->whereNull('town_id');
+            // });
+            $storeVids = $storeVids->whereNull('town_id')->whereNull('state_id')->whereNull('district_id');
         }
 
         $storeVids = $storeVids->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
