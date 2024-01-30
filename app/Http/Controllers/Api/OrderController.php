@@ -616,7 +616,7 @@ class OrderController extends Controller
                             {
                                 if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
                                 {
-                                    $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
+                                    $value->product_name = @$value->productDetail->variant_name;
                                     $value->productDetail->variant_name=$value->product_name;
                                 }
                                 else
