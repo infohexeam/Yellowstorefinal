@@ -600,15 +600,39 @@ class OrderController extends Controller
                            
 
 
-
                             $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+                            
+                            if($value->product_image==NULL)
+                            {
+                                $value->product_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+                              
+                            }
+                            else
+                            {
+                                $value->product_image = '/assets/uploads/products/base_product/base_image/' . @$value->product_image;
 
+                            }
+                            if($value->product_name==NULL)
+                            {
+                                if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
+                                {
+                                    $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
+
+                                }
+                                else
+                                {
+                                    $value->product_name = @$baseProductDetail->product_name;
+
+                                }
+                                
+                          
+                                
+                                
+                            }
+                           
                             
 
-                            // if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
-                            //     $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
-                            // else
-                            //     $value->product_name = @$baseProductDetail->product_name;
+                            // 
                             
                             $taxFullData = Mst_Tax::find(@$value->tax_id);
                             //return $value->tax_id;
