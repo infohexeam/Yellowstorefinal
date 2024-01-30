@@ -4677,7 +4677,7 @@ class StoreController extends Controller
       'service_area' => $request->service_area,
       // 'store_district_id' =>  $request->service_district,
       // 'town_id' => $request->service_town,
-      'business_type_id' => $request->business_type_id,
+      //'business_type_id' => $request->business_type_id,
       'order_number_prefix' => $request->order_number_prefix,
       'delivery_option_immediate'=>$immediate_delivery,
       'delivery_option_slot'=>$slot_delivery,
