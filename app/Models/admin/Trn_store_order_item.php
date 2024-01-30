@@ -21,6 +21,8 @@ class Trn_store_order_item extends Model
                        'store_commision_percentage',
                        'cart_status',
                        'quantity',
+                       'product_name',
+                       'product_image',
                        'unit_price',
                        'tax_value',
                        'tax_id',
