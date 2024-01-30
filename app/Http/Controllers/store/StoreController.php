@@ -6751,12 +6751,28 @@ class StoreController extends Controller
         //////////////////////////////////////////
         $videos = Mst_Video::where('status', 1);
        
-          $storeTownData = Mst_store::find($store_id);
+        $storeTownData = Mst_store::find($store_id);
           // $videos = $videos->where(function ($query) use ($storeTownData) {
           //     $query->where('town_id', $storeTownData->town_id)->orWhereNull('town_id');
           // });
+          $videos = $videos
+          ->where(function ($query) use ($storeTownData) {
+              $query
+                  ->where('state_id', $storeTownData->store_state_id)
+                  ->orWhereNull('state_id');
+          })
+          ->where(function ($query) use ($storeTownData) {
+              $query
+                  ->where('district_id', $storeTownData->store_district_id)
+                  ->orWhereNull('district_id');
+          })
+          ->where(function ($query) use ($storeTownData) {
+              $query
+                  ->where('town_id', $storeTownData->town_id)
+                  ->orWhereNull('town_id');
+          });
   
-          $videos = $videos->where('town_id', $storeTownData->town_id)->where('state_id', $storeTownData->store_state_id)->where('district_id', $storeTownData->store_district_id);//->orWhereNull('town_id');
+          //$videos = $videos->where('town_id', $storeTownData->town_id)->where('state_id', $storeTownData->store_state_id)->where('district_id', $storeTownData->store_district_id);//->orWhereNull('town_id');
 
           $videos = $videos->where('visibility', 1)->orderBy('video_id', 'DESC')->get();
 
