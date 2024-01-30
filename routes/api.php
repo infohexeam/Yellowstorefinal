@@ -460,6 +460,7 @@ Route::get('customer/cart-bulk-delete', 'Customer_Api\ProductController@CartOutO
 
 
 Route::get('customer/wallet-page', 'Customer_Api\ProductController@walletPage');
+Route::get('customer/wallet-page-admin', 'Customer_Api\ProductController@walletPageAdmin');
 Route::get('customer/raise-issues', 'Customer_Api\ProductController@raiseIssuesPage');
 Route::get('customer/store-wallet-page', 'Customer_Api\ProductController@storeWalletPage');
 

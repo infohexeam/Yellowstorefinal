@@ -1946,6 +1946,91 @@ class ProductController extends Controller
             return response($response);
         }
     }
+    public function walletPageAdmin(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+
+                $totalCustomerRewardsCount = Trn_customer_reward::where('customer_id', $request->customer_id)->where('reward_point_status', 1)->whereNull('store_id')->where('discription','!=','store points')->sum('reward_points_earned');
+                $totalusedPoints = Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->sum('reward_points_used');
+                $redeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+
+                $balanceCount =  ($totalCustomerRewardsCount - $totalusedPoints)-$redeemedPoints;
+                $data['customerRewardsCount'] = number_format(floor($totalCustomerRewardsCount), 2);
+                $totalAdminRedeemedPoints = Trn_points_redeemed::where('customer_id', $request->customer_id)->sum('points');
+                if ($totalusedPoints >= 0)
+                    $data['totalusedPoints']  = number_format((float)floor($totalusedPoints), 2, '.', '');
+                else
+                    $data['totalusedPoints']  = '0';
+
+               
+
+                if ($totalAdminRedeemedPoints >= 0)
+                    $data['totalAdminRedeemedPoints']  =  number_format((float)floor($totalAdminRedeemedPoints), 2, '.', '');//$totalAdminRedeemedPoints;
+                else
+                    $data['totalAdminRedeemedPoints']  = '0';
+
+                if($balanceCount>=0)
+                {
+                    $data['balancePoints']=number_format((float)floor($balanceCount), 2, '.', '');//$totalAdminRedeemedPoints;
+
+                }
+                else
+                {
+                    $data['balancePoints']='0';
+
+
+                }
+
+                
+                $data['customerRewards'] = Trn_customer_reward::where('customer_id',$request->customer_id)
+                    ->where('reward_point_status', 1)->where('reward_points_earned','!=',0.00)->whereNull('store_id')->where('discription','!=','store points')->orderBy('reward_id', 'DESC')->get();
+                foreach ($data['customerRewards'] as $cr) {
+                    if (Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id)) {
+                        $cr->rewardTransactionType = Trn_customer_reward_transaction_type::find(@$cr->transaction_type_id);
+                    } 
+                    else {
+                        $cr->rewardTransactionType = new \stdClass();
+
+                        if (($cr->discription == null) && ($cr->discription == '')) {
+                            $orderInfo = Trn_store_order::find($cr->order_id);
+                            $cr->rewardTransactionType->transaction_type = 'from order ' . $orderInfo->order_number;
+                        } else {
+                            $cr->rewardTransactionType->transaction_type = $cr->discription;
+                        }
+                    }
+                }
+                $data['customerUsedLogs']=Trn_store_order::where('customer_id', $request->customer_id)->whereNotIn('status_id', [5])->orderBy('updated_at','DESC')->get();
+                $data['customerAdminRedeemedLogs']=Trn_points_redeemed::where('customer_id', $request->customer_id)->orderBy('updated_at','DESC')->get();
+                $perPage = 10;
+                $page=$request->page??1;
+                $offset = ($page - 1) * $perPage;
+                $roWc=count(collect($data['customerRewards'] )->values());
+                $data['allTransactionCount']=$roWc;
+                $transactions = collect($data['customerRewards'] )->slice($offset, $perPage)->values();
+                $data['customerRewards']=$transactions; 
+                if ($roWc>9) {
+                    $data['pageCount'] = ceil(@$roWc /10);
+                } else {
+                    $data['pageCount'] = 1;
+                }
+                $data['status'] = 1;
+                $data['message'] = "Success";
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found ";
+            }
+
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
     public function storeWalletPage(Request $request)
     {
         $data = array();
