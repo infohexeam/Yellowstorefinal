@@ -543,7 +543,7 @@ class OrderController extends Controller
 
 
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
-                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount','mrp', 'tax_amount','tax_id','tax_value', 'unit_price', 'tick_status','is_timeslot_product','time_start','time_end')
+                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity','product_name','product_image', 'discount_amount', 'discount_percentage', 'total_amount','mrp', 'tax_amount','tax_id','tax_value', 'unit_price', 'tick_status','is_timeslot_product','time_start','time_end')
                             ->get();
 
 
@@ -609,7 +609,7 @@ class OrderController extends Controller
                             //     $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
                             // else
                             //     $value->product_name = @$baseProductDetail->product_name;
-
+                            
                             $taxFullData = Mst_Tax::find(@$value->tax_id);
                             //return $value->tax_id;
                             //return response($taxFullData);
