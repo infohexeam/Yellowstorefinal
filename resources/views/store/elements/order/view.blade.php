@@ -320,7 +320,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              <br>
                                                {{ @$order_item->product_varient->variant_name }}
                                              @else
-                                             <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_image)}}"  width="50" >
+                                             <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_image)}}"  width="50" >
                                              <br>
                                                {{ @$order_item->product_name }}
                                              @endif
