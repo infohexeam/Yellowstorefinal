@@ -3005,7 +3005,7 @@ public function orderHistory(Request $request)
                         $data['orderDetails']->item_list_link = url('item/list/' . Crypt::encryptString($data['orderDetails']->order_id));
 
                         $data['orderDetails']->orderItems = Trn_store_order_item::where('order_id', $data['orderDetails']->order_id)
-                            ->select('product_id','product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price','mrp','tax_value','tax_id', 'tick_status','is_timeslot_product','time_start','time_end')
+                            ->select('product_id','product_varient_id', 'order_item_id', 'quantity','product_name','product_image','discount_amount', 'discount_percentage', 'total_amount', 'tax_amount', 'unit_price','mrp','tax_value','tax_id', 'tick_status','is_timeslot_product','time_start','time_end')
                             ->get();
 
 
