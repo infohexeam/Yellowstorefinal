@@ -99,7 +99,7 @@ iframe{
                                        --
                                    @endif</td>
                                    <td>{{ @$value->town->town_name }} </td>
-                                   <td>{{ $value->video_discription }} </td>
+                                   <td style="word-wrap: break-word;">{{ $value->video_discription }} </td>
                                       <td> 
                                        @if ($value->status == 1)
                                           Active
