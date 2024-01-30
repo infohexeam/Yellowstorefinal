@@ -314,9 +314,17 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        <tr>
                                        <td>{{$i++}}
                                           <td>
+                                             
+                                             @if(@$order_item->product_name==NULL)
                                              <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_varient_base_image)}}"  width="50" >
                                              <br>
-                                             {{ @$order_item->product_varient->variant_name }}
+                                               {{ @$order_item->product_varient->variant_name }}
+                                             @else
+                                             <img src="{{asset('/assets/uploads/products/base_product/base_image/'.@$order_item->product_varient->product_image)}}"  width="50" >
+                                             <br>
+                                               {{ @$order_item->product_name }}
+                                             @endif
+                                            
                                              @if(@$order->order_type != 'POS')
                                              @if($order_item->is_timeslot_product)
                                              @if($order_item->is_timeslot_product==1)
