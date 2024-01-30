@@ -487,12 +487,26 @@ public function storeVideoListNew(Request $request)
         $dboyVid = Mst_Video::where('status', 1)->where('visibility', 3);
 
         if (isset($request->delivery_boy_id)) {
-            // $dbTownId = Mst_delivery_boy::find($request->delivery_boy_id)->town_id;
-            // $dboyVid = $dboyVid->where(function ($query) use ($dbTownId) {
-            //     $query->where('town_id', $dbTownId)->orWhereNull('town_id');
-            // });
+           
             $db = Mst_delivery_boy::find($request->delivery_boy_id);
-            $dboyVid =$dboyVid->where('town_id', $db->town_id)->where('state_id', $db->state_id)->where('district_id', $db->district_id);//->orWhereNull('town_id');
+        
+            // Add conditions to match state_id and district_id
+            $dboyVid = $dboyVid
+                ->where(function ($query) use ($db) {
+                    $query
+                        ->where('state_id', $db->state_id)
+                        ->orWhereNull('state_id');
+                })
+                ->where(function ($query) use ($db) {
+                    $query
+                        ->where('district_id', $db->district_id)
+                        ->orWhereNull('district_id');
+                })
+                ->where(function ($query) use ($db) {
+                    $query
+                        ->where('town_id', $db->town_id)
+                        ->orWhereNull('town_id');
+                });
 
         } else {
             // $dboyVid = $dboyVid->where(function ($query) {
