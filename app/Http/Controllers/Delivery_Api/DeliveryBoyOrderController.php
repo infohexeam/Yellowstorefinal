@@ -667,7 +667,7 @@ class DeliveryBoyOrderController extends Controller
                     if ($orderDetails  = Trn_store_order::select('order_id', 'delivery_address', 'delivery_date', 'delivery_time', 'store_id', 'delivery_boy_id', 'order_note', 'payment_type_id', 'order_number', 'created_at', 'status_id', 'customer_id', 'product_total_amount')->where('order_id', $order_id)->where('delivery_boy_id', $delivery_boy_id)->first()) {
 
                         $orderItems = Trn_store_order_item::where('order_id', $orderDetails->order_id)
-                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity', 'discount_amount', 'discount_percentage', 'total_amount','mrp', 'tax_amount', 'unit_price', 'tick_status', 'delivery_boy_tick_status')
+                            ->select('product_id', 'product_varient_id', 'order_item_id', 'quantity','product_name','product_image', 'discount_amount', 'discount_percentage', 'total_amount','mrp', 'tax_amount', 'unit_price', 'tick_status', 'delivery_boy_tick_status')
                             ->get();
 
 
@@ -691,10 +691,37 @@ class DeliveryBoyOrderController extends Controller
 
                             $value->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
 
-                            if ($baseProductDetail->product_name == $value['productDetail']->variant_name)
-                                $value->product_name = @$baseProductDetail->product_name;
+                            // if ($baseProductDetail->product_name == $value['productDetail']->variant_name)
+                            //     $value->product_name = @$baseProductDetail->product_name;
+                            // else
+                            //     $value->product_name = @$baseProductDetail->product_name . " " . @$value['productDetail']->variant_name;
+                            if($value->product_image==NULL)
+                            {
+                                $value->product_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+                              
+                            }
                             else
-                                $value->product_name = @$baseProductDetail->product_name . " " . @$value['productDetail']->variant_name;
+                            {
+                                $value->product_image = '/assets/uploads/products/base_product/base_image/' . @$value->product_image;
+
+                            }
+                            if($value->product_name==NULL)
+                            {
+                                if (@$baseProductDetail->product_name != @$value->productDetail->variant_name)
+                                {
+                                    $value->product_name = @$baseProductDetail->product_name . " " . @$value->productDetail->variant_name;
+
+                                }
+                                else
+                                {
+                                    $value->product_name = @$baseProductDetail->product_name;
+
+                                }
+                                
+                          
+                                
+                                
+                            }
                         }
 
                         $data['orderItems'] = $orderItems;
