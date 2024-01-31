@@ -2218,6 +2218,13 @@ class StoreOrderController extends Controller
                         $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You cannot place an order';
                         return response($data);          
                     }
+                    if($getParentExpiry->store_account_status==0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = 'Store is inactive.Not possible to place an order!';
+                        return response($data);       
+                                    
+                    }
                     
     
                 }
