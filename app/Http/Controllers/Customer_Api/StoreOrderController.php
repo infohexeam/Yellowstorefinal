@@ -2202,7 +2202,7 @@ class StoreOrderController extends Controller
                 $store=Mst_store::find($request->store_id);
                 if($store->online_status==0)
                 {
-                    $data['status'] = 6;
+                    $data['status'] = 2;
                     $data['message'] = 'Store is offline now.Not possible to place an order.Try again later!';
                     return response($data);     
 
