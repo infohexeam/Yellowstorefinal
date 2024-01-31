@@ -7748,7 +7748,7 @@ class ProductController extends Controller
                 $body = 'A product enquiry has been submited to '.$store->store_name;
                 $clickAction = "EnquiryListFragment";
                 $type = "Enquiry";
-                $data['responseEnquiry'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
             }
     
             $enquiry->store_id = $store_id;
