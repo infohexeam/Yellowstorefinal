@@ -7719,6 +7719,7 @@ class ProductController extends Controller
     }
     public function createEnquiry(Request $request)
     {
+        $data=[];
         try
         {
             $customer_id = $request->input('customer_id');
