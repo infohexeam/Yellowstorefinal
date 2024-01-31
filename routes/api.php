@@ -515,11 +515,12 @@ Route::get('delivery-boy/resend-otp', 'Delivery_Api\DeliveryBoyController@resend
 
 
 Route::get('delivery-boy/assigned-orders', 'Delivery_Api\DeliveryBoyOrderController@assignedOrders');
+Route::get('delivery-boy/assigned-orders-new', 'Delivery_Api\DeliveryBoyOrderController@assignedOrdersNew');
 Route::get('delivery-boy/accept-order', 'Delivery_Api\DeliveryBoyOrderController@orderAcceptance');
 Route::get('delivery-boy/view-order', 'Delivery_Api\DeliveryBoyOrderController@viewOrder');
 
 Route::get('delivery-boy/completed-orders', 'Delivery_Api\DeliveryBoyOrderController@completedOrders');
-
+Route::get('delivery-boy/completed-orders-new', 'Delivery_Api\DeliveryBoyOrderController@completedOrdersNew');
 Route::get('delivery-boy/view-profile', 'Delivery_Api\DeliveryBoyController@viewProfile');
 Route::post('delivery-boy/update-profile', 'Delivery_Api\DeliveryBoyController@updateProfile');
 Route::post('delivery-boy/update-password', 'Delivery_Api\DeliveryBoyController@updatePassword');

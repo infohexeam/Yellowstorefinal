@@ -114,6 +114,88 @@ class DeliveryBoyOrderController extends Controller
             return response($response);
         }
     }
+    public function assignedOrdersNew(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
+                $ordersList = array();
+                if ($assignedOrders  = Trn_store_order::where('delivery_boy_id', $request->delivery_boy_id)
+                    ->orderBy('order_id', 'DESC')->get()
+                ) {
+                    foreach ($assignedOrders as $order) {
+                        //dd($order);
+                        if (($order->status_id != 9) &&  ($order->status_id >= 7) &&  ($order->delivery_accept != 2)) {
+                            if (!isset($order->delivery_accept))
+                                $order->delivery_accept = "0";
+
+                            $statusInfo = Sys_store_order_status::find($order->status_id);
+                            $order->status = @$statusInfo->status;
+                            $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
+                            $customerInfo = Trn_store_customer::find($order->customer_id);
+
+
+                            $customerAddressData = Trn_customerAddress::find($order->delivery_address);
+                            if (isset($customerAddressData->name)) {
+                                $order->customer_name = @$customerAddressData->name;
+                            } else {
+                                if (isset($customerInfo->customer_last_name))
+                                    $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
+                                else
+                                    $order->customer_name = @$customerInfo->customer_first_name;
+                            }
+
+
+
+
+                            $storeInfo = Mst_store::withTrashed()->find($order->store_id);
+                            if($storeInfo!=NULL)
+                            {
+                                $order->store_name = @$storeInfo->store_name;
+
+                            }
+                            else
+                            {
+                                $order->store_name = 'Store not exists';
+                            }
+                           
+
+                            $ordersList[] = $order;
+                        }
+                    }
+                    $data['assignedOrders'] = $ordersList;
+                    $perPage = 10;
+                    $page=$request->page??1;
+                    $offset = ($page - 1) * $perPage;
+                    $roWc=count(collect($data['assignedOrders'])->values());
+                    $data['allOrdersCount']=$roWc;
+                    $transactions = collect($data['assignedOrders'])->slice($offset, $perPage)->values();
+                    $data['assignedOrders']=$transactions; 
+                    if ($roWc>9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
+                    } else {
+                        $data['pageCount'] = 1;
+                    }
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Delivery boy not found";
+            }
+
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
 
     public function completedOrders(Request $request)
     {
@@ -151,6 +233,76 @@ class DeliveryBoyOrderController extends Controller
                             $order->store_name = 'Store not exists(Removed)';
 
                         }
+                    }
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed";
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Delivery boy not found";
+            }
+
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+    public function completedOrdersNew(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->delivery_boy_id) && Mst_delivery_boy::find($request->delivery_boy_id)) {
+                if ($data['completedOrders']  = Trn_store_order::where('delivery_boy_id', $request->delivery_boy_id)->whereIn('status_id', [5,9])->whereIn('delivery_status_id', [3,4])->orderBy('updated_at', 'DESC')->get()) {
+                    foreach ($data['completedOrders'] as $order) {
+                        //dd($order);
+                        $orlink=Mst_order_link_delivery_boy::where('order_id',$order->order_id)->where('delivery_boy_id',$request->delivery_boy_id)->first();
+                        $statusInfo = Sys_store_order_status::find($order->status_id);
+                        $order->status = @$statusInfo->status;
+                        $order->amount_earned=$orlink->commision_per_order??0;
+                        $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
+                        $customerInfo = Trn_store_customer::find($order->customer_id);
+
+                        $customerAddressData = Trn_customerAddress::find($order->delivery_address);
+                        if (isset($customerAddressData->name)) {
+                            $order->customer_name = @$customerAddressData->name;
+                        } else {
+                            if (isset($customerInfo->customer_last_name))
+                                $order->customer_name = @$customerInfo->customer_first_name . " " . @$customerInfo->customer_last_name;
+                            else
+                                $order->customer_name = @$customerInfo->customer_first_name;
+                        }
+
+                        $storeInfo = Mst_store::withTrashed()->find($order->store_id);
+                        if($storeInfo!=NULL)
+                        {
+                            $order->store_name = @$storeInfo->store_name;
+
+                        }
+                        else
+                        {
+                            $order->store_name = 'Store not exists(Removed)';
+
+                        }
+                    }
+                    
+                    $perPage = 10;
+                    $page=$request->page??1;
+                    $offset = ($page - 1) * $perPage;
+                    $roWc=count(collect($data['completedOrders'])->values());
+                    $data['allOrdersCount']=$roWc;
+                    $transactions = collect($data['completedOrders'])->slice($offset, $perPage)->values();
+                    $data['completedOrders']=$transactions; 
+                    if ($roWc>9) {
+                        $data['pageCount'] = ceil(@$roWc /10);
+                    } else {
+                        $data['pageCount'] = 1;
                     }
                     $data['status'] = 1;
                     $data['message'] = "success";
