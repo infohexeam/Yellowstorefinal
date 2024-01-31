@@ -2157,14 +2157,7 @@ class StoreOrderController extends Controller
         try {
             if(isset($request->store_id))
             {
-                $store=Mst_store::find($request->store_id);
-                if($store->online_status==0)
-                {
-                    $data['status'] = 6;
-                    $data['message'] = 'Store is offline now.Not possible to place an order.Try again later!';
-                    return response($data);     
-
-                }
+                
             foreach ($request->product_variants as $value) {
 
                 $varProdu = Mst_store_product_varient::lockForUpdate()->find($value['product_varient_id']);
@@ -2206,6 +2199,15 @@ class StoreOrderController extends Controller
             $remCount=0;
             if($request->store_id)
             {
+                $store=Mst_store::find($request->store_id);
+                if($store->online_status==0)
+                {
+                    $data['status'] = 6;
+                    $data['message'] = 'Store is offline now.Not possible to place an order.Try again later!';
+                    return response($data);     
+
+                }
+
                 $isActiveSlot=Helper::findHoliday($request->store_id);
                 if($isActiveSlot==false)
                 {
