@@ -2230,7 +2230,7 @@ class StoreOrderController extends Controller
                     }
                     if($getParentExpiry->store_account_status==0)
                     {
-                        $data['status'] = 6;
+                        $data['status'] = 20;
                         $data['message'] = 'Store is inactive.Not possible to place an order!';
                         return response($data);       
                                     
