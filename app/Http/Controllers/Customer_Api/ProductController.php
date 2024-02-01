@@ -7761,8 +7761,8 @@ class ProductController extends Controller
             foreach ($storeDevice as $sd) {
                 $title = 'Product Enquiry Received';
                 $body = 'A product enquiry has been received from '.$customer->customer_first_name.' '.$customer->customer_last_name.'for '.$product_variant->variant_name;
-                $clickAction = "EnquiryListFragment";
-                $type = "Enquiry";
+                $clickAction = "EnquiryListsFragment";
+                $type = "enquiry";
                 $data['responseEnquiryStore'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
             }
 
