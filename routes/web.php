@@ -848,7 +848,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store-profile/update', 'StoreController@updateProfile')->name('store.update_profile');
         Route::post('store/destroy/document/{document}', 'StoreController@destroyStore_Doc')->name('store.destroy_store_doc');
         Route::post('store/destroy/image/{image}', 'StoreController@destroyStore_Image')->name('store.destroy_store_image');
-
+        Route::post('store/destroy/interior-image/{image}', 'StoreController@destroyStore_InteriorImage')->name('store.destroy_store_interior_image');
         // agency
         Route::get('store/agency/list', 'StoreController@listAgency')->name('store.list_agency');
 

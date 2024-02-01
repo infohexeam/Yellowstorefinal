@@ -77,6 +77,7 @@ use PDF;
 
 
 use App\Models\admin\Mst_StockDetail;
+use App\Models\admin\Mst_store_interior_images;
 use App\Models\admin\Sys_delivery_boy_availability;
 use App\Models\admin\Sys_vehicle_type;
 use App\Models\admin\Trn_customer_enquiry;
@@ -318,6 +319,7 @@ class StoreController extends Controller
     $countries = Country::all();
     $store_documents  = Mst_store_documents::where('store_id', '=', $store_id)->get();
     $store_images = Mst_store_images::where('store_id', '=', $store_id)->get();
+    $store_interior_images=Mst_store_interior_images::where('store_id', '=', $store_id)->get();
     $agencies = Mst_store_link_agency::where('store_id', '=', $store_id)->get();
 
     $delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
@@ -346,6 +348,7 @@ class StoreController extends Controller
       'pageTitle',
       'countries',
       'store_images',
+      'store_interior_images',
       'store_documents',
       'agencies',
       'delivery_boys',
@@ -587,7 +590,35 @@ class StoreController extends Controller
           Mst_store_images::insert($data2);
         }
       }
+      if ($request->hasFile('store_interior_image')) {
 
+
+
+        $store_image = $request->file('store_interior_image');
+        // dd($product_image);
+        foreach ($store_image as $image) {
+          $filename = rand(1, 5000) . time() . '.' . $image->getClientOriginalExtension();
+          // dd($filename);
+          $destination_path = 'assets/uploads/store_images/images';
+          //$destination_path = public_path('/assets/uploads/store_images/images');
+
+          $store_img = Image::make($image->getRealPath());
+          $store_img->save($destination_path . '/' . $filename, 80);
+
+
+
+          $data2 = [
+            [
+              'store_image'      => $filename,
+              'store_id'       => $store_id,
+              'created_at'         => $date,
+              'updated_at'         => $date,
+            ],
+          ];
+
+          Mst_store_interior_images::insert($data2);
+        }
+      }
 
 
       $sDAta = Mst_store::find($store_id);
@@ -747,6 +778,14 @@ class StoreController extends Controller
 
     return redirect()->back()->with('status', 'Image deleted Successfully');;
   }
+  public function destroyStore_InteriorImage(Request $request, Mst_store_interior_images $image)
+  {
+
+    $image = $image->delete();
+
+    return redirect()->back()->with('status', 'Image deleted Successfully');;
+  }
+  
 
 
   public function listProduct(Request $request)

@@ -13,7 +13,7 @@
     @php
     use App\Models\admin\Mst_store;
     use App\Models\admin\Trn_StoreAdmin;
-
+    $storeProfilePic= Mst_store::find(Auth::guard('store')->user()->store_id)->profile_image;
     @endphp
 
     @if(Auth::check())
@@ -22,7 +22,12 @@
          <div class="app-sidebar__user">
       <div class="dropdown user-pro-body text-center">
         <div class="user-pic pt-4">
+        
+     @if($storeProfilePic==NULL)
           <img src="{{URL::to('/assets/uploads/admin.png')}}" alt="user-img" class="avatar-xl rounded-circle">
+      @else
+      <img src="{{asset('/assets/uploads/store_images/images/'.$storeProfilePic)}}" alt="user-img" class="avatar-xl rounded-circle">
+      @endif
         </div>
 
 

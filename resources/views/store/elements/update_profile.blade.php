@@ -1,5 +1,6 @@
 @extends('store.layouts.app')
 @section('content')
+
 <div class="row" id="user-profile">
    <div class="col-lg-12">
       <div class="card">
@@ -18,7 +19,7 @@
                            data-toggle="tab">Basic Information</a></li>
                         <!--<li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>-->
                         <li><a href="#tab-71" data-toggle="tab" class="">Banner Images</a></li>
-                       {{-- <li><a href="#tab-81" data-toggle="tab" class="">Agencies</a></li> --}}
+                       <li><a href="#tab-81" data-toggle="tab" class="">Store Images</a></li>
                         {{-- <li><a id="dboyz" href="#tab-91" data-toggle="tab" class="">Delivery Boys</a></li> --}}
 
                      </ul>
@@ -476,6 +477,33 @@
                       </div>
                     </div>
                     <br>
+                           <div class="card-body border" @if(count($store_interior_images)>=6) style="display:none;" @endif>
+                      <div class="card-header">
+                  <h3 class="mb-0 card-title" >Add Store Images({{count($store_interior_images)}}/6 Images Uploaded)</h3>
+                    </div>
+                   <div class="card-body">
+                  <div class="row">
+                  <input type="hidden" id="totStoreImg" name="total_store_image" value="{{count($store_interior_images)}}">
+                     <div class="col-md-6">
+                        <div class="form-group">
+                           <div id="teamAreaInterior">
+                           <label class="form-label">Images </label>
+                           <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]"  placeholder="Images">
+                        </div>
+                     </div>
+                    </div>
+
+                     <div class="col-md-2">
+                        <div class="form-group">
+                           <label class="form-label">Add more</label>
+                            <button type="button" id="addInteriorImage" class="btn btn-raised btn-success"> Add More</button>
+                        </div>
+                        </div>
+
+                      </div>
+                      </div>
+                    </div>
+                    <br>
 
                      <div class="form-group">
                            <center>
@@ -609,8 +637,67 @@
                      </div>
                   </div>
 
+  <div class="tab-pane" id="tab-81">
 
-                <div class="tab-pane" id="tab-81">
+                     <div id="profile-log-switch">
+                        <div class="media-heading">
+                           <h5><strong>Store Images</strong></h5>
+                        </div><br>
+                        <div class="table-responsive ">
+                           <table  id="example5" class="table table-striped table-bordered">
+                              <thead>
+                                 <tr>
+                                   <th class="wd-15p">S.No</th>
+                                    <th class="wd-15p">{{ __('Image') }}</th>
+                                    {{-- <th class="wd-15p">{{ __('Default Status') }}</th> --}}
+                                    <th class="wd-15p">{{ __('Action') }}</th>
+
+                                 </tr>
+                              </thead>
+                               <tbody class="col-lg-12 col-xl-6 p-0">
+                                 @php
+                                 $i = 0;
+                                 @endphp
+                                @if(!$store_interior_images->isEmpty())
+                                 @foreach ($store_interior_images as $image)
+                                 @php
+                                 $i++;
+                                 @endphp
+                                 <tr>
+                                    <td>{{$i}}</td>
+                                    <td><img data-toggle="modal" data-target="#viewInModal{{$image->store_image_id}}" src="{{asset('/assets/uploads/store_images/images/'.$image->store_image)}}"  width="50" ></td>
+
+                                    {{-- <td>
+                                    
+                                    <input type="checkbox" class="csatatus" @if (@$image->default_image == 1) checked
+
+                                    @endif value="1" onchange="myFunction({{$image->store_image_id}})"  name="default_status" id="default_status{{$image->store_image_id}}"></td>
+
+                                    --}}
+  <td>
+                                    <form action="{{route('store.destroy_store_interior_image',$image->store_image_id)}}" method="POST">
+
+                                    @csrf
+                                    @method('POST')
+                                    <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                    </td>
+                                 </tr>
+                                 @endforeach
+                                 @else
+                                 <tr>
+                                <td colspan="3"><center> No data available in the table</center></td>
+                                  </tr>
+                                  @endif
+                              </tbody>
+                           </table>
+                           <center>
+                           <a class="btn btn-cyan" href="{{ url('store/home') }}">Cancel</a>
+                           </center>
+                        </div>
+                     </div>
+                  </div>
+                <div class="tab-pane" id="tab-810">
 
                      <div id="profile-log-switch">
                         <div class="media-heading">
@@ -793,7 +880,7 @@
      <div class="modal-dialog" role="document">
         <div class="modal-content">
            <div class="modal-header">
-              <h5 class="modal-title" id="example-Modal3">{{$pageTitle}}</h5>
+              <h5 class="modal-title" id="example-Modal3">View Banner Image</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
               </button>
@@ -811,7 +898,28 @@
   </div>
   @endforeach
 
+@foreach($store_interior_images as $image)
+  <div class="modal fade" id="viewInModal{{$image->store_image_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
+     <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <div class="modal-header">
+              <h5 class="modal-title" id="example-Modal3">View Store Image</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+           </div>
+           <div class="modal-body">
 
+            <img  src="{{asset('/assets/uploads/store_images/images/'.$image->store_image)}}"  width="600" >
+
+           </div>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+           </div>
+        </div>
+     </div>
+  </div>
+  @endforeach
 <script type="text/javascript">
 
 
@@ -1109,10 +1217,14 @@ function myFunction(id)
 
 $(document).ready(function() {
    var wrapper      = $("#teamArea"); //Fields wrapper
-  var add_button      = $("#addImage"); //Add button ID
-
+   var wrapper_interior     = $("#teamAreaInterior"); //Fields wrapper
+   var add_button      = $("#addImage"); //Add button ID
+  var add_button_interior      = $("#addInteriorImage"); //Add button ID
+  var totStoreImg=$("#totStoreImg").val();
+  //alert(totStoreImg);
+  
   var x = 1; //initlal text box count
-
+  var x_i = 1; //initlal text box count
 
   $(add_button).click(function(e){ //on add input button click
     e.preventDefault();
@@ -1121,13 +1233,33 @@ $(document).ready(function() {
       $(wrapper).append('<div> <br>  <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
 
   });
+  $(add_button_interior).click(function(e){ //on add input button click
+    e.preventDefault();
+    //max input box allowed
+      x_i++; //text box increment
+      if(x_i+parseInt(totStoreImg)<=6)
+      {
+        $(wrapper_interior).append('<div> <br>  <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove'+x_i+'</a></div>'); //add input box
+      }
+      else
+      {
+         alert('Max limit for upload store image is 6');
+      }
+      
+      
+  });
 
-
+  
 
   $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
     e.preventDefault(); $(this).parent('div').remove(); x--;
   })
+
+  $(wrapper_interior).on("click",".remove_field", function(e){ //user click on remove text
+    e.preventDefault(); $(this).parent('div').remove(); x_i--;
+  })
 });
+
 
 
 $(document).ready(function() {
