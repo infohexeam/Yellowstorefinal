@@ -510,7 +510,7 @@ var newOrders = [];
     });
   }
   function playNotificationSoundOrder() {
-    var alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/new-order.mp3');
+    var alarmSound = new Audio('https://hexprojects.in/Yellowstore/assets/alaram.wav');
     alarmSound.play();
   }
 
