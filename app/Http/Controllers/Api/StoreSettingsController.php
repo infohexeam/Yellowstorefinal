@@ -1051,6 +1051,7 @@ class StoreSettingsController extends Controller
 
                 $banners =  Mst_StoreAppBanner::where('town_id', @$store->town_id)->orWhere('town_id', null)
                     ->select('banner_id', 'town_id', 'image')
+                    ->where('status',1)
                     ->get();
                 foreach ($banners as $b) {
                     $b->image = 'assets/uploads/store_banner/' . $b->image;
