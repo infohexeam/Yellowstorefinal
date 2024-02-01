@@ -1761,8 +1761,7 @@ public function storeVideoListNew(Request $request)
                 $enq['product_name']= $var->variant_name;
                 $enq['varient_id']=$var->product_varient_id;
                 $enq['product_id']=$var->product_id;
-                
-                
+                $enq['enquiry_number']='ENQ-'.$data->enquiry_id;        
                 $qry['created_at']= $data->created_at->diffForHumans();
                 return $enq;
               });
