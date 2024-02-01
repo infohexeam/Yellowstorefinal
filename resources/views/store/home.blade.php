@@ -10,7 +10,7 @@ use App\Models\admin\Mst_categories;
 use App\Models\admin\Mst_store;
 $store = Mst_store::Find(auth()->user()->store_id);
 
-$banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_id', null)->get();
+$banners = Mst_StoreAppBanner::where('town_id',@$store->town_id)->orWhere('town_id', null)->where('status',1)->get();
 
 
 
