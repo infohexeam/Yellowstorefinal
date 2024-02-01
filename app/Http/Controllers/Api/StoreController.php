@@ -1755,17 +1755,17 @@ public function storeVideoListNew(Request $request)
                   });
                   $data['newOrders']=$newOrders;
 
-            $newEnquiries=Trn_customer_enquiry::whereDate('created_at', Carbon::today())->where('store_id',$request->store_id)->latest()->limit(4)->get()->map(function($data){
-                //$subdata=json_decode($data->data);
-                $var=Mst_store_product_varient::where('product_varient_id',$data['product_varient_id'])->first();
-                $enq['product_name']= $var->variant_name;
-                $enq['varient_id']=$var->product_varient_id;
-                $enq['product_id']=$var->product_id;
-                $enq['enquiry_number']='ENQ-'.$data->enquiry_id;        
-                $qry['created_at']= $data->created_at->diffForHumans();
-                return $enq;
-              });
-            $data['newEnquiries']=$newEnquiries;
+            // $newEnquiries=Trn_customer_enquiry::whereDate('created_at', Carbon::today())->where('store_id',$request->store_id)->latest()->limit(4)->get()->map(function($data){
+            //     //$subdata=json_decode($data->data);
+            //     $var=Mst_store_product_varient::where('product_varient_id',$data['product_varient_id'])->first();
+            //     $enq['product_name']= $var->variant_name;
+            //     $enq['varient_id']=$var->product_varient_id;
+            //     $enq['product_id']=$var->product_id;
+            //     $enq['enquiry_number']='ENQ-'.$data->enquiry_id;        
+            //     $qry['created_at']= $data->created_at->diffForHumans();
+            //     return $enq;
+            //   });
+            // $data['newEnquiries']=$newEnquiries;
 
             } else {
                 $data['status'] = 0;
