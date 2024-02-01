@@ -61,6 +61,7 @@ use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_CustomerFeedback;
 use App\Models\admin\Trn_RecentlyVisitedProductCategory;
 use App\Models\admin\Mst_FeedbackQuestion;
+use App\Models\admin\Mst_store_interior_images;
 use App\Models\admin\Trn_customer_enquiry;
 use App\Models\admin\Trn_CustomerDeviceToken;
 use App\Models\admin\Trn_points_redeemed;
@@ -5349,7 +5350,15 @@ class ProductController extends Controller
                     $linkCode=Helper::getYouTubeVideoCode($link->youtube_link);
                     $link->link_code=$linkCode;
                 }
+
                 $data['youtube_videos']=$ytVideos;
+                //store images to customer
+                $store_images=Mst_store_interior_images::select('store_image_id','store_image')->where('store_id',$request->store_id)->get();
+                foreach($store_images as $store_image)
+                {
+                    $store_image->store_image='/assets/uploads/store_images/images/'.$store_image->store_image;
+                }
+                $data['store_images']=$store_images;
                 $flag=Helper::checkStoreDeliveryHours($request->store_id);
                 $data['is_delivery_available']=$flag;
                 if($flag==1)
