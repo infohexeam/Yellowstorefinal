@@ -1239,7 +1239,7 @@ $(document).ready(function() {
       x_i++; //text box increment
       if(x_i+parseInt(totStoreImg)<=6)
       {
-        $(wrapper_interior).append('<div> <br>  <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove'+x_i+'</a></div>'); //add input box
+        $(wrapper_interior).append('<div> <br>  <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
       }
       else
       {
