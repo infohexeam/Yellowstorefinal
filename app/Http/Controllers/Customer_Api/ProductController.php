@@ -67,6 +67,8 @@ use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Trn_StoreBankData;
+use App\Models\admin\Trn_StoreDeviceToken;
+use App\Models\admin\Trn_StoreWebToken;
 use App\Trn_wallet_log;
 
 class ProductController extends Controller
@@ -7726,6 +7728,8 @@ class ProductController extends Controller
             $product_variant_id = $request->input('product_varient_id');
             $store_id = $request->input('store_id');
             $store=Mst_store::where('store_id',$store_id)->first();
+            $customer=Trn_store_customer::find($customer_id);
+            $product_variant=Mst_store_product_varient::find($product_variant_id);
     
             if(!$customer_id || !$product_variant_id || !$store_id) {
                 return response(['status' => 0, 'message' => 'Invalid request parameters']);
@@ -7750,6 +7754,25 @@ class ProductController extends Controller
                 $type = "Enquiry";
                 $data['responseEnquiry']=$this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
             }
+            $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+            $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+           // $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+
+            foreach ($storeDevice as $sd) {
+                $title = 'Product Enquiry Received';
+                $body = 'A product enquiry has been received from '.$customer->customer_first_name.' '.$customer->customer_last_name.'for '.$product_variant->variant_name;
+                $clickAction = "EnquiryListFragment";
+                $type = "Enquiry";
+                $data['responseEnquiryStore'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
+            }
+
+            // foreach ($storeWeb as $sw) {
+            //     $title = 'Dispute raised';
+            //     $body = 'New dispute raised with order id ' . $orderdatas->order_number;
+            //     $clickAction = "OrderListFragment";
+            //     $type = "order";
+            //     $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+            // }
     
             $enquiry->store_id = $store_id;
             $enquiry->save();
@@ -7757,7 +7780,7 @@ class ProductController extends Controller
             $store=Mst_store::find($store_id);
 
     
-            return response(['status' => 1, 'message' => 'Enquiry created','store_mobile'=>$store->store_mobile,'store_contact_person_number'=>$store->store_contact_person_phone_number,'responseEnquiry'=>$data['responseEnquiry']]);
+            return response(['status' => 1, 'message' => 'Enquiry created','store_mobile'=>$store->store_mobile,'store_contact_person_number'=>$store->store_contact_person_phone_number,'responseEnquiryCustomer'=>$data['responseEnquiry'],'responseEnquiryStore'=>$data['responseEnquiryStore']]);
         }
         catch (\Exception $e) {
             return response(['status' => 0, 'message' => $e->getMessage()]);
@@ -7813,6 +7836,34 @@ class ProductController extends Controller
         $headers = array(
 
 
+            'Content-Type:application/json',
+            'Authorization:key=' . $api_key
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('FCM Send Error: ' . curl_error($ch));
+        }
+        curl_close($ch);
+        return $result;
+    }
+    private function storeNotification($device_id, $title, $body,$clickAction,$type)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
+        $fields = array(
+            'to' => $device_id,
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
+        );
+        $headers = array(
             'Content-Type:application/json',
             'Authorization:key=' . $api_key
         );
