@@ -48,6 +48,7 @@ use App\Models\admin\Trn_customer_reward;
 use App\Models\admin\Trn_configure_points;
 use App\Models\admin\Trn_points_redeemed;
 use App\Models\admin\Trn_RecentlyVisitedProducts;
+use App\Models\admin\Trn_StoreAdmin;
 use App\Trn_wallet_log;
 use DateTime;
 
@@ -2825,7 +2826,48 @@ public function addToCartTest(Request $request)
                     );
                     if (!$validator->fails()) {
 
-                        
+                        if($request->store_id)
+            {
+                $store=Mst_store::find($request->store_id);
+                if($store->online_status==0)
+                {
+                    $data['status'] = 16;
+                    $data['message'] = 'Store is offline now.Not possible to place an order.Try again later!';
+                    return response($data);     
+
+                }
+
+                $isActiveSlot=Helper::findHoliday($request->store_id);
+                if($isActiveSlot==false)
+                {
+                    $data['status'] = 17;
+                    $data['message'] = "You cannot place an order now.store closed";
+                    return response($data);
+
+                }
+                $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$request->store_id)->where('role_id','=',0)->first();
+                if($getParentExpiry)
+                {
+                    $today = Carbon::now()->toDateString();
+                    $parentExpiryDate = $getParentExpiry->expiry_date;
+                    if($today>$parentExpiryDate)
+                    {
+                            
+                        $data['status'] = 18;
+                        $data['message'] = 'Store was not avaliable from '.date('d-M-Y',strtotime($parentExpiryDate)).' You cannot place an order';
+                        return response($data);          
+                    }
+                    if($getParentExpiry->store_account_status==0)
+                    {
+                        $data['status'] = 20;
+                        $data['message'] = 'Store is inactive.Not possible to place an order!';
+                        return response($data);       
+                                    
+                    }
+                    
+    
+                }
+            }
                         
                             $varProdu = Mst_store_product_varient::find($request->product_varient_id);
                 
