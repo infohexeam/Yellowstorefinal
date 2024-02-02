@@ -1301,7 +1301,7 @@ class CustomerController extends Controller
                         $addr['longitude'] = $request->longitude;
                         $addr['latitude'] = $request->latitude;
                         $addr['place'] = $request->place;
-                        $addr['default_status'] = $request->default_status;
+                        //$addr['default_status'] = $request->default_status;
 
                         // if($request->default_status == 'one')
                         // {
