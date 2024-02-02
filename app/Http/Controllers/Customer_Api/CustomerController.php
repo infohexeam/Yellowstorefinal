@@ -1330,7 +1330,7 @@ class CustomerController extends Controller
                                 }
                                 else
                                 {
-                                    Trn_customerAddress::where('customer_address_id', $countAddress->customer_address_id)->update(['default_status' => 0]);
+                                    Trn_customerAddress::where('customer_address_id', $request->customer_address_id)->update(['default_status' => 0]);
                                 }
                                 
                             }
