@@ -1338,6 +1338,13 @@ class CustomerController extends Controller
                                 }
                                 
                             }
+                            // if($request->default_status==0)
+                            // {
+                            //     $countAddress =  Trn_customerAddress::where('customer_id', $request->customer_id)->first();
+
+
+                            // }
+                            
 
 
                             $data['status'] = 1;
