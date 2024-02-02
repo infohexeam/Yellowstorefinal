@@ -1175,4 +1175,8 @@ class StoreSettingsController extends Controller
         }
 
     }
+    public function uploadStoreImages(Request $request)
+    {
+        
+    }
 }
