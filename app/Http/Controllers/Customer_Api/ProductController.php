@@ -4156,6 +4156,57 @@ class ProductController extends Controller
                     {
                         $data['is_collect_from_store']=1;
                     }
+                    if($request->store_id)
+                    {
+                        $store=Mst_store::find($request->store_id);
+                        if($store->online_status==0)
+                        {
+                           $data['is_store_online']=0;
+        
+                        }
+                        else
+                        {
+                            $data['is_store_online']=1;
+                        }
+        
+                        $isActiveSlot=Helper::findHoliday($request->store_id);
+                        if($isActiveSlot==false)
+                        {
+                            $data['is_store_closed']=1;
+        
+                        }
+                        else
+                        {
+                            $data['is_store_closed']=0;
+                        }
+                        $getParentExpiry = Trn_StoreAdmin::where('store_id','=',$request->store_id)->where('role_id','=',0)->first();
+                        if($getParentExpiry)
+                        {
+                            $today = Carbon::now()->toDateString();
+                            $parentExpiryDate = $getParentExpiry->expiry_date;
+                            if($today>$parentExpiryDate)
+                            {
+                                    
+                               $data['is_store_expired']=1;        
+                            }
+                            else
+                            {
+                                $data['is_store_expired']=0;
+                            }
+                            if($getParentExpiry->store_account_status==0)
+                            {
+                                $data['is_store_active']=0;  
+                                            
+                            }
+                            else
+                            {
+                                $data['is_store_active']=1;
+                            }
+                            
+            
+                        }
+                    }
+
 
                     if ($request->customer_id == 0) {
 
