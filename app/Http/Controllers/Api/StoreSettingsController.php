@@ -37,6 +37,7 @@ use App\Models\admin\Mst_store_product_varient;
 use App\Models\admin\Trn_ProductVariantAttribute;
 
 use App\Models\admin\Mst_product_image;
+use App\Models\admin\Mst_store_interior_images;
 use App\Models\admin\Trn_store_setting;
 use App\Models\admin\Trn_StoreTimeSlot;
 use App\User;
@@ -61,6 +62,33 @@ class StoreSettingsController extends Controller
             if (isset($request->store_image_id) && Mst_store_images::find($request->store_image_id)) {
                 $store_image_id = $request->store_image_id;
                 if (Mst_store_images::where('store_image_id', $store_image_id)->delete()) {
+                    $data['status'] = 1;
+                    $data['message'] = "success";
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "failed.";
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Banner not found.";
+            }
+
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
+    public function removeStoreImage(Request $request)
+    {
+        $data = array();
+        try {
+            if (isset($request->store_image_id) && Mst_store_interior_images::find($request->store_image_id)) {
+                $store_image_id = $request->store_image_id;
+                if (Mst_store_interior_images::where('store_image_id', $store_image_id)->delete()) {
                     $data['status'] = 1;
                     $data['message'] = "success";
                 } else {
@@ -660,6 +688,13 @@ class StoreSettingsController extends Controller
                     foreach ($data['storeDetails']['store_images'] as $img) {
                         $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
                     }
+                    
+                    $data['storeDetails']['store_interior_images'] = Mst_store_interior_images::where('store_id', $store_id)
+                        ->select('store_image_id', 'store_image', 'store_id', 'default_image')
+                        ->get();
+                    foreach ($data['storeDetails']['store_interior_images'] as $img) {
+                        $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
+                    }
 
                     $data['bankDetail'] = [];
 
@@ -819,6 +854,21 @@ class StoreSettingsController extends Controller
                                 Mst_store_images::insert($info);
                             }
                         }
+                        if ($files_int = $request->file('store_interior_images')) {
+                            // Mst_store_images::where('store_id', $store_id)->delete();
+                        
+                            foreach ($files_int as $file) {
+                                $extension = $file->getClientOriginalExtension();
+                                $filename = uniqid('store_interior_image_') . '.' . $extension;
+                                $file->move('assets/uploads/store_images/images/', $filename);
+                                $info = [
+                                    'store_id' => $store_id,
+                                    'store_image' =>  $filename,
+                                    'default_image' =>  0,
+                                ];
+                                Mst_store_interior_images::insert($info);
+                            }
+                        }
                         
                     }
 
@@ -826,10 +876,15 @@ class StoreSettingsController extends Controller
                     foreach ($storeImgs as $img) {
                         $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
                     }
+                    $storeInteriorImgs = Mst_store_interior_images::where('store_id', $store_id)->get();
+                    foreach ($storeInteriorImgs as $img) {
+                        $img->store_image = '/assets/uploads/store_images/images/' . $img->store_image;
+                    }
 
 
                     $data['status'] = 1;
                     $data['storeImgs'] = $storeImgs;
+                    $data['storeInteriorImgs']=$storeInteriorImgs;
 
                     $data['message'] = "Store Info updated successfully.";
                     return response($data);

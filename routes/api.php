@@ -224,6 +224,8 @@ Route::group(['prefix' => 'store'], function () {
     Route::get('live-orders', 'Api\StoreSettingsController@newOrdersAll');
     Route::get('miniumum-stock-products', 'Api\StoreSettingsController@getMinimumStockProducts');
     Route::get('remove-banner', 'Api\StoreSettingsController@removeBanner');
+    Route::get('remove-store-image', 'Api\StoreSettingsController@removeStoreImage');
+    
 
     //WORKING DAYS
     Route::get('working-days/list', 'Api\StoreSettingsController@listWorkingDays');
