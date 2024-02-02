@@ -154,7 +154,11 @@
                                        <tr>
                                            <td>{{ ++$c }}</td>
                                           <td>
+                                             @if(@$order_item->product_name==NULL)
                                              {{ @$order_item->product_varient->variant_name }}
+                                             @else
+                                             {{ @$order_item->product_name }}
+                                             @endif
                                              
                                              {{-- {{@$order_item->product->product_name}}   
                                              @if (isset($order_item->product_varient_id) && $order_item->product_varient_id != 0 )

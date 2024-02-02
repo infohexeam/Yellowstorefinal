@@ -200,7 +200,11 @@
 
                   <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center"> 
                   
+                  @if(@$order_item->product_name==NULL)
                     {{ @$order_item->product_varient->variant_name }}
+                  @else
+                    {{ @$order_item->product_name }}
+                  @endif
                   
                     {{-- {{@$order_item->product->product_name}}
                     
