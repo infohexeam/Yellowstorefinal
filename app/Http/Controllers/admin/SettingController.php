@@ -1370,10 +1370,40 @@ class SettingController extends Controller
 	{
 		$subadmin_id = $request->subadmin_id;
 		//dd($country_id);
-		$stores = Mst_store::where('subadmin_id', $subadmin_id)->orderBy('store_id', 'desc')->pluck("store_id", "store_name");
+		//$stores = Mst_store::where('subadmin_id', $subadmin_id)->orderBy('store_id', 'desc')->pluck("store_id", "store_name");
+		$stores = Mst_store::selectRaw('store_id, CONCAT(store_name, IFNULL(CONCAT(" (", store_code, ")"), "")) as store_name')
+        ->where('subadmin_id', $subadmin_id)
+        ->orderBy('store_id', 'desc')
+        ->pluck("store_id", "store_name");
 
+    return response()->json($stores);
 		return response()->json($stores);
 	}
+	public function GetStoreNew(Request $request)
+{
+    $subadmin_id = $request->subadmin_id;
+    
+    $stores = Mst_store::where('subadmin_id', $subadmin_id)
+        ->orderBy('store_id', 'desc')
+        ->get(["store_id", "store_name", "store_code"]);
+
+    $formattedStores = $stores->map(function ($store) {
+        if ($store->store_code !== null) {
+            return [
+                'store_id' => $store->store_id,
+                'store_name' => $store->store_name . ' (' . $store->store_code . ')',
+            ];
+        } else {
+            return [
+                'store_id' => $store->store_id,
+                'store_name' => $store->store_name,
+            ];
+        }
+    });
+
+    return response()->json($formattedStores);
+}
+
 
 	public function GetState(Request $request)
 	{

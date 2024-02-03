@@ -63,7 +63,7 @@ $date = Carbon\Carbon::now();
                             @if(request()->input('store_id') == 0)
                                  <option value="0"> All </option>
                              @else
-                                 <option value="{{request()->input('store_id')}}"> {{$store_dataz->store_name}}  </option>
+                                 <option value="{{request()->input('store_id')}}"> {{$store_dataz->store_name}} @if($store_dataz->store_code!=NULL) ({{$store_dataz->store_code}}) @endif </option>
                              @endif
                         @else
                                  <option value=""> Select Store </option>
@@ -176,7 +176,7 @@ $date = Carbon\Carbon::now();
                         <td>{{ $order->product_total_amount}}</td>
 
                         {{-- <td>{{$order->product->product_name->product_name}}</td> --}}
-                        <td>{{ @$order->store['store_name']}}</td>
+                        <td>{{ @$order->store['store_name']}}@if(@$order->store['store_code']!=NULL)({{@$order->store['store_code']}}) @endif</td>
                         <td>{{ @$order->store['store_mobile']}}</td>
                         <td>
                            @if(isset($order->subadmin->name))
