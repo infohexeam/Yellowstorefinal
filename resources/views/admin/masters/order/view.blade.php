@@ -58,6 +58,9 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                        <tr>
                                           <td><strong>Customer Name: </strong> </td> <td>{{ @$order->customer['customer_first_name']}} {{ @$order->customer['customer_last_name']}} </td>
                                        </tr>
+                                        <tr>
+                                          <td><strong>Store Name: </strong> </td> <td>{{ @$order->store['store_name']}}@if(@$order->store['store_code']!=NULL)({{@$order->store['store_code']}}) @endif </td>
+                                       </tr>
                                  
                                        <tr>
                                           <td> <h3> <strong>Total Amount: </strong> </h3>  </td> <td> <h3> <i class="fa fa-inr"></i> {{ @$order->product_total_amount }} </h3></td>
