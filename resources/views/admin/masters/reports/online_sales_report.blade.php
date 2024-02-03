@@ -186,7 +186,7 @@
 
                                             <td>{{ $d->order_number }}</td>
                                             
-                                            <td>{{ $d->store_name }}</td>
+                                              <td>{{ $d->store_name }}@if($d->store_code != NULL)<br>({{$d->store_code}}) @endif</td>
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
                                             
                                             
@@ -316,10 +316,10 @@
                         {
                           $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
                           
-                          let storeId = getUrlParameter('storeId');
+                         let storeIdUrl = getUrlParameter('store_id');
                             if ( typeof storeId !== "undefined" && storeId) {
                                 $("#storeId option").each(function(){
-                                    if($(this).val()==storeId){ 
+                                    if($(this).val()==storeIdUrl){ 
                                         $(this).attr("selected","selected");    
                                     }
                                 });

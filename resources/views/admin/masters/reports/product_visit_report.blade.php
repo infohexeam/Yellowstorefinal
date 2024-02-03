@@ -66,7 +66,7 @@
                                                <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
                                                      <option value="">Store</option>
                                                     @foreach($stores as $key)
-                                                    <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
+                                                    <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }}  @if($key->store_code != NULL)-{{$key->store_code}} @endif </option>
                                                     @endforeach
                                                   </select>
                                             </div>
@@ -180,7 +180,7 @@
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('H:i:s')}}</td>
                                             
-                                            <td>{{ $d->store_name }}</td>
+                                            <td>{{ $d->store_name }} @if($d->store_code != NULL)<br>({{$d->store_code}}) @endif</td>
                                             
                                             <td>
                                                 @if(isset($d->agency_name))
@@ -283,18 +283,24 @@ $(function(e) {
               url:"{{ url('admin/store-name-list') }}?subadmin_id="+subadminId,
     
               success:function(res){
-                    if(res){
-                       // console.log(res);
-                        $('#storeId').prop("diabled",false);
+                    if (res) {
+                        $('#storeId').prop("disabled", false);
                         $('#storeId').empty();
                         $('#storeId').append('<option value="">Store</option>');
-                        $.each(res,function(store_id,store_name)
-                        {
-                          $('#storeId').append('<option value="'+store_id+'">'+store_name+'</option>');
+                        $.each(res, function (index, store) {
+                        var optionText = store.store_code ? store.store_name + ' (' + store.store_code + ')' : store.store_name;
+                            $('#storeId').append('<option value="' + store.store_id + '">' + optionText + '</option>');
+                            let storeIdUrl = getUrlParameter('store_id');
+                            if ( typeof storeId !== "undefined" && storeId) {
+                                $("#storeId option").each(function(){
+                                    if($(this).val()==storeIdUrl){ 
+                                        $(this).attr("selected","selected");    
+                                    }
+                                });
+                            } 
                         });
-                    }else
-                    {
-                      $('#storeId').empty();
+                    } else {
+                        $('#storeId').empty();
                     }
                 }
     

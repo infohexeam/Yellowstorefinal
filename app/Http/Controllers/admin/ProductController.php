@@ -92,7 +92,7 @@ class ProductController extends Controller
   }
 
 
-  public function listStoreNames(Request $request)
+  public function listStoreNamesOld(Request $request)
   {
     $subadmin_id = $request->subadmin_id;
     $stores  = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
@@ -111,6 +111,32 @@ class ProductController extends Controller
 
     return response()->json($stores);
   }
+  public function listStoreNames(Request $request)
+  {
+      $subadmin_id = $request->subadmin_id;
+  
+      $stores = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
+          ->where("trn__store_admins.role_id", '=', 0)
+          ->where("mst_stores.subadmin_id", '=', $subadmin_id);
+  
+      if (isset($subadmin_id) && $subadmin_id != '') {
+          $stores = $stores->where("mst_stores.subadmin_id", '=', $subadmin_id);
+      }
+  
+      $stores = $stores->get(["mst_stores.store_id", "mst_stores.store_name", "mst_stores.store_code"]);
+  
+      $formattedStores = $stores->map(function ($store) {
+          return [
+              'store_id' => $store->store_id,
+              'store_name' => $store->store_name,
+              'store_code' => $store->store_code,
+          ];
+      });
+  
+      return response()->json($formattedStores);
+  }
+  
+
 
   public function listProductNames(Request $request)
   {
@@ -831,6 +857,7 @@ class ProductController extends Controller
         'trn_store_customers.customer_mobile_number',
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'trn__recently_visited_products.product_id',
         'mst_store_products.product_code',
@@ -880,6 +907,7 @@ class ProductController extends Controller
           'trn_store_customers.customer_mobile_number',
           'mst_stores.store_id',
           'mst_stores.store_name',
+          'mst_stores.store_code',
           'mst_stores.store_mobile',
           'mst_store_products.product_id',
           'mst_store_products.product_code',
@@ -960,6 +988,7 @@ class ProductController extends Controller
         'trn_store_customers.customer_mobile_number',
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'mst_store_products.product_id',
         'mst_store_products.product_code',
@@ -1008,6 +1037,7 @@ class ProductController extends Controller
           'trn_store_customers.customer_mobile_number',
           'mst_stores.store_id',
           'mst_stores.store_name',
+          'mst_stores.store_code',
           'mst_stores.store_mobile',
           'mst_store_products.product_id',
           'mst_store_products.product_code',
@@ -1108,6 +1138,7 @@ class ProductController extends Controller
           'trn_store_customers.customer_mobile_number',
           'mst_stores.store_id',
           'mst_stores.store_name',
+          'mst_stores.store_code',
           'mst_stores.store_mobile',
           'mst_store_products.product_id',
           'mst_store_products.product_code',
@@ -1158,6 +1189,7 @@ class ProductController extends Controller
             'trn_store_customers.customer_last_name',
             'trn_store_customers.customer_mobile_number',
             'mst_stores.store_id',
+            'mst_stores.store_code',
             'mst_stores.store_name',
             'mst_stores.store_mobile',
             'mst_stores.subadmin_id',
@@ -1258,6 +1290,7 @@ class ProductController extends Controller
           'trn_store_customers.customer_mobile_number',
           'mst_stores.store_id',
           'mst_stores.store_name',
+          'mst_stores.store_code',
           'mst_stores.store_mobile',
           'mst_store_products.product_id',
           'mst_store_products.product_code',
@@ -1307,6 +1340,7 @@ class ProductController extends Controller
             'trn_store_customers.customer_mobile_number',
             'mst_stores.store_id',
             'mst_stores.store_name',
+            'mst_stores.store_code',
             'mst_stores.store_mobile',
             'mst_store_products.product_id',
             'mst_store_products.product_code',
@@ -1437,6 +1471,7 @@ class ProductController extends Controller
           'trn_store_customers.place',
           'mst_stores.store_id',
           'mst_stores.store_name',
+          'mst_stores.store_code',
           'mst_stores.store_mobile',
           'mst_towns.town_name',
           'trn_store_customers.town_id'
@@ -1499,6 +1534,7 @@ class ProductController extends Controller
           'trn_store_customers.place',
           'mst_stores.store_id',
           'mst_stores.store_name',
+          'mst_stores.store_code',
           'mst_stores.store_mobile',
           'mst_towns.town_name',
           'trn_store_customers.town_id'
@@ -1602,6 +1638,7 @@ class ProductController extends Controller
 
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'mst_stores.subadmin_id',
 
@@ -1731,6 +1768,7 @@ class ProductController extends Controller
 
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'mst_stores.subadmin_id',
 
@@ -1861,6 +1899,7 @@ class ProductController extends Controller
 
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'mst_stores.subadmin_id',
 
@@ -1996,6 +2035,7 @@ class ProductController extends Controller
 
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'mst_stores.subadmin_id',
 
@@ -2131,6 +2171,7 @@ class ProductController extends Controller
 
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'mst_stores.subadmin_id',
 
@@ -2262,6 +2303,7 @@ class ProductController extends Controller
 
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
 
         'mst_delivery_boys.delivery_boy_name',
@@ -2484,6 +2526,7 @@ class ProductController extends Controller
 
         'mst_stores.store_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
         'mst_stores.store_mobile',
         'mst_stores.subadmin_id'
 
@@ -2619,6 +2662,7 @@ public function showInventoryReport(Request $request)
         'mst_stores.store_id',
         'mst_stores.subadmin_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
 
       );
 
@@ -2754,6 +2798,7 @@ public function showOutofStockReport(Request $request)
         'mst_stores.store_id',
         'mst_stores.subadmin_id',
         'mst_stores.store_name',
+        'mst_stores.store_code',
 
       );
 
