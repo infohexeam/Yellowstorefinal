@@ -131,7 +131,7 @@ class AdminController extends Controller
         //dd($reviews);
         $stores  = Mst_store::join('trn__store_admins', 'trn__store_admins.store_id', '=', 'mst_stores.store_id')
             ->where("trn__store_admins.role_id", '=', 0)
-            ->select("mst_stores.store_name", "mst_stores.store_id")->orderBy('store_name')->get();
+            ->select("mst_stores.store_name", "mst_stores.store_id","mst_stores.store_code")->orderBy('store_name')->get();
         $subadmins = User::where('user_role_id', '!=', 0)->get();
         $customers = Trn_store_customer::all();
 

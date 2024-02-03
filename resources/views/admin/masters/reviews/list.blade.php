@@ -44,7 +44,7 @@
                             <select name="store_id" class="form-control" >
                                 <option value=""> Store</option>
                                 @foreach($stores as $key)
-                                <option {{request()->input('store_id')  == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name}} </option>
+                                <option {{request()->input('store_id')  == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name}}@if($key->store_code!=NULL)({{$key->store_code}}) @endif </option>
                                     @endforeach
                                     </select>
                             </div>
@@ -155,7 +155,7 @@
                                             
                                         </td>
                                         <td>{{ $row->rating}}</td>
-                                        <td>{{ @$row->store->store_name}}</td>
+                                        <td>{{ @$row->store->store_name}} @if(@$row->store->store_code!=NULL)({{@$row->store->store_code}}) @endif</td>
                                         <td>{{ @$row->customer->customer_first_name}} {{ @$row->customer->customer_last_name}}</td>
                                         <td>
                                             <form action="{{route('admin.review_status',$row->reviews_id)}}" method="POST">
@@ -237,7 +237,7 @@
                                  </tr>
 
                                  <tr>
-                                     <td><strong>Store:</strong> {{ @$row->store->store_name}}</td>
+                                     <td><strong>Store:</strong> {{ @$row->store->store_name}}@if(@$row->store->store_code!=NULL)({{@$row->store->store_code}})@endif</td>
                                  </tr>
 
                                  <tr>
