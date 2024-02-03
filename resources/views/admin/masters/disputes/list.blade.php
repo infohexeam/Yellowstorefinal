@@ -41,7 +41,7 @@ $date = Carbon\Carbon::now();
                        <select name="store_id" id="store_id"  class="form-control" >
                                  <option value=""> Select Store</option>
                                 @foreach($stores as $key)
-                                <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }} </option>
+                                <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }}@if($key->store_code!=NULL)({{$key->store_code}}) @endif </option>
                                 @endforeach
                               </select>
                   </div>
@@ -142,7 +142,7 @@ $date = Carbon\Carbon::now();
 
                                     <td>{{  date("d-m-Y", strtotime(@$order->created_at)) }}</td>
                                     <td>{{ @$dispute->order_number}}</td>
-                                    <td>{{ @$store->store_name}}</td>
+                                    <td>{{ @$store->store_name}}@if($store->store_code!=NULL) ({{$store->store_code}}) @endif</td>
 
                                     <td>
                                         @if(isset($subadmin->name))
@@ -250,7 +250,7 @@ $date = Carbon\Carbon::now();
                             @php
                                 $issue = \DB::table('mst__issues')->where('issue_id',$dispute->issue_id)->first();
                     $customer = \DB::table('trn_store_customers')->where('customer_id',$dispute->customer_id)->first();
-
+                    $store=\DB::table('mst_stores')->where('store_id',$dispute->store_id)->first();
                             @endphp
                                  <tr>
                                     <td><h6>Customer Name : {{@$customer->customer_first_name}} {{@$customer->customer_last_name }}</h6></td>
@@ -258,6 +258,10 @@ $date = Carbon\Carbon::now();
                                  <tr>
                                     <td><h6>Customer Phone : {{$customer->customer_mobile_number}}</h6></td>
                                  </tr>
+                                  <tr>
+                                    <td><h6>Store : {{$store->store_name}}@if($store->store_code!=NULL) ({{$store->store_code}}) @endif</h6></td>
+                                 </tr>
+                                 
                                  <tr>
                                     <td><h6>Dispute Status : 
                                        @if($dispute->dispute_status == '1' )Closed
