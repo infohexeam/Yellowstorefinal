@@ -94,7 +94,7 @@
                             <select name="store_id"  class="form-control" >
                                  <option value=""> Select Store</option>
                                 @foreach($stores as $key)
-                                <option {{old('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }} </option>
+                                <option {{old('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id}}"> {{$key->store_name }}@if($key->store_code!=NULL)({{$key->store_code}}) @endif </option>
                                 @endforeach
                               </select>
                         </div>
