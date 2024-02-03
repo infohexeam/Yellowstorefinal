@@ -60,7 +60,15 @@ class Helper
         $check_store=Mst_store::find($store_id);
         if($check_store)
         {
-            $sname =  $check_store->store_name;
+            if($check_store->store_code!=NULL)
+            {
+                $sname =  $check_store->store_name.'('.$check_store->store_code.')';
+            }
+            else
+            {
+                $sname =  $check_store->store_name;
+            }
+            
             return $sname;
 
         }

@@ -142,7 +142,7 @@ $date = Carbon\Carbon::now();
 
                                     <td>{{  date("d-m-Y", strtotime(@$order->created_at)) }}</td>
                                     <td>{{ @$dispute->order_number}}</td>
-                                    <td>{{ @$store->store_name}}@if($store->store_code!=NULL) ({{$store->store_code}}) @endif</td>
+                                    <td>{{ @$store->store_name}}@if($store->store_code!=NULL)<br> ({{$store->store_code}}) @endif</td>
 
                                     <td>
                                         @if(isset($subadmin->name))

@@ -4049,6 +4049,7 @@ class SettingController extends Controller
 
 	public function listDeliveryboyOrder(Request $request)
 	{
+		
 
 		$pageTitle = "Delivery Boy Orders";
 		$delivery_boy_orders = Trn_store_order::join('mst_delivery_boys', 'mst_delivery_boys.delivery_boy_id', '=', 'trn_store_orders.delivery_boy_id')
@@ -4079,19 +4080,27 @@ class SettingController extends Controller
 
 			$delivery_boy_orders = $delivery_boy_orders->whereDate('trn_store_orders.created_at', '<=', $a2);
 		}
+		
 
 		$delivery_boy_orders = $delivery_boy_orders->orderBy('trn_store_orders.order_id', 'DESC')->get();
-
+		//dd(12);
 		//dd($delivery_boy_orders);
 
-		$order_item = Trn_store_order_item::all();
-		$store = Mst_Store::all();
+		
+		$order_item=[];
+		$store=[];
+		$delivery_boy=[];
+		$payment_types=[];
 
-		$delivery_boy  = Mst_delivery_boy::all();
+		//$order_item = Trn_store_order_item:dd(Trn_store_order_item::all());
+		 $store = Mst_store::all();
+
+		 $delivery_boy  = Mst_delivery_boy::all();
 		$payment_types = Sys_payment_type::all();
 
 
-
+		
+        //dd(3);
 
 		return view('admin.masters.delivery_boy_order.list', compact('dateto', 'datefrom', 'store', 'pageTitle', 'delivery_boy', 'order_item', 'delivery_boy_orders', 'payment_types'));
 	}
@@ -4481,9 +4490,19 @@ class SettingController extends Controller
 
 	public function list_stores_payments(Request $request, $store_name, $store_id)
 	{ //s
-		$pageTitle = $store_name . " (store) Payment Settlement";
+		
+		
 		$store_id  = Crypt::decryptString($store_id);
-
+		$str=Mst_store::find($store_id);
+		if($str->store_code!=NULL)
+		{
+			$pageTitle = $store_name ."(".$str->store_code. ")-Store Payment Settlement";
+		}
+		else
+		{
+			$pageTitle = $store_name . "-Store Payment Settlement";
+		}
+		
 		$paidAmount = Trn_store_payments_tracker::where('store_id', $store_id)->sum('commision_paid');
 		$paid_details = Trn_store_payments_tracker::where('store_id', $store_id)->orderBy('store_payments_tracker_id', 'DESC')->limit(15)->get();
 

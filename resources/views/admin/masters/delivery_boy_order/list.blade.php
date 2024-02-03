@@ -150,7 +150,7 @@ use App\User;
                         <td>{{ @$orderDAta->order_number}}</td>
                         <td>{{ @$dBoyDAta->delivery_boy_name }}</td>
                         <td>{{ @$dBoyDAta->delivery_boy_mobile }}</td>
-                        <td>{{@$delivery_boy_order->store['store_name']}}</td>
+                        <td>{{@$delivery_boy_order->store['store_name']}}@if(@$delivery_boy_order->store['store_code']!=NULL)<br>({{@$delivery_boy_order->store['store_code']}})@endif</td>
                         <td>
                             @if(isset($subadmin->name))
                             {{@$subadmin->name}}

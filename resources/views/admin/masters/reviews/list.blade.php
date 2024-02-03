@@ -155,7 +155,7 @@
                                             
                                         </td>
                                         <td>{{ $row->rating}}</td>
-                                        <td>{{ @$row->store->store_name}} @if(@$row->store->store_code!=NULL)({{@$row->store->store_code}}) @endif</td>
+                                        <td>{{ @$row->store->store_name}} @if(@$row->store->store_code!=NULL)<br>({{@$row->store->store_code}}) @endif</td>
                                         <td>{{ @$row->customer->customer_first_name}} {{ @$row->customer->customer_last_name}}</td>
                                         <td>
                                             <form action="{{route('admin.review_status',$row->reviews_id)}}" method="POST">
