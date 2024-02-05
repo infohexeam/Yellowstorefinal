@@ -7808,7 +7808,7 @@ class ProductController extends Controller
             $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
             foreach ($customerDevice as $cd) {
     
-                $title = 'Product Enquiry submitted';
+                $title = 'Product Enquiry Submitted';
                 $body = 'A product enquiry has been submited to '.$store->store_name;
                 $clickAction = "EnquiryListFragment";
                 $type = "Enquiry";
@@ -7820,7 +7820,7 @@ class ProductController extends Controller
 
             foreach ($storeDevice as $sd) {
                 $title = 'Product Enquiry Received';
-                $body = 'A product enquiry has been received from '.$customer->customer_first_name.' '.$customer->customer_last_name.'for '.$product_variant->variant_name;
+                $body = 'A product enquiry has been received from '.$customer->customer_first_name.' '.$customer->customer_last_name.' for '.$product_variant->variant_name;
                 $clickAction = "EnquiryListsFragment";
                 $type = "enquiry";
                 $data['responseEnquiryStore'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
