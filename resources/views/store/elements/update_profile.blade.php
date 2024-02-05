@@ -73,13 +73,20 @@
                   <div class="row">
                      <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">Store Name</label>
+                           <label class="form-label">Store Name343</label>
 
                            <input type="text" readonly="" class="form-control" name="store_name" value="{{old('store_name',$store->store_name)}}"  placeholder="Store Name">
                         </div>
                       </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="form-label">Store Code</label>
 
-                        <div class="col-md-6">
+                           <input type="text" readonly="" class="form-control" name="store_code" value="{{old('store_code',$store->store_code)}}"  placeholder="Store Name">
+                        </div>
+                      </div>
+
+                        <div class="col-md-3">
                             <div class="form-group">
                             <label class="form-label">Store Mobile Number</label>
                                 <input type="text" readonly maxlength="10" name="store_mobile" class="form-control"  value="{{old('store_mobile',$store->store_mobile)}}" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  placeholder="Store Mobile Number">
