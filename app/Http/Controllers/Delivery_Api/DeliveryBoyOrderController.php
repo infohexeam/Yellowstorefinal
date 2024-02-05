@@ -152,11 +152,13 @@ class DeliveryBoyOrderController extends Controller
                             if($storeInfo!=NULL)
                             {
                                 $order->store_name = @$storeInfo->store_name;
+                                $order->store_code = @$storeInfo->store_code;
 
                             }
                             else
                             {
                                 $order->store_name = 'Store not exists';
+                                $order->store_code = 'Store not exists';
                             }
                            
 
@@ -611,6 +613,7 @@ class DeliveryBoyOrderController extends Controller
                         $storeData = Mst_store::find($data['orderDetails']->store_id);
                         
                             $data['orderDetails']->store_name = @$storeData->store_name;
+                            $data['orderDetails']->store_code = @$storeData->store_code;
                                 if (isset($storeData->gst))
                                     $data['orderDetails']->gst = @$storeData->gst;
                                 else
