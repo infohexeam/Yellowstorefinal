@@ -2675,8 +2675,10 @@ public function orderHistory(Request $request)
                 $storeData = Mst_store::withTrashed()->find($order->store_id);
                 if ($storeData != NULL) {
                     $order->store_name = @$storeData->store_name;
+                    $order->store_code = @$storeData->store_code;
                 } else {
                     $order->store_name = 'Store not exists(Removed)';
+                    $order->store_code = 'Store not exists(Removed)';
                 }
 
                 if (isset($order->customer_id)) {
