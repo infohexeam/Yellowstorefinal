@@ -634,6 +634,7 @@ class StoreSettingsController extends Controller
                     ->select(
                         'store_id',
                         'store_name',
+                        'store_code',
                         'store_contact_person_name',
                         'store_name_slug',
                         'store_contact_person_phone_number',
