@@ -120,8 +120,14 @@
                            <input type="text"  class="form-control" name="store_name" value="{{old('store_name',$store->store_name)}}"  placeholder="Store Name" required>
                         </div>
                       </div>
+                       <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="form-label"> Store Code *</label>
+                           <input type="text" class="form-control" required name="store_code" value="{{old('store_code',$store->store_code)}}" placeholder="Store Code">
+                        </div>
+                      </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                             <label class="form-label">Store Mobile Number</label>
                                 <input type="text" readonly="" maxlength="10" name="store_mobile" class="form-control"  value="{{old('store_mobile',$store->store_mobile)}}" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  placeholder="Store Mobile Number">

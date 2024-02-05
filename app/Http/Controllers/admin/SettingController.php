@@ -778,7 +778,8 @@ class SettingController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'store_name'       				   => 'required|unique:mst_stores',
+				'store_name'       				   => 'required',
+				'store_code'       				   => 'required|unique:mst_stores',
 				'store_contact_person_name'        => 'required',
 				'store_contact_person_phone_number' => 'required',
 				'store_pincode'				       => 'required',
@@ -863,6 +864,7 @@ class SettingController extends Controller
 
 			$store_added_by = Auth()->user()->user_role_id;
 			$store->store_name 					= $request->store_name;
+			$store->store_code					= $request->store_code;
 			$store->store_name_slug   		    = Str::of($request->store_name)->slug('-');
 			$store->store_contact_person_name   = $request->store_contact_person_name;
 
@@ -1097,7 +1099,8 @@ class SettingController extends Controller
 		$validator = Validator::make(
 			$request->all(),
 			[
-				'store_name'    => 'required|unique:mst_stores,store_name,' . $store_id . ',store_id',
+				'store_name'    => 'required',
+				'store_code'        => 'required|unique:mst_stores,store_code,' . $store_id . ',store_id',
 				'store_contact_person_name'        => 'required',
 				'store_contact_person_phone_number' => 'required',
 				'store_town'				       => 'required',
@@ -1222,6 +1225,7 @@ class SettingController extends Controller
 
 
 			$store->store_name 					= $request->store_name;
+			$store->store_code					= $request->store_code;
 			$store->store_name_slug   		= Str::of($request->store_name)->slug('-');
 			$store->store_contact_person_name   = $request->store_contact_person_name;
 
