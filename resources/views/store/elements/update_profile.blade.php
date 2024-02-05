@@ -73,7 +73,7 @@
                   <div class="row">
                      <div class="col-md-6">
                         <div class="form-group">
-                           <label class="form-label">Store Name343</label>
+                           <label class="form-label">Store Name</label>
 
                            <input type="text" readonly="" class="form-control" name="store_name" value="{{old('store_name',$store->store_name)}}"  placeholder="Store Name">
                         </div>
