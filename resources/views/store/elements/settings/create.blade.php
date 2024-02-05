@@ -328,10 +328,10 @@
                                 <input type="number" min="0" step="1" oninput="validity.valid||(value='');" required   id="packing_charge0" class="form-control"  name="packing_charge[]">
                               </td>
                                <td>
-                                <input type="number" min="1" step="1" oninput="validity.valid||(value='');" required value="{{ $data->minimum_order_amount}}" id="minimum_order_amount0" class="form-control"  name="minimum_order_amount[]">
+                                <input type="number" min="1" step="1" oninput="validity.valid||(value='');" required value="0" id="minimum_order_amount0" class="form-control"  name="minimum_order_amount[]">
                               </td>
                               <td>
-                                <input type="number" min="1" max="100" step="1" oninput="validity.valid||(value='');" required value="{{ $data->reduction_percentage }}"  id="reduction_percentage0" class="form-control"  name="reduction_percentage[]">
+                                <input type="number" min="1" max="100" step="1" oninput="validity.valid||(value='');" required value="0"  id="reduction_percentage0" class="form-control"  name="reduction_percentage[]">
                               </td>
                              <td>
                                  <a id="r" onclick="startKMChanged(this.id,0)" class="remove_field btn btn-warning"><i style="color:red;" class="fa fa-trash"></i></a>
