@@ -964,6 +964,7 @@ public function storeVideoListNew(Request $request)
                                 $data['store_id'] = $custCheck->store_id;
                                 $data['store_admin_id'] = $custCheck->store_admin_id;
                                 $data['store_name'] = $storeData->store_name;
+                                $data['store_code'] = $storeData->store_code;
                                 $data['store_username'] = $storeData->store_username;
                                 $data['store_mobile'] = $phone;
                                 $data['password'] = $passChk;
@@ -1238,6 +1239,7 @@ public function storeVideoListNew(Request $request)
                                 $profileData = Helper::findStoreDataFilled($custCheck->store_id);
                                 $data['profileData'] = $profileData;
                                 $data['store_name'] = $storeData->store_name;
+                                $data['store_code'] = $storeData->store_code;
                                 $data['store_admin_name'] = $dataName;
                                 $data['store_username'] = $storeData->store_username;
                                 $data['store_mobile_number'] = $dataMobile;
