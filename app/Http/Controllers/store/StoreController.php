@@ -1886,12 +1886,12 @@ class StoreController extends Controller
        if(is_null($request->is_product_listed))
        {
         $product_listed=0;
-        // Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->update(['stock_count'=>0]);
-        // Db::table('empty_stock_log')->whereIn('product_varient_id',$varient_ids)->delete();
-        // foreach($varient_ids as $vid)
-        // {
-        //   DB::table('empty_stock_log')->insert(['product_varient_id'=>$vid,'created_time' => Carbon::now()]);
-        // }
+        Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->update(['stock_count'=>0]);
+        Db::table('empty_stock_log')->whereIn('product_varient_id',$varient_ids)->delete();
+        foreach($varient_ids as $vid)
+        {
+          DB::table('empty_stock_log')->insert(['product_varient_id'=>$vid,'created_time' => Carbon::now()]);
+        }
        
  
        }
@@ -1908,12 +1908,12 @@ class StoreController extends Controller
       if($store_Data->product_supply_type==1)
       {
        $product_listed=0;
-      //  Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->update(['stock_count'=>0]);
-      //   Db::table('empty_stock_log')->whereIn('product_varient_id',$varient_ids)->delete();
-      //   foreach($varient_ids as $vid)
-      //   {
-      //     DB::table('empty_stock_log')->insert(['product_varient_id'=>$vid,'created_time' => Carbon::now()]);
-      //   }
+       Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->update(['stock_count'=>0]);
+        Db::table('empty_stock_log')->whereIn('product_varient_id',$varient_ids)->delete();
+        foreach($varient_ids as $vid)
+        {
+          DB::table('empty_stock_log')->insert(['product_varient_id'=>$vid,'created_time' => Carbon::now()]);
+        }
       }
       $product['is_product_listed_by_product']=$product_listed;
       if (isset($request->business_type_id))
