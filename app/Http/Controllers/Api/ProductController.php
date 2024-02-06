@@ -2207,6 +2207,12 @@ class ProductController extends Controller
                 if (!$validator->fails()) {
 
                     $store_Data=Mst_store::find($store_id);
+                    if($request->product_id != 0)
+                    {
+                        $varient_ids=Mst_store_product_varient::where('product_id',$request->product_id)->pluck('product_varient_id');
+
+                    }
+                   
                     if($store_Data->product_supply_type==3)
                     {
                      if($request->is_product_listed==1)
@@ -2217,6 +2223,15 @@ class ProductController extends Controller
                     else
                     {
                         $product_listed=0;
+                        if($request->product_id != 0)
+                       {
+                        Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->update(['stock_count'=>0]);
+                        Db::table('empty_stock_log')->whereIn('product_varient_id',$varient_ids)->delete();
+                        foreach($varient_ids as $vid)
+                        {
+                          DB::table('empty_stock_log')->insert(['product_varient_id'=>$vid,'created_time' => Carbon::now()]);
+                        }
+                    }
                     }
                
                     }
@@ -2227,6 +2242,15 @@ class ProductController extends Controller
                     if($store_Data->product_supply_type==1)
                     {
                      $product_listed=0;
+                     if($request->product_id != 0)
+                       {
+                     Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->update(['stock_count'=>0]);
+                     Db::table('empty_stock_log')->whereIn('product_varient_id',$varient_ids)->delete();
+                     foreach($varient_ids as $vid)
+                     {
+                       DB::table('empty_stock_log')->insert(['product_varient_id'=>$vid,'created_time' => Carbon::now()]);
+                     }
+                    }
                     }
                         
 
