@@ -1185,7 +1185,7 @@ public function destroyDelivery_boy(Request $request)
             $delivery_boy=Mst_delivery_boy::find($delivery_boy_id);
             if($delivery_boy)
             {
-                $order_count=Trn_store_order::where('delivery_boy_id',$delivery_boy->delivery_boy_id)->count();
+                $order_count=Trn_store_order::where('delivery_boy_id',$delivery_boy->delivery_boy_id)->where('status_id',9)->count();
                 if($order_count>0)
                 {
                     $data['status']=0;
