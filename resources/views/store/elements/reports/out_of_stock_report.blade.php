@@ -153,8 +153,8 @@
                                                     $dateU = $d->created_at;
                                                 }
                                             @endphp
-                                            <td>{{ \Carbon\Carbon::parse($dateU)->format('d-m-Y')}}</td>
-                                            <td>{{ \Carbon\Carbon::parse($dateU)->format('h:i:s')}}</td>
+                                            <td>{{ $dateU }}<br>{{ \Carbon\Carbon::parse($dateU)->format('d-m-Y')}}</td>
+                                            <td>{{ $dateU }}<br>{{ \Carbon\Carbon::parse($dateU)->format('h:i:s')}}</td>
 
                                             <td>{{ $d->variant_name }}</td>
                                             <td>{{ $d->product_varient_offer_price }}</td>
