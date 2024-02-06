@@ -102,7 +102,7 @@
                        <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">Store Profile Description *</label>
-                           <textarea id="storeProfileDescription" class="form-control"  name="store_profile_description" 
+                           <textarea id="storeProfileDescription" class="form-control"  name="store_profile_description" required
                            rows="4" placeholder="Store Profile Description">{{old('store_profile_description')}}</textarea>
                            <!-- <p id="wordCount">Words left: 100</p>-->
                         </div>
