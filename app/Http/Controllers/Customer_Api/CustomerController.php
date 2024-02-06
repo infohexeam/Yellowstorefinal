@@ -1379,6 +1379,128 @@ class CustomerController extends Controller
             return response($response);
         }
     }
+    public function editAddressNew(Request $request)
+    {
+        $data = array();
+
+        try {
+            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
+                if (isset($request->customer_address_id) && Trn_customerAddress::find($request->customer_address_id)) {
+                    $validator = Validator::make(
+                        $request->all(),
+                        [
+                            'address'          => 'required',
+                        ]
+                    );
+
+                    if (!$validator->fails()) {
+
+                        if ($request->default_status == 1) {
+                            $countAddress =  Trn_customerAddress::where('customer_id', $request->customer_id)->update(['default_status' => 0]);
+                            Trn_customerAddress::where('customer_address_id',$request->customer_address_id)->update(['default_status' => 1]);
+                        } else {
+
+                            $countFirstAddress =  Trn_customerAddress::where('customer_id', $request->customer_id)->first();
+                            Trn_customerAddress::where('customer_address_id', $request->customer_address_id)->update(['default_status' => 0]);
+                            if(Trn_customerAddress::where('customer_id', $request->customer_id)->count()==1)
+                            {
+                                $countFirstAddress->default_status=1;
+                                $countFirstAddress->update();
+                            }
+                            
+                        }
+
+
+                        // $addr = Trn_customerAddress::find($request->customer_address_id);
+                        $addr['address'] = $request->address;
+                        $addr['name'] = $request->name;
+                        $addr['phone'] = $request->phone;
+                        $addr['state'] = $request->state;
+                        $addr['district'] = $request->district;
+                        $addr['street'] = $request->street;
+                        $addr['pincode'] = $request->pincode;
+
+                        $addr['longitude'] = $request->longitude;
+                        $addr['latitude'] = $request->latitude;
+                        $addr['place'] = $request->place;
+                        //$addr['default_status'] = $request->default_status;
+
+                        // if($request->default_status == 'one')
+                        // {
+                        //      $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)->update(['default_status' => 0]);
+                        //     $addr['default_status'] = 1;
+
+                        // }
+                        // else
+                        // {
+                        //     $addr['default_status'] = 0;
+
+                        // }
+
+                        if (Trn_customerAddress::where('customer_address_id', $request->customer_address_id)->update($addr)) {
+                            // $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)
+                            // ->where('customer_address_id','!=',$request->customer_address_id)->update(['default_status' => 0]);
+
+
+                           /* if ($request->default_status == 0) {
+
+                                $countAddress =  Trn_customerAddress::where('customer_id', $request->customer_id)->first();
+                                if(Trn_customerAddress::where('customer_id', $request->customer_id)->count()==1)
+                                {
+                                    Trn_customerAddress::where('customer_address_id', $countAddress->customer_address_id)->update(['default_status' => 1]);
+
+                                }
+                                else
+                                {
+                                    
+                                        Trn_customerAddress::where('customer_address_id', $request->customer_address_id)->update(['default_status' => 0]);
+
+                                    
+                                    
+                                }
+                                
+                            }*/
+                            // if($request->default_status==0)
+                            // {
+                            //     $countAddress =  Trn_customerAddress::where('customer_id', $request->customer_id)->first();
+
+
+                            // }
+                            
+
+
+                            $data['status'] = 1;
+                            $data['message'] = "Address updated";
+                            $data['data'] = $request->all();
+                            return response($data);
+                        } else {
+                            $data['status'] = 0;
+                            $data['message'] = "failed";
+                            return response($data);
+                        }
+                    } else {
+                        $data['status'] = 0;
+                        $data['message'] = "Address required";
+                        return response($data);
+                    }
+                } else {
+                    $data['status'] = 0;
+                    $data['message'] = "Address not found ";
+                    return response($data);
+                }
+            } else {
+                $data['status'] = 0;
+                $data['message'] = "Customer not found ";
+                return response($data);
+            }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
 
     public function removeAddress(Request $request)
     {

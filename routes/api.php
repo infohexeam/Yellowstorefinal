@@ -396,7 +396,7 @@ Route::post('customer/product-stock-status', 'Customer_Api\StoreOrderController@
 // profile
 Route::get('customer/customer-info', 'Customer_Api\CustomerController@viewInfo');
 Route::post('customer/add-address', 'Customer_Api\CustomerController@addAddress');
-Route::post('customer/edit-address', 'Customer_Api\CustomerController@editAddress');
+Route::post('customer/edit-address', 'Customer_Api\CustomerController@editAddressNew');
 Route::get('customer/remove-address', 'Customer_Api\CustomerController@removeAddress');
 Route::get('customer/view-address', 'Customer_Api\CustomerController@viewAddress');
 Route::post('customer/update-profile', 'Customer_Api\CustomerController@updateProfile');
