@@ -1105,7 +1105,7 @@ class SettingController extends Controller
 				'store_contact_person_phone_number' => 'required',
 				'store_town'				       => 'required',
 				'store_primary_address'            => 'required',
-				'store_profile_description'            => 'required',
+				//'store_profile_description'            => 'required',
 				'store_country_id'			       => 'required',
 				'store_state_id'       		       => 'required',
 				'product_limit' 					=> 'required|numeric|gte:0',

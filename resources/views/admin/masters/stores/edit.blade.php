@@ -136,7 +136,7 @@
                          <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">Store Profile Description *</label>
-                           <textarea class="form-control"  name="store_profile_description" required
+                           <textarea class="form-control"  name="store_profile_description" 
                            rows="4" placeholder="Store Profile Description">{{old('store_profile_description',$store->profile_description)}}</textarea>
                         </div>
                      </div>
