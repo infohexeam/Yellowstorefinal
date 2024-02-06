@@ -1411,19 +1411,20 @@ class CustomerController extends Controller
                         }
 
 
-                        // $addr = Trn_customerAddress::find($request->customer_address_id);
-                        $addr['address'] = $request->address;
-                        $addr['name'] = $request->name;
-                        $addr['phone'] = $request->phone;
-                        $addr['state'] = $request->state;
-                        $addr['district'] = $request->district;
-                        $addr['street'] = $request->street;
-                        $addr['pincode'] = $request->pincode;
+                        $addr = Trn_customerAddress::find($request->customer_address_id);
+                        $addr->address = $request->address;
+                        $addr->name = $request->name;
+                        $addr->phone = $request->phone;
+                        $addr->state = $request->state;
+                        $addr->district= $request->district;
+                        $addr->street = $request->street;
+                        $addr->pincode = $request->pincode;
 
-                        $addr['longitude'] = $request->longitude;
-                        $addr['latitude'] = $request->latitude;
-                        $addr['place'] = $request->place;
+                        $addr->longitude= $request->longitude;
+                        $addr->latitude = $request->latitude;
+                        $addr->place = $request->place;
                         //$addr['default_status'] = $request->default_status;
+
 
                         // if($request->default_status == 'one')
                         // {
@@ -1437,7 +1438,7 @@ class CustomerController extends Controller
 
                         // }
 
-                        if (Trn_customerAddress::where('customer_address_id', $request->customer_address_id)->update($addr)) {
+                        if ($addr->update()) {
                             // $countAddress =  Trn_customerAddress::where('customer_id',$request->customer_id)
                             // ->where('customer_address_id','!=',$request->customer_address_id)->update(['default_status' => 0]);
 
