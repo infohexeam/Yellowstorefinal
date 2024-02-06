@@ -147,7 +147,7 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             @php
-                                                if(!isset($d->updated_time)){
+                                                if(isset($d->updated_time)){
                                                     $dateU = $d->updated_time;
                                                 }else{
                                                     $dateU = $d->created_at;
