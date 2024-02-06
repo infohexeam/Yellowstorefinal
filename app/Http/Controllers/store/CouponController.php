@@ -1222,7 +1222,7 @@ class CouponController extends Controller
     $inventoryDatas = $inventoryData->unique('product_varient_id');
     $data =   $inventoryDatas->values()->all();
 
-    //   dd($data);
+       dd($data);
 
     return view('store.elements.reports.out_of_stock_report', compact('subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
   }
