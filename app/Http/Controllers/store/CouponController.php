@@ -1214,7 +1214,7 @@ class CouponController extends Controller
     }
 
 
-    $inventoryData = $inventoryData->orderBy('empty_stock_log.created_time', 'DESC')->get();
+    $inventoryData = $inventoryData->get();
 
     //  dd($inventoryData);
 
