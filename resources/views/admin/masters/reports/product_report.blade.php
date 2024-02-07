@@ -174,7 +174,7 @@
                         
                             <div class="card-body">
                                 <div class="table-responsive">
-                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                                   <table  class="table table-striped table-bordered text-nowrap w-100">
                                       <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
@@ -200,7 +200,7 @@
                                         @endphp
                                         @foreach ($data as $d)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ ($data->currentPage()-1) * $data->perPage() + $loop->index + 1 }}</td>
                                             <td>
                                                 @if(isset($d->created_at))
                                                 {{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}
@@ -210,7 +210,7 @@
                                                 </td>
                                             <td>
                                                 @if(isset($d->created_at))
-                                                {{ $d->store_name }} @if($d->store_code != NULL)-{{$d->store_code}} @endif
+                                                {{ $d->store_name }} @if($d->store_code != NULL)-({{$d->store_code}} @endif
                                                  @else
                                                     ---
                                                 @endif
@@ -325,6 +325,7 @@
                                     
                                       </tbody>
                                    </table>
+                                   {{ $data->appends(request()->query())->links('custom_pagination') }}
                                 </div>
                             </div>
                       </div>
