@@ -865,7 +865,7 @@ class SettingController extends Controller
 			$store_added_by = Auth()->user()->user_role_id;
 			$store->store_name 					= $request->store_name;
 			$store->store_code					= $request->store_code;
-			$store->store_name_slug   		    = Str::of($request->store_name)->slug('-');
+			$store->store_name_slug   		    = Str::of($request->store_name.''.$request->store_code)->slug('-');
 			$store->store_contact_person_name   = $request->store_contact_person_name;
 
 
@@ -906,7 +906,7 @@ class SettingController extends Controller
 
 			//dd($data);
 			$timestamp = time();
-			$qrco = Str::of($request->store_name)->slug('-') . "-" . @$request->store_mobile;
+			$qrco = Str::of($request->store_name.''.$request->store_code)->slug('-') . "-" . @$request->store_mobile;
 
 			\QrCode::format('svg')->size(500)->generate($qrco, 'assets/uploads/store_qrcodes/' . $qrco . '.svg');
 			$store->store_qrcode          = $qrco;
@@ -1226,7 +1226,7 @@ class SettingController extends Controller
 
 			$store->store_name 					= $request->store_name;
 			$store->store_code					= $request->store_code;
-			$store->store_name_slug   		= Str::of($request->store_name)->slug('-');
+			$store->store_name_slug   		= Str::of($request->store_name.''.$request->store_code)->slug('-');
 			$store->store_contact_person_name   = $request->store_contact_person_name;
 
 			$store->store_mobile = $request->store_mobile;

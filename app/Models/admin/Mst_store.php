@@ -20,7 +20,7 @@ class Mst_store extends Authenticatable
     protected $primaryKey = "store_id";
 
     protected $fillable = [
-        'store_id', 'store_name', 'store_name_slug', 'store_mobile',
+        'store_id', 'store_name','store_code','store_name_slug', 'store_mobile',
         'store_contact_person_name', 'store_contact_person_phone_number',
         'store_contact_number_2',
         'store_website_link', 'store_pincode', 'store_primary_address',
@@ -33,7 +33,7 @@ class Mst_store extends Authenticatable
         'subadmin_id', 'place', 'town', 'store_commision_amount', 'store_mobile',
         'order_number_prefix',
         'online_status', 'store_qrcode', 'profile_image', 'upi_id',
-        'longitude', 'latitude', 'place_id','service_area', 'is_pgActivated', 'gst','store_referral_id','product_upload_limit','delivery_option_immediate','delivery_option_slot','delivery_option_future','delivery_start_time','delivery_end_time','immediate_delivery_text','minimum_order_amount','store_profile_description','youtube_account_link','facebook_account_link','instagram_account_link','snapchat_account_link','store_code'
+        'longitude', 'latitude', 'place_id','service_area', 'is_pgActivated', 'gst','store_referral_id','product_upload_limit','delivery_option_immediate','delivery_option_slot','delivery_option_future','delivery_start_time','delivery_end_time','immediate_delivery_text','minimum_order_amount','store_profile_description','youtube_account_link','facebook_account_link','instagram_account_link','snapchat_account_link',
 
     ];
 
