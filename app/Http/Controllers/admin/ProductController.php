@@ -825,7 +825,7 @@ class ProductController extends Controller
     }
   }
 
-  public function showReportOld(Request $request)
+  public function showReport(Request $request)
   {
     // dd($request);
     // try {
@@ -1104,7 +1104,7 @@ class ProductController extends Controller
     //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     // }
   }
-  public function showReport(Request $request)
+  public function showReportNew(Request $request)
   {
       $stores = Mst_store::when(auth()->user()->user_role_id !== 0, function ($query) {
           return $query->where('subadmin_id', auth()->user()->id);
