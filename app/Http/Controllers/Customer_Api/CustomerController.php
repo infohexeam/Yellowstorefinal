@@ -1402,7 +1402,7 @@ class CustomerController extends Controller
 
                             $countFirstAddress =  Trn_customerAddress::where('customer_id', $request->customer_id)->first();
                             Trn_customerAddress::where('customer_address_id', $request->customer_address_id)->update(['default_status' => 0]);
-                            if(Trn_customerAddress::where('customer_id', $request->customer_id)->count()==1)
+                            if(Trn_customerAddress::where('customer_id', $request->customer_id)->where('default_status',1)->count()==0)
                             {
                                 $countFirstAddress->default_status=1;
                                 $countFirstAddress->update();
