@@ -1122,10 +1122,10 @@ $("#store_name").blur(function(){
             }
             else
             {
-                $('#error_username').html('<label class="text-danger">Store name already exist </label>');
+               /* $('#error_username').html('<label class="text-danger">Store name already exist </label>');
 
                 $('#store_name').addClass('has-error');
-                $('#submit').attr('disabled', 'disabled');
+                $('#submit').attr('disabled', 'disabled');*/
             }
         }
    })
