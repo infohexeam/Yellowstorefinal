@@ -1375,10 +1375,10 @@ class SettingController extends Controller
 		$subadmin_id = $request->subadmin_id;
 		//dd($country_id);
 		//$stores = Mst_store::where('subadmin_id', $subadmin_id)->orderBy('store_id', 'desc')->pluck("store_id", "store_name");
-		$stores = Mst_store::selectRaw('store_id, CONCAT(store_name, IFNULL(CONCAT(" (", store_code, ")"), "")) as store_name')
-        ->where('subadmin_id', $subadmin_id)
-        ->orderBy('store_id', 'desc')
-        ->pluck("store_id", "store_name");
+		$stores = Mst_store::selectRaw('store_id, CONCAT(store_name, IFNULL(CONCAT("-", store_code), "")) as store_name')
+		->where('subadmin_id', $subadmin_id)
+		->orderBy('store_id', 'desc')
+		->pluck("store_id", "store_name");
 
     return response()->json($stores);
 		return response()->json($stores);
