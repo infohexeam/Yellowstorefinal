@@ -197,7 +197,7 @@ class BusinessTypeController extends Controller
                         $offerProduct->ratingCount = $countRating;
                         $productDataFinal[] =   $offerProduct;
                     }
-                    $data['offerProducts'] = array_slice($productDataFinal, 0, 10);
+                    $data['offerProducts'] =[];// array_slice($productDataFinal, 0, 10);
 
 
 
@@ -547,7 +547,7 @@ class BusinessTypeController extends Controller
                             $offerProduct->ratingCount = $countRating;
                             $productDataFinal[] =   $offerProduct;
                         }
-                        $data['offerProducts'] = array_slice($productDataFinal, 0, 10);
+                        $data['offerProducts'] = [];//array_slice($productDataFinal, 0, 10);
 
 
 
