@@ -825,7 +825,7 @@ class ProductController extends Controller
     }
   }
 
-  public function showReport(Request $request)
+  public function showReportOld(Request $request)
   {
     // dd($request);
     // try {
@@ -1104,6 +1104,94 @@ class ProductController extends Controller
     //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     // }
   }
+  public function showReport(Request $request)
+  {
+      $stores = Mst_store::when(auth()->user()->user_role_id !== 0, function ($query) {
+          return $query->where('subadmin_id', auth()->user()->id);
+      })->orderby('store_id', 'DESC')->get();
+  
+      $subadmins = User::where('user_role_id', '!=', 0)->get();
+      $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
+      $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
+      $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
+      $customers = Trn_store_customer::all();
+      $pageTitle = "Product Wise Reports";
+  
+      $data = Trn_RecentlyVisitedProducts::select(
+          'trn__recently_visited_products.rvp_id',
+          'trn__recently_visited_products.visit_count',
+          'trn__recently_visited_products.created_at',
+          'trn__recently_visited_products.updated_at',
+          'trn_store_customers.customer_id',
+          'trn_store_customers.customer_first_name',
+          'trn_store_customers.customer_last_name',
+          'trn_store_customers.customer_mobile_number',
+          'mst_stores.store_id',
+          'mst_stores.store_name',
+          'mst_stores.store_code',
+          'mst_stores.store_mobile',
+          'mst_store_products.product_id',
+          'mst_store_products.product_code',
+          'mst_store_products.product_name',
+          'mst_store_products.product_brand',
+          'mst_store_product_varients.product_varient_id',
+          'mst_store_product_varients.variant_name',
+          'mst_store_agencies.agency_id',
+          'mst_store_agencies.agency_name',
+          'mst_store_categories.category_id',
+          'mst_store_categories.category_name',
+          'mst__sub_categories.sub_category_id',
+          'mst__sub_categories.sub_category_name'
+      )
+      ->with('customer', 'store', 'product', 'productVariant', 'agency', 'category', 'subCategory')
+      ->selectRaw('SUM(trn__recently_visited_products.visit_count) as sum');
+  
+      if ($_GET) {
+          $data->when(isset($request->date_from), function ($query) use ($request) {
+              return $query->whereDate('trn__recently_visited_products.created_at', '>=', Carbon::parse($request->date_from)->startOfDay());
+          })->when(isset($request->date_to), function ($query) use ($request) {
+              return $query->whereDate('trn__recently_visited_products.created_at', '<=', Carbon::parse($request->date_to)->endOfDay());
+          });
+  
+          $data->when(isset($request->store_id), function ($query) use ($request) {
+              return $query->where('mst_stores.store_id', $request->store_id);
+          })->when(isset($request->subadmin_id), function ($query) use ($request) {
+              return $query->where('mst_stores.subadmin_id', $request->subadmin_id);
+          });
+  
+          $data->when(isset($request->product_id), function ($query) use ($request) {
+              return $query->where('mst_store_products.product_id', $request->product_id);
+          })->when(isset($request->vendor_id), function ($query) use ($request) {
+              return $query->where('mst_store_products.vendor_id', $request->vendor_id);
+          });
+  
+          $data->when(isset($request->category_id), function ($query) use ($request) {
+              return $query->where('mst_store_products.product_cat_id', $request->category_id);
+          })->when(isset($request->sub_category_id), function ($query) use ($request) {
+              return $query->where('mst_store_products.sub_category_id', $request->sub_category_id);
+          });
+  
+          $data->when(isset($request->customer_id), function ($query) use ($request) {
+              return $query->where('trn__recently_visited_products.customer_id', $request->customer_id);
+          });
+  
+          $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')
+               ->orderBy('trn__recently_visited_products.rvp_id', 'DESC');
+  
+          $processedData = collect(); // Collection to store processed data
+  
+          $data->chunk(10, function ($chunk) use ($processedData) {
+              // Process each chunk of data
+              $processedData->push($chunk);
+          });
+  
+          return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'processedData', 'pageTitle'));
+      }
+  
+      return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'subadmins', 'stores', 'data', 'pageTitle'));
+  }
+  
+
 
   public function showVisitReport(Request $request)
   {
