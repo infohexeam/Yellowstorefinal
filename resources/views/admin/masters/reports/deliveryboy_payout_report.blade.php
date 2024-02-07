@@ -150,7 +150,7 @@
 
                                             <td>{{ $d->order_number }}</td>
                                             
-                                             <td>{{ $d->store_name }}@if($d->store_code != NULL)<br>({{$d->store_code}}) @endif</td>
+                                             <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}} @endif</td>
                                                <td>
                                                 @if(isset($d->delivery_boy_name))
                                                  {{ $d->delivery_boy_name }}
@@ -256,7 +256,7 @@
                         $('#storeId').empty();
                         $('#storeId').append('<option value="">Store</option>');
                         $.each(res, function (index, store) {
-                        var optionText = store.store_code ? store.store_name + ' (' + store.store_code + ')' : store.store_name;
+                        var optionText = store.store_code ? store.store_name + ' -' + store.store_code: store.store_name;
                             $('#storeId').append('<option value="' + store.store_id + '">' + optionText + '</option>');
                             let storeIdUrl = getUrlParameter('store_id');
                             if ( typeof storeId !== "undefined" && storeId) {

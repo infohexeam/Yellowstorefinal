@@ -186,7 +186,7 @@
 
                                             <td>{{ $d->order_number }}</td>
                                             
-                                            <td>{{ $d->store_name }}@if($d->store_code != NULL)<br>({{$d->store_code}}) @endif</td>
+                                            <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}} @endif</td>
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
                                             
                                             

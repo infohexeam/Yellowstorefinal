@@ -157,7 +157,7 @@
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>
                                             
-                                             <td>{{ $d->store_name }}@if($d->store_code != NULL)<br>({{$d->store_code}}) @endif</td>
+                                             <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}} @endif</td>
                                             
                                             
                                             
