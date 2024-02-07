@@ -180,8 +180,10 @@ class RegisterController extends Controller
 
 
         if (!$validator->fails()) {
+            $uniqueString = Str::random(6);
             $store->store_name            = $request->store_name;
-            $store->store_name_slug       = Str::of($request->store_name)->slug('-');
+            $store->store_code  =$uniqueString;
+            $store->store_name_slug       = Str::of($request->store_name.''.$uniqueString)->slug('-');
             $store->store_contact_person_phone_number = $request->store_contact_person_phone_number;
             // $store->email   = $request->email;
 
@@ -206,7 +208,7 @@ class RegisterController extends Controller
             $store->latitude=$request->latitude;
             $store->longitude=$request->longitude;
             $timestamp = time();
-            $qrco = Str::of($request->store_name)->slug('-') . "-" . rand(10, 99) . "-" . @$request->store_mobile;
+            $qrco = Str::of($request->store_name.''.$uniqueString)->slug('-') . "-" . rand(10, 99) . "-" . @$request->store_mobile;
 
             \QrCode::format('svg')->size(500)->generate($qrco, 'assets/uploads/store_qrcodes/' . $qrco . '.svg');
             $store->store_qrcode          = $qrco;
