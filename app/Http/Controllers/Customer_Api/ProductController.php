@@ -3032,8 +3032,16 @@ class ProductController extends Controller
     
                     $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
                     $data['addressList']  = $addressList;
-    
+                    $cnt=0;
                     foreach ($data['addressList'] as $a) {
+                        if($cnt==0)
+                        {
+                            if(Trn_customerAddress::where('customer_id', $request->customer_id)->where('default_status',1)->count()==0)
+                            {
+                                $a->default_status = 1;
+                            }
+                        }
+
                         if (isset($a->longitude) && isset($a->latitude)) {
                             if (!isset($a->default_status)) {
                                 $a->default_status = 0;
@@ -3107,6 +3115,7 @@ class ProductController extends Controller
     
                         $a->stateData = @$a->stateFunction['state_name'];
                         $a->districtData = @$a->districtFunction['district_name'];
+                        $cnt++;
                     }
     
                     $data['status'] = 1;
