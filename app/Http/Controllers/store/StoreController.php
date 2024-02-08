@@ -381,7 +381,7 @@ class StoreController extends Controller
         'store_contact_person_phone_number' => 'required',
         'store_town'               => 'required',
         'store_primary_address'            => 'required',
-        'store_profile_description'            => 'required',
+        'store_profile_description' => 'required|max_words:1000',
         'store_country_id'             => 'required',
         //	'profile_image'			       => 'required',
         'store_state_id'                  => 'required',
@@ -404,6 +404,7 @@ class StoreController extends Controller
         'store_contact_person_phone_number.required' => 'Contact person number required',
 
         //  'email.required'         				 => 'Email required',
+        'store_profile_description.max_words' => 'The store profile description must not exceed 1000 words.',
 
         'store_town.required'               => 'Pincode required',
         'store_primary_address.required'             => 'Primary address required',
