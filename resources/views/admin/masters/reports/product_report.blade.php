@@ -210,7 +210,7 @@
                                                 </td>
                                             <td>
                                                 @if(isset($d->created_at))
-                                                {{ $d->store_name }} @if($d->store_code != NULL)-({{$d->store_code}} @endif
+                                                {{ $d->store_name }} @if($d->store_code != NULL)-{{$d->store_code}} @endif
                                                  @else
                                                     ---
                                                 @endif
