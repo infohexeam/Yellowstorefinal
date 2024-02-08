@@ -114,7 +114,7 @@
                         
                             <div class="card-body">
                                 <div class="table-responsive">
-                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                                   <table  class="table table-striped table-bordered text-nowrap w-100">
                                       <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
@@ -140,7 +140,7 @@
                                         @endphp
                                         @foreach ($data as $d)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ ($data->currentPage()-1) * $data->perPage() + $loop->index + 1 }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
 
                                             <td>{{ $d->order_number }}</td>
@@ -179,6 +179,7 @@
                                     
                                       </tbody>
                                    </table>
+                                   {{ $data->appends(request()->query())->links('custom_pagination') }}
                                 </div>
                             </div>
                       </div>

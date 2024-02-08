@@ -2670,7 +2670,7 @@ class ProductController extends Controller
       }
 
       $data = $data->where('reward_points_used','!=',NULL)->where('reward_points_used','>', '0.00')->orderBy('trn_store_orders.order_id', 'DESC')
-        ->get();
+        ->paginate(10);
 //DD($request->store_id,$request->subadmin_id,$data);
 
       return view('admin.masters.reports.redeem_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
