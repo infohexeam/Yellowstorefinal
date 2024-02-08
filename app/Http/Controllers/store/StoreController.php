@@ -488,7 +488,8 @@ class StoreController extends Controller
       $data = [
 
         'store_name' =>  $request->store_name,
-        'store_name_slug' => Str::of($request->store_name)->slug('-'),
+        'store_code' =>  $request->store_code,
+        'store_name_slug' => Str::of($request->store_name.''.$request->store_code)->slug('-'),
         'store_contact_person_name' => $request->store_contact_person_name,
         'store_mobile' => $request->store_mobile,
         'store_contact_person_phone_number' => $request->store_contact_person_phone_number,
