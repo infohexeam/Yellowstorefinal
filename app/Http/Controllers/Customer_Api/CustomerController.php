@@ -1546,6 +1546,15 @@ class CustomerController extends Controller
         try {
             if (isset($request->customer_address_id) && Trn_customerAddress::find($request->customer_address_id)) {
                 $data['addressData'] = Trn_customerAddress::find($request->customer_address_id);
+                $countFirstAddress =  Trn_customerAddress::where('customer_id', $data['addressData']->customer_id)->first();
+                if($countFirstAddress->customer_address_id==$request->customer_address_id)
+                {
+                   
+                    if(Trn_customerAddress::where('customer_id', $data['addressData']->customer_id)->where('default_status',1)->count()==0)
+                    {
+                        $data['addressData']->deafult_status=1;
+                    }
+                }
                 $data['addressData']->stateData = $data['addressData']->stateFunction['state_name'];
                 $data['addressData']->districtData = $data['addressData']->districtFunction['district_name'];
                 $data['status'] = 1;

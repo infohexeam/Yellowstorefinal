@@ -3147,6 +3147,19 @@ class ProductController extends Controller
                 $data['status']=1;
                 $data['message']="Address Fetched";
                 $data['addressList']  = $addressList;
+                $cnt=0;
+                foreach($data['addressList'] as $a)
+                {
+                    if($cnt==0)
+                    {
+                            if(Trn_customerAddress::where('customer_id', $request->customer_id)->where('default_status',1)->count()==0)
+                        {
+                            $a->default_status = 1;
+                        }
+
+                    }
+                    
+                }
                 return response($data);
                 
             }
