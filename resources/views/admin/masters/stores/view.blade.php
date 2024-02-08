@@ -44,6 +44,9 @@
                                  <tr>
                                     <td><strong>Store Name:</strong> {{ @$store->store_name}}</td>
                                  </tr>
+                                 <tr>
+                                    <td><strong>Store Code:</strong> {{ @$store->store_code}}</td>
+                                 </tr>
                                    <tr>
                                      <td><strong>Store Profile Description :</strong>
                                      <span style="display: inline-flex;" > <?php
