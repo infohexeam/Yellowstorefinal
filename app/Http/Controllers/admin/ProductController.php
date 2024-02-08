@@ -2941,7 +2941,7 @@ public function showOutofStockReport(Request $request)
     //old
     // $data = $data->orderBy('updated_time', 'DESC')->get();
     $data=$data->orderBy('updated_time', 'DESC');
-    $data = $data->groupBy('mst_store_product_varients.product_varient_id')->get();
+    $data = $data->groupBy('mst_store_product_varients.product_varient_id')->paginate(10);
     //dd($data);
    // dd(1);
     

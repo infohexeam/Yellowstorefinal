@@ -182,7 +182,7 @@
                                         @foreach ($data as $d)
                                         @if($d->updated_time)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ ($data->currentPage()-1) * $data->perPage() + $loop->index + 1 }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('d-m-Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('h:i:s')}}</td>
 
@@ -210,6 +210,7 @@
                                     
                                       </tbody>
                                    </table>
+                                   {{ $data->appends(request()->query())->links('custom_pagination') }}
                                 </div>
                             </div>
                       </div>
