@@ -62,7 +62,7 @@ class Helper
         {
             if($check_store->store_code!=NULL)
             {
-                $sname =  $check_store->store_name.'('.$check_store->store_code.')';
+                $sname =  $check_store->store_name.'-'.$check_store->store_code;
             }
             else
             {
