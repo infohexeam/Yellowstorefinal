@@ -1558,6 +1558,7 @@ class CustomerController extends Controller
                 $data['addressData']->stateData = $data['addressData']->stateFunction['state_name'];
                 $data['addressData']->districtData = $data['addressData']->districtFunction['district_name'];
                 $data['status'] = 1;
+                $data['test']=1;
                 $data['message'] = "success";
                 return response($data);
             } else {
