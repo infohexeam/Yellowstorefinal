@@ -1555,6 +1555,7 @@ class CustomerController extends Controller
                         $data['addressData']->deafult_status=1;
                     }
                 }
+                $data['addressData']->deafult_status=333;
                 $data['addressData']->stateData = $data['addressData']->stateFunction['state_name'];
                 $data['addressData']->districtData = $data['addressData']->districtFunction['district_name'];
                 $data['status'] = 1;
