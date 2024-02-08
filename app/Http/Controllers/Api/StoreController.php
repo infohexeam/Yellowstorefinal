@@ -4304,8 +4304,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
         if (request('customer_name') != NULL) {
             $customerName = request('customer_name');
             $enquiries->where(function ($query) use ($customerName) {
-                $query->where('trn_store_customers.customer_first_name', 'like', '%' . $customerName . '%')
-                      ->orWhere('trn_store_customers.customer_last_name', 'like', '%' . $customerName . '%');
+                $query->where(DB::raw("CONCAT(trn_store_customers.customer_first_name, ' ', trn_store_customers.customer_last_name)"), 'like', '%' . $customerName . '%');
             });
         }
         if (request('customer_mobile')!=NULL) {
