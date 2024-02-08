@@ -1552,13 +1552,12 @@ class CustomerController extends Controller
                    
                     if(Trn_customerAddress::where('customer_id', $data['addressData']->customer_id)->where('default_status',1)->count()==0)
                     {
-                        $data['addressData']['deafult_status']=1;
+                        $data['addressData']->default_status=1;
                     }
                 }
                 $data['addressData']->stateData = $data['addressData']->stateFunction['state_name'];
                 $data['addressData']->districtData = $data['addressData']->districtFunction['district_name'];
                 $data['status'] = 1;
-                $data['test']=1;
                 $data['message'] = "success";
                 return response($data);
             } else {
