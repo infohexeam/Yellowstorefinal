@@ -6641,12 +6641,14 @@ class StoreController extends Controller
   public function destroyDelivery_boy(Request $request, mst_delivery_boy $delivery_boy)
 	{
   
-    $order_count=Trn_store_order::where('delivery_boy_id',$delivery_boy->delivery_boy_id)->count();
-		if($order_count)
-		{
-			return redirect()->back()->with('error', 'Delivery boy cannot be removed as orders are exist');
-			
-		}
+    
+    $order_count=Trn_store_order::where('delivery_boy_id',$delivery_boy->delivery_boy_id)->whereNotIn('status_id',[5,9])->count();
+    if($order_count>0)
+    {
+      return redirect()->back()->with('error', 'Delivery boy cannot be removed as orders are exist');       
+                    
+    }
+		
 		$delete = $delivery_boy->delete();
 
 		return redirect('store/delivery-boys/list')->with('status', 'Delivery boy deleted successfully');;
