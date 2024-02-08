@@ -3041,6 +3041,7 @@ class ProductController extends Controller
                                 $a->default_status = 1;
                             }
                         }
+                        $cnt++;
 
                         if (isset($a->longitude) && isset($a->latitude)) {
                             if (!isset($a->default_status)) {
