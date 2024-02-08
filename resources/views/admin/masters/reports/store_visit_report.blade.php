@@ -143,7 +143,7 @@
                                         @endphp
                                         @foreach ($data as $d)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ ($data->currentPage()-1) * $data->perPage() + $loop->index + 1 }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
                                             <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}} @endif</td>
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
@@ -190,6 +190,7 @@
                                     
                                       </tbody>
                                    </table>
+                                    {{ $data->appends(request()->query())->links('custom_pagination') }}
                                 </div>
                             </div>
                       </div>
