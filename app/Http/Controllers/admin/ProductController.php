@@ -1919,7 +1919,7 @@ class ProductController extends Controller
 
       $data = $data->where('trn_store_orders.order_type', 'APP')
         ->orderBy('trn_store_orders.order_id', 'DESC')
-        ->get();
+        ->paginate(10);
 
 
       return view('admin.masters.reports.online_sales_report', compact('subadmins', 'stores', 'orderStatus', 'deliveryBoys', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
