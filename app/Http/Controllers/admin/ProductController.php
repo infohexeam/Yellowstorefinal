@@ -1786,7 +1786,7 @@ class ProductController extends Controller
       }
 
       $data = $data->orderBy('trn_store_orders.order_id', 'DESC')
-        ->get();
+        ->paginate(10);
 
 
 
