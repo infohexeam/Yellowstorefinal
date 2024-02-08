@@ -4301,8 +4301,12 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
 
             $enquiries->whereBetween('trn_customer_enquiry.created_at', [$start_date, $end_date]);
         }
-        if (request('customer_name')!=NULL) {
-            $enquiries->where('trn_store_customers.customer_first_name', 'like', '%' . request('customer_name') . '%');
+        if (request('customer_name') != NULL) {
+            $customerName = request('customer_name');
+            $enquiries->where(function ($query) use ($customerName) {
+                $query->where('trn_store_customers.customer_first_name', 'like', '%' . $customerName . '%')
+                      ->orWhere('trn_store_customers.customer_last_name', 'like', '%' . $customerName . '%');
+            });
         }
         if (request('customer_mobile')!=NULL) {
             $enquiries->where('trn_store_customers.customer_mobile_number', 'like', '%' . request('customer_mobile') . '%');
