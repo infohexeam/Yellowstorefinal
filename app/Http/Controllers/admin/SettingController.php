@@ -4501,11 +4501,11 @@ class SettingController extends Controller
 		$str=Mst_store::find($store_id);
 		if($str->store_code!=NULL)
 		{
-			$pageTitle = $store_name ."(".$str->store_code. ")-Store Payment Settlement";
+			$pageTitle = $store_name ."-".$str->store_code. " Store Payment Settlement";
 		}
 		else
 		{
-			$pageTitle = $store_name . "-Store Payment Settlement";
+			$pageTitle = $store_name . " Store Payment Settlement";
 		}
 		
 		$paidAmount = Trn_store_payments_tracker::where('store_id', $store_id)->sum('commision_paid');
