@@ -47,6 +47,20 @@ class DeliveryBoyController extends Controller
             return response($response);
         }
     }
+    public function dBoyWithTrasshed(Request $request)
+    {
+        $data = array();
+        try {
+            $data['delivery'] = Mst_delivery_boy::withTrashed()->get();
+            return response($data);
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
+    }
 
     public function logout(Request $request)
     {
@@ -402,6 +416,7 @@ class DeliveryBoyController extends Controller
                     $data['message'] = "failed";
                     $data['status'] = 0;
                 }
+                
             } else {
                 $data['message'] = "Delivery boys not found";
                 $data['status'] = 0;
