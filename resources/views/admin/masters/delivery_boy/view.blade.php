@@ -175,7 +175,7 @@ use App\User;
                                  @endphp
                                  <tr>
                                     <td>{{$i}}</td>
-                                    <td>{{ @$assigned_store->store['store_name']}}@if(@$assigned_store->store['store_code']!=NULL)({{@$assigned_store->store['store_code']}}) @endif</td>
+                                    <td>{{ @$assigned_store->store['store_name']}}@if(@$assigned_store->store['store_code']!=NULL)-{{@$assigned_store->store['store_code']}} @endif</td>
                                     <td>{{ @$assigned_store->store['store_contact_person_phone_number']}}</td>
 
                                  </tr>
