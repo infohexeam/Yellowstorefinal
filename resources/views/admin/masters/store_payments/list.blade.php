@@ -79,7 +79,7 @@
                                  @foreach ($store as $value)
                                  <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $value->store_name}}@if($value->store_code!=NULL)<br>({{$value->store_code}}) @endif</td>
+                                    <td>{{ $value->store_name}}@if($value->store_code!=NULL)-{{$value->store_code}} @endif</td>
                                     <td>{{ $value->store_contact_person_phone_number}}</td>
 
                                    <td>
