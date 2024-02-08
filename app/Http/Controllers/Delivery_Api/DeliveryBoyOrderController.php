@@ -690,20 +690,18 @@ class DeliveryBoyOrderController extends Controller
 
                         $orderAddress = Trn_customerAddress::find($data['orderDetails']->delivery_address);
                         
-
+                        $orderAddress = Trn_customerAddress::find($data['orderDetails']->delivery_address);
+                        if (isset($orderAddress)) {
                         $dist = Helper::haversineGreatCircleDistance(@$storeData->latitude, @$storeData->longitude, @$orderAddress->latitude, @$orderAddress->longitude);
 
-                        //  $settingsRow = Trn_store_setting::where('store_id',$data['orderDetails']->store_id)
-                        //     ->where('service_start', '<=' , $dist)
-                        //     ->where('service_end', '>=' , $dist)
-                        //     ->first();
-
-                        //     if(isset($settingsRow->delivery_charge))
-                        //     $deliveryCharge = $settingsRow->delivery_charge;
-                        //     else
-                        //     $deliveryCharge = '0';
+                       
 
                         $data['orderDetails']->km_covered = $dist;
+                        }
+                        else
+                        {
+                            $data['orderDetails']->km_covered = 0;  
+                        }
                         if (isset($deliveryBoy->delivery_boy_commision_amount))
                         {
                             $orlink=Mst_order_link_delivery_boy::where('order_id',$request->order_id)->where('delivery_boy_id',$request->delivery_boy_id)->first();
