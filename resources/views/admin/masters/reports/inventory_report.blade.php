@@ -195,7 +195,7 @@
                                             {{-- <td>{{ $d->product_name }}</td> --}}
                                             <td>{{ $d->variant_name }}</td>
                                             
-                                            <td>{{ $d->store_name }}@if($d->store_code != NULL){{$d->store_code}} @endif</td>
+                                            <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}} @endif</td>
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
 
                                             <td>{{ $d->stock_count }}</td>
