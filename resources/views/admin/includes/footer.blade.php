@@ -111,6 +111,10 @@ $("#date_fromc").change(function () {
         $('#date_toc').val('');
         $('#date_toc').attr('min', $('#date_fromc').val());
     });
+    ("#date_from").change(function () {
+        $('#date_to').val('');
+        $('#date_to').attr('min', $('#date_from').val());
+    });
      $(document).ready(function() {       
       $('.imgValidation').bind('change', function() {
          var a=(this.files[0].size);
