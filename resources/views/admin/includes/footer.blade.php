@@ -107,7 +107,10 @@
 <script type="text/javascript">
    $('#err_msg').fadeOut(5000);
 
-
+$("#date_fromc").change(function () {
+        $('#date_toc').val('');
+        $('#date_toc').attr('min', $('#date_fromc').val());
+    });
      $(document).ready(function() {       
       $('.imgValidation').bind('change', function() {
          var a=(this.files[0].size);
