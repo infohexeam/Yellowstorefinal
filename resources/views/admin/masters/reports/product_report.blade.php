@@ -353,10 +353,11 @@ $(document).ready(function() {
     $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
+         paging: false, // Disable pagination
         buttons: [
             {
                 extend: 'pdf',
-                paging: false, // Disable pagination
+               
                 title: 'Product report',
                 footer: true,
                 exportOptions: {
