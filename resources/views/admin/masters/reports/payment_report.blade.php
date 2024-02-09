@@ -219,6 +219,7 @@
     $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
+         paging: false, // Disable pagination
         buttons: [
             {
                 extend: 'pdf',
