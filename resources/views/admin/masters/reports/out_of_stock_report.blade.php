@@ -87,7 +87,7 @@
                                          
                                       
                                           
-                                           <div class="col-md-6">
+                                          {{-- <div class="col-md-6">
                                               <div class="form-group">
                                                   <label class="form-label">Products</label>
                                                       <select name="product_id" id="productId" class="form-control select2-show-search" data-placeholder="Products" >
@@ -97,7 +97,7 @@
                                                            @endforeach
                                                       </select>
                                                </div>
-                                          </div>
+                                          </div>--}}
                                           
                                           <div class="col-md-6">
                                             <div class="form-group">

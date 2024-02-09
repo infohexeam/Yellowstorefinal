@@ -2828,10 +2828,11 @@ public function showOutofStockReport(Request $request)
 
     $subadmins = User::where('user_role_id', '!=', 0)->get();
 
-    $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-      ->select('mst_store_products.product_id', 'mst_store_products.product_name')
-      // ->where('mst_store_products.store_id',Auth::guard('store')->user()->store_id)
-      ->orderBy('mst_store_products.product_id', 'DESC')->get();
+    // $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+    //   ->select('mst_store_products.product_id', 'mst_store_products.product_name')
+    //   // ->where('mst_store_products.store_id',Auth::guard('store')->user()->store_id)
+    //   ->orderBy('mst_store_products.product_id', 'DESC')->get();
+    $products=[];
 
     $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
     $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
