@@ -81,7 +81,7 @@
 
 			<div class="col-md-12">
 			<div class="form-group">
-				<label class="form-label">Old Password</label>
+				<label class="form-label">Old Password *</label>
                 <div class="password-show">
 					  <input type="password" required class="form-control" name="old_password" id="old_password" value="" placeholder="Old Password">
                       <div class="password-show__toggle">
@@ -95,7 +95,7 @@
 
 				<div class="col-md-12">
 			<div class="form-group">
-				<label class="form-label">New Password</label>
+				<label class="form-label">New Password *</label>
                 <div class="password-show">
 					  <input type="password" class="form-control" required oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()" name="password" id="password" value="" placeholder="New Password">
                       <div class="password-show__toggle">
@@ -110,7 +110,7 @@
 				   </div>
 				  <div class="col-md-12">
 				 <div class="form-group">
-						<label class="form-label">Password Confirmation</label>
+						<label class="form-label">Password Confirmation *</label>
                         <div class="password-show">
 					  <input onkeyup="validatePass()" id="confirm_password" required type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
                       <div class="password-show__toggle">
