@@ -153,7 +153,7 @@
                         
                             <div class="card-body">
                                 <div class="table-responsive">
-                                   <table  class="table table-striped table-bordered text-nowrap w-100">
+                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
                                       <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
@@ -270,6 +270,7 @@ $(document).ready(function() {
     $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
+        paging: false, // Disable pagination
         buttons: [
             {
                 extend: 'pdf',
