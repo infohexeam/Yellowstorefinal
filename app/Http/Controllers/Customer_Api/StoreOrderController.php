@@ -680,6 +680,8 @@ class StoreOrderController extends Controller
                             'customer_id' => $request['customer_id'],
                             'store_id' => $request['store_id'],
                             'quantity' => $value['quantity'],
+                             'product_name'=>$productVarOlddata->variant_name,
+                                'product_image'=>$productVarOlddata->product_varient_base_image,
                             'mrp'=>@$productVarOlddata->product_varient_price,
                             'unit_price' =>  $value['unit_price'],
                             'tax_amount' => $iTax,

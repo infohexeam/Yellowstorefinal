@@ -4558,6 +4558,8 @@ class StoreController extends Controller
         'order_id' => $order_id,
         'product_id' => $productVarOlddata->product_id??0,
         'product_varient_id' => $pro_variant[$i],
+        'product_name'=>$productVarOlddata->variant_name,
+        'product_image'=>$productVarOlddata->product_varient_base_image,
         'customer_id' => $request->get('customer_id'),
         'store_id' => Auth::guard('store')->user()->store_id,
         'quantity' => $single_quantity[$i],

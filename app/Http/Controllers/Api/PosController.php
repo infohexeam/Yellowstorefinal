@@ -350,6 +350,8 @@ class PosController extends Controller
                             'order_id' => $order_id,
                             'product_id' => $value['product_id'],
                             'product_varient_id' => $value['product_varient_id'],
+                            'product_name'=>$productVarOlddata->variant_name,
+                            'product_image'=>$productVarOlddata->product_varient_base_image,
                             'customer_id' => 3,
                             'store_id' => $request['store_id'],
                             'quantity' => $value['quantity'],
@@ -513,6 +515,8 @@ class PosController extends Controller
 
                         $data2 = [
                             'order_id' => $order_id,
+                            'product_name'=>$productVarOlddata->variant_name,
+                            'product_image'=>$productVarOlddata->product_varient_base_image,
                             'product_id' => $value['product_id'],
                             'product_varient_id' => $value['product_varient_id'],
                             'customer_id' => 3,
