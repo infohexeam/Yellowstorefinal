@@ -2122,10 +2122,11 @@ class StoreOrderController extends Controller
     private function storeNotification($device_id, $title, $body,$clickAction,$type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
+        $custom_sound_url = 'https://hexprojects.in/Yellowstore/assets/sound_two.mp3'; // Update this with the URL of your custom sound file
         $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
         $fields = array(
             'to' => $device_id,
-            'notification' => array('title' => $title, 'body' => $body, 'sound' => 'default', 'click_action' => $clickAction),
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => $custom_sound_url, 'click_action' => $clickAction),
             'data' => array('title' => $title, 'body' => $body,'type' => $type),
         );
         $headers = array(
