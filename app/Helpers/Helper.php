@@ -1845,7 +1845,7 @@ public static function findServiceOrder($orderId)
    if($orderFirstItem)
    {
         $product=Mst_store_product::where('product_id',$orderFirstItem->product_id)->first();
-        if($product->product_type==1)
+        if($product->product_type==2)
         {
             if($product->service_type==2)
             {
