@@ -241,8 +241,10 @@ function validatePassLength() {
 <script>
 function validatePass() {
   var x = document.forms["myForm"]["password"].value;
-  var y = document.forms["myForm"]["password_confirmation"].value;
+  var y = document.forms["myForm"]["confirm_password"].value;
+
    document.getElementById('showmessage').innerHTML = '';
+    $('#submit').attr('disabled', false);
    if(y != '')
    {
     if (x == y) {
@@ -256,6 +258,10 @@ function validatePass() {
         document.getElementById('showmessage').innerHTML = 'passwords not matching';
          $('#submit').attr('disabled', true);
     }
+   }
+   else
+   {
+
    }
 }
 </script>
