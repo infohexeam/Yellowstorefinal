@@ -3199,7 +3199,7 @@ class ProductController extends Controller
                     $global_product_images = Trn_GlobalProductImage::where('global_product_id', $global_product_id)->get();
 
                     foreach ($global_product_images as $file) {
-
+                        if ($global_product->product_base_image == $file->image_name) {
                         $date = Carbon::now();
                         $data1 = [
                             [
@@ -3214,9 +3214,10 @@ class ProductController extends Controller
                         Mst_product_image::insert($data1);
                         $proImg_Id = DB::getPdo()->lastInsertId();
 
-                        if ($global_product->product_base_image == $file->image_name) {
+                        /*if ($global_product->product_base_image == $file->image_name) {
                             DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-                        }
+                        }*/
+                    }
                     }
                     // global product videos
                     $global_product_videos = Trn_GlobalProductVideo::where('global_product_id', $global_product_id)->get();
@@ -3261,7 +3262,8 @@ class ProductController extends Controller
                     $global_product_images = Trn_GlobalProductImage::where('global_product_id', $global_product_id)->get();
 
                     foreach ($global_product_images as $file) {
-
+                        
+                        if ($global_product->product_base_image == $file->image_name) {
                         $date = Carbon::now();
                         $data1 = [
                             [
@@ -3277,9 +3279,11 @@ class ProductController extends Controller
                         Mst_product_image::insert($data1);
                         $proImg_Id = DB::getPdo()->lastInsertId();
 
-                        if ($global_product->product_base_image == $file->image_name) {
+                       /* if ($global_product->product_base_image == $file->image_name) {
                             DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
-                        }
+                        }*/
+                    }
+                        
                     }
                     }
                 }
