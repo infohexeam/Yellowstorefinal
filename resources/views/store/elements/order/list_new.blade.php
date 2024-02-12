@@ -252,7 +252,7 @@ use App\Helpers\Helper;
                   <div class="modal-body">
                     <input type="hidden" class="form-control" name="order_id" value="{{$order->order_id}}" >
 
-                   <label class="form-label"> Status</label>
+                   <label class="form-label"> Status{{$serviceOrderType}}</label>
                       <select class="form-control" name="status_id" id="status_id">
                                  <option value=""> Select Status</option>
                             
