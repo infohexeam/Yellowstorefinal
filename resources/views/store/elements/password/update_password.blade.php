@@ -190,14 +190,16 @@
            document.getElementById('showpassmessage2').style.color = 'red';
       //      document.getElementById('showpassmessage2').innerHTML = 'passwords must be in alphanumeric format';
             document.getElementById('showpassmessage2').innerHTML = 'Password must include at least one upper case letter, lower case letter, number, and special character';
-                            $('#submit').attr('disabled', true);
+                           
    validatePass();
+    $('#submit').attr('disabled', true);
       }
       else
       {
              document.getElementById('showpassmessage2').innerHTML = '';
-                        $('#submit').attr('disabled', false);
+                       
     validatePass();
+     $('#submit').attr('disabled', false);
       }
     }
     else
@@ -261,7 +263,7 @@ function validatePass() {
    }
    else
    {
- $('#submit').attr('disabled', false);
+ //$('#submit').attr('disabled', false);
    }
 }
 </script>
