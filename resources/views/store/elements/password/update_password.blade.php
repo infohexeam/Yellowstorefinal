@@ -246,6 +246,7 @@ function validatePass() {
   var y = document.forms["myForm"]["confirm_password"].value;
 
    document.getElementById('showmessage').innerHTML = '';
+   alert(x,y);
    
    if(y != '')
    {
