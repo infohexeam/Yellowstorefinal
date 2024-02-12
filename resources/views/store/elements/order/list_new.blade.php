@@ -272,9 +272,8 @@ use App\Helpers\Helper;
                                               
                                               {{ $key->status}}
                                         </option>
-                                    @else
-                                    @if(($key->status_id >= $order->status_id ) || ($key->status_id <3 )||($key->status_id ==5 ))
- <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} 
+                                        @else
+                                         <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} 
                                               value="
                                               @if($key->status_id != $order->status_id )
                                                 {{ $key->status_id}}
@@ -283,9 +282,7 @@ use App\Helpers\Helper;
                                               "> 
                                               
                                               {{ $key->status}}
-                                        </option>
                                         @endif
-                                    @endif
                                       @endif
                                       @endif
 
