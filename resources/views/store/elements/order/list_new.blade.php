@@ -261,7 +261,7 @@ use App\Helpers\Helper;
                                      @if($key->status_id != 5)
 
                                       @if(($key->status_id >= $order->status_id ) || ($key->status_id == 5 ))
-                                      @if($serviceOrderType==0 || $serviceOrderType==1)
+                                      @if($serviceOrderType==0 || $serviceOrderType==2)
                                           <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} 
                                               value="
                                               @if($key->status_id != $order->status_id )
