@@ -263,7 +263,7 @@ function validatePass() {
    }
    else
    {
- //$('#submit').attr('disabled', false);
+ $('#submit').attr('disabled', false);
    }
 }
 </script>
