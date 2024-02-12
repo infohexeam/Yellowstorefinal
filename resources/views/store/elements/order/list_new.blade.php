@@ -247,7 +247,7 @@ use App\Helpers\Helper;
                         </button>
                      </div>
 
-                 <form action="{{ route('store.order_status',$order->order_id) }} " method="POST" enctype="multipart/form-data" >
+                 <form action="{{ route('store.order_status_new',$order->order_id) }} " method="POST" enctype="multipart/form-data" >
                  @csrf
                   <div class="modal-body">
                     <input type="hidden" class="form-control" name="order_id" value="{{$order->order_id}}" >

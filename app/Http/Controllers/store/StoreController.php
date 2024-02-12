@@ -3605,7 +3605,10 @@ class StoreController extends Controller
           if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
           {
          if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
-            return redirect()->back()->withErrors(['delivery boy not assigned']);
+            if(Helper::findServiceOrder($order->order_id)==0)
+            {
+              return redirect()->back()->withErrors(['delivery boy not assigned']);
+            }
           }
         }
         }
@@ -3618,7 +3621,12 @@ class StoreController extends Controller
           if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
           {
         if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
+          if(Helper::findServiceOrder($order->order_id)==0)
+          {
             return redirect()->back()->withErrors(['delivery boy not assigned']);
+
+          }
+            
           }
         }
         }

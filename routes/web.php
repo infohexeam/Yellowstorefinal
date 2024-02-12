@@ -922,7 +922,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store/order/update/{id}', 'StoreController@')->name('store.update_order');
         Route::get('store/order/invoice/{id}', 'StoreController@viewInvoice')->name('store.invoice_order');
         Route::post('store/order/status/{order_id}', 'StoreController@OrderStatus')->name('store.order_status');
-
+        Route::post('store/order/status-new/{order_id}', 'StoreController@OrderStatusNew')->name('store.order_status_new');
         Route::get('store/share-items', 'StoreController@ShareItems')->name('store.share_item_list');
 
         //invoice 
