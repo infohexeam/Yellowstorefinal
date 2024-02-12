@@ -241,7 +241,7 @@ function validatePassLength() {
 <script>
 function validatePass() {
   var x = document.forms["myForm"]["password"].value;
-  var y = document.forms["myForm"]["confirm_password"].value;
+  var y = document.forms["myForm"]["password_confirmation"].value;
    document.getElementById('showmessage').innerHTML = '';
    if(y != '')
    {
