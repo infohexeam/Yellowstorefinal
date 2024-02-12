@@ -128,7 +128,7 @@
 			<div class="col-md-12">
  			   <div  class="form-group">
  					<center>
-              	<button type="submit" class="btn btn-raised btn-primary">
+              	<button type="submit" class="btn btn-raised btn-primary" id="submit">
 				          <i class="fa fa-check-square-o"></i> Update</button>
 				          {{-- <button type="reset" class="btn btn-raised btn-success">
 				         Reset</button> --}}
