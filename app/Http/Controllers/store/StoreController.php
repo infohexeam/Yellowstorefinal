@@ -1058,8 +1058,11 @@ class StoreController extends Controller
         'sale_price'   => 'required|gt:0',
         'tax_id'   => 'required',
         'min_stock'           => [
-          'required',
-          'gte:0',
+          function ($attribute, $value, $fail) use ($request) {
+            if ($request->input('product_type') == 1 && $value < 0) {
+                $fail(__('The :attribute must be greater than or equal to zero.'));
+            }
+        },
           'required_if:product_type,1',
       ],
         'product_code'   => 'required',
@@ -1816,7 +1819,14 @@ class StoreController extends Controller
         
         'sale_price'   => 'required|gt:0',
         'tax_id'   => 'required',
-        'min_stock'   => 'required|gte:0',
+        'min_stock'           => [
+          function ($attribute, $value, $fail) use ($request) {
+            if ($request->input('product_type') == 1 && $value < 0) {
+                $fail(__('The :attribute must be greater than or equal to zero.'));
+            }
+        },
+          'required_if:product_type,1',
+      ],
         'product_code'   => 'required|unique:mst_store_products,product_code,'.$product_id.',product_id,store_id,'.$store_id,
         //  'business_type_id'   => 'required',
         //  'attr_group_id'   => 'required',

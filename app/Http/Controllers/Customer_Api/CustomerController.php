@@ -45,7 +45,7 @@ class CustomerController extends Controller
             $accessToken = auth()->user()->token();
             $token = $request->user()->tokens->find($accessToken);
             $token->revoke();
-            Trn_CustomerDeviceToken::where('customer_id',$request->customer_id)->delete();
+            Trn_CustomerDeviceToken::where('customer_id',$request->customer_id)->where('customer_device_token',$request->device_token)->delete();
 
             $data['status'] = 1;
             $data['message'] = "Success";
@@ -101,9 +101,9 @@ class CustomerController extends Controller
                                     $user = Trn_store_customer::find(auth()->guard('customer')->user()->customer_id);
 
                                     if (isset($request->device_token) && isset($request->device_type)) {
-                                        Trn_CustomerDeviceToken::where('customer_id', auth()->guard('customer')->user()->customer_id)
-                                            //  ->where('customer_device_token',$request->device_token)
-                                            ->delete();
+                                        // Trn_CustomerDeviceToken::where('customer_id', auth()->guard('customer')->user()->customer_id)
+                                        //     //  ->where('customer_device_token',$request->device_token)
+                                        //     ->delete();
 
                                         $cdt = new Trn_CustomerDeviceToken;
                                         $cdt->customer_id = auth()->guard('customer')->user()->customer_id;

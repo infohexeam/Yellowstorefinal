@@ -145,11 +145,11 @@
                     <div class="col-md-6" id="minStockDiv">
                         <div class="form-group">
                        
-                          <label class="form-label">Min Stock *</label>
+                          <label class="form-label">Min Stock  <span id="minReq"></span></label>
                           <input type="text" required onkeypress="preventNonNumericalInput(event)" class="form-control"  name="min_stock" id="min_stock" value="{{old('min_stock',$product->stock_count )}}" placeholder="Min Stock">               
                         </div>
                     </div>
-                  <input type="hidden" name="mStock" id="mStock" value="{{$product->stock_count??0}}">
+                  <input type="hidden" name="mStock" id="mStock" value="{{$product->stock_count??null}}">
                   
                    <div class="col-md-6">
                      
@@ -1425,7 +1425,8 @@ $(document).ready(function () {
       {
          //alert(1);
       $("div#minStockDiv").show();
-      $("#min_stock").prop('required',true); 
+      $("#min_stock").prop('required',false); 
+      $("#minReq").text($("#minReq").text().replace('*', ''));
 
       }
       else
@@ -1437,6 +1438,7 @@ $(document).ready(function () {
       $("div#service_type_id").hide();
       ("div#minStockDiv").show();
       $("#min_stock").prop('required',true); 
+       $("#minReq").text($("#minReq").text().replace('*', ''));
    }
    
 });
@@ -1458,7 +1460,8 @@ function proTypeChanged(val)
       {
          //alert(1);
       $("div#minStockDiv").show();
-      $("#min_stock").prop('required',true); 
+      $("#min_stock").prop('required',false); 
+      $("#minReq").text($("#minReq").text().replace('*', ''));
        var mStockValue=$('#mStock').val();
     $("#min_stock").val(mStockValue); 
 
@@ -1480,6 +1483,7 @@ function proTypeChanged(val)
     $("div#service_type_id").hide();
     $("div#attSec").show();
         $('#service_type_input').prop('selectedIndex',0);
+         $("#minReq").text($("#minReq").text().replace('', '*'));
 
  }
 }
@@ -1500,7 +1504,8 @@ function servTypeChanged(v){
       $("div#attSec").show();
       $(".proVariant").prop('required',false);
         $("div#minStockDiv").show();
-     $("#min_stock").prop('required',true); 
+     $("#min_stock").prop('required',false); 
+     $("#minReq").text($("#minReq").text().replace('*', ''));
        var mStockValue=$('#mStock').val();
     $("#min_stock").val(mStockValue); 
 

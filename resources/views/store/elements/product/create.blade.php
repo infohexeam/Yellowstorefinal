@@ -134,7 +134,7 @@ input[type="file"] {
                     </div>
                      <div class="col-md-6" id="minStockDiv">
                         <div class="form-group">
-                          <label class="form-label">Min Stock *</label>
+                          <label class="form-label">Min Stock <span id="minReq">*</span></label>
                           <input type="number" required class="form-control" onkeypress="preventNonNumericalInput(event)"  name="min_stock" id="min_stock" value="{{old('min_stock' )}}" placeholder="Min Stock">               
                         </div>
                     </div>
@@ -858,7 +858,8 @@ function servTypeChanged(v){
       $(".proVariant").prop('required',false);  // edited after call
       $("#btnAddVar").show();
        $("div#minStockDiv").show();
-     $("#min_stock").prop('required',true); 
+     $("#min_stock").prop('required',false); 
+     $("#minReq").text($("#minReq").text().replace('*', ''));
      $("#min_stock").val(null); 
 
     }
