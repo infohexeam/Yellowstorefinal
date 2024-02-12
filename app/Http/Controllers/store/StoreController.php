@@ -2646,6 +2646,69 @@ class StoreController extends Controller
     }
     return view('store.elements.order.list', compact('assign_delivery_boys', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
   }
+  public function listOrderNew(Request $request)
+  {
+
+    $pageTitle = "List Orders";
+    $store_id =   Auth::guard('store')->user()->store_id;
+    $customer = Trn_store_customer::all();
+
+    $orders = Trn_store_order::where('store_id', '=', $store_id)->orderBy('order_id', 'DESC')->get();
+    $status = Sys_store_order_status::all();
+    $store = Mst_store::all();
+    $product = Mst_store_product::where('store_id', '=', $store_id)->get();
+    $order_not_seen=Trn_store_order::where('store_id', '=', $store_id)->whereNull('TEST')->orderBy('order_id', 'DESC')->update(['TEST'=>1]);
+    $delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
+      ->select("mst_delivery_boys.*")->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
+
+    $assign_delivery_boys = Mst_delivery_boy::join('mst_store_link_delivery_boys', 'mst_store_link_delivery_boys.delivery_boy_id', '=', 'mst_delivery_boys.delivery_boy_id')
+      ->select("mst_delivery_boys.*")
+      ->where('mst_delivery_boys.availability_status', 1)
+      ->where('mst_delivery_boys.delivery_boy_status', 1)
+      ->where('mst_store_link_delivery_boys.store_id', $store_id)->get();
+
+
+
+
+    // dd($delivery_boys);
+
+    if ($_GET) {
+
+      $delivery_boy_id = $request->delivery_boy_id;
+      $status_id = $request->status_id;
+      $customer_id = $request->customer_id;
+      $datefrom = $request->date_from;
+      $dateto = $request->date_to;
+      // dd($request->all());
+      $a1 = Carbon::parse($request->date_from)->startOfDay();
+      $a2  = Carbon::parse($request->date_to)->endOfDay();
+      DB::enableQueryLog();
+
+      $query = Trn_store_order::where('store_id', '=', $store_id);
+
+      if (isset($request->status_id)) {
+        $query->where('status_id', $status_id);
+        //  $query->orWhere('payment_status', $status_id);
+      }
+      if (isset($request->delivery_boy_id)) {
+        $query->where('delivery_boy_id', $delivery_boy_id);
+      }
+      if (isset($request->customer_id)) {
+        $query->where('customer_id', $customer_id);
+      }
+      if (isset($request->date_from)) {
+        $query->whereDate('trn_store_orders.created_at', '>=', $a1);
+      }
+
+      if (isset($request->date_to)) {
+        $query->whereDate('trn_store_orders.created_at', '<=', $a2);
+      }
+      $orders = $query->orderBy('order_id', 'DESC')->get();
+      // dd(DB::getQueryLog());
+      return view('store.elements.order.list', compact('assign_delivery_boys', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
+    }
+    return view('store.elements.order.list_new', compact('assign_delivery_boys', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
+  }
 
 
   public function listTodaysOrder(Request $request)
@@ -2820,7 +2883,7 @@ class StoreController extends Controller
   public function OrderStatus(Request $request, Trn_store_order $order, $order_id)
   {
 
-    //try {
+    
   //dd("hii");
 
     $order_id = $request->order_id;
@@ -2865,6 +2928,670 @@ class StoreController extends Controller
     if ($request->status_id == 5) {
       if($order->status_id==8)
       {
+
+        return redirect()->back()->with('error', 'Order is already out for delivery.You cannot cancel this order.');
+                             
+      
+      }
+    }
+      $order->status_id = $request->status_id;
+
+      if ($request->status_id == 8) {
+        if ($order->order_type == 'APP') {
+          if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
+          {
+         if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
+            return redirect()->back()->withErrors(['delivery boy not assigned']);
+          }
+        }
+        }
+      }
+      if (($request->status_id == 9)) {
+
+        $order->delivery_date = Carbon::now()->format('Y-m-d');
+        $order->delivery_time = Carbon::now()->format('H:i');
+        if ($order->order_type == 'APP') {
+          if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
+          {
+        if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
+            return redirect()->back()->withErrors(['delivery boy not assigned']);
+          }
+        }
+        }
+
+        $configPoint = Trn_configure_points::find(1);
+        $orderAmount  = $configPoint->order_amount;
+        $orderPoint  = $configPoint->order_points;
+
+        // $orderAmounttoPointPercentage =  $orderAmount / $orderPoint;
+        // $orderPointAmount = ($order->product_total_amount * $orderAmounttoPointPercentage) / 100;
+        $orderPointAmount=Helper::totalOrderCredit($orderAmount,$orderPoint,$order->product_total_amount);
+         ///////////////////////////////////////////////////////
+         $store_id=Auth::guard('store')->user()->store_id;
+        // dd($store_id);
+         $storeConfigPoint = Trn_configure_points::where('store_id',$store_id)->first();
+         if($storeConfigPoint)
+        {
+         $storeOrderAmount  = $storeConfigPoint->order_amount;
+         $storeOrderPoint  = $storeConfigPoint->order_points;
+
+        //  $storeOrderAmounttoPointPercentage =  $storeOrderPoint / $storeOrderAmount;
+        //  $storeOrderPointAmount =$order->product_total_amount * $storeOrderAmounttoPointPercentage;
+        $storeOrderPointAmount=Helper::totalOrderCredit($storeOrderAmount,$storeOrderPoint,$order->product_total_amount);
+        }
+         ///////////////////////////////////////////////////////
+        // if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
+        //   $configPoint = Trn_configure_points::find(1);
+
+        //   $cr = new Trn_customer_reward;
+        //   $cr->transaction_type_id = 0;
+        //   $cr->reward_points_earned = $configPoint->first_order_points;
+        //   $cr->customer_id = $customer_id;
+        //   $cr->order_id = $order_id;
+        //   $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+        //   $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+        //   $cr->reward_point_status = 1;
+        //   $cr->discription = "First order points";
+        //   $cr->save();
+
+        //   $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+
+        //   foreach ($customerDevice as $cd) {
+        //     $title = 'First order points credited';
+        //     //  $body = 'First order points credited successully..';
+        //     $body = $configPoint->first_order_points . ' points credited to your wallet..';
+        //     $clickAction = "OrderListFragment";
+        //     $type = "order";
+        //     $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        //   }
+
+
+        //   // referal - point
+        //   $refCusData = Trn_store_customer::find($order->customer_id);
+        //   if ($refCusData->referred_by) {
+        //     $crRef = new Trn_customer_reward;
+        //     $crRef->transaction_type_id = 0;
+        //     $crRef->reward_points_earned = $configPoint->referal_points;
+        //     $crRef->customer_id = $refCusData->referred_by;
+        //     $crRef->order_id = null;
+        //     $crRef->reward_approved_date = Carbon::now()->format('Y-m-d');
+        //     $crRef->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+        //     $crRef->reward_point_status = 1;
+        //     $crRef->discription = "Referal points";
+        //     $crRef->save();
+
+        //     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $refCusData->referred_by)->get();
+
+        //     foreach ($customerDevice as $cd) {
+        //       $title = 'Referal points credited';
+        //       //$body = 'Referal points credited successully..';
+        //       $body = $configPoint->referal_points . ' points credited to your wallet..';
+        //       $clickAction = "OrderListFragment";
+        //       $type = "order";
+        //       $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        //     }
+
+
+
+        //     // joiner - point
+        //     $crJoin = new Trn_customer_reward;
+        //     $crJoin->transaction_type_id = 0;
+        //     $crJoin->reward_points_earned = $configPoint->joiner_points;
+        //     $crJoin->customer_id = $order->customer_id;
+        //     $crJoin->order_id = $order->order_id;
+        //     $crJoin->reward_approved_date = Carbon::now()->format('Y-m-d');
+        //     $crJoin->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+        //     $crJoin->reward_point_status = 1;
+        //     $crJoin->discription = "Referal joiner points";
+        //     if ($crJoin->save()) {
+        //       $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+
+        //       foreach ($customerDevice as $cd) {
+        //         $title = 'Referal joiner points credited';
+        //         //$body = 'Referal joiner points credited successully..';
+        //         $body = $configPoint->joiner_points . ' points credited to your wallet..';
+        //         $clickAction = "OrderListFragment";
+        //         $type = "order";
+        //         $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        //       }
+        //     }
+        //   }
+        // }
+
+       //if (Trn_customer_reward::where('order_id', $order_id)->count() < 1) {
+
+          //if ((Trn_customer_reward::where('order_id', $order_id)->count() < 1) || (Trn_store_order::where('customer_id', $customer_id)->count() == 1)) {
+            if($orderPointAmount!=0.00)
+            {
+            $cr = new Trn_customer_reward;
+            $cr->transaction_type_id = 0;
+            $cr->reward_points_earned = $orderPointAmount;
+            $cr->customer_id = $customer_id;
+            $cr->order_id = $order_id;
+            $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $cr->reward_point_status = 1;
+            $cr->discription = 'admin points';
+            $cr->save();
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+            foreach ($customerDevice as $cd) {
+
+                $title = 'App Order Points Credited';
+                $body = $orderPointAmount . ' points credited to your wallet';
+                $clickAction = "MyWalletFragment";
+                $type = "wallet";
+                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
+            }
+            if($storeConfigPoint)
+            {
+            if($storeOrderPointAmount!=0.00)
+            {
+            $scr = new Trn_customer_reward;
+            $scr->transaction_type_id = 0;
+            $scr->store_id=$store_id;
+            $scr->reward_points_earned = $storeOrderPointAmount;
+            $scr->customer_id = $order->customer_id;
+            $scr->order_id = $order->order_id;
+            $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+            $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+            $scr->reward_point_status = 1;
+            $scr->discription = 'store points';
+            $scr->save();
+
+            $wallet_log=new Trn_wallet_log();
+            $wallet_log->store_id=$order->store_id;
+            $wallet_log->customer_id=$order->customer_id;
+            $wallet_log->order_id=$order->order_id;
+            $wallet_log->type='credit';
+            $wallet_log->points_debited=null;
+            $wallet_log->points_credited=$storeOrderPointAmount;
+
+            $wallet_log->save();
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+            foreach ($customerDevice as $cd) {
+
+                $title = 'Store Order Points Credited';
+                $body = $storeOrderPointAmount . ' points credited to your wallet';
+                $clickAction = "MyWalletFragment";
+                $type = "wallet";
+                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
+            }
+            }
+           
+
+            $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+            if (($request->status_id == 9)) {
+            $str=Mst_store::where('store_id',$order->store_id)->first();
+            if($str)
+            {
+              if(is_null($str->store_referral_id))
+              {
+                $st_uid=$str->store_id;
+
+              }
+              else
+              {
+                $st_uid=$str->store_referral_id;
+
+              }
+             
+             //dd($st_uid,1);
+            }
+           //dd($st_uid);
+            //dd($cust->referral_id,$st_uid,$order);
+            $fop_store=Helper::checkFop($order);
+            $fop_app=Helper::checkFopApp($order);
+            //$ref_id=Helper::manageReferral($cust->referral_id,$st_uid,$order);
+            //$ref_id_App=Helper::manageAppReferral($cust->referral_id,$order);
+            //dd($ref_id,$st_uid);
+            $ref_id=0;
+
+            if($ref_id!=0)
+            {
+             
+               //if (Trn_store_order::where('customer_id', $customer_id)->count() == 1) {
+                // $configPoint = Trn_configure_points::find(1);
+      
+                // $cr = new Trn_customer_reward;
+                // $cr->transaction_type_id = 0;
+                // $cr->reward_points_earned = $configPoint->first_order_points;
+                // $cr->customer_id = $customer_id;
+                // $cr->order_id = $order_id;
+                // $cr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                // $cr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                // $cr->reward_point_status = 1;
+                // $cr->discription = "First order points";
+                // $cr->save();
+      
+                // $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+      
+                // foreach ($customerDevice as $cd) {
+                //   $title = 'First order points credited';
+                //   //  $body = 'First order points credited successully..';
+                //   $body = $configPoint->first_order_points . ' points credited to your wallet..';
+                //   $clickAction = "OrderListFragment";
+                //   $type = "order";
+                //   $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                // }
+      
+      
+                // // referal - point
+                // // $refCusData = Trn_store_customer::find($order->customer_id);
+                // // if ($refCusData->referred_by) {
+                //   $crRef = new Trn_customer_reward;
+                //   $crRef->transaction_type_id = 0;
+                //   $crRef->reward_points_earned = $configPoint->referal_points;
+                //   $crRef->customer_id = $ref_id;
+                //   $crRef->order_id = $order_id;
+                //   $crRef->reward_approved_date = Carbon::now()->format('Y-m-d');
+                //   $crRef->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                //   $crRef->reward_point_status = 1;
+                //   $crRef->discription = "Referal points";
+                //   $crRef->save();
+                //   $cst=Trn_store_customer::where('customer_id',$customer_id)->first();
+                //   $cst->referred_by=$ref_id;
+                //   $cst->update();
+      
+                //   $customerDevice = Trn_CustomerDeviceToken::where('customer_id',Helper::manageReferral($cust->referral_id,$st_uid,$order))->get();
+      
+                //   foreach ($customerDevice as $cd) {
+                //     $title = 'Referal points credited';
+                //     //$body = 'Referal points credited successully..';
+                //     $body = $configPoint->referal_points . ' points credited to your wallet..';
+                //     $clickAction = "OrderListFragment";
+                //     $type = "order";
+                //     $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                //   }
+      
+      
+      
+                //   // joiner - point
+                //   $crJoin = new Trn_customer_reward;
+                //   $crJoin->transaction_type_id = 0;
+                //   $crJoin->reward_points_earned = $configPoint->joiner_points;
+                //   $crJoin->customer_id = $order->customer_id;
+                //   $crJoin->order_id = $order->order_id;
+                //   $crJoin->reward_approved_date = Carbon::now()->format('Y-m-d');
+                //   $crJoin->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                //   $crJoin->reward_point_status = 1;
+                //   $crJoin->discription = "Referal joiner points";
+                //   if ($crJoin->save()) {
+                //     $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $order->customer_id)->get();
+      
+                //     foreach ($customerDevice as $cd) {
+                //       $title = 'Referal joiner points credited';
+                //       //$body = 'Referal joiner points credited successully..';
+                //       $body = $configPoint->joiner_points . ' points credited to your wallet..';
+                //       $clickAction = "OrderListFragment";
+                //       $type = "order";
+                //       $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                //     }
+                //   }
+                //}
+              //}
+              
+              
+            }
+            }
+        if($order->payment_type_id==2)
+        {
+          foreach ($customerDevice as $cd) {
+            $title = 'Order points credited';
+            $body = $orderPointAmount . ' points credited to your wallet..';
+            $clickAction = "OrderListFragment";
+            $type = "order";
+            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            if($storeConfigPoint)
+            {
+            $title = 'Store order points credited';
+            $body = @$storeOrderPointAmount . ' points credited to your store wallet..';
+            $clickAction = "MyWalletFragment";
+            $type = "wallet";
+            $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+            }
+          }
+
+        }
+           
+          //}
+        //}
+      }
+
+      if ($request->status_id == 8) {
+        $order->delivery_status_id = 2;
+      } else if ($request->status_id == 7) {
+        $order->delivery_status_id = 1;
+      } else if ($request->status_id == 9) {
+        $order->delivery_status_id = 3;
+      } else {
+        $order->delivery_status_id = null;
+      }
+
+
+
+
+
+      $status_id = $request->status_id;
+      if ($status_id == 1) {
+        $order_status = "Pending";
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order Pending';
+          $body = 'Your order with order id ' . $order_number . ' is pending..';
+          $clickAction = "OrderListFragment";
+          $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        }
+      } elseif ($status_id == 2) {
+        $order_status = "PaymentSuccess";
+      } elseif ($status_id == 3) {
+        $order_status = "Payment Cancelled";
+      } elseif ($status_id == 4) {
+        $order_status = "Confirmed";
+
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order confirmed';
+          $body = 'Your order with order id ' . $order_number . ' is confirmerd..';
+          $clickAction = "OrderListFragment";
+          $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        }
+      } elseif ($status_id == 5) {
+        if($order->reward_points_used_store!=NULL||$order->reward_points_used_store!=0.00)
+                    {
+                        $scr = new Trn_customer_reward;
+                        $scr->transaction_type_id = 0;
+                        $scr->store_id=$order->store_id;
+                        $scr->reward_points_earned = $order->reward_points_used_store;
+                        $scr->customer_id = $order->customer_id;
+                        $scr->order_id = $order->order_id;
+                        $scr->reward_approved_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_expire_date = Carbon::now()->format('Y-m-d');
+                        $scr->reward_point_status = 1;
+                        $scr->discription = 'store points';
+                        $scr->save();
+                        
+
+                        $wallet_log=new Trn_wallet_log();
+                        $wallet_log->store_id=$order->store_id;
+                        $wallet_log->customer_id=$order->customer_id;
+                        $wallet_log->order_id=$order->order_id;
+                        $wallet_log->type='credit';
+                        $wallet_log->points_debited=null;
+                        $wallet_log->points_credited=$order->reward_points_used_store;
+                        $wallet_log->save();
+                        
+
+                    }
+        $order_status = "Cancelled";
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order cancelled';
+          $body = 'Your order with order id ' . $order_number . ' is cancelled..';
+          $clickAction = "OrderListFragment";
+          $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title,$body,$clickAction,$type);
+        }
+      if($order->delivery_boy_id!=NULL)
+      {
+        $dBoyDevices = Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', $order->delivery_boy_id)->get();
+      
+        foreach ($dBoyDevices as $cd) {
+            $title = 'Order Cancelled';
+            $body = 'An order(' . $order_number . ') has been cancelled';
+            $clickAction = "AssignedOrderFragment";
+            $type = "order";
+            $data['response'] =  Helper::deliveryBoyNotification($cd->dboy_device_token, $title, $body,$clickAction,$type);
+        }
+      }
+        
+        foreach ($storeDevice as $sd) {
+          $title = 'Order cancelled';
+          $body = 'Order with order id ' . $order_number . ' is cancelled..';
+          $clickAction = "OrdersFragment";
+          $type = "order";
+          $data['response'] =  $this->storeNotification($sd->store_device_token, $title, $body, $clickAction, $type);
+      }
+        
+      } elseif ($status_id == 4) {
+        $order_status = "Confirmed";
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order Confirmed';
+          $body = 'Your order with order id ' . $order_number . ' is Confirmed..';
+          $clickAction = "OrderListFragment";
+          $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        }
+      } elseif ($status_id == 6) {
+        $order_status = "Completed";
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order completed';
+          $body = 'Your order with order id ' . $order_number . ' is completed..';
+          $clickAction = "OrderListFragment";
+                        $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        }
+      } elseif ($status_id == 7) {
+        $order_status = "Ready for Delivery";
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order ready for delivery';
+          $body = 'Your order with order id ' . $order_number . ' is packed and ready for delivery..';
+          $clickAction = "OrderListFragment";
+                        $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        }
+      } elseif ($status_id == 8) {
+        $order_status = "Out for Delivery";
+
+        $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+        $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+        $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+        foreach ($customerDevice as $cd) {
+          $title = 'Order out for delivery';
+          $body = 'Your order with order id ' . $order_number . ' is out for delivery..';
+          $clickAction = "OrderListFragment";
+                        $type = "order";
+          $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+        }
+      } else {
+        if ($order->status_id != 9) {
+
+          $order_status = "Deliverd";
+
+          $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
+          $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
+          $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+          foreach ($customerDevice as $cd) {
+            $title = 'Order deliverd';
+            $body = 'Your order with order id ' . $order_number . ' is deliverd..';
+            $clickAction = "OrderListFragment";
+                        $type = "order";
+            $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+          }
+        }
+      }
+
+      $cus_id = $order->customer_id;
+
+      $customer = Trn_store_customer::Find($cus_id);
+      $customer_email = $customer->customer_email;
+      //dd($customer_email);
+
+      if ($request->status_id == 5) {
+        if($order->status_id==8)
+        {
+  
+          return redirect()->back()->with('status', 'Order is already out for delivery.You cannot cancel this order.');
+                               
+        
+        }
+
+        if (isset($order->referenceId) && ($order->isRefunded < 2)) {
+
+
+          $curl = curl_init();
+
+          curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.cashfree.com/api/v1/order/refund',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+              'appId' => '165253d13ce80549d879dba25b352561',
+              'secretKey' => 'bab0967cdc3e5559bded656346423baf0b1d38c4',
+              'ContentType' => 'application/json',
+              'referenceId' => $order->referenceId, 'refundAmount' => $order->product_total_amount, 'refundNote' => 'full refund'
+            ),
+            CURLOPT_HTTPHEADER => array(
+              'Accept' => 'application/json',
+              'x-api-version' => '2021-05-21',
+              'x-client-id' => '165253d13ce80549d879dba25b352561',
+              'x-client-secret' => 'bab0967cdc3e5559bded656346423baf0b1d38c4'
+            ),
+          ));
+
+          $response = curl_exec($curl);
+          // dd($response);
+          curl_close($curl);
+          $dataString = json_decode($response);
+          if ($dataString->status == "OK") {
+            $data['message'] = $dataString->message;
+            $data['refundId'] = $dataString->refundId;
+          } else {
+            $data['message'] = $dataString->message;
+            //  $data['message'] = "Refund failed! Please contact store";
+          }
+
+          if ($dataString->status == "OK") {
+            $order->refundId = $dataString->refundId;
+            $order->refundStatus = "Inprogress";
+            $order->isRefunded = 1;
+          }
+        }
+
+        $orderData = Trn_store_order_item::where('order_id', $order_id)->get();
+
+
+        // dd($orderData);
+        foreach ($orderData as $o) {
+
+          $productVarOlddata = Mst_store_product_varient::find($o->product_varient_id);
+
+          $sd = new Mst_StockDetail;
+          $sd->store_id = $store_id;
+          $sd->product_id = $o->product_id;
+          $sd->stock = $o->quantity;
+          $sd->product_varient_id = $o->product_varient_id;
+          $sd->prev_stock = $productVarOlddata->stock_count;
+          $sd->save();
+
+
+          DB::table('mst_store_product_varients')->where('product_varient_id', $o->product_varient_id)->increment('stock_count', $o->quantity);
+        }
+      }
+
+
+      $order->update();
+
+
+      $data = array('order_number' => $order_number, 'order_status' => $request->status_id, 'to_mail' => $customer_email);
+
+
+      // Mail::send('store/mail-template/order-status-mail-template', $data, function($message) use ($data){
+      //         $message->to($data['to_mail'], 'Yellowstore - Order Status')->subject
+      //             ('ORDER-STATUS-UPDATION');
+      //         $message->from('anumadathinakath@gmail.com','Customer-Order-Status');
+      //     });
+
+      return redirect()->back()->with('status', 'Status updated successfully.');
+    } else {
+      return redirect()->back()->withErrors($validator)->withInput();
+    }
+    // } catch (\Exception $e) {
+
+    //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+
+    // }
+  }
+  public function OrderStatusNew(Request $request, Trn_store_order $order, $order_id)
+  {
+
+    
+  //dd("hii");
+
+    $order_id = $request->order_id;
+    $order = Trn_store_order::Find($order_id);
+    
+    
+    $order_number = $order->order_number;
+    $store_id = $order->store_id;
+    $customer_id = $order->customer_id;
+    $cust=Trn_store_customer::where('customer_id',$customer_id)->first();
+    //dd($request->status_id);
+    $validator = Validator::make(
+      $request->all(),
+      [
+
+        'status_id'   => 'required',
+
+      ],
+      [
+        'status_id.required' => 'Status required',
+
+
+      ]
+    );
+
+    if (!$validator->fails()) {
+      $data = $request->except('_token');
+
+      if($order->status_id==1)
+    {
+      if(!in_array($request->status_id,[4,5]))
+      {
+        return redirect()->back()->withErrors(['Cannot update to this status before confirming the order']);
+
+      }
+    }
+    if($order->status_id==9)
+    {
+      return redirect()->back()->withErrors(['Order is already delivered.Cannot proceed']);
+                    
+    }
+    if ($request->status_id == 5) {
+      if($order->status_id==8)
+      {
+        
 
         return redirect()->back()->with('error', 'Order is already out for delivery.You cannot cancel this order.');
                              

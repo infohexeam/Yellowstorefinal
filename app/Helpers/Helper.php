@@ -10,6 +10,7 @@ use Validator;
 use GuzzleHttp\Client as HttpClient;
 
 use App\Models\admin\Mst_store;
+use App\Models\admin\Mst_store_images;
 use App\Models\admin\Trn_StoreAdmin;
 use App\Models\admin\Trn_store_order_item;
 use App\Models\admin\Mst_store_product;
@@ -1837,6 +1838,27 @@ public static function getYouTubeVideoCode($url) {
         // Return null if no match is found
         return null;
     }
+}
+public static function findServiceOrder($orderId)
+{
+   $orderFirstItem=Trn_store_order_item::where('order_id',$orderId)->first();
+   $product=Mst_store_product::where('product_id',$orderFirstItem->product_id)->first();
+   if($product->product_type==1)
+   {
+    if($product->service_type==1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 2;
+    }
+   }
+   else
+   {
+    return 0;
+   }
+
 }
 
 }
