@@ -244,7 +244,7 @@ function validatePass() {
   var y = document.forms["myForm"]["confirm_password"].value;
 
    document.getElementById('showmessage').innerHTML = '';
-    $('#submit').attr('disabled', false);
+   
    if(y != '')
    {
     if (x == y) {
@@ -261,7 +261,7 @@ function validatePass() {
    }
    else
    {
-
+ $('#submit').attr('disabled', false);
    }
 }
 </script>
