@@ -2829,6 +2829,41 @@ public function addToCartTest(Request $request)
                         if($request->store_id)
             {
                 $store=Mst_store::find($request->store_id);
+                /////////////////////////////////////////////////////////////////////////////
+                $pVar=Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('variant_status','=',1)->first();
+                if($pVar)
+                {
+                    $prdctToInsert=Mst_store_product::find($pVar->product_id);
+                    if($prdctToInsert)
+                    {
+                        $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
+                        if($firstCartData)
+                        {
+                            $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                            if($prdctInCart)
+                            {
+                                if($prdctToInsert->product_type!=$prdctInCart->product_type)
+                                {
+                                    if($prdctToInsert->product_type==1)
+                                    {
+                                        $msG="You cannot add to cart normal products as service products  in cart";
+                                    }
+                                    if($prdctToInsert->product_type==2)
+                                    {
+                                        $msG="You cannot add to cart purchase products as normal products  in cart";
+                                    }
+                                    $data['status'] = 30;
+                                    $data['message'] = $msG;
+                                    return response($data);
+
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+                ///////////////////////////////////////////////////
                 if($store->online_status==0)
                 {
                     $data['status'] = 16;
