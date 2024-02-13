@@ -252,7 +252,7 @@ use App\Helpers\Helper;
                   <div class="modal-body">
                     <input type="hidden" class="form-control" name="order_id" value="{{$order->order_id}}" >
 
-                   <label class="form-label"> Status{{$serviceOrderType}}</label>
+                   <label class="form-label"> Status</label>
                       <select class="form-control" name="status_id" id="status_id">
                                  <option value=""> Select Status</option>
                             
@@ -273,7 +273,7 @@ use App\Helpers\Helper;
                                               {{ $key->status}}
                                         </option>
                                         @else
-                                        @if($key->status_id<=4)
+                                        @if($key->status_id!=6 && $key->status_id!=7 && $key->status_id!=8 )
                                          <option {{request()->input('status_id',$order->status_id) == $key->status_id ? 'selected':''}} 
                                               value="
                                               @if($key->status_id != $order->status_id )
