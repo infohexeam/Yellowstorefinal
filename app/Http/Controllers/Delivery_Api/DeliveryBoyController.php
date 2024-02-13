@@ -143,7 +143,7 @@ class DeliveryBoyController extends Controller
                                 $user = Mst_delivery_boy::find(auth()->guard('delivery')->user()->delivery_boy_id);
                                 if (isset($request->device_token)) {
 
-                                    Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', auth()->guard('delivery')->user()->delivery_boy_id)->delete();
+                                    //Trn_DeliveryBoyDeviceToken::where('delivery_boy_id', auth()->guard('delivery')->user()->delivery_boy_id)->delete();
                                     $ddt =  new Trn_DeliveryBoyDeviceToken;
                                     $ddt->delivery_boy_id = auth()->guard('delivery')->user()->delivery_boy_id;
                                     $ddt->dboy_device_token = $request->device_token;
