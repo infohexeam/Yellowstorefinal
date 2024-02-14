@@ -32,14 +32,14 @@
                      <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Registration Points</label>
-                           <input type="number" min="0" oninput="validity.valid||(value='');" class="form-control"  name="registraion_points" value="{{old('registraion_points',@$configure_points->registraion_points)}}" placeholder="Registration Points">
+                           <input type="number" min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" class="form-control"  name="registraion_points" value="{{old('registraion_points',@$configure_points->registraion_points)}}" placeholder="Registration Points">
                         </div>
                         </div>
 
                          <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">First Order Points</label>
-                           <input type="number" min="0" oninput="validity.valid||(value='');" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points">
+                           <input type="number" min="0" oninput="validity.valid||(value='');truncateInput(this, 10)" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points">
                         </div>
                         </div>
 
@@ -48,7 +48,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Referral Points</label>
-                            <input type="number" min="0" oninput="validity.valid||(value='');" required=""  name="referal_points" class="form-control"  value="{{old('referal_points',@$configure_points->referal_points)}}" placeholder="Referral Points ">
+                            <input type="number" min="0" oninput="validity.valid||(value='');truncateInput(this, 10)" required=""  name="referal_points" class="form-control"  value="{{old('referal_points',@$configure_points->referal_points)}}" placeholder="Referral Points ">
                            </div>
                         </div>
                         
@@ -57,7 +57,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Referred Joiner Points</label>
-                            <input type="number" min="0" oninput="validity.valid||(value='');" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points ">
+                            <input type="number" min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points ">
                            </div>
                         </div>
 
@@ -89,7 +89,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Order Amount</label>
-                            <input type="number" min="0" oninput="validity.valid||(value='');" required=""  name="order_amount" class="form-control"  value="{{old('order_amount',@$configure_points->order_amount)}}" placeholder="Order Amount ">
+                            <input type="number" min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" required=""  name="order_amount" class="form-control"  value="{{old('order_amount',@$configure_points->order_amount)}}" placeholder="Order Amount ">
                            </div>
                         </div>
 
@@ -104,27 +104,27 @@
 
                          <div class="form-group">
                            <label class="form-label">Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');" required=""  name="order_points" class="form-control"  value="{{old('points',@$configure_points->order_points)}}" placeholder="Order points ">
+                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" required=""  name="order_points" class="form-control"  value="{{old('points',@$configure_points->order_points)}}" placeholder="Order points ">
                            </div>
                         </div>
                         
                         <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Percentage of wallet points can be redeemed per order</label>
-                           <input type="number"  min="0" max="100" oninput="validity.valid||(value='');" class="form-control" name="redeem_percentage" value="{{old('redeem_percentage',@$configure_points->redeem_percentage)}}" placeholder="Percentage of wallet points can be redeemed per order">
+                           <input type="number"  min="0" max="100" oninput="validity.valid||(value='');truncateInput(this, 10);" class="form-control" name="redeem_percentage" value="{{old('redeem_percentage',@$configure_points->redeem_percentage)}}" placeholder="Percentage of wallet points can be redeemed per order">
                         </div>
                         </div>
 
                         <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Maximum redeem amount per order</label>
-                           <input type="number"  min="0" oninput="validity.valid||(value='');" class="form-control" name="max_redeem_amount" value="{{old('max_redeem_amount',@$configure_points->max_redeem_amount)}}" placeholder="Maximum redeem amount per order">
+                           <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" class="form-control" name="max_redeem_amount" value="{{old('max_redeem_amount',@$configure_points->max_redeem_amount)}}" placeholder="Maximum redeem amount per order">
                         </div>
                         </div>
                           <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Minimum Order Amount</label>
-                           <input type="number"  min="1" oninput="validity.valid||(value='');" class="form-control" name="minimum_order_amount" value="{{old('minimum_order_amount',@$configure_points->minimum_order_amount)}}" placeholder="Maximum redeem amount per order">
+                           <input type="number"  min="1" oninput="validity.valid||(value='');truncateInput(this, 10);" class="form-control" name="minimum_order_amount" value="{{old('minimum_order_amount',@$configure_points->minimum_order_amount)}}" placeholder="Maximum redeem amount per order">
                         </div>
                         </div>
 
@@ -145,6 +145,14 @@
       </div>
    </div>
 </div>
+<script>
+function truncateInput(input, maxLength) {
+    if (input.value.length > maxLength) {
+        input.value = input.value.slice(0, maxLength);
+    }
+}
+
+</script>
 @endsection
 
 
