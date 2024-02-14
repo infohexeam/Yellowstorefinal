@@ -39,7 +39,7 @@
                          <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">First Order Points</label>
-                           <input type="number"  min="0" oninput="validity.valid||(value='');" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points" maxlength="10">
+                           <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points" maxlength="10">
                         </div>
                         </div>
 
@@ -104,7 +104,7 @@
 
                          <div class="form-group">
                            <label class="form-label">Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');" required=""  name="order_points" class="form-control"  value="{{old('points',@$configure_points->order_points)}}" placeholder="Order points " maxlength="10">
+                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" required=""  name="order_points" class="form-control"  value="{{old('points',@$configure_points->order_points)}}" placeholder="Order points " maxlength="10">
                            </div>
                         </div>
                         
@@ -145,6 +145,14 @@
       </div>
    </div>
 </div>
+<script>
+function truncateInput(input, maxLength) {
+    if (input.value.length > maxLength) {
+        input.value = input.value.slice(0, maxLength);
+    }
+}
+
+</script>
 @endsection
 
 
