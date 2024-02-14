@@ -2027,7 +2027,12 @@ class SettingController extends Controller
 					],
 				];
 
-				Mst_store_link_agency::firstOrCreate($data);
+				Mst_store_link_delivery_boy::firstorcreate([
+					'store_id' => $value,
+					'delivery_boy_id' => $request->store_id,
+
+				]);
+
 			}
 
 			return redirect('admin/store/list')->with('status', 'Agency assigned successfully.');
