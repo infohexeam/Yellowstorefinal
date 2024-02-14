@@ -2027,9 +2027,9 @@ class SettingController extends Controller
 					],
 				];
 
-				Mst_store_link_delivery_boy::firstorcreate([
-					'store_id' => $value,
-					'delivery_boy_id' => $request->store_id,
+				Mst_store_link_agency::firstorcreate([
+					'agency_id' => $value,
+					'store_id' => $request->store_id,
 
 				]);
 
