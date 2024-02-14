@@ -2020,14 +2020,14 @@ class SettingController extends Controller
 					[
 						'agency_id' => $value,
 						'store_id' => $request->store_id,
-						'created_at' => $date,
-						'updated_at' => $date,
+						// 'created_at' => $date,
+						// 'updated_at' => $date,
 
 
 					],
 				];
 
-				Mst_store_link_agency::insert($data);
+				Mst_store_link_agency::firstOrCreate($data);
 			}
 
 			return redirect('admin/store/list')->with('status', 'Agency assigned successfully.');
