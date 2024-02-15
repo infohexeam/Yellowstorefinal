@@ -4564,6 +4564,10 @@ class ProductController extends Controller
 
                         foreach ($allProducts as $allProduct) {
                             $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
+                            if($allProduct->product_type==2)
+                            {
+                                $allProduct->variant_stock_count=1;
+                            }
                             $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                             $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                             $storeData = Mst_store::find($allProduct->store_id);
@@ -4959,6 +4963,10 @@ class ProductController extends Controller
 
                             foreach ($allProducts as $allProduct) {
                                 $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
+                                    if($allProduct->product_type==2)
+                                {
+                                    $allProduct->variant_stock_count=1;
+                                }
                                 $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                                 $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                                 $storeData = Mst_store::find($allProduct->store_id);
@@ -5341,6 +5349,10 @@ class ProductController extends Controller
 
                     foreach ($allProducts as $allProduct) {
                         $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
+                        if($allProduct->product_type==2)
+                            {
+                                $allProduct->variant_stock_count=1;
+                            }
                         $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                         $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                         $storeData = Mst_store::find($allProduct->store_id);
@@ -5611,6 +5623,10 @@ class ProductController extends Controller
 
                     foreach ($allProducts as $allProduct) {
                         $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
+                        if($allProduct->product_type==2)
+                            {
+                                $allProduct->variant_stock_count=1;
+                            }
                         //$vaCount=Helper::variantCount($allProduct->product_id);
                         $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                         $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
@@ -5962,6 +5978,10 @@ class ProductController extends Controller
 
                         foreach ($allProducts as $allProduct) {
                             $allProduct->variant_stock_count=Mst_store_product_varient::where('product_id',$allProduct->product_id)->where('is_removed',0)->where('stock_count','>',0)->sum('stock_count');
+                            if($allProduct->product_type==2)
+                            {
+                                $allProduct->variant_stock_count=1;
+                            }
                             $allProduct->product_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_base_image;
                             $allProduct->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $allProduct->product_varient_base_image;
                             $storeData = Mst_store::find($allProduct->store_id);
