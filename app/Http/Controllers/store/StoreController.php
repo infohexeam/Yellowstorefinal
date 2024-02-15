@@ -7759,7 +7759,7 @@ public function showInHome(Request $request, $product_id)
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
   }
-  public function enquiryReport(Request $request)
+  public function enquiryReportLegacy(Request $request)
   {
   
     try
@@ -7820,6 +7820,67 @@ public function showInHome(Request $request, $product_id)
       return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
     }
   }
+  public function enquiryReport(Request $request)
+{
+    try {
+        $store_id = Auth::guard('store')->user()->store_id;
+        $pageTitle = "Enquiry Report";
+        $enquiries = Trn_customer_enquiry::leftjoin('mst_store_product_varients', 'mst_store_product_varients.product_varient_id', '=', 'trn_customer_enquiry.product_varient_id')
+            ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_customer_enquiry.customer_id')
+            ->leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+            ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'trn_customer_enquiry.store_id')
+            ->select(
+                'trn_customer_enquiry.enquiry_id',
+                'trn_customer_enquiry.product_varient_id',
+                'trn_customer_enquiry.customer_id',
+                'trn_customer_enquiry.visited_date',
+                'trn_customer_enquiry.created_at',
+                'mst_store_products.product_name',
+                'mst_store_product_varients.variant_name',
+                'mst_store_product_varients.product_id',
+                'trn_store_customers.customer_first_name',
+                'trn_store_customers.customer_last_name',
+                'trn_store_customers.customer_mobile_number',
+                'trn_customer_enquiry.store_id',
+                'mst_stores.store_name',
+                'trn_customer_enquiry.created_at'
+            )->where('trn_customer_enquiry.store_id', $store_id);
+
+        if (request('start_date') != NULL && request('end_date') != NULL) {
+            $start_date = $request->input('start_date');
+            $end_date = $request->input('end_date');
+            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+
+            $enquiries->whereBetween('trn_customer_enquiry.created_at', [$start_date, $end_date]);
+        }
+
+        if (request('customer_name') != NULL) {
+            $customerName = request('customer_name');
+            $enquiries->where(function ($query) use ($customerName) {
+                $query->whereRaw("CONCAT(trn_store_customers.customer_first_name, ' ', COALESCE(trn_store_customers.customer_last_name, '')) like ?", ['%' . $customerName . '%']);
+            });
+        }
+
+        if (request('customer_mobile') != NULL) {
+            $enquiries->where('trn_store_customers.customer_mobile_number', 'like', '%' . request('customer_mobile') . '%');
+        }
+
+        if (request('product_name') != NULL) {
+            $productName = request('product_name');
+            $enquiries->where(function ($query) use ($productName) {
+                $query->where('mst_store_products.product_name', 'like', '%' . $productName . '%')
+                      ->orWhere('mst_store_product_varients.variant_name', 'like', '%' . $productName . '%');
+            });
+        }
+
+        $enquiries = $enquiries->latest()->get();
+        return view('store.elements.reports.enquiry_report', compact('pageTitle', 'enquiries'));
+    } catch (\Exception $e) {
+        return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    }
+}
+
 
   public function listUserLogs()
     {
