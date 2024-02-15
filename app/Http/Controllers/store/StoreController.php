@@ -3420,7 +3420,7 @@ class StoreController extends Controller
           $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
         }
       } else {
-        if ($order->status_id != 9) {
+        if ($status_id == 9) {
 
           $order_status = "Deliverd";
 
