@@ -119,7 +119,7 @@ $date = Carbon\Carbon::now();
         </div>
     </div>
 </div>
-
+<script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
 <script>
  ("#date_from").change(function () {
     alert(1);
