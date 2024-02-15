@@ -121,6 +121,10 @@ $date = Carbon\Carbon::now();
 </div>
 
 <script>
+ ("#date_from").change(function () {
+        $('#date_to').val('');
+        $('#date_to').attr('min', $('#date_from').val());
+    });
     $(document).ready(function () {
         $(function (e) {
             $('#exampletable').DataTable({
