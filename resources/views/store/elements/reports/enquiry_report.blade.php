@@ -121,8 +121,8 @@ $date = Carbon\Carbon::now();
 </div>
 <script src="{{URL::to('/assets/js/jquery-3.4.1.min.js')}}"></script>
 <script>
- ("#date_from").change(function () {
-    alert(1);
+ $("#date_from").change(function () {
+    
         $('#date_to').val('');
         $('#date_to').attr('min', $('#date_from').val());
     });
