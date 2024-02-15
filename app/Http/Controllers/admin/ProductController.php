@@ -1213,7 +1213,7 @@ class ProductController extends Controller
 
 
       if (auth()->user()->user_role_id  == 0) {
-       dd('under maintanence');
+      
 
         $data = Trn_RecentlyVisitedProducts::select(
           'trn__recently_visited_products.rvp_id',
@@ -1252,6 +1252,8 @@ class ProductController extends Controller
           ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
           ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
           ->get();
+
+          dd($data,'under maintanence');
 
 
         if ($_GET) {
