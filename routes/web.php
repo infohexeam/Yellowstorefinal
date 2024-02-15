@@ -914,7 +914,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         // order Managemnet
 
-        Route::get('store/order/list', 'StoreController@listOrder')->name('store.list_order');
+        Route::get('store/order/list', 'StoreController@listOrderNew')->name('store.list_order');
         Route::get('store/order/list-new', 'StoreController@listOrderNew')->name('store.list_order_new');
         Route::get('store/today-order/list', 'StoreController@listTodaysOrder')->name('store.list_todays_order');
         Route::get('store/order/view/{id}', 'StoreController@viewOrder')->name('store.view_order');
