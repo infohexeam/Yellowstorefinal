@@ -1793,7 +1793,7 @@ public function destroyDelivery_boy(Request $request)
                                 $body = "Your order " . $od->order_number . ' is confirmed..';
                                 $clickAction = "OrderListFragment";
                                 $type = "order";
-                                $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                $data['response'] =  Helper::customerNotificationNew($cd->customer_device_token, $title, $body,$clickAction,$type);
                             }
                         }
 

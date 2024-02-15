@@ -623,6 +623,35 @@ class Helper
         curl_close($ch);
         return $result;
     }
+    public static function customerNotificationNew($device_id, $title, $body,$clickAction, $type)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $custom_sound_url = 'https://hexprojects.in/Yellowstore/assets/sound_two.mp3'; // Update this with the URL of your custom sound file
+        $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
+        $fields = array(
+            'to' => $device_id,
+            'notification' => array('title' => $title, 'body' => $body, 'sound' => $custom_sound_url, 'click_action' => $clickAction),
+            'data' => array('title' => $title, 'body' => $body,'type' => $type),
+        );
+        $headers = array(
+            'Content-Type:application/json',
+            'Authorization:key=' . $api_key
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('FCM Send Error: ' . curl_error($ch));
+        }
+        curl_close($ch);
+        return $result;
+    }
 
 
 
