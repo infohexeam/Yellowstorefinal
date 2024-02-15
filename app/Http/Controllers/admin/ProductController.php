@@ -2857,7 +2857,7 @@ public function showInventoryReport(Request $request)
     ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
     ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
     ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-
+    ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
    
     ->where('mst__stock_details.stock', '>', 0)
 
@@ -2895,6 +2895,11 @@ public function showInventoryReport(Request $request)
       'mst__stock_details.updated_at AS updated_time',
       'mst_store_agencies.agency_name',
       'mst__sub_categories.sub_category_name',
+
+      'mst_stores.store_id',
+      'mst_stores.subadmin_id',
+      'mst_stores.store_name',
+      'mst_stores.store_code',
       
 
     );
