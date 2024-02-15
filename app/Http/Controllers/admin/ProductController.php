@@ -1195,7 +1195,7 @@ class ProductController extends Controller
 
   public function showVisitReport(Request $request)
   {
-    try {
+    // try {
 
       $pageTitle = "Product Visit Reports";
 
@@ -1530,10 +1530,10 @@ class ProductController extends Controller
       //    dd($subadmins);
 
       return view('admin.masters.reports.product_visit_report', compact('customers', 'subCategories', 'categories', 'agencies', 'subadmins', 'stores', 'data', 'pageTitle'));
-    } catch (\Exception $e) {
-      // return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();
-      return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
-    }
+    // } catch (\Exception $e) {
+    //   // return redirect()->back()->withErrors([  $e->getMessage() ])->withInput();
+    //   return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+    // }
   }
 
   public function showStoreVisitReport(Request $request)
