@@ -408,6 +408,12 @@ class OrderController extends Controller
                             $data['orderDetails']->db_longitude = '';
                             $data['orderDetails']->customer_place = ' ';
                         }
+                        if ($data['orderDetails']->order_type == 'POS') 
+                        {
+                            $data['orderDetails']->delivery_date='';
+                            $data['orderDetails']->delivery_time='';
+                        }
+                       
 
                         $storeData = Mst_store::find($request->store_id);
                         $data['orderDetails']->store_name = $storeData->store_name;
