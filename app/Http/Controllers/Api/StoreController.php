@@ -4293,13 +4293,22 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
 
         )->where('trn_customer_enquiry.store_id',$request->store_id);
         //dd(request('start_date'));
-        if (request('start_date')!=NULL && request('end_date')!=NULL) {
-            $start_date = $request->input('start_date');
-            $end_date = $request->input('end_date');
-            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
-            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+        // if (request('start_date')!=NULL && request('end_date')!=NULL) {
+        //     $start_date = $request->input('start_date');
+        //     $end_date = $request->input('end_date');
+        //     $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+        //     $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
 
-            $enquiries->whereBetween('trn_customer_enquiry.created_at', [$start_date, $end_date]);
+        //     $enquiries->whereBetween('trn_customer_enquiry.created_at', [$start_date, $end_date]);
+        // }
+        if (request('start_date') != NULL) {
+            $start_date = date('Y-m-d 00:00:00', strtotime(request('start_date')));
+            $enquiries->where('trn_customer_enquiry.created_at', '>=', $start_date);
+        }
+  
+        if (request('end_date') != NULL) {
+            $end_date = date('Y-m-d 23:59:59', strtotime(request('end_date')));
+            $enquiries->where('trn_customer_enquiry.created_at', '<=', $end_date);
         }
         if (request('customer_name') != NULL) {
             $customerName = request('customer_name');
