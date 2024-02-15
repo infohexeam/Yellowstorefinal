@@ -1348,7 +1348,7 @@ class ProductController extends Controller
 
 
           $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-            ->get();
+          ->paginate(10);
 
       // dd($request->category_id,$request->sub_category_id,$data);
 
@@ -1417,7 +1417,7 @@ class ProductController extends Controller
           ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
           ->where('mst_stores.subadmin_id', auth()->user()->id)
           ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-          ->get();
+          ->paginate(10);
 
 
 
@@ -1507,7 +1507,7 @@ class ProductController extends Controller
 
 
           $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
-            ->get();
+          ->paginate(10);
 
 
 
