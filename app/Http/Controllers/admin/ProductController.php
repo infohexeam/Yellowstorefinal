@@ -1377,8 +1377,7 @@ class ProductController extends Controller
           'stores',
           'data',
           'pageTitle',
-          'datefrom',
-          'dateto'
+          
         ));
       } else {
         $data = Trn_RecentlyVisitedProducts::select(
