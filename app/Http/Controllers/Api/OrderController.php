@@ -410,8 +410,8 @@ class OrderController extends Controller
                         }
                         if ($data['orderDetails']->order_type == 'POS') 
                         {
-                            $data['orderDetails']->delivery_date='';
-                            $data['orderDetails']->delivery_time='';
+                            $data['orderDetails']->delivery_date=Carbon::parse($data['orderDetails']->updated_at)->format('Y-m-d');;
+                            $data['orderDetails']->delivery_time=Carbon::parse($data['orderDetails']->updated_at)->format('H:i');
                         }
                        
 
