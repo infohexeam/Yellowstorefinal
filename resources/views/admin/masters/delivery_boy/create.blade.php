@@ -104,7 +104,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                          <label class="form-label">Country *</label>
-                            <select name="country_id" required="" class="form-control" id="country" >
+                            <select name="country_id" required="" class="form-control select2-show-search" id="country" >
                                  <option value=""> Select Country</option>
                                 @foreach($countries as $key)
                                 <option {{old('country_id') == $key->country_id ? 'selected':''}} value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -116,7 +116,7 @@
                      <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">State *</label>
-                            <select name="state_id" required="" class="form-control" id="state" >
+                            <select name="state_id" required="" class="form-control select2-show-search" id="state" >
                                  <option  value=""> Select State</option>
                                 @if(old('state_id'))
 
@@ -138,7 +138,7 @@
                      <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">District *</label>
-                          <select name="district_id" required="" class="form-control" id="city">
+                          <select name="district_id" required="" class="form-control select2-show-search" id="city">
                              <option value="">Select District</option>
                              @if(old('district_id'))
 
@@ -159,7 +159,7 @@
                       <div class="col-md-6">
                           <div class="form-group">
                               <label class="form-label">Pincode *</label>
-                              <select name="town_id" required="" class="form-control" id="town">
+                              <select name="town_id" required="" class="form-control select2-show-search" id="town">
                                  <option value="">Select Pincode</option>
                                   @if(old('town_id'))
 

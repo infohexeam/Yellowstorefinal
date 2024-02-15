@@ -97,7 +97,7 @@
                         </div> --}}
                          <div class="form-group">
                            <label class="form-label">Country</label>
-                            <select name="country_id" required="" class="form-control" id="country" >
+                            <select name="country_id" required="" class="form-control select2-show-search" id="country" >
                                  <option value=""> Select Country</option>
                                 @foreach($countries as $key)
                                 <option {{old('country_id',@$delivery_boy->country_id) == @$key->country_id ? 'selected':''}} value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -110,7 +110,7 @@
                       <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">State</label>
-                            <select name="state_id" required="" class="form-control" id="state" >
+                            <select name="state_id" required="" class="form-control select2-show-search" id="state" >
                             @foreach($states as $state)
                              <option   @if($state->state_id==$delivery_boy->state_id) selected="" @endif value="{{$state->state_id}}" >  {{@$state->state_name}}</option>
                              @endforeach
@@ -122,7 +122,7 @@
                          <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">District</label>
-                    <select name="district_id" required="" class="form-control" id="city">
+                    <select name="district_id" required="" class="form-control select2-show-search" id="city">
                     @foreach($districts as $district)
                             <option   @if($district->district_id==$delivery_boy->district_id) selected=""  @endif value="{{$district->district_id}}">  {{@$district->district_name}}</option>
                     @endforeach
@@ -133,7 +133,7 @@
 
   <div class="form-group">
                               <label class="form-label">Pincode</label>
-                              <select name="town_id"  class="form-control" id="town">
+                              <select name="town_id"  class="form-control select2-show-search" id="town">
                                 @foreach($towns as $town)
                                  <option  @if($town->town_id==$delivery_boy->town_id) selected=""  @endif  value="{{@$town->town_id}}">  {{@$town->town_name}}</option>
                                  @endforeach
