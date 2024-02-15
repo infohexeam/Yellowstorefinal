@@ -1469,7 +1469,7 @@ class StoreOrderController extends Controller
                                     $body = $request->reward_points_used . ' points deducted from your wallet';
                                     $clickAction = "MyWalletFragment";
                                     $type = "wallet";
-                                    $data['responseAppDeduction'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
+                                    $data['responseAppDeduction'] =  $this->customerNotificationTest($cd->customer_device_token, $title, $body,$clickAction,$type);
                                 }
                             }
                         }
