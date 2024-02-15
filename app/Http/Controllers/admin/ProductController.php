@@ -1253,7 +1253,7 @@ class ProductController extends Controller
           ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
           ->get();
 
-          dd($data,'under maintanence');
+          //dd($data,'under maintanence');
 
 
         if ($_GET) {
@@ -1368,6 +1368,18 @@ class ProductController extends Controller
             'dateto'
           ));
         }
+        return view('admin.masters.reports.product_visit_report', compact(
+          'customers',
+          'subCategories',
+          'categories',
+          'agencies',
+          'subadmins',
+          'stores',
+          'data',
+          'pageTitle',
+          'datefrom',
+          'dateto'
+        ));
       } else {
         $data = Trn_RecentlyVisitedProducts::select(
           'trn__recently_visited_products.rvp_id',
