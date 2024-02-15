@@ -122,6 +122,7 @@ $date = Carbon\Carbon::now();
 
 <script>
  ("#date_from").change(function () {
+    alert(1);
         $('#date_to').val('');
         $('#date_to').attr('min', $('#date_from').val());
     });
