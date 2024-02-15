@@ -1213,7 +1213,7 @@ class ProductController extends Controller
 
 
       if (auth()->user()->user_role_id  == 0) {
-       // dd(1);
+       dd('under maintanence');
 
         $data = Trn_RecentlyVisitedProducts::select(
           'trn__recently_visited_products.rvp_id',
