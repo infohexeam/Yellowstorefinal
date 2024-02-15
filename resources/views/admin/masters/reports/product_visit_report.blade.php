@@ -176,7 +176,7 @@
                                         @endphp
                                         @foreach ($data as $d)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ ($data->currentPage()-1) * $data->perPage() + $loop->index + 1 }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
                                             <td>{{ \Carbon\Carbon::parse($d->created_at)->format('H:i:s')}}</td>
                                             
@@ -223,6 +223,7 @@
                                     
                                       </tbody>
                                    </table>
+                                    {{ $data->appends(request()->query())->links('custom_pagination') }}
                                 </div>
                             </div>
                       </div>
