@@ -978,11 +978,12 @@ class StoreOrderController extends Controller
                             //return $pua;
                             if($varProdu )
                             {
-                                $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
                                 if($proData->product_type==2)
                                 {
                                     $varProdu->stock_count=$value['quantity'];
                                 }
+                                $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
+                                
                                 if ($request->payment_type_id != 2) {
                                 if($stockDiffernece<0)
                                 {
