@@ -3413,6 +3413,7 @@ class ProductController extends Controller
                             'mst_store_products.show_in_home_screen',
                             'mst_store_products.product_status',
                             'mst_store_products.is_removed',
+                            'mst_store_products.product_type',
                             'mst_store_product_varients.product_varient_id',
                             'mst_store_product_varients.variant_name',
                             'mst_store_product_varients.product_varient_price',
@@ -3442,12 +3443,16 @@ class ProductController extends Controller
                                 }
      
                             }
-
+                        if($cartData->product_type==1)
+                        {
                             if($cartData->stock_count<=$cartData->quantity||$cartData->is_removed==1 || $cartData->variant_status==0||$cartData->varient_remove_status==1)
                             {
                                 array_push($OutStockProduct,$cartData->product_varient_id);
 
                             }
+
+                        }
+                            
                             
                         }
                         
