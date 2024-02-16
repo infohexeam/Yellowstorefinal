@@ -2221,7 +2221,12 @@ class StoreOrderController extends Controller
                     array_push($unAvailableProduct,$varProdu->product_varient_id); 
                 }
                 if ($value['quantity'] > $varProdu->stock_count) {
-                    array_push($noStockProducts,$varProdu->product_varient_id); 
+                    if($proData->product_type==1)
+                    {
+                        array_push($noStockProducts,$varProdu->product_varient_id); 
+
+                    }
+                    
                 }
                 if ($varProdu->is_removed==1) {
                     array_push($unAvailableProduct,$varProdu->product_varient_id); 
