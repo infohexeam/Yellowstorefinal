@@ -3114,7 +3114,14 @@ public function orderHistory(Request $request)
                             
                             @$serviceData->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . @$serviceData->product_varient_base_image;
                             $baseProductDetail = Mst_store_product::find(@$serviceData->product_id);
-                          
+                            $serviceData->map(function ($item,$baseProductDetail) {
+                                // Add new key-value pairs to each item in the collection
+                                $item->is_timeslot_product = $baseProductDetail->is_timeslot_based_product;
+                                $item->time_start = $baseProductDetail->timeslot_start_time;
+                                $item->time_end = $baseProductDetail->timeslot_end_time;
+                                
+                                return $item; // Return the modified item
+                            });
                             $serviceData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
                             
                             if (@$baseProductDetail->product_name != @$serviceData->variant_name)
@@ -3122,9 +3129,7 @@ public function orderHistory(Request $request)
                             else
                                 $serviceData->product_name = @$baseProductDetail->product_name;
                             $data['orderDetails']->serviceData = $serviceData;
-                            $data['orderDetails']->serviceData->is_timeslot_product=$baseProductDetail->is_timeslot_based_product;
-                            $data['orderDetails']->serviceData->time_start=$baseProductDetail->timeslot_start_time;
-                            $data['orderDetails']->serviceData->time_end=$baseProductDetail->timeslot_end_time;
+                           
                         }
 
                         $store_id = $data['orderDetails']->store_id;
