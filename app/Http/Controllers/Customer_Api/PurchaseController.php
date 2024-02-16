@@ -2934,7 +2934,7 @@ public function addToCartTest(Request $request)
                             if($proData->product_type==1)
                             {
                                     if ($request->quantity > $varProdu->stock_count ) {  
-                                        $data['message'] = 'Stock unavailable';
+                                        $data['message'] = 'Stock unavailableeee'.$proData->product_type;
                                         $data['status'] = 3;
                                         return response($data);
                                     
