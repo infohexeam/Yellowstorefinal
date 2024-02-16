@@ -1191,7 +1191,7 @@ class StoreOrderController extends Controller
                             $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
                             if($proData->product_type==2)
                             {
-                                $varProdu->stock_count=$value['quantity'];
+                                $productVarOlddata->stock_count=$value['quantity'];
                             }
                             $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
                             
