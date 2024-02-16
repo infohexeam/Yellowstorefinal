@@ -1220,7 +1220,7 @@ class StoreOrderController extends Controller
                                 {
                                     Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->increment('stock_count', $value['quantity']);
                                     $data['status'] = 0;
-                                    $data['message'] = "Some products quantity is more than available stock..Try again Later";
+                                    $data['message'] = "Some products quantity is more than available stock..Try again Later!";
                                     DB::rollback();
                                     return response($data);
 
