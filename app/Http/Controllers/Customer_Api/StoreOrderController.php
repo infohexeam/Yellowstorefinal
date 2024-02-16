@@ -2123,7 +2123,7 @@ class StoreOrderController extends Controller
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
-        $custom_sound_url = 'https://hexprojects.in/Yellowstore/assets/sound_two.mp3'; // Update this with the URL of your custom sound file
+        $custom_sound_url = 'https://hexprojects.in/Yellowstore/assets/order_confirmed.mp3'; // Update this with the URL of your custom sound file
         $fields = array(
             'to' => $device_id,
             'notification' => array('title' => $title, 'body' => $body, 'sound' => $custom_sound_url, 'click_action' => $clickAction),
