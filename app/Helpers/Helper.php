@@ -626,7 +626,7 @@ class Helper
     public static function customerNotificationNew($device_id, $title, $body,$clickAction, $type)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
-        $custom_sound_url = 'https://hexprojects.in/Yellowstore/assets/sound_two.mp3'; // Update this with the URL of your custom sound file
+        $custom_sound_url = 'https://hexprojects.in/Yellowstore/assets/order_confirmed.mp3'; // Update this with the URL of your custom sound file
         $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
         $fields = array(
             'to' => $device_id,
