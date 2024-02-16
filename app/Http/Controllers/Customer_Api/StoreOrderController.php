@@ -3125,6 +3125,7 @@ public function orderHistory(Request $request)
                             $data['orderDetails']->serviceData->is_timeslot_product=$baseProductDetail->is_timeslot_based_product;
                             $data['orderDetails']->serviceData->time_start=$baseProductDetail->timeslot_start_time;
                             $data['orderDetails']->serviceData->time_end=$baseProductDetail->timeslot_end_time;
+                            $data['orderDetails']->serviceData->total_amount==$baseProductDetail->product_total_amount;
                         }
 
                         $store_id = $data['orderDetails']->store_id;
