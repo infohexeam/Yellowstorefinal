@@ -3428,8 +3428,8 @@ class StoreController extends Controller
           $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
           $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
           foreach ($customerDevice as $cd) {
-            $title = 'Order deliverd';
-            $body = 'Your order with order id ' . $order_number . ' is deliverd..';
+            $title = 'Order delivered';
+            $body = 'Your order with order id ' . $order_number . ' is delivered..';
             $clickAction = "OrderListFragment";
                         $type = "order";
             $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
@@ -4100,8 +4100,8 @@ class StoreController extends Controller
           $customerDevice = Trn_CustomerDeviceToken::where('customer_id', $customer_id)->get();
           $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
           foreach ($customerDevice as $cd) {
-            $title = 'Order deliverd';
-            $body = 'Your order with order id ' . $order_number . ' is deliverd..';
+            $title = 'Order delivered';
+            $body = 'Your order with order id ' . $order_number . ' is delivered..';
             $clickAction = "OrderListFragment";
                         $type = "order";
             $data['response'] =  $this->customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);

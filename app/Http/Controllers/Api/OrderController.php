@@ -1837,7 +1837,7 @@ public function destroyDelivery_boy(Request $request)
 
                             foreach ($customerDevice as $cd) {
                                 $title = 'Order delivered';
-                                $body = "Your order " . $od->order_number . ' is deliverd..';
+                                $body = "Your order " . $od->order_number . ' is delivered..';
                                 $clickAction = "OrderListFragment";
                                 $type = "order";
                                 $data['response'] =  Helper::customerNotification($cd->customer_device_token, $title, $body,$clickAction,$type);
