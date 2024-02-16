@@ -227,7 +227,8 @@
                           </form>
                           </td>
                         <td>
-                         
+
+                        @if($product->product_type==1)
                             <button type="button"  data-toggle="modal" data-target="#___StockModal{{$product->product_id}}"  class="btn btn-sm @if(@$stock_count_sum == 0) btn-danger @else btn-success @endif"> 
                            {{@$stock_count_sum}} / {{@$stock_count_base_sum}}
                            
@@ -244,6 +245,9 @@
                              @endif
                           
                           </form>
+                          @else
+                            <button type="button" class="btn btn-sm  btn-info"><small>Not Applicable</small> </button>
+                          @endif
 
                         </td>
                      
