@@ -3117,7 +3117,7 @@ public function orderHistory(Request $request)
                             $serviceData->is_timeslot_product=$baseProductDetail->is_timeslot_based_product;
                             $serviceData->time_start=$baseProductDetail->timeslot_start_time;
                             $serviceData->time_end=$baseProductDetail->timeslot_end_time;
-                            $serviceData->product_base_image = '/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
+                            $serviceData->product_base_image ='is_timeslot_based_product'; //'/assets/uploads/products/base_product/base_image/' . @$baseProductDetail->product_base_image;
                             
                             if (@$baseProductDetail->product_name != @$serviceData->variant_name)
                                 $serviceData->product_name = @$baseProductDetail->product_name . " " . @$serviceData->productDetail->variant_name;
