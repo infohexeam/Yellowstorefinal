@@ -246,7 +246,7 @@
                           
                           </form>
                           @else
-                            <button type="button" class="btn btn-sm  btn-info"><small>Not Applicable</small> </button>
+                            <button type="button" class="btn btn-sm  btn-warning"><small>Not Applicable</small> </button>
                           @endif
 
                         </td>
