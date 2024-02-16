@@ -3001,6 +3001,10 @@ public function addToCartTest(Request $request)
                            
                         
                         if (isset($varProdu)) { 
+                            if($proData->product_type!=1)
+                            {
+                                $varProdu->stock_count=$request->quantity;
+                            }
                             if ($request->quantity <= $varProdu->stock_count) {  //quantity shud be less dan current stock
                
                             $totcountInCart = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
@@ -3084,7 +3088,7 @@ public function addToCartTest(Request $request)
 
                                 
                             } else {
-                                $data['message'] = 'Stock unavailableeeeeeeeeeeee'.$proData->product_type;
+                                $data['message'] = 'Stock unavailableeeeeeeeeeeee';
                                 $data['status'] = 3;
                                 return response($data);
                             }
