@@ -1189,11 +1189,12 @@ class StoreOrderController extends Controller
 
                         foreach ($request->product_variants as $value) {
                             $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
-                            $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
                             if($proData->product_type==2)
                             {
                                 $varProdu->stock_count=$value['quantity'];
                             }
+                            $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
+                            
                             if ($request->payment_type_id == 1) {
                                 if($stockDiffernece<0)
                                 {
