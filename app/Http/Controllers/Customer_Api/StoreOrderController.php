@@ -127,8 +127,8 @@ class StoreOrderController extends Controller
                     $noStockProducts = array();
                     $varProdu=Mst_store_product_varient::find($request->product_varient_id);
                     $proData = Mst_store_product::find($varProdu->product_id);
-                    return $proData;
-                    if($proData->is_timeslot_based_product==1)
+                    //return $proData;
+                    if($proData->is_timeslot_based_product=="1")
                     {
                         $currentTime = now();
                         $proDataFetch= Mst_store_product::where('product_id', $varProdu->product_id)
