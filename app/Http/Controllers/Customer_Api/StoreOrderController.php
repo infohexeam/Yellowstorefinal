@@ -125,6 +125,60 @@ class StoreOrderController extends Controller
 
                     }
                     $noStockProducts = array();
+                    $varProdu=Mst_store_product_varient::find($request->product_varient_id);
+                    $proData = Mst_store_product::find($varProdu->product_id);
+                    $start = $proData->timeslot_start_time; //init the start time
+                    $end = $proData->timeslot_end_time; //init the end time
+                            //return $start;
+                    $slot=[];
+                    if($request->time_slot)
+                    {
+                        $slot=Trn_StoreDeliveryTimeSlot::find($request->time_slot);
+                    }
+                    $pua=0;
+                    if($request->time_slot==0)
+                    {
+                        $currTime = date("G:i");
+                                
+                                //return $start;
+                        if($proData->is_timeslot_based_product==1)
+                        {
+                               
+                            if ($currTime<$start || $currTime>$end)
+                                {
+                                    $pua=$pua+1;
+                            
+                                }
+                                   
+                            
+                        }
+
+
+                    }
+                           
+                            if ($proData->is_timeslot_based_product==1)
+                            {
+                                if($slot)
+                                {
+                                if($slot->time_start<$start || $slot->time_end>$end)
+                                {
+                                    $pua=$pua+1;
+                                }
+                             }
+                            
+                               
+                            }
+                           
+                            if($pua>0)
+                            {
+                                $data['status'] = 3;
+                                $data['message'] = "PRODUCT IS UNAVAILABLE ON THE SELECTED TIMESLOT";
+                                
+                                return response($data);
+    
+                            }
+                       
+        
                     foreach ($request->product_variants as $value) {
                         $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                         $proData = Mst_store_product::find($varProdu->product_id);
@@ -237,7 +291,7 @@ class StoreOrderController extends Controller
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
 
-                        
+
                         if (!isset($value['discount_amount'])) {
                             $value['discount_amount'] = 0;
                         }
