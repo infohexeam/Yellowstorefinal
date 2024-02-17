@@ -1488,9 +1488,9 @@ function proTypeChanged(val)
     $("#min_stock").val(mStockValue); 
     $("div#service_type_id").hide();
     $("div#attSec").show();
-        $('#service_type_input').prop('selectedIndex',0);
-         $("#minReq").text($("#minReq").text().replace('', '*'));
-           $("#btnAddVar").show();
+   $('#service_type_input').prop('selectedIndex',0);
+   $("#minReq").text($("#minReq").text().replace('', '*'));
+   $("#btnAddVar").show();
 
  }
 }
