@@ -1409,6 +1409,7 @@ $(document).ready(function() {
 
 
 $(document).ready(function () {
+   
 
     
    var product_type = $('#product_type').val();
@@ -1431,6 +1432,8 @@ $(document).ready(function () {
       }
       else
       {
+          $("div#attSec").hide();
+           $("#btnAddVar").hide();
          
       }
    }
