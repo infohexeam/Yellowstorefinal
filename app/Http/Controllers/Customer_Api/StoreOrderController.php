@@ -152,6 +152,7 @@ class StoreOrderController extends Controller
                                    
                             
                         }
+                        return $pua;
 
 
                     }
@@ -160,14 +161,14 @@ class StoreOrderController extends Controller
                             {
                                 if($slot)
                                 {
-                                if($slot->time_start<$start || $slot->time_end>$end)
-                                {
-                                    $pua=$pua+1;
+                                    if($slot->time_start<$start || $slot->time_end>$end)
+                                    {
+                                        $pua=$pua+1;
+                                    }
                                 }
-                             }
-                            
-                               
+                           
                             }
+                            
                            
                             if($pua>0)
                             {
