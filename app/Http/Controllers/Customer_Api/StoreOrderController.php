@@ -168,7 +168,7 @@ class StoreOrderController extends Controller
                                    
                             
                         }
-                        return $pua;
+                        //return $pua;
 
 
                     }
