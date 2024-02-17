@@ -85,16 +85,16 @@ class ProductController extends Controller
 
             $base_varient_stock=0;
 
-            $productVariantData = Mst_store_product_varient::where('product_id', $productData->product_id)
+            $productVariantdata = Mst_store_product_varient::where('product_id', $productData->product_id)
             ->where('is_removed', 0)
             ->where('variant_status', 1);
 
             if ($productData->product_type == 1) {
-            $productVariantData->where('stock_count', '>', 0);
+            $productVariantdata->where('stock_count', '>', 0);
             }
 
-            $productVariantData = $productVariantData->get();
-                foreach ($productVartiantdata as $row) {
+            $productVariantdata = $productVariantdata->get();
+                foreach ($productVariantdata as $row) {
                     if($row->product_varient_base_image!=NULL)
                     {
                         $row->product_varient_base_image = '/assets/uploads/products/base_product/base_image/' . $row->product_varient_base_image;
