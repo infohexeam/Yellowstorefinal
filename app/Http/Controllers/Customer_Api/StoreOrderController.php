@@ -237,6 +237,7 @@ class StoreOrderController extends Controller
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
 
+                        
                         if (!isset($value['discount_amount'])) {
                             $value['discount_amount'] = 0;
                         }
@@ -3126,6 +3127,7 @@ public function orderHistory(Request $request)
                             $data['orderDetails']->serviceData->time_start=$baseProductDetail->timeslot_start_time;
                             $data['orderDetails']->serviceData->time_end=$baseProductDetail->timeslot_end_time;
                             $data['orderDetails']->serviceData->total_amount=$data['orderDetails']->product_total_amount;
+                            
                         }
 
                         $store_id = $data['orderDetails']->store_id;

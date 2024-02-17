@@ -2418,7 +2418,7 @@ public function storeVideoListNew(Request $request)
                 ->where('mst_store_products.store_id', $store_id)
                 
           
-                ->where('mst_store_products.product_type', 1)
+               // ->where('mst_store_products.product_type', 1)
                 // ->where('mst_store_products.is_removed',0)
                 // ->orderBy('mst_store_products.product_name','ASC')
                 //   ->orderBy('mst_store_product_varients.stock_count', 'ASC')
@@ -2433,6 +2433,8 @@ public function storeVideoListNew(Request $request)
                   'mst_store_products.product_status',
                   'mst_store_products.product_brand',
                   'mst_store_products.min_stock',
+                  'mst_store_products.product_type',
+                  'mst_store_products.service_type',
                   'mst_store_products.is_removed',
           
                   'mst_store_products.tax_id',

@@ -196,7 +196,7 @@
                                              @if($d->is_base_variant==1)
                                              Base Product
                                              @else
-                                             Varient Product
+                                             Variant Product
                                              @endif
                                              </td>
                                             <td> 
