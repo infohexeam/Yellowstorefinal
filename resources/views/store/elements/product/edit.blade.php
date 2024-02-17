@@ -1496,6 +1496,7 @@ function servTypeChanged(v){
       $(".proVariant").prop('required',false);
        $("div#minStockDiv").hide();
        $("#min_stock").prop('required',false); 
+        $("#btnAddVar").hide();
        $("#min_stock").val(0); 
    
 
@@ -1504,6 +1505,7 @@ function servTypeChanged(v){
       $("div#attSec").show();
       $(".proVariant").prop('required',false);
         $("div#minStockDiv").show();
+         $("#btnAddVar").show();
      $("#min_stock").prop('required',false); 
      $("#minReq").text($("#minReq").text().replace('*', ''));
        var mStockValue=$('#mStock').val();
