@@ -1469,6 +1469,7 @@ function proTypeChanged(val)
       else
       {
           $("div#attSec").hide();
+          $("div#attSec").remove();
          
       }
 
