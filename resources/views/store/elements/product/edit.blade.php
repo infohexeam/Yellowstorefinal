@@ -1452,7 +1452,7 @@ function proTypeChanged(val)
     $("#min_stock").prop('required',false); 
     $("#min_stock").val(0); 
     $("#service_type_input").prop('required',true);
-    $("div#attSec").hide();
+   
     //$('#service_type_input').prop('selectedIndex',0);
     var ser_type = $('#service_type_input').val();
       //alert(ser_type);
@@ -1468,6 +1468,7 @@ function proTypeChanged(val)
       }
       else
       {
+          $("div#attSec").hide();
          
       }
 
