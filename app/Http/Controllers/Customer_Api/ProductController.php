@@ -153,13 +153,18 @@ class ProductController extends Controller
                 }
                 $data['productVartiantdata'] = $productVartiantdata;
                 $variant_stock_count=Mst_store_product_varient::where('product_id',$productData->product_id)->where('is_removed',0)->where('stock_count','>',0)->where('variant_status',1)->sum('stock_count');
-                if($variant_stock_count<=0)
+                if($productData->product_type==1)
                 {
-                    $data['message'] = 'Product unavailable.Can not add this item to cart' ;
-                    $data['status'] = 0;
-                    return response($data);
+                        if($variant_stock_count<=0)
+                    {
+                        $data['message'] = 'Product unavailable.Can not add this item to cart' ;
+                        $data['status'] = 0;
+                        return response($data);
 
+                    }
+                    
                 }
+                
                 $productData->stock_count=$base_varient_stock;
 
                 $data['productData'] = $productData;
