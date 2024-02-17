@@ -596,6 +596,8 @@ class CouponController extends Controller
         'mst_store_products.product_brand',
         'mst_store_products.min_stock',
         'mst_store_products.is_removed',
+        'mst_store_products.product_type',
+        'mst_store_products.service_type',
 
         'mst_store_products.tax_id',
         'mst_store_product_varients.product_varient_id',

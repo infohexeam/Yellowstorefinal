@@ -139,6 +139,7 @@
                                             <th class="wd-15p">Category</th>
                                             <th class="wd-15p">Sub Category</th>
                                             <th class="wd-15p">Brand</th>
+                                            <th class="wd-15p">Produdct Type</th>
                                             <th class="wd-15p">Base/Variant Product</th>
                                             {{-- <th class="wd-15p">Minimum Stock</th> --}}
                                             <th class="wd-15p">Product Status</th>
@@ -192,6 +193,18 @@
                                                 
                                                 
                                                 </td>
+                                            <td>
+                                            @if($d->product_type==1)
+                                             Product
+                                            @else
+                                             Service
+                                                @if($d->service_type==1)
+                                                 Booking
+                                                @else
+                                                 Purchase
+                                                @endif
+                                            @endif
+                                            </td>
                                              <td>
                                              @if($d->is_base_variant==1)
                                              Base Product
