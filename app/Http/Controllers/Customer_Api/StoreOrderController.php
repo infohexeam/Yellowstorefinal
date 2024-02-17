@@ -156,7 +156,7 @@ class StoreOrderController extends Controller
                     {
                         $currTime = date("G:i");
                                 
-                        return $start;
+                        //return $start;
                         if($proData->is_timeslot_based_product==1)
                         {
                                
