@@ -127,6 +127,22 @@ class StoreOrderController extends Controller
                     $noStockProducts = array();
                     $varProdu=Mst_store_product_varient::find($request->product_varient_id);
                     $proData = Mst_store_product::find($varProdu->product_id);
+                    if($proData->is_timeslot_based_product==1)
+                    {
+                        $currentTime = now();
+                        $proDataFetch= Mst_store_product::where('product_id', $varProdu->product_id)
+                                ->where('timeslot_start_time', '<=', $currentTime)
+                                ->where('timeslot_end_time', '>=', $currentTime)
+                                ->exists();
+                        if(!$proDataFetch)
+                        {
+                            $data['status'] = 3;
+                            $data['message'] = "PRODUCT IS UNAVAILABLE ON THE SELECTED TIMESLOT";
+                            return response($data);
+
+                        }
+
+                    }
                     $start = $proData->timeslot_start_time; //init the start time
                     $end = $proData->timeslot_end_time; //init the end time
                             //return $start;
@@ -140,7 +156,7 @@ class StoreOrderController extends Controller
                     {
                         $currTime = date("G:i");
                                 
-                                //return $start;
+                        return $start;
                         if($proData->is_timeslot_based_product==1)
                         {
                                
