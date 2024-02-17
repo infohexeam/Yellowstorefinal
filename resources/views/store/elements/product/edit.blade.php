@@ -1490,7 +1490,7 @@ function proTypeChanged(val)
     $("div#attSec").show();
         $('#service_type_input').prop('selectedIndex',0);
          $("#minReq").text($("#minReq").text().replace('', '*'));
-           $("#btnAddVar").hide();
+           $("#btnAddVar").show();
 
  }
 }
