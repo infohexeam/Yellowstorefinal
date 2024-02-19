@@ -726,6 +726,24 @@ class ProductController extends Controller
                 }
 
                 // dd($varAv);
+                $data['productTypeInCart']='';
+                $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
+                if($firstCartData)
+                {
+                    $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                    if($prdctInCart)
+                    {
+                        if($prdctInCart->product_type==1)
+                        {
+                            $data['productTypeInCart']='normal';
+                        }
+                        if($prdctInCart->product_type==2)
+                        {
+                            $data['productTypeInCart']='service';
+                        }
+                    }
+
+                }
                 if ($request->customer_id == 0) {
                     $productData = Mst_store_product::with('categories')->join('mst_store_product_varients', 'mst_store_product_varients.product_id', '=', 'mst_store_products.product_id')
                         ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
