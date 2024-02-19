@@ -718,6 +718,7 @@ class OrderController extends Controller
                             $data['orderDetails']->serviceData->time_end=$baseProductDetail->timeslot_end_time;
                             $data['orderDetails']->serviceData->total_amount=$data['orderDetails']->product_total_amount;
                             $data['orderDetails']->serviceData->taxPercentage = $data['orderDetails']->service_tax_value;
+                            $data['orderDetails']->serviceData->discountAmount = $data['orderDetails']->service_discount_amount;
                             $tTax = 1 * (@$data['orderDetails']->product_total_amount * @$data['orderDetails']->service_tax_value/ (100 + @$data['orderDetails']->service_tax_value));
                             $data['orderDetails']->serviceData->gstAmount = number_format((float)$tTax, 2, '.', '');
                             $orgCost =  1 * (100 / (100 + @$data['orderDetails']->service_tax_value));
