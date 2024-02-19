@@ -1412,6 +1412,14 @@ public function destroyDelivery_boy(Request $request)
                             return response($data);
                     
                         }
+                        if($od->status_id==5)
+                        {
+                         
+                            $data['status'] = 0;
+                            $data['message'] = "Order is already Cancelled.Cannot proceed";
+                            return response($data);
+                    
+                        }
 
                         if (isset($request->status_id))
                             $orderdata2['order_note'] = $request->order_note;

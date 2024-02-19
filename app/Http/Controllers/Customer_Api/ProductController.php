@@ -5658,6 +5658,7 @@ class ProductController extends Controller
 
                     $data['recentlyVisitedProducts'] = [];
                     $data['purchasedProducts']  = [];
+                    $data['bookedProducts']=[];
 
 
 
@@ -6181,6 +6182,7 @@ class ProductController extends Controller
                         $PurproductDataz =  $PurproductDatas->values()->all();
 
                         $data['purchasedProducts'] = $PurproductDataz;
+                        $data['bookedProducts']=[];
                         // $dataPurchase = array();
                         foreach ($data['purchasedProducts'] as $offerProduct) {
 
