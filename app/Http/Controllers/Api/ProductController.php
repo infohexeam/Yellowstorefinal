@@ -460,7 +460,7 @@ class ProductController extends Controller
                                     ->orderBy('mst_store_products.product_id', 'DESC')
                                     ->where('mst_store_products.is_removed', 0)
 
-                                    ->select('mst_store_products.product_id', 'mst_store_products.product_cat_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id', 'mst_store_products.product_status','mst_store_products.show_in_home_screen','mst_store_products.is_product_listed_by_product');
+                                    ->select('mst_store_products.product_id', 'mst_store_products.product_cat_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id', 'mst_store_products.product_status','mst_store_products.show_in_home_screen','mst_store_products.is_product_listed_by_product','mst_store_products.product_type','mst_store_products.service_type');
 
 
 
