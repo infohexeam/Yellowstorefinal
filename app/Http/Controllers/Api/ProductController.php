@@ -502,7 +502,7 @@ class ProductController extends Controller
                                     ->where('mst_store_products.product_name', 'LIKE', "%{$request->product_name}%")
                                     ->where('mst_store_products.product_cat_id', $category_id)->where('mst_store_products.store_id', $store_id)->orderBy('mst_store_products.product_id', 'DESC')
                                     ->where('mst_store_products.is_removed', 0)
-                                    ->select('mst_store_products.product_id', 'mst_store_products.product_cat_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id', 'mst_store_products.product_status','mst_store_products.show_in_home_screen');
+                                    ->select('mst_store_products.product_id', 'mst_store_products.product_cat_id', 'mst_store_products.product_name', 'mst_store_products.product_code', 'mst_store_products.product_price', 'mst_store_products.product_price_offer', 'mst_store_products.product_base_image', 'mst_store_categories.category_name', 'mst_store_categories.category_id', 'mst_store_products.product_status','mst_store_products.show_in_home_screen','mst_store_products.product_type','mst_store_products.service_type');
 
 
                                 if (isset($request->page)) {
