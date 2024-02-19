@@ -193,7 +193,7 @@ class StoreOrderController extends Controller
                             if($pua>0)
                             {
                                 $start=$prdt->timeslot_start_time;
-                                $start=$prdt->timeslot_end_time;
+                                $end=$prdt->timeslot_end_time;
                                 $data['status'] = 3;
                                 $data['message'] = 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
                                 return response($data);
