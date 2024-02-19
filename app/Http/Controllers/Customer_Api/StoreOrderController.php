@@ -237,8 +237,12 @@ class StoreOrderController extends Controller
                     } else {
                         $orderNumberPrefix = 'ORDRYSTR';
                     }
-
-
+                    $productVarOlddata = Mst_store_product_varient::find($request->product_varient_id);
+                    $proDataZ = Mst_store_product::find($productVarOlddata->product_id);
+    
+                    $taxData = Mst_Tax::find($proDataZ->tax_id);
+                    $iTax = @$productVarOlddata->product_varient_offer_price * @$taxData->tax_value / (100 + @$taxData->tax_value);
+                    $iDis = @$productVarOlddata->product_varient_price - @$productVarOlddata->product_varient_offer_price;
                     $store_order = new Trn_store_order;
 
                     $store_order->service_order =  1;
@@ -277,7 +281,12 @@ class StoreOrderController extends Controller
 
                     if (isset($request->amount_reduced_by_coupon))
                         $store_order->amount_reduced_by_coupon =  $request->amount_reduced_by_coupon;
-
+                    $store_order->service_tax_id=$proDataZ->tax_id;
+                    $store_order->service_tax_value=$taxData->tax_value;
+                    $store_order->service_tax_amount=$iTax;
+                    $store_order->service_discount_amount=$iDis;
+                    $store_order->service_mrp=$productVarOlddata->product_varient_price;
+                    
                     $store_order->save();
                     $order_id = DB::getPdo()->lastInsertId();
 
@@ -3199,6 +3208,24 @@ public function orderHistory(Request $request)
                             $data['orderDetails']->serviceData->time_start=$baseProductDetail->timeslot_start_time;
                             $data['orderDetails']->serviceData->time_end=$baseProductDetail->timeslot_end_time;
                             $data['orderDetails']->serviceData->total_amount=$data['orderDetails']->product_total_amount;
+                            $data['orderDetails']->serviceData->taxPercentage = $data['orderDetails']->service_tax_value;
+                            $tTax = 1 * (@$data['orderDetails']->product_total_amount * @$data['orderDetails']->service_tax_value/ (100 + @$data['orderDetails']->service_tax_value));
+                            $data['orderDetails']->serviceData->gstAmount = number_format((float)$tTax, 2, '.', '');
+                            $orgCost =  1 * (100 / (100 + @$data['orderDetails']->service_tax_value));
+                            $data['orderDetails']->serviceData->orgCost = number_format((float)$orgCost, 2, '.', '');
+                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$data['orderDetails']->service_tax_id)->get();
+                            $stax = 0;
+
+
+                            foreach ($splitdata as $sd) {
+                                if (@$data['orderDetails']->service_tax_value == 0 || !isset($data['orderDetails']->service_tax_value))
+                                    @$data['orderDetails']->service_tax_value = 1;
+
+                                $stax = ($sd->split_tax_value * $tTax) / @$data['orderDetails']->service_tax_value;
+                                $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
+                            }
+
+                            $data['orderDetails']->serviceData->taxSplitups = $splitdata;
                             
                         }
 

@@ -713,6 +713,28 @@ class OrderController extends Controller
                             else
                                 $serviceData->product_name = @$baseProductDetail->product_name;
                             $data['orderDetails']->serviceData = $serviceData;
+                            $data['orderDetails']->serviceData->is_timeslot_product=$baseProductDetail->is_timeslot_based_product;
+                            $data['orderDetails']->serviceData->time_start=$baseProductDetail->timeslot_start_time;
+                            $data['orderDetails']->serviceData->time_end=$baseProductDetail->timeslot_end_time;
+                            $data['orderDetails']->serviceData->total_amount=$data['orderDetails']->product_total_amount;
+                            $data['orderDetails']->serviceData->taxPercentage = $data['orderDetails']->service_tax_value;
+                            $tTax = 1 * (@$data['orderDetails']->product_total_amount * @$data['orderDetails']->service_tax_value/ (100 + @$data['orderDetails']->service_tax_value));
+                            $data['orderDetails']->serviceData->gstAmount = number_format((float)$tTax, 2, '.', '');
+                            $orgCost =  1 * (100 / (100 + @$data['orderDetails']->service_tax_value));
+                            $data['orderDetails']->serviceData->orgCost = number_format((float)$orgCost, 2, '.', '');
+                            $splitdata = \DB::table('trn__tax_split_ups')->where('tax_id', @$data['orderDetails']->service_tax_id)->get();
+                            $stax = 0;
+
+
+                            foreach ($splitdata as $sd) {
+                                if (@$data['orderDetails']->service_tax_value == 0 || !isset($data['orderDetails']->service_tax_value))
+                                    @$data['orderDetails']->service_tax_value = 1;
+
+                                $stax = ($sd->split_tax_value * $tTax) / @$data['orderDetails']->service_tax_value;
+                                $sd->tax_split_value = number_format((float)$stax, 2, '.', '');
+                            }
+
+                            $data['orderDetails']->serviceData->taxSplitups = $splitdata;
                         }
 
 
