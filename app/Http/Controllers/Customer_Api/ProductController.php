@@ -4184,6 +4184,27 @@ class ProductController extends Controller
                 if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
                     $category_id = $request->category_id;
                     $store_id = $request->store_id;
+                    $data['productTypeInCart']='';
+                        $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
+                        if($firstCartData)
+                        {
+                            $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                            if($prdctInCart)
+                            {
+                                if($prdctInCart->product_type==1)
+                                {
+                                    $data['productTypeInCart']='normal';
+                                }
+                                if($prdctInCart->product_type==2)
+                                {
+                                    $data['productTypeInCart']='service';
+                                }
+                            }
+
+                        }
+
+                
+                    /////
                     $flag=Helper::checkStoreDeliveryHours($request->store_id);
                     $data['is_delivery_available']=$flag;
                     if($flag==1)
