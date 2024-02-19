@@ -139,7 +139,7 @@
                                             <th class="wd-15p">Category</th>
                                             <th class="wd-15p">Sub Category</th>
                                             <th class="wd-15p">Brand</th>
-                                            <th class="wd-15p">Produdct Type</th>
+                                            <th class="wd-15p">Product Type</th>
                                             <th class="wd-15p">Base/Variant Product</th>
                                             {{-- <th class="wd-15p">Minimum Stock</th> --}}
                                             <th class="wd-15p">Product Status</th>
@@ -199,9 +199,9 @@
                                             @else
                                              Service
                                                 @if($d->service_type==1)
-                                                 Booking
+                                                - Booking
                                                 @else
-                                                 Purchase
+                                                 - Purchase
                                                 @endif
                                             @endif
                                             </td>

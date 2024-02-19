@@ -131,14 +131,17 @@ class StoreOrderController extends Controller
                     if($proData->is_timeslot_based_product=="1")
                     {
                         $currentTime = now();
+                        $prdt=Mst_store_product::where('product_id', $varProdu->product_id)->first();
                         $proDataFetch= Mst_store_product::where('product_id', $varProdu->product_id)
                                 ->where('timeslot_start_time', '<=', $currentTime)
                                 ->where('timeslot_end_time', '>=', $currentTime)
                                 ->exists();
                         if(!$proDataFetch)
                         {
+                            $start=$prdt->timeslot_start_time;
+                            $start=$prdt->timeslot_end_time;
                             $data['status'] = 3;
-                            $data['message'] = "PRODUCT IS UNAVAILABLE ON THE SELECTED TIMESLOT";
+                            $data['message'] = "Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end))";
                             return response($data);
 
                         }
