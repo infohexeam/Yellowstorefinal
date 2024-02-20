@@ -115,9 +115,11 @@
                        Phone: {{@$order->customerAddress['phone']}}<br>
                                        
                   @else
+                @if(isset($order->customer['customer_address']))
                 {{@$order->customer['customer_address']}} <br>
                 Pincode: {{$order->customer['customer_pincode']}}<br>
                 Phone: {{@$order->customer['customer_mobile_number']}}<br>
+                @endif
                   @endif
                 @else
                   {{@$order->customer['customer_first_name']}} {{@$order->customer['customer_last_name']??''}} <br>
