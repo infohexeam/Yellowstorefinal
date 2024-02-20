@@ -141,7 +141,7 @@ use App\Helpers\Helper;
                      @endphp
                      @foreach ($orders as $order)
                      <tr>
-                        <td>{{ $i++ }}</td>
+                        <td>{{ ($orders->currentPage()-1) * $orders->perPage() + $loop->index + 1 }}</td>
                         <td>{{ $order->order_number}}
                         @if($order->order_item!=NULL)
                         
@@ -237,7 +237,7 @@ use App\Helpers\Helper;
                      @endforeach
                   </tbody>
                </table>
-               
+               {{ $orders->appends(request()->query())->links('custom_pagination') }}
             </div>
           
            @if (count($orders) == 0)
@@ -422,6 +422,7 @@ use App\Helpers\Helper;
 $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
+        paging:false,
         buttons: [
             {
                 extend: 'pdf',
