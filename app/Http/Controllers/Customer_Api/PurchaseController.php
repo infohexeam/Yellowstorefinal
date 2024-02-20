@@ -3451,6 +3451,7 @@ public function addToCartTest(Request $request)
                     $data['CurrentCartCount'] = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status','=',0)->count();
                 }else{
                     $data['CurrentCartCount'] = 0; 
+                    $data['productTypeInCart']='';
                 }                   
 
                 $data['status'] = 1;
