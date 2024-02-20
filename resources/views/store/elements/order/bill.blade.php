@@ -111,7 +111,7 @@
                        @endif
                        <br>
   
-                       Pincode: {{$order->customerAddress['pincode']}}<br>
+                       Pincode: {{@$order->customerAddress['pincode']}}<br>
                        Phone: {{@$order->customerAddress['phone']}}<br>
                                        
                   @else
