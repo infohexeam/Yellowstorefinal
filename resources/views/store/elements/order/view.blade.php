@@ -625,7 +625,7 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                    <tr>
                                       <td><strong>Service Tax Amount: </strong> </td> 
                                       <td> 
-                                       {{@$order->service_tax_amount}}
+                                       <i class="fa fa-inr"></i>{{@$order->service_tax_amount}}
                                          
                                           {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
                                             {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
