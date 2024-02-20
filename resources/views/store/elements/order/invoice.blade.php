@@ -140,8 +140,6 @@
                                        <td>Total</td>
                                     </tr>
                            </thead>
-               @if($order)
-               
                            <tbody>  
                                     @php
                                        $dis_amt = 0;
@@ -392,7 +390,6 @@
                         </table>
                      </div> 
                   </div>
-                  
                               {{-- <br>
                               <h5 class="mt-6 ml-4">Tax Split Ups</h5>
                               <div class="col-md-8">
