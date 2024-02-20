@@ -2847,11 +2847,11 @@ public function orderHistory(Request $request)
                     if($order->order_item->product->product_type==1)
                     {
 
-                       $order->orderProductType="Normal";
+                       $order->orderProductType="Order";
                     }
                     if($order->order_item->product->product_type==2)
                     {
-                        $order->orderProductType="Service";
+                        $order->orderProductType="Purchase";
                        
                     }
 
