@@ -3314,6 +3314,8 @@ class ProductController extends Controller
                     'mst_store_products.product_code',
                     'mst_store_products.product_name',
                     'mst_store_products.product_brand',
+                    'mst_store_products.product_type',
+                    'mst_store_products.service_type',
                     'mst_store_product_varients.product_varient_id',
                     'mst_store_product_varients.is_base_variant',
                     'mst_store_product_varients.variant_status',

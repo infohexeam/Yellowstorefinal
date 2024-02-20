@@ -124,7 +124,7 @@
                     </div>
 
                     
-                      <div class="col-md-6">
+                  <div class="col-md-6">
                      <div class="form-group">
                        <label class="form-label">Product Type *</label>
                         <select onchange="proTypeChanged(this.value)" name="product_type" required id="product_type" class="form-control"  >
