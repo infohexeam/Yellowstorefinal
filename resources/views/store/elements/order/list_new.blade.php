@@ -237,7 +237,7 @@ use App\Helpers\Helper;
                      @endforeach
                   </tbody>
                </table>
-               {{ $orders->appends(request()->query())->links('custom_pagination') }}
+               
             </div>
           
            @if (count($orders) == 0)
@@ -422,7 +422,6 @@ use App\Helpers\Helper;
 $(function(e) {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
-        paging:false,
         buttons: [
             {
                 extend: 'pdf',

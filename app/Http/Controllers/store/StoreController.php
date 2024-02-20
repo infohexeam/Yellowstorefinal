@@ -2653,7 +2653,7 @@ class StoreController extends Controller
     $store_id =   Auth::guard('store')->user()->store_id;
     $customer = Trn_store_customer::all();
 
-    $orders = Trn_store_order::with('order_item')->where('store_id', '=', $store_id)->orderBy('order_id', 'DESC')->paginate(10);
+    $orders = Trn_store_order::with('order_item')->where('store_id', '=', $store_id)->orderBy('order_id', 'DESC')->get();
     $status = Sys_store_order_status::all();
     $store = Mst_store::all();
     $product = Mst_store_product::where('store_id', '=', $store_id)->get();
@@ -2703,7 +2703,7 @@ class StoreController extends Controller
       if (isset($request->date_to)) {
         $query->whereDate('trn_store_orders.created_at', '<=', $a2);
       }
-      $orders = $query->orderBy('order_id', 'DESC')->paginate(10);
+      $orders = $query->orderBy('order_id', 'DESC')->get();
       // dd(DB::getQueryLog());
       return view('store.elements.order.list', compact('assign_delivery_boys', 'customer', 'orders', 'pageTitle', 'status', 'store', 'status', 'product', 'delivery_boys'));
     }
