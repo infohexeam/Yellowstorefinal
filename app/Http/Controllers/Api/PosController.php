@@ -491,6 +491,7 @@ class PosController extends Controller
 
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
+                        $stockCount=$productVarOlddata->stcok_count;
                         $negStock = -1 * abs($value['quantity']);
 
                         $sd = new Mst_StockDetail;
@@ -504,14 +505,7 @@ class PosController extends Controller
                         $taxData = Mst_Tax::find($product_detail->tax_id);
                        
                         Mst_store_product_varient::where('product_varient_id', '=', $value['product_varient_id'])->decrement('stock_count', $value['quantity']);
-                        $stockDiffernece=$productVarOlddata->stock_count-$value['quantity'];
-                        if($stockDiffernece==0)
-                        {
-                            DB::table('mst__stock_details')->where('product_varient_id', $value['product_varient_id'])->update(['created_at' => Carbon::now()]);
-                            $s = DB::table('mst_store_product_varients')->where('product_varient_id', $value['product_varient_id'])->pluck("stock_count");
-                            Db::table('empty_stock_log')->where('product_varient_id',$value['product_varient_id'])->delete();
-                            DB::table('empty_stock_log')->insert(['product_varient_id'=>$value['product_varient_id'],'created_time' => Carbon::now()]);
-                        }
+                       
 
                         if (!isset($value['discount_amount'])) {
                             $value['discount_amount'] = 0;
@@ -541,7 +535,17 @@ class PosController extends Controller
                             'created_at'         => Carbon::now(),
                             'updated_at'         => Carbon::now(),
                         ];
-                        Trn_store_order_item::insert($data2);
+                        if(Trn_store_order_item::insert($data2))
+                        {
+                            $stockDifference=$stockCount-$value['quantity'];
+                            if($stockDifference==0)
+                            {
+                                DB::table('mst__stock_details')->where('product_varient_id', $value['product_varient_id'])->update(['created_at' => Carbon::now()]);
+                                $s = DB::table('mst_store_product_varients')->where('product_varient_id', $value['product_varient_id'])->pluck("stock_count");
+                                Db::table('empty_stock_log')->where('product_varient_id',$value['product_varient_id'])->delete();
+                                DB::table('empty_stock_log')->insert(['product_varient_id'=>$value['product_varient_id'],'created_time' => Carbon::now()]);
+                            }
+                        }
                     }
 
                     $data['status'] = 1;
