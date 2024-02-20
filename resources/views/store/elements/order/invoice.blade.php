@@ -390,66 +390,7 @@
                         </table>
                      </div> 
                   </div>
-                    <tr>
-                                      <td><strong>Service Name: </strong> </td> 
-                                      <td> 
-                                       {{@$serviceVarDetail->variant_name}}
-                                         
-                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
-                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
-                                          @else
-                                            {{$serviceDetail->product_name}}
-                                          @endif --}}
-                                      </td>
-                                   </tr>
-                                    <tr>
-                                      <td><strong>Service MRP: </strong> </td> 
-                                      <td> 
-                                       <i class="fa fa-inr"></i>{{@$order->service_mrp}}
-                                         
-                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
-                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
-                                          @else
-                                            {{$serviceDetail->product_name}}
-                                          @endif --}}
-                                      </td>
-                                   </tr>
-                                   <tr>
-                                      <td><strong>Service Discount: </strong> </td> 
-                                      <td> 
-                                       <i class="fa fa-inr"></i>{{@$order->service_discount_amount}}
-                                         
-                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
-                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
-                                          @else
-                                            {{$serviceDetail->product_name}}
-                                          @endif --}}
-                                      </td>
-                                   </tr>
-                                    <tr>
-                                      <td><strong>Service Tax Percentage: </strong> </td> 
-                                      <td> 
-                                       {{@$order->service_tax_value}}
-                                         
-                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
-                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
-                                          @else
-                                            {{$serviceDetail->product_name}}
-                                          @endif --}}
-                                      </td>
-                                   </tr>
-                                   <tr>
-                                      <td><strong>Service Tax Amount: </strong> </td> 
-                                      <td> 
-                                       <i class="fa fa-inr"></i>{{@$order->service_tax_amount}}
-                                         
-                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
-                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
-                                          @else
-                                            {{$serviceDetail->product_name}}
-                                          @endif --}}
-                                      </td>
-                                   </tr>
+                  
                               {{-- <br>
                               <h5 class="mt-6 ml-4">Tax Split Ups</h5>
                               <div class="col-md-8">
