@@ -3984,6 +3984,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
                 if ($data['productDetails']  = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
                     // ->join('mst__taxes','mst_store_products.tax_id','=','mst__taxes.tax_id')
                     ->where('mst_store_products.store_id', $request->store_id)
+                    ->where('mst_store_products.product_type',1)
                     //->where('mst_store_products.product_status', 1)
                     ->where('mst_store_product_varients.stock_count', '>', 0)
                     ->orderBy('mst_store_products.product_id', 'DESC')
