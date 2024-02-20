@@ -391,6 +391,89 @@
 
                                  </tbody>
                         </table>
+                  @else
+                  @php
+                  @endphp
+                  <div class="col-md-12">
+                    <div class="card">
+                       <div class="card-body">
+                       Service Details
+                            <table class="table row table-borderless">
+                                <tbody class="col-lg-12 col-xl-6 p-0">
+                                    @php
+                                        $serviceVarDetail = \DB::table('mst_store_product_varients')->where('product_varient_id',@$order->product_varient_id)->first();
+                                        $serviceDetail = \DB::table('mst_store_products')->where('product_id',@$serviceVarDetail->product_id)->first();
+                                        $addCus = \DB::table('trn_customer_addresses')->where('customer_address_id',@$order->delivery_address)->first();
+
+                                    @endphp
+                                   <tr>
+                                      <td><strong>Service Name: </strong> </td> 
+                                      <td> 
+                                       {{@$serviceVarDetail->variant_name}}
+                                         
+                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
+                                          @else
+                                            {{$serviceDetail->product_name}}
+                                          @endif --}}
+                                      </td>
+                                   </tr>
+                                    <tr>
+                                      <td><strong>Service MRP: </strong> </td> 
+                                      <td> 
+                                       <i class="fa fa-inr"></i>{{@$order->service_mrp}}
+                                         
+                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
+                                          @else
+                                            {{$serviceDetail->product_name}}
+                                          @endif --}}
+                                      </td>
+                                   </tr>
+                                   <tr>
+                                      <td><strong>Service Discount: </strong> </td> 
+                                      <td> 
+                                       <i class="fa fa-inr"></i>{{@$order->service_discount_amount}}
+                                         
+                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
+                                          @else
+                                            {{$serviceDetail->product_name}}
+                                          @endif --}}
+                                      </td>
+                                   </tr>
+                                    <tr>
+                                      <td><strong>Service Tax Percentage: </strong> </td> 
+                                      <td> 
+                                       {{@$order->service_tax_value}}
+                                         
+                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
+                                          @else
+                                            {{$serviceDetail->product_name}}
+                                          @endif --}}
+                                      </td>
+                                   </tr>
+                                   <tr>
+                                      <td><strong>Service Tax Amount: </strong> </td> 
+                                      <td> 
+                                       <i class="fa fa-inr"></i>{{@$order->service_tax_amount}}
+                                         
+                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
+                                          @else
+                                            {{$serviceDetail->product_name}}
+                                          @endif --}}
+                                      </td>
+                                   </tr>
+                                   
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                   @endif
                      </div> 
                   </div>
