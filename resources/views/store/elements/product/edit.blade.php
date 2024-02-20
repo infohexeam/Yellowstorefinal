@@ -191,9 +191,8 @@
                      <div class="form-group">
                        <label class="form-label">Service Type *</label>
                         <select id="service_type_input" name="service_type"   onchange="servTypeChanged(this.value)"  class="form-control"  >
-                         <option value="" > Service Type </option>
-                         <option value="1" {{old('service_type',$product->service_type) == '1' ? 'selected':''}} > Booking Only</option>
-                         <option value="2" {{old('service_type',$product->service_type) == '2' ? 'selected':''}} > Purchase</option>
+                        <option  @if($product->service_type ==1) value="1"  @else value="2"  @endif > @if($product->service_type ==1) Booking Only @else Purchase @endif</option>
+                        
                          </select>
                      </div>
                   </div> 
