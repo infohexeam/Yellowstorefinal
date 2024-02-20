@@ -2187,6 +2187,7 @@ class StoreOrderController extends Controller
 
     private function customerNotification($device_id, $title, $body,$clickAction,$type)
     {
+        sleep(5);
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAA09gixf4:APA91bFiBdhtMnj2UBtqSQ9YlZ_uxvdOOOzE-otA9Ja2w0cFUpX230Xv0Yi87owPBlFDp1H02FWpv4m8azPsuMmeAmz0msoeF-1Cxx0iVpDSOjYBTCWxzUYT8tKTuUvLb08MDsRXHbgM';
         $fields = array(
@@ -2250,6 +2251,7 @@ class StoreOrderController extends Controller
 
     private function storeNotification($device_id, $title, $body,$clickAction,$type)
     {
+        sleep(5);
         $url = 'https://fcm.googleapis.com/fcm/send';
         $api_key = 'AAAAnXagbe8:APA91bEqMgI9Wb_psiCzKPNCQcoFt3W7RwG08oucA_UHwMjTBIbLyalZgMnigItD-0e8SDrWPfxHrT4g5zlfXHovUITXLuB32RdWp3abYyqJh2xIy_tAsGuPJJdnV5sNGxrnrrnExYYm';
         $fields = array(
