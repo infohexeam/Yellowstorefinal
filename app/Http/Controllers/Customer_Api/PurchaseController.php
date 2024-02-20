@@ -2834,6 +2834,7 @@ public function addToCartTest(Request $request)
                 if($pVar)
                 {
                     $prdctToInsert=Mst_store_product::find($pVar->product_id);
+                    $data['productTypeInCart']='';
                     if($prdctToInsert)
                     {
                         $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
@@ -2855,6 +2856,17 @@ public function addToCartTest(Request $request)
                                     $data['status'] = 30;
                                     $data['message'] = $msG;
                                     return response($data);
+
+                                }
+                                else{
+                                    if($prdctToInsert->product_type==1)
+                                    {
+                                     $data['productTypeInCart']='normal';
+                                    }
+                                    if($prdctToInsert->product_type==2)
+                                    {
+                                     $data['productTypeInCart']='service';
+                                    }
 
                                 }
                             }
