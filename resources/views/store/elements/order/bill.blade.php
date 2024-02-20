@@ -140,7 +140,7 @@
     </tr>
       <tr>
           <td colspan="2">
-          @if($order->service_booking_order!=1)
+          
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               
@@ -314,7 +314,6 @@
               @endforeach
   
           </table>
-          @endif
         </td>
     </tr>
     
