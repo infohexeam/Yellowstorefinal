@@ -112,10 +112,26 @@ class OrderController extends Controller
 
                 foreach ($data['orderDetails'] as $order) {
                     $customerData = Trn_store_customer::find($order->customer_id);
-                    /*if($order->order_item->product->product_type==1)
+                    if($order->order_item!=NULL)
                     {
-                       
-                    }*/
+                        if($order->order_item->product->product_type==1)
+                        {
+
+                           $order->orderProductType="Normal";
+                        }
+                        if($order->order_item->product->product_type==2)
+                        {
+                            $order->orderProductType="Service";
+                           
+                        }
+
+                    }
+                    else
+                    {
+                        $order->orderProductType="Booking Only";
+
+                    }
+                   
                     if ($order->order_type == 'POS') {
                         $order->customer_name = 'Store Customer';
                     } else {
