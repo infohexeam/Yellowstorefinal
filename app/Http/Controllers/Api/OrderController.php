@@ -79,7 +79,7 @@ class OrderController extends Controller
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $store_id = $request->store_id;
                 $order_not_seen=Trn_store_order::where('store_id', '=', $store_id)->whereNull('TEST')->orderBy('order_id', 'DESC')->update(['TEST'=>1]);
-                $query = Trn_store_order::select(
+                $query = Trn_store_order::with('order_item')->select(
                     'order_id',
                     'order_number',
                     'delivery_address',
@@ -112,6 +112,10 @@ class OrderController extends Controller
 
                 foreach ($data['orderDetails'] as $order) {
                     $customerData = Trn_store_customer::find($order->customer_id);
+                    /*if($order->order_item->product->product_type==1)
+                    {
+                       
+                    }*/
                     if ($order->order_type == 'POS') {
                         $order->customer_name = 'Store Customer';
                     } else {

@@ -2872,6 +2872,19 @@ public function addToCartTest(Request $request)
                             }
 
                         }
+                        else
+                        {
+                            if($prdctToInsert->product_type==1)
+                            {
+                                $data['productTypeInCart']='normal';
+                            }
+                            if($prdctToInsert->product_type==2)
+                            {
+                                $data['productTypeInCart']='service';
+                            }
+
+
+                        }
 
                     }
                 }
