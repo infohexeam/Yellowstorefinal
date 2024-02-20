@@ -136,15 +136,15 @@ class StoreOrderController extends Controller
                                 ->where('timeslot_start_time', '<=', $currentTime)
                                 ->where('timeslot_end_time', '>=', $currentTime)
                                 ->exists();
-                        if(!$proDataFetch)
-                        {
-                            $start=$prdt->timeslot_start_time;
-                            $start=$prdt->timeslot_end_time;
-                            $data['status'] = 3;
-                            $data['message'] = "Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end))";
-                            return response($data);
+                        // if(!$proDataFetch)
+                        // {
+                        //     $start=$prdt->timeslot_start_time;
+                        //     $end=$prdt->timeslot_end_time;
+                        //     $data['status'] = 3;
+                        //     $data['message'] = "Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end))";
+                        //     return response($data);
 
-                        }
+                        // }
 
                     }
                     $start = $proData->timeslot_start_time; //init the start time
@@ -1022,7 +1022,7 @@ class StoreOrderController extends Controller
                         }
                         $pua=0;
                         $remCount=0;
-                        ///$i_check=0;
+                        $i_check=0;
                         foreach ($request->product_variants as $value) {
                             $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                             $proData = Mst_store_product::find($varProdu->product_id);
