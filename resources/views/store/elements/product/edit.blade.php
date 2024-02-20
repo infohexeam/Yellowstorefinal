@@ -128,8 +128,9 @@
                      <div class="form-group">
                        <label class="form-label">Product Type *</label>
                         <select onchange="proTypeChanged(this.value)" name="product_type" required id="product_type" class="form-control"  >
-                              <option value="1" > Product</option>
-                              <option value="2" {{old('product_type',$product->product_type) == '2' ? 'selected':''}} > Service</option>
+                       
+                              <option  @if($product->product_type==1) value="1" @else value="2"  @endif> @if($product->product_type==1) Product @else Service @endif</option>
+                  
                            </select>
                      </div>
                   </div>
