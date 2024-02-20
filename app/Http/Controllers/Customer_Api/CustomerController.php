@@ -106,9 +106,9 @@ class CustomerController extends Controller
                                     $user = Trn_store_customer::find(auth()->guard('customer')->user()->customer_id);
 
                                     if (isset($request->device_token) && isset($request->device_type)) {
-                                        // Trn_CustomerDeviceToken::where('customer_id', auth()->guard('customer')->user()->customer_id)
-                                        //     //  ->where('customer_device_token',$request->device_token)
-                                        //     ->delete();
+                                        Trn_CustomerDeviceToken::where('customer_id', auth()->guard('customer')->user()->customer_id)
+                                            ->where('customer_device_token',$request->device_token)
+                                            ->delete();
 
                                         $cdt = new Trn_CustomerDeviceToken;
                                         $cdt->customer_id = auth()->guard('customer')->user()->customer_id;
