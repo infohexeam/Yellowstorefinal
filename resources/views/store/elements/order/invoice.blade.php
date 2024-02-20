@@ -143,6 +143,7 @@
                @if($order)
                 @if($order->service_booking_order != 1)
 
+                 
                            <tbody>  
                                     @php
                                        $dis_amt = 0;
@@ -390,7 +391,7 @@
 
 
                                  </tbody>
-            @endif
+                                 @endif
                         </table>
                      </div> 
                   </div>
