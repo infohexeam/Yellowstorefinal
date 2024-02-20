@@ -491,7 +491,6 @@ class PosController extends Controller
 
                     foreach ($request->product_variants as $value) {
                         $productVarOlddata = Mst_store_product_varient::find($value['product_varient_id']);
-                        $stockCount=$productVarOlddata->stcok_count;
                         $negStock = -1 * abs($value['quantity']);
 
                         $sd = new Mst_StockDetail;
@@ -537,14 +536,14 @@ class PosController extends Controller
                         ];
                         if(Trn_store_order_item::insert($data2))
                         {
-                            $stockDifference=$stockCount-$value['quantity'];
-                            if($stockDifference==0)
-                            {
-                                DB::table('mst__stock_details')->where('product_varient_id', $value['product_varient_id'])->update(['created_at' => Carbon::now()]);
-                                $s = DB::table('mst_store_product_varients')->where('product_varient_id', $value['product_varient_id'])->pluck("stock_count");
-                                Db::table('empty_stock_log')->where('product_varient_id',$value['product_varient_id'])->delete();
-                                DB::table('empty_stock_log')->insert(['product_varient_id'=>$value['product_varient_id'],'created_time' => Carbon::now()]);
-                            }
+                             $stockResult=$productVarOlddata->stock_count+$value['quantity'];
+                        if($stockResult==0)
+                        {
+                            DB::table('mst__stock_details')->where('product_varient_id', $value['product_varient_id'])->update(['created_at' => Carbon::now()]);
+                            $s = DB::table('mst_store_product_varients')->where('product_varient_id', $value['product_varient_id'])->pluck("stock_count");
+                            Db::table('empty_stock_log')->where('product_varient_id',$value['product_varient_id'])->delete();
+                            DB::table('empty_stock_log')->insert(['product_varient_id'=>$value['product_varient_id'],'created_time' => Carbon::now()]);
+                        }
                         }
                     }
 
