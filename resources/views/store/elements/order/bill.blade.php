@@ -90,7 +90,7 @@
                     @php 
                      $cAddr =  \DB::table('trn_customer_addresses')->where('customer_address_id',$order->delivery_address)->first();
                     @endphp
-                    {{$cAddr->name }}  <br> 
+                    {{@$cAddr->name }}  <br> 
                     
                       {{@$order->customerAddress['address']}} <br>
   
