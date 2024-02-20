@@ -132,10 +132,10 @@ class StoreOrderController extends Controller
                     {
                         $currentTime = now();
                         $prdt=Mst_store_product::where('product_id', $varProdu->product_id)->first();
-                        $proDataFetch= Mst_store_product::where('product_id', $varProdu->product_id)
-                                ->where('timeslot_start_time', '<=', $currentTime)
-                                ->where('timeslot_end_time', '>=', $currentTime)
-                                ->exists();
+                        // $proDataFetch= Mst_store_product::where('product_id', $varProdu->product_id)
+                        //         ->where('timeslot_start_time', '<=', $currentTime)
+                        //         ->where('timeslot_end_time', '>=', $currentTime)
+                        //         ->exists();
                         // if(!$proDataFetch)
                         // {
                         //     $start=$prdt->timeslot_start_time;
