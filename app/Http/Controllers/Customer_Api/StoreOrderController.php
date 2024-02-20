@@ -2785,7 +2785,7 @@ public function orderHistory(Request $request)
     try {
         if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
             $customer_id = $request->customer_id;
-            $query = Trn_store_order::select(
+            $query = Trn_store_order::with('order_item')->select(
                 'order_id',
                 'order_number',
                 'store_id',
@@ -2841,6 +2841,25 @@ public function orderHistory(Request $request)
                     $order->status_name = @$statusData->status;
                 } else {
                     $order->status_name = null;
+                }
+                if($order->order_item!=NULL)
+                {
+                    if($order->order_item->product->product_type==1)
+                    {
+
+                       $order->orderProductType="Normal";
+                    }
+                    if($order->order_item->product->product_type==2)
+                    {
+                        $order->orderProductType="Service";
+                       
+                    }
+
+                }
+                else
+                {
+                    $order->orderProductType="Booking Only";
+
                 }
 
                 $order->order_date = Carbon::parse($order->created_at)->format('d-m-Y');
