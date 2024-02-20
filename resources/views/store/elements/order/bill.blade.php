@@ -115,7 +115,7 @@
                        Phone: {{@$order->customerAddress['phone']}}<br>
                                        
                   @else
-                @if(isset(@$order->customer['customer_address']))
+                @if(@$order->customer['customer_address']!=NULL)
                 {{@$order->customer['customer_address']}} <br>
                 Pincode: {{$order->customer['customer_pincode']}}<br>
                 Phone: {{@$order->customer['customer_mobile_number']}}<br>
