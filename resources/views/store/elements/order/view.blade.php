@@ -623,6 +623,18 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                       </td>
                                    </tr>
                                    <tr>
+                                      <td><strong>Service Tax Amount: </strong> </td> 
+                                      <td> 
+                                       {{@$order->service_tax_amount}}
+                                         
+                                          {{-- @if($serviceDetail->product_name != $serviceVarDetail->variant_name)
+                                            {{$serviceDetail->product_name}} {{$serviceDetail->variant_name}}
+                                          @else
+                                            {{$serviceDetail->product_name}}
+                                          @endif --}}
+                                      </td>
+                                   </tr>
+                                   <tr>
                                       <td><strong>Customer Phone: </strong> </td> 
                                       <td>{{ @$order->customer->customer_mobile_number}} <br> 
                                       {{ @$addCus->phone }} </td>
