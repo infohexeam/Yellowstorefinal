@@ -124,6 +124,9 @@
             <br>
                   <div class="col-md-12">
                   <div class="table-responsive push">
+                   @if($order->service_booking_order != 1)
+
+                  
                         <table class="table table-bordered table-hover mb-0 text-nowrap">
                           <thead>
                                     <tr>
@@ -388,6 +391,7 @@
 
                                  </tbody>
                         </table>
+                  @endif
                      </div> 
                   </div>
                               {{-- <br>
