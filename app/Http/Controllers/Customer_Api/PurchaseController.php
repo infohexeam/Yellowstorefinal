@@ -3439,6 +3439,7 @@ public function addToCartTest(Request $request)
                         Trn_Cart::where('product_varient_id', $request->product_varient_id)
                             ->where('customer_id', $request->customer_id)
                             ->update(['remove_status' =>  1]); //1=deleted
+                            $data['productTypeInCart']='';
                     } else {
                         $cart = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id);
 
