@@ -3411,8 +3411,29 @@ public function addToCartTest(Request $request)
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
 
                 // echo "here";die;  
+                ///////////////////////////////////////////////
+                $data['productTypeInCart']='';
+                $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
+                if($firstCartData)
+                {
+                    $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                    if($prdctInCart)
+                    {
+                        if($prdctInCart->product_type==1)
+                        {
+                            $data['productTypeInCart']='normal';
+                        }
+                        if($prdctInCart->product_type==2)
+                        {
+                            $data['productTypeInCart']='service';
+                        }
+                    }
+
+                }
+                //////////////////////////////////////////
 
                 $cartData = Trn_Cart::where('product_varient_id', $request->product_varient_id)->where('customer_id', $request->customer_id)->first();
+
                 if (isset($cartData)) {
                     if ($request->quantity == 0) {
                         Trn_Cart::where('product_varient_id', $request->product_varient_id)

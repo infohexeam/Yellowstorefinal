@@ -94,6 +94,7 @@ class Trn_store_order extends Model
   }
   public function order_item()
   {
-    return $this->belongsTo('App\Models\admin\Trn_store_order_item', 'order_item_id', 'order_item_id');
+    return $this->belongsTo('App\Models\admin\Trn_store_order_item', 'order_id', 'order_id');
   }
+  
 }

@@ -1022,7 +1022,7 @@ class StoreOrderController extends Controller
                         }
                         $pua=0;
                         $remCount=0;
-    
+                        ///$i_check=0;
                         foreach ($request->product_variants as $value) {
                             $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                             $proData = Mst_store_product::find($varProdu->product_id);

@@ -142,7 +142,20 @@ use App\Helpers\Helper;
                      @foreach ($orders as $order)
                      <tr>
                         <td>{{ $i++ }}</td>
-                        <td>{{ $order->order_number}}</td>
+                        <td>{{ $order->order_number}}
+                        @if($order->order_item!=NULL)
+                        
+                          @if($order->order_item->product->product_type==1)
+                         <h6><span class="badge badge-success">Order</span></h6>
+                          @endif
+                          @if($order->order_item->product->product_type==2)
+                         <h6><span class="badge badge-info">Purchase</span></h6>
+                          @endif
+                       
+                        @else
+                       <h6><span class="badge badge-info">Booking Only</span></h6>
+                        @endif
+                        </td>
                         <td>
                            @if(!isset($order->customerAddress['name']))
                            {{ @$order->customer->customer_first_name}}
