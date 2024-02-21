@@ -286,7 +286,7 @@ function validatePassChange() {
     } else {
         document.getElementById('showmessage').style.color = 'red';
         document.getElementById('showmessage').innerHTML = 'passwords not matching';
-         $('#submit').attr('disabled', false);
+         $('#submit').attr('disabled', fasle);
     }
    }
    else
