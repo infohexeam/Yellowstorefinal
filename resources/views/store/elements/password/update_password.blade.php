@@ -111,7 +111,7 @@
 				 <div class="form-group">
 						<label class="form-label">Password Confirmation</label>
             <div class="password-show">
-					  <input onkeyup="validatePass()" id="confirm_password" type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
+					  <input onkeyup="validatePassChange()" id="confirm_password" type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
             <div class="password-show__toggle">
               <i class="fa fa-eye password-show_toggle_show-icon"></i>
               <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
@@ -253,7 +253,33 @@ function validatePass() {
     if (x == y) {
     document.getElementById('password').border.color = 'green';
     document.getElementById('confirm_password').border.color = 'green';
-        $('#submit').attr('disabled', false);
+    $('#submit').attr('disabled', false);
+
+
+    } else {
+        document.getElementById('showmessage').style.color = 'red';
+        document.getElementById('showmessage').innerHTML = 'passwords not matching';
+         $('#submit').attr('disabled', true);
+    }
+   }
+   else
+   {
+ $('#submit').attr('disabled', false);
+   }
+}
+function validatePassChange() {
+  var x = document.forms["myForm"]["password"].value;
+  var y = document.forms["myForm"]["confirm_password"].value;
+
+   document.getElementById('showmessage').innerHTML = '';
+   //alert(x,y);
+   
+   if(y != '')
+   {
+    if (x == y) {
+    document.getElementById('password').border.color = 'green';
+    document.getElementById('confirm_password').border.color = 'green';
+    $('#submit').attr('disabled', false);
 
 
     } else {
