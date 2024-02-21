@@ -272,6 +272,7 @@ class StoreController extends Controller
     $store_admin_id = Auth::guard('store')->user()->store_admin_id;
 
     $store = Mst_store::Find($store_id);
+    $store_admin=Trn_StoreAdmin::find($store_admin_id);
 
     $validator = Validator::make(
       $request->all(),
@@ -291,12 +292,12 @@ class StoreController extends Controller
       $data = $request->except('_token');
 
 
-      if (Hash::check($request->old_password, $store->password)) {
+      if (Hash::check($request->old_password, $store_admin->password)) {
         $data2 = [
           'password'      => Hash::make($request->password),
 
         ];
-        Mst_store::where('store_id', $store_id)->update($data2);
+        //Mst_store::where('store_id', $store_id)->update($data2);
         Trn_StoreAdmin::where('store_admin_id', $store_admin_id)->update($data2);
       } else {
         return redirect()->back()->with('errstatus', 'Old password incorrect.');
