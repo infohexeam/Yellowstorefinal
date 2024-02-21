@@ -524,6 +524,7 @@ class ProductController extends Controller
           $allowedfileExtension = ['jpg', 'png', 'jpeg',];
           $files = $request->file('product_image');
           $c = 1;
+          Trn_GlobalProductImage::where('global_product_id',$global_product_id)->delete();
           foreach ($files as $file) {
             $filename = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
