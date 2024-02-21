@@ -277,8 +277,7 @@ function validatePassChange() {
    if(y != '')
    {
     if (x == y) {
-      alert(x);
-      alert(y);
+      
     document.getElementById('password').border.color = 'green';
     document.getElementById('confirm_password').border.color = 'green';
     $('#submit').attr('disabled', false);
