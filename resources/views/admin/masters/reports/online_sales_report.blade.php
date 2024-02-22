@@ -143,7 +143,7 @@
                         
                             <div class="card-body">
                                 <div class="table-responsive">
-                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
+                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap">
                                       <thead>
                                          <tr>
                                             <th class="wd-15p">SL.No</th>
