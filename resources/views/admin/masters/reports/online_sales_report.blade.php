@@ -277,9 +277,12 @@
         paging: false, // Disable pagination
         buttons: [
             {
-                extend: 'pdf',
+                extend: 'pdfHtml5',
                 title: 'Online Sales Report',
                 footer: true,
+                 exportOptions: {
+                columns: ':visible' // Include all visible columns in PDF export
+            }
                
             },
             {
