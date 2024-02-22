@@ -187,7 +187,7 @@
                                             <td>{{ \Carbon\Carbon::parse($d->updated_time)->format('h:i:s')}}</td>
 
                                             {{-- <td>{{ $d->product_name }}</td> --}}
-                                            <td>{{ $d->variant_name }}{{ $d->prev_stock }}</td>
+                                            <td>{{ $d->variant_name }}</td>
                                             
                                              <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}}@endif</td>
                                             <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
