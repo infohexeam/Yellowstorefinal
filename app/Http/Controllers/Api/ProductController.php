@@ -3316,7 +3316,7 @@ class ProductController extends Controller
                     'mst_store_products.product_brand',
                     'mst_store_products.product_type',
                     'mst_store_products.service_type',
-                    'mst_store_products.sub_category_id as sb_id',
+                    'mst_store_products.sub_category_id',
                     'mst_store_product_varients.product_varient_id',
                     'mst_store_product_varients.is_base_variant',
                     'mst_store_product_varients.variant_status',
@@ -3325,7 +3325,7 @@ class ProductController extends Controller
                     'mst_store_agencies.agency_name',
                     'mst_store_categories.category_id',
                     'mst_store_categories.category_name',
-                    'mst__sub_categories.sub_category_id',
+                    
                     'mst__sub_categories.sub_category_name'
                 )
                     ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
