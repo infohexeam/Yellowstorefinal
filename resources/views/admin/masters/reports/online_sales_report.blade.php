@@ -279,6 +279,7 @@
             {
                 extend: 'pdfHtml5',
                 title: 'Online Sales Report',
+                 orientation: 'landscape', // Set orientation to landscape
                 footer: true,
                  exportOptions: {
                 columns: ':visible' // Include all visible columns in PDF export
