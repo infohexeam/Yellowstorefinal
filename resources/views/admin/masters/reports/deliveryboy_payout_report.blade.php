@@ -117,6 +117,7 @@
                                             <th class="wd-15p">Commission/Order</th>
                                              <th class="wd-15p">Previous Commission</th>
                                             <th class="wd-15p">Commission After order</th>
+                                             <th class="wd-15p">Delivery Date & Time</th>
 
                                            
                                             
@@ -181,6 +182,7 @@
                                             <td>{{ @$d->c_order??0.00 }}</td>
                                             <td>{{ @$d->previous_amount+@$d->c_month??0.00 }}</td>
                                             <td>{{ @$d->new_amount+@$d->c_month??0.00 }}</td>
+                                             <td>{{ @$d->delivery_date }} {{ @$d->delivery_time }}</td>
 
                                           
                                             
