@@ -3357,7 +3357,7 @@ class ProductController extends Controller
 
                 if (isset($request->sub_category_id)) {
         
-                    $dataRV = $dataRV->where('sb_id', '=', $request->sub_category_id);
+                    $dataRV = $dataRV->where('mst_store_products.sub_category_id', '=', $request->sub_category_id);
                 }
 
                 if (isset($request->agency_id)) {
