@@ -2436,6 +2436,7 @@ public function storeVideoListNew(Request $request)
                   'mst_store_products.product_type',
                   'mst_store_products.service_type',
                   'mst_store_products.is_removed',
+                  'mst_store_products.sub_category_id',
           
                   'mst_store_products.tax_id',
                   'mst_store_product_varients.product_varient_id',
@@ -2490,7 +2491,17 @@ public function storeVideoListNew(Request $request)
                 }
 
                 if (isset($request->sub_category_id)) {
-                    $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+                    if($request->sub_category_id!=0)
+                    {
+                      
+                        $inventoryData = $inventoryData->where('mst_store_products.sub_category_id', $request->sub_category_id);
+                    }
+                    else
+                    {
+                        $inventoryData = $inventoryData->where('mst_store_products.sub_category_id',0);
+
+                    }
+                    
                 }
 
 
