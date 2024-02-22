@@ -2628,6 +2628,7 @@ public function storeVideoListNew(Request $request)
                         'mst_store_products.product_status',
                         'mst_store_products.product_brand',
                         'mst_store_products.min_stock',
+                        'mst_store_products.sub_category_id',
 
                         'mst_store_products.tax_id',
                         'mst_store_product_varients.product_varient_id',
@@ -2679,7 +2680,7 @@ public function storeVideoListNew(Request $request)
                 }
 
                 if (isset($request->sub_category_id)) {
-                    $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+                    $inventoryData = $inventoryData->where('mst_store_products.sub_category_id', $request->sub_category_id);
                 }
                
 
@@ -2759,6 +2760,10 @@ public function storeVideoListNew(Request $request)
 
                 foreach($inventoryData as $da)
                 {
+                    if(is_null($da->sub_category_name))
+                    {
+                        $da->sub_category_name="Others";
+                    }
                     // if($da->stock_count==0)
                     // {
                     //     if($da->prev_stock>0)
