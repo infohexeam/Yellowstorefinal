@@ -1730,6 +1730,9 @@ class CouponController extends Controller
         'trn_store_orders.created_at',
         'trn_store_orders.amount_reduced_by_coupon',
         'trn_store_orders.order_type',
+        'trn_store_orders.delivery_date',
+        'trn_store_orders.delivery_time',
+
 
         'trn_store_customers.customer_id',
         'trn_store_customers.customer_first_name',
