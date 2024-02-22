@@ -2549,11 +2549,19 @@ public function storeVideoListNew(Request $request)
                         $inventoryData22 = $inventoryData22->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
                     }
                     $roWz = $inventoryData22->get();
+
                     $roWc = count($roWz);
                 }
 
 
+               foreach($inventoryDataa as $inventoryD)
+               {
+                if(is_null($inventoryD->sub_category_name))
+                {
+                    $inventoryD->sub_category_name='Others';
 
+                }
+               }
 
                 $inventoryDatasss = collect($inventoryDataa);
                 
