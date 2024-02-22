@@ -182,7 +182,7 @@
                                             <td>{{ @$d->c_order??0.00 }}</td>
                                             <td>{{ @$d->previous_amount+@$d->c_month??0.00 }}</td>
                                             <td>{{ @$d->new_amount+@$d->c_month??0.00 }}</td>
-                                             <td>{{ @$d->delivery_date }} {{ @$d->delivery_time }}</td>
+                                             <td>{{ @$d->delivery_date }},{{ @$d->delivery_time }}</td>
 
                                           
                                             
