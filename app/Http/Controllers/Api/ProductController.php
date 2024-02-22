@@ -3316,6 +3316,7 @@ class ProductController extends Controller
                     'mst_store_products.product_brand',
                     'mst_store_products.product_type',
                     'mst_store_products.service_type',
+                    'mst_store_products.sub_category_id as sb_id',
                     'mst_store_product_varients.product_varient_id',
                     'mst_store_product_varients.is_base_variant',
                     'mst_store_product_varients.variant_status',
@@ -3355,7 +3356,8 @@ class ProductController extends Controller
                 }
 
                 if (isset($request->sub_category_id)) {
-                    $dataRV = $dataRV->where('mst_store_products.sub_category_id', '=', $request->sub_category_id);
+        
+                    $dataRV = $dataRV->where('sb_id', '=', $request->sub_category_id);
                 }
 
                 if (isset($request->agency_id)) {
@@ -3387,6 +3389,8 @@ class ProductController extends Controller
 
 
                 foreach ($dataRV as $d) {
+                    if(is_null($d->sub_category_name))
+                        $d->sub_category_name = 'Others';
                     if (!isset($d->customer_last_name))
                         $d->customer_last_name = '';
                     if (!isset($d->customer_first_name))
