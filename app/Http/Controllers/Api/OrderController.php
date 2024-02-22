@@ -1916,13 +1916,13 @@ public function destroyDelivery_boy(Request $request)
                         }
 
                         if ($request->status_id == 5) {
-                            if($od->status_id==8)
+                            /*if($od->status_id==8)
                             {
                                 $data['status'] = 0;
                                 $data['message'] = "Order is already out for delivery.You cannot cancel this order ";
                                 return response($data);
         
-                            }
+                            }*/
                 if($od->reward_points_used_store!=NULL||$od->reward_points_used_store!=0.00)
                     {
                         $scr = new Trn_customer_reward;
