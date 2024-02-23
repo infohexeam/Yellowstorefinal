@@ -3208,7 +3208,25 @@ public function addToCartTest(Request $request)
         $data = array();
         try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-               
+                $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
+                $data['productTypeInCart']='';
+                if($firstCartData)
+                {
+                    $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                    if($prdctInCart)
+                    {
+                            if($prdctInCart->product_type==1)
+                            {
+                             $data['productTypeInCart']='normal';
+                            }
+                            if($prdctInCart->product_type==2)
+                            {
+                             $data['productTypeInCart']='service';
+                            }
+                    }
+
+                }
+                
                 if($request->cart_type)
                 {
                     if($request->cart_type=='quick')
