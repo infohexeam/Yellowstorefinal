@@ -3318,7 +3318,7 @@ public function addToCartTest(Request $request)
             }
         
             $data['status'] = 1;
-            $data['message'] = "Product added to cart";
+            $data['message'] = "Product has been added to cart";
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
