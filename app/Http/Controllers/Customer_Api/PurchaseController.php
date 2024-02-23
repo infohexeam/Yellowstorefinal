@@ -3317,7 +3317,8 @@ public function addToCartTest(Request $request)
                 $data['message'] = "Customer not found ";
             }
         
-
+            $data['status'] = 1;
+            $data['message'] = "Product added to cart";
             return response($data);
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
