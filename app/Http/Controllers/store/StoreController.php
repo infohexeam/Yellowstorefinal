@@ -5273,6 +5273,7 @@ class StoreController extends Controller
     foreach ($request->get('product_id') as $p_id) {
       //  echo "here";
       $productVarOlddata =  Mst_store_product_varient::find($pro_variant[$i]);
+      $stockCount=0;
       $product_detail = Mst_store_product::where('product_id', '=',$productVarOlddata->product_id)->first();
 
       
@@ -5324,6 +5325,14 @@ class StoreController extends Controller
 
 
       Trn_store_order_item::insert($data);
+      // $stockResult=$pvarData->stock_count+$value['quantity'];
+      if($stockCount==0)
+      {
+          DB::table('mst__stock_details')->where('product_varient_id', $pro_variant[$i])->update(['created_at' => Carbon::now()]);
+          $s = DB::table('mst_store_product_varients')->where('product_varient_id', $pro_variant[$i])->pluck("stock_count");
+          Db::table('empty_stock_log')->where('product_varient_id',$pro_variant[$i])->delete();
+          DB::table('empty_stock_log')->insert(['product_varient_id'=>$pro_variant[$i],'created_time' => Carbon::now()]);
+      }
 
       //  $order_item->save();
 
