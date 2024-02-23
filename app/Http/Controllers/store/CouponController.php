@@ -425,6 +425,7 @@ class CouponController extends Controller
         'mst_store_products.product_code',
         'mst_store_products.product_name',
         'mst_store_products.product_brand',
+        'mst_store_products.sub_category_id',
         'mst_store_product_varients.product_varient_id',
         'mst_store_product_varients.is_base_variant',
         'mst_store_product_varients.variant_status',
@@ -433,7 +434,6 @@ class CouponController extends Controller
         'mst_store_agencies.agency_name',
         'mst_store_categories.category_id',
         'mst_store_categories.category_name',
-        'mst__sub_categories.sub_category_id',
         'mst__sub_categories.sub_category_name'
     )
         ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
@@ -486,7 +486,7 @@ class CouponController extends Controller
           'mst_store_agencies.agency_name',
           'mst_store_categories.category_id',
           'mst_store_categories.category_name',
-          'mst__sub_categories.sub_category_id',
+          'mst_store_products.sub_category_id',
           'mst__sub_categories.sub_category_name'
       )
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
@@ -540,8 +540,24 @@ class CouponController extends Controller
         ->groupBy('trn__recently_visited_products.product_varient_id','trn__recently_visited_products.store_id','trn__recently_visited_products.customer_id', DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"))
         ->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->get();
         //dd($data);
+        foreach($data as $da)
+        {
+          if(is_null($da->sub_category_name))
+          {
+            $da->sub_category_name="Others";
+
+          }
+        }
         return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'dateto', 'datefrom', 'data', 'pageTitle'));
       }
+      foreach($data as $da)
+        {
+          if(is_null($da->sub_category_name))
+          {
+            $da->sub_category_name="Others";
+
+          }
+        }
 
       return view('store.elements.reports.product_report', compact('productVAriants', 'subCategories', 'categories', 'agencies', 'products', 'customers', 'data', 'pageTitle'));
     // } catch (\Exception $e) {
@@ -598,6 +614,7 @@ class CouponController extends Controller
         'mst_store_products.is_removed',
         'mst_store_products.product_type',
         'mst_store_products.service_type',
+        'mst_store_products.sub_category_id',
 
         'mst_store_products.tax_id',
         'mst_store_product_varients.product_varient_id',
@@ -654,7 +671,7 @@ class CouponController extends Controller
       }
 
       if (isset($request->sub_category_id)) {
-        $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+        $inventoryData = $inventoryData->where('mst_store_products.sub_category_id', $request->sub_category_id);
       }
     }
 
@@ -662,6 +679,14 @@ class CouponController extends Controller
     $inventoryData = $inventoryData->orderBy('product_varient_id','DESC')->get();
 
     //  dd($inventoryData);
+    foreach($inventoryData as $inventoryD)
+    {
+     if(is_null($inventoryD->sub_category_name))
+     {
+         $inventoryD->sub_category_name='Others';
+
+     }
+    }
 
     $inventoryData = collect($inventoryData);
     //$inventoryDatas = $inventoryData->unique('product_varient_id');
@@ -978,6 +1003,7 @@ class CouponController extends Controller
         'mst_store_products.product_status',
         'mst_store_products.product_brand',
         'mst_store_products.min_stock',
+        'mst_store_products.sub_category_id',
 
         'mst_store_products.tax_id',
         'mst_store_product_varients.product_varient_id',
@@ -1031,7 +1057,7 @@ class CouponController extends Controller
       }
 
       if (isset($request->sub_category_id)) {
-        $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+        $inventoryData = $inventoryData->where('mst_store_products.sub_category_id', $request->sub_category_id);
       }
     }
 
@@ -1061,6 +1087,11 @@ class CouponController extends Controller
     //  dd($inventoryData);
     foreach($inventoryData as $da)
     {
+      if(is_null($da->sub_category_name))
+          {
+            $da->sub_category_name="Others";
+
+          }
         // if($da->stock_count==0)
         // {
         //     if($da->prev_stock>0)
@@ -1158,6 +1189,7 @@ class CouponController extends Controller
         'mst_store_products.product_status',
         'mst_store_products.product_brand',
         'mst_store_products.min_stock',
+        'mst_store_products.sub_category_id',
 
         'mst_store_products.tax_id',
         'mst_store_product_varients.product_varient_id',
@@ -1211,13 +1243,20 @@ class CouponController extends Controller
       }
 
       if (isset($request->sub_category_id)) {
-        $inventoryData = $inventoryData->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+        $inventoryData = $inventoryData->where('mst_store_products.sub_category_id', $request->sub_category_id);
       }
     }
 
 
     $inventoryData = $inventoryData->get();
+    foreach($inventoryData as $da)
+    {
+      if(is_null($da->sub_category_name))
+          {
+            $da->sub_category_name="Others";
 
+          }
+    }
     //  dd($inventoryData);
 
     $inventoryData = collect($inventoryData);

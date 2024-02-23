@@ -99,6 +99,7 @@
                                                 <option value="">Sub Category</option>
                                                     @foreach($subCategories as $key)
                                                     <option {{request()->input('sub_category_id') == $key->sub_category_id ? 'selected':''}} value="{{$key->sub_category_id }}"> {{$key->sub_category_name }} </option>
+                                                    <option {{request()->input('sub_category_id') == 0 ? 'selected':''}} value="0"> Others</option>
                                                     @endforeach
                                                   </select>
                                             </div>
@@ -258,6 +259,7 @@ $(document).ready(function() {
                         {
                           $('#subCategoryId').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
                         });
+                         $('#subCategoryId').append('<option value="0">Others</option>');
                         
                         let subCategoryId = getUrlParameter('sub_category_id');
                         if ( typeof subCategoryId !== "undefined" && subCategoryId) {
