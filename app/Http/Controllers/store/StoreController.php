@@ -5412,7 +5412,8 @@ class StoreController extends Controller
       'delivery_end_time.after' => 'Delivery end time should be after delivery start time.'
   ]);
 
-  if ($validator->fails()) {
+  if ($validator->fails()) 
+  {
       return redirect()->back()->withErrors($validator)->withInput();
   }
 
@@ -5458,6 +5459,7 @@ class StoreController extends Controller
     {
       $future_delivery=1;
     }
+
     if(is_null($request->pay_delivery_status))
     {
        $pad=1;
@@ -5466,6 +5468,7 @@ class StoreController extends Controller
     {
       $pad=1;
     }
+    
     if(is_null($request->collect_store_status))
     {
        $css=0;

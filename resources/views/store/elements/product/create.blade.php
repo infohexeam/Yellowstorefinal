@@ -842,7 +842,7 @@ function proTypeChanged(val)
 var vc = 1;
 function servTypeChanged(v){
   if(vc != 1){
-    if(v == 1){
+    if(v == 3){
       $("div#attSec").hide();
       $("#btnAddVar").hide();
 
@@ -857,7 +857,16 @@ function servTypeChanged(v){
       $("div#attSec").show();
       $(".proVariant").prop('required',false);  // edited after call
       $("#btnAddVar").show();
-       $("div#minStockDiv").show();
+      if(v == 1)
+      {
+         $("div#minStockDiv").hide();
+
+      }
+      else
+      {
+         $("div#minStockDiv").show();
+      }
+      
      $("#min_stock").prop('required',false); 
      $("#minReq").text($("#minReq").text().replace('*', ''));
      $("#min_stock").val(null); 

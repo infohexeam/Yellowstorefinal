@@ -1432,8 +1432,8 @@ $(document).ready(function () {
       }
       else
       {
-          $("div#attSec").hide();
-           $("#btnAddVar").hide();
+          //$("div#attSec").hide();
+           //$("#btnAddVar").hide();
          
       }
    }
@@ -1471,7 +1471,7 @@ function proTypeChanged(val)
       }
       else
       {
-          $("div#attSec").hide();
+          $("div#attSec").show();
           
           //$("div#attSec").remove();
          
@@ -1497,7 +1497,7 @@ function proTypeChanged(val)
 var vc = 1;
 function servTypeChanged(v){
   if(vc != 1){
-    if(v == 1){
+    if(v == 3){
       $("div#attSec").hide();
 
       $(".proVariant").prop('required',false);
