@@ -2963,7 +2963,7 @@ public function addToCartTest(Request $request)
                                         $data['status'] = 3;
                                         return response($data);
                                     
-                                }
+                            }
 
                         
                             
@@ -3210,22 +3210,22 @@ public function addToCartTest(Request $request)
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
                 $data['productTypeInCart']='';
-                if($firstCartData)
-                {
-                    $prdctInCart=Mst_store_product::find($firstCartData->product_id);
-                    if($prdctInCart)
-                    {
-                            if($prdctInCart->product_type==1)
-                            {
-                             $data['productTypeInCart']='normal';
-                            }
-                            if($prdctInCart->product_type==2)
-                            {
-                             $data['productTypeInCart']='service';
-                            }
-                    }
+                // if($firstCartData)
+                // {
+                //     $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                //     if($prdctInCart)
+                //     {
+                //             if($prdctInCart->product_type==1)
+                //             {
+                //              $data['productTypeInCart']='normal';
+                //             }
+                //             if($prdctInCart->product_type==2)
+                //             {
+                //              $data['productTypeInCart']='service';
+                //             }
+                //     }
 
-                }
+                // }
                 
                 if($request->cart_type)
                 {
@@ -3259,6 +3259,19 @@ public function addToCartTest(Request $request)
                 
                     $proData = Mst_store_product::find($varProdu->product_id);
                     //if ($proData->service_type != 2) {
+
+                    //$prdctToInsert=Mst_store_product::find($varProdu->product_id);
+                    $data['productTypeInCart']='';
+                    if($proData->product_type==1)
+                    {
+                        $data['productTypeInCart']='normal';
+
+                    }
+                    if($proData->product_type==2)
+                    {
+                        $data['productTypeInCart']='service';
+                        
+                    }
                         
                         if (isset($varProdu)) {
                             
