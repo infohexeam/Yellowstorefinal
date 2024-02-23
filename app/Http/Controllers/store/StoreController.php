@@ -751,14 +751,14 @@ class StoreController extends Controller
           $data->ifsc = $request->ifsc;
           $data->account_holder = $request->account_holder;
           $data->update();
-          return redirect('store/home')->with('status', 'Profile updated successfully.');
+          return redirect()->back()->with('status', 'Profile updated successfully.');
         } else {
           //  return $response = ['status' => 0, 'message' => 'Unable to update bank details' . $jData->message];
           return redirect()->back()->with('errStatus', 'Unable to update bank details' . $jData->message);
         }
       }
 
-      return redirect('store/home')->with('status', 'Profile updated successfully.');
+      return redirect()->back()->with('status', 'Profile updated successfully.');
     } else {
 
       return redirect()->back()->withErrors($validator)->withInput();

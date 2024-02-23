@@ -3025,7 +3025,7 @@ public function addToCartTest(Request $request)
     
                            
                         
-                        if (isset($varProdu)) { 
+                    if (isset($varProdu)) { 
                             if($proData->product_type!=1)
                             {
                                 $varProdu->stock_count=$request->quantity;
