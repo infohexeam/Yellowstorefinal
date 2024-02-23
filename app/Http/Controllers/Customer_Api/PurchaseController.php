@@ -3274,7 +3274,8 @@ public function addToCartTest(Request $request)
                     }
                         
                         if (isset($varProdu)) {
-                            
+                        if($proData->product_type==1)
+                        {
                             if ($request->quantity <= $varProdu->stock_count) {
                                 
                                 //add the product to cart
@@ -3298,6 +3299,7 @@ public function addToCartTest(Request $request)
                                 $data['status'] = 3;
                                 return response($data);
                             }
+                        }
                         } else {
                         $data['message'] = 'Product not found';
                         $data['status'] = 2;
