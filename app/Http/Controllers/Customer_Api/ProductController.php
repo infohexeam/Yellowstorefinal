@@ -7915,7 +7915,7 @@ class ProductController extends Controller
             }
             $storeDatas = Trn_StoreAdmin::where('store_id', $store_id)->where('role_id', 0)->first();
             $storeDevice = Trn_StoreDeviceToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
-           // $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
+            $storeWeb = Trn_StoreWebToken::where('store_admin_id', $storeDatas->store_admin_id)->where('store_id', $store_id)->get();
 
             foreach ($storeDevice as $sd) {
                 $title = 'Product Enquiry Received';
@@ -7925,13 +7925,19 @@ class ProductController extends Controller
                 $data['responseEnquiryStore'] =  $this->storeNotification($sd->store_device_token, $title, $body,$clickAction,$type);
             }
 
-            // foreach ($storeWeb as $sw) {
-            //     $title = 'Dispute raised';
-            //     $body = 'New dispute raised with order id ' . $orderdatas->order_number;
-            //     $clickAction = "OrderListFragment";
-            //     $type = "order";
-            //     $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
-            // }
+            foreach ($storeWeb as $sw) {
+                $title = 'Product Enquiry Received';
+                $body = 'A product enquiry has been received from '.$customer->customer_first_name.' '.$customer->customer_last_name.' for '.$product_variant->variant_name;
+                $clickAction = "EnquiryListsFragment";
+                $type = "enquiry";
+                $data['responseEnquiryStoreWeb'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+                ///////////////////////////////////////////////////
+                // $title = 'Dispute raised';
+                // $body = 'New dispute raised with order id ' . $orderdatas->order_number;
+                // $clickAction = "OrderListFragment";
+                // $type = "order";
+                // $data['response'] =  Helper::storeNotifyWeb($sw->store_web_token, $title, $body,$clickAction,$type);
+            }
     
             $enquiry->store_id = $store_id;
             $enquiry->save();
