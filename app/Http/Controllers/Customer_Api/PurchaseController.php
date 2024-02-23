@@ -3315,11 +3315,12 @@ public function addToCartTest(Request $request)
             } else {
                 $data['status'] = 3;
                 $data['message'] = "Customer not found ";
+                return response($data);
             }
         
             $data['status'] = 1;
             $data['message'] = "Product has been added to cart";
-            return response($data);
+           
         } catch (\Exception $e) {
             $response = ['status' => '0', 'message' => $e->getMessage()];
             return response($response);
