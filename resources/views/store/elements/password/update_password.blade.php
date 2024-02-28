@@ -146,7 +146,7 @@
         });
     });
 
-    function checkPasswordComplexity(pwd) {
+    function checkPasswordComplexity(pwd, elementId) {
         var re = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
 
         if (pwd !== '') {
@@ -185,10 +185,10 @@
         if (y !== '') {
             if (x === y) {
                 $('#password, #confirm_password').css('border-color', 'green');
-                validatePass();
+                checkPasswordComplexity(y, 'confirm_password'); // Check complexity for confirmation password
             } else {
                 $('#showmessage').css('color', 'red').html('Passwords not matching');
-                $('#submit').prop('disabled', true); // Added line
+                $('#submit').prop('disabled', true); // Disable submit if passwords don't match
             }
         } else {
             validatePass();
@@ -227,6 +227,7 @@
         }
     }
 </script>
+
 
 
 @endsection
