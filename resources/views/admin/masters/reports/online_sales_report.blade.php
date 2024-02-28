@@ -287,9 +287,9 @@ $(document).ready(function() {
                 customize: function(doc) {
                     // Dynamically adjust column widths based on content
                     var colWidths = [];
-                    $(doc.content[1].table.body[0]).each(function() {
-                        $(this).find('td').each(function(index, cell) {
-                            colWidths[index] = Math.max(colWidths[index] || 0, doc.getStringUnitWidth(cell.textContent || cell.innerText));
+                    doc.content[1].table.body.forEach(function(row) {
+                        row.forEach(function(cell, index) {
+                            colWidths[index] = Math.max(colWidths[index] || 0, doc.widths && doc.widths[index] || 0, doc.getStringUnitWidth(cell.content || cell.text || ''));
                         });
                     });
                     doc.content[1].table.widths = colWidths.map(function(width) { return width * 1.1; }); // Increase width slightly
@@ -304,6 +304,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
 
 
 
