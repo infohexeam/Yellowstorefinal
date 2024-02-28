@@ -221,7 +221,9 @@ $(document).ready(function() {
 
         @foreach($agencies as $key)
             if (!excludedAgencyIds.includes({{$key->agency_id}})) {
+               @if(!in_array($key->agency_id,$linked_agency_ids))
                 options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
+               @endif
             }
         @endforeach
         // Append input box
