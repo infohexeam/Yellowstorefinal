@@ -146,16 +146,16 @@ $(document).ready(function() {
     var add_button = $("#addAgency"); // Add button ID
     var x = 1; // Initial text box count
 
-    // Function to get array of excluded agency IDs
-    function getExcludedAgencyIds() {
-        var excludedAgencyIds = [];
+    // Function to get array of already selected agency IDs
+    function getSelectedAgencyIds() {
+        var selectedAgencyIds = [];
         $('select[name="agency_id[]"]').each(function() {
             var selectedAgencyId = $(this).val();
             if (selectedAgencyId != '') {
-                excludedAgencyIds.push(parseInt(selectedAgencyId));
+                selectedAgencyIds.push(parseInt(selectedAgencyId));
             }
         });
-        return excludedAgencyIds;
+        return selectedAgencyIds;
     }
 
     $(add_button).click(function(e) { // On add input button click
@@ -163,8 +163,11 @@ $(document).ready(function() {
         // Max input box allowed
         x++; // Text box increment
         var options = '<option value=""> Select Agency</option>';
-        // Generate options excluding already selected agencies
-        var excludedAgencyIds = getExcludedAgencyIds();
+        // Generate options excluding already linked and already selected agencies
+        var linkedAgencyIds = {!! json_encode($linked_agency_ids) !!};
+        var selectedAgencyIds = getSelectedAgencyIds();
+        var excludedAgencyIds = linkedAgencyIds.concat(selectedAgencyIds);
+
         @foreach($agencies as $key)
             if (!excludedAgencyIds.includes({{$key->agency_id}})) {
                 options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
@@ -178,18 +181,8 @@ $(document).ready(function() {
         e.preventDefault();
         $(this).parent('div').remove();
         x--;
-        // Update options in the first row dropdown
-        var options = '<option value=""> Select Agency</option>';
-        var excludedAgencyIds = getExcludedAgencyIds();
-        @foreach($agencies as $key)
-            if (!excludedAgencyIds.includes({{$key->agency_id}})) {
-                options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
-            }
-        @endforeach
-        $('select[name="agency_id[]"]').eq(0).html(options);
     });
 });
-
 
 
 
