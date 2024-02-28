@@ -182,7 +182,8 @@
         $(this).parent('div').remove();
         x--;
     });
-}); newww*/
+}); 
+*/
 $(document).ready(function() {
     var wrapper = $("#agency"); // Fields wrapper
     var add_button = $("#addAgency"); // Add button ID
@@ -200,18 +201,11 @@ $(document).ready(function() {
         return selectedAgencyIds;
     }
 
-    function updateFirstRowDropdown() {
+    // Update the first dropdown to show only the selected value
+    function updateFirstDropdown() {
+        var selectedAgencyId = $('select[name="agency_id[]"]').eq(0).val();
         var options = '<option value=""> Select Agency</option>';
-        var linkedAgencyIds = {!! json_encode($linked_agency_ids) !!};
-        var selectedAgencyIds = getSelectedAgencyIds();
-        var excludedAgencyIds = linkedAgencyIds.concat(selectedAgencyIds);
-
-        @foreach($agencies as $key)
-            if (!excludedAgencyIds.includes({{$key->agency_id}})) {
-                options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
-            }
-        @endforeach
-
+        options += '<option selected value="' + selectedAgencyId + '">' + $('select[name="agency_id[]"]').eq(0).find(':selected').text() + '</option>';
         $('select[name="agency_id[]"]').eq(0).html(options);
     }
 
@@ -233,8 +227,8 @@ $(document).ready(function() {
         // Append input box
         $(wrapper).append('<div> <br> <label class="form-label">Agencies </label> <select name="agency_id[]" required="" class="form-control"  >' + options + '</select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>');
 
-        // Update options in the first row dropdown
-        updateFirstRowDropdown();
+        // Update the first dropdown to show only the selected value
+        updateFirstDropdown();
     });
 
     $(wrapper).on("click", ".remove_field", function(e) { // User click on remove text
@@ -242,10 +236,11 @@ $(document).ready(function() {
         $(this).parent('div').remove();
         x--;
 
-        // Update options in the first row dropdown
-        updateFirstRowDropdown();
+        // Update the first dropdown to show only the selected value
+        updateFirstDropdown();
     });
 });
+
 
 
 
