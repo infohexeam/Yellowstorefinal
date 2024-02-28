@@ -141,7 +141,7 @@
     e.preventDefault(); $(this).parent('div').remove(); x--;
   })
 });*/
-$(document).ready(function() {
+/*$(document).ready(function() {
     var wrapper = $("#agency"); // Fields wrapper
     var add_button = $("#addAgency"); // Add button ID
     var x = 1; // Initial text box count
@@ -182,7 +182,71 @@ $(document).ready(function() {
         $(this).parent('div').remove();
         x--;
     });
+}); newww*/
+$(document).ready(function() {
+    var wrapper = $("#agency"); // Fields wrapper
+    var add_button = $("#addAgency"); // Add button ID
+    var x = 1; // Initial text box count
+
+    // Function to get array of already selected agency IDs
+    function getSelectedAgencyIds() {
+        var selectedAgencyIds = [];
+        $('select[name="agency_id[]"]').each(function() {
+            var selectedAgencyId = $(this).val();
+            if (selectedAgencyId != '') {
+                selectedAgencyIds.push(parseInt(selectedAgencyId));
+            }
+        });
+        return selectedAgencyIds;
+    }
+
+    function updateFirstRowDropdown() {
+        var options = '<option value=""> Select Agency</option>';
+        var linkedAgencyIds = {!! json_encode($linked_agency_ids) !!};
+        var selectedAgencyIds = getSelectedAgencyIds();
+        var excludedAgencyIds = linkedAgencyIds.concat(selectedAgencyIds);
+
+        @foreach($agencies as $key)
+            if (!excludedAgencyIds.includes({{$key->agency_id}})) {
+                options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
+            }
+        @endforeach
+
+        $('select[name="agency_id[]"]').eq(0).html(options);
+    }
+
+    $(add_button).click(function(e) { // On add input button click
+        e.preventDefault();
+        // Max input box allowed
+        x++; // Text box increment
+        var options = '<option value=""> Select Agency</option>';
+        // Generate options excluding already linked and already selected agencies
+        var linkedAgencyIds = {!! json_encode($linked_agency_ids) !!};
+        var selectedAgencyIds = getSelectedAgencyIds();
+        var excludedAgencyIds = linkedAgencyIds.concat(selectedAgencyIds);
+
+        @foreach($agencies as $key)
+            if (!excludedAgencyIds.includes({{$key->agency_id}})) {
+                options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
+            }
+        @endforeach
+        // Append input box
+        $(wrapper).append('<div> <br> <label class="form-label">Agencies </label> <select name="agency_id[]" required="" class="form-control"  >' + options + '</select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>');
+
+        // Update options in the first row dropdown
+        updateFirstRowDropdown();
+    });
+
+    $(wrapper).on("click", ".remove_field", function(e) { // User click on remove text
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+
+        // Update options in the first row dropdown
+        updateFirstRowDropdown();
+    });
 });
+
 
 
 
