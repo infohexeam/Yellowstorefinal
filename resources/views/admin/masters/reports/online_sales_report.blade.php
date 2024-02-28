@@ -285,8 +285,14 @@ $(document).ready(function() {
                     columns: ':visible' // Include all visible columns in PDF export
                 },
                 customize: function(doc) {
-                    // Manually specify column widths to prevent truncation
-                    doc.content[1].table.widths = [30,40, 60, 60, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
+                    // Dynamically adjust column widths based on content
+                    var colWidths = [];
+                    $(doc.content[1].table.body[0]).each(function() {
+                        $(this).find('td').each(function(index, cell) {
+                            colWidths[index] = Math.max(colWidths[index] || 0, doc.getStringUnitWidth(cell.textContent || cell.innerText));
+                        });
+                    });
+                    doc.content[1].table.widths = colWidths.map(function(width) { return width * 1.1; }); // Increase width slightly
                 }
             },
             {
@@ -298,6 +304,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
 
 
 
