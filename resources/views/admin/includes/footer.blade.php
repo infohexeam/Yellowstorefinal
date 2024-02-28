@@ -104,6 +104,9 @@
 <script src="{{URL::to('/assets/js/vfs_fonts.js')}}"></script>
 <script src="{{URL::to('/assets/js/buttons.html5.min.js')}}"></script>
 <script src="{{URL::to('/assets/js/buttons.print.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<!-- jsPDF AutoTable plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
 <script type="text/javascript">
    $('#err_msg').fadeOut(5000);
 
