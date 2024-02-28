@@ -271,7 +271,7 @@
 
 
 <script>
-    $(function(e) {
+  $(function(e) {
     $('#exampletable').DataTable({
         dom: 'Bfrtip',
         paging: false, // Disable pagination
@@ -282,8 +282,16 @@
                 orientation: 'landscape', // Set orientation to landscape
                 footer: true,
                 customize: function(doc) {
-                    // Adjust table layout to fit the content
-                    doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                    // Use jsPDF AutoTable plugin for advanced PDF customization
+                    var table = doc.autoTable(document.getElementById('exampletable'), {
+                        styles: { overflow: 'linebreak' },
+                        columnStyles: { 0: { columnWidth: 'auto' } }, // Adjust column width
+                        margin: { top: 60 } // Adjust margin
+                    });
+
+                    // Add page numbers
+                    var totalPagesExp = "{total_pages_count_string}";
+                    doc.text(totalPagesExp, 500, 10, null, null, 'right');
                 },
                 exportOptions: {
                     columns: ':visible' // Include all visible columns in PDF export
