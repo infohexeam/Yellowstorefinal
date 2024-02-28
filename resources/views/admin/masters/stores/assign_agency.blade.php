@@ -225,7 +225,8 @@ $(document).ready(function() {
             }
         @endforeach
         // Append input box
-        $(wrapper).append('<div> <br> <label class="form-label">Agencies </label> <select name="agency_id[]" required="" class="form-control"  >' + options + '</select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>');
+        var newDropdown = '<div> <br> <label class="form-label">Agencies </label> <select name="agency_id[]" required="" class="form-control"  >' + options + '</select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>';
+        $(wrapper).append(newDropdown);
 
         // Update the first dropdown to show only the selected value
         updateFirstDropdown();
@@ -240,6 +241,7 @@ $(document).ready(function() {
         updateFirstDropdown();
     });
 });
+
 
 
 
