@@ -284,8 +284,8 @@ $(document).ready(function() {
                     columns: ':visible' // Include all visible columns in PDF export
                 },
                 customize: function(doc) {
-                    // Adjust column widths to prevent truncation
-                    doc.content[1].table.widths = Array(doc.content[1].table.body[0].length).fill('*');
+                    // Manually specify column widths to prevent truncation
+                    doc.content[1].table.widths = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
                 }
             },
             {
@@ -297,6 +297,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
 
 
 
