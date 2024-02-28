@@ -120,7 +120,7 @@
 </script>
 <script type="text/javascript">
 
-$(document).ready(function() {
+/*$(document).ready(function() {
    var wrapper      = $("#agency"); //Fields wrapper
   var add_button      = $("#addAgency"); //Add button ID
   
@@ -140,7 +140,42 @@ $(document).ready(function() {
   $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
     e.preventDefault(); $(this).parent('div').remove(); x--;
   })
+});*/
+$(document).ready(function() {
+    var wrapper = $("#agency"); // Fields wrapper
+    var add_button = $("#addAgency"); // Add button ID
+    var x = 1; // Initial text box count
+
+    $(add_button).click(function(e) { // On add input button click
+        e.preventDefault();
+        // Max input box allowed
+        x++; // Text box increment
+        var options = '<option value=""> Select Agency</option>';
+        // Generate options excluding already selected agencies
+        @foreach($agencies as $key)
+            var alreadyLinked = false;
+            var agencyId = {{$key->agency_id}};
+            @foreach($linked_agencies as $data)
+                if (agencyId == {{$data->agency_id}}) {
+                    alreadyLinked = true;
+                    break; // Exit the loop if already linked
+                }
+            @endforeach
+            if (!alreadyLinked) {
+                options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
+            }
+        @endforeach
+        // Append input box
+        $(wrapper).append('<div> <br> <label class="form-label">Agencies </label> <select name="agency_id[]" required="" class="form-control"  >' + options + '</select><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>');
+    });
+
+    $(wrapper).on("click", ".remove_field", function(e) { // User click on remove text
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    });
 });
+
 
 
 </script>
