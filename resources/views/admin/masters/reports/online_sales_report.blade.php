@@ -285,7 +285,7 @@ $(document).ready(function() {
                 },
                 customize: function(doc) {
                     // Manually specify column widths to prevent truncation
-                    doc.content[1].table.widths = [30,40, 60, 60, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
+                    doc.content[1].table.widths = [30,40, 60, 60, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 20, 20, 20, 20, 50, 50];
                 }
             },
             {
