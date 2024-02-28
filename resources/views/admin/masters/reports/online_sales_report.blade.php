@@ -271,32 +271,29 @@
 
 
 <script>
-    $(function(e) {
-	 $('#exampletable').DataTable( {
+$(document).ready(function() {
+    $('#exampletable').DataTable({
         dom: 'Bfrtip',
-        paging: false, // Disable pagination
         buttons: [
             {
                 extend: 'pdfHtml5',
                 title: 'Online Sales Report',
-                 orientation: 'landscape', // Set orientation to landscape
+                orientation: 'landscape',
                 footer: true,
-                 exportOptions: {
-                columns: ':visible' // Include all visible columns in PDF export
-            }
-               
+                exportOptions: {
+                    columns: ':visible' // Include all visible columns in PDF export
+                }
             },
             {
                 extend: 'excel',
                 title: 'Online Sales Report',
-                footer: true,
-               
+                footer: true
             }
-         ]
-    } );
-
-} );
+        ]
+    });
+});
 </script>
+
 
 
 
