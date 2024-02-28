@@ -151,17 +151,16 @@ $(document).ready(function() {
         // Max input box allowed
         x++; // Text box increment
         var options = '<option value=""> Select Agency</option>';
-        // Generate options excluding already selected agencies
+        // Generate options excluding already linked and already selected agencies
+        var linkedAgencyIds = {!! json_encode($linked_agency_ids) !!};
+        $('select[name="agency_id[]"]').each(function() {
+            var selectedAgencyId = $(this).val();
+            if (selectedAgencyId != '') {
+                linkedAgencyIds.push(parseInt(selectedAgencyId));
+            }
+        });
         @foreach($agencies as $key)
-            var alreadyLinked = false;
-            var agencyId = {{$key->agency_id}};
-            @foreach($linked_agencies as $data)
-                if (agencyId == {{$data->agency_id}}) {
-                    alreadyLinked = true;
-                    break; // Exit the loop if already linked
-                }
-            @endforeach
-            if (!alreadyLinked) {
+            if (!linkedAgencyIds.includes({{$key->agency_id}})) {
                 options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
             }
         @endforeach
@@ -175,6 +174,7 @@ $(document).ready(function() {
         x--;
     });
 });
+
 
 
 
