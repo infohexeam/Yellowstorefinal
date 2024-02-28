@@ -278,14 +278,14 @@ $(document).ready(function() {
             {
                 extend: 'pdfHtml5',
                 title: 'Online Sales Report',
-               
+                orientation: 'landscape',
                 footer: true,
                 exportOptions: {
                     columns: ':visible' // Include all visible columns in PDF export
                 },
                 customize: function(doc) {
                     // Manually specify column widths to prevent truncation
-                    doc.content[1].table.widths = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
+                    doc.content[1].table.widths = Array(doc.content[1].table.body[0].length).fill('*');
                 }
             },
             {
