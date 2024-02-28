@@ -146,6 +146,18 @@ $(document).ready(function() {
     var add_button = $("#addAgency"); // Add button ID
     var x = 1; // Initial text box count
 
+    // Function to get array of already selected agency IDs
+    function getSelectedAgencyIds() {
+        var selectedAgencyIds = [];
+        $('select[name="agency_id[]"]').each(function() {
+            var selectedAgencyId = $(this).val();
+            if (selectedAgencyId != '') {
+                selectedAgencyIds.push(parseInt(selectedAgencyId));
+            }
+        });
+        return selectedAgencyIds;
+    }
+
     $(add_button).click(function(e) { // On add input button click
         e.preventDefault();
         // Max input box allowed
@@ -153,14 +165,11 @@ $(document).ready(function() {
         var options = '<option value=""> Select Agency</option>';
         // Generate options excluding already linked and already selected agencies
         var linkedAgencyIds = {!! json_encode($linked_agency_ids) !!};
-        $('select[name="agency_id[]"]').each(function() {
-            var selectedAgencyId = $(this).val();
-            if (selectedAgencyId != '') {
-                linkedAgencyIds.push(parseInt(selectedAgencyId));
-            }
-        });
+        var selectedAgencyIds = getSelectedAgencyIds();
+        var excludedAgencyIds = linkedAgencyIds.concat(selectedAgencyIds);
+
         @foreach($agencies as $key)
-            if (!linkedAgencyIds.includes({{$key->agency_id}})) {
+            if (!excludedAgencyIds.includes({{$key->agency_id}})) {
                 options += '<option {{old('agency_id') == $key->agency_id ? 'selected':''}} value="{{$key->agency_id}}">{{$key->agency_name}}</option>';
             }
         @endforeach
@@ -174,6 +183,7 @@ $(document).ready(function() {
         x--;
     });
 });
+
 
 
 
