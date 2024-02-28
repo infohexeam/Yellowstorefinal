@@ -157,12 +157,10 @@
             } else {
                 $('#showpassmessage2').html('');
                 validatePass();
-                $('#submit').prop('disabled', false);
             }
         } else {
             $('#showpassmessage2').html('');
             validatePass();
-            $('#submit').prop('disabled', false);
         }
     }
 
@@ -187,13 +185,13 @@
         if (y !== '') {
             if (x === y) {
                 $('#password, #confirm_password').css('border-color', 'green');
-                $('#submit').prop('disabled', false);
+                validatePass();
             } else {
                 $('#showmessage').css('color', 'red').html('Passwords not matching');
-                $('#submit').prop('disabled', true);
+                $('#submit').prop('disabled', true); // Added line
             }
         } else {
-            $('#submit').prop('disabled', false);
+            validatePass();
         }
     }
 
@@ -211,7 +209,7 @@
                 $('#submit').prop('disabled', true);
             }
         } else {
-            $('#submit').prop('disabled', false);
+            $('#submit').prop('disabled', true);
         }
     }
 
@@ -229,5 +227,6 @@
         }
     }
 </script>
+
 
 @endsection
