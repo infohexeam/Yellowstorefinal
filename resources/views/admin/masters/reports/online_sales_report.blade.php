@@ -268,45 +268,34 @@
 </div>
 
 
-<
 
 
 <script>
-  $(function(e) {
-    $('#exampletable').DataTable({
+    $(function(e) {
+	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
         paging: false, // Disable pagination
         buttons: [
             {
                 extend: 'pdfHtml5',
                 title: 'Online Sales Report',
-                orientation: 'landscape', // Set orientation to landscape
+                 orientation: 'landscape', // Set orientation to landscape
                 footer: true,
-                customize: function(doc) {
-                    // Use jsPDF AutoTable plugin for advanced PDF customization
-                    var table = doc.autoTable(document.getElementById('exampletable'), {
-                        styles: { overflow: 'linebreak' },
-                        columnStyles: { 0: { columnWidth: 'auto' } }, // Adjust column width
-                        margin: { top: 60 } // Adjust margin
-                    });
-
-                    // Add page numbers
-                    var totalPagesExp = "{total_pages_count_string}";
-                    doc.text(totalPagesExp, 500, 10, null, null, 'right');
-                },
-                exportOptions: {
-                    columns: ':visible' // Include all visible columns in PDF export
-                }
+                 exportOptions: {
+                columns: ':visible' // Include all visible columns in PDF export
+            }
+               
             },
             {
                 extend: 'excel',
                 title: 'Online Sales Report',
-                footer: true
+                footer: true,
+               
             }
-        ]
-    });
-});
+         ]
+    } );
 
+} );
 </script>
 
 
