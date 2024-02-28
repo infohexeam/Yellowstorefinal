@@ -4,7 +4,7 @@
    <div class="col-lg-12">
       <div class="card">
          <div class="card-body">
-            <div class="wideget-user">
+            <div class="wideget-user"> 
                <h4>{{$pageTitle}}</h4>
             </div>
          </div>
@@ -1546,7 +1546,7 @@ function servTypeChanged(v){
 
 
 $(document).ready(function() {
-   var wrapper      = $(".BaseFeatureArea"); //Fields wrapper
+  var wrapper      = $(".BaseFeatureArea"); //Fields wrapper
   var add_button      = $(".addBaseFeatureImage"); //Add button ID
 
   var x = 1; //initlal text box count
