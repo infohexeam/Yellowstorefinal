@@ -1,5 +1,3 @@
-
-
 @extends('store.layouts.app')
 
 @section('content')
@@ -19,7 +17,7 @@
     bottom: 0;
     width: 2.5rem;
   }
-  .password-show_toggleshow-icon, .password-showtoggle_hide-icon {
+  .password-show_toggle_show-icon, .password-show_toggle_hide-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -38,30 +36,30 @@
   .password-show.show .password-show_toggle_hide-icon {
     display: block;
   }
-  </style>
- <div class="container">
-	<div class="row">
-	  <div class="col-md-12">
-		<div class="card">
-			<div class="card-header">
-				<h3 class="mb-0 card-title">{{$pageTitle}}</h3>
-			</div>
-			<div class="card-body">
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
+                </div>
+                <div class="card-body">
                     @if ($message = Session::get('status'))
                        <div class="alert alert-success">
-			         <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
-			      </div>
+                         <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+                      </div>
                     @endif
                 </div>
                 <div class="col-lg-12">
-                 @if ($message = Session::get('errstatus'))
-                  <div class="alert alert-danger">
+                    @if ($message = Session::get('errstatus'))
+                        <div class="alert alert-danger">
                             <strong>Whoops!</strong> There were some problems with your input.<br><br>
                             <ul>
                                     <li>{{ $message }}</li>
                             </ul>
                         </div>
-                 @endif
+                    @endif
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -73,255 +71,163 @@
                         </div>
                     @endif
 
-                    <form  id="myForm" onsubmit="return validateForm()" action="{{ route('store.update_password') }}" method="POST" enctype="multipart/form-data" >
+                    <form id="myForm" action="{{ route('store.update_password') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-
-		      <div class="form-body">
-		      	<div class="row">
-
-			<div class="col-md-12">
-			<div class="form-group">
-				<label class="form-label">Old Password</label>
-        <div class="password-show">
-					  <input type="password" required class="form-control" name="old_password" id="old_password" value="" placeholder="Old Password">
-            <div class="password-show__toggle">
-              <i class="fa fa-eye password-show_toggle_show-icon"></i>
-              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-            </div> 
-        </div>
-               </div>
-				   </div>
-
-
-				<div class="col-md-12">
-			<div class="form-group">
-				<label class="form-label">New Password</label>
-        <div class="password-show">
-					  <input type="password" class="form-control" oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()" name="password" id="password" value="" placeholder="New Password">
-            <div class="password-show__toggle">
-              <i class="fa fa-eye password-show_toggle_show-icon"></i>
-              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-            </div> 
-                        <span id="showpassmessage"></span>
-                        <span id="showpassmessage2"></span>
-        </div>
-               </div>
-				   </div>
-				  <div class="col-md-12">
-				 <div class="form-group">
-						<label class="form-label">Password Confirmation</label>
-            <div class="password-show">
-					  <input onkeyup="validatePassChange()" id="confirm_password" type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
-            <div class="password-show__toggle">
-              <i class="fa fa-eye password-show_toggle_show-icon"></i>
-              <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-            </div> 
-            </div>
-				                        <span id="showmessage"></span>
-
-                </div>
-      </div>
-
-				</div>
-
-
-			<div class="col-md-12">
- 			   <div  class="form-group">
- 					<center>
-              	<button type="submit" class="btn btn-raised btn-primary" id="submit">
-				          <i class="fa fa-check-square-o"></i> Update</button>
-				          {{-- <button type="reset" class="btn btn-raised btn-success">
-				         Reset</button> --}}
-				         <a class="btn btn-danger" href="{{ url('store/home') }}">Cancel</a>
-					</center>
-               </div>
-
-            </div>
-         </div>
-
-
-    </form>
-</div>
-
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Old Password</label>
+                                        <div class="password-show">
+                                            <input type="password" required class="form-control" name="old_password" id="old_password" value="" placeholder="Old Password">
+                                            <div class="password-show__toggle">
+                                                <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                                                <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <div class="password-show">
+                                            <input type="password" class="form-control" oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()" name="password" id="password" value="" placeholder="New Password">
+                                            <div class="password-show__toggle">
+                                                <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                                                <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                                            </div>
+                                            <span id="showpassmessage"></span>
+                                            <span id="showpassmessage2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Password Confirmation</label>
+                                        <div class="password-show">
+                                            <input onkeyup="validatePassChange()" id="confirm_password" type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
+                                            <div class="password-show__toggle">
+                                                <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                                                <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                                            </div>
+                                        </div>
+                                        <span id="showmessage"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <center>
+                                        <button type="submit" class="btn btn-raised btn-primary" id="submit" disabled>
+                                            <i class="fa fa-check-square-o"></i> Update
+                                        </button>
+                                        <a class="btn btn-danger" href="{{ url('store/home') }}">Cancel</a>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-  $(".password-show__toggle").on("click", function(e) {
-    console.log("click");
-    if (
-      !$(this)
-        .parent()
-        .hasClass("show")
-    ) {
-      $(this)
-        .parent()
-        .addClass("show");
-      $(this)
-        .prev()
-        .attr("type", "text");
-    } else {
-      $(this)
-        .parent()
-        .removeClass("show");
-      $(this)
-        .prev()
-        .attr("type", "password");
-    }
-  });
-});
-   </script>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".password-show__toggle").on("click", function(e) {
+            var $parent = $(this).parent();
+            var $input = $parent.find("input");
 
+            $parent.toggleClass("show");
+            $input.attr("type", function(index, attr) {
+                return attr === "password" ? "text" : "password";
+            });
+        });
+    });
 
-    <script>
-    
     function checkPasswordComplexity(pwd) {
-// var re = /^(?=.*\d)(?=.*[a-z])(.{8,50})$/
- var re = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/
+        var re = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
 
-    if(pwd != '')  
-    {
-        
-      if(re.test(pwd) == false)
-      {
-           document.getElementById('showpassmessage2').style.color = 'red';
-      //      document.getElementById('showpassmessage2').innerHTML = 'passwords must be in alphanumeric format';
-            document.getElementById('showpassmessage2').innerHTML = 'Password must include at least one upper case letter, lower case letter, number, and special character';
-                           
-   validatePass();
-    $('#submit').attr('disabled', true);
-      }
-      else
-      {
-             document.getElementById('showpassmessage2').innerHTML = '';
-                       
-    validatePass();
-     $('#submit').attr('disabled', false);
-      }
+        if (pwd !== '') {
+            if (!re.test(pwd)) {
+                $('#showpassmessage2').css('color', 'red').html('Password must include at least one upper case letter, lower case letter, number, and special character');
+                validatePass();
+                $('#submit').prop('disabled', true);
+            } else {
+                $('#showpassmessage2').html('');
+                validatePass();
+                $('#submit').prop('disabled', false);
+            }
+        } else {
+            $('#showpassmessage2').html('');
+            validatePass();
+            $('#submit').prop('disabled', false);
+        }
     }
-    else
-    {
-           document.getElementById('showpassmessage2').innerHTML = '';
-                        $('#submit').attr('disabled', false);
-      validatePass();
 
+    function validatePassLength() {
+        var x = $('#password').val();
+        if (x !== '') {
+            if (x.length < 8) {
+                $('#showpassmessage').css('color', 'red').html('You have to enter at least 8 digits!');
+            } else {
+                $('#showpassmessage').html('');
+            }
+        } else {
+            $('#showpassmessage').html('');
+        }
     }
-}
 
+    function validatePassChange() {
+        var x = $('#password').val();
+        var y = $('#confirm_password').val();
 
-
-
-function validatePassLength() {
-  var x = document.forms["myForm"]["password"].value;
-  if(x != '')
-  {
-   if(x.length < 8)
-   {
-     document.getElementById('showpassmessage').style.color = 'red';
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
-   }
-   else
-   {
-                   document.getElementById('showpassmessage').innerHTML = '';
-
-   }
-  }
-  else
-  {
-                   document.getElementById('showpassmessage').innerHTML = '';
-
-  }
-
-}
-
-</script>
-
-
-<script>
-function validatePass() {
-  var x = document.forms["myForm"]["password"].value;
-  var y = document.forms["myForm"]["confirm_password"].value;
-
-   document.getElementById('showmessage').innerHTML = '';
-   //alert(x,y);
-   
-   if(y != '')
-   {
-    if (x == y) {
-    document.getElementById('password').border.color = 'green';
-    document.getElementById('confirm_password').border.color = 'green';
-    $('#submit').attr('disabled', false);
-
-
-    } else {
-        document.getElementById('showmessage').style.color = 'red';
-        document.getElementById('showmessage').innerHTML = 'passwords not matching';
-         $('#submit').attr('disabled', true);
+        $('#showmessage').html('');
+        if (y !== '') {
+            if (x === y) {
+                $('#password, #confirm_password').css('border-color', 'green');
+                $('#submit').prop('disabled', false);
+            } else {
+                $('#showmessage').css('color', 'red').html('Passwords not matching');
+                $('#submit').prop('disabled', true);
+            }
+        } else {
+            $('#submit').prop('disabled', false);
+        }
     }
-   }
-   else
-   {
- $('#submit').attr('disabled', false);
-   }
-}
-function validatePassChange() {
-  var x = document.forms["myForm"]["password"].value;
-  var y = document.forms["myForm"]["confirm_password"].value;
 
-   document.getElementById('showmessage').innerHTML = '';
-   //alert(x,y);
-   
-   if(y != '')
-   {
-    if (x == y) {
-      
-    document.getElementById('password').border.color = 'green';
-    document.getElementById('confirm_password').border.color = 'green';
-    $('#submit').attr('disabled', false);
+    function validatePass() {
+        var x = $('#password').val();
+        var y = $('#confirm_password').val();
 
-
-    } else {
-        document.getElementById('showmessage').style.color = 'red';
-        document.getElementById('showmessage').innerHTML = 'passwords not matching';
-         $('#submit').attr('disabled', false);
+        $('#showmessage').html('');
+        if (y !== '') {
+            if (x === y) {
+                $('#password, #confirm_password').css('border-color', 'green');
+                $('#submit').prop('disabled', false);
+            } else {
+                $('#showmessage').css('color', 'red').html('Passwords not matching');
+                $('#submit').prop('disabled', true);
+            }
+        } else {
+            $('#submit').prop('disabled', false);
+        }
     }
-   }
-   else
-   {
- $('#submit').attr('disabled', false);
-   }
-}
-</script>
 
-
-<script>
-function validateForm() {
-  var x = document.forms["myForm"]["password"].value;
-  var y = document.forms["myForm"]["confirm_password"].value;
-   if(x.length >= 8)
-    {
-        if (x != y) {
-            document.getElementById('showmessage').style.color = 'red';
-            document.getElementById('showmessage').innerHTML = 'passwords not matching';
-            var elmnt = document.getElementById("passlabel");
-            elmnt.scrollIntoView();
+    function validateForm() {
+        var x = $('#password').val();
+        var y = $('#confirm_password').val();
+        if (x.length >= 8) {
+            if (x !== y) {
+                $('#showmessage').css('color', 'red').html('Passwords not matching');
+                return false;
+            }
+        } else {
+            $('#showpassmessage').css('color', 'red').html('You have to enter at least 8 digits!');
             return false;
         }
     }
-    else
-    {
-           document.getElementById('showpassmessage').style.color = 'red';
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
-            var elmnt = document.getElementById("passlabel");
-            elmnt.scrollIntoView();
-            return false;
-    }
-}
 </script>
 
-
 @endsection
-
