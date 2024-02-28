@@ -285,14 +285,8 @@ $(document).ready(function() {
                     columns: ':visible' // Include all visible columns in PDF export
                 },
                 customize: function(doc) {
-                    // Dynamically adjust column widths based on content
-                    var colWidths = [];
-                    doc.content[1].table.body.forEach(function(row) {
-                        row.forEach(function(cell, index) {
-                            colWidths[index] = Math.max(colWidths[index] || 0, doc.widths && doc.widths[index] || 0, doc.getStringUnitWidth(cell.content || cell.text || ''));
-                        });
-                    });
-                    doc.content[1].table.widths = colWidths.map(function(width) { return width * 1.1; }); // Increase width slightly
+                    // Manually specify column widths to prevent truncation
+                    doc.content[1].table.widths = [30,40, 60, 60, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
                 }
             },
             {
@@ -304,8 +298,6 @@ $(document).ready(function() {
     });
 });
 </script>
-
-
 
 
 
