@@ -38,7 +38,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">  Minimum Purchase Amount *</label>
-                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');truncateInput(this, 8);" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt')}}" placeholder="Minimum Purchase Amount">
+                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');truncateInput(this, 8);" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt')}}" placeholder="Minimum Purchase Amount" maxlength="8">
                             </div>
                         </div>
                         
@@ -67,7 +67,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label"> Discount <span id="loseend" > </span> *</label>
-                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');truncateInput(this, 6);" required class="form-control" name="discount" id="discountAmt" value="{{old('discount')}}" placeholder="Discount">
+                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');truncateInput(this, 6);" required class="form-control" name="discount" id="discountAmt" value="{{old('discount')}}" placeholder="Discount" maxlength="6">
                             </div>
                         </div>
                      
