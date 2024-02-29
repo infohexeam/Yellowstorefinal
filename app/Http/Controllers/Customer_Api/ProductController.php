@@ -1072,21 +1072,16 @@ class ProductController extends Controller
                                 'mst_store_product_varients.stock_count',
                                 'mst_store_product_varients.variant_status',
                                 'mst_store_product_varients.is_base_variant',
-                                'mst_stores.store_name'
+                                'mst_stores.store_name',
+                                'mst_stores.collect_store_status'
                             )
                             ->where('mst_store_product_varients.product_varient_id', $productVarientId)
                             ->first();
                             // Mst_store_product::where('product_id')
                         $flag=Helper::checkStoreDeliveryHours($productData->store_id);
                         $data['is_delivery_available']=$flag;
-                        if($flag==1)
-                        {
-                            $data['is_only_collect_from_store']=0;
-                        }
-                        else
-                        { 
-                            $data['is_only_collect_from_store']=1;
-                        }
+                        $data['collect_from_store_status']=$productData->collect_store_status;
+                       
                             if($productData->is_base_variant==1)
                             {
                                 if($productData->product_status==0)
