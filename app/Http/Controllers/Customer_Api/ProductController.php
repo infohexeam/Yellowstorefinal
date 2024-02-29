@@ -779,6 +779,16 @@ class ProductController extends Controller
                         )
                         ->where('mst_store_product_varients.product_varient_id', $productVarientId)
                         ->first();
+                        $flag=Helper::checkStoreDeliveryHours($productData->store_id);
+                        $data['is_delivery_available']=$flag;
+                        if($flag==1)
+                        {
+                            $data['is_only_collect_from_store']=0;
+                        }
+                        else
+                        { 
+                            $data['is_only_collect_from_store']=1;
+                        }
                     if($productData->is_base_variant==1)
                     {
                         if($productData->product_status==0)
@@ -1067,6 +1077,16 @@ class ProductController extends Controller
                             ->where('mst_store_product_varients.product_varient_id', $productVarientId)
                             ->first();
                             // Mst_store_product::where('product_id')
+                        $flag=Helper::checkStoreDeliveryHours($productData->store_id);
+                        $data['is_delivery_available']=$flag;
+                        if($flag==1)
+                        {
+                            $data['is_only_collect_from_store']=0;
+                        }
+                        else
+                        { 
+                            $data['is_only_collect_from_store']=1;
+                        }
                             if($productData->is_base_variant==1)
                             {
                                 if($productData->product_status==0)

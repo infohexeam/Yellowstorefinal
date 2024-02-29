@@ -548,8 +548,8 @@ var countPro = 0;
            {
               // $('#total_amount').val(0);
             //   $('#total_discount').val(0);
- alert("Plese fill all fields..");
-  $('#order_btn').hide();
+          alert("Please fill all fields..");
+          $('#order_btn').hide();
            }
 
          // alert('cusId='+customer_id+'\n proid='+product_id+' \n qty='+quantity+'\n rate='+rate+' \n disc='+discount+'\n tDis='+total_discount+'\n tax_value='+tax_value+'\n tAmt='+total_amount);
