@@ -2829,6 +2829,14 @@ public function addToCartTest(Request $request)
                         if($request->store_id)
             {
                 $store=Mst_store::find($request->store_id);
+                $delivery_available=Helper::checkStoreDeliveryHours($store->store_id);
+                $data['is_delivery_available']=$delivery_available;
+                if($delivery_available==0)
+                {
+                    $data['status'] = 40;
+                    $data['message'] = 'Delivery is not available now.Try again later!';
+                    return response($data);     
+                }
                 /////////////////////////////////////////////////////////////////////////////
                 $pVar=Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('variant_status','=',1)->first();
                 if($pVar)
@@ -3259,7 +3267,14 @@ public function addToCartTest(Request $request)
                 
                     $proData = Mst_store_product::find($varProdu->product_id);
                     //if ($proData->service_type != 2) {
-
+                        $delivery_available=Helper::checkStoreDeliveryHours($proData->store_id);
+                        $data['is_delivery_available']=$delivery_available;
+                        if($delivery_available==0)
+                        {
+                            $data['status'] = 40;
+                            $data['message'] = 'Delivery is not available now.Try again later!';
+                            return response($data);     
+                        }
                     //$prdctToInsert=Mst_store_product::find($varProdu->product_id);
                     $data['productTypeInCart']='';
                     if($proData->product_type==1)
