@@ -76,69 +76,60 @@
                     <form  id="myForm" onsubmit="return validateForm()" action="{{ route('admin.update_password') }}" method="POST" enctype="multipart/form-data" >
                         @csrf
 
-		      <div class="form-body">
-		      	<div class="row">
-
-			<div class="col-md-12">
-			<div class="form-group">
-				<label class="form-label">Old Password *</label>
-                <div class="password-show">
-					  <input type="password" required class="form-control" name="old_password" id="old_password" value="" placeholder="Old Password">
-                      <div class="password-show__toggle">
-                        <i class="fa fa-eye password-show_toggle_show-icon"></i>
-                        <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-                      </div> 
-                </div>
-               </div>
-				   </div>
-
-
-				<div class="col-md-12">
-			<div class="form-group">
-				<label class="form-label">New Password *</label>
-                <div class="password-show">
-					  <input type="password" class="form-control" required oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()" name="password" id="password" value="" placeholder="New Password">
-                      <div class="password-show__toggle">
-                        <i class="fa fa-eye password-show_toggle_show-icon"></i>
-                        <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-                      </div>
-                </div> 
-                        <span id="showpassmessage"></span> <br>
-                        <span id="showpassmessage2"></span>
-                        
-               </div>
-				   </div>
-				  <div class="col-md-12">
-				 <div class="form-group">
-						<label class="form-label">Password Confirmation *</label>
-                        <div class="password-show">
-					  <input onkeyup="validatePass()" id="confirm_password" required type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
-                      <div class="password-show__toggle">
-                        <i class="fa fa-eye password-show_toggle_show-icon"></i>
-                        <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
-                      </div> 
+		   @csrf
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Old Password</label>
+                                        <div class="password-show">
+                                            <input type="password" required class="form-control" name="old_password" id="old_password" value="" placeholder="Old Password">
+                                            <div class="password-show__toggle">
+                                                <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                                                <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <div class="password-show">
+                                            <input type="password" class="form-control" oninput="checkPasswordComplexity(this.value)" onkeyup="validatePassLength()" name="password" id="password" value="" placeholder="New Password">
+                                            <div class="password-show__toggle">
+                                                <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                                                <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                                            </div>
+                                            <span id="showpassmessage"></span>
+                                            <span id="showpassmessage2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Password Confirmation</label>
+                                        <div class="password-show">
+                                            <input onkeyup="validatePassChange()" id="confirm_password" type="password" class="form-control" name="password_confirmation" value="" placeholder="Confirm Password">
+                                            <div class="password-show__toggle">
+                                                <i class="fa fa-eye password-show_toggle_show-icon"></i>
+                                                <i class="fa fa-eye-slash password-show_toggle_hide-icon"></i>
+                                            </div>
+                                        </div>
+                                        <span id="showmessage"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <center>
+                                        <button type="submit" class="btn btn-raised btn-primary" id="submit" disabled>
+                                            <i class="fa fa-check-square-o"></i> Update
+                                        </button>
+                                        <a class="btn btn-danger" href="{{ url('store/home') }}">Cancel</a>
+                                    </center>
+                                </div>
+                            </div>
                         </div>
-				                        <span id="showmessage"></span>
-
-                </div>
-      </div>
-
-				</div>
-
-
-			<div class="col-md-12">
- 			   <div  class="form-group">
- 					<center>
-              	<button type="submit" id="submit" class="btn btn-raised btn-primary">
-				          <i class="fa fa-check-square-o"></i> Update</button>
-				          <button type="reset" class="btn btn-raised btn-success">
-				         Reset</button>
-				         <a class="btn btn-danger" href="{{ route('home') }}">Cancel</a>
-					</center>
-               </div>
-
-            </div>
-         </div>
 
 
     </form>
@@ -152,140 +143,99 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script>
-        $(document).ready(function() {
-  $(".password-show__toggle").on("click", function(e) {
-    console.log("click");
-    if (
-      !$(this)
-        .parent()
-        .hasClass("show")
-    ) {
-      $(this)
-        .parent()
-        .addClass("show");
-      $(this)
-        .prev()
-        .attr("type", "text");
-    } else {
-      $(this)
-        .parent()
-        .removeClass("show");
-      $(this)
-        .prev()
-        .attr("type", "password");
+    $(document).ready(function() {
+        $(".password-show__toggle").on("click", function(e) {
+            var $parent = $(this).parent();
+            var $input = $parent.find("input");
+
+            $parent.toggleClass("show");
+            $input.attr("type", function(index, attr) {
+                return attr === "password" ? "text" : "password";
+            });
+        });
+    });
+
+    function checkPasswordComplexity(pwd, elementId) {
+        var re = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+
+        if (pwd !== '') {
+            if (!re.test(pwd)) {
+                $('#showpassmessage2').css('color', 'red').html('Password must include at least one upper case letter, lower case letter, number, and special character');
+                validatePass();
+                $('#submit').prop('disabled', true);
+            } else {
+                $('#showpassmessage2').html('');
+                validatePass();
+            }
+        } else {
+            $('#showpassmessage2').html('');
+            validatePass();
+        }
     }
-  });
-});
-   </script>
-   
 
-
-
-    <script>
-function checkPasswordComplexity(pwd) {
- //var re = /^(?=.*\d)(?=.*[a-z])(.{8,50})$/
- var re = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/
-
-    if(pwd != '')  
-    {
-        
-      if(re.test(pwd) == false)
-      {
-           document.getElementById('showpassmessage2').style.color = 'red';
-    //        document.getElementById('showpassmessage2').innerHTML = 'passwords must be in alphanumeric format';
-                         document.getElementById('showpassmessage2').innerHTML = 'Password must include at least one upper case letter, lower case letter, number, and special character';
-                          $('#submit').attr('disabled', 'disabled');
-    
-      }
-      else
-      {
-             document.getElementById('showpassmessage2').innerHTML = '';
-                        $('#submit').attr('disabled', false);
-    
-      }
+    function validatePassLength() {
+        var x = $('#password').val();
+        if (x !== '') {
+            if (x.length < 8) {
+                $('#showpassmessage').css('color', 'red').html('You have to enter at least 8 digits!');
+            } else {
+                $('#showpassmessage').html('');
+            }
+        } else {
+            $('#showpassmessage').html('');
+        }
     }
-    else
-    {
-           document.getElementById('showpassmessage2').innerHTML = '';
-                        $('#submit').attr('disabled', false);
+
+    function validatePassChange() {
+        var x = $('#password').val();
+        var y = $('#confirm_password').val();
+
+        $('#showmessage').html('');
+        if (y !== '') {
+            if (x === y) {
+                $('#password, #confirm_password').css('border-color', 'green');
+                checkPasswordComplexity(y, 'confirm_password'); // Check complexity for confirmation password
+            } else {
+                $('#showmessage').css('color', 'red').html('Passwords not matching');
+                $('#submit').prop('disabled', true); // Disable submit if passwords don't match
+            }
+        } else {
+            validatePass();
+        }
     }
-}
 
+    function validatePass() {
+        var x = $('#password').val();
+        var y = $('#confirm_password').val();
 
+        $('#showmessage').html('');
+        if (y !== '') {
+            if (x === y) {
+                $('#password, #confirm_password').css('border-color', 'green');
+                $('#submit').prop('disabled', false);
+            } else {
+                $('#showmessage').css('color', 'red').html('Passwords not matching');
+                $('#submit').prop('disabled', true);
+            }
+        } else {
+            $('#submit').prop('disabled', true);
+        }
+    }
 
-function validatePassLength() {
-  var x = document.forms["myForm"]["password"].value;
-      if(x != '')  
-{
-   if(x.length < 8)
-   {
-     document.getElementById('showpassmessage').style.color = 'red';
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
-   }
-   else
-   {
-                   document.getElementById('showpassmessage').innerHTML = '';
-
-   }
-}
-else
-{
-                       document.getElementById('showpassmessage').innerHTML = '';
-
-}
-
-}
-
-</script>
-
-
-<script>
-function validatePass() {
-  var x = document.forms["myForm"]["password"].value;
-  var y = document.forms["myForm"]["confirm_password"].value;
-   document.getElementById('showmessage').innerHTML = '';
-   if(y != '')
-   {
-       
-   
-    if (x == y) {
-    document.getElementById('password').border.color = 'green';
-    document.getElementById('confirm_password').border.color = 'green';
-
-
-    } else {
-        document.getElementById('showmessage').style.color = 'red';
-        document.getElementById('showmessage').innerHTML = 'passwords not matching';
-    }}
-}
-</script>
-
-
-<script>
-function validateForm() {
-  var x = document.forms["myForm"]["password"].value;
-  var y = document.forms["myForm"]["confirm_password"].value;
-   if(x.length >= 8)
-    {
-        if (x != y) {
-            document.getElementById('showmessage').style.color = 'red';
-            document.getElementById('showmessage').innerHTML = 'passwords not matching';
-            var elmnt = document.getElementById("passlabel");
-            elmnt.scrollIntoView();
+    function validateForm() {
+        var x = $('#password').val();
+        var y = $('#confirm_password').val();
+        if (x.length >= 8) {
+            if (x !== y) {
+                $('#showmessage').css('color', 'red').html('Passwords not matching');
+                return false;
+            }
+        } else {
+            $('#showpassmessage').css('color', 'red').html('You have to enter at least 8 digits!');
             return false;
         }
     }
-    else
-    {
-           document.getElementById('showpassmessage').style.color = 'red';
-            document.getElementById('showpassmessage').innerHTML = 'You have to enter at least 8 digits!';
-            var elmnt = document.getElementById("passlabel");
-            elmnt.scrollIntoView();
-            return false;
-    }
-}
 </script>
-
 
 @endsection
 
