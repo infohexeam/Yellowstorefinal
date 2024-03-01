@@ -311,7 +311,7 @@ $(document).ready(function() {
                     columns: ':visible' // Include all visible columns in export
                  },
                  orientation : 'landscape',
-                pageSize: 'A0'
+                pageSize: 'A4'
 
             },
             {
