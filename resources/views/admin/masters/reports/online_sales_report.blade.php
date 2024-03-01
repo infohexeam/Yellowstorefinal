@@ -297,7 +297,7 @@
         ]
     });
 });*/
-$(function(e) {
+$(document).ready(function() {
 	 $('#exampletable').DataTable( {
         dom: 'Bfrtip',
          paging: false, // Disable pagination
