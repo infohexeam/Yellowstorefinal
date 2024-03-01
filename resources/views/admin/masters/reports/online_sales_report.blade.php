@@ -307,7 +307,7 @@ $(document).ready(function() {
                 title: 'Online Sales Report',
                 footer: true,
                 exportOptions: {
-                     //columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
                      columns: ':visible' // Include all visible columns in export
                  },
                  orientation : 'landscape',
@@ -318,8 +318,8 @@ $(document).ready(function() {
                 title: 'Online Sales Report',
                 footer: true,
                 exportOptions: {
-                     //columns:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-                     columns: ':visible' // Include all visible columns in export
+                     columns:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+                     //columns: ':visible' // Include all visible columns in export
                  }
             }
          ]
