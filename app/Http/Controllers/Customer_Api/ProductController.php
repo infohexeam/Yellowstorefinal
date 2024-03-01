@@ -4239,15 +4239,12 @@ class ProductController extends Controller
                 
                     /////
                     $flag=Helper::checkStoreDeliveryHours($request->store_id);
+                    $str=Mst_store::where('store_id',$request->store_id)->first();
+
                     $data['is_delivery_available']=$flag;
-                    if($flag==1)
-                    {
-                        $data['is_collect_from_store']=0;
-                    }
-                    else
-                    {
-                        $data['is_collect_from_store']=1;
-                    }
+                    
+                    $data['is_collect_from_store']=$str->collect_store_status;
+                   
                     if($request->store_id)
                     {
                         $store=Mst_store::find($request->store_id);
