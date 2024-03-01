@@ -2831,7 +2831,8 @@ public function addToCartTest(Request $request)
                 $store=Mst_store::find($request->store_id);
                 $delivery_available=Helper::checkStoreDeliveryHours($store->store_id);
                 $data['is_delivery_available']=$delivery_available;
-                if($delivery_available==0)
+                $collect_store=$store->collect_store_status;
+                if($delivery_available==0&&$collect_store==0)
                 {
                     $data['status'] = 40;
                     $data['message'] = 'Delivery is not available now.Try again later!';
@@ -3269,7 +3270,9 @@ public function addToCartTest(Request $request)
                     //if ($proData->service_type != 2) {
                         $delivery_available=Helper::checkStoreDeliveryHours($proData->store_id);
                         $data['is_delivery_available']=$delivery_available;
-                        if($delivery_available==0)
+                        $store=Mst_store::find($proData->store_id);
+                        $collect_store=$store->collect_store_status;
+                        if($delivery_available==0&&$collect_store==0)
                         {
                             $data['status'] = 40;
                             $data['message'] = 'Delivery is not available now.Try again later!';
