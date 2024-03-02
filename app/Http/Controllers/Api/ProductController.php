@@ -2212,6 +2212,7 @@ class ProductController extends Controller
                         $varient_ids=Mst_store_product_varient::where('product_id',$request->product_id)->pluck('product_varient_id');
 
                     }
+                    $service_purchase_delivery_status=1;
                     if(isset($request->service_purchase_delivery_status))
                     {
                         if($request->service_purchase_delivery_status==1)
@@ -2447,7 +2448,7 @@ class ProductController extends Controller
                                 // $data['status'] = 0;
                                 //     $data['message'] = "Someting happened.";
                                 //     return response($data);
-                                $productData['service_purchase_delivery_status']=$service_purchase_delivery_status;
+                                $productData['service_purchase_delivery_status']=$service_purchase_delivery_status??1;
                                 $productData['product_name'] = $request->product_name;
                                 $productData['product_description'] = $request->product_description;
                                 $productData['product_price'] = $request->regular_price;
