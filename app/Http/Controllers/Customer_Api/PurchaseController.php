@@ -3405,6 +3405,7 @@ public function addToCartTest(Request $request)
                                 'mst_store_products.timeslot_start_time',
                                 'mst_store_products.timeslot_end_time',
                                 'mst_store_products.is_product_listed_by_product',
+                                'mst_store_products.service_purchase_delivery_status',
                                 'mst_store_product_varients.product_varient_id',
                                 'mst_store_product_varients.variant_name',
                                 'mst_store_product_varients.product_varient_price',
