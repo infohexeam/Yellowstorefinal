@@ -4218,7 +4218,7 @@ class ProductController extends Controller
                     $category_id = $request->category_id;
                     $store_id = $request->store_id;
                     $data['productTypeInCart']='';
-                    $data['servicePurchaseProductId']='';
+                    $data['servicePurchaseProductId']=0;
                         $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
                         if($firstCartData)
                         {
