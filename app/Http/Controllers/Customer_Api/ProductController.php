@@ -4218,6 +4218,7 @@ class ProductController extends Controller
                     $category_id = $request->category_id;
                     $store_id = $request->store_id;
                     $data['productTypeInCart']='';
+                    $data['servicePurchaseProductId']='';
                         $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
                         if($firstCartData)
                         {
@@ -4231,6 +4232,7 @@ class ProductController extends Controller
                                 if($prdctInCart->product_type==2)
                                 {
                                     $data['productTypeInCart']='service';
+                                    $data['servicePurchaseProductId']=$prdctInCart->product_id;
                                 }
                             }
 
