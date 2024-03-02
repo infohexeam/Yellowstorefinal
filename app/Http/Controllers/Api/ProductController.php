@@ -2212,6 +2212,19 @@ class ProductController extends Controller
                         $varient_ids=Mst_store_product_varient::where('product_id',$request->product_id)->pluck('product_varient_id');
 
                     }
+                    if(isset($request->service_purchase_delivery_status))
+                    {
+                        if($request->service_purchase_delivery_status==1)
+                        {
+                            $service_purchase_delivery_status=1;
+                        }
+                        else
+                        {
+                            $service_purchase_delivery_status=0;
+                        }
+
+                    }
+                    
                    
                     if($store_Data->product_supply_type==3)
                     {
@@ -2236,6 +2249,7 @@ class ProductController extends Controller
                      $product_listed=0;
                      
                     }
+
                         
 
                         if ($request->product_id == 0) {
@@ -2248,7 +2262,7 @@ class ProductController extends Controller
                                 }
                           
                             $product = new Mst_store_product;
-    
+                            $product->service_purchase_delivery_status=$service_purchase_delivery_status;
                             $product->product_name           = $request->product_name;
                             $product->product_description    = $request->product_description;
                             $product->product_price          = $request->regular_price;
@@ -2433,6 +2447,7 @@ class ProductController extends Controller
                                 // $data['status'] = 0;
                                 //     $data['message'] = "Someting happened.";
                                 //     return response($data);
+                                $productData['service_purchase_delivery_status']=$service_purchase_delivery_status;
                                 $productData['product_name'] = $request->product_name;
                                 $productData['product_description'] = $request->product_description;
                                 $productData['product_price'] = $request->regular_price;
