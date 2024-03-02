@@ -183,7 +183,19 @@ input[type="file"] {
                           <option value="2"> Purchase</option>
                           </select>
                       </div>
-                   </div>  
+                      <div class="col-md-4" id="spda">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Service Purchase Delivery Availability
+                         
+														<input type="checkbox" name="service_purchase_delivery_status" checked     class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div> 
+                   </div> 
+                     
                      <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label" >Product Category * </label>
@@ -815,6 +827,7 @@ function proTypeChanged(val)
 {
   if(val == 2){
     $("div#service_type_id").show();
+     $("#spda").hide();
     
     
     $(".proVariant").prop('required',false); 
@@ -859,11 +872,13 @@ function servTypeChanged(v){
       $("#btnAddVar").show();
       if(v == 1)
       {
+         $("#spda").hide();
          $("div#minStockDiv").hide();
 
       }
       else
       {
+        $("#spda").show();
          $("div#minStockDiv").show();
       }
       

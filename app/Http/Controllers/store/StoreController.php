@@ -1122,6 +1122,13 @@ class StoreController extends Controller
           return redirect()->back()->with('status-error', 'Product code already used by the store.')->withInput();
       }else{
 
+        if(is_null($request->service_purchase_delivery_status))
+        {
+          $ServiceDeliveryStatus = 0;
+        }else{
+          $ServiceDeliveryStatus = 1;
+        }
+        $product->service_purchase_delivery_status=$ServiceDeliveryStatus;
         $product->product_name           = $request->product_name;
       $product->product_description    = $request->product_description;
       $product->product_price          = $request->regular_price;
@@ -1873,6 +1880,13 @@ class StoreController extends Controller
         return redirect()->back()->with('status-error', 'Product code already used by the store.')->withInput();
 
       }else{
+        if(is_null($request->service_purchase_delivery_status))
+        {
+          $ServiceDeliveryStatus = 0;
+        }else{
+          $ServiceDeliveryStatus = 1;
+        }
+        $product['service_purchase_delivery_status']=$ServiceDeliveryStatus;
 
         $product['product_name']          = $request->product_name;
       $product['product_description']    = $request->product_description;

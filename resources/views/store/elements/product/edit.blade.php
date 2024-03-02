@@ -195,6 +195,19 @@
                         
                          </select>
                      </div>
+                  @if($product->service_type ==2)
+                       <div class="col-md-4" id="spda">
+                      <div class="form-group">
+                   <label class="form-group custom-switch">
+                   Service Purchase Delivery Availability
+                         
+														<input type="checkbox" name="service_purchase_delivery_status" @if($product->service_purchase_delivery_status==1) checked @endif     class="custom-switch-input">
+														<span class="custom-switch-indicator"></span>
+														<span class="custom-switch-description"></span>
+													</label>
+                          </div>
+                          </div> 
+                  @endif
                   </div> 
                        
                   
