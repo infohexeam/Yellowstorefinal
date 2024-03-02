@@ -1978,7 +1978,8 @@ class ProductController extends Controller
                             'is_timeslot_based_product',
                             'timeslot_start_time',
                             'timeslot_end_time',
-                            'is_product_listed_by_product'
+                            'is_product_listed_by_product',
+                            'service_purchase_delivery_status'
                         )
                         ->first()
                     ) {
