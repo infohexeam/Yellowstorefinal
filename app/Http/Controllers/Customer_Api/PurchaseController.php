@@ -2844,6 +2844,7 @@ public function addToCartTest(Request $request)
                 {
                     $prdctToInsert=Mst_store_product::find($pVar->product_id);
                     $data['productTypeInCart']='';
+                    $data['servicePurchaseProductId']=0;
                     if($prdctToInsert)
                     {
                         $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
@@ -2875,6 +2876,7 @@ public function addToCartTest(Request $request)
                                     if($prdctToInsert->product_type==2)
                                     {
                                      $data['productTypeInCart']='service';
+                                     $data['servicePurchaseProductId']=$prdctInCart->product_id;
                                      if($prdctInCart->product_type==2)
                                      {
                                         $data['status'] = 44;

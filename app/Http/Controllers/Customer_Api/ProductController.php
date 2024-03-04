@@ -4209,10 +4209,10 @@ class ProductController extends Controller
 
 
 
-    public function homePageCategory(Request $request)
-    {
-        $data = array();
-        try {
+public function homePageCategory(Request $request)
+{
+    $data = array();
+    try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 if (isset($request->category_id) && Mst_categories::find($request->category_id)) {
                     $category_id = $request->category_id;
