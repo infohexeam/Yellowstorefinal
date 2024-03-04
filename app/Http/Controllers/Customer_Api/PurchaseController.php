@@ -3360,6 +3360,24 @@ public function addToCartTest(Request $request)
                                 return response($data);
                             }
                         }
+                        else
+                        {
+                            $proVarData = Mst_store_product_varient::find($request->product_varient_id);
+                            $cartItem = new Trn_Cart;
+                            $cartItem->store_id = $proVarData->store_id;
+                            $cartItem->customer_id = $request->customer_id;
+                            $cartItem->product_varient_id = $request->product_varient_id;
+                            $cartItem->product_id = $proVarData->product_id;
+                            $cartItem->quantity = $request->quantity;
+                            $cartItem->remove_status = 0;
+                            $cartItem->save();
+    
+                            $data['status'] = 1;
+
+                            $data['message'] = "Product added to cart";
+                            return response($data);
+
+                        }
                         } else {
                         $data['message'] = 'Product not found';
                         $data['status'] = 2;
