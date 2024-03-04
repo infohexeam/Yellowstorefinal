@@ -4232,7 +4232,7 @@ public function homePageCategory(Request $request)
                                 if($prdctInCart->product_type==2)
                                 {
                                     $data['productTypeInCart']='service';
-                                    $data['servicePurchaseProductId']=$prdctInCart->product_id;
+                                    $data['servicePurchaseProductId']=$firstCartData->product_varient_id;
                                 }
                             }
 
