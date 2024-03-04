@@ -2845,6 +2845,7 @@ public function addToCartTest(Request $request)
                     $prdctToInsert=Mst_store_product::find($pVar->product_id);
                     $data['productTypeInCart']='';
                     $data['servicePurchaseProductId']=0;
+                    $data['servicePurchaseVariantId']=0;
                     if($prdctToInsert)
                     {
                         $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
@@ -2876,7 +2877,8 @@ public function addToCartTest(Request $request)
                                     if($prdctToInsert->product_type==2)
                                     {
                                      $data['productTypeInCart']='service';
-                                     $data['servicePurchaseProductId']=$firstCartData->product_varient_id;
+                                     $data['servicePurchaseProductId']=$firstCartData->product_id;
+                                     $data['servicePurchaseVariantId']=$firstCartData->product_varient_id;
                                      if($prdctInCart->product_type==2)
                                      {
                                         if($pVar->product_varient_id!=$firstCartData->product_varient_id)
@@ -3235,6 +3237,30 @@ public function addToCartTest(Request $request)
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
                 $data['productTypeInCart']='';
+                $data['servicePurchaseProductId']=0;
+                $data['servicePurchaseVariantId']=0;
+               
+                if($firstCartData)
+                {
+                    $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                    if($prdctInCart->product_type==2)
+                    {
+                        if($firstCartData->quantity==1)
+                        {
+                            $data['servicePurchaseProductId']=0;
+                            $data['servicePurchaseVariantId']=0;
+
+                        }
+                        else
+                        {
+                            $data['servicePurchaseProductId']=$firstCartData->product_id;
+                            $data['servicePurchaseVariantId']=$firstCartData->product_varient_id;
+                        }
+
+
+                    }
+
+                }
                 // if($firstCartData)
                 // {
                 //     $prdctInCart=Mst_store_product::find($firstCartData->product_id);

@@ -84,6 +84,8 @@ class ProductController extends Controller
             if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
                 $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
                 $data['servicePurchaseProductId']=0;
+                $data['servicePurchaseVariantId']=0;
+
                 if($firstCartData)
                 {
                     $prdctInCart=Mst_store_product::find($firstCartData->product_id);
@@ -96,7 +98,8 @@ class ProductController extends Controller
                         if($prdctInCart->product_type==2)
                         {
                             $data['productTypeInCart']='service';
-                            $data['servicePurchaseProductId']=$firstCartData->product_varient_id;
+                            $data['servicePurchaseProductId']=$firstCartData->product_id;
+                            $data['servicePurchaseVariantId']=$firstCartData->product_varient_id;
                         }
                         
                     }
@@ -4239,6 +4242,7 @@ public function homePageCategory(Request $request)
                     $store_id = $request->store_id;
                     $data['productTypeInCart']='';
                     $data['servicePurchaseProductId']=0;
+                    $data['servicePurchaseVariantId']=0;
                         $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
                         if($firstCartData)
                         {
@@ -4252,7 +4256,8 @@ public function homePageCategory(Request $request)
                                 if($prdctInCart->product_type==2)
                                 {
                                     $data['productTypeInCart']='service';
-                                    $data['servicePurchaseProductId']=$firstCartData->product_varient_id;
+                                    $data['servicePurchaseProductId']=$firstCartData->product_id;
+                                    $data['servicePurchaseVariantId']=$firstCartData->product_varient_id;
                                 }
                                 
                             }
