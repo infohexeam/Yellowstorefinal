@@ -2876,12 +2876,17 @@ public function addToCartTest(Request $request)
                                     if($prdctToInsert->product_type==2)
                                     {
                                      $data['productTypeInCart']='service';
-                                     $data['servicePurchaseProductId']=$prdctInCart->product_id;
+                                     $data['servicePurchaseProductId']=$firstCartData->product_varient_id;
                                      if($prdctInCart->product_type==2)
                                      {
-                                        $data['status'] = 44;
-                                        $data['message'] = 'Only one service purchase product is allowed to add to cart!';
-                                        return response($data);    
+                                        if($pVar->product_varient_id!=$firstCartData->product_varient_id)
+                                        {
+                                            $data['status'] = 44;
+                                            $data['message'] = 'Only one service purchase product is allowed to add to cart!';
+                                            return response($data);  
+
+                                        }
+                                         
 
                                         
                                      }
