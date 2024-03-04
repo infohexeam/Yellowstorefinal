@@ -82,7 +82,26 @@ class ProductController extends Controller
         try {
 
             if (isset($request->product_id) && $productData = Mst_store_product::find($request->product_id)) {
+                $firstCartData = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->first();
+                $data['servicePurchaseProductId']=0;
+                if($firstCartData)
+                {
+                    $prdctInCart=Mst_store_product::find($firstCartData->product_id);
+                    if($prdctInCart)
+                    {
+                        if($prdctInCart->product_type==1)
+                        {
+                            $data['productTypeInCart']='normal';
+                        }
+                        if($prdctInCart->product_type==2)
+                        {
+                            $data['productTypeInCart']='service';
+                            $data['servicePurchaseProductId']=$firstCartData->product_varient_id;
+                        }
+                        
+                    }
 
+                }
             $base_varient_stock=0;
 
             $productVariantdata = Mst_store_product_varient::where('product_id', $productData->product_id)
@@ -92,6 +111,7 @@ class ProductController extends Controller
             if ($productData->product_type == 1) {
             $productVariantdata->where('stock_count', '>', 0);
             }
+
 
             $productVariantdata = $productVariantdata->get();
                 foreach ($productVariantdata as $row) {
@@ -4234,6 +4254,7 @@ public function homePageCategory(Request $request)
                                     $data['productTypeInCart']='service';
                                     $data['servicePurchaseProductId']=$firstCartData->product_varient_id;
                                 }
+                                
                             }
 
                         }
