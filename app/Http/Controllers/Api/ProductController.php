@@ -3648,7 +3648,7 @@ public function showInHome(Request $request)
         else
         {
             $data['status'] = 0;
-            $data['message'] = "Offer price should not be equals to MRP!";
+            $data['message'] = "Unable to Add to home .The offered price should be lower than the MRP";
             return response($data);
         }
        
