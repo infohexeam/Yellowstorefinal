@@ -97,7 +97,7 @@
                            <i class="fa fa-check-square-o"></i> Submit</button>
                            <button type="reset" class="btn btn-raised btn-success">
                            Reset</button>
-                           <a class="btn btn-danger" href="{{ url('admin/store/add_youtube/' . $store->store_name_slug) }}">Cancel</a>
+                           <a class="btn btn-danger" href="{{route('admin.list_store')}}">Cancel</a>
                            </center>
                         </div>
                   </form>
