@@ -2879,7 +2879,7 @@ public function addToCartTest(Request $request)
                                      $data['productTypeInCart']='service';
                                     //  $data['servicePurchaseProductId']=$firstCartData->product_id;
                                     //  $data['servicePurchaseVariantId']=$firstCartData->product_varient_id;
-                                    $data['servicePurchaseProductId']=$pVar->product_varient_id;
+                                    $data['servicePurchaseProductId']=$pVar->product_id;
                                     $data['servicePurchaseVariantId']=$pVar->product_varient_id;
                                      if($prdctInCart->product_type==2)
                                      {
@@ -2910,7 +2910,7 @@ public function addToCartTest(Request $request)
                             if($prdctToInsert->product_type==2)
                             {
                                 $data['productTypeInCart']='service';
-                                $data['servicePurchaseProductId']=$pVar->product_varient_id;
+                                $data['servicePurchaseProductId']=$pVar->product_id;
                                 $data['servicePurchaseVariantId']=$pVar->product_varient_id;
 
                             }
