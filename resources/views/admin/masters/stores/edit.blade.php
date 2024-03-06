@@ -576,7 +576,7 @@
                               </tbody>
                            </table>
                            <center>
-                           <a class="btn btn-cyan" href="{{ route('admin.list_store') }}">Cancel</a>
+                           <a class="btn btn-cyan" href="">Cancel</a>
                            </center>
                         </div>
                      </div>
@@ -635,7 +635,7 @@
                               </tbody>
                            </table>
                            <center>
-                           <a class="btn btn-cyan" href="{{ route('admin.list_store') }}">Cancel</a>
+                           <a class="btn btn-cyan" href="">Cancel</a>
                            </center>
                         </div>
                      </div>
@@ -693,7 +693,7 @@
                               </tbody>
                            </table>
                            <center>
-                           <a class="btn btn-cyan" href="{{ route('admin.list_store') }}">Cancel</a>
+                           <a class="btn btn-cyan" href="">Cancel</a>
                            </center>
                         </div>
                      </div>
@@ -776,7 +776,7 @@
                               </tbody>
                            </table>
                            <center>
-                           <a class="btn btn-cyan" href="{{ route('admin.list_store') }}">Cancel</a>
+                           <a class="btn btn-cyan" href="">Cancel</a>
                            </center>
                         </div>
                      </div>
@@ -868,7 +868,7 @@
                               </tbody>
                            </table>
                            <center>
-                           <a class="btn btn-cyan" href="{{ route('admin.list_store') }}">Cancel</a>
+                           <a class="btn btn-cyan" href="">Cancel</a>
                            </center>
                         </div>
                      </div>
@@ -925,7 +925,7 @@
                            <i class="fa fa-check-square-o"></i> Update</button>
                            <button type="reset" class="btn btn-raised btn-success">
                            Reset</button>
-                           <a class="btn btn-danger" href="{{ route('admin.list_store') }}">Cancel</a>
+                           <a class="btn btn-danger" href="">Cancel</a>
                            </center>
                            </div>
                            
@@ -1531,4 +1531,5 @@ $(document).ready(function(){
   });
 });
 </script>
+
 @endsection
