@@ -1023,6 +1023,7 @@ class StoreOrderController extends Controller
                         $pua=0;
                         $remCount=0;
                         $i_check=0;
+                        $service_purchase_delivery_status=0;
                         foreach ($request->product_variants as $value) {
                             $varProdu = Mst_store_product_varient::find($value['product_varient_id']);
                             $proData = Mst_store_product::find($varProdu->product_id);
@@ -1066,7 +1067,20 @@ class StoreOrderController extends Controller
                             {
                                 if($proData->product_type==2)
                                 {
+                                    if($proData->service_purchase_delivery_status==0)
+                                    {
+                                        $data['status'] = 0;
+                                        $data['message'] = "Delivery is not available now for this purchase product..Try again!!!!!!!!!";
+                                        DB::rollback();
+                                        return response($data);
+
+                                    }
+                                    else
+                                    {
+                                        $service_purchase_delivery_status=1;
+                                    }
                                     $varProdu->stock_count=$value['quantity'];
+
                                 }
                                 $stockDiffernece=$varProdu ->stock_count-$value['quantity'];
                                 
@@ -1203,7 +1217,7 @@ class StoreOrderController extends Controller
                         $store_order->order_service_purchase_delivery_availability=$request->service_purchase_delivery_status??223;
                         $store_order->time_slot =  $request->time_slot;
 
-                        $store_order->delivery_option=$request->delivery_option??1;
+                        $store_order->delivery_option=$service_purchase_delivery_status??0;
                         $store_order->future_delivery_date=$request->future_delivery_date??NULL;
                         $store_order->is_collect_from_store=$request->is_collect_from_store;
                         $store_order->immediate_store_text=$orderStoreData->immediate_delivery_text;
