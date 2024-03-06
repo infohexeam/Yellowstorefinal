@@ -1214,7 +1214,7 @@ class StoreOrderController extends Controller
                         $store_order->payment_type_id = $request->payment_type_id;
                         $store_order->delivery_charge =  $request->delivery_charge;
                         $store_order->packing_charge =  $request->packing_charge;
-                        $store_order->order_service_purchase_delivery_availability=$request->service_purchase_delivery_status??223;
+                        $store_order->order_service_purchase_delivery_availability=$service_purchase_delivery_status;
                         $store_order->time_slot =  $request->time_slot;
 
                         $store_order->delivery_option=$service_purchase_delivery_status??0;
