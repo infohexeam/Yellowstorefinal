@@ -53,7 +53,7 @@
                            data-toggle="tab">Store Information</a></li>
                        <li><a href="#tab-42" data-toggle="tab" class="">Change Password</a></li>
                         <!--<li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>-->
-                        <li><a href="#tab-71" data-toggle="tab" class="">Images</a></li>
+                        <li><a href="#tab-71" data-toggle="tab" class="">Banner Images</a></li>
                        <li><a href="#tab-81" data-toggle="tab" class="">Agencies</a></li>
                         <li><a id="dboyz" href="#tab-91" data-toggle="tab" class="">Delivery Boys</a></li>
                        <li><a href="#tab-41" data-toggle="tab" class="">Products</a></li>
@@ -586,7 +586,7 @@
 
                      <div id="profile-log-switch">
                         <div class="media-heading">
-                           <h5><strong>Images</strong></h5>
+                           <h5><strong>Banner Images</strong></h5>
                         </div><br>
                         <div class="table-responsive ">
                            <table  id="example5" class="table table-striped table-bordered">

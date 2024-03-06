@@ -1069,10 +1069,7 @@ class StoreOrderController extends Controller
                                 {
                                     if($proData->service_purchase_delivery_status==0)
                                     {
-                                        $data['status'] = 0;
-                                        $data['message'] = "Delivery is not available now for this purchase product..Try again!!!!!!!!!";
-                                        DB::rollback();
-                                        return response($data);
+                                        $service_purchase_delivery_status=0;
 
                                     }
                                     else
