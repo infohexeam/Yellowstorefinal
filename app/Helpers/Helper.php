@@ -1878,8 +1878,10 @@ public static function findServiceOrder($orderId)
         {
             if($product->service_type==2)
             {
-                if($product->service_purchase_delivery_status==1)
+                $order=Trn_store_order::find($orderId);
+                if($order->order_service_purchase_delivery_availability==1)
                 {
+
                     return 0;
 
                 }

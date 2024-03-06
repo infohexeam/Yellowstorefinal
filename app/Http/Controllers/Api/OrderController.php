@@ -291,15 +291,10 @@ class OrderController extends Controller
                             {
                                 if($product->service_type==2)
                                 {
-                                    if($product->service_purchase_delivery_status==1)
-                                    {
-                                        $data['servicePurchaseDeliveryStatus']=1; 
+                                    
+                                        $data['servicePurchaseDeliveryStatus']=$data['orderDetails']->order_service_purchase_delivery_availability; 
 
-                                    }
-                                    else
-                                    {
-                                        $data['servicePurchaseDeliveryStatus']=0; 
-                                    }
+                                    
                                 }
                             
                             }
