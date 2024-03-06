@@ -1878,7 +1878,16 @@ public static function findServiceOrder($orderId)
         {
             if($product->service_type==2)
             {
-                return 2;
+                if($product->service_purchase_delivery_status==1)
+                {
+                    return 0;
+
+                }
+                else
+                {
+                   return 2;
+                }
+                
             }
            
         }

@@ -3565,7 +3565,7 @@ class StoreController extends Controller
   //dd("hii");
 
     $order_id = $request->order_id;
-    $order = Trn_store_order::Find($order_id);
+    $order = Trn_store_order::with('order_item')->Find($order_id);
     
     
     $order_number = $order->order_number;
