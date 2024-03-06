@@ -1887,7 +1887,7 @@ public static function findServiceOrder($orderId)
                 }
                 else
                 {
-                   return 2;
+                   return 1;
                 }
                 
             }
