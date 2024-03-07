@@ -3617,15 +3617,15 @@ class StoreController extends Controller
 
       if ($request->status_id == 8) {
         if ($order->order_type == 'APP') {
-          if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
-          {
+          // if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
+          // {
          if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
             if(Helper::findServiceOrder($order->order_id)==0)
             {
               return redirect()->back()->withErrors(['delivery boy not assigned']);
             }
           }
-        }
+        //}
         }
       }
       if (($request->status_id == 9)) {
@@ -3633,8 +3633,8 @@ class StoreController extends Controller
         $order->delivery_date = Carbon::now()->format('Y-m-d');
         $order->delivery_time = Carbon::now()->format('H:i');
         if ($order->order_type == 'APP') {
-          if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
-          {
+          // if($order->is_collect_from_store==NULL || $order->is_collect_from_store==0 )
+          // {
         if (($order->delivery_boy_id == 0) || !isset($order->delivery_boy_id)) {
           if(Helper::findServiceOrder($order->order_id)==0)
           {
@@ -3643,7 +3643,7 @@ class StoreController extends Controller
           }
             
           }
-        }
+        //}
         }
 
         $configPoint = Trn_configure_points::find(1);
