@@ -4251,7 +4251,7 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
             $data['status']=1;
             $data['message']="Store level referrals fetched";
             $data['store_level_referrals']=Trn_store_referrals::leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_referrals.joined_by_id')
-            ->where('store_id',$store_id)->get();
+            ->where('store_id',$store_id)->where('reference_status',1)->get();
             return response($data);
 
         }
