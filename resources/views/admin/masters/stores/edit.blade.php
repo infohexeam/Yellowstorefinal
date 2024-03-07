@@ -54,6 +54,7 @@
                        <li><a href="#tab-42" data-toggle="tab" class="">Change Password</a></li>
                         <!--<li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>-->
                         <li><a href="#tab-71" data-toggle="tab" class="">Banner Images</a></li>
+                         <li><a href="#tab-91" data-toggle="tab" class="">Store Images</a></li>
                        <li><a href="#tab-81" data-toggle="tab" class="">Agencies</a></li>
                         <li><a id="dboyz" href="#tab-91" data-toggle="tab" class="">Delivery Boys</a></li>
                        <li><a href="#tab-41" data-toggle="tab" class="">Products</a></li>
@@ -625,6 +626,52 @@
                                     <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button>
                                     </form>
                                     </td>
+                                 </tr>
+                                 @endforeach
+                                 @else
+                                 <tr>
+                                <td colspan="3"><center> No data available in the table</center></td>
+                                  </tr>
+                                  @endif
+                              </tbody>
+                           </table>
+                           <center>
+                           <a class="btn btn-cyan" href="">Cancel</a>
+                           </center>
+                        </div>
+                     </div>
+                  </div>
+
+                 <div class="tab-pane" id="tab-91">
+
+                     <div id="profile-log-switch">
+                        <div class="media-heading">
+                           <h5><strong>Store Images</strong></h5>
+                        </div><br>
+                        <div class="table-responsive ">
+                           <table  id="example5" class="table table-striped table-bordered">
+                              <thead>
+                                 <tr>
+                                   <th class="wd-15p">S.No</th>
+                                    <th class="wd-15p">{{ __('Image') }}</th>
+                                 
+                                  
+
+                                 </tr>
+                              </thead>
+                               <tbody class="col-lg-12 col-xl-6 p-0">
+                                 @php
+                                 $i = 0;
+                                 @endphp
+                                @if(!$store_images->isEmpty())
+                                 @foreach ($store_interior_images as $image)
+                                 @php
+                                 $i++;
+                                 @endphp
+                                 <tr>
+                                    <td>{{$i}}</td>
+                                    <td><img data-toggle="modal" data-target="#viewModal{{$image->store_image_id}}" src="{{asset('/assets/uploads/store_images/images/'.$image->store_image)}}"  width="50" >
+</td>
                                  </tr>
                                  @endforeach
                                  @else

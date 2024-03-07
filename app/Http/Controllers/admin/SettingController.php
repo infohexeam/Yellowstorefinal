@@ -28,6 +28,7 @@ use App\Models\admin\Mst_product_image;
 use App\Models\admin\Trn_store_customer_otp_verify;
 use App\Models\admin\Mst_delivery_boy;
 use App\Models\admin\Mst_GlobalProducts;
+use App\Models\admin\Mst_store_interior_images;
 use App\Models\admin\Sys_delivery_boy_availability;
 use App\Models\admin\Mst_store_link_delivery_boy;
 use App\Models\admin\Trn_delivery_boy_order;
@@ -1062,6 +1063,7 @@ class SettingController extends Controller
 		$store_admin=Trn_StoreAdmin::where('store_id',$store_id)->first();
 		$store_documents  = Mst_store_documents::where('store_id', '=', $store_id)->get();
 		$store_images = Mst_store_images::where('store_id', '=', $store_id)->get();
+		$store_interior_images = Mst_store_interior_images::where('store_id', '=', $store_id)->get();
 		$agencies = Mst_store_link_agency::where('store_id', '=', $store_id)->get();
 
 		$delivery_boys = Mst_store_link_delivery_boy::where('store_id', '=', $store_id)->get();
@@ -1084,7 +1086,7 @@ class SettingController extends Controller
 			->where('is_removed', 0)
 			->get();
 
-		return view('admin.masters.stores.edit', compact('products', 'subadmins', 'all_delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'delivery_boys', 'business_types','store_admin'));
+		return view('admin.masters.stores.edit', compact('products', 'subadmins', 'all_delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'delivery_boys', 'business_types','store_admin','store_interior_images'));
 	}
 	public function updateStore(Request $request, Mst_store $store, $store_id)
 	{
