@@ -7733,7 +7733,7 @@ public function showInHome(Request $request, $product_id)
 
         //$referrals=Trn_store_referrals::where('store_id',$store_id)->get();
         $referrals=Trn_store_referrals::leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn_store_referrals.joined_by_id')
-        ->where('store_id',$store_id)->where('reference_status',1)->get();
+      ->where('store_id',$store_id)->where('reference_status',1)->orderBy('created_at','DESC')->get();
         return view('store.elements.referrals.list', compact('pageTitle','referrals'
           
         ));
