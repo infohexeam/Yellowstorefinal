@@ -137,7 +137,7 @@
                                             
                                             <td>{{ $d->customer_first_name }} {{ $d->customer_last_name }}</td>
                                             <td>{{ $d->customer_mobile_number }}</td>
-                                             <td>{{ @$d->delivery_date }},{{ @$d->delivery_time }}</td>
+                                             <td>@if(@$d->delivery_date!=NULL){{ @$d->delivery_date }},{{ @$d->delivery_time }} @else -- @endif</td>
 
                                            
                                            
