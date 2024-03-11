@@ -87,6 +87,7 @@
                                             <th class="wd-15p">Payment Type</th>
                                             <th class="wd-15p">Payment Status</th>
                                             <th class="wd-15p">Transaction ID</th>
+                                            <th class="wd-15p">Delivery Date & Time</th>
                                             
                                          </tr>
                                       </thead>
@@ -145,7 +146,7 @@
                                                 @endif
                                                 
                                                 </td>
-
+  <td>@if(@$d->delivery_date!=NULL){{ @$d->delivery_date }},{{ @$d->delivery_time }} @else -- @endif</td>
 
                                         </tr>
                                         @endforeach

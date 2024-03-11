@@ -149,7 +149,7 @@
                                            
                                             <th class="wd-15p">Delivery Boy</th>
                                             <th class="wd-15p">Delivery Status</th>
-                                            
+                                            <th class="wd-15p">Delivery Date & Time</th>
                                          </tr>
                                       </thead>
                                       <tbody>
@@ -222,7 +222,7 @@
                                                     --
                                                 @endif
                                             </td>
-
+  <td>@if(@$d->delivery_date!=NULL){{ @$d->delivery_date }},{{ @$d->delivery_time }} @else -- @endif</td>
                                         </tr>
                                         @endforeach
                                
