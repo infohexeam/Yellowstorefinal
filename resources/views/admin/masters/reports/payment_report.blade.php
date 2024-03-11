@@ -121,7 +121,7 @@
                                             <th class="wd-15p">Payment Type</th>
                                             <th class="wd-15p">Payment Status</th>
                                             <th class="wd-15p">Transaction ID</th>
-                                            
+                                              <th class="wd-15p">Delivery Date & Time</th>
                                          </tr>
                                       </thead>
                                       <tbody>
@@ -197,6 +197,7 @@
                                                 ---
                                                 @endif
                                             </td>
+                                             <td>@if(@$d->delivery_date!=NULL){{ @$d->delivery_date }},{{ @$d->delivery_time }} @else -- @endif</td>
 
 
                                         </tr>
@@ -226,7 +227,7 @@
                 title: 'Payment report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
                  },
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
@@ -236,7 +237,7 @@
                 title: 'Payment report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
                  }
             }
          ]
