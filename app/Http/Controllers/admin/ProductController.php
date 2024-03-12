@@ -873,7 +873,7 @@ class ProductController extends Controller
         'mst_store_agencies.agency_name',
         'mst_store_categories.category_id',
         'mst_store_categories.category_name',
-        'mst__sub_categories.sub_category_id',
+        'mst_store_products.sub_category_id',
         'mst__sub_categories.sub_category_name'
       )->selectRaw('SUM(trn__recently_visited_products.visit_count) as sum')
         ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
@@ -923,7 +923,7 @@ class ProductController extends Controller
           'mst_store_agencies.agency_name',
           'mst_store_categories.category_id',
           'mst_store_categories.category_name',
-          'mst__sub_categories.sub_category_id',
+          'mst_store_products.sub_category_id',
           'mst__sub_categories.sub_category_name'
         )->selectRaw('SUM(trn__recently_visited_products.visit_count) as sum')
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
@@ -974,7 +974,14 @@ class ProductController extends Controller
         }
 
         $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->paginate(10);
-
+        foreach($data as $inventoryD)
+        {
+         if(is_null($inventoryD->sub_category_name))
+         {
+             $inventoryD->sub_category_name='Others';
+    
+         }
+        }
 
         return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
       }
@@ -1004,7 +1011,7 @@ class ProductController extends Controller
         'mst_store_agencies.agency_name',
         'mst_store_categories.category_id',
         'mst_store_categories.category_name',
-        'mst__sub_categories.sub_category_id',
+        'mst_store_products.sub_category_id',
         'mst__sub_categories.sub_category_name'
       )->selectRaw('SUM(trn__recently_visited_products.visit_count) as sum')
         ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
@@ -1051,7 +1058,7 @@ class ProductController extends Controller
           'mst_store_agencies.agency_name',
           'mst_store_categories.category_id',
           'mst_store_categories.category_name',
-          'mst__sub_categories.sub_category_id',
+          'mst_store_products.sub_category_id',
           'mst__sub_categories.sub_category_name'
         )->selectRaw('SUM(trn__recently_visited_products.visit_count) as sum')
           ->join('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
@@ -1087,6 +1094,9 @@ class ProductController extends Controller
         if (isset($request->category_id)) {
           $data = $data->where('mst_store_products.product_cat_id', $request->category_id);
         }
+        if (isset($request->sub_category_id)) {
+          $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
+        }
 
         if (isset($request->customer_id)) {
           $data = $data->where('trn__recently_visited_products.customer_id', $request->customer_id);
@@ -1095,7 +1105,14 @@ class ProductController extends Controller
 
 
         $data = $data->groupBy(DB::raw("DATE_FORMAT(trn__recently_visited_products.created_at, '%d-%m-%Y')"), 'trn__recently_visited_products.product_varient_id')->orderBy('trn__recently_visited_products.rvp_id', 'DESC')->paginate(10);
+        foreach($data as $inventoryD)
+    {
+     if(is_null($inventoryD->sub_category_name))
+     {
+         $inventoryD->sub_category_name='Others';
 
+     }
+    }
         return view('admin.masters.reports.product_report', compact('customers', 'subCategories', 'categories', 'agencies', 'dateto', 'datefrom', 'subadmins', 'stores', 'data', 'pageTitle'));
       }
     }
