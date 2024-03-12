@@ -127,6 +127,7 @@
                                                 <option value="">Sub Category</option>
                                                     @foreach($subCategories as $key)
                                                     <option {{request()->input('sub_category_id') == $key->sub_category_id ? 'selected':''}} value="{{$key->sub_category_id }}"> {{$key->sub_category_name }} </option>
+                                                     <option {{request()->input('sub_category_id') == 0 ? 'selected':''}} value="0"> Others</option>
                                                     @endforeach
                                                   </select>
                                             </div>
