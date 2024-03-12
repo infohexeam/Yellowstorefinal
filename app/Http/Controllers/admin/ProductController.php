@@ -2917,6 +2917,7 @@ public function showInventoryReport(Request $request)
       'mst_store_products.min_stock',
 
       'mst_store_products.tax_id',
+      'mst_store_products.sub_category_id',
       'mst_store_product_varients.product_varient_id',
       'mst_store_product_varients.variant_name',
       'mst_store_product_varients.product_varient_price',
@@ -2976,7 +2977,7 @@ public function showInventoryReport(Request $request)
       }
 
       if (isset($request->sub_category_id)) {
-        $data = $data->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+        $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
       }
 
 
@@ -2995,6 +2996,11 @@ public function showInventoryReport(Request $request)
     //  dd($inventoryData);
     foreach($data as $da)
     {
+      if(is_null($da->sub_category_name))
+          {
+            $da->sub_category_name="Others";
+
+          }
         // if($da->stock_count==0)
         // {
         //     if($da->prev_stock>0)
