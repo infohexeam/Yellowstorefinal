@@ -19,7 +19,7 @@ class Mst_delivery_boy extends Authenticatable
     'delivery_boy_mobile','delivery_boy_email','delivery_boy_image','delivery_boy_address',
     'vehicle_number','vehicle_type_id','delivery_boy_availability_id',
     'delivery_boy_username','password','country_id',
-    'state_id','district_id','store_id','delivery_boy_status','delivery_boy_commision_amount','availability_status',
+    'state_id','district_id','town_id','store_id','delivery_boy_status','delivery_boy_commision_amount','availability_status',
     'latitude','longitude'
 							];
 

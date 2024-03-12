@@ -35,11 +35,13 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">  Minimum Purchase Amount *</label>
-                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');truncateInput(this, 8);" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt',$coupon->min_purchase_amt)}}" placeholder="Minimum Purchase Amount">
-                            </div>
+                        <div class="form-group">
+                            <label class="form-label"> Minimum Purchase Amount *</label>
+                            <input type="number" min="0" step="1" oninput="validity.valid||(value=''); truncateInput(this, 6, 'min_purchase_amt_message');" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt', $coupon->min_purchase_amt)}}" placeholder="Minimum Purchase Amount" maxlength="8">
+                            <span id="min_purchase_amt_message" class="text-danger" style="display: none;">Maximum allowed digit is 6</span>
                         </div>
+                    </div>
+
                         
                         <div class="col-md-6">
                             <div class="form-group">
@@ -62,12 +64,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label"> Discount <span id="loseend" > </span> *</label>
-                                <input type="number" min="0" step="1" oninput="validity.valid||(value='');truncateInput(this, 6);" required class="form-control" id="discountAmt" name="discount" value="{{old('discount',$coupon->discount)}}" placeholder="Discount (%)">
-                            </div>
+                       <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label"> Discount <span id="loseend" > </span> *</label>
+                            <input type="number" min="0" step="1" oninput="validity.valid||(value=''); truncateInput(this, 8, 'discount_message');" required class="form-control" id="discountAmt" name="discount" value="{{old('discount', $coupon->discount)}}" placeholder="Discount (%)">
+                            <span id="discount_message" class="text-danger" style="display: none;">Maximum allowed digit is 8</span>
                         </div>
+                    </div>
+
                      
                     
                         <div class="col-md-6">
@@ -169,12 +173,17 @@
             $('#discountAmt').val(0);
        }
 }
- function truncateInput(element, maxLength) {
-        if (element.value.length > maxLength) 
-        {
-            element.value = element.value.slice(0, maxLength);
-        }
+ function truncateInput(element, maxLength, messageElementId) {
+    var inputLength = element.value.length;
+    var messageElement = document.getElementById(messageElementId);
+    if (inputLength > maxLength) {
+        element.value = element.value.slice(0, maxLength);
+        messageElement.style.display = 'block';
+    } else {
+        messageElement.style.display = 'none';
     }
+}
+
 
 </script>
 
