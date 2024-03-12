@@ -122,13 +122,14 @@
                                          
                                           <div class="col-md-3">
                                             <div class="form-group">
-                                              <label class="form-label">Sub hdggdhCategory </label>
+                                              <label class="form-label">Sub Category </label>
                                                <select  name="sub_category_id" id="subCategoryId" class="form-control select2-show-search" data-placeholder="Sub Category"  >
                                                 <option value="">Sub Category</option>
                                                     @foreach($subCategories as $key)
                                                     <option {{request()->input('sub_category_id') == $key->sub_category_id ? 'selected':''}} value="{{$key->sub_category_id }}"> {{$key->sub_category_name }} </option>
-                                                     <option {{request()->input('sub_category_id') == 0 ? 'selected':''}} value="0"> Others</option>
+                                                     
                                                     @endforeach
+                                                    <option {{request()->input('sub_category_id') == 0 ? 'selected':''}} value="0"> Others</option>
                                                   </select>
                                             </div>
                                          </div>
