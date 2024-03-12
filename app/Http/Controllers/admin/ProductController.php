@@ -3043,6 +3043,56 @@ public function showInventoryReport(Request $request)
 }
 public function showOutofStockReport(Request $request)
 {
+    $pageTitle = "Out of Stock Reports";
+    $datefrom = '';
+    $dateto = '';
+
+    $storesQuery = Mst_store::orderBy('store_id', 'DESC');
+    if (auth()->user()->user_role_id != 0) {
+        $storesQuery->where('subadmin_id', auth()->user()->id);
+    }
+    $stores = $storesQuery->get();
+
+    $subadmins = User::where('user_role_id', '!=', 0)->get();
+    $products = [];
+    $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
+    $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
+    $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
+
+    $dataQuery = Mst_store_product_varient::join('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+        ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+        ->leftJoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
+        ->leftJoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+        ->leftJoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+        ->where('mst_store_product_varients.stock_count', '<=', 0)
+        ->where('mst_store_products.product_type', 1)
+        ->where('mst_store_products.is_removed', 0)
+        ->where('mst_store_product_varients.is_removed', 0);
+
+    if (auth()->user()->user_role_id != 0) {
+        $dataQuery->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+    }
+
+    if ($request->has('date_from') && $request->has('date_to')) {
+        $dataQuery->whereBetween('mst__stock_details.created_at', [$request->date_from, $request->date_to]);
+    }
+
+    $data = $dataQuery->orderBy('mst__stock_details.created_at', 'DESC')
+        ->groupBy('mst_store_product_varients.product_varient_id')
+        ->paginate(10);
+
+    foreach ($data as $da) {
+        if (is_null($da->sub_category_name)) {
+            $da->sub_category_name = "Others";
+        }
+    }
+
+    return view('admin.masters.reports.out_of_stock_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
+}
+
+public function showOutofStockReportOld(Request $request)
+{
     //echo "working..";die;
     $pageTitle = "Out of Stock Reports";
     $datefrom = '';
@@ -3094,6 +3144,7 @@ public function showOutofStockReport(Request $request)
         'mst_store_products.product_status',
         'mst_store_products.product_brand',
         'mst_store_products.min_stock',
+        'mst_store_products.sub_category_id',
 
         'mst_store_products.tax_id',
         'mst_store_product_varients.product_varient_id',
@@ -3156,7 +3207,7 @@ public function showOutofStockReport(Request $request)
       }
 
       if (isset($request->sub_category_id)) {
-        $data = $data->where('mst__sub_categories.sub_category_id', $request->sub_category_id);
+        $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
       }
 
       if (isset($request->subadmin_id)) {
@@ -3174,6 +3225,14 @@ public function showOutofStockReport(Request $request)
     $data = $data->groupBy('mst_store_product_varients.product_varient_id')->paginate(10);
     //dd($data);
    // dd(1);
+   foreach($data as $da)
+   {
+     if(is_null($da->sub_category_name))
+         {
+           $da->sub_category_name="Others";
+
+         }
+    }
     
 
     //   dd($data);
