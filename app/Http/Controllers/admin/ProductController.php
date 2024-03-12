@@ -1242,7 +1242,7 @@ class ProductController extends Controller
           'mst_store_agencies.agency_name',
           'mst_store_categories.category_id',
           'mst_store_categories.category_name',
-          'mst__sub_categories.sub_category_id',
+          'mst_store_products.sub_category_id',
           'mst__sub_categories.sub_category_name'
         )
           ->leftjoin('trn_store_customers', 'trn_store_customers.customer_id', '=', 'trn__recently_visited_products.customer_id')
@@ -1351,6 +1351,15 @@ class ProductController extends Controller
 
           $data = $data->orderBy('trn__recently_visited_products.rvp_id', 'DESC')
           ->paginate(10);
+
+          foreach($data as $dat)
+          {
+           if(is_null($dat->sub_category_name))
+           {
+               $dat->sub_category_name='Others';
+      
+           }
+          }
 
       // dd($request->category_id,$request->sub_category_id,$data);
 
