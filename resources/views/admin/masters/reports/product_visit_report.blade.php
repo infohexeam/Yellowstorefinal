@@ -387,6 +387,7 @@ $(function(e) {
                         {
                           $('#subCategoryId').append('<option value="'+sub_category_id+'">'+sub_category_name+'</option>');
                         });
+                        $('#subCategoryId').append('<option value="0">Others</option>');
                         
                         let subCategoryId = getUrlParameter('sub_category_id');
                         if ( typeof subCategoryId !== "undefined" && subCategoryId) {
