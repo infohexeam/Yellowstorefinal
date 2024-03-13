@@ -54,7 +54,7 @@
                        <li><a href="#tab-42" data-toggle="tab" class="">Change Password</a></li>
                         <!--<li><a href="#tab-61" data-toggle="tab" class="">Documents</a></li>-->
                         <li><a href="#tab-71" data-toggle="tab" class="">Banner Images</a></li>
-                         <li><a href="#tab-91" data-toggle="tab" class="">Store Images</a></li>
+                         <li><a href="#tab-191" data-toggle="tab" class="">Store Images</a></li>
                        <li><a href="#tab-81" data-toggle="tab" class="">Agencies</a></li>
                         <li><a id="dboyz" href="#tab-91" data-toggle="tab" class="">Delivery Boys</a></li>
                        <li><a href="#tab-41" data-toggle="tab" class="">Products</a></li>
@@ -642,7 +642,7 @@
                      </div>
                   </div>
 
-                 <div class="tab-pane" id="tab-91">
+                 <div class="tab-pane" id="tab-191">
 
                      <div id="profile-log-switch">
                         <div class="media-heading">
