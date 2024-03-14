@@ -115,6 +115,15 @@ use App\Models\admin\Trn_StoreDeliveryTimeSlot;
                                              @if($order->delivery_option==1)
                                                Immediate Delivery @if($order->immediate_store_text)({{@$order->immediate_store_text}}) @endif
                                              @endif
+                                              @if($order->delivery_option==0)
+                                               @if (isset($order->time_slot) && ($order->time_slot != 0)) 
+
+                                                @php
+                                                 $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($order->time_slot);
+                                             @endphp
+                                                Time Slot Delivery ({{ @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end }})
+                                             @endif
+                                             @endif
                                              @if($order->delivery_option==2)
                                                 @php
                                                  $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($order->time_slot);
