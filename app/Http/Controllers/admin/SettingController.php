@@ -1608,8 +1608,9 @@ class SettingController extends Controller
         ->orderBy('mst_store_products.product_id', 'DESC')->get();
 		//dd($store_product_varients);
 		$store_images = Mst_store_images::where('store_id', '=', $store_id)->get();
+		$store_interior_images = Mst_store_interior_images::where('store_id', '=', $store_id)->get();
 		//dd($store_documents);
-		return view('admin.masters.stores.view', compact('store_product_varients','delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'store_products'));
+		return view('admin.masters.stores.view', compact('store_product_varients','delivery_boys', 'store', 'pageTitle', 'countries', 'store_images', 'store_documents', 'agencies', 'store_products','store_interior_images'));
 	}
 
 	// ajax check for email existance

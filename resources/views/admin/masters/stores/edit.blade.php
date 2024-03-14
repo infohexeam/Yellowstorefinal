@@ -688,7 +688,7 @@
                                  @php
                                  $i = 0;
                                  @endphp
-                                @if(!$store_images->isEmpty())
+                                @if(!$store_interior_images->isEmpty())
                                  @foreach ($store_interior_images as $image)
                                  @php
                                  $i++;
