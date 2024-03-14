@@ -3123,6 +3123,11 @@ public function orderHistory(Request $request)
                             $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
                             
                         }
+                        if($data['orderDetails']->delivery_option==0)
+                        {
+                            $deliveryTimeSlot = Trn_StoreDeliveryTimeSlot::withTrashed()->find($data['orderDetails']->time_slot);
+                            $data['orderDetails']->time_slot = @$deliveryTimeSlot->time_start . "-" . @$deliveryTimeSlot->time_end;
+                        }
                         
 
                     }
