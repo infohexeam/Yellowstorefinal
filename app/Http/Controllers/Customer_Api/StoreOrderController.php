@@ -1214,7 +1214,7 @@ class StoreOrderController extends Controller
                         $store_order->order_service_purchase_delivery_availability=$service_purchase_delivery_status;
                         $store_order->time_slot =  $request->time_slot;
 
-                        $store_order->delivery_option=$service_purchase_delivery_status??0;
+                        //$store_order->delivery_option=$service_purchase_delivery_status??0;
                         $store_order->future_delivery_date=$request->future_delivery_date??NULL;
                         $store_order->is_collect_from_store=$request->is_collect_from_store;
                         $store_order->immediate_store_text=$orderStoreData->immediate_delivery_text;
