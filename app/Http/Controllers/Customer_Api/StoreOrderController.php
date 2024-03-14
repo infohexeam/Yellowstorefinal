@@ -1841,7 +1841,7 @@ class StoreOrderController extends Controller
                         $store_order->packing_charge =  $request->packing_charge;
     
                         $store_order->time_slot =  $request->time_slot;
-                        $store_order->delivery_option =  3;
+                        $store_order->delivery_option =  $request->delivery_option;
     
     
     
