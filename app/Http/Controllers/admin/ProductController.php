@@ -3046,14 +3046,17 @@ public function showOutofStockReport(Request $request)
     $pageTitle = "Out of Stock Reports";
     $datefrom = '';
     $dateto = '';
+    dd('test1');
 
     $storesQuery = Mst_store::orderBy('store_id', 'DESC');
     if (auth()->user()->user_role_id != 0) {
         $storesQuery->where('subadmin_id', auth()->user()->id);
     }
     $stores = $storesQuery->get();
+    dd('test2');
 
     $subadmins = User::where('user_role_id', '!=', 0)->get();
+    dd('test3');
     $products = [];
     $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
     $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
