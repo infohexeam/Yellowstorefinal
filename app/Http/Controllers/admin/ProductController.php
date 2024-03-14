@@ -3041,7 +3041,7 @@ public function showInventoryReport(Request $request)
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
-public function showOutofStockReport2(Request $request)
+public function showOutofStockReport(Request $request)
 {
     $pageTitle = "Out of Stock Reports";
     $datefrom = '';
@@ -3091,7 +3091,7 @@ public function showOutofStockReport2(Request $request)
     return view('admin.masters.reports.out_of_stock_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
 
-public function showOutofStockReport(Request $request)
+public function showOutofStockReportPrevious(Request $request)
 {
     //echo "working..";die;
     $pageTitle = "Out of Stock Reports";
