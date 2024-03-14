@@ -3091,7 +3091,7 @@ public function showOutofStockReport(Request $request)
             $da->sub_category_name = "Others";
         }
     }
-    dd('test5');
+    
 
     return view('admin.masters.reports.out_of_stock_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
