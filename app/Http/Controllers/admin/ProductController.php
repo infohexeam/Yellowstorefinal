@@ -3046,7 +3046,7 @@ public function showOutofStockReport(Request $request)
     $pageTitle = "Out of Stock Reports";
     $datefrom = '';
     $dateto = '';
-    dd('test1');
+    //dd('test1');
 
     $storesQuery = Mst_store::orderBy('store_id', 'DESC');
     if (auth()->user()->user_role_id != 0) {
