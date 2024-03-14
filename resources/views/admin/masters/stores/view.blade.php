@@ -87,6 +87,19 @@
                                     <td><strong> Delivery Hours:</strong> {{ date('h:i A',strtotime(@$store->delivery_start_time))}}-{{ date('h:i A',strtotime(@$store->delivery_end_time))}}</td>
                                  </tr>
                                  @endif
+                                 <tr>
+                                    <td><strong> Youtube Url:</strong>  {{@$store->youtube_account_link}}</td>
+                                 </tr>
+                                 <tr>
+                                    <td><strong> Facebook Url:</strong>  {{@$store->facebook_account_link}}</td>
+                                 </tr>
+                                  <tr>
+                                    <td><strong> Instagram Url:</strong>  {{@$store->instagram_account_link}}</td>
+                                 </tr>
+                                  <tr>
+                                    <td><strong>Snap Chat Url:</strong>  {{@$store->snapchat_account_link}}</td>
+                                 </tr>
+                                
 
                                   {{-- <tr>
                                     <td><strong> Store Commision Percentage Per Order:</strong> {{ $store->store_commision_percentage}}%</td>
