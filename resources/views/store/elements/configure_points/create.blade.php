@@ -39,7 +39,8 @@
                          <div class="col-md-12">
                         <div class="form-group">
                            <label class="form-label">First Order Points</label>
-                           <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points" maxlength="10">
+                           <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10, 'fop_message');" class="form-control" name="first_order_points" value="{{old('first_order_points',@$configure_points->first_order_points)}}" placeholder="First Order Points" maxlength="10">
+                           <span id="fop_message" class="text-danger" style="display: none;">Maximum allowed digit is 10</span>
                         </div>
                         </div>
 
@@ -48,7 +49,8 @@
 
                          <div class="form-group">
                            <label class="form-label">Referral Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" required=""  name="referal_points" class="form-control"  value="{{old('referal_points',@$configure_points->referal_points)}}" placeholder="Referral Points " maxlength="10">
+                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10, 'rp_message');" required=""  name="referal_points" class="form-control"  value="{{old('referal_points',@$configure_points->referal_points)}}" placeholder="Referral Points " maxlength="10">
+                             <span id="rp_message" class="text-danger" style="display: none;">Maximum allowed digit is 10</span>
                            </div>
                         </div>
                         
@@ -57,7 +59,8 @@
 
                          <div class="form-group">
                            <label class="form-label">Referred Joiner Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points " maxlength="10">
+                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10, 'jp_message');" required=""  name="joiner_points" class="form-control"  value="{{old('joiner_points',@$configure_points->joiner_points)}}" placeholder="Joiner Points " maxlength="10">
+                             <span id="jp_message" class="text-danger" style="display: none;">Maximum allowed digit is 10</span>
                            </div>
                         </div>
 
@@ -104,7 +107,8 @@
 
                          <div class="form-group">
                            <label class="form-label">Points</label>
-                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" required=""  name="order_points" class="form-control"  value="{{old('points',@$configure_points->order_points)}}" placeholder="Order points " maxlength="10">
+                            <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10, 'points_message');" required=""  name="order_points" class="form-control"  value="{{old('points',@$configure_points->order_points)}}" placeholder="Order points " maxlength="10">
+                             <span id="points_message" class="text-danger" style="display: none;">Maximum allowed digit is 10</span>
                            </div>
                         </div>
                         
@@ -118,7 +122,8 @@
                         <div class="col-md-6">
                         <div class="form-group">
                            <label class="form-label">Maximum redeem amount per order</label>
-                           <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10);" class="form-control" name="max_redeem_amount" value="{{old('max_redeem_amount',@$configure_points->max_redeem_amount)}}" placeholder="Maximum redeem amount per order" maxlength="10">
+                           <input type="number"  min="0" oninput="validity.valid||(value='');truncateInput(this, 10, 'max_red_messagee');" class="form-control" name="max_redeem_amount" value="{{old('max_redeem_amount',@$configure_points->max_redeem_amount)}}" placeholder="Maximum redeem amount per order" maxlength="10">
+                            <span id="max_red_message" class="text-danger" style="display: none;">Maximum allowed digit is 10</span>
                         </div>
                         </div>
                          <div class="col-md-6">
@@ -146,9 +151,14 @@
    </div>
 </div>
 <script>
-function truncateInput(input, maxLength) {
-    if (input.value.length > maxLength) {
-        input.value = input.value.slice(0, maxLength);
+function truncateInput(element, maxLength, messageElementId) {
+    var inputLength = element.value.length;
+    var messageElement = document.getElementById(messageElementId);
+    if (inputLength > maxLength) {
+        element.value = element.value.slice(0, maxLength);
+        messageElement.style.display = 'block';
+    } else {
+        messageElement.style.display = 'none';
     }
 }
 
