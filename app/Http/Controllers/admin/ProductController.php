@@ -2930,7 +2930,7 @@ public function showInventoryReport(Request $request)
         }
     }
 
-    $data = $data->orderBy('mst__stock_details.updated_at', 'DESC')->paginate(10);
+    $data = $data->orderBy('mst__stock_details.updated_at', 'DESC')->get();
 
     foreach ($data as $da) {
         if (is_null($da->sub_category_name)) {
@@ -2953,7 +2953,8 @@ public function showInventoryReport(Request $request)
 
     $data = collect($data)
     ->unique('product_varient_id')
-    ->values();
+    ->values()
+    ->paginate(10);
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
