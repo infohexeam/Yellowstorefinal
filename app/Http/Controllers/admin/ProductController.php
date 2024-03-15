@@ -3035,7 +3035,7 @@ public function showInventoryReport(Request $request)
       return $item->updated_time;
   });
 
-    $data = collect($data);
+    //$data = collect($data);
     $data = $data->unique('product_varient_id');
     $data =   $data->values()->all();
 
