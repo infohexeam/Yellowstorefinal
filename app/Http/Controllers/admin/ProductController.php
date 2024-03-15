@@ -2885,7 +2885,7 @@ public function showInventoryReport(Request $request)
     $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
     $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
 
-    $data = Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+    $dataQuery = Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
         ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
         ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
@@ -2928,7 +2928,7 @@ public function showInventoryReport(Request $request)
         );
 
     if (auth()->user()->user_role_id != 0) {
-        $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+        $dataQuery = $dataQuery->where('mst_stores.subadmin_id', '=', auth()->user()->id);
     }
 
     if ($request->has('date_from') && $request->has('date_to')) {
@@ -2938,31 +2938,31 @@ public function showInventoryReport(Request $request)
         $a2 = Carbon::parse($request->date_to)->endOfDay();
 
         if ($request->has('product_id')) {
-            $data = $data->where('mst_store_products.product_id', $request->product_id);
+            $dataQuery = $dataQuery->where('mst_store_products.product_id', $request->product_id);
         }
 
         if ($request->has('vendor_id')) {
-            $data = $data->where('mst_store_agencies.agency_id', $request->vendor_id);
+            $dataQuery = $dataQuery->where('mst_store_agencies.agency_id', $request->vendor_id);
         }
 
         if ($request->has('category_id')) {
-            $data = $data->where('mst_store_categories.category_id', $request->category_id);
+            $dataQuery = $dataQuery->where('mst_store_categories.category_id', $request->category_id);
         }
 
         if ($request->has('sub_category_id')) {
-            $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
+            $dataQuery = $dataQuery->where('mst_store_products.sub_category_id', $request->sub_category_id);
         }
 
         if ($request->has('subadmin_id')) {
-            $data = $data->where('mst_stores.subadmin_id', '=', $request->subadmin_id);
+            $dataQuery = $dataQuery->where('mst_stores.subadmin_id', '=', $request->subadmin_id);
         }
 
         if ($request->has('store_id')) {
-            $data = $data->where('mst_stores.store_id', '=', $request->store_id);
+            $dataQuery = $dataQuery->where('mst_stores.store_id', '=', $request->store_id);
         }
     }
 
-    $data = $data->orderBy('updated_time', 'DESC')->paginate(10);
+    $data = $dataQuery->orderBy('updated_time', 'DESC')->paginate(10);
 
     foreach ($data as $da) {
         if (is_null($da->sub_category_name)) {
@@ -2985,10 +2985,10 @@ public function showInventoryReport(Request $request)
     });
 
     // Convert the paginator to a collection
-    $collection = $data->items();
+    $collection = $data->getCollection();
 
     // Apply uniqueness based on 'product_varient_id'
-    $uniqueCollection = collect($collection)->unique('product_varient_id');
+    $uniqueCollection = $collection->unique('product_varient_id');
 
     // Convert the collection back to an array
     $uniqueArray = $uniqueCollection->values()->all();
