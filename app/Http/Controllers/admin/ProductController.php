@@ -2949,7 +2949,7 @@ public function showInventoryReport(Request $request)
     $data = collect($data);
     $data = $data->unique('product_varient_id');
     $data = $data->values()->all();
-
+   dd($data);
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
 
