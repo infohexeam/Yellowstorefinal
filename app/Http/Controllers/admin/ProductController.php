@@ -2929,7 +2929,7 @@ public function showInventoryReport(Request $request)
         $query->where('mst_stores.store_id', '=', $request->store_id);
     }
 
-    $data = $query->orderBy('mst__stock_details.updated_at', 'DESC')->paginate(10);
+    $data = $query->orderBy('mst__stock_details.updated_at', 'DESC')->get();
 
 // Retrieve the stock details for each item in the paginated data
 $data->transform(function ($item) {

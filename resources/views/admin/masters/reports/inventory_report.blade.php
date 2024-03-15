@@ -191,7 +191,7 @@
                                         @endphp
                                         @foreach ($data as $d)
                                         <tr>
-                                            <td></td>
+                                            <td>{{ ++$i }}</td>
                                             {{-- <td>{{ $d->product_name }}</td> --}}
                                             <td>{{ $d->variant_name }}</td>
                                             
@@ -248,7 +248,6 @@
                                     
                                       </tbody>
                                    </table>
-                                   
                                 </div>
                             </div>
                       </div>
