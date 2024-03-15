@@ -248,7 +248,7 @@
                                     
                                       </tbody>
                                    </table>
-                                    {{ $data->appends(request()->query())->links('custom_pagination') }}
+                                    
                                 </div>
                             </div>
                       </div>
