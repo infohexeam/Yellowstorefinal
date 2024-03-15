@@ -2858,106 +2858,189 @@ public function showInventoryReportLegacy(Request $request)
 
     //  dd($inventoryData);
 
-    $data = collect($data)
-    ->unique('product_varient_id')
-    ->values();
+    $data = collect($data);
+    $data = $data->unique('product_varient_id');
+    $data =   $data->values()->all();
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
 public function showInventoryReport(Request $request)
-{
+  {
+    //echo "working..";die;
     $pageTitle = "Inventory Reports";
     $datefrom = '';
     $dateto = '';
-
-    if (auth()->user()->user_role_id == 0) {
-        $stores = Mst_store::orderby('store_id', 'DESC')->get();
+    if (auth()->user()->user_role_id  == 0) {
+      $stores = Mst_store::orderby('store_id', 'DESC')->get();
     } else {
-        $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+      $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
     }
 
     $subadmins = User::where('user_role_id', '!=', 0)->get();
+
+
     $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-        ->select('mst_store_products.product_id', 'mst_store_products.product_name')
-        ->orderBy('mst_store_products.product_id', 'DESC')->get();
+      ->select('mst_store_products.product_id', 'mst_store_products.product_name')
+      //->where('mst_store_products.store_id',Auth::guard('store')->user()->store_id)
+      ->orderBy('mst_store_products.product_id', 'DESC')->get();
+
     $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
     $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
     $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
 
-    $data = Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-        ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
-        ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
-        ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
-        ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
-        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
-        ->where('mst__stock_details.stock', '>', 0)
-        ->where('mst_store_products.product_type', 1)
-        ->where('mst_store_product_varients.is_removed', 0);
 
-    if (auth()->user()->user_role_id != 0) {
-        $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+
+    $data =   Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+    ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+    ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
+    ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+    ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+    ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+   
+    ->where('mst__stock_details.stock', '>', 0)
+
+    ->where('mst_store_products.product_type', 1)
+    // ->where('mst_store_products.is_removed', 0)
+     ->where('mst_store_product_varients.is_removed', 0)
+    // ->orderBy('mst_store_products.product_name','ASC')
+    //   ->orderBy('mst_store_product_varients.stock_count', 'ASC')
+    
+
+    ->select(
+      'mst_store_products.product_id',
+      'mst_store_products.product_name',
+      'mst_store_products.product_code',
+      'mst_store_products.product_cat_id',
+      'mst_store_products.product_base_image',
+      'mst_store_products.product_status',
+      'mst_store_products.product_brand',
+      'mst_store_products.min_stock',
+
+      'mst_store_products.tax_id',
+      'mst_store_products.sub_category_id',
+      'mst_store_product_varients.product_varient_id',
+      'mst_store_product_varients.variant_name',
+      'mst_store_product_varients.product_varient_price',
+      'mst_store_product_varients.product_varient_offer_price',
+      'mst_store_product_varients.product_varient_base_image',
+      'mst_store_product_varients.stock_count',
+      'mst_store_product_varients.created_at',
+      'mst_store_product_varients.is_base_variant',
+      'mst_store_product_varients.variant_status',
+      'mst_store_categories.category_id',
+      'mst_store_categories.category_name',
+      'mst__stock_details.stock',
+      'mst__stock_details.prev_stock',
+      'mst__stock_details.updated_at AS updated_time',
+      'mst_store_agencies.agency_name',
+      'mst__sub_categories.sub_category_name',
+
+      'mst_stores.store_id',
+      'mst_stores.subadmin_id',
+      'mst_stores.store_name',
+      'mst_stores.store_code',
+      
+
+    );
+
+    if (auth()->user()->user_role_id  != 0) {
+      $data = $data->where('mst_stores.subadmin_id', '=', auth()->user()->id);
     }
 
     if ($_GET) {
-        $datefrom = $request->date_from;
-        $dateto = $request->date_to;
+      $datefrom = $request->date_from;
+      $dateto = $request->date_to;
 
-        $a1 = Carbon::parse($request->date_from)->startOfDay();
-        $a2  = Carbon::parse($request->date_to)->endOfDay();
+      $a1 = Carbon::parse($request->date_from)->startOfDay();
+      $a2  = Carbon::parse($request->date_to)->endOfDay();
 
-        if (isset($request->product_id)) {
-            $data = $data->where('mst_store_products.product_id', $request->product_id);
-        }
+      // if(isset($request->date_from))
+      // {
+      //   $data = $data->whereDate('trn_store_orders.created_at','>=',$a1);
+      // }
 
-        if (isset($request->vendor_id)) {
-            $data = $data->where('mst_store_agencies.agency_id', $request->vendor_id);
-        }
+      // if(isset($request->date_to))
+      // {
+      //   $data = $data->whereDate('trn_store_orders.created_at','<=',$a2);
+      // }
 
-        if (isset($request->category_id)) {
-            $data = $data->where('mst_store_categories.category_id', $request->category_id);
-        }
+      if (isset($request->product_id)) {
+        $data = $data->where('mst_store_products.product_id', $request->product_id);
+      }
 
-        if (isset($request->sub_category_id)) {
-            $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
-        }
+      if (isset($request->vendor_id)) {
+        $data = $data->where('mst_store_agencies.agency_id', $request->vendor_id);
+      }
 
-        if (isset($request->subadmin_id)) {
-            $data = $data->where('mst_stores.subadmin_id', '=', $request->subadmin_id);
-        }
+      if (isset($request->category_id)) {
+        $data = $data->where('mst_store_categories.category_id', $request->category_id);
+      }
 
-        if (isset($request->store_id)) {
-            $data = $data->where('mst_stores.store_id', '=', $request->store_id);
-        }
+      if (isset($request->sub_category_id)) {
+        $data = $data->where('mst_store_products.sub_category_id', $request->sub_category_id);
+      }
+
+
+      if (isset($request->subadmin_id)) {
+        $data = $data->where('mst_stores.subadmin_id', '=', $request->subadmin_id);
+      }
+
+      if (isset($request->store_id)) {
+        $data = $data->where('mst_stores.store_id', '=', $request->store_id);
+      }
     }
 
-    $data = $data->orderBy('mst__stock_details.updated_at', 'DESC')->get();
+    $data = $data->orderBy('updated_time', 'DESC')->get();
+    //   
 
-    foreach ($data as $da) {
-        if (is_null($da->sub_category_name)) {
-            $da->sub_category_name = "Others";
-        }
+    //  dd($inventoryData);
+    foreach($data as $da)
+    {
+      if(is_null($da->sub_category_name))
+          {
+            $da->sub_category_name="Others";
 
-        $stock_info = Mst_StockDetail::where('product_varient_id', $da->product_varient_id)->orderBy('stock_detail_id', 'DESC')->first();
-        if ($stock_info) {
-            $da->prev_stock = $stock_info->prev_stock;
-            $da->stock = $stock_info->stock;
-            $da->prev_stock = (string) $da->prev_stock;
-            $da->stock = (string) $da->stock;
-            $da->updated_time = Carbon::parse($stock_info->created_at)->format('Y-m-d H:i:s');
-        }
+          }
+        // if($da->stock_count==0)
+        // {
+        //     if($da->prev_stock>0)
+        //     {
+        //         $da->prev_stock=$da->prev_stock+$da->stock;
+        //         $da->stock=0-$da->prev_stock;
+        //         $da->prev_stock=(string)$da->prev_stock;
+        //         $da->stock=(string)$da->stock;
+        //     }
+           
+        // }
+        // if($da->stock>0&&$da->prev_stock==0)
+        // {
+        //     $st=$da->stock;
+        //     $da->stock=$da->stock_count-$da->stock;
+        //     $da->prev_stock=(string)$st;
+        //     $da->stock=(string)$da->stock;
+        // }
+       $stock_info= Mst_StockDetail::where('product_varient_id',$da->product_varient_id)->orderBy('stock_detail_id','DESC')->first();
+       if($stock_info)
+       {
+        $da->prev_stock=$stock_info->prev_stock;
+        $da->stock=$stock_info->stock;
+        $da->prev_stock=(string)$da->prev_stock;
+        $da->stock=(string)$da->stock;
+        $da->updated_time = Carbon::parse($stock_info->created_at)->format('Y-m-d H:i:s');
+
+       }
+
     }
-
     $data = $data->sortByDesc(function ($item) {
-        return $item->updated_time;
-    });
+      return $item->updated_time;
+  });
 
-    $data = collect($data)
-    ->unique('product_varient_id')
-    ->paginate(10);
+    $data = collect($data);
+    $data = $data->unique('product_varient_id');
+    $data =   $data->values()->all();
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
-
 public function showOutofStockReport(Request $request)
 {
     $pageTitle = "Out of Stock Reports";
