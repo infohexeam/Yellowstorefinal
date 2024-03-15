@@ -2865,7 +2865,7 @@ public function showInventoryReportLegacy(Request $request)
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
 public function showInventoryReport(Request $request)
-  {
+{
     //echo "working..";die;
     $pageTitle = "Inventory Reports";
     $datefrom = '';
@@ -2990,7 +2990,7 @@ public function showInventoryReport(Request $request)
       }
     }
 
-    $data = $data->orderBy('updated_time', 'DESC')->get();
+    $data = $data->orderBy('updated_time', 'DESC')->paginate(10);
     //   
 
     //  dd($inventoryData);
@@ -3091,6 +3091,7 @@ public function showOutofStockReport(Request $request)
             $da->sub_category_name = "Others";
         }
     }
+    dd(1);
     
 
     return view('admin.masters.reports.out_of_stock_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
