@@ -2990,7 +2990,7 @@ public function showInventoryReport(Request $request)
       }
     }
 
-    $data = $data->orderBy('updated_time', 'DESC')->get();
+    $data = $data->orderBy('updated_time', 'DESC')->paginate(10);
     //   
 
     //  dd($inventoryData);
