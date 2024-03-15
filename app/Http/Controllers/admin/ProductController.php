@@ -3085,7 +3085,9 @@ public function showOutofStockReport(Request $request)
     $data = $dataQuery->orderBy('mst__stock_details.created_at', 'DESC')
         ->groupBy('mst_store_product_varients.product_varient_id')
         ->paginate(10);
-        dd(1);
+        //dd($data);
+
+    return $data;
 
     foreach ($data as $da) {
         if (is_null($da->sub_category_name)) {
