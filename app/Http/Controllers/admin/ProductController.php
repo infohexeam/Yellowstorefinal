@@ -2858,9 +2858,9 @@ public function showInventoryReportLegacy(Request $request)
 
     //  dd($inventoryData);
 
-    $data = collect($data);
-    $data = $data->unique('product_varient_id');
-    $data =   $data->values()->all();
+    $data = collect($data)
+    ->unique('product_varient_id')
+    ->values();
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
