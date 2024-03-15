@@ -3087,14 +3087,14 @@ public function showOutofStockReport(Request $request)
         ->paginate(10);
         //dd($data);
 
-    return $data;
+   
 
     foreach ($data as $da) {
         if (is_null($da->sub_category_name)) {
             $da->sub_category_name = "Others";
         }
     }
-   
+    return $data;
     
 
     return view('admin.masters.reports.out_of_stock_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
