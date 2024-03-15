@@ -191,7 +191,7 @@
                                         @endphp
                                         @foreach ($data as $d)
                                         <tr>
-                                            <td>{{ $data->firstItem() + $loop->index }}</td>
+                                            <td>{{ ++$i }}</td>
                                             {{-- <td>{{ $d->product_name }}</td> --}}
                                             <td>{{ $d->variant_name }}</td>
                                             
@@ -248,7 +248,7 @@
                                     
                                       </tbody>
                                    </table>
-                                       {{ $data->appends(request()->query())->links('custom_pagination') }}
+                                   
                                 </div>
                             </div>
                       </div>
