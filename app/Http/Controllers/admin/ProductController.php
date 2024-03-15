@@ -2931,25 +2931,36 @@ public function showInventoryReport(Request $request)
 
     $data = $query->orderBy('mst__stock_details.updated_at', 'DESC')->paginate(10);
 
-    foreach ($data as $da) {
-        $stock_info = Mst_StockDetail::where('product_varient_id', $da->product_varient_id)->orderBy('stock_detail_id', 'DESC')->first();
-        if ($stock_info) {
-            $da->prev_stock = $stock_info->prev_stock;
-            $da->stock = $stock_info->stock;
-            $da->prev_stock = (string)$da->prev_stock;
-            $da->stock = (string)$da->stock;
-            $da->updated_time = Carbon::parse($stock_info->created_at)->format('Y-m-d H:i:s');
-        }
+// Retrieve the stock details for each item in the paginated data
+$data->transform(function ($item) {
+    $stock_info = Mst_StockDetail::where('product_varient_id', $item->product_varient_id)
+        ->orderBy('stock_detail_id', 'DESC')
+        ->first();
+
+    if ($stock_info) {
+        $item->prev_stock = $stock_info->prev_stock;
+        $item->stock = $stock_info->stock;
+        $item->prev_stock = (string)$item->prev_stock;
+        $item->stock = (string)$item->stock;
+        $item->updated_time = Carbon::parse($stock_info->created_at)->format('Y-m-d H:i:s');
     }
 
-    $data = $data->sortByDesc(function ($item) {
-        return $item->updated_time;
-    });
+    return $item;
+});
 
-    $data = collect($data);
-    $data = $data->unique('product_varient_id');
-    $data = $data->values()->all();
-   dd($data);
+// Sort the paginated data by updated_time
+$data = $data->sortByDesc(function ($item) {
+    return $item->updated_time;
+});
+
+// Remove duplicate entries based on product_varient_id
+$data = $data->unique('product_varient_id');
+
+// Reindex the collection
+$data = $data->values()->all();
+
+return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
+
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
 
