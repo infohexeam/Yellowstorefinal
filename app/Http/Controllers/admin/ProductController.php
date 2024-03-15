@@ -2865,6 +2865,95 @@ public function showInventoryReportLegacy(Request $request)
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
 public function showInventoryReport(Request $request)
+{
+    $pageTitle = "Inventory Reports";
+    $datefrom = '';
+    $dateto = '';
+    
+    if (auth()->user()->user_role_id  == 0) {
+        $stores = Mst_store::orderby('store_id', 'DESC')->get();
+    } else {
+        $stores = Mst_store::where('subadmin_id', auth()->user()->id)->orderBy('store_id', 'desc')->get();
+    }
+
+    $subadmins = User::where('user_role_id', '!=', 0)->get();
+    $products = Mst_store_product::join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->select('mst_store_products.product_id', 'mst_store_products.product_name')
+        ->orderBy('mst_store_products.product_id', 'DESC')->get();
+
+    $agencies = Mst_store_agencies::orderBy('agency_id', 'DESC')->where('agency_account_status', 1)->get();
+    $categories = Mst_categories::orderBy('category_id', 'DESC')->where('category_status', 1)->get();
+    $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
+
+    $query = Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
+        ->join('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->leftjoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
+        ->leftjoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
+        ->leftjoin('mst__sub_categories', 'mst__sub_categories.sub_category_id', '=', 'mst_store_products.sub_category_id')
+        ->join('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
+        ->where('mst__stock_details.stock', '>', 0)
+        ->where('mst_store_products.product_type', 1)
+        ->where('mst_store_product_varients.is_removed', 0);
+
+    if (auth()->user()->user_role_id  != 0) {
+        $query->where('mst_stores.subadmin_id', '=', auth()->user()->id);
+    }
+
+    if ($request->has('date_from') && $request->has('date_to')) {
+        $datefrom = $request->date_from;
+        $dateto = $request->date_to;
+        $query->whereBetween('mst__stock_details.updated_at', [$datefrom, $dateto]);
+    }
+
+    if ($request->has('product_id')) {
+        $query->where('mst_store_products.product_id', $request->product_id);
+    }
+
+    if ($request->has('vendor_id')) {
+        $query->where('mst_store_agencies.agency_id', $request->vendor_id);
+    }
+
+    if ($request->has('category_id')) {
+        $query->where('mst_store_categories.category_id', $request->category_id);
+    }
+
+    if ($request->has('sub_category_id')) {
+        $query->where('mst_store_products.sub_category_id', $request->sub_category_id);
+    }
+
+    if ($request->has('subadmin_id')) {
+        $query->where('mst_stores.subadmin_id', '=', $request->subadmin_id);
+    }
+
+    if ($request->has('store_id')) {
+        $query->where('mst_stores.store_id', '=', $request->store_id);
+    }
+
+    $data = $query->orderBy('mst__stock_details.updated_at', 'DESC')->paginate(10);
+
+    foreach ($data as $da) {
+        $stock_info = Mst_StockDetail::where('product_varient_id', $da->product_varient_id)->orderBy('stock_detail_id', 'DESC')->first();
+        if ($stock_info) {
+            $da->prev_stock = $stock_info->prev_stock;
+            $da->stock = $stock_info->stock;
+            $da->prev_stock = (string)$da->prev_stock;
+            $da->stock = (string)$da->stock;
+            $da->updated_time = Carbon::parse($stock_info->created_at)->format('Y-m-d H:i:s');
+        }
+    }
+
+    $data = $data->sortByDesc(function ($item) {
+        return $item->updated_time;
+    });
+
+    $data = collect($data);
+    $data = $data->unique('product_varient_id');
+    $data = $data->values()->all();
+
+    return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
+}
+
+public function showInventoryReportPrevious(Request $request)
   {
     //echo "working..";die;
     $pageTitle = "Inventory Reports";
