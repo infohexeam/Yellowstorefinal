@@ -3064,7 +3064,7 @@ public function showOutofStockReport(Request $request)
     $subCategories = Mst_SubCategory::orderBy('sub_category_id', 'DESC')->where('sub_category_status', 1)->get();
     
     $dataQuery = Mst_store_product_varient::leftjoin('mst_store_products', 'mst_store_products.product_id', '=', 'mst_store_product_varients.product_id')
-        ->leftoin('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
+        ->leftjoin('mst_store_categories', 'mst_store_categories.category_id', '=', 'mst_store_products.product_cat_id')
         ->leftjoin('mst_stores', 'mst_stores.store_id', '=', 'mst_store_products.store_id')
         ->leftJoin('mst__stock_details', 'mst__stock_details.product_varient_id', '=', 'mst_store_product_varients.product_varient_id')
         ->leftJoin('mst_store_agencies', 'mst_store_agencies.agency_id', '=', 'mst_store_products.vendor_id')
