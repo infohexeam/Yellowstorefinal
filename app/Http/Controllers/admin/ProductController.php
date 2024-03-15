@@ -3035,16 +3035,17 @@ public function showInventoryReport(Request $request)
       return $item->updated_time;
   });
 
-  $collection = $data->getCollection();
+  // Convert the paginator to a collection
+$collection = $data->items();
 
-  // Apply uniqueness based on 'product_varient_id'
-  $uniqueCollection = $collection->unique('product_varient_id');
-  
-  // Convert the collection back to an array
-  $uniqueArray = $uniqueCollection->values()->all();
-  
-  // Set the unique array as the new collection for pagination
-  $data->setCollection(collect($uniqueArray));
+// Apply uniqueness based on 'product_varient_id'
+$uniqueCollection = collect($collection)->unique('product_varient_id');
+
+// Convert the collection back to an array
+$uniqueArray = $uniqueCollection->values()->all();
+
+// Set the unique array as the new collection for pagination
+$data->setCollection($uniqueArray);
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
