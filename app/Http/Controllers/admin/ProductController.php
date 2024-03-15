@@ -3011,7 +3011,7 @@ public function showInventoryReport(Request $request)
         $currentPage,
         ['path' => $request->url()]
     );
-    return $data;
+    //return $data;
 
     return view('admin.masters.reports.inventory_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
 }
