@@ -191,7 +191,7 @@
                                         @endphp
                                         @foreach ($data as $d)
                                         <tr>
-                                            <td>{{ ($data->currentPage()-1) * $data->perPage() + $loop->index + 1 }}</td>
+                                            <td>{{ $data->firstItem() + $loop->index }}</td>
                                             {{-- <td>{{ $d->product_name }}</td> --}}
                                             <td>{{ $d->variant_name }}</td>
                                             
