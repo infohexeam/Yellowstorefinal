@@ -3053,6 +3053,7 @@ public function showOutofStockReport(Request $request)
         $storesQuery->where('subadmin_id', auth()->user()->id);
     }
     $stores = $storesQuery->get();
+    dd(1);
     //dd('test2');
 
     $subadmins = User::where('user_role_id', '!=', 0)->get();
@@ -3091,7 +3092,7 @@ public function showOutofStockReport(Request $request)
             $da->sub_category_name = "Others";
         }
     }
-    dd(1);
+   
     
 
     return view('admin.masters.reports.out_of_stock_report', compact('stores', 'subadmins', 'subCategories', 'categories', 'agencies', 'products', 'dateto', 'datefrom', 'data', 'pageTitle'));
