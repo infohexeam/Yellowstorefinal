@@ -197,20 +197,13 @@ class PosController extends Controller
             $data['status']=1;
             $data['message']="sucessful";
             return response()->json($data);
-
         }
         else
         {
             $data['status']=0;
             $data['message']="failed";
             return response()->json($data);
-        }
-      
-        
-       
-  
-  
-       
+        } 
       }
       else
       {
