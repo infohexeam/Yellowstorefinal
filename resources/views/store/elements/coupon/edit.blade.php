@@ -37,8 +37,8 @@
                         <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label"> Minimum Purchase Amount *</label>
-                            <input type="number" min="0" step="1" oninput="validity.valid||(value=''); truncateInput(this, 6, 'min_purchase_amt_message');" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt', $coupon->min_purchase_amt)}}" placeholder="Minimum Purchase Amount" maxlength="8">
-                            <span id="min_purchase_amt_message" class="text-danger" style="display: none;">Maximum allowed digit is 6</span>
+                            <input type="number" min="0" step="1" oninput="validity.valid||(value=''); truncateInput(this, 8, 'min_purchase_amt_message');" required class="form-control" name="min_purchase_amt" id="min_purchase_amt" value="{{old('min_purchase_amt', $coupon->min_purchase_amt)}}" placeholder="Minimum Purchase Amount" maxlength="8">
+                            <span id="min_purchase_amt_message" class="text-danger" style="display: none;">Maximum allowed digit is 8</span>
                         </div>
                     </div>
 
