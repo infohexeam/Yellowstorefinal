@@ -572,7 +572,7 @@ class SettingController extends Controller
 		}
 
 
-		$delete = $business_type->delete();
+		$delete = $business_type->forceDelete();
 
 		return redirect('admin/business_type/list')->with('status', 'Business type deleted successfully');;
 	}
