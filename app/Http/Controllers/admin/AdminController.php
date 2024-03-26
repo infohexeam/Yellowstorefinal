@@ -629,7 +629,7 @@ class AdminController extends Controller
 
         }
         $vehicle_type = Sys_vehicle_type::find($vehicle_type_id);
-        $vehicle_type->delete();
+        $vehicle_type->forceDelete();
         return redirect()->back()->with('status', 'Vehicle type removed successfully.');
     }
 
