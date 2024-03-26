@@ -1555,6 +1555,22 @@ class ProductController extends Controller
                         $data['message'] = "Product cannot be removed as orders are exist with this product";
                         return response($data);
                     }
+                    $cart=Trn_Cart::where('product_id',$request->product_id);
+                    if ($cart->count() > 0) 
+                    {
+                        //$cart->delete();
+                        $data['status'] = 0;
+                        $data['message'] = "Product cannot be removed as this product is added to cart";
+                        return response($data);
+                    }
+                    $stock_count=Mst_store_product_varient::where('product_id',$request->product_id)->where('stock_count','>',0)->count();
+                    if($stock_count>0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Product cannot be removed as this product or varient has stock in inventory";
+                        return response($data);
+
+                    }
                     $removeProduct = array();
                     $removeProduct['is_removed'] = 1;
                     $removeProduct['product_status'] = 0;

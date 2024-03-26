@@ -80,6 +80,7 @@ use App\Models\admin\Mst_StockDetail;
 use App\Models\admin\Mst_store_interior_images;
 use App\Models\admin\Sys_delivery_boy_availability;
 use App\Models\admin\Sys_vehicle_type;
+use App\Models\admin\Trn_Cart;
 use App\Models\admin\Trn_customer_enquiry;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_StoreBankData;
@@ -2183,12 +2184,26 @@ class StoreController extends Controller
 
     $productData  = Mst_store_product::find($product);
     $item_count=Trn_store_order_item::where('product_id',$product)->count();
+   
+    $cart=Trn_Cart::where('product_id',$product);
+    
+    $stock_count=Mst_store_product_varient::where('product_id',$request->product_id)->where('stock_count','>',0)->count();
+   
     if($item_count>0)
     {
       return redirect()->back()->with('err_status', 'Product cannot be removed as orders are exist with this product');
     }
-    else
+    if ($cart->count() > 0) 
     {
+        //$cart->delete();
+        return redirect()->back()->with('err_status', 'Product cannot be removed as this product is already in cart');
+    }
+    if($stock_count>0)
+    {
+      return redirect()->back()->with('err_status', 'Product cannot be removed as this product or varient has stock in inventory');
+
+    }
+    
       
       $product = Mst_store_product::find($product);
 
@@ -2202,7 +2217,7 @@ class StoreController extends Controller
       // Force delete each soft deleted variant
       foreach ($variants as $variant) {
       $variant->forceDelete();
-      }
+      
     }
     // if (isset($productData->global_product_id))
     //   $removeProduct['global_product_id'] = 0;
