@@ -457,7 +457,7 @@ class AdminController extends Controller
         {
             return redirect()->back()->with('error', 'Pincode cannot be removed as delivery boys exists.');
         }
-        $delete = $town->delete();
+        $delete = $town->forceDelete();
 
         return redirect('admin/pincode/list')->with('status', 'Pincode deleted successfully');
     }
