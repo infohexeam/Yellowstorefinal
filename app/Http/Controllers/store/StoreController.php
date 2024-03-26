@@ -2187,7 +2187,7 @@ class StoreController extends Controller
    
     $cart=Trn_Cart::where('product_id',$product);
     
-    $stock_count=Mst_store_product_varient::where('product_id',$request->product_id)->where('stock_count','>',0)->count();
+    $stock_count=Mst_store_product_varient::where('product_id',$product)->where('stock_count','>',0)->count();
    
     if($item_count>0)
     {
