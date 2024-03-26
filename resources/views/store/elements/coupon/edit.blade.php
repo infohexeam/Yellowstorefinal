@@ -97,10 +97,7 @@
                                     <option  {{old('coupon_status',$coupon->coupon_status) == '1' ? 'selected':''}} value="1">InActive</option>
                                 </select>
                             </div>
-                        </div>
-
-        
-                                
+                        </div>                            
                   </div>
                     <div class="form-group">
                            <center>

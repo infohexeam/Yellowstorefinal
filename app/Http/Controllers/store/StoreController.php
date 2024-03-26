@@ -2187,14 +2187,28 @@ class StoreController extends Controller
     {
       return redirect()->back()->with('error', 'Product cannot be removed as orders are exist with this product');
     }
-    if (isset($productData->global_product_id))
-      $removeProduct['global_product_id'] = 0;
+    else
+    {
+      
+      $product = Mst_store_product::find($product);
+
+      // Permanently delete the record
+      $product->forceDelete();
+
+      $variants = Mst_store_product_varient::where('product_id', $product)
+      ->withTrashed() // Include soft deleted variants
+      ->get();
+
+      // Force delete each soft deleted variant
+      foreach ($variants as $variant) {
+      $variant->forceDelete();
+      }
+    }
+    // if (isset($productData->global_product_id))
+    //   $removeProduct['global_product_id'] = 0;
 
 
 
-    Mst_store_product::where('product_id', $product)->update($removeProduct);
-
-    Mst_store_product_varient::where('product_id', $product)->update($removeProductVar);
 
 
 
