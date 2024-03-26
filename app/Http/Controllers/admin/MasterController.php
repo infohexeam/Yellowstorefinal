@@ -395,7 +395,7 @@ class MasterController extends Controller
 
     public function removeVideo(Request $request,Mst_Video $video,$video_id)
     {
-        Mst_Video::where('video_id',$video_id)->delete();
+        Mst_Video::where('video_id',$video_id)->forceDelete();
 
         return redirect()->back()->with('status','Video deleted successfully.');
     }

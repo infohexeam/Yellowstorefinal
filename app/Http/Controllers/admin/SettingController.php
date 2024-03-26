@@ -6740,7 +6740,7 @@ class SettingController extends Controller
 			return redirect()->back()->with('error', 'Attribute value cannot be removed as products are associated with this value');
 
 		}
-		$delete = $attribute_value->delete();
+		$delete = $attribute_value->forceDelete();
 
 
 		return redirect('admin/attribute_value/list')->with('status', 'Attribute value deleted successfully.');
@@ -6759,7 +6759,7 @@ class SettingController extends Controller
 			return redirect()->back()->with('error', 'Attribute group cannot be removed as products are associated with this group');
 
 		}
-		$delete = $attribute_group->delete();
+		$delete = $attribute_group->forceDelete();
 
 
 		return redirect('admin/attribute_group/list')->with('status', 'Attribute group deleted successfully.');;
