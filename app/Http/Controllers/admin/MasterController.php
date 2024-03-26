@@ -588,7 +588,7 @@ class MasterController extends Controller
         {
             return redirect()->back()->with('error', 'Sub Category cannot be removed as products exist.');
         }
-        Mst_SubCategory::where('sub_category_id',$sub_category_id)->delete();
+        Mst_SubCategory::where('sub_category_id',$sub_category_id)->forceDelete();
 
         
         
