@@ -700,7 +700,8 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Tax cannot be removed as products exist.');
         }
 
-        $tax = Mst_Tax::where('tax_id', $tax_id)->update(['is_removed' => 1]);
+        $tax = Mst_Tax::where('tax_id', $tax_id)->first();
+        $tax->forceDelete();
 
         return redirect()->back()->with('status', 'Tax removed successfully.');
     }
