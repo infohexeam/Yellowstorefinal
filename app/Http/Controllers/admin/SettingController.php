@@ -350,7 +350,7 @@ class SettingController extends Controller
         }
 
 
-		$delete = $category->delete();
+		$delete = $category->forceDelete();
 
 		return redirect('admin/categories/list')->with('status', 'Category deleted successfully');
 	}
