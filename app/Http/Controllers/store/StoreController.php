@@ -7439,7 +7439,7 @@ class StoreController extends Controller
                     
     }
 		
-		$delete = $delivery_boy->delete();
+		$delete = $delivery_boy->forceDelete();
 
 		return redirect('store/delivery-boys/list')->with('status', 'Delivery boy deleted successfully');;
 	}
