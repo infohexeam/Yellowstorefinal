@@ -3534,7 +3534,7 @@ class SettingController extends Controller
 			
 		}
 
-		$delete = $delivery_boy->delete();
+		$delete = $delivery_boy->forceDelete();
 
 		return redirect('admin/delivery_boy/list')->with('status', 'Delivery boy deleted successfully');;
 	}

@@ -1268,7 +1268,7 @@ public function destroyDelivery_boy(Request $request)
                     return response($data);
                     
                 }
-                $delete = $delivery_boy->delete();
+                $delete = $delivery_boy->forceDelete();
                 $data['status']=1;
                 $data['message']="Delivery boy deleted successfully";
                 return response($data);

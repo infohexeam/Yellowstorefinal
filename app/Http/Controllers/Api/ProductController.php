@@ -1565,9 +1565,14 @@ class ProductController extends Controller
 
                     // if (isset($productData->global_product_id)) //restore back to global listing. feature removed due to latest client update of providing restore option for store
                     //     $removeProduct['global_product_id'] = 0;
+                    $product = Mst_store_product::find($request->product_id);
+                    // Permanently delete the record
+                    //$product->forceDelete();
 
-                    if (Mst_store_product::where('product_id', $request->product_id)->update($removeProduct)) {
-                        Mst_store_product_varient::where('product_id', $request->product_id)->update($removeProductVar);
+
+
+                    if ($product->forceDelete()) {
+                        Mst_store_product_varient::withTrashed()->where('product_id', $request->product_id)->forceDelete();
                         $data['status'] = 1;
                         $data['message'] = "Product deleted ";
                         return response($data);
