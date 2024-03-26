@@ -2185,7 +2185,7 @@ class StoreController extends Controller
     $item_count=Trn_store_order_item::where('product_id',$product)->count();
     if($item_count>0)
     {
-      return redirect()->back()->with('error', 'Product cannot be removed as orders are exist with this product');
+      return redirect()->back()->with('err_status', 'Product cannot be removed as orders are exist with this product');
     }
     else
     {
