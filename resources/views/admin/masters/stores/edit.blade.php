@@ -429,26 +429,26 @@
                      <div class="col-md-6">
                                 <div class="form-group">
                                    <label class="form-label">Youtube </label>
-                                   <input type="text"  value="{{$store->youtube_account_link}}"   class="form-control" name="youtube_account_link"  placeholder="Youtube Channel Link" readonly>
+                                   <input type="text"  value="{{$store->youtube_account_link}}"   class="form-control" name="youtube_account_link"  placeholder="Youtube Channel Link">
                                  </div>
                             </div>
                             
                             <div class="col-md-6">
                                 <div class="form-group">
                                    <label class="form-label">Facebook </label>
-                                   <input type="text" class="form-control" value="{{$store->facebook_account_link}}"   class="form-control" name="facebook_account_link" placeholder="Facebook Account Link" readonly>
+                                   <input type="text" class="form-control" value="{{$store->facebook_account_link}}"   class="form-control" name="facebook_account_link" placeholder="Facebook Account Link">
                                  </div>
                             </div>
                              <div class="col-md-6">
                                 <div class="form-group">
                                    <label class="form-label">Instagram </label>
-                                   <input type="text" class="form-control" value="{{$store->instagram_account_link}}"    name="instagram_account_link" placeholder="Instagram Account Link" readonly>
+                                   <input type="text" class="form-control" value="{{$store->instagram_account_link}}"    name="instagram_account_link" placeholder="Instagram Account Link">
                                  </div>
                             </div>
                              <div class="col-md-6">
                                 <div class="form-group">
                                    <label class="form-label">Snapchat </label>
-                                   <input type="text" class="form-control" value="{{$store->snapchat_account_link}}"    name="snapchat_account_link" placeholder="Snapchat Account Link" readonly>
+                                   <input type="text" class="form-control" value="{{$store->snapchat_account_link}}"    name="snapchat_account_link" placeholder="Snapchat Account Link">
                                  </div>
                             </div>
 

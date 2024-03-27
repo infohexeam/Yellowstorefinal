@@ -1255,6 +1255,11 @@ class SettingController extends Controller
 			$store->profile_description=$request->store_profile_description;
 			$store->product_supply_type=$request->product_distribution_type;
 
+			$store->youtube_account_link=$request->youtube_account_link;
+			$store->facebook_account_link=$request->facebook_account_link;
+			$store->instagram_account_link=$request->instagram_account_link;
+			$store->snapchat_account_link=$request->snapchat_account_link;
+
 			if (auth()->user()->user_role_id == 0) {
 				$store->subadmin_id          = $request->subadmin_id??2;
 				$store->store_commision_percentage   = $request->store_commision_percentage;
