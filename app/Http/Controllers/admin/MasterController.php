@@ -111,7 +111,7 @@ class MasterController extends Controller
     }
   
   
-     public function sendPushNotification(Request $request)
+    public function sendPushNotification(Request $request)
     {
        // $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
           
@@ -271,7 +271,7 @@ class MasterController extends Controller
            $state = State::where('country_id',101)->get();
         return view('admin.masters.video.create',compact('pageTitle','state'));
     }
-
+    
     public function storeVideo(Request $request,Mst_Video $video)
     {
         $data = $request->except('_token');

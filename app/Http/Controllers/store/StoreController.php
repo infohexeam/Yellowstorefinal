@@ -2193,16 +2193,22 @@ class StoreController extends Controller
     {
       return redirect()->back()->with('err_status', 'Product cannot be removed as orders are exist with this product');
     }
-    if ($cart->count() > 0) 
+    
+        if ($cart->count() > 0) 
+        {
+            //$cart->delete();
+            return redirect()->back()->with('err_status', 'Product cannot be removed as this product is already in cart');
+        }
+    if($productData->product_type==1)
     {
-        //$cart->delete();
-        return redirect()->back()->with('err_status', 'Product cannot be removed as this product is already in cart');
-    }
-    if($stock_count>0)
-    {
-      return redirect()->back()->with('err_status', 'Product cannot be removed as this product or varient has stock in inventory');
+        if($stock_count>0)
+        {
+          return redirect()->back()->with('err_status', 'Product cannot be removed as this product or varient has stock in inventory');
+    
+        }
 
     }
+   
     
       
       $product = Mst_store_product::find($product);
