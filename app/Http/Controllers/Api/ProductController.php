@@ -1555,7 +1555,7 @@ class ProductController extends Controller
                         $data['message'] = "Product cannot be removed as orders are exist with this product";
                         return response($data);
                     }
-                    $cart=Trn_Cart::where('product_id',$request->product_id);
+                    $cart=Trn_Cart::where('product_id',$request->product_id)->where('remove_status','=',0);
                     if ($cart->count() > 0) 
                     {
                         //$cart->delete();
