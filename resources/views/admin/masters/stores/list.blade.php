@@ -17,6 +17,11 @@ use App\Models\admin\Trn_StoreBankData;
                      <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
                   </div>
                   @endif
+                    @if ($message = Session::get('error'))
+                  <div class="alert alert-danger">
+                     <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
+                  </div>
+                  @endif
                   <div class="col-lg-12">
                      @if ($errors->any())
                      <div class="alert alert-danger">
@@ -357,7 +362,8 @@ use App\Models\admin\Trn_StoreBankData;
                                           $store->store_name_slug)}}">View</a>
                                           @csrf
                                           @method('POST')
-                                          <!-- <button type="submit" onclick="return confirm('Do you want to delete this item?');"  class="btn btn-sm btn-danger">Delete</button> -->
+                                         <button type="submit" onclick="return confirm('Do you want to delete this item?') && confirm('The store will be permanently deleted. Are you sure?');" class="btn btn-sm btn-danger">Delete</button>
+
                                        </form>
                                     </td>
                                  </tr>

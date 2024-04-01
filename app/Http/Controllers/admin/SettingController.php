@@ -1538,6 +1538,32 @@ class SettingController extends Controller
 
 	public function destroyStore(Request $request, Mst_store $store)
 	{
+		if(Trn_store_order::where('store_id',$store->store_id)->count()>0)
+		{
+			return redirect('admin/store/list')->with('error', 'Store cannot be deleted as orders are exists for this store');;
+
+		}
+		if(Mst_store_product::where('store_id',$store->store_id)->count()>0)
+		{
+			return redirect('admin/store/list')->with('error', 'Store cannot be deleted as products are exists for this store');;
+
+		}
+		if(Mst_store_link_agency::where('store_id',$store->store_id)->count()>0)
+		{
+			return redirect('admin/store/list')->with('error', 'Store cannot be deleted as agencies are linked to this store');;
+
+		}
+		if(Mst_store_link_delivery_boy::where('store_id',$store->store_id)->count()>0)
+		{
+			return redirect('admin/store/list')->with('error', 'Store cannot be deleted as agencies are linked to delivery boys');;
+
+		}
+		if(Mst_store_link_subadmin::where('store_id',$store->store_id)->count()>0)
+		{
+			return redirect('admin/store/list')->with('error', 'Store cannot be deleted as agencies are linked to subadmin');;
+
+		}
+
 
 		$delete = $store->delete();
 
