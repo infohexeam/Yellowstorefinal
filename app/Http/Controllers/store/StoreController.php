@@ -1255,7 +1255,7 @@ class StoreController extends Controller
           $image->encode('webp');
           // Compress the image if its size exceeds 2MB
           if ($file->getSize() >= 2 * 1024 * 1024) {
-            $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 80); // Adjust quality as needed
+            $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 95); // Adjust quality as needed
           } else {
             $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
           }
@@ -1282,7 +1282,7 @@ class StoreController extends Controller
           $productBaseImg = "";
 
           if ($c == 1) {
-            DB::table('mst_store_products')->where('product_id', $id)->update(['product_base_image' => $filename]);
+            DB::table('mst_store_products')->where('product_id', $id)->update(['product_base_image' => $filename.'.webp']);
             $productBaseImg = $filename;
             $c++;
             DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
@@ -1438,7 +1438,7 @@ class StoreController extends Controller
               $image->encode('webp');
               // Compress the image if its size exceeds 2MB
               if ($file->getSize() >= 2 * 1024 * 1024) {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 80); // Adjust quality as needed
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 95); // Adjust quality as needed
               } else {
                 $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
               }
@@ -1461,7 +1461,7 @@ class StoreController extends Controller
               $proImg_Id = DB::getPdo()->lastInsertId();
 
               if ($vic == 0) {
-                DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $filename]);
+                DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $filename.'.webp']);
                 $vic++;
                 DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
               }
