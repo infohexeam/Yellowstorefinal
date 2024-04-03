@@ -507,13 +507,13 @@ class ProductController extends Controller
               $image = InterventionImage::make($file);
 
               // Resize the image if necessary
-              $image->resize(300, 200); // Adjust dimensions as needed
+              //$image->resize(300, 200); // Adjust dimensions as needed
 
               // Convert the image to WebP format
               $image->encode('webp');
               // Compress the image if its size exceeds 2MB
               if ($file->getSize() >= 2 * 1024 * 1024) {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 75); // Adjust quality as needed
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 80); // Adjust quality as needed
               } else {
                 $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
               }
