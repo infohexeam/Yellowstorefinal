@@ -386,7 +386,7 @@ class ProductController extends Controller
         'sub_category_id' => ['required'],
         //  'attr_value_id' => ['required' ],
         //  'product_image.*' => ['required', 'dimensions:min_width=1000,min_height=800'],
-        'product_image.*' => ['required', 'max:2048'], // 2MB limit
+        //'product_image.*' => ['required', 'max:2048'], // 2MB limit
 
       ],
       [
