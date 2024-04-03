@@ -409,7 +409,7 @@ class ProductController extends Controller
         'sub_category_id.required'         => 'Product subcategory required',
         'vendor_id.required'         => 'Vendor required',
         //   'product_image.required'        => 'Product image required',
-        'product_image.*.max' => 'Product image size should not exceed 2MB',
+        // 'product_image.*.max' => 'Product image size should not exceed 2MB',
         'product_image.dimensions'        => 'Product image dimensions invalid',
 
       ]
@@ -495,9 +495,9 @@ class ProductController extends Controller
             $c = 1;
             foreach ($files as $file) {
               // Check file size
-              if ($file->getSize() > 2 * 1024 * 1024) {
-                return redirect()->back()->withErrors(['File size exceeds the maximum limit of 2MB.'])->withInput();
-              }
+              // if ($file->getSize() > 2 * 1024 * 1024) {
+              //   return redirect()->back()->withErrors(['File size exceeds the maximum limit of 2MB.'])->withInput();
+              // }
 
               $filename = $file->getClientOriginalName();
               $extension = $file->getClientOriginalExtension();
@@ -510,9 +510,15 @@ class ProductController extends Controller
 
               // Convert the image to WebP format
               $image->encode('webp');
+              // Compress the image if its size exceeds 2MB
+              if ($file->getSize() >= 2 * 1024 * 1024) {
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 75); // Adjust quality as needed
+              } else {
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
+              }
 
               // Save the image
-              $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
+              // $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
 
               // Insert data into the database
               $data1 = [
