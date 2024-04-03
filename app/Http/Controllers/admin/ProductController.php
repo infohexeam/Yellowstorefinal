@@ -712,7 +712,7 @@ class ProductController extends Controller
               $image = InterventionImage::make($file);
 
               // Resize the image if necessary
-              $image->resize(300, 200); // Adjust dimensions as needed
+              //$image->resize(300, 200); // Adjust dimensions as needed
 
               // Convert the image to WebP format
               $image->encode('webp');
