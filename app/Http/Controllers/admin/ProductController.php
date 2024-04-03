@@ -499,7 +499,8 @@ class ProductController extends Controller
               //   return redirect()->back()->withErrors(['File size exceeds the maximum limit of 2MB.'])->withInput();
               // }
 
-              $filename = $file->getClientOriginalName();
+              //$filename = $file->getClientOriginalName();
+              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
               $extension = $file->getClientOriginalExtension();
 
               // Use Intervention Image to open and manipulate the image
