@@ -43,7 +43,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/store/terms-and-condition', 'PublicController@showTC');
     Route::get('/customer/terms-and-condition', 'PublicController@showCusTC');
     Route::get('/delivery/terms-and-condition', 'PublicController@showDeliveryTC');
-    Route::get('/delivery/privacy-policy','PublicController@showDeliveryPrivacy');
+    Route::get('/delivery/privacy-policy', 'PublicController@showDeliveryPrivacy');
 
     Route::post('store/ajax/unique_storename', 'PublicController@CheckName')->name('unique_storename');
     Route::post('store/ajax/unique_phone', 'PublicController@CheckPhone')->name('unique_store_mobile');
@@ -110,7 +110,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/product-name-list', 'ProductController@listProductNames');
         Route::get('admin/sub-category-list', 'ProductController@listSubCategoryNames');
         Route::get('admin/user-log-list', 'MasterController@listUserLogs');
-      
+
 
         Route::get('admin/categories/list', 'SettingController@listCategory')->name('admin.list_category');
         Route::get('admin/categories/create', 'SettingController@createCategory')->name('admin.create_category');
@@ -197,7 +197,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('admin/store/add_youtube/{id}', 'SettingController@addYoutubeVideos')->name('admin.add_youtube_videos');
         Route::post('admin/store/store_youtube/{store_id}', 'SettingController@storeYoutubeVideos')->name('admin.store_youtube_videos');
         Route::get('admin/store/remove_youtube/{link_id}', 'SettingController@RemoveYoutubeVideos')->name('admin.remove_youtube_videos');
-        
+
         ////////////////////////
         Route::get('admin/store/assign_delivery_boy/{id}', 'SettingController@assignDelivery_boy')->name('admin.assign_delivery_boy_store');
 
@@ -579,7 +579,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('/admin/global/products/list', 'ProductController@listGlobalProducts')->name('admin.global_products');
         Route::get('/admin/global/product/create', 'ProductController@createGlobalProduct')->name('admin.create_global_product');
-        Route::post('/admin/global/product/store', 'ProductController@storeGlobalProduct')->name('admin.store_global_product');
+        Route::post('/admin/global/product/store', 'ProductController@storeGlobalProductNew')->name('admin.store_global_product');
         Route::post('/admin/global/product/remove/{global_product_id}', 'ProductController@removeGlobalProduct')->name('admin.destroy_global_product');
         Route::post('/admin/global/product/update/{global_product_id}', 'ProductController@updateGlobalProduct')->name('admin.update_global_product');
         Route::get('/admin/global/product/edit/{global_product_id}', 'ProductController@editGlobalProduct')->name('admin.edit_global_product');
@@ -719,7 +719,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
         Route::get('store-registration', 'Auth\RegisterController@showRegistrationForm')->name('show_register.store');
         Route::post('send-registration-otp', 'Auth\RegisterController@sendRegisterOtp')->name('store.sendotp');
-        
+
         Route::post('verify-registration-otp', 'Auth\RegisterController@verifyRegisterOtp')->name('store.verifyotp');
 
         Route::post('store/registration', 'Auth\RegisterController@storeRegistration')->name('register.store');
@@ -802,10 +802,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('store/product/variant/update/{product_varient_id}', 'StoreController@updateProductVariant')->name('store.update_product_variant');
 
         Route::get('store/product/restore', 'StoreController@restoreProduct')->name('store.restore-products');
-        
-        Route::get('store/restore-product/{id}','StoreController@restoreProductSave')->name('store.restore-products-save');
-       //Minium stock Products Notifications
-       Route::get('store/minimumstock-reached-products', 'StoreController@minimumStockNotifications')->name('store.minimum-stock-notifications');
+
+        Route::get('store/restore-product/{id}', 'StoreController@restoreProductSave')->name('store.restore-products-save');
+        //Minium stock Products Notifications
+        Route::get('store/minimumstock-reached-products', 'StoreController@minimumStockNotifications')->name('store.minimum-stock-notifications');
 
 
         // get parent cat and sub cat by ajax
@@ -996,19 +996,19 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('store/delivery-order/view/{id}', 'StoreController@viewDeliveryOrder')->name('store.view_delivery_order');
 
         Route::get('store/switch=status', 'StoreController@switchStatus')->name('store.switchStatus');
-  //Youtube videos
-   //assign youtube videos
-   Route::get('store/add_youtube','StoreController@addYoutubeVideos')->name('store.add_youtube_videos');
-   Route::post('store/store_youtube','StoreController@storeYoutubeVideos')->name('store.store_youtube_videos');
-   Route::get('store/remove_youtube/{link_id}', 'StoreController@RemoveYoutubeVideos')->name('admin.remove_youtube_videos');
-   
-   ////////////////////////
+        //Youtube videos
+        //assign youtube videos
+        Route::get('store/add_youtube', 'StoreController@addYoutubeVideos')->name('store.add_youtube_videos');
+        Route::post('store/store_youtube', 'StoreController@storeYoutubeVideos')->name('store.store_youtube_videos');
+        Route::get('store/remove_youtube/{link_id}', 'StoreController@RemoveYoutubeVideos')->name('admin.remove_youtube_videos');
+
+        ////////////////////////
         // video gallery
         Route::get('store/video-gallery', 'StoreController@videoGallery')->name('store.video_gallery');
-       //configure points
-       Route::get('store/configure_points/list', 'WalletController@createConfigurePoints')->name('store.create_configure_points');
-       Route::post('store/configure_points/save', 'WalletController@storeConfigurePoints')->name('store.save_configure_points');
-       //customer rewards
+        //configure points
+        Route::get('store/configure_points/list', 'WalletController@createConfigurePoints')->name('store.create_configure_points');
+        Route::post('store/configure_points/save', 'WalletController@storeConfigurePoints')->name('store.save_configure_points');
+        //customer rewards
         Route::get('store/customer-rewards/list', 'WalletController@listCustomerReward')->name('store.customer_reward.list');
         Route::get('store/customer-rewards/add', 'WalletController@addReward')->name('store.customer_reward.add');
         Route::post('store/customer-rewards/save', 'WalletController@storeReward')->name('store.customer_reward.save');
