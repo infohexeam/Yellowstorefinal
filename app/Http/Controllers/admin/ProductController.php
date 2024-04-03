@@ -594,7 +594,7 @@ class ProductController extends Controller
         //'vendor_id' => ['required'],
         //'attr_value_id' => ['required' ],
         // 'product_image.*' => 'dimensions:min_width=1000,min_height=800'
-        'product_image.*' => ['required', 'max:30'],
+        //'product_image.*' => ['required', 'max:30'],
 
       ],
       [
@@ -695,23 +695,48 @@ class ProductController extends Controller
 
 
           if ($request->hasFile('product_image')) {
-            $allowedfileExtension = ['jpg', 'png', 'jpeg',];
+            $allowedfileExtension = ['jpg', 'png', 'jpeg'];
             $files = $request->file('product_image');
             $c = 1;
-            Trn_GlobalProductImage::where('global_product_id', $global_product_id)->delete();
             foreach ($files as $file) {
-              $filename = $file->getClientOriginalName();
+              // Check file size
+              // if ($file->getSize() > 2 * 1024 * 1024) {
+              //   return redirect()->back()->withErrors(['File size exceeds the maximum limit of 2MB.'])->withInput();
+              // }
+
+              //$filename = $file->getClientOriginalName();
+              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
               $extension = $file->getClientOriginalExtension();
-              $file->move('assets/uploads/products/base_product/base_image', $filename);
-              $data1 = [[
-                'global_product_id'   => $global_product_id,
-                'image_name'  => $filename,
-                'created_at'  => Carbon::now(),
-                'updated_at'  => Carbon::now(),
-              ],];
+
+              // Use Intervention Image to open and manipulate the image
+              $image = InterventionImage::make($file);
+
+              // Resize the image if necessary
+              $image->resize(300, 200); // Adjust dimensions as needed
+
+              // Convert the image to WebP format
+              $image->encode('webp');
+              // Compress the image if its size exceeds 2MB
+              if ($file->getSize() >= 2 * 1024 * 1024) {
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 75); // Adjust quality as needed
+              } else {
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
+              }
+
+              // Save the image
+              // $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
+
+              // Insert data into the database
+              $data1 = [
+                'global_product_id' => $global_product_id,
+                'image_name' => $filename . '.webp', // Update the filename with the new extension
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+              ];
               Trn_GlobalProductImage::insert($data1);
+
               if ($c == 1) {
-                DB::table('mst__global_products')->where('global_product_id', $global_product_id)->update(['product_base_image' => $filename]);
+                DB::table('mst__global_products')->where('global_product_id', $global_product_id)->update(['product_base_image' => $filename . '.webp']); // Update the filename with the new extension
                 $c++;
               }
             }
