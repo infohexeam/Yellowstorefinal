@@ -1074,8 +1074,8 @@ class StoreController extends Controller
         'product_cat_id'   => 'required',
         // 'vendor_id'   => 'required',
         // 'color_id'   => 'required',
-        'product_image.*' => 'dimensions:min_width=1000,min_height=800|mimes:jpeg,jpg,png|max:10000',
-        'product_image.*' => 'required|mimes:jpeg,jpg,png|max:10000',
+        //'product_image.*' => 'dimensions:min_width=1000,min_height=800|mimes:jpeg,jpg,png|max:10000',
+        //'product_image.*' => 'required|mimes:jpeg,jpg,png|max:10000',
 
 
 
@@ -1240,14 +1240,34 @@ class StoreController extends Controller
 
           //   $filename = $file->getClientOriginalName();
           $extension = $file->getClientOriginalExtension();
+          //$filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+          /****************************************************************************** */
           $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+          $extension = $file->getClientOriginalExtension();
+
+          // Use Intervention Image to open and manipulate the image
+          $image = Image::make($file);
+
+          // Resize the image if necessary
+          //$image->resize(300, 200); // Adjust dimensions as needed
+
+          // Convert the image to WebP format
+          $image->encode('webp');
+          // Compress the image if its size exceeds 2MB
+          if ($file->getSize() >= 2 * 1024 * 1024) {
+            $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 80); // Adjust quality as needed
+          } else {
+            $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
+          }
+
+          //////////////////////////////////////////////////////////////////////////////////////////
 
           // $fullpath = $filename . '.' . $extension ;
-          $file->move('assets/uploads/products/base_product/base_image', $filename);
+          //$file->move('assets/uploads/products/base_product/base_image', $filename);
           $date = Carbon::now();
           $data1 = [
             [
-              'product_image'      => $filename,
+              'product_image'      => $filename.'.webp',
               'product_id' => $id,
               'product_varient_id' => 0,
               'image_flag'         => 0,
@@ -1401,13 +1421,35 @@ class StoreController extends Controller
               //   $filename = $file->getClientOriginalName();
               $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
 
+              /*********Image compression********************************* */
               $extension = $file->getClientOriginalExtension();
-              $file->move('assets/uploads/products/base_product/base_image', $filename);
+              //$filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+              /****************************************************************************** */
+              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+              $extension = $file->getClientOriginalExtension();
+    
+              // Use Intervention Image to open and manipulate the image
+              $image = Image::make($file);
+    
+              // Resize the image if necessary
+              //$image->resize(300, 200); // Adjust dimensions as needed
+    
+              // Convert the image to WebP format
+              $image->encode('webp');
+              // Compress the image if its size exceeds 2MB
+              if ($file->getSize() >= 2 * 1024 * 1024) {
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 80); // Adjust quality as needed
+              } else {
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
+              }
+
+              /***************8End  Image Compression */
+              //$file->move('assets/uploads/products/base_product/base_image', $filename);
               $date = Carbon::now();
 
               $data5 = [
                 [
-                  'product_image'      => $filename,
+                  'product_image'      => $filename.'.webp',
                   'product_id' => $id,
                   'product_varient_id' => $vari_id,
                   'image_flag'         => 0,
