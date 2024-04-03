@@ -513,7 +513,7 @@ class ProductController extends Controller
               $image->encode('webp');
               // Compress the image if its size exceeds 2MB
               if ($file->getSize() >= 2 * 1024 * 1024) {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 80); // Adjust quality as needed
+                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 95); // Adjust quality as needed
               } else {
                 $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
               }
