@@ -89,6 +89,7 @@ use App\Trn_store_referrals;
 use App\Trn_wallet_log;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Crypt as FacadesCrypt;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class StoreController extends Controller
 {
@@ -2239,8 +2240,7 @@ class StoreController extends Controller
     
         if ($cart->count() > 0) 
         {
-            //$cart->delete();
-            return redirect()->back()->with('err_status', 'Product cannot be removed as this product is already in cart');
+            return redirect()->back()->with('err_status', 'Product cannot be removed as this base product or variant product is already in cart');
         }
     if($productData->product_type==1)
     {
@@ -2260,15 +2260,13 @@ class StoreController extends Controller
       // Permanently delete the record
       $product_new->forceDelete();
 
-      $variants = Mst_store_product_varient::where('product_id',$product_id)
-      ->withTrashed() // Include soft deleted variants
-      ->get();
+      $variants = DB::table('mst_store_product_varients')->where('product_id',$product)->delete();
 
-      // Force delete each soft deleted variant
-      foreach ($variants as $variant) {
-      $variant->forceDelete();
+    //   // Force delete each soft deleted variant
+    //   foreach ($variants as $variant) {
+    //   $variant->forceDelete();
       
-    }
+    // }
     // if (isset($productData->global_product_id))
     //   $removeProduct['global_product_id'] = 0;
 
