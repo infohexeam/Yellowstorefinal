@@ -2224,7 +2224,7 @@ class StoreController extends Controller
     $removeProductVar['is_removed'] = 1;
    // $removeProductVar['stock_count'] = 0;
    
-    $varient_ids=Mst_store_product_varient::where('product_id',$request->product_id)->pluck('product_varient_id');
+    $varient_ids=Mst_store_product_varient::where('product_id',$product)->pluck('product_varient_id');
     $productData  = Mst_store_product::find($product);
     $item_count=Trn_store_order_item::where('product_id',$product)->count();
     
