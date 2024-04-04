@@ -2223,13 +2223,14 @@ class StoreController extends Controller
     $removeProductVar = array();
     $removeProductVar['is_removed'] = 1;
    // $removeProductVar['stock_count'] = 0;
-
-    $productData  = Mst_store_product::find($product);
-    $item_count=Trn_store_order_item::where('product_id',$product)->count();
    
-    $cart=Trn_Cart::where('product_id',$request->product_id)->where('remove_status','=',0);
+    $varient_ids=Mst_store_product_varient::where('product_id',$request->product_id)->pluck('product_varient_id');
+    $productData  = Mst_store_product::find($request->product_id);
+    $item_count=Trn_store_order_item::where('product_id',$product)->count();
     
-    $stock_count=Mst_store_product_varient::where('product_id',$product)->where('stock_count','>',0)->count();
+    $cart=Trn_Cart::whereIn('product_varient_id',$varient_ids)->where('remove_status','=',0);
+    
+    $stock_count=Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->where('stock_count','>',0)->count();
    
     if($item_count>0)
     {
@@ -2258,7 +2259,7 @@ class StoreController extends Controller
       // Permanently delete the record
       $product->forceDelete();
 
-      $variants = Mst_store_product_varient::where('product_id', $product)
+      $variants = Mst_store_product_varient::where('product_id', $request->product_id)
       ->withTrashed() // Include soft deleted variants
       ->get();
 
