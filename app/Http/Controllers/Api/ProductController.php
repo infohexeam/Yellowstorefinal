@@ -1555,7 +1555,8 @@ class ProductController extends Controller
                         $data['message'] = "Product cannot be removed as orders are exist with this product";
                         return response($data);
                     }
-                    $cart=Trn_Cart::where('product_id',$request->product_id)->where('remove_status','=',0);
+                    $varient_ids=Mst_store_product_varient::where('product_id',$request->product_id)->pluck('product_varient_id');
+                    $cart=Trn_Cart::whereIn('product_varient_id',$varient_ids)->where('remove_status','=',0);
                     if ($cart->count() > 0) 
                     {
                         //$cart->delete();
@@ -1565,7 +1566,7 @@ class ProductController extends Controller
                     }
                     if($productData->product_type==1)
                     {
-                        $stock_count=Mst_store_product_varient::where('product_id',$request->product_id)->where('stock_count','>',0)->count();
+                        $stock_count=Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->where('stock_count','>',0)->count();
                         if($stock_count>0)
                         {
                             $data['status'] = 0;
@@ -1591,7 +1592,8 @@ class ProductController extends Controller
 
 
                     if ($product->forceDelete()) {
-                        Mst_store_product_varient::withTrashed()->where('product_id', $request->product_id)->forceDelete();
+                       // Mst_store_product_varient::withTrashed()->where('product_id', $request->product_id)->forceDelete();
+                        DB::table('mst_store_product_varients')->where('product_id',$request->product)->delete();
                         $data['status'] = 1;
                         $data['message'] = "Product deleted ";
                         return response($data);

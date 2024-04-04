@@ -2260,7 +2260,7 @@ class StoreController extends Controller
       // Permanently delete the record
       $product_new->forceDelete();
 
-      $variants = DB::table('mst_store_product_varients')->where('product_id',$product)->delete();
+      DB::table('mst_store_product_varients')->where('product_id',$product)->delete();
 
     //   // Force delete each soft deleted variant
     //   foreach ($variants as $variant) {
