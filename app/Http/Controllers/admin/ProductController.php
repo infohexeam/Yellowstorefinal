@@ -415,7 +415,7 @@ class ProductController extends Controller
       ]
     );
     if (!$validator->fails()) {
-      
+      try {
         //check store code
         $ChkCodeExstnce = DB::table('mst_store_products')->where('product_code', $request->product_code)->count();
 
@@ -512,13 +512,13 @@ class ProductController extends Controller
             //$originalSize = $resizedImage->filesize();
 
         // Determine compression quality based on original size
-        // if ($originalSize > 50000) { // If original size > 50kb
-        //     $quality = 50;
-        // } elseif ($originalSize > 30000) { // If original size > 30kb
-        //     $quality = 60;
-        // } else { // If original size <= 30kb
-        //     $quality = 80;
-        // }
+        if ($originalSize > 50000) { // If original size > 50kb
+            $quality = 50;
+        } elseif ($originalSize > 30000) { // If original size > 30kb
+            $quality = 60;
+        } else { // If original size <= 30kb
+            $quality = 80;
+        }
 
 
               // Resize the image if necessary
@@ -554,7 +554,10 @@ class ProductController extends Controller
           }
           return redirect('/admin/global/products/list')->with('status', 'Global product added successfully.');
         }
-     
+      } catch (\Exception $e) {
+
+        return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
+      }
     } else {
       return redirect()->back()->withErrors($validator)->withInput();
     }
