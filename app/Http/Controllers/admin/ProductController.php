@@ -610,6 +610,7 @@ class ProductController extends Controller
         //'attr_value_id' => ['required' ],
         // 'product_image.*' => 'dimensions:min_width=1000,min_height=800'
         //'product_image.*' => ['required', 'max:30'],
+        'product_image.*' => ['required', 'max:2048'], // 2MB limit
 
       ],
       [
@@ -631,7 +632,7 @@ class ProductController extends Controller
         'product_cat_id.required'         => 'Product category required',
         'vendor_id.required'         => 'Vendor required',
         // 'product_image.required'        => 'Product image required',
-        'product_image.*.max' => 'Product image size should not exceed 30KB',
+        'product_image.*.max' => 'Product image size should not exceed 2MB',
         //'product_image.dimensions'        => 'Product image dimensions invalid',
 
       ]
@@ -720,23 +721,33 @@ class ProductController extends Controller
               // }
 
               //$filename = $file->getClientOriginalName();
-              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+              $filename = rand(1, 5000) . time();
               $extension = $file->getClientOriginalExtension();
 
               // Use Intervention Image to open and manipulate the image
-              $image = InterventionImage::make($file);
+              $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+        $originalSize = $resizedImage->filesize();
+
+        // Determine compression quality based on original size
+        if ($originalSize > 50000) { // If original size > 50kb
+            $quality = 50;
+        } elseif ($originalSize > 30000) { // If original size > 30kb
+            $quality = 60;
+        } else { // If original size <= 30kb
+            $quality = 100;
+        }
+
 
               // Resize the image if necessary
               //$image->resize(300, 200); // Adjust dimensions as needed
 
-              // Convert the image to WebP format
-              $image->encode('webp');
-              // Compress the image if its size exceeds 2MB
-              if ($file->getSize() >= 2 * 1024 * 1024) {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 80); // Adjust quality as needed
-              } else {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
-              }
+              // Convert the image to JPG format
+              $resizedImage->encode('jpg',$quality);
+              $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
 
               // Save the image
               // $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
@@ -744,14 +755,14 @@ class ProductController extends Controller
               // Insert data into the database
               $data1 = [
                 'global_product_id' => $global_product_id,
-                'image_name' => $filename . '.webp', // Update the filename with the new extension
+                'image_name' => $filename . '.jpg', // Update the filename with the new extension
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
               ];
               Trn_GlobalProductImage::insert($data1);
 
               if ($c == 1) {
-                DB::table('mst__global_products')->where('global_product_id', $global_product_id)->update(['product_base_image' => $filename . '.webp']); // Update the filename with the new extension
+                DB::table('mst__global_products')->where('global_product_id', $global_product_id)->update(['product_base_image' => $filename . '.jpg']); // Update the filename with the new extension
                 $c++;
               }
             }
