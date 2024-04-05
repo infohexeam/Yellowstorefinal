@@ -5,7 +5,7 @@ namespace App\Http\Controllers\store;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
-
+use Intervention\Image\Facades\Image  as InterventionImage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\admin\Mst_store;
 use App\Models\admin\Mst_store_product;
