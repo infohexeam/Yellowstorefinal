@@ -415,7 +415,7 @@ class ProductController extends Controller
       ]
     );
     if (!$validator->fails()) {
-      try {
+      
         //check store code
         $ChkCodeExstnce = DB::table('mst_store_products')->where('product_code', $request->product_code)->count();
 
@@ -554,10 +554,7 @@ class ProductController extends Controller
           }
           return redirect('/admin/global/products/list')->with('status', 'Global product added successfully.');
         }
-      } catch (\Exception $e) {
-
-        return redirect()->back()->withErrors(['Something went wrong!'])->withInput();
-      }
+     
     } else {
       return redirect()->back()->withErrors($validator)->withInput();
     }
