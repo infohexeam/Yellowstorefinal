@@ -386,7 +386,7 @@ class ProductController extends Controller
         'sub_category_id' => ['required'],
         //  'attr_value_id' => ['required' ],
         //  'product_image.*' => ['required', 'dimensions:min_width=1000,min_height=800'],
-        //'product_image.*' => ['required', 'max:2048'], // 2MB limit
+      'product_image.*' => ['required', 'max:2048'], // 2MB limit
 
       ],
       [
@@ -409,7 +409,7 @@ class ProductController extends Controller
         'sub_category_id.required'         => 'Product subcategory required',
         'vendor_id.required'         => 'Vendor required',
         //   'product_image.required'        => 'Product image required',
-        // 'product_image.*.max' => 'Product image size should not exceed 2MB',
+        'product_image.*.max' => 'Product image size should not exceed 2MB',
         'product_image.dimensions'        => 'Product image dimensions invalid',
 
       ]
@@ -500,23 +500,39 @@ class ProductController extends Controller
               // }
 
               //$filename = $file->getClientOriginalName();
-              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+              $filename = rand(1, 5000) . time();
               $extension = $file->getClientOriginalExtension();
 
               // Use Intervention Image to open and manipulate the image
-              $image = InterventionImage::make($file);
+              $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            //$originalSize = $resizedImage->filesize();
+
+        // Determine compression quality based on original size
+        // if ($originalSize > 50000) { // If original size > 50kb
+        //     $quality = 50;
+        // } elseif ($originalSize > 30000) { // If original size > 30kb
+        //     $quality = 60;
+        // } else { // If original size <= 30kb
+        //     $quality = 80;
+        // }
+
 
               // Resize the image if necessary
               //$image->resize(300, 200); // Adjust dimensions as needed
 
               // Convert the image to WebP format
-              $image->encode('webp');
+              $resizedImage->encode('webp',$quality);
               // Compress the image if its size exceeds 2MB
-              if ($file->getSize() >= 2 * 1024 * 1024) {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 95); // Adjust quality as needed
-              } else {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
-              }
+              $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp'); // Adjust quality as needed
+              // if ($file->getSize() >= 2 * 1024 * 1024) {
+              //   $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 95); // Adjust quality as needed
+              // } else {
+              //   $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
+              // }
 
               // Save the image
               // $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');

@@ -1243,7 +1243,7 @@ class StoreController extends Controller
           $extension = $file->getClientOriginalExtension();
           //$filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
           /****************************************************************************** */
-          $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+          $filename = rand(1, 5000) . time();
           $extension = $file->getClientOriginalExtension();
 
           // Use Intervention Image to open and manipulate the image
