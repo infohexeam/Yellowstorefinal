@@ -509,7 +509,7 @@ class ProductController extends Controller
                 $constraint->upsize();
             });
 
-            //$originalSize = $resizedImage->filesize();
+        $originalSize = $resizedImage->filesize();
 
         // Determine compression quality based on original size
         if ($originalSize > 50000) { // If original size > 50kb
