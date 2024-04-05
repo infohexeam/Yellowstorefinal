@@ -1240,26 +1240,36 @@ class StoreController extends Controller
 
 
           //   $filename = $file->getClientOriginalName();
-          $extension = $file->getClientOriginalExtension();
+         
           //$filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
           /****************************************************************************** */
           $filename = rand(1, 5000) . time();
-          $extension = $file->getClientOriginalExtension();
+    
 
-          // Use Intervention Image to open and manipulate the image
-          $image = Image::make($file);
+              // Use Intervention Image to open and manipulate the image
+              $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
 
-          // Resize the image if necessary
-          //$image->resize(300, 200); // Adjust dimensions as needed
+        $originalSize = $resizedImage->filesize();
 
-          // Convert the image to WebP format
-          $image->encode('webp');
-          // Compress the image if its size exceeds 2MB
-          if ($file->getSize() >= 2 * 1024 * 1024) {
-            $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 95); // Adjust quality as needed
-          } else {
-            $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
-          }
+        // Determine compression quality based on original size
+        if ($originalSize > 50000) { // If original size > 50kb
+            $quality = 50;
+        } elseif ($originalSize > 30000) { // If original size > 30kb
+            $quality = 60;
+        } else { // If original size <= 30kb
+            $quality = 100;
+        }
+
+
+              // Resize the image if necessary
+              //$image->resize(300, 200); // Adjust dimensions as needed
+
+              // Convert the image to JPG format
+              $resizedImage->encode('jpg',$quality);
+              $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
 
           //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1268,7 +1278,7 @@ class StoreController extends Controller
           $date = Carbon::now();
           $data1 = [
             [
-              'product_image'      => $filename.'.webp',
+              'product_image'      => $filename.'.jpg',
               'product_id' => $id,
               'product_varient_id' => 0,
               'image_flag'         => 0,
@@ -1283,7 +1293,7 @@ class StoreController extends Controller
           $productBaseImg = "";
 
           if ($c == 1) {
-            DB::table('mst_store_products')->where('product_id', $id)->update(['product_base_image' => $filename.'.webp']);
+            DB::table('mst_store_products')->where('product_id', $id)->update(['product_base_image' => $filename.'.jpg']);
             $productBaseImg = $filename;
             $c++;
             DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
@@ -1420,29 +1430,39 @@ class StoreController extends Controller
             //dd($files);
             foreach ($files as $file) {
               //   $filename = $file->getClientOriginalName();
-              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-
-              /*********Image compression********************************* */
-              $extension = $file->getClientOriginalExtension();
-              //$filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+              
               /****************************************************************************** */
-              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-              $extension = $file->getClientOriginalExtension();
+              
+              
     
               // Use Intervention Image to open and manipulate the image
-              $image = Image::make($file);
-    
+              $filename = rand(1, 5000) . time();
+              $extension = $file->getClientOriginalExtension();
+
+              // Use Intervention Image to open and manipulate the image
+              $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+        $originalSize = $resizedImage->filesize();
+
+        // Determine compression quality based on original size
+        if ($originalSize > 50000) { // If original size > 50kb
+            $quality = 50;
+        } elseif ($originalSize > 30000) { // If original size > 30kb
+            $quality = 60;
+        } else { // If original size <= 30kb
+            $quality = 100;
+        }
+
+
               // Resize the image if necessary
               //$image->resize(300, 200); // Adjust dimensions as needed
-    
-              // Convert the image to WebP format
-              $image->encode('webp');
-              // Compress the image if its size exceeds 2MB
-              if ($file->getSize() >= 2 * 1024 * 1024) {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp', 95); // Adjust quality as needed
-              } else {
-                $image->save('assets/uploads/products/base_product/base_image/' . $filename . '.webp');
-              }
+
+              // Convert the image to JPG format
+              $resizedImage->encode('jpg',$quality);
+              $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
 
               /***************8End  Image Compression */
               //$file->move('assets/uploads/products/base_product/base_image', $filename);
@@ -1450,7 +1470,7 @@ class StoreController extends Controller
 
               $data5 = [
                 [
-                  'product_image'      => $filename.'.webp',
+                  'product_image'      => $filename.'.jpg',
                   'product_id' => $id,
                   'product_varient_id' => $vari_id,
                   'image_flag'         => 0,
@@ -1462,7 +1482,7 @@ class StoreController extends Controller
               $proImg_Id = DB::getPdo()->lastInsertId();
 
               if ($vic == 0) {
-                DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $filename.'.webp']);
+                DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)->update(['product_varient_base_image' => $filename.'.jpg']);
                 $vic++;
                 DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
               }
@@ -2049,17 +2069,38 @@ class StoreController extends Controller
 
 
 
-          // $filename = $file->getClientOriginalName();
-          $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+           // Use Intervention Image to open and manipulate the image
+           $filename = rand(1, 5000) . time();
+           $extension = $file->getClientOriginalExtension();
 
-          $extension = $file->getClientOriginalExtension();
+           // Use Intervention Image to open and manipulate the image
+           $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+             $constraint->aspectRatio();
+             $constraint->upsize();
+         });
 
-          // $fullpath = $filename . '.' . $extension ;
-          $file->move('assets/uploads/products/base_product/base_image', $filename);
+     $originalSize = $resizedImage->filesize();
+
+     // Determine compression quality based on original size
+     if ($originalSize > 50000) { // If original size > 50kb
+         $quality = 50;
+     } elseif ($originalSize > 30000) { // If original size > 30kb
+         $quality = 60;
+     } else { // If original size <= 30kb
+         $quality = 100;
+     }
+
+
+           // Resize the image if necessary
+           //$image->resize(300, 200); // Adjust dimensions as needed
+
+           // Convert the image to JPG format
+           $resizedImage->encode('jpg',$quality);
+           $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
           $date = Carbon::now();
           $data1 = [
             [
-              'product_image'      => $filename,
+              'product_image'      => $filename.'.jpg',
               'product_id' => $product_id,
               'product_varient_id' => @$baseVar->product_varient_id,
               'image_flag'         => 1,
@@ -2068,7 +2109,7 @@ class StoreController extends Controller
             ],
           ];
           $data9=['product_base_image'=>$filename];
-          @$baseVar->product_varient_base_image=$filename;
+          @$baseVar->product_varient_base_image=$filename.'jpg';
           DB::table('mst_store_products')->where('product_id', $product_id)->update($data9);
           Mst_product_image::where('product_id', $product_id)->where('product_varient_id',@$baseVar->product_varient_id)->delete();
           Mst_product_image::insert($data1);
@@ -2165,16 +2206,39 @@ class StoreController extends Controller
             $files = $request->file('var_images')[$vc];
             //dd($files);
             foreach ($files as $file) {
-              // $filename = $file->getClientOriginalName();
-              $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-
+              // Use Intervention Image to open and manipulate the image
+              $filename = rand(1, 5000) . time();
               $extension = $file->getClientOriginalExtension();
-              $file->move('assets/uploads/products/base_product/base_image', $filename);
+
+              // Use Intervention Image to open and manipulate the image
+              $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+        $originalSize = $resizedImage->filesize();
+
+        // Determine compression quality based on original size
+        if ($originalSize > 50000) { // If original size > 50kb
+            $quality = 50;
+        } elseif ($originalSize > 30000) { // If original size > 30kb
+            $quality = 60;
+        } else { // If original size <= 30kb
+            $quality = 100;
+        }
+
+
+              // Resize the image if necessary
+              //$image->resize(300, 200); // Adjust dimensions as needed
+
+              // Convert the image to JPG format
+              $resizedImage->encode('jpg',$quality);
+              $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
               $date = Carbon::now();
 
               $data5 = [
                 [
-                  'product_image'      => $filename,
+                  'product_image'      => $filename.'jpg',
                   'product_id' => $product_id,
                   'product_varient_id' => $vari_id,
                   'image_flag'         => 1,
@@ -2185,7 +2249,7 @@ class StoreController extends Controller
               Mst_product_image::insert($data5);
               if ($vic == 0) {
                 DB::table('mst_store_product_varients')->where('product_varient_id', $vari_id)
-                  ->update(['product_varient_base_image' => $filename]);
+                  ->update(['product_varient_base_image' => $filename.'.jpg']);
                 $vic++;
               }
             }
