@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image  as InterventionImage;
 use Response;
 use Image;
 use DB;
@@ -2352,9 +2353,41 @@ class ProductController extends Controller
                                     // dd($files);
                                     foreach ($files as $file) {
                                         $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-                                        $file->move('assets/uploads/products/base_product/base_image', $filename);
+                                        /**************************Image upload start********************/
+            //$filename = $file->getClientOriginalName();
+                                $filename = rand(1, 5000) . time();
+                                //$extension = $file->getClientOriginalExtension();
+
+                                // Use Intervention Image to open and manipulate the image
+                                $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                                });
+
+                                $originalSize = $resizedImage->filesize();
+
+                                // Determine compression quality based on original size
+                                if ($originalSize > 50000) { // If original size > 50kb
+                                $quality = 50;
+                                } elseif ($originalSize > 30000) { // If original size > 30kb
+                                $quality = 60;
+                                } else { // If original size <= 30kb
+                                $quality = 100;
+                                }
+
+
+                                // Resize the image if necessary
+                                //$image->resize(300, 200); // Adjust dimensions as needed
+
+                                // Convert the image to JPG format
+                                $resizedImage->encode('jpg',$quality);
+                                $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
+
+            // Make sure we don’t
+                                        /*******Image upload ends */
+                                        //$file->move('assets/uploads/products/base_product/base_image', $filename);
                                         $imageData = [
-                                            'product_image'      => $filename,
+                                            'product_image'      => $filename.'.jpg',
                                             'product_id' => $id,
                                             'product_varient_id' => 0,
                                             'image_flag'         => 0,
@@ -2367,7 +2400,7 @@ class ProductController extends Controller
     
                                         if ($c == 1) {
                                             DB::table('mst_store_products')->where('product_id', $id)
-                                                ->update(['product_base_image' => $filename]);
+                                                ->update(['product_base_image' => $filename.'.jpg']);
                                             $c++;
                                             DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                         }
@@ -2556,10 +2589,37 @@ class ProductController extends Controller
                                         //    Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',0)->delete();
     
                                         foreach ($files as $file) {
-                                            $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-                                            $file->move('assets/uploads/products/base_product/base_image', $filename);
+                                            // $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+                                            // $file->move('assets/uploads/products/base_product/base_image', $filename);
+                                            $filename = rand(1, 5000) . time();
+                                            $extension = $file->getClientOriginalExtension();
+        
+                                            // Use Intervention Image to open and manipulate the image
+                                            $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                                            $constraint->aspectRatio();
+                                            $constraint->upsize();
+                                            });
+        
+                                            $originalSize = $resizedImage->filesize();
+        
+                                            // Determine compression quality based on original size
+                                            if ($originalSize > 50000) { // If original size > 50kb
+                                            $quality = 50;
+                                            } elseif ($originalSize > 30000) { // If original size > 30kb
+                                            $quality = 60;
+                                            } else { // If original size <= 30kb
+                                            $quality = 100;
+                                            }
+        
+        
+                                            // Resize the image if necessary
+                                            //$image->resize(300, 200); // Adjust dimensions as needed
+        
+                                            // Convert the image to JPG format
+                                            $resizedImage->encode('jpg',$quality);
+                                            $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
                                             $imageData = [
-                                                'product_image'      => $filename,
+                                                'product_image'      => $filename.'jpg',
                                                 'product_id' => $request->product_id,
                                                 'product_varient_id' => $baseVari->product_varient_id,
                                                 'image_flag'         => 1,
@@ -2575,9 +2635,9 @@ class ProductController extends Controller
                                                     Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$baseVari->product_varient_id)->delete();
                                                     Mst_product_image::insert($imageData);
                                                     DB::table('mst_store_products')->where('product_id', $request->product_id)
-                                                        ->update(['product_base_image' => $filename]);
+                                                        ->update(['product_base_image' => $filename.'.jgp']);
                                                 DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
-                                                        ->update(['product_varient_base_image' => $filename]);
+                                                        ->update(['product_varient_base_image' => $filename.'.jgp']);
                                                    
                                                    // DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                                 }
@@ -2593,9 +2653,9 @@ class ProductController extends Controller
                                                         Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$baseVari->product_varient_id)->delete();
                                                         Mst_product_image::insert($imageData);
                                                         DB::table('mst_store_products')->where('product_id', $request->product_id)
-                                                            ->update(['product_base_image' => $filename]);
+                                                            ->update(['product_base_image' => $filename.'.jgp']);
                                                     DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
-                                                            ->update(['product_varient_base_image' => $filename]);
+                                                            ->update(['product_varient_base_image' => $filename.'.jgp']);
                                                    
                                                     //}
                                                 }
@@ -2778,11 +2838,38 @@ class ProductController extends Controller
                             $filename = "";
                             if ($files = $request->file('variant_images')) {
                                 foreach ($files as $file) {
-                                    $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-                                    $file->move('assets/uploads/products/base_product/base_image', $filename);
+                                    // $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+                                    // $file->move('assets/uploads/products/base_product/base_image', $filename);
+                                    //$filename = $file->getClientOriginalName();
+                                    $filename = rand(1, 5000) . time();
+                                    $extension = $file->getClientOriginalExtension();
 
+                                    // Use Intervention Image to open and manipulate the image
+                                    $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                    $constraint->upsize();
+                                    });
+
+                                    $originalSize = $resizedImage->filesize();
+
+                                    // Determine compression quality based on original size
+                                    if ($originalSize > 50000) { // If original size > 50kb
+                                    $quality = 50;
+                                    } elseif ($originalSize > 30000) { // If original size > 30kb
+                                    $quality = 60;
+                                    } else { // If original size <= 30kb
+                                    $quality = 100;
+                                    }
+
+
+                                    // Resize the image if necessary
+                                    //$image->resize(300, 200); // Adjust dimensions as needed
+
+                                    // Convert the image to JPG format
+                                    $resizedImage->encode('jpg',$quality);
+                                    $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
                                     $imageData = [
-                                        'product_image'      => $filename,
+                                        'product_image'      => $filename.'.jpg',
                                         'product_id'         => $request->product_id,
                                         'product_varient_id' => $Varid,
                                         'image_flag'         => 1,
@@ -2796,7 +2883,7 @@ class ProductController extends Controller
 
                                    
                                         DB::table('mst_store_product_varients')->where('product_varient_id', $Varid)
-                                            ->update(['product_varient_base_image' => $filename]);
+                                            ->update(['product_varient_base_image' => $filename.'jpg']);
                                         $c++;
                                         //DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                    
@@ -2859,10 +2946,38 @@ class ProductController extends Controller
                                 foreach ($files as $file) {
                                     if($c==1)
                                     {
-                                    $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
-                                    $file->move('assets/uploads/products/base_product/base_image', $filename);
+                                    //$filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+                                    //$file->move('assets/uploads/products/base_product/base_image', $filename);
+                                     //$filename = $file->getClientOriginalName();
+                                     $filename = rand(1, 5000) . time();
+                                     $extension = $file->getClientOriginalExtension();
+ 
+                                     // Use Intervention Image to open and manipulate the image
+                                     $resizedImage = InterventionImage::make($file)->resize(null, 300, function ($constraint) {
+                                     $constraint->aspectRatio();
+                                     $constraint->upsize();
+                                     });
+ 
+                                     $originalSize = $resizedImage->filesize();
+ 
+                                     // Determine compression quality based on original size
+                                     if ($originalSize > 50000) { // If original size > 50kb
+                                     $quality = 50;
+                                     } elseif ($originalSize > 30000) { // If original size > 30kb
+                                     $quality = 60;
+                                     } else { // If original size <= 30kb
+                                     $quality = 100;
+                                     }
+ 
+ 
+                                     // Resize the image if necessary
+                                     //$image->resize(300, 200); // Adjust dimensions as needed
+ 
+                                     // Convert the image to JPG format
+                                     $resizedImage->encode('jpg',$quality);
+                                     $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
                                     $imageData = [
-                                        'product_image'      => $filename,
+                                        'product_image'      => $filename.'.jpg',
                                         'product_id'         => $request->product_id,
                                         'product_varient_id' => $product_varient_id,
                                         'image_flag'         => 1,
@@ -2878,7 +2993,7 @@ class ProductController extends Controller
 
                                    
                                         DB::table('mst_store_product_varients')->where('product_varient_id', $product_varient_id)
-                                            ->update(['product_varient_base_image' => $filename]);
+                                            ->update(['product_varient_base_image' => $filename.'.jpg']);
                                         //$c++;
                                 }
                                 $c++;
