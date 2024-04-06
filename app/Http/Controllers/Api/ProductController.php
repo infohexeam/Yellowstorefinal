@@ -2352,7 +2352,7 @@ class ProductController extends Controller
                                 if ($files = $request->file('product_images')) {
                                     // dd($files);
                                     foreach ($files as $file) {
-                                        $filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
+                                        //$filename = rand(1, 5000) . time() . '.' . $file->getClientOriginalExtension();
                                         /**************************Image upload start********************/
             //$filename = $file->getClientOriginalName();
                                 $filename = rand(1, 5000) . time();
