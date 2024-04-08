@@ -2302,10 +2302,15 @@ class StoreController extends Controller
       return redirect()->back()->with('err_status', 'Product cannot be removed as orders are exist with this product');
     }
     
-        if ($cart->count() > 0) 
-        {
-            return redirect()->back()->with('err_status', 'Product cannot be removed as this base product or variant product is already in cart');
-        }
+    if ($cart->count() > 0) 
+    {
+      return redirect()->back()->with('err_status', 'Product cannot be removed as this base product or variant product is already in cart');
+    }
+    $customer_enquiry=Trn_customer_enquiry::whereIn('product_varient_id',$varient_ids)->count();
+    if($customer_enquiry>0)
+    {
+      return redirect()->back()->with('err_status', 'Product cannot be removed as this product is enquired by customer');
+    }
     if($productData->product_type==1)
     {
         if($stock_count>0)

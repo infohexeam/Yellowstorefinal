@@ -46,6 +46,7 @@ use App\Models\admin\Trn_GlobalProductVideo;
 use App\Models\admin\Trn_ProductVideo;
 use App\Models\admin\Trn_store_customer;
 use App\Models\admin\Trn_store_order_item;
+use App\Models\admin\Trn_customer_enquiry;
 
 class ProductController extends Controller
 {
@@ -1565,6 +1566,14 @@ class ProductController extends Controller
                         $data['message'] = "Product cannot be removed as this product is added to cart";
                         return response($data);
                     }
+                    $customer_enquiry=Trn_customer_enquiry::whereIn('product_varient_id',$varient_ids)->count();
+                    if($customer_enquiry->count()>0)
+                    {
+                        $data['status'] = 0;
+                        $data['message'] = "Product cannot be removed as this product is enquired by customer";
+                        return response($data);
+                    }
+
                     if($productData->product_type==1)
                     {
                         $stock_count=Mst_store_product_varient::whereIn('product_varient_id',$varient_ids)->where('stock_count','>',0)->count();
