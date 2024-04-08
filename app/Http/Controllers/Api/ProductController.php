@@ -2619,7 +2619,7 @@ class ProductController extends Controller
                                             $resizedImage->encode('jpg',$quality);
                                             $resizedImage->save('assets/uploads/products/base_product/base_image/' . $filename . '.jpg'); // Adjust quality as needed
                                             $imageData = [
-                                                'product_image'      => $filename.'jpg',
+                                                'product_image'      => $filename.'.jpg',
                                                 'product_id' => $request->product_id,
                                                 'product_varient_id' => $baseVari->product_varient_id,
                                                 'image_flag'         => 1,
@@ -2883,7 +2883,7 @@ class ProductController extends Controller
 
                                    
                                         DB::table('mst_store_product_varients')->where('product_varient_id', $Varid)
-                                            ->update(['product_varient_base_image' => $filename.'jpg']);
+                                            ->update(['product_varient_base_image' => $filename.'.jpg']);
                                         $c++;
                                         //DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                    
