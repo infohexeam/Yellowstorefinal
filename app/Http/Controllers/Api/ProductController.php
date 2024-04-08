@@ -2644,9 +2644,9 @@ class ProductController extends Controller
                                                     Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$baseVari->product_varient_id)->delete();
                                                     Mst_product_image::insert($imageData);
                                                     DB::table('mst_store_products')->where('product_id', $request->product_id)
-                                                        ->update(['product_base_image' => $filename.'.jgp']);
+                                                        ->update(['product_base_image' => $filename.'.jpg']);
                                                 DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
-                                                        ->update(['product_varient_base_image' => $filename.'.jgp']);
+                                                        ->update(['product_varient_base_image' => $filename.'.jpg']);
                                                    
                                                    // DB::table('mst_product_images')->where('product_image_id', $proImg_Id)->update(['image_flag' => 1]);
                                                 }
@@ -2662,9 +2662,9 @@ class ProductController extends Controller
                                                         Mst_product_image::where('product_id',$request->product_id)->where('product_varient_id',$baseVari->product_varient_id)->delete();
                                                         Mst_product_image::insert($imageData);
                                                         DB::table('mst_store_products')->where('product_id', $request->product_id)
-                                                            ->update(['product_base_image' => $filename.'.jgp']);
+                                                            ->update(['product_base_image' => $filename.'.jpg']);
                                                     DB::table('mst_store_product_varients')->where('product_varient_id', $baseVari->product_varient_id)
-                                                            ->update(['product_varient_base_image' => $filename.'.jgp']);
+                                                            ->update(['product_varient_base_image' => $filename.'.jpg']);
                                                    
                                                     //}
                                                 }
