@@ -379,7 +379,7 @@
                    <div class="form-group">
                     <div class="BaseFeatureArea">
                      <label class="form-label">Upload Images *</label>
-                     <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control imgValidation" name="product_image[]">
+                     <input type="file" accept="image/png, image/jpeg, image/jpg" class="form-control" name="product_image[]">
                         <br>
                      </div>
                      </div>
@@ -461,7 +461,7 @@
                    <div class="col-md-12">
                      <div class="form-group">
                          <label class="form-label">Images </label>
-                         <input type="file"  accept="image/png, image/jpeg, image/jpg" class="form-control proVariant imgValidation" name="var_images[0][]" >
+                         <input type="file"  accept="image/png, image/jpeg, image/jpg" class="form-control proVariant" name="var_images[0][]" >
                      </div>
                  </div>
               </div>
@@ -525,7 +525,7 @@
                               <div class="col-md-12">
                                     <div class="form-group">
                                        <label class="form-label">Images(1000*800 or more) *</label>
-                                       <input type="file" accept="image/png, image/jpeg, image/jpg"  class="form-control proVariant imgValidation" name="var_image[]" >
+                                       <input type="file" accept="image/png, image/jpeg, image/jpg"  class="form-control proVariant" name="var_image[]" >
                                     </div>
                               </div>
 
@@ -1410,7 +1410,7 @@ $(document).ready(function() {
      //max input box allowed
        x++; //text box increment
        var attr_id_div = x+'a0';
-       $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute * </label><select required name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)  <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option> @endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value *</label><select required name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\','+x+')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" required class="form-control"   name="var_regular_price[]" id="var_regular_price'+x+'" oninput="regularPriceChangeVar('+x+')"  placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" type="number" class="form-control"  name="var_sale_price[]" id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Images </label><input  type="file" class="form-control imgValidation" accept="image/png, image/jpeg, image/jpg" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
+       $(wrapper).append('<div style="border: 1px solid #0008ff42;" class="mt-2 row"><div class="col-md-12"><div class="form-group"><label class="form-label">Variant Name </label><input  type="text" class="form-control"  name="variant_name[]"   id="variant_name'+x+'" placeholder="Variant Name"></div></div><div id="attHalfRow'+x+'a" class="container"> <div  id="attHalfSec'+x+'a" class="section"><div  class=" row"><div class="col-md-6"><div class="form-group"><label class="form-label">Attribute * </label><select required name="attr_group_id['+x+'][]" onchange="findValue(\''+attr_id_div+'\')"  id="attr_group'+attr_id_div+'" class="attr_group form-control" ><option value="">Attribute</option>@foreach($attr_groups as $key)  <option value="{{$key->attr_group_id}}"> {{$key->group_name}} </option> @endforeach</select></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Value *</label><select required name="attr_value_id['+x+'][]"   id="attr_value'+attr_id_div+'" class="attr_value form-control" ><option value="">Value</option></select></div></div></div></div><div class="col-md-2"><div class="form-group"><a  id="addVariantAttr'+x+'" onclick="addAttributes(\''+x+'a\','+x+')" class="text-white mt-2 btn btn-sm btn-secondary">Add More</a></div></div></div> <div class="col-md-6"><div class="form-group"><label class="form-label">MRP </label><input step="0.01" type="number" required class="form-control"   name="var_regular_price[]" id="var_regular_price'+x+'" oninput="regularPriceChangeVar('+x+')"  placeholder="MRP"></div></div><div class="col-md-6"><div class="form-group"><label class="form-label">Sale Price </label><input step="0.01" type="number" class="form-control"  name="var_sale_price[]" id="var_sale_price'+x+'" oninput="salePriceChangeVar('+x+')" placeholder="Sale Price"><span style="color:red" id="sale_priceMsg'+x+'"> </span></div></div><input type="hidden" id="cval'+x+'" value="'+x+'"><div class="col-md-12"><div class="form-group"><label class="form-label">Images </label><input  type="file" class="form-control" accept="image/png, image/jpeg, image/jpg" name="var_images['+x+'][]" ></div></div><a href="#" class="remove_field ml-4 mb-2 btn btn-warning btn btn-sm">Remove</a></div>'); //add input box
    });
    
    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
@@ -1567,7 +1567,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div>  <input type="file" class="form-control imgValidation" name="product_image[]"  accept="image/png, image/jpeg, image/jpg"  value="{{old('product_image')}}" placeholder="Base Product Feature Image" /> <a href="#" class="remove_field btn btn-primary">Remove</a></div>'); //add input box
+      $(wrapper).append('<div>  <input type="file" class="form-control" name="product_image[]"  accept="image/png, image/jpeg, image/jpg"  value="{{old('product_image')}}" placeholder="Base Product Feature Image" /> <a href="#" class="remove_field btn btn-primary">Remove</a></div>'); //add input box
 
   });
 
