@@ -1567,7 +1567,7 @@ class ProductController extends Controller
                         return response($data);
                     }
                     $customer_enquiry=Trn_customer_enquiry::whereIn('product_varient_id',$varient_ids)->count();
-                    if($customer_enquiry->count()>0)
+                    if($customer_enquiry>0)
                     {
                         $data['status'] = 0;
                         $data['message'] = "Product cannot be removed as this product is enquired by customer";
