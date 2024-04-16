@@ -446,7 +446,7 @@ class StoreController extends Controller
       $img_validate = Validator::make(
         $request->all(),
         [
-          'store_image.*' => 'required',
+          'store_image.*' => 'required|max:2048',
         ]
       );
       if ($img_validate->fails()) {
@@ -458,11 +458,39 @@ class StoreController extends Controller
       $data = $request->except('_token');
       //	dd($store);
       $filenamePro = $store->profile_image;
+      $filenamePro = str_replace('.jpg', '', $filenamePro);
       if ($request->hasFile('profile_image')) {
 
         $filePro = $request->file('profile_image');
-        $filenamePro = rand(1, 5000) . time() . '.' . $filePro->getClientOriginalExtension();
-        $filePro->move('assets/uploads/store_images/images', $filenamePro);
+        $destination_path='assets/uploads/store_images/images/';
+        $filenamePro = rand(1, 5000) . time();
+                    
+        // Use Intervention Image to open and manipulate the image
+        $resizedImage = Image::make($filePro->getRealPath())->resize(300, null, function ($constraint) {
+        $constraint->aspectRatio();
+        $constraint->upsize();
+        });
+
+        $originalSize = $resizedImage->filesize();
+
+                // Determine compression quality based on original size
+        if ($originalSize > 50000)
+        { // If original size > 50kb
+        $quality = 50;
+        } 
+        elseif ($originalSize > 30000) { // If original size > 30kb
+        $quality = 60;
+        } 
+        else
+        { // If original size <= 30kb
+        $quality = 100;
+        }
+
+
+                // Convert the image to JPG format
+        $resizedImage->encode('jpg',$quality);
+        $resizedImage->save($destination_path . $filenamePro . '.jpg'); // Adjust quality as needed
+        //$filePro->move('assets/uploads/store_images/images', $filenamePro);
       }
 
 
@@ -509,7 +537,7 @@ class StoreController extends Controller
         // 'store_commision_amount' => $request->store_commision_amount,
         'town_id' => $request->store_town,
         'place' => $request->store_place,
-        'profile_image' => $filenamePro,
+        'profile_image' => $filenamePro.'.jpg',
         'latitude' => $sendLat,
         'longitude' => $sendLong,
         'place_id' => $sendPlaceId,
@@ -573,19 +601,42 @@ class StoreController extends Controller
         $store_image = $request->file('store_image');
         // dd($product_image);
         foreach ($store_image as $image) {
-          $filename = rand(1, 5000) . time() . '.' . $image->getClientOriginalExtension();
-          // dd($filename);
-          $destination_path = 'assets/uploads/store_images/images';
+      
+    
+          $destination_path = 'assets/uploads/store_images/images/';
           //$destination_path = public_path('/assets/uploads/store_images/images');
 
-          $store_img = Image::make($image->getRealPath());
-          $store_img->save($destination_path . '/' . $filename, 80);
-
-
-
+          $filename = rand(1, 5000) . time();
+     
+                                    // Use Intervention Image to open and manipulate the image
+          $resizedImage = Image::make($image->getRealPath())->resize(1000, 800, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                      
+          $originalSize = $resizedImage->filesize();
+                            
+                                    // Determine compression quality based on original size
+          if ($originalSize > 50000)
+				  { // If original size > 50kb
+            $quality = 50;
+          } 
+          elseif ($originalSize > 30000) 
+          { // If original size > 30kb
+            $quality = 60;
+          } 
+          else
+          { // If original size <= 30kb
+            $quality = 100;
+          }
+                            
+                      
+          // Convert the image to JPG format
+          $resizedImage->encode('jpg',$quality);
+          $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
           $data2 = [
             [
-              'store_image'      => $filename,
+              'store_image'      => $filename.'.jpg',
               'store_id'       => $store_id,
               'created_at'         => $date,
               'updated_at'         => $date,
@@ -602,19 +653,40 @@ class StoreController extends Controller
         $store_image = $request->file('store_interior_image');
         // dd($product_image);
         foreach ($store_image as $image) {
-          $filename = rand(1, 5000) . time() . '.' . $image->getClientOriginalExtension();
-          // dd($filename);
-          $destination_path = 'assets/uploads/store_images/images';
+          $destination_path = 'assets/uploads/store_images/images/';
           //$destination_path = public_path('/assets/uploads/store_images/images');
 
-          $store_img = Image::make($image->getRealPath());
-          $store_img->save($destination_path . '/' . $filename, 80);
-
-
-
+          $filename = rand(1, 5000) . time();
+     
+                                    // Use Intervention Image to open and manipulate the image
+          $resizedImage = Image::make($image->getRealPath())->resize(300, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                      
+          $originalSize = $resizedImage->filesize();
+                            
+                                    // Determine compression quality based on original size
+          if ($originalSize > 50000)
+				  { // If original size > 50kb
+            $quality = 50;
+          } 
+          elseif ($originalSize > 30000) 
+          { // If original size > 30kb
+            $quality = 60;
+          } 
+          else
+          { // If original size <= 30kb
+            $quality = 100;
+          }
+                            
+                      
+          // Convert the image to JPG format
+          $resizedImage->encode('jpg',$quality);
+          $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
           $data2 = [
             [
-              'store_image'      => $filename,
+              'store_image'      => $filename . '.jpg',
               'store_id'       => $store_id,
               'created_at'         => $date,
               'updated_at'         => $date,
@@ -7338,23 +7410,36 @@ class StoreController extends Controller
 
 
 			if ($request->hasFile('delivery_boy_image')) {
-				/*	$delivery_boy_image = $request->file('delivery_boy_image');
-
-
-			$filename = time().'.'.$delivery_boy_image->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/delivery_boy/images/'.$filename);
-
-			Image::make($delivery_boy_image)->save($location);
-			$delivery_boy->delivery_boy_image = $filename;*/
-
+				
 				$photo = $request->file('delivery_boy_image');
-
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/delivery_boy/images';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$delivery_boy->delivery_boy_image = $filename;
+        $destination_path = 'assets/uploads/delivery_boy/images/';
+				$filename = rand(1, 5000) . time();
+				
+								// Use Intervention Image to open and manipulate the image
+					$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+					$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+					$resizedImage->encode('jpg',$quality);
+					$resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
+				  $delivery_boy->delivery_boy_image = $filename. '.jpg';
 			}
 
 			$delivery_boy->save();
@@ -7531,26 +7616,41 @@ class StoreController extends Controller
 
 
 			if ($request->hasFile('delivery_boy_image')) {
-				/*	$delivery_boy_image = $request->file('delivery_boy_image');
-
-
-			$filename = time().'.'.$delivery_boy_image->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/delivery_boy/images/'.$filename);
-
-			Image::make($delivery_boy_image)->save($location);
-			$delivery_boy->delivery_boy_image = $filename;*/
 
 				$photo = $request->file('delivery_boy_image');
-				$old_delivery_boy_image = 'assets/uploads/company/logos/' . $delivery_boy->delivery_boy_image;
+				$old_delivery_boy_image = 'assets/uploads/delivery_boy/images/' . $delivery_boy->delivery_boy_image;
 				if (is_file($old_delivery_boy_image)) {
 					unlink($old_delivery_boy_image);
 				}
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/delivery_boy/images';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$delivery_boy->delivery_boy_image = $filename;
+				$destinationPath = 'assets/uploads/delivery_boy/images/';
+	
+				$filename = rand(1, 5000) . time();
+				
+					// Use Intervention Image to open and manipulate the image
+					$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+					$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save($destinationPath . $filename . '.jpg'); // Adjust quality as needed
+				$delivery_boy->delivery_boy_image = $filename . '.jpg';
 			}
 
 			$delivery_boy->update();
@@ -8082,7 +8182,64 @@ public function showInHome(Request $request, $product_id)
 		//dd($agencies);
 		return view('store.elements.add_youtube', compact('store', 'pageTitle','youtube_links'));
 	}
-	public function storeYoutubeVideos(Request $request)
+  public function storeYoutubeVideos(Request $request)
+{
+    $validator = Validator::make(
+        $request->all(),
+        [
+            'youtube_link.*' => 'required',
+            'youtube_thumbnail.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust max file size as needed
+        ],
+        [
+            'youtube_link.*.required' => 'Youtube link required',
+            'youtube_thumbnail.*.required' => 'Thumbnail image required',
+            'youtube_thumbnail.*.image' => 'Uploaded file is not an image',
+            'youtube_thumbnail.*.mimes' => 'Uploaded image must be in format: jpeg, png, jpg, gif',
+            'youtube_thumbnail.*.max' => 'Uploaded image may not be larger than 2MB',
+        ]
+    );
+
+    if (!$validator->fails()) {
+        $youtubeLinks = $request->youtube_link;
+        $thumbnails = $request->file('youtube_thumbnail');
+
+        foreach ($youtubeLinks as $key => $youtubeLink) {
+            $thumbnailFile = $thumbnails[$key];
+            $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension(); // Use original extension
+            $destination_path = 'assets/uploads/video_images/';
+
+            // Resize the image
+            $resizedImage = Image::make($thumbnailFile)->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            // Adjust quality based on original size
+            $originalSize = $resizedImage->filesize();
+            $quality = $originalSize > 50000 ? 50 : ($originalSize > 30000 ? 60 : 100);
+
+            // Encode and save the image
+            $resizedImage->encode('jpg', $quality)->save($destination_path . $thumbnailFilename);
+
+            // Save video data
+            $videoData = [
+                'youtube_link' => $youtubeLink,
+                'store_id' => Auth::guard('store')->user()->store_id,
+                'youtube_title' => $youtubeLink, // You might want to fetch the actual title from YouTube API
+                'youtube_status' => 1,
+                'youtube_link_thumbnail' => $thumbnailFilename
+            ];
+
+            DB::table('trn_store_youtube_videos')->insert($videoData);
+        }
+
+        return redirect()->back()->with('status', 'Youtube links added successfully.');
+    } else {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+}
+
+	public function storeYoutubeVideosLegacy(Request $request)
 	{
 		$validator = Validator::make(
 			$request->all(),
@@ -8109,8 +8266,34 @@ public function showInHome(Request $request, $product_id)
         //return $thumbnails ;
         foreach ($youtubeLinks as $key => $youtubeLink) {
             $thumbnailFile = $thumbnails[$key];
-            $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
-            $thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
+            $thumbnailFilename = rand(1, 5000) . time() . '.' .'jpg';
+            $destination_path='assets/uploads/video_images/'; 
+            // Use Intervention Image to open and manipulate the image
+            $resizedImage = Image::make($thumbnailFile->getRealPath())->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+            });
+
+            $originalSize = $resizedImage->filesize();
+
+                    // Determine compression quality based on original size
+            if ($originalSize > 50000)
+            { // If original size > 50kb
+            $quality = 50;
+            } 
+            elseif ($originalSize > 30000) { // If original size > 30kb
+            $quality = 60;
+            } 
+            else
+            { // If original size <= 30kb
+            $quality = 100;
+            }
+
+
+                    // Convert the image to JPG format
+            $resizedImage->encode('jpg',$quality);
+            $resizedImage->save($destination_path . $thumbnailFile); // Adjust quality as needed
+            //$thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
             $videoData = [
                 'youtube_link' => $youtubeLink,
                 'store_id' => Auth::guard('store')->user()->store_id,

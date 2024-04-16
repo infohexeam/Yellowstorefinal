@@ -785,7 +785,7 @@ class AdminController extends Controller
             $img_validate = Validator::make(
                 $request->all(),
                 [
-                    // 'images.*' => 'required|dimensions:width=620,height=290',
+                    'images.*' => 'required|max:2048',
                     // 'town_id' => 'required',
                     // 'district_id' => 'required',
                     // 'state_id' => 'required',
@@ -793,6 +793,7 @@ class AdminController extends Controller
                 ],
                 [
                     'images.*.dimensions' => 'Banner image dimensions invalid',
+                    'images.*.max' => 'Banner image size should not exceed 2MB',
                     'town_id.required' => 'Town required',
                 ]
             );
@@ -811,18 +812,42 @@ class AdminController extends Controller
                 $town_id = $request->town_id;
                 // dd($product_image);
                 foreach ($images as $image) {
-                    $filename = time() .rand(). '.' . $image->getClientOriginalExtension();
+    
                     // dd($filename);
                     $destination_path = 'assets/uploads/store_banner/';
 
-                    $store_img = Image::make($image->getRealPath());
-                    $store_img->save($destination_path . '/' . $filename, 80);
+                    $filename = rand(1, 5000) . time();
+                    
+                                    // Use Intervention Image to open and manipulate the image
+                        $resizedImage = Image::make($image->getRealPath())->resize(225, 225, function ($constraint) {
+                            //$constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                      
+                        $originalSize = $resizedImage->filesize();
+                            
+                                    // Determine compression quality based on original size
+                        if ($originalSize > 50000) { // If original size > 50kb
+                            $quality = 50;
+                        } 
+                        elseif ($originalSize > 30000) { // If original size > 30kb
+                            $quality = 60;
+                        } 
+                        else
+                        { // If original size <= 30kb
+                            $quality = 100;
+                        }
+                            
+                      
+                                    // Convert the image to JPG format
+                        $resizedImage->encode('jpg',$quality);
+                        $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
 
 
 
                     $data2 = [
                         [
-                            'image'      => $filename,
+                            'image'      => $filename . '.jpg',
                             'town_id'      => $town_id,
                             'status'      => $request->status,
                         ],
@@ -867,14 +892,14 @@ class AdminController extends Controller
             $img_validate = Validator::make(
                 $request->all(),
                 [
-                    'images.*' => 'required',
+                    'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
                     // 'country_id' => 'required',
                     // 'state_id' => 'required',
                     // 'district_id' => 'required',
                     // 'town_id' => 'required',
                 ],
                 [
-                    'images.*.dimensions' => 'Banner image dimensions invalid',
+                    'images.*.max'=>'Maximum file size must not exceeeds 2MB',
                 ]
             );
             if ($img_validate->fails()) {
@@ -897,13 +922,45 @@ class AdminController extends Controller
 
                 // dd($product_image);
                 foreach ($request->file('images') as $image) {
-                    $filename = time() . rand() .'.' . $image->getClientOriginalExtension();
+                    
                     // dd($filename);
                     //echo $filename." - "; 
                     $destination_path = 'assets/uploads/customer_banner/';
 
-                    $store_img = Image::make($image->getRealPath());
-                    $store_img->save($destination_path . '/' . $filename, 80);
+                    // $store_img = Image::make($image->getRealPath());
+                    // $store_img->save($destination_path . '/' . $filename, 80);
+
+                    /////////////////////////////////////////
+
+                    $filename = rand(1, 5000) . time();
+                    
+                                    // Use Intervention Image to open and manipulate the image
+                        $resizedImage = Image::make($image->getRealPath())->resize(225, 225, function ($constraint) {
+                            //$constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                      
+                        $originalSize = $resizedImage->filesize();
+                            
+                                    // Determine compression quality based on original size
+                        if ($originalSize > 50000) { // If original size > 50kb
+                            $quality = 50;
+                        } 
+                        elseif ($originalSize > 30000) { // If original size > 30kb
+                            $quality = 60;
+                        } 
+                        else
+                        { // If original size <= 30kb
+                            $quality = 100;
+                        }
+                            
+                      
+                                    // Convert the image to JPG format
+                        $resizedImage->encode('jpg',$quality);
+                        $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
+                        
+
+                    //////////////////////////////////////////////////
 
 
 
@@ -917,7 +974,7 @@ class AdminController extends Controller
                     // ];
 
                     Mst_CustomerAppBanner::insert( [
-                            'image'      => $filename,
+                            'image'      => $filename. '.jpg',
                             'town_id'      => $request->town_id,
                             'status' => $request->status,
                             'default_status' => 0

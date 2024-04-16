@@ -325,7 +325,7 @@
                          @endif
                         <div class="form-group">
                            <label class="form-label"> Store image</label>
-                           <input type="file"  class="form-control imgValidation" accept="image/x-png,image/jpg,image/jpeg" name="profile_image"  placeholder="Image">
+                           <input type="file"  class="form-control" accept="image/x-png,image/jpg,image/jpeg" name="profile_image"  placeholder="Image">
                         </div>
                      </div>
                      
@@ -468,7 +468,7 @@
                         <div class="form-group">
                            <div id="teamArea">
                            <label class="form-label">Images </label>
-                           <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]"  placeholder="Images">
+                           <input type="file" class="form-control" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]"  placeholder="Images">
                         </div>
                      </div>
                     </div>
@@ -495,7 +495,7 @@
                         <div class="form-group">
                            <div id="teamAreaInterior">
                            <label class="form-label">Images </label>
-                           <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]"  placeholder="Images">
+                           <input type="file" class="form-control" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]"  placeholder="Images">
                         </div>
                      </div>
                     </div>
@@ -1237,7 +1237,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div> <br>  <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div> <br>  <input type="file" class="form-control" accept="image/x-png,image/jpg,image/jpeg" multiple="" name="store_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
 
   });
   $(add_button_interior).click(function(e){ //on add input button click
@@ -1246,7 +1246,7 @@ $(document).ready(function() {
       x_i++; //text box increment
       if(x_i+parseInt(totStoreImg)<=6)
       {
-        $(wrapper_interior).append('<div> <br>  <input type="file" class="form-control imgValidationBanner" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+        $(wrapper_interior).append('<div> <br>  <input type="file" class="form-control" accept="image/x-png,image/jpg,image/jpeg"  name="store_interior_image[]" placeholder="Images"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
       }
       else
       {
@@ -1281,7 +1281,7 @@ $(document).ready(function() {
     //max input box allowed
       x++; //text box increment
       //$(wrapper).append('<div> <br>  <input type="file" class="form-control" name="store_document_other_file[]" value="{{old('store_document_other_file')}}" placeholder="Store Document Other File"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
-$(wrapper).append('<div class="border border-primary mb=2"> <div class="col-md-10"><div class="form-group"><label class="form-label"> Document Title </label><input type="text" class="form-control"name="store_document_other_file_head[]" placeholder="Store Document File Title"></div></div><div class="col-md-10"><div class="form-group"><label class="form-label"> Other File [in pdf,doc,docx or txt] </label><input type="file" class="form-control imgValidation" accept=".pdf,.docx,.txt,.doc" name="store_document_other_file[]"  placeholder="Store Document Other File"></div></div><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div><br>'); //add input box
+$(wrapper).append('<div class="border border-primary mb=2"> <div class="col-md-10"><div class="form-group"><label class="form-label"> Document Title </label><input type="text" class="form-control"name="store_document_other_file_head[]" placeholder="Store Document File Title"></div></div><div class="col-md-10"><div class="form-group"><label class="form-label"> Other File [in pdf,doc,docx or txt] </label><input type="file" class="form-control" accept=".pdf,.docx,.txt,.doc" name="store_document_other_file[]"  placeholder="Store Document Other File"></div></div><a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div><br>'); //add input box
 
   });
 

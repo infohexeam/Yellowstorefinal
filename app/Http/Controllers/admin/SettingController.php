@@ -130,7 +130,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'category_name'       => 'required|unique:mst_store_categories',
-					'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
+					'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:2048',
 				//	'category_description' => 'required',
 				//	'business_type_id'		=> 'required',
 
@@ -142,7 +142,7 @@ class SettingController extends Controller
 				'category_icon.dimensions'        => 'Category icon dimensions is invalid',
 				'category_description.required'	 => 'Category description required',
 				'business_type_id.required'	 => 'Business type required',
-				'category_icon.max'=>'Maximum file size must not exceeeds 1MB'
+				'category_icon.max'=>'Maximum file size must not exceeeds 2MB'
 
 
 
@@ -172,20 +172,30 @@ class SettingController extends Controller
 			if ($request->hasFile('category_icon')) {
 
 				$photo = $request->file('category_icon');
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/category/icons';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-
-
-				// 			$category_icon = $request->file('category_icon');
-
-				// 			$filename = time().'.'.$category_icon->getClientOriginalExtension();
-
-				// 			$location = public_path('assets/uploads/category/icons/'.$filename);
-
-				// 			Image::make($category_icon)->save($location);
-				$category->category_icon = $filename;
+				$filename = rand(1, 5000) . time();
+				
+				// Use Intervention Image to open and manipulate the image
+				$resizedImage = Image::make($photo->getRealPath())->resize(150,150, function ($constraint) {
+				  //$constraint->aspectRatio();
+				  $constraint->upsize();
+			  });
+  
+				$originalSize = $resizedImage->filesize();
+		
+				// Determine compression quality based on original size
+				if ($originalSize > 50000) { // If original size > 50kb
+					$quality = 50;
+				} elseif ($originalSize > 30000) { // If original size > 30kb
+					$quality = 60;
+				} else { // If original size <= 30kb
+					$quality = 100;
+				}
+		
+  
+				// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save('assets/uploads/category/icons/' . $filename . '.jpg'); // Adjust quality as needed
+				$category->category_icon = $filename . '.jpg';
 			}
 
 			$category->category_status 		= 1;
@@ -233,7 +243,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'category_name'       => 'required|unique:mst_store_categories,category_name,' . $category_id . ',category_id',
-				'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
+				'category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:2048',
 				//		'category_description' => 'required',
 				//'business_type_id'		=> 'required',
 
@@ -245,7 +255,7 @@ class SettingController extends Controller
 				'category_icon.required'        => 'Category icon required',
 				'category_description.required'	 => 'Category description required',
 				'business_type_id.required'	 => 'Business type required',
-				'category_icon.max'=>'Maximum file size must not exceeeds 1MB'
+				'category_icon.max'=>'Maximum file size must not exceeeds 2MB'
 
 			]
 		);
@@ -277,18 +287,7 @@ class SettingController extends Controller
 
 
 				$category_icon = $request->file('category_icon');
-				/*	$old_category_icon = 'assets/uploads/category/icons/' . $category->category_icon;
-			if (is_file($old_category_icon)) {
-                  unlink($old_category_icon);
-
-                    }
-
-			$filename = time().'.'.$category_icon->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/category/icons/'.$filename);
-
-			Image::make($category_icon)->save($location);
-			$category->category_icon = $filename;*/
+			
 
 
 				$photo = $request->file('category_icon');
@@ -296,16 +295,41 @@ class SettingController extends Controller
 				if (is_file($old_category_icon)) {
 					unlink($old_category_icon);
 				}
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/category/icons';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$category->category_icon = $filename;
+				$filename = rand(1, 5000) . time();
+				
+				// Use Intervention Image to open and manipulate the image
+				$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+				  //$constraint->aspectRatio();
+				  $constraint->upsize();
+			  });
+  
+				$originalSize = $resizedImage->filesize();
+		
+				// Determine compression quality based on original size
+				if ($originalSize > 50000) { // If original size > 50kb
+					$quality = 50;
+				} 
+				elseif ($originalSize > 30000) { // If original size > 30kb
+					$quality = 60;
+				} 
+				else
+			    { // If original size <= 30kb
+					$quality = 100;
+				}
+		
+  
+				// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save('assets/uploads/category/icons/' . $filename . '.jpg'); // Adjust quality as needed
+				$category->category_icon = $filename . '.jpg';
 			}
 
-			if ($request->parent_id == '') {
+			if ($request->parent_id == '')
+		    {
 				$category->parent_id	= 0;
-			} else {
+			} 
+			else
+			{
 				$category->parent_id = $request->parent_id;
 			}
 
@@ -403,7 +427,7 @@ class SettingController extends Controller
 			[
 				'business_type_name'       => 'required|unique:mst_store_business_types',
 				//'business_type_icon'        => 'required',
-					'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:1024',
+					'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:2048',
 
 
 
@@ -412,7 +436,7 @@ class SettingController extends Controller
 				'business_type_name.required'         => 'Business type name required',
 				'business_type_icon.required'        => 'Business type icon required',
 				'business_type_icon.dimensions'        => 'Business type icon size invalid',
-				'business_type_icon.max'        => 'Maximum file size must not exceeeds 1MB',
+				'business_type_icon.max'        => 'Maximum file size must not exceeeds 2MB',
 
 			]
 		);
@@ -434,29 +458,42 @@ class SettingController extends Controller
 			$business_type->business_type_name_slug  	= Str::of($request->business_type_name)->slug('-');
 
 			if ($request->hasFile('business_type_icon')) {
-				/*	$business_type_icon = $request->file('business_type_icon');
 
-			$filename = time().'.'.$business_type_icon->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/business_type/icons/'.$filename);
-
-			Image::make($business_type_icon)->save($location);*/
 				$photo = $request->file('business_type_icon');
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/business_type/icons';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$business_type->business_type_icon = $filename;
+				$filename = rand(1, 5000) . time();
+				
+				// Use Intervention Image to open and manipulate the image
+				$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+				  //$constraint->aspectRatio();
+				  $constraint->upsize();
+			  });
+  
+				$originalSize = $resizedImage->filesize();
+		
+				// Determine compression quality based on original size
+				if ($originalSize > 50000) { // If original size > 50kb
+					$quality = 50;
+				} elseif ($originalSize > 30000) { // If original size > 30kb
+					$quality = 60;
+				} else { // If original size <= 30kb
+					$quality = 100;
+				}
+		
+  
+				// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save('assets/uploads/business_type/icons/' . $filename . '.jpg'); // Adjust quality as needed
+				$business_type->business_type_icon = $filename . '.jpg';
 			}
 
-			$business_type->business_type_status 		= 1;
+				$business_type->business_type_status 		= 1;
 
-			$business_type->is_product_listed=   $product_listed;
+				$business_type->is_product_listed=   $product_listed;
 
 
-			$business_type->save();
+				$business_type->save();
 
-			return redirect('admin/business_type/list')->with('status', 'Business type added successfully.');
+				return redirect('admin/business_type/list')->with('status', 'Business type added successfully.');
 		} else {
 
 			return redirect()->back()->withErrors($validator)->withInput();
@@ -486,7 +523,7 @@ class SettingController extends Controller
 			$request->all(),
 			[
 				'business_type_name'       => 'required|unique:mst_store_business_types,business_type_name,' . $business_type_id . ',business_type_id',
-				'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:1024',
+				'business_type_icon'        => 'image|mimes:jpeg,png,jpg|dimensions:min_width=150,min_height=150|max:2048',
 
 
 
@@ -495,7 +532,7 @@ class SettingController extends Controller
 				'business_type_name.required'         => 'Business type name required',
 				'business_type_icon.required'        => 'Business type icon required',
 				'business_type_icon.dimensions'        => 'Business type icon size invalid',
-				'business_type_icon.max'        => 'Maximum file size must not exceeeds 1MB',
+				'business_type_icon.max'        => 'Maximum file size must not exceeeds 2MB',
 
 
 			]
@@ -518,25 +555,34 @@ class SettingController extends Controller
 			$business_type->business_type_name_slug  	= Str::of($request->business_type_name)->slug('-');
 
 			if ($request->hasFile('business_type_icon')) {
-				/*	$business_type_icon = $request->file('business_type_icon');
-
-			$filename = time().'.'.$business_type_icon->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/business_type/icons/'.$filename);
-
-			Image::make($business_type_icon)->save($location);
-			$business_type->business_type_icon = $filename;*/
-
+				$filename = rand(1, 5000) . time();
 				$photo = $request->file('business_type_icon');
 				$old_business_type_icon = 'assets/uploads/business_type/icons/' . $business_type->business_type_icon;
 				if (is_file($old_business_type_icon)) {
 					unlink($old_business_type_icon);
 				}
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/business_type/icons';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$business_type->business_type_icon = $filename;
+				// Use Intervention Image to open and manipulate the image
+				$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+					//$constraint->aspectRatio();
+					$constraint->upsize();
+				});
+	
+				  $originalSize = $resizedImage->filesize();
+		  
+				  // Determine compression quality based on original size
+				  if ($originalSize > 50000) { // If original size > 50kb
+					  $quality = 50;
+				  } elseif ($originalSize > 30000) { // If original size > 30kb
+					  $quality = 60;
+				  } else { // If original size <= 30kb
+					  $quality = 100;
+				  }
+		  
+	
+				  // Convert the image to JPG format
+				  $resizedImage->encode('jpg',$quality);
+				  $resizedImage->save('assets/uploads/business_type/icons/' . $filename . '.jpg'); // Adjust quality as needed
+				  $business_type->business_type_icon = $filename . '.jpg';
 			}
 
 			$business_type->business_type_status 		= 1;
@@ -850,10 +896,11 @@ class SettingController extends Controller
 				$request->all(),
 				[
 					//'store_image.*' => 'required|dimensions:min_width=1000,min_height=800',
-					'store_image.*' => 'required',
+					'store_image.*' => 'required|dimensions:min_width=1000,min_height=800|max:2048',
 				],
 				[
 					'store_image.*.dimensions' => 'store image dimensions invalid',
+					'store_image.*.max' => 'store image should not exceed 2 MB',
 				]
 			);
 			if ($img_validate->fails()) {
@@ -893,12 +940,17 @@ class SettingController extends Controller
 			$store->product_supply_type=$request->product_distribution_type;
 			if ($store_added_by == 0) {
 				$store->store_account_status         = 1;
-			} else {
+			} 
+			else 
+			{
 				$store->store_account_status         = 1;
 			}
-			if (auth()->user()->user_role_id == 0) {
+			if (auth()->user()->user_role_id == 0) 
+			{
 				$store->subadmin_id          = $request->subadmin_id??2;
-			} else {
+			} 
+			else 
+			{
 				$store->subadmin_id          = auth()->user()->id;
 			}
 
@@ -1017,18 +1069,40 @@ class SettingController extends Controller
 				$store_image = $request->file('store_image');
 				// dd($product_image);
 				foreach ($store_image as $image) {
-					$filename = time() . '.' . $image->getClientOriginalExtension();
-					// dd($filename);
-					$destination_path = 'assets/uploads/store_images/images';
 
-					$store_img = Image::make($image->getRealPath());
-					$store_img->save($destination_path . '/' . $filename, 80);
+					$destination_path = 'assets/uploads/store_images/images/';
 
-
+                    $filename = rand(1, 5000) . time();
+                    
+                                    // Use Intervention Image to open and manipulate the image
+                    $resizedImage = Image::make($image->getRealPath())->resize(1000, 800, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                      
+                    $originalSize = $resizedImage->filesize();
+                            
+                                    // Determine compression quality based on original size
+                    if ($originalSize > 50000)
+				    { // If original size > 50kb
+                            $quality = 50;
+                        } 
+                    elseif ($originalSize > 30000) { // If original size > 30kb
+                            $quality = 60;
+                        } 
+                    else
+                        { // If original size <= 30kb
+                            $quality = 100;
+                        }
+                            
+                      
+                                    // Convert the image to JPG format
+                        $resizedImage->encode('jpg',$quality);
+                        $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
 
 					$data2 = [
 						[
-							'store_image'      => $filename,
+							'store_image'      => $filename . '.jpg',
 							'store_id' 			=> $last_id,
 							'created_at'         => $date,
 							'updated_at'         => $date,
@@ -1169,9 +1243,10 @@ class SettingController extends Controller
 			$img_validate = Validator::make(
 				$request->all(),
 				[
-					'store_image.*' => 'required|dimensions:min_width=1000,min_height=800',
+					'store_image.*' => 'required|dimensions:min_width=1000,min_height=800|max:2048',
 				],
 				[
+					'store_image.*.max' => 'store image should not exceed 2 MB',
 					'store_image.*.dimensions' => 'store image dimensions invalid',
 				]
 			);
@@ -1343,18 +1418,41 @@ class SettingController extends Controller
 				$store_image = $request->file('store_image');
 				// dd($product_image);
 				foreach ($store_image as $image) {
-					$filename = time() . '.' . $image->getClientOriginalExtension();
-					// dd($filename);
-					$destination_path = 'assets/uploads/store_images/images';
+					$destination_path = 'assets/uploads/store_images/images/';
 
-					$store_img = Image::make($image->getRealPath());
-					$store_img->save($destination_path . '/' . $filename, 80);
+                    $filename = rand(1, 5000) . time();
+                    
+                                    // Use Intervention Image to open and manipulate the image
+                    $resizedImage = Image::make($image->getRealPath())->resize(1000,800, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                      
+                    $originalSize = $resizedImage->filesize();
+                            
+                                    // Determine compression quality based on original size
+                    if ($originalSize > 50000)
+				    { // If original size > 50kb
+                            $quality = 50;
+                        } 
+                    elseif ($originalSize > 30000) { // If original size > 30kb
+                            $quality = 60;
+                        } 
+                    else
+                        { // If original size <= 30kb
+                            $quality = 100;
+                        }
+                            
+                      
+                                    // Convert the image to JPG format
+                        $resizedImage->encode('jpg',$quality);
+                        $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
 
 
 
 					$data2 = [
 						[
-							'store_image'      => $filename,
+							'store_image'      => $filename . '.jpg',
 							'store_id' 			=> $store_Id,
 							'created_at'         => $date,
 							'updated_at'         => $date,
@@ -1788,23 +1886,34 @@ class SettingController extends Controller
 
 
 			if ($request->hasFile('agency_logo')) {
-				/*	$agency_logo = $request->file('agency_logo');
+		
 
 
-			$filename = time().'.'.$agency_logo->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/agency/logos/'.$filename);
-
-			Image::make($agency_logo)->save($location);
-			$agency->agency_logo = $filename;
-*/
-
-				// $photo = $request->file('agency_logo');
-				// $filename = time() . '.' . $photo->getClientOriginalExtension();
-				// $destinationPath = 'assets/uploads/agency/logos';
-				// $thumb_img = Image::make($photo->getRealPath());
-				// $thumb_img->save($destinationPath . '/' .$filename, 80);
-				// $agency->agency_logo = $filename;
+			    $photo = $request->file('agency_logo');
+				$filename = rand(1, 5000) . time();
+				
+				// Use Intervention Image to open and manipulate the image
+				$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+				  //$constraint->aspectRatio();
+				  $constraint->upsize();
+			  });
+  
+				$originalSize = $resizedImage->filesize();
+		
+				// Determine compression quality based on original size
+				if ($originalSize > 50000) { // If original size > 50kb
+					$quality = 50;
+				} elseif ($originalSize > 30000) { // If original size > 30kb
+					$quality = 60;
+				} else { // If original size <= 30kb
+					$quality = 100;
+				}
+		
+  
+				// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save('assets/uploads/agency/logos/' . $filename . '.jpg'); // Adjust quality as needed
+				$agency->agency_logo = $filename . '.jpg';
 			}
 
 			$agency->save();
@@ -1956,26 +2065,37 @@ class SettingController extends Controller
 
 
 			if ($request->hasFile('agency_logo')) {
-				/*$agency_logo = $request->file('agency_logo');
-
-
-			$filename = time().'.'.$agency_logo->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/agency/logos/'.$filename);
-
-			Image::make($agency_logo)->save($location);
-			$agency->agency_logo = $filename;*/
-
+		
 				$photo = $request->file('agency_logo');
 				$old_agency_logo = 'assets/uploads/agency/logos/' . $agency->agency_logo;
 				if (is_file($old_agency_logo)) {
 					unlink($old_agency_logo);
 				}
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/agency/logos';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$agency->agency_logo = $filename;
+				$filename = rand(1, 5000) . time();
+				
+				// Use Intervention Image to open and manipulate the image
+				$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+				  //$constraint->aspectRatio();
+				  $constraint->upsize();
+			  });
+  
+				$originalSize = $resizedImage->filesize();
+		
+				// Determine compression quality based on original size
+				if ($originalSize > 50000) { // If original size > 50kb
+					$quality = 50;
+				} elseif ($originalSize > 30000) { // If original size > 30kb
+					$quality = 60;
+				} else { // If original size <= 30kb
+					$quality = 100;
+				}
+		
+  
+				// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save('assets/uploads/agency/logos/' . $filename . '.jpg'); // Adjust quality as needed
+				$agency->agency_logo = $filename . '.jpg';
+				
 			}
 
 			$agency->update();
@@ -3332,6 +3452,7 @@ class SettingController extends Controller
 				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys,delivery_boy_username,' . $delivery_boy_id . ',delivery_boy_id',
 				'password'  => 'sometimes|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
+				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:2048'
 	
 
 			],          
@@ -3349,8 +3470,8 @@ class SettingController extends Controller
 				'district_id.required'        		   => 'District  required',
 				'delivery_boy_username.required'       => 'Username required',
 				'password.required'	   => 'Password required',
-				'password.regex'=>'Password must include at least one upper case letter, lower case letter, number, and special character'
-				
+				'password.regex'=>'Password must include at least one upper case letter, lower case letter, number, and special character',
+				'delivery_boy_image'=> 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:2048'
 
 
 			]
@@ -3387,26 +3508,41 @@ class SettingController extends Controller
 
 
 			if ($request->hasFile('delivery_boy_image')) {
-				/*	$delivery_boy_image = $request->file('delivery_boy_image');
-
-
-			$filename = time().'.'.$delivery_boy_image->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/delivery_boy/images/'.$filename);
-
-			Image::make($delivery_boy_image)->save($location);
-			$delivery_boy->delivery_boy_image = $filename;*/
-
 				$photo = $request->file('delivery_boy_image');
-				$old_delivery_boy_image = 'assets/uploads/company/logos/' . $delivery_boy->delivery_boy_image;
+				$old_delivery_boy_image = 'assets/uploads/delivery_boy/images/' . $delivery_boy->delivery_boy_image;
 				if (is_file($old_delivery_boy_image)) {
 					unlink($old_delivery_boy_image);
 				}
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/delivery_boy/images';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$delivery_boy->delivery_boy_image = $filename;
+				;
+				$destinationPath = 'assets/uploads/delivery_boy/images/';
+	
+				$filename = rand(1, 5000) . time();
+				
+								// Use Intervention Image to open and manipulate the image
+					$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+					$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save($destinationPath . $filename . '.jpg'); // Adjust quality as needed
+				$delivery_boy->delivery_boy_image = $filename . '.jpg';
 			}
 
 			$delivery_boy->update();
@@ -3441,7 +3577,7 @@ class SettingController extends Controller
 				'delivery_boy_commision_amount'            => 'required|gte:0',
 				'delivery_boy_username' => 'required|unique:mst_delivery_boys',
 				'delivery_boy_password'  => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
-				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:1024'
+				'delivery_boy_image'		 => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:2048'
 
 
 			],
@@ -3460,6 +3596,7 @@ class SettingController extends Controller
 				'delivery_boy_username.required'       => 'Username required',
 				'delivery_boy_password.required'	   => 'Password required',
 				//'delivery_boy_image.required'		   =>'Image Required',
+				'delivery_boy_image.max'		   =>'Maximum image upload size is 2MB',
 				'delivery_boy_image.dimensions'		   => 'Image dimensions invalid',
 				'delivery_boy_commision.required'	   => 'Delivery boy commision percentage required',
 				'delivery_boy_commision_amount.required'	=> 'Delivery boy commision percentage required',
@@ -3504,23 +3641,38 @@ class SettingController extends Controller
 
 
 			if ($request->hasFile('delivery_boy_image')) {
-				/*	$delivery_boy_image = $request->file('delivery_boy_image');
-
-
-			$filename = time().'.'.$delivery_boy_image->getClientOriginalExtension();
-
-			$location = public_path('assets/uploads/delivery_boy/images/'.$filename);
-
-			Image::make($delivery_boy_image)->save($location);
-			$delivery_boy->delivery_boy_image = $filename;*/
 
 				$photo = $request->file('delivery_boy_image');
+				
+				$destination_path = 'assets/uploads/delivery_boy/images/';
 
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
-				$destinationPath = 'assets/uploads/delivery_boy/images';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$delivery_boy->delivery_boy_image = $filename;
+				$filename = rand(1, 5000) . time();
+				
+								// Use Intervention Image to open and manipulate the image
+					$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+					$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+					$resizedImage->encode('jpg',$quality);
+					$resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
+				$delivery_boy->delivery_boy_image = $filename. '.jpg';
 			}
 
 			$delivery_boy->save();

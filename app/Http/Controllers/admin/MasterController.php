@@ -461,7 +461,7 @@ class MasterController extends Controller
 		[
 		    'category_id'       => 'required',
 		    'sub_category_name'       => 'required|unique:mst__sub_categories',
-			'sub_category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
+			'sub_category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:2048',
 			'sub_category_description' => 'required',
 			'business_type_id'		=> 'required',
 
@@ -474,7 +474,7 @@ class MasterController extends Controller
 			'sub_category_icon.dimensions'        => 'Sub category icon dimensions is invalid',
 			'sub_category_description.required'	 => 'Sub category description required',
 			'business_type_id.required'	 => 'Business type required',
-            'sub_category_icon.max'=>'Maximum file size must not exceeeds 1MB'
+            'sub_category_icon.max'=>'Maximum file size must not exceeeds 2MB'
 
 		]);
 
@@ -493,13 +493,33 @@ class MasterController extends Controller
                 {
 
                     $photo = $request->file('sub_category_icon');
-                                $filename = time() . '.' . $photo->getClientOriginalExtension();
-                                $destinationPath = 'assets/uploads/category/icons';
-                                $thumb_img = Image::make($photo->getRealPath());
-                                $thumb_img->save($destinationPath . '/' .$filename, 80);
-
-         $sub_category->sub_category_icon = $filename;
-
+                    $filename = rand(1, 5000) . time();
+				
+                                // Use Intervention Image to open and manipulate the image
+                    $resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+                        //$constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                  
+                    $originalSize = $resizedImage->filesize();
+                        
+                                // Determine compression quality based on original size
+                    if ($originalSize > 50000) { // If original size > 50kb
+                        $quality = 50;
+                    } 
+                    elseif ($originalSize > 30000) { // If original size > 30kb
+                        $quality = 60;
+                    } 
+                    else
+                    { // If original size <= 30kb
+                        $quality = 100;
+                    }
+                        
+                  
+                                // Convert the image to JPG format
+                    $resizedImage->encode('jpg',$quality);
+                    $resizedImage->save('assets/uploads/category/icons/' . $filename . '.jpg'); // Adjust quality as needed
+                    $sub_category->sub_category_icon = $filename. '.jpg';
                 }
 
                 $sub_category->sub_category_status 		= 1;
@@ -532,7 +552,7 @@ class MasterController extends Controller
 		[
 		    'category_id'       => 'required',
 		    'sub_category_name'       => 'required',
-			'sub_category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:1024',
+			'sub_category_icon'        => 'dimensions:min_width=150,min_height=150|image|mimes:jpeg,png,jpg|max:2048',
 			'sub_category_description' => 'required',
 			'business_type_id'		=> 'required',
 
@@ -544,7 +564,7 @@ class MasterController extends Controller
 			'sub_category_icon.dimensions'        => 'Sub category icon dimensions is invalid',
 			'sub_category_description.required'	 => 'Sub category description required',
 			'business_type_id.required'	 => 'Business type required',
-            'sub_category_icon.max'=>'Maximum file size must not exceeeds 1MB'
+            'sub_category_icon.max'=>'Maximum file size must not exceeeds 2MB'
 
 		]);
         if(!$validator->fails())
@@ -560,12 +580,33 @@ class MasterController extends Controller
             {
 
                 $photo = $request->file('sub_category_icon');
-                            $filename = time() . '.' . $photo->getClientOriginalExtension();
-                            $destinationPath = 'assets/uploads/category/icons';
-                            $thumb_img = Image::make($photo->getRealPath());
-                            $thumb_img->save($destinationPath . '/' .$filename, 80);
-
-                    $data['sub_category_icon'] = $filename;
+                $filename = rand(1, 5000) . time();
+				
+                                // Use Intervention Image to open and manipulate the image
+                    $resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+                        //$constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                  
+                    $originalSize = $resizedImage->filesize();
+                        
+                                // Determine compression quality based on original size
+                    if ($originalSize > 50000) { // If original size > 50kb
+                        $quality = 50;
+                    } 
+                    elseif ($originalSize > 30000) { // If original size > 30kb
+                        $quality = 60;
+                    } 
+                    else
+                    { // If original size <= 30kb
+                        $quality = 100;
+                    }
+                        
+                  
+                                // Convert the image to JPG format
+                    $resizedImage->encode('jpg',$quality);
+                    $resizedImage->save('assets/uploads/category/icons/' . $filename . '.jpg'); // Adjust quality as needed
+                    $data['sub_category_icon'] = $filename. '.jpg';
 
             }
 

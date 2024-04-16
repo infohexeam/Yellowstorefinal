@@ -76,7 +76,7 @@
                          
                          <div id="agency">
                            <label class="form-label">Youtube Thumbnail * </label>
-                           <input type="file" name="youtube_thumbnail[]" class="form-control imgValidation" required accept="image/png, image/jpeg, image/jpg">
+                           <input type="file" name="youtube_thumbnail[]" class="form-control" required accept="image/png, image/jpeg, image/jpg">
                          
                         </div>
                      </div>
@@ -126,7 +126,7 @@ $(document).ready(function() {
     e.preventDefault();
     //max input box allowed
       x++; //text box increment
-      $(wrapper).append('<div class="row col-md-12" > <br> <label class="form-label">Youtube Links * </label><input type="text" required name="youtube_link[]" class="form-control"><label class="form-label">Youtube Thumbnail * </label><input type="file" required name="youtube_thumbnail[]" class="form-control imgValidation"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
+      $(wrapper).append('<div class="row col-md-12" > <br> <label class="form-label">Youtube Links * </label><input type="text" required name="youtube_link[]" class="form-control"><label class="form-label">Youtube Thumbnail * </label><input type="file" required name="youtube_thumbnail[]" class="form-control"> <a href="#" class="remove_field btn btn-info btn btn-sm">Remove</a></div>'); //add input box
     
   });
 
