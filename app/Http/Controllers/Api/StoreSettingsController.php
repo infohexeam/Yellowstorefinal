@@ -750,8 +750,8 @@ class StoreSettingsController extends Controller
                         'store_pincode'          => 'required',
                         'store_primary_address'          => 'required',
                         'profile_description'          => 'required',
-                        'store_images.*.store_image'          => 'required',
-                        'store_images.*.default_image'          => 'required',
+                        'store_images.*.store_image'          => 'required|max:2048',
+                        'store_images.*.default_image'          => 'required|max:2048',
 
                     ],
                     [
@@ -816,10 +816,39 @@ class StoreSettingsController extends Controller
                         $filePro->move('assets/uploads/store_images/images', $filenamePro);
                     }*/
                     if ($request->hasFile('profile_image')) {
-                        $filePro = $request->file('profile_image');
-                        $extensionPro = $filePro->getClientOriginalExtension();
-                        $filenamePro = uniqid('store_profile_image_') . '.' . $extensionPro;
-                        $filePro->move('assets/uploads/store_images/images', $filenamePro);
+                        
+                            $filePro = $request->file('profile_image');
+                            $destination_path='assets/uploads/store_images/images/';
+                            $filenamePro = uniqid('store_profile_image_');
+                                        
+                            // Use Intervention Image to open and manipulate the image
+                            $resizedImage = Image::make($filePro->getRealPath())->resize(300, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                            });
+
+                            $originalSize = $resizedImage->filesize();
+
+                                    // Determine compression quality based on original size
+                            if ($originalSize > 50000)
+                            { // If original size > 50kb
+                            $quality = 50;
+                            } 
+                            elseif ($originalSize > 30000) { // If original size > 30kb
+                            $quality = 60;
+                            } 
+                            else
+                            { // If original size <= 30kb
+                            $quality = 100;
+                            }
+
+
+                                    // Convert the image to JPG format
+                            $resizedImage->encode('jpg',$quality);
+                            $resizedImage->save($destination_path . $filenamePro . '.jpg'); // Adjust quality as needed
+
+                    // dd($resizedImage);
+                    // dd($resizedImage->filesize());
                     }
                     $data2['profile_image'] = @$filenamePro;
 
@@ -844,12 +873,43 @@ class StoreSettingsController extends Controller
                             // Mst_store_images::where('store_id', $store_id)->delete();
                         
                             foreach ($files as $file) {
-                                $extension = $file->getClientOriginalExtension();
-                                $filename = uniqid('store_image_') . '.' . $extension;
-                                $file->move('assets/uploads/store_images/images/', $filename);
+    
+                                $filename = uniqid('store_image_');
+                                $destination_path = 'assets/uploads/store_images/images/';
+                                //$destination_path = public_path('/assets/uploads/store_images/images');
+                      
+                        
+                           
+                                                          // Use Intervention Image to open and manipulate the image
+                                $resizedImage = Image::make($file->getRealPath())->resize(1000, 800, function ($constraint) {
+                                                  $constraint->aspectRatio();
+                                                  $constraint->upsize();
+                                              });
+                                            
+                                $originalSize = $resizedImage->filesize();
+                                                  
+                                                          // Determine compression quality based on original size
+                                if ($originalSize > 50000)
+                                        { // If original size > 50kb
+                                  $quality = 50;
+                                } 
+                                elseif ($originalSize > 30000) 
+                                { // If original size > 30kb
+                                  $quality = 60;
+                                } 
+                                else
+                                { // If original size <= 30kb
+                                  $quality = 100;
+                                }
+                                                  
+                                            
+                                // Convert the image to JPG format
+                                $resizedImage->encode('jpg',$quality);
+                                $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
+                                //$file->move('assets/uploads/store_images/images/', $filename);
                                 $info = [
                                     'store_id' => $store_id,
-                                    'store_image' =>  $filename,
+                                    'store_image' => $filename . '.jpg',
                                     'default_image' =>  0,
                                 ];
                                 Mst_store_images::insert($info);
@@ -861,10 +921,41 @@ class StoreSettingsController extends Controller
                             foreach ($files_int as $file) {
                                 $extension = $file->getClientOriginalExtension();
                                 $filename = uniqid('store_interior_image_') . '.' . $extension;
-                                $file->move('assets/uploads/store_images/images/', $filename);
+                                $$filename = uniqid('store_image_');
+                                $destination_path = 'assets/uploads/store_images/images/';
+                                //$destination_path = public_path('/assets/uploads/store_images/images');
+                      
+                        
+                           
+                                                          // Use Intervention Image to open and manipulate the image
+                                $resizedImage = Image::make($file->getRealPath())->resize(1000, 800, function ($constraint) {
+                                                  $constraint->aspectRatio();
+                                                  $constraint->upsize();
+                                              });
+                                            
+                                $originalSize = $resizedImage->filesize();
+                                                  
+                                                          // Determine compression quality based on original size
+                                if ($originalSize > 50000)
+                                        { // If original size > 50kb
+                                  $quality = 50;
+                                } 
+                                elseif ($originalSize > 30000) 
+                                { // If original size > 30kb
+                                  $quality = 60;
+                                } 
+                                else
+                                { // If original size <= 30kb
+                                  $quality = 100;
+                                }
+                                                  
+                                            
+                                // Convert the image to JPG format
+                                $resizedImage->encode('jpg',$quality);
+                                $resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
                                 $info = [
                                     'store_id' => $store_id,
-                                    'store_image' =>  $filename,
+                                    'store_image' =>  $filename . '.jpg',
                                     'default_image' =>  0,
                                 ];
                                 Mst_store_interior_images::insert($info);

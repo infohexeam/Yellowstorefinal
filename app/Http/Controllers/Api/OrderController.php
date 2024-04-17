@@ -1001,7 +1001,7 @@ class OrderController extends Controller
             'delivery_boy_commision_amount' => 'required|gte:0',
             'delivery_boy_username'        => 'required|unique:mst_delivery_boys',
             'delivery_boy_password'        => 'required|min:8|same:password_confirmation|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/u',
-            'delivery_boy_image'           => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:1024'
+            'delivery_boy_image'           => 'mimes:jpeg,png,jpg,gif,svg|dimensions:min_width=150,150|max:2048'
         ],
         [
             'delivery_boy_name.required'           => 'Delivery boy name required',
@@ -1022,7 +1022,7 @@ class OrderController extends Controller
             'delivery_boy_password.regex'          => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
             'delivery_boy_image.mimes'             => 'Invalid image format. Only JPEG, PNG, JPG, GIF, and SVG allowed',
             'delivery_boy_image.dimensions'        => 'Image dimensions are invalid. Minimum width and height should be 150 pixels.',
-            'delivery_boy_image.max'               => 'Maximum image size allowed is 1024 KB'
+            'delivery_boy_image.max'               => 'Maximum image size allowed is 2 MB'
         ]
     );
 
@@ -1052,12 +1052,40 @@ class OrderController extends Controller
         $delivery_boy->delivery_boy_status = 0;
 
         if ($request->hasFile('delivery_boy_image')) {
+          
+            
             $photo = $request->file('delivery_boy_image');
-            $filename = time() . '.' . $photo->getClientOriginalExtension();
-            $destinationPath = 'assets/uploads/delivery_boy/images';
-            $thumb_img = Image::make($photo->getRealPath());
-            $thumb_img->save($destinationPath . '/' . $filename, 80);
-            $delivery_boy->delivery_boy_image = $filename;
+            $destination_path = 'assets/uploads/delivery_boy/images/';
+			$filename = rand(1, 5000) . time();
+				
+								// Use Intervention Image to open and manipulate the image
+			$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+			$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+					$resizedImage->encode('jpg',$quality);
+					$resizedImage->save($destination_path . $filename . '.jpg'); // Adjust quality as needed
+				  $delivery_boy->delivery_boy_image = $filename. '.jpg';
+
+
+            
         }
 
         $delivery_boy->save();
@@ -1215,15 +1243,39 @@ public function updateDelivery_boy(Request $request)
             if ($request->hasFile('delivery_boy_image')) {
                 // Handle image upload...
                 $photo = $request->file('delivery_boy_image');
-                $old_delivery_boy_image = 'assets/uploads/company/logos/' . $delivery_boy->delivery_boy_image;
+                $old_delivery_boy_image = 'assets/uploads/delivery_boy/images/' . $delivery_boy->delivery_boy_image;
                 if (is_file($old_delivery_boy_image)) {
                     unlink($old_delivery_boy_image);
                 }
-                $filename = time() . '.' . $photo->getClientOriginalExtension();
-                $destinationPath = 'assets/uploads/delivery_boy/images';
-                $thumb_img = Image::make($photo->getRealPath());
-                $thumb_img->save($destinationPath . '/' . $filename, 80);
-                $delivery_boy->delivery_boy_image = $filename;
+                $destinationPath = 'assets/uploads/delivery_boy/images/';
+	
+				$filename = rand(1, 5000) . time();
+				
+					// Use Intervention Image to open and manipulate the image
+					$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+					$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save($destinationPath . $filename . '.jpg'); // Adjust quality as needed
+				$delivery_boy->delivery_boy_image = $filename . '.jpg';
             }
 
             // Save the updated delivery boy object

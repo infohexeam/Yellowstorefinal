@@ -4421,9 +4421,21 @@ $commission_order_numeric = is_numeric($sd->commission_order) ? (float) $sd->com
         $date = Carbon::now();
         $youtubeLink = $request->youtube_link;
         $thumbnailFile = $request->file('youtube_thumbnail');
+        $thumbnailFilename = rand(1, 5000) . time() . '.' . 'jpg'; // Use original extension
+        $destination_path = 'assets/uploads/video_images/';
 
-        $thumbnailFilename = rand(1, 5000) . time() . '.' . $thumbnailFile->getClientOriginalExtension();
-        $thumbnailFile->move('assets/uploads/video_images', $thumbnailFilename);
+        // Resize the image
+        $resizedImage = Image::make($thumbnailFile)->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        // Adjust quality based on original size
+        $originalSize = $resizedImage->filesize();
+        $quality = $originalSize > 50000 ? 50 : ($originalSize > 30000 ? 60 : 100);
+
+        // Encode and save the image
+        $resizedImage->encode('jpg', $quality)->save($destination_path . $thumbnailFilename);
 
         $videoData = [
             'youtube_link' => $youtubeLink,
