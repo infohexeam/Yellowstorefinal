@@ -1272,7 +1272,7 @@ public function updateDelivery_boy(Request $request)
 					}
 						
 				  
-								// Convert the image to JPG format
+				// Convert the image to JPG format
 				$resizedImage->encode('jpg',$quality);
 				$resizedImage->save($destinationPath . $filename . '.jpg'); // Adjust quality as needed
 				$delivery_boy->delivery_boy_image = $filename . '.jpg';
