@@ -1979,8 +1979,8 @@ class StoreController extends Controller
         //  'vendor_id'   => 'required',
         // 'color_id'   => 'required',
         //  'product_image.*' => 'dimensions:min_width=1000,min_height=800',
-        'product_image.*' => 'dimensions:min_width=1000,min_height=800|mimes:jpeg,jpg,png|max:10000',
-        'product_image.*' => 'mimes:jpeg,jpg,png|max:10000',
+        'product_image.*' => 'mimes:jpeg,jpg,png|max:2048',
+        //'product_image.*' => 'mimes:jpeg,jpg,png|max:10000',
       ],
       [
 
@@ -2004,6 +2004,7 @@ class StoreController extends Controller
         'color_id.required'        => 'Color required',
         'product_image.required'        => 'Product image required',
         'product_image.dimensions'        => 'Product image dimensions invalid',
+        'product_image.max'        => 'Maximum image size should not exceed 2 MB',
       ]
     );
 
@@ -2180,7 +2181,7 @@ class StoreController extends Controller
               'updated_at'         => $date,
             ],
           ];
-          $data9=['product_base_image'=>$filename];
+          $data9=['product_base_image'=>$filename.'.jpg'];
           @$baseVar->product_varient_base_image=$filename.'jpg';
           DB::table('mst_store_products')->where('product_id', $product_id)->update($data9);
           Mst_product_image::where('product_id', $product_id)->where('product_varient_id',@$baseVar->product_varient_id)->delete();
