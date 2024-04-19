@@ -468,6 +468,7 @@ class ProductController extends Controller
           $global_product->created_date = Carbon::now()->format('Y-m-d');
           // $global_product->created_by = auth()->user()->id; // since store id and admin id seems to be 1 to solve jira issue 476
           $global_product->created_by = 0;
+          $global_product->supply_type=$request->distribution_type;
 
           $global_product->save();
 
@@ -689,6 +690,7 @@ class ProductController extends Controller
           $data['product_cat_id'] = $request->product_cat_id;
           $data['sub_category_id'] = $request->sub_category_id;
           $data['vendor_id'] = $request->vendor_id;
+          $data['supply_type']=$request->distribution_type;
 
           Mst_GlobalProducts::where('global_product_id', $global_product_id)->update($data);
 

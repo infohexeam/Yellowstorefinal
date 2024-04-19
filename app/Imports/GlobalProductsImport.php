@@ -106,6 +106,7 @@ class GlobalProductsImport implements ToCollection, WithHeadingRow, SkipsOnError
                     'vendor_id' =>  @$vendor_data->agency_id ,
                     'product_base_image' => null,
                     'created_date' =>  Carbon::now()->format('Y-m-d'),
+                    'supply_type'=>$row['distribution_type'],
                     // 'created_by' => auth()->user()->id, // since store id and admin id seems to be 1 to solve jira issue 476
                     'created_by' => 0,
             ];

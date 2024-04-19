@@ -105,7 +105,8 @@
                   @foreach ($global_product as $value)
                                  <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{@$value->product_name}}</td>
+                                    <td>{{@$value->product_name}}<br>
+                                    <button class="btn btn-sm btn-info"><small>{{ucwords(@$value->supply_type)}}</small></button></td>
                                     <td>{{@$value->product_cat['category_name']}}</td>
                                     <td>{{@$value->sale_price}}</td>
                                     <td><img data-toggle="modal" data-target="#viewModal{{$value->global_product_id}}" src="{{asset('/assets/uploads/products/base_product/base_image/'.$value->product_base_image)}}"  width="50" >&nbsp;</td>

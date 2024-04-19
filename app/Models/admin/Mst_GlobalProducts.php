@@ -19,7 +19,7 @@ class Mst_GlobalProducts extends Model
     					'min_stock','product_code','business_type_id',
     					'color_id','product_brand','attr_group_id',
     					'attr_value_id','product_cat_id','vendor_id',
-    					'product_base_image','created_date','created_by','sub_category_id','isConvertedFromProducts'
+    					'product_base_image','created_date','created_by','sub_category_id','isConvertedFromProducts','supply_type'
     					  ];
 
 

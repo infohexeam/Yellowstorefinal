@@ -188,6 +188,16 @@
                      </div>
                      </div>
                  </div>
+                  <div class="col-md-12">
+                        <div class="form-group">
+                           <label class="form-label">Distribution Type *</label>
+                            <select name="distribution_type" required=""  class="form-control" id="distType" required >
+                                 <option value=""> Select  Distribution Type</option>
+                                 <option value="purchase" {{old('distribution_type') == 'purchase' ? 'selected':''}}>Purchase Products</option>
+                                 <option value="listing"  {{old('distribution_type') == 'listing' ? 'selected':''}}>Listing Products</option>
+                              </select>
+                        </div>
+                    </div>
 
 
 

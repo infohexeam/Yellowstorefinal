@@ -88,9 +88,9 @@ iframe{
                                  <tr>
                                     <td><strong>Brand:</strong> {{ $product->product_brand}}</td>
                                 </tr>
-                                {{-- <tr>
-                                     <td><strong>Commision Rate :</strong>{{ $product->product_commision_rate}}</td>
-                                </tr> --}}
+                                 <tr>
+                                     <td><strong>Distribution Type :</strong>{{ ucwords($product->supply_type)}}</td>
+                                </tr>
                                 
                                   <tr>
                                     <td><strong>Min. Stock:</strong> {{ $product->min_stock}}</td>
