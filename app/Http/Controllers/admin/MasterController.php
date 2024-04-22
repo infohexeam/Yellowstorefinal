@@ -623,7 +623,7 @@ class MasterController extends Controller
 
     public function removeSubCategory(Request $request,Mst_SubCategory $sub_category,$sub_category_id)
     {
-        return $sub_category_id;
+        return $sub_category->sub_category_id;
         $gp_count=Mst_GlobalProducts::where('sub_category_id',$sub_category->sub_category_id)->count();
         $sp_count=Mst_store_product::where('sub_category_id',$sub_category->sub_category_id)->count();
         if($gp_count>0||$sp_count>0)
