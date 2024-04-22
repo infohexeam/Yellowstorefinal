@@ -3173,7 +3173,7 @@ class ProductController extends Controller
                         @$data['prouctDetails']->tax_name = @$tax->tax_name;
                         @$data['prouctDetails']->tax_value = @$tax->tax_value;
                         @$data['prouctDetails']->vendor = @$vendor->agency_name;
-                        @$data['prouctDetails']->min_stock = 0;jhxjhx
+                        @$data['prouctDetails']->min_stock = 0;
 
                         if (@$data['prouctDetails']->product_type == 1) {
                             @$data['prouctDetails']->product_type_name = "Product";
