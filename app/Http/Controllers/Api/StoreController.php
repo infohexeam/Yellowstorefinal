@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Helpers\Helper;
 use DB;
+use Image;
 use Carbon\Carbon;
 use Crypt;
 use Str;
