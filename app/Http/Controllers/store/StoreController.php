@@ -6120,6 +6120,23 @@ class StoreController extends Controller
       $global_product = Mst_GlobalProducts::find($global_product_id);
       // dd($global_product);
       $store_id =  Auth::guard('store')->user()->store_id;
+      $store_distribution_type=Mst_store::where('store_id',$store_id)->first()->product_supply_type;
+      if($store_distribution_type==1)
+      {
+        if($global_product->supply_type=='listing')
+        {
+          return redirect()->back()->with('status-error', 'The store is set with a product distribution type of purchase only.Please try to add purchase product')->withInput();
+
+        }
+      }
+      if($store_distribution_type==2)
+      {
+        if($global_product->supply_type=='purchase')
+        {
+          return redirect()->back()->with('status-error', 'The store is set with a product distribution type of listing only.Please try to add listing product')->withInput();
+
+        }
+      }
       $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
     $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
     
@@ -6327,6 +6344,7 @@ class StoreController extends Controller
     try {
 
       $store_id =  Auth::guard('store')->user()->store_id;
+      $store_distribution_type=Mst_store::where('store_id',$store_id)->first()->product_supply_type;
       $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
       $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
       if(is_null($request->global_product_idz))
@@ -6340,11 +6358,31 @@ class StoreController extends Controller
         return redirect()->back()->with('status-error', 'Unable to add product.Product Upload Limit Exceeds')->withInput();
   
       }
+      $supply_excluded_products=[];
       foreach ($request->global_product_idz as $global_product_id) {
 
-
+ 
 
         $global_product = Mst_GlobalProducts::find($global_product_id);
+        if($store_distribution_type==1)
+      {
+        if($global_product->supply_type=='listing')
+        {
+          $supply_excluded_products[]=$global_product->product_name;
+          continue;
+
+        }
+      }
+      if($store_distribution_type==2)
+      {
+        if($global_product->supply_type=='purchase')
+        {
+          $supply_excluded_products[]=$global_product->product_name;
+          continue;
+
+
+        }
+      }
         // dd($global_product);
         
         
@@ -6535,7 +6573,11 @@ class StoreController extends Controller
       }
     }
 
+     if(count($supply_excluded_products)>0)
+     {
+      return redirect()->back()->with('status', 'Global products added to store successfully..Some products('.implode(",",$supply_excluded_products).')excluded since it has different product type of store');
 
+     }
 
       return redirect()->back()->with('status', 'Global products added to store successfully');
     } catch (\Exception $e) {
@@ -6549,13 +6591,8 @@ class StoreController extends Controller
   {
     $pageTitle = "Payments Settlements";
     $store_id  = Auth::guard('store')->user()->store_id;
-
-
-
     $a1 = Carbon::parse($request->date_from)->startOfDay();
     $a2  = Carbon::parse($request->date_to)->endOfDay();
-
-
     $paidAmount = Trn_store_payments_tracker::where('store_id', $store_id)->sum('commision_paid');
     $paid_details = Trn_store_payments_tracker::where('store_id', $store_id)->orderBy('store_payments_tracker_id', 'DESC')->limit(15)->get();
 
