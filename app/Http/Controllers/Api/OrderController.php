@@ -956,7 +956,7 @@ class OrderController extends Controller
                 $delivery_boy->town_name=DB::table('mst_towns')->where('town_id',$delivery_boy->town_id)->first()->town_name;
                 $delivery_boy->vechicle_type_name=DB::table('sys_vehicle_types')->where('vehicle_type_id',$delivery_boy->vehicle_type_id)->first()->vehicle_type_name;
                 $destinationPath = 'assets/uploads/delivery_boy/images';
-                $delivery_boy->delivery_boy_image_path=$destinationPath;
+                $delivery_boy->delivery_boy_image_path=$destinationPath.'/'.$delivery_boy->delivery_boy_image;
                 $data['details']  =$delivery_boy; 
                 $data['status']=1;
                 $data['message']="Details fetched";
