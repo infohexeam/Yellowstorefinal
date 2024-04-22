@@ -3255,6 +3255,8 @@ class ProductController extends Controller
                 $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
                 $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
                 $gp_cnt=count($request->global_product_id);
+                $store_distribution_type=Mst_store::where('store_id',$store_id)->first()->product_supply_type;
+               
                 if($product_count+$gp_cnt>$product_upload_limit)
                 {
                     $data['status'] = 0;
@@ -3269,6 +3271,28 @@ class ProductController extends Controller
 
                     $global_product = Mst_GlobalProducts::find($global_product_id);
                     $store_id =  $request->store_id;
+                    if($store_distribution_type==1)
+                    {
+                      if($global_product->supply_type=='listing')
+                      {
+                        
+                        $data['status'] = 0;
+                        $data['message'] = "The store is set with a product distribution type of purchase only.Please try to add purchase product";
+                        return response($data);    
+              
+                      }
+                    }
+                    if($store_distribution_type==2)
+                    {
+                      if($global_product->supply_type=='purchase')
+                      {
+                    
+                        $data['status'] = 0;
+                        $data['message'] = "The store is set with a product distribution type of listing only.Please try to add listing product";
+                        return response($data);    
+              
+                      }
+                    }
 
                     $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
         
