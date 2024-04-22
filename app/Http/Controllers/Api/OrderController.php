@@ -1051,10 +1051,10 @@ class OrderController extends Controller
         $delivery_boy->password  = Hash::make($request->delivery_boy_password);
         $delivery_boy->delivery_boy_status = 0;
 
-        if ($request->hasFile('delivery_boy_image')) {
+        if ($request->hasFile('profile_image')) {
           
             
-            $photo = $request->file('delivery_boy_image');
+            $photo = $request->file('profile_image');
             $destination_path = 'assets/uploads/delivery_boy/images/';
 			$filename = rand(1, 5000) . time();
 				
@@ -1240,9 +1240,9 @@ public function updateDelivery_boy(Request $request)
             }
 
             // Handle uploaded image (if any)
-            if ($request->hasFile('delivery_boy_image')) {
+            if ($request->hasFile('profile_image')) {
                 // Handle image upload...
-                $photo = $request->file('delivery_boy_image');
+                $photo = $request->file('profile_image');
                 $old_delivery_boy_image = 'assets/uploads/delivery_boy/images/' . $delivery_boy->delivery_boy_image;
                 if (is_file($old_delivery_boy_image)) {
                     unlink($old_delivery_boy_image);
