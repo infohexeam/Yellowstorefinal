@@ -150,6 +150,7 @@
                         <div class="form-group">
                            <label class="form-label"> Username</label>
                           <input type="text" readonly=""  required id="username" name="delivery_boy_username" class="form-control" placeholder="Username" value="{{old('delivery_boy_username',@$delivery_boy->delivery_boy_username)}}">
+                           <img src="{{asset('/assets/uploads/delivery_boy/images/'.@$delivery_boy->delivery_boy_image)}}"  width="100" style="height:60px" "width :50px">
                            <span id="error_username"></span>
                        </div>
                         </div>
