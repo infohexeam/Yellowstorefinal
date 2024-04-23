@@ -1130,7 +1130,6 @@ class SettingController extends Controller
 	{
 
 		$pageTitle = "Edit Store";
-
 		$store = Mst_store::where('store_name_slug', '=', $id)->first();
 		$store_id = $store->store_id;
 		$countries = Country::all();
@@ -3743,8 +3742,6 @@ class SettingController extends Controller
 
 				Mst_store_link_delivery_boy::insert($dataz);
 			}
-
-
 
 			return redirect('admin/delivery_boy/list')->with('status', 'Delivery boy added successfully.');
 		} else {
