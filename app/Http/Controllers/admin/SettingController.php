@@ -2386,7 +2386,7 @@ class SettingController extends Controller
 				$photo = $request->file('company_logo');
 
 				
-				$destinationPath = 'assets/uploads/company/logos';
+				$destinationPath = 'assets/uploads/company/logos/';
 			
 	
 				$filename = rand(1, 5000) . time();
@@ -2586,7 +2586,7 @@ class SettingController extends Controller
 				if (is_file($old_company_logo)) {
 					unlink($old_company_logo);
 				}
-				$destinationPath = 'assets/uploads/company/logos';
+				$destinationPath = 'assets/uploads/company/logos/';
 			
 	
 				$filename = rand(1, 5000) . time();
