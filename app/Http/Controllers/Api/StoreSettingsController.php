@@ -881,7 +881,7 @@ class StoreSettingsController extends Controller
                         
                            
                                                           // Use Intervention Image to open and manipulate the image
-                                $resizedImage = Image::make($file->getRealPath())->resize(1000, 800, function ($constraint) {
+                                $resizedImage = Image::make($file->getRealPath())->resize(300, null, function ($constraint) {
                                                   $constraint->aspectRatio();
                                                   $constraint->upsize();
                                               });
@@ -928,7 +928,7 @@ class StoreSettingsController extends Controller
                         
                            
                                                           // Use Intervention Image to open and manipulate the image
-                                $resizedImage = Image::make($file->getRealPath())->resize(1000, 800, function ($constraint) {
+                                $resizedImage = Image::make($file->getRealPath())->resize(300, null, function ($constraint) {
                                                   $constraint->aspectRatio();
                                                   $constraint->upsize();
                                               });

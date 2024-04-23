@@ -1423,7 +1423,7 @@ class SettingController extends Controller
                     $filename = rand(1, 5000) . time();
                     
                                     // Use Intervention Image to open and manipulate the image
-                    $resizedImage = Image::make($image->getRealPath())->resize(1000,800, function ($constraint) {
+                    $resizedImage = Image::make($image->getRealPath())->resize(300,null, function ($constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
                         });
@@ -2613,7 +2613,7 @@ class SettingController extends Controller
 					}
 						
 				  
-								// Convert the image to JPG format
+				// Convert the image to JPG format
 				$resizedImage->encode('jpg',$quality);
 				$resizedImage->save($destinationPath . $filename . '.jpg'); // Adjust quality as needed
 				$company->company_logo = $filename . '.jpg';
