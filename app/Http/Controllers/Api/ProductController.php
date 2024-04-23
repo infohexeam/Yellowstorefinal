@@ -1803,7 +1803,42 @@ class ProductController extends Controller
         $data = array();
         try {
             if (isset($request->product_varient_id) && Mst_store_product_varient::find($request->product_varient_id)) {
+                $pro_var=Mst_store_product_varient::find($request->product_varient_id);
+                $productData=Mst_store_product::where('product_id',$pro_var->product_id)->first();
+                $item_count=Trn_store_order_item::where('product_varient_id',$request->product_varient_id)->count();
+                if($item_count>0)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Variant cannot be removed as orders are exist with this product variant";
+                    return response($data);
+                }
+                
+                $cart=Trn_Cart::where('product_varient_id',$request->product_varient_id)->where('remove_status','=',0);
+                if ($cart->count() > 0) 
+                {
+                    //$cart->delete();
+                    $data['status'] = 0;
+                    $data['message'] = "Variant cannot be removed as this product variant is added to cart";
+                    return response($data);
+                }
+                $customer_enquiry=Trn_customer_enquiry::where('product_varient_id',$request->product_varient_id)->count();
+                if($customer_enquiry>0)
+                {
+                    $data['status'] = 0;
+                    $data['message'] = "Variant cannot be removed as this product variant is enquired by customer";
+                    return response($data);
+                }
+                if($productData->product_type==1)
+                    {
+                        $stock_count=Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('stock_count','>',0)->count();
+                        if($stock_count>0)
+                        {
+                            $data['status'] = 0;
+                            $data['message'] = "Variant cannot be removed as this variant has stock in inventory";
+                            return response($data);
 
+                        }
+                    }
                 $removeProduct = array();
                 $removeProduct['is_removed'] = 1;
                 $removeProduct['product_status'] = 0;

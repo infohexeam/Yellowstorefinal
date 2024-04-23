@@ -896,7 +896,7 @@ class SettingController extends Controller
 				$request->all(),
 				[
 					//'store_image.*' => 'required|dimensions:min_width=1000,min_height=800',
-					'store_image.*' => 'required|dimensions:min_width=1000,min_height=800|max:2048',
+					'store_image.*' => 'required|max:2048',
 				],
 				[
 					'store_image.*.dimensions' => 'store image dimensions invalid',
@@ -1242,11 +1242,11 @@ class SettingController extends Controller
 			$img_validate = Validator::make(
 				$request->all(),
 				[
-					'store_image.*' => 'required|dimensions:min_width=1000,min_height=800|max:2048',
+					'store_image.*' => 'required|max:2048',
 				],
 				[
 					'store_image.*.max' => 'store image should not exceed 2 MB',
-					'store_image.*.dimensions' => 'store image dimensions invalid',
+					
 				]
 			);
 			if ($img_validate->fails()) {
