@@ -2386,11 +2386,37 @@ class SettingController extends Controller
 
 				$photo = $request->file('company_logo');
 
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
+				
 				$destinationPath = 'assets/uploads/company/logos';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$company->company_logo = $filename;
+			
+	
+				$filename = rand(1, 5000) . time();
+				
+								// Use Intervention Image to open and manipulate the image
+					$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+					$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save($destinationPath . $filename . '.jpg'); // Adjust quality as needed
+				$company->company_logo = $filename . '.jpg';
 			}
 
 			$company->save();
@@ -2561,11 +2587,36 @@ class SettingController extends Controller
 				if (is_file($old_company_logo)) {
 					unlink($old_company_logo);
 				}
-				$filename = time() . '.' . $photo->getClientOriginalExtension();
 				$destinationPath = 'assets/uploads/company/logos';
-				$thumb_img = Image::make($photo->getRealPath());
-				$thumb_img->save($destinationPath . '/' . $filename, 80);
-				$company->company_logo = $filename;
+			
+	
+				$filename = rand(1, 5000) . time();
+				
+								// Use Intervention Image to open and manipulate the image
+					$resizedImage = Image::make($photo->getRealPath())->resize(150, 150, function ($constraint) {
+						//$constraint->aspectRatio();
+						$constraint->upsize();
+					});
+				  
+					$originalSize = $resizedImage->filesize();
+						
+								// Determine compression quality based on original size
+					if ($originalSize > 50000) { // If original size > 50kb
+						$quality = 50;
+					} 
+					elseif ($originalSize > 30000) { // If original size > 30kb
+						$quality = 60;
+					} 
+					else
+					{ // If original size <= 30kb
+						$quality = 100;
+					}
+						
+				  
+								// Convert the image to JPG format
+				$resizedImage->encode('jpg',$quality);
+				$resizedImage->save($destinationPath . $filename . '.jpg'); // Adjust quality as needed
+				$company->company_logo = $filename . '.jpg';
 			}
 
 			$company->update();
