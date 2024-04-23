@@ -53,7 +53,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                <label class="form-label">State </label>
-                                <select name="state_id" onchange="findCity(this.value)" class="form-control" id="state" >
+                                <select name="state_id" onchange="findCity(this.value)" class="form-control select2-show-search" id="state" >
                                      <option value=""> Select State</option>
                                     @foreach( @$state as $key)
                                     <option {{old('state_id') == $key->state_id ? 'selected':''}} value="{{$key->state_id}}"> {{$key->state_name }} </option>
@@ -65,7 +65,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                <label class="form-label">District </label>
-                              <select name="district_id" onchange="findTown(this.value)" class="form-control" id="city">
+                              <select name="district_id" onchange="findTown(this.value)" class="form-control select2-show-search" id="city">
                                  <option value="">Select District</option>
                               </select>
                             </div>
@@ -74,7 +74,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                <label class="form-label">Pincode </label>
-                                  <select name="town_id" class="form-control" id="town">
+                                  <select name="town_id" class="form-control select2-show-search" id="town">
                                      <option value="">Select Pincode</option>
                                   </select>
                             </div>
