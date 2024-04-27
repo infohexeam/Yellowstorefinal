@@ -127,7 +127,7 @@
                         <div class="col-md-6">
                          <div class="form-group">
                            <label class="form-label">Country *</label>
-                            <select name="store_country_id" required="" class="form-control" id="country" >
+                            <select name="store_country_id" required="" class="form-control select2-show-search" id="country" >
                                  <option value=""> Select Country</option>
                                 @foreach($countries as $key)
                                 <option {{old('store_country_id',$store->store_country_id) == $key->country_id ? 'selected':''}} value="{{$key->country_id}}"> {{$key->country_name }} </option>
@@ -154,7 +154,7 @@
                                
                   
                            @endphp
-                            <select name="store_state_id" required="" class="form-control" id="state" >
+                            <select name="store_state_id" required="" class="form-control select2-show-search" id="state" >
                                                                                     <option  value=""> State</option>
 
                              @foreach ($states_data as $value)
@@ -179,7 +179,7 @@
                               }
                                
                            @endphp
-                           <select name="store_district_id" required="" class="form-control" id="city">
+                           <select name="store_district_id" required="" class="form-control select2-show-search" id="city">
                                                     <option  value=""> District</option>
 
                            @foreach (@$district_data as $value)
@@ -194,7 +194,7 @@
                          <div class="form-group">
                               <label class="form-label">Pincode *</label>
                               
-                              <select name="store_town" required="" class="form-control" id="town">
+                              <select name="store_town" required="" class="form-control select2-show-search" id="town">
                                   @if(isset($store->town_id))
                                    @php
                            $town_data = \DB::table('mst_towns')->where('district_id',@$store->store_district_id)->whereNull('deleted_at')->get();
