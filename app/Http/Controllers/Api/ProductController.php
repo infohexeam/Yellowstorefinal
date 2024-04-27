@@ -1821,24 +1821,24 @@ class ProductController extends Controller
                     $data['message'] = "Variant cannot be removed as this product variant is added to cart";
                     return response($data);
                 }
-                $customer_enquiry=Trn_customer_enquiry::where('product_varient_id',$request->product_varient_id)->count();
-                if($customer_enquiry>0)
-                {
-                    $data['status'] = 0;
-                    $data['message'] = "Variant cannot be removed as this product variant is enquired by customer";
-                    return response($data);
-                }
-                if($productData->product_type==1)
-                    {
-                        $stock_count=Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('stock_count','>',0)->count();
-                        if($stock_count>0)
-                        {
-                            $data['status'] = 0;
-                            $data['message'] = "Variant cannot be removed as this variant has stock in inventory";
-                            return response($data);
+                // $customer_enquiry=Trn_customer_enquiry::where('product_varient_id',$request->product_varient_id)->count();
+                // if($customer_enquiry>0)
+                // {
+                //     $data['status'] = 0;
+                //     $data['message'] = "Variant cannot be removed as this product variant is enquired by customer";
+                //     return response($data);
+                // }
+                // if($productData->product_type==1)
+                //     {
+                //         $stock_count=Mst_store_product_varient::where('product_varient_id',$request->product_varient_id)->where('stock_count','>',0)->count();
+                //         if($stock_count>0)
+                //         {
+                //             $data['status'] = 0;
+                //             $data['message'] = "Variant cannot be removed as this variant has stock in inventory";
+                //             return response($data);
 
-                        }
-                    }
+                //         }
+                //     }
                 $removeProduct = array();
                 $removeProduct['is_removed'] = 1;
                 $removeProduct['product_status'] = 0;
