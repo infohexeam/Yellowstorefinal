@@ -70,6 +70,9 @@
                                   
                                     <td><strong> Subcategory:</strong> @if(isset($product->product_subcat['sub_category_name'])){{@$product->product_subcat['sub_category_name']}}@else Others  @endif</td>
                                  </tr>
+                                  <tr>
+                                     <td><strong>Distribution Type :</strong>{{ ucwords($product->supply_type)}}</td>
+                                </tr>
                               
 
                                 <tr>
