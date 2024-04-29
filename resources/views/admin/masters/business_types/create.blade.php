@@ -43,7 +43,7 @@
                            name="business_type_icon"  value="{{old('business_type_icon')}}" placeholder="Business Type Icon">
                         </div>
                      </div>
-                      <div class="col-md-6">
+                      <div class="col-md-6" style="display:none;">
                       <div class="form-group">
                    <label class="form-group custom-switch">
                    Is it just a product listing?

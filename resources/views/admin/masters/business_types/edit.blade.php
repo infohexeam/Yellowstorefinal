@@ -45,7 +45,7 @@
                     <img src="{{asset('/assets/uploads/business_type/icons/'.$business_type->business_type_icon)}}"  width="100" style="height:60px" "width :50px">
                   </div>
                 </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6"  style="display:none;">
                       <div class="form-group">
                    <label class="form-group custom-switch">
                    Is it just a product listing?

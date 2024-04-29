@@ -102,7 +102,7 @@
                     <textarea class="form-control"
                     name="category_description" rows="4" id="category_description" placeholder="Category Description">{{old('category_description',$category->category_description)}}</textarea>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4"  style="display:none;">
                       <div class="form-group">
                    <label class="form-group custom-switch">
                    Is it just a product listing?
