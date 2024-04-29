@@ -1153,14 +1153,14 @@ $("#store_name").blur(function(){
                                 $('#error_store_mobile').empty();
 $('#store_mobile').removeClass('has-error');
                 $('#submit').attr('disabled',false);
-                //$('#submit').show();
+                $('#submit').show();
             }
             else
             {
                 $('#error_store_mobile').html('<label class="text-danger">Store phone already exist </label>');
                 $('#store_mobile').addClass('has-error');
                 $('#submit').attr('disabled',true);
-                //$('#submit').hide();
+                $('#submit').hide();
             }
         }
    })
