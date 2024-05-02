@@ -3124,7 +3124,7 @@ class ProductController extends Controller
                             }
     
                             if (isset($latitude) && isset($longitude)) {
-                                return $latitude;
+                                //return $latitude;
                                 $dist = Helper::haversineGreatCircleDistanceNew($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
                                $dist_with_units= Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
                                 //$dist=(float)str_replace(' km', '', $dist);

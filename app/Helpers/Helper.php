@@ -796,6 +796,7 @@ class Helper
     public static function haversineGreatCircleDistanceNew($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
     {
         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$latitudeFrom.",".$longitudeFrom."&destinations=".$latitudeTo.",".$longitudeTo."&mode=driving&language=en-EN&key=AIzaSyAKYUXBDwnBHpAW7OWVEfqp4L-ZCxmTJjw";
+        return $url;
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
