@@ -761,23 +761,14 @@ class Helper
                 $response = curl_exec($ch);
                 curl_close($ch);
                 $data = json_decode($response, true);
-                if(isset($data['rows'][0]['elements'][0])) 
+                if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
                 {
-                    if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
-                    {
-                        $dist = $data['rows'][0]['elements'][0]['distance']['text'];
-                        $time = $data['rows'][0]['elements'][0]['duration']['text'];
+                    $dist = $data['rows'][0]['elements'][0]['distance']['text'];
+                    $time = $data['rows'][0]['elements'][0]['duration']['text'];
 
-                    }else{
-                        $dist = '';
-                        $time = '';
-                    }
-                }
-                else
-                {
+                }else{
                     $dist = '';
                     $time = '';
-
                 }
                 
                 return $dist;
@@ -814,28 +805,16 @@ class Helper
                 $response = curl_exec($ch);
                 curl_close($ch);
                 $data = json_decode($response, true);
-                if(isset($data['rows'][0]['elements'][0])) 
+                if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
                 {
-                    if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
-                    {
-                        $dist = $data['rows'][0]['elements'][0]['distance']['text'];
-                        $time = $data['rows'][0]['elements'][0]['duration']['text'];
-                        $value = $data['rows'][0]['elements'][0]['distance']['value'];
+                    $dist = $data['rows'][0]['elements'][0]['distance']['text'];
+                    $time = $data['rows'][0]['elements'][0]['duration']['text'];
+                    $value = $data['rows'][0]['elements'][0]['distance']['value'];
 
-                    }
-                    else
-                    {
-                        $dist = '';
-                        $time = '';
-                        $value='';
-                    }
-                }
-                else
-                {
+                }else{
                     $dist = '';
                     $time = '';
                     $value='';
-                    
                 }
                 
                 return $value;
