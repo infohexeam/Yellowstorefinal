@@ -2974,8 +2974,8 @@ public function addToCartTest(Request $request)
 
                             // }
                             $currTime = date("G:i");
-                            $start = strtotime($proData->timeslot_start_time); // Convert start time to timestamp
-                            $end = strtotime($proData->timeslot_end_time); // Convert end time to timestamp
+                            $start = $proData->timeslot_start_time; //init the start time
+                            $end = $proData->timeslot_end_time; //init the end time
                             //return $start;
                            
                             if ($proData->is_timeslot_based_product==1)
