@@ -3064,7 +3064,7 @@ class ProductController extends Controller
     public function listCouponAndAddress(Request $request)
     {
         $data = array();
-        
+        try {
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
                     
@@ -3097,6 +3097,7 @@ class ProductController extends Controller
     
                     $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
                     $data['addressList']  = $addressList;
+                    return $addressList;
                     $cnt=0;
                     foreach ($data['addressList'] as $a) {
                         if($cnt==0)
@@ -3115,7 +3116,7 @@ class ProductController extends Controller
     
                             $latitude = $a->latitude;
                             $longitude = $a->longitude;
-    
+                       
                             if (isset($Storedata->service_area)) {
                                 $serVdata = $Storedata->service_area;
                             } else {
@@ -3196,7 +3197,13 @@ class ProductController extends Controller
             }
     
             return response($data);
-      
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
     }
     public function listOnlyAddress(Request $request)
     {
