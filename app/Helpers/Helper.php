@@ -796,7 +796,6 @@ class Helper
     public static function haversineGreatCircleDistanceNew($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
     {
         $url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$latitudeFrom.",".$longitudeFrom."&destinations=".$latitudeTo.",".$longitudeTo."&mode=driving&language=en-EN&key=AIzaSyAKYUXBDwnBHpAW7OWVEfqp4L-ZCxmTJjw";
-        return $url;
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -806,16 +805,28 @@ class Helper
                 $response = curl_exec($ch);
                 curl_close($ch);
                 $data = json_decode($response, true);
-                if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
+                if(isset($data['rows'][0]['elements'][0])) 
                 {
-                    $dist = $data['rows'][0]['elements'][0]['distance']['text'];
-                    $time = $data['rows'][0]['elements'][0]['duration']['text'];
-                    $value = $data['rows'][0]['elements'][0]['distance']['value'];
+                    if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
+                    {
+                        $dist = $data['rows'][0]['elements'][0]['distance']['text'];
+                        $time = $data['rows'][0]['elements'][0]['duration']['text'];
+                        $value = $data['rows'][0]['elements'][0]['distance']['value'];
 
-                }else{
+                    }
+                    else
+                    {
+                        $dist = '';
+                        $time = '';
+                        $value='';
+                    }
+                }
+                else
+                {
                     $dist = '';
                     $time = '';
                     $value='';
+                    
                 }
                 
                 return $value;
