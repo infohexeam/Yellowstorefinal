@@ -761,14 +761,23 @@ class Helper
                 $response = curl_exec($ch);
                 curl_close($ch);
                 $data = json_decode($response, true);
-                if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
+                if(isset($data['rows'][0]['elements'][0])) 
                 {
-                    $dist = $data['rows'][0]['elements'][0]['distance']['text'];
-                    $time = $data['rows'][0]['elements'][0]['duration']['text'];
+                    if($data['rows'][0]['elements'][0]['status'] != "ZERO_RESULTS")
+                    {
+                        $dist = $data['rows'][0]['elements'][0]['distance']['text'];
+                        $time = $data['rows'][0]['elements'][0]['duration']['text'];
 
-                }else{
+                    }else{
+                        $dist = '';
+                        $time = '';
+                    }
+                }
+                else
+                {
                     $dist = '';
                     $time = '';
+
                 }
                 
                 return $dist;
