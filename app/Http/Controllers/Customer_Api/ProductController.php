@@ -3060,146 +3060,11 @@ class ProductController extends Controller
     //     }
     // }
 
+
     public function listCouponAndAddress(Request $request)
     {
         $data = array();
-        try {
-            if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
-                if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
-                    
-                    $today = Carbon::now()->toDateString();
-                    $cus = Trn_store_customer::find($request->customer_id);
-                    $data['registered_mobile_number'] = $cus->customer_mobile_number;
-                    $flag = Helper::checkStoreDeliveryHours($request->store_id);
-                    $data['is_delivery_available'] = $flag;
-                    $data['is_only_collect_from_store'] = $flag ? 0 : 1;
-                    
-                    $usedCouponIds = Trn_store_order::join('mst__coupons', 'mst__coupons.coupon_id', '=', 'trn_store_orders.coupon_id')
-                        ->where('mst__coupons.coupon_type', 1)
-                        ->where('trn_store_orders.customer_id', $request->customer_id)
-                        ->groupBy('trn_store_orders.coupon_id')
-                        ->pluck('trn_store_orders.coupon_id')
-                        ->toArray();
-    
-                    $couponDetail = Mst_Coupon::where('store_id', $request->store_id)
-                        ->where('coupon_status', 0)
-                        ->whereNotIn('coupon_id', $usedCouponIds)
-                        ->whereDate('valid_from', '<=', $today)
-                        ->whereDate('valid_to', '>=', $today);
-    
-                    $data['couponDetails'] = $couponDetail->orderBy('coupon_id', 'DESC')->get();
-    
-                    $addressList = Trn_customerAddress::where('customer_id', $request->customer_id)->get();
-                    
-                    if ($addressList->isEmpty()) {
-                        $data['status'] = 0;
-                        $data['message'] = "No address found for the customer";
-                        return response($data);
-                    }
-    
-                    $data['addressList'] = $addressList;
-                    $cnt = 0;
-                    foreach ($data['addressList'] as $a) {
-                        if ($cnt == 0 && Trn_customerAddress::where('customer_id', $request->customer_id)->where('default_status', 1)->count() == 0) {
-                            $a->default_status = 1;
-                        }
-    
-                        if (isset($a->longitude) && isset($a->latitude)) {
-                            if (!isset($a->default_status)) {
-                                $a->default_status = 0;
-                            }
-    
-                            $latitude = $a->latitude;
-                            $longitude = $a->longitude;
-    
-                            if (isset($Storedata->service_area)) {
-                                $serVdata = $Storedata->service_area;
-                            } else {
-                                $serVdata = 0;
-                            }
-    
-                            if (isset($latitude) && isset($longitude)) {
-                                $dist = Helper::haversineGreatCircleDistanceNew($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
-                                $dist_with_units = Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
-                                $serVdata = $serVdata * 1000;
-    
-                                if ($dist < $serVdata) {
-                                    $a->storeAvailabilityStatus = 1;
-                                    if ($dist == "") {
-                                        $a->storeAvailabilityStatus = 0;
-                                        $dist = 0;
-                                        $dist_with_units = 0;
-                                    }
-                                } else {
-                                    $a->storeAvailabilityStatus = 0;
-                                }
-                            } else {
-                                $a->storeAvailabilityStatus = 0;
-                            }
-                            $a->service_area = $serVdata;
-                            $a->distance = $dist;
-                            $a->dist_with_units = $dist_with_units;
-    
-                            $settingsRow = Trn_store_setting::where('store_id', $request->store_id)
-                                ->whereRaw('service_start * 1000 <= ?', [$a->distance]) // Convert km to meters
-                                ->whereRaw('service_end * 1000 >= ?', [$a->distance])   // Convert km to meters
-                                ->first();
-    
-                            if (isset($settingsRow->delivery_charge)) {
-                                $a->actualDeliveryCharge = $settingsRow->delivery_charge;
-                                $a->deliveryCharge = $settingsRow->delivery_charge;
-                                $a->minimumOrderAmount = $settingsRow->minimum_order_amount;
-                                $a->reductionPercentage = $settingsRow->reduction_percentage;
-                                $order_total = Helper::cartTotal($request->customer_id);
-                                if (isset($request->order_total)) {
-                                    $a->deliveryCharge = Helper::calculateDeliveryCharge($settingsRow->delivery_charge, $settingsRow->reduction_percentage, $settingsRow->minimum_order_amount, $request->order_total);
-                                }
-                            } else {
-                                $a->actualDeliveryCharge = '0';
-                                $a->deliveryCharge = '0';
-                                $a->minimumOrderAmount = '0';
-                                $a->reductionPercentage = '0';
-                            }
-    
-                            if (isset($settingsRow->packing_charge)) {
-                                $a->packingCharge = $settingsRow->packing_charge;
-                            } else {
-                                $a->packingCharge = '0';
-                            }
-                        } else {
-                            $a->storeAvailabilityStatus = 0;
-                        }
-    
-                        $a->stateData = @$a->stateFunction['state_name'];
-                        $a->districtData = @$a->districtFunction['district_name'];
-                        $cnt++;
-                    }
-    
-                    $data['status'] = 1;
-                    $data['message'] = "success";
-                } else {
-                    $data['status'] = 0;
-                    $data['message'] = "Store not found";
-                }
-            } else {
-                $data['status'] = 0;
-                $data['message'] = "Customer not found";
-            }
-    
-            return response($data);
-        } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        }
-    }
-    
-    public function listCouponAndAddressOld(Request $request)
-    {
-        $data = array();
-        try {
+        
             if (isset($request->customer_id) && Trn_store_customer::find($request->customer_id)) {
                 if (isset($request->store_id) && $Storedata = Mst_store::find($request->store_id)) {
                     
@@ -3331,13 +3196,7 @@ class ProductController extends Controller
             }
     
             return response($data);
-        } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        }
+      
     }
     public function listOnlyAddress(Request $request)
     {
