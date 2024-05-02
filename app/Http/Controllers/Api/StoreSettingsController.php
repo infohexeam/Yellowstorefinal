@@ -849,8 +849,9 @@ class StoreSettingsController extends Controller
 
                     // dd($resizedImage);
                     // dd($resizedImage->filesize());
+                    $filenamePro=$filenamePro.'.jpg';
                     }
-                    $data2['profile_image'] = @$filenamePro.'.jpg';
+                    $data2['profile_image'] = @$filenamePro;
 
                     if (Mst_store::where('store_id', $store_id)->update($data2)) {
                         /*if ($files = $request->file('store_images')) {
