@@ -105,11 +105,13 @@
                              @else
                              
                                 <h5> {{@$order->customer['customer_first_name']}} {{@$order->customer['customer_last_name']}}  </h5>
+                                  @if(@$order->order_type!='POS')
                                    <div>
                                     {{@$order->customer['customer_address']}} <br>
                                      Pincode: {{@$order->customer['customer_pincode']}}<br>
                                      Phone: {{@$order->customer['customer_mobile_number']}}<br>
                                    </div>
+                                   @endif
                              
                              @endif
 
