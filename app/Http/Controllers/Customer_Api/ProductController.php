@@ -3097,7 +3097,7 @@ class ProductController extends Controller
     
                     $addressList  =  Trn_customerAddress::where('customer_id', $request->customer_id)->get();
                     $data['addressList']  = $addressList;
-                    return $addressList;
+                   // return $addressList;
                     $cnt=0;
                     foreach ($data['addressList'] as $a) {
                         if($cnt==0)
@@ -3124,6 +3124,7 @@ class ProductController extends Controller
                             }
     
                             if (isset($latitude) && isset($longitude)) {
+                                return $latitude;
                                 $dist = Helper::haversineGreatCircleDistanceNew($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
                                $dist_with_units= Helper::haversineGreatCircleDistance($Storedata->latitude, $Storedata->longitude, $latitude, $longitude);
                                 //$dist=(float)str_replace(' km', '', $dist);
