@@ -3337,6 +3337,21 @@ public function addToCartTest(Request $request)
                         $data['productTypeInCart']='service';
                         
                     }
+                    $currTime = date("G:i");
+                            $start = $proData->timeslot_start_time; //init the start time
+                            $end = $proData->timeslot_end_time; //init the end time
+                            //return $start;
+                           
+                            if ($proData->is_timeslot_based_product==1)
+                            {
+                                if($currTime<$start || $currTime>$end)
+                                {
+                                    $data['message'] = 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
+                                    $data['status'] = 3;
+                                    return response($data);
+                                }
+                               
+                            }
                         
                         if (isset($varProdu)) {
                         if($proData->product_type==1)
