@@ -576,7 +576,7 @@ var firebaseConfig = {
   
   
   function phoneSendAuth() {
-    alert(1);
+    //alert(1);
       
       var sName = $('#store_name').val();
       var sPhone = $('#store_mobile').val();
@@ -632,49 +632,71 @@ var firebaseConfig = {
           else{
                 return false;
           }
-          
-      
-      $('#firstDiv').hide();
-      $('#secDiv').show();
-         
-      var number = '+91'+$("#store_mobile").val();
-      var _token= $('input[name="_token"]').val();
-      
-      console.log(number);
-      console.log(window.recaptchaVerifier) 
-        
-     /* firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
-            
-          window.confirmationResult=confirmationResult;
-          coderesult=confirmationResult;
-          console.log(coderesult);*/
-           $.ajax({
-  url:"{{ route('store.sendotp') }}",
-  method:"POST",
-  data:{phone:number, _token:_token},
-  success:function(result)
-  {
-    //alert("dszczs");
-    console.log(result.session_id);
-   if(result.status == 'success')
-   {
-    $('#firstDiv').hide();
-    $('#secDiv').show();
-    $('#otpSessionId').val(result.session_id);
-    $('#sentSuccessMsg').html('<label class="text-success">Otp Has been Sent to'+number+'</label>');
-    
-   }
-   else
-   {
-    $('#firstDiv').show();
-    $('#secDiv').hide();
-    $('#sentSuccessMsg').html('<label class="text-danger">Error! </label>');
-    
-     $('#submit').attr('disabled', 'disabled');
+       $.ajax({
+                url:"{{ route('store.unique_store_mobile') }}",
+                method:"POST",
+                data:{number:number, _token:_token},
+                success:function(result)
+                {
+                //alert("dszczs");
+                //alert(result);
+                if(result == 'unique')
+                {
+                                $('#error_store_mobile').empty();
+                                $('#submit').hide();
 
-   }
-  }
+                }
+                else
+                {
+                   $('#submit').show();
+                          $('#firstDiv').hide();
+              $('#secDiv').show();//No salary..bad code
+                
+              var number = '+91'+$("#store_mobile").val();
+              var _token= $('input[name="_token"]').val();
+              
+              console.log(number);
+              console.log(window.recaptchaVerifier) 
+                
+            /* firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+                    
+                  window.confirmationResult=confirmationResult;
+                  coderesult=confirmationResult;
+                  console.log(coderesult);*/
+                  $.ajax({
+          url:"{{ route('store.sendotp') }}",
+          method:"POST",
+          data:{phone:number, _token:_token},
+          success:function(result)
+          {
+            //alert("dszczs");
+            console.log(result.session_id);
+          if(result.status == 'success')
+          {
+            $('#firstDiv').hide();
+            $('#secDiv').show();
+            $('#otpSessionId').val(result.session_id);
+            $('#sentSuccessMsg').html('<label class="text-success">Otp Has been Sent to'+number+'</label>');
+            
+          }
+          else
+          {
+            $('#firstDiv').show();
+            $('#secDiv').hide();
+            $('#sentSuccessMsg').html('<label class="text-danger">Error! </label>');
+            
+            $('#submit').attr('disabled', 'disabled');
+
+          }
+          }
  });
+
+                }
+               
+            }
+        });    
+      
+   
 
   }
   
