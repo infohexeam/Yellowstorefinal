@@ -3354,21 +3354,38 @@ public function addToCartTest(Request $request)
                         $data['productTypeInCart']='service';
                         
                     }
-                    $currTime = date("G:i");
-                            $start = $proData->timeslot_start_time; //init the start time
-                            $end = $proData->timeslot_end_time; //init the end time
-                            //return $start;
+                    // $currTime = date("G:i");
+                    //         $start = $proData->timeslot_start_time; //init the start time
+                    //         $end = $proData->timeslot_end_time; //init the end time
+                    //         //return $start;
                            
-                            if ($proData->is_timeslot_based_product==1)
-                            {
-                                if($currTime<$start || $currTime>$end)
-                                {
-                                    $data['message'] = 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
-                                    $data['status'] = 3;
-                                    return response($data);
-                                }
+                    //         if ($proData->is_timeslot_based_product==1)
+                    //         {
+                    //             if($currTime<$start || $currTime>$end)
+                    //             {
+                    //                 $data['message'] = 'Product Unavailable. The product will be available from '.date('g:i A',strtotime($start)) .' to '.date('g:i A',strtotime($end));
+                    //                 $data['status'] = 3;
+                    //                 return response($data);
+                    //             }
                                
-                            }
+                    //         }
+                    $currTime = date("G:i"); // Current time
+                    $start = $proData->timeslot_start_time; // Start time
+                    $end = $proData->timeslot_end_time; // End time
+
+                    if ($proData->is_timeslot_based_product == 1) {
+                        // Convert times to timestamps
+                        $startTimeStamp = strtotime($start);
+                        $endTimeStamp = strtotime($end);
+                        $currTimeStamp = strtotime($currTime);
+
+                        // Check if current time is outside the timeslot
+                        if ($currTimeStamp < $startTimeStamp || $currTimeStamp > $endTimeStamp) {
+                            $data['message'] = 'Product Unavailable. The product will be available from ' . date('g:i A', $startTimeStamp) . ' to ' . date('g:i A', $endTimeStamp);
+                            $data['status'] = 3;
+                            return response($data);
+                        }
+                    }
                         
                         if (isset($varProdu)) {
                         if($proData->product_type==1)
