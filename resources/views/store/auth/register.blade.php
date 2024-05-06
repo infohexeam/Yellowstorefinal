@@ -576,6 +576,7 @@ var firebaseConfig = {
   
   
   function phoneSendAuth() {
+    alert(1);
       
       var sName = $('#store_name').val();
       var sPhone = $('#store_mobile').val();
