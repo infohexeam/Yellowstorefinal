@@ -580,6 +580,7 @@ var firebaseConfig = {
       
       var sName = $('#store_name').val();
       var sPhone = $('#store_mobile').val();
+       var number=sPhone;
       var sBusinessType = $('#business_type_id').val();
        var sContactNumber = $('#store_contact_person_phone_number').val();
       
@@ -633,6 +634,7 @@ var firebaseConfig = {
                 return false;
           }
        $.ajax({
+       
                 url:"{{ route('store.unique_store_mobile') }}",
                 method:"POST",
                 data:{number:number, _token:_token},
