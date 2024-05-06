@@ -508,6 +508,32 @@
       <script src="{{URL::to('/assets/js/custom.js')}}"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script>
+$(document).ready(function(){
+    $("#store_mobile").change(function(){
+        var error_store_mobile = '';
+        var store_username = $(this).val();
+        var _token = $('input[name="_token"]').val();
+        
+        $.ajax({
+            url:"{{ route('unique_store_mobile') }}",
+            method:"POST",
+            data:{store_mobile:store_username, _token:_token},
+            success:function(result) {
+                if(result == 'unique') {
+                    $('#error_store_mobile').empty();
+                    $('#store_mobile').removeClass('has-error');
+                    $('#submit').attr('disabled',false);
+                } else {
+                    $('#error_store_mobile').html('<label class="text-danger">Store phone already exist </label>');
+                    $('#store_mobile').addClass('has-error');
+                    $('#submit').attr('disabled',true);
+                }
+            }
+        });
+    }).change(); // This line triggers the change event onload
+});
+</script>
 
 
  <script>
