@@ -3105,7 +3105,8 @@ public function addToCartTest(Request $request)
                                         $data['status'] = 1;
                                         $data['message'] = "Product added to cart";
                                         return response($data);
-                            }else{
+                            }else
+                            {
                                 if ($getItem = Trn_Cart::where('customer_id', $request->customer_id)->where('remove_status', 0)->where('product_varient_id', $request->product_varient_id)->first()) {
 
                                     $totalQuantity = $request->quantity;

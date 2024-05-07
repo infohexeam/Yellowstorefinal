@@ -810,7 +810,7 @@ var firebaseConfig = {
 
 <script type="text/javascript">
 	function mobileValidation(){
-	var number= document.forms["myForm"]["store_mobile_"].value;///get id with value
+	var number= document.forms["myForm"]["store_mobile"].value;///get id with value
 	var numberpattern=/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;////Regular expression
 	if(numberpattern.test(number))
 	   {
