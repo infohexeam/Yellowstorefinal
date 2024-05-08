@@ -6139,6 +6139,15 @@ class StoreController extends Controller
         }
         $product_listing_status=1;
       }
+      if($store_distribution_type==3)
+      {
+          if($global_product->supply_type=='listing')
+          {
+              $product_listing_status=1;
+
+          }
+
+      }
       $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
     $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
     
@@ -6387,6 +6396,15 @@ class StoreController extends Controller
 
         }
         $product_listing_status=1;
+      }
+      if($store_distribution_type==3)
+      {
+          if($global_product->supply_type=='listing')
+          {
+              $product_listing_status=1;
+
+          }
+
       }
         // dd($global_product);
         

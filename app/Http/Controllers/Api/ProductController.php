@@ -3330,6 +3330,15 @@ class ProductController extends Controller
                       }
                       $product_listing_status=1;
                     }
+                    if($store_distribution_type==3)
+                    {
+                        if($global_product->supply_type=='listing')
+                        {
+                            $product_listing_status=1;
+
+                        }
+
+                    }
 
                     $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
         
