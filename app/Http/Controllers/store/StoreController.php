@@ -6119,6 +6119,7 @@ class StoreController extends Controller
     try {
       $global_product = Mst_GlobalProducts::find($global_product_id);
       // dd($global_product);
+      $product_listing_status=0;
       $store_id =  Auth::guard('store')->user()->store_id;
       $store_distribution_type=Mst_store::where('store_id',$store_id)->first()->product_supply_type;
       if($store_distribution_type==1)
@@ -6136,6 +6137,7 @@ class StoreController extends Controller
           return redirect()->back()->with('status-error', 'The store is set with a product distribution type of listing only.Please try to add listing product')->withInput();
 
         }
+        $product_listing_status=1;
       }
       $product_upload_limit=Mst_store::where('store_id',$store_id)->first()->product_upload_limit;
     $product_count=Mst_store_product_varient::where('store_id',$store_id)->count();
@@ -6227,6 +6229,8 @@ class StoreController extends Controller
       // $product->color_id = $global_product->color_id;
       // $product->vendor_id = $global_product->vendor_id;
       $product->global_product_id = $global_product->global_product_id;
+      $product->is_product_listed_by_product = $product_listing_status;
+      
 
       $product->product_status = 0;
       $product->product_type = 1;
