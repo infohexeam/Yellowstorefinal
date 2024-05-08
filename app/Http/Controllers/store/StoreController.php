@@ -6366,7 +6366,7 @@ class StoreController extends Controller
       foreach ($request->global_product_idz as $global_product_id) {
 
  
-
+        $product_listing_status=0;
         $global_product = Mst_GlobalProducts::find($global_product_id);
         if($store_distribution_type==1)
       {
@@ -6386,6 +6386,7 @@ class StoreController extends Controller
 
 
         }
+        $product_listing_status=1;
       }
         // dd($global_product);
         
@@ -6468,7 +6469,8 @@ class StoreController extends Controller
         // $product->color_id = $global_product->color_id;
         // $product->vendor_id = $global_product->vendor_id;
         $product['global_product_id'] = $global_product_id;
-        $product['product_brand'] = $global_product->product_brand;;
+        $product['product_brand'] = $global_product->product_brand;
+        $product['is_product_listed_by_product'] = $product_listing_status;
 
         $product['product_status'] = 0;
         $product['product_type'] = 1;
