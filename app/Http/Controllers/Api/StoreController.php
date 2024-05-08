@@ -700,9 +700,9 @@ public function storeVideoListNew(Request $request)
             ->count();
         $divTok2 = $divTok2 - 1;
         if ($divTok2 > 0) {
-            $data['login_status '] = 1;
+            $data['login_status'] = 1;
         } else {
-            $data['login_status '] = 0;
+            $data['login_status'] = 0;
         }
 
 
@@ -945,7 +945,7 @@ public function storeVideoListNew(Request $request)
                             if ($custCheck->store_otp_verify_status != 0) {
                                 $data['status'] = 1;
                                 $data['message'] = "Success";
-                                $data['login_status '] = 1;
+                                $data['login_status'] = 1;
                                     $userIpAddress = $request->ip();
                                     $userType = 'store'; // You may need to customize this based on your application's logic
                                     $storeId = $custCheck->store_id; // You may need to set a specific store ID based on your application
@@ -985,7 +985,7 @@ public function storeVideoListNew(Request $request)
 
 
                                 if (($divTok > 0) && ($devTokenC == 0)) {
-                                    $data['login_status '] =1 ; // logged in another device (otp)
+                                    $data['login_status'] =1 ; // logged in another device (otp)
                                     $store_otp=rand(100000,999999);
                                     $storeData = Mst_store::find($custCheck->store_id);
                                     //$otp_verify=Trn_store_otp_verify::where('store_id',$custCheck->store_id)->first();
@@ -1003,10 +1003,10 @@ public function storeVideoListNew(Request $request)
                                     $data['otp']=$store_otp;
                                     $data['message'] = "Success";
                                 } else {
-                                    $data['login_status '] = 0; // success 
+                                    $data['login_status'] = 0; // success 
                                 }
 
-                                //  $data['login_status '] = $divTok;
+                                //  $data['login_status'] = $divTok;
                             } else {
                                 $store_otp=rand(100000,999999);
                                 $storeData = Mst_store::find($custCheck->store_id);
@@ -1253,7 +1253,7 @@ public function storeVideoListNew(Request $request)
                                     ->count();
                                 $divTok = $divTok - 1;
                                 if ($divTok > 0) {
-                                    $data['login_status '] = 1;
+                                    $data['login_status'] = 1;
                                     $userIpAddress = $request->ip();
                                     $userType = 'store'; // You may need to customize this based on your application's logic
                                     $storeId = $custCheck->store_id; // You may need to set a specific store ID based on your application
@@ -1268,7 +1268,7 @@ public function storeVideoListNew(Request $request)
                                     ]);
                                     
                                 } else {
-                                    $data['login_status '] = 0;
+                                    $data['login_status'] = 0;
                                 }
 
                                 $data['onBoardingStatus'] = Helper::onBoardingStatus($custCheck->store_id);
