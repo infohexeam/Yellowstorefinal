@@ -3306,6 +3306,7 @@ class ProductController extends Controller
 
                     $global_product = Mst_GlobalProducts::find($global_product_id);
                     $store_id =  $request->store_id;
+                    $product_listing_status=0;
                     if($store_distribution_type==1)
                     {
                       if($global_product->supply_type=='listing')
@@ -3327,6 +3328,7 @@ class ProductController extends Controller
                         return response($data);    
               
                       }
+                      $product_listing_status=1;
                     }
 
                     $ChkCodeExstnce = DB::table('mst_store_products')->where('store_id','=',$store_id)->where('product_code',$global_product->product_code)->count();
@@ -3396,8 +3398,8 @@ class ProductController extends Controller
                     $product['store_id'] = $store_id;
                     $product['stock_count'] = $global_product->min_stock;
                     $product['global_product_id'] = $global_product->global_product_id;
-                    $product['product_brand'] = $global_product->product_brand;;
-
+                    $product['product_brand'] = $global_product->product_brand;
+                    $product['is_product_listed_by_product'] = $product_listing_status;
                     $product['product_type'] = 1;
 
                     $product['product_status'] = 0;
