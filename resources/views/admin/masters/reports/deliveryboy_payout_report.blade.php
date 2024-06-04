@@ -234,7 +234,7 @@
                     title: 'Delivery Boy Payout Report',
                     footer: true,
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 7, 8, 9,12,16 13, 14, 15]
+                        columns: [0, 1, 2, 3, 4, 7, 8, 9,12,16,13,14,15]
                     },
                     orientation: 'landscape',
                     pageSize: 'LEGAL',
