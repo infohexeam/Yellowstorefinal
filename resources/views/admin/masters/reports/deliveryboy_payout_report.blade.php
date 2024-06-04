@@ -230,15 +230,25 @@
         autoWidth: false,
         buttons: [
             {
-                extend: 'pdf',
-                title: 'Delivery Boy Payout Report',
-                footer: true,
-                exportOptions: {
-                     columns: [0,1,2,3,4,7,8,9,10,11,12,13,14,15,16]
-                 },
-                 orientation : 'landscape',
-                pageSize : 'LEGAL',
-            },
+                    extend: 'pdf',
+                    title: 'Delivery Boy Payout Report',
+                    footer: true,
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                    },
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
+                    customize: function(doc) {
+                        doc.styles.tableHeader = {
+                            fillColor: '#4CAF50',
+                            color: 'white',
+                            alignment: 'center'
+                        };
+                        doc.defaultStyle.fontSize = 8;
+                        doc.styles.tableHeader.fontSize = 8;
+                        doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                    }
+                },
             {
                 extend: 'excel',
                 title: 'Delivery Boy Payout Report',
