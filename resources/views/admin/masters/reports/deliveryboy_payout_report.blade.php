@@ -7,200 +7,215 @@
         <div class="col-md-12 col-lg-12">
             <div class="card">
                 <div class="row">
-                    <div class="col-12" >
-    
-                      @if ($message = Session::get('status'))
-                      <div class="alert alert-success">
-                         <p>{{ $message }}<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button></p>
-                      </div>
-                      @endif
-                      <div class="col-lg-12">
-                             @if ($errors->any())
-                             <div class="alert alert-danger">
+                    <div class="col-12">
+
+                        @if ($message = Session::get('status'))
+                        <div class="alert alert-success">
+                            <p>{{ $message }}<button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">×</button></p>
+                        </div>
+                        @endif
+                        <div class="col-lg-12">
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
                                 <h6>Whoops!</h6> There were some problems with your input.<br><br>
                                 <ul>
-                                   @foreach ($errors->all() as $error)
-                                   <li>{{ $error }}</li>
-                                   @endforeach
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
                                 </ul>
-                             </div>
-                             @endif
-                             <div class="card-header">
+                            </div>
+                            @endif
+                            <div class="card-header">
                                 <h3 class="mb-0 card-title">{{$pageTitle}}</h3>
-                             </div>
-                             
-                              <div class="card-body border">
-                                <form action="{{route('admin.delivery_boy_payout_reports')}}" method="GET" enctype="multipart/form-data">
-                                   @csrf
+                            </div>
+
+                            <div class="card-body border">
+                                <form action="{{route('admin.delivery_boy_payout_reports')}}" method="GET"
+                                    enctype="multipart/form-data">
+                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">From Date</label>
-                                                   <input type="date" class="form-control"  name="date_from" id="date_fromc"  value="{{@$datefrom}}" placeholder="From Date">
-                            
-                                             </div>
+                                                <input type="date" class="form-control" name="date_from" id="date_fromc"
+                                                    value="{{@$datefrom}}" placeholder="From Date">
+
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label">To Date</label>
-                                                 <input type="date" class="form-control" name="date_to"   id="date_toc" value="{{@$dateto}}" placeholder="To Date">
+                                                <input type="date" class="form-control" name="date_to" id="date_toc"
+                                                    value="{{@$dateto}}" placeholder="To Date">
                                             </div>
-                                         </div>
-                                         
-                                          @if(auth()->user()->user_role_id  == 0) 
-                                            <div class="col-md-6">
-                                              <div class="form-group">
-                                                 <label class="form-label">Sub Admin</label>
-                                                 <div id="subadminl"></div>
-                                                       <select  name="subadmin_id" id="subadminId" class="form-control select2-show-search" data-placeholder="Sub Admin" >
-                                                          <option value="">Sub Admin</option>
-                                                             @foreach($subadmins as $key)
-                                                             <option {{request()->input('subadmin_id') == $key->id ? 'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
-                                                             @endforeach
-                                                       </select>
-                                              </div>
-                                           </div>
-                                        @endif
-                                         
-                                         <div class="col-md-6">
+                                        </div>
+
+                                        @if(auth()->user()->user_role_id == 0)
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                              <label class="form-label">Store </label>
-                                               <select  name="store_id" id="storeId" class="form-control select2-show-search" data-placeholder="Store"  >
-                                                     <option value="">Store</option>
-                                                    @foreach($stores as $key)
-                                                    <option {{request()->input('store_id') == $key->store_id ? 'selected':''}} value="{{$key->store_id }}"> {{$key->store_name }} </option>
+                                                <label class="form-label">Sub Admin</label>
+                                                <div id="subadminl"></div>
+                                                <select name="subadmin_id" id="subadminId"
+                                                    class="form-control select2-show-search"
+                                                    data-placeholder="Sub Admin">
+                                                    <option value="">Sub Admin</option>
+                                                    @foreach($subadmins as $key)
+                                                    <option {{request()->input('subadmin_id') == $key->id ?
+                                                        'selected':''}} value="{{$key->id}}"> {{$key->name }} </option>
                                                     @endforeach
-                                                  </select>
+                                                </select>
                                             </div>
-                                         </div>
-                                      
-                                         
-                                         <div class="col-md-12">
+                                        </div>
+                                        @endif
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Store </label>
+                                                <select name="store_id" id="storeId"
+                                                    class="form-control select2-show-search" data-placeholder="Store">
+                                                    <option value="">Store</option>
+                                                    @foreach($stores as $key)
+                                                    <option {{request()->input('store_id') == $key->store_id ?
+                                                        'selected':''}} value="{{$key->store_id }}"> {{$key->store_name
+                                                        }} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <center>
-                                                   <button type="submit" class="btn btn-raised btn-primary"><i class="fa fa-check-square-o"></i> Filter</button>
-                                                   {{-- <button type="reset" id="reset" class="btn btn-raised btn-success">Reset</button> --}}
-                                                   <a href="{{route('admin.delivery_boy_payout_reports')}}"  class="btn btn-info">Cancel</a>
+                                                    <button type="submit" class="btn btn-raised btn-primary"><i
+                                                            class="fa fa-check-square-o"></i> Filter</button>
+                                                    {{-- <button type="reset" id="reset"
+                                                        class="btn btn-raised btn-success">Reset</button> --}}
+                                                    <a href="{{route('admin.delivery_boy_payout_reports')}}"
+                                                        class="btn btn-info">Cancel</a>
                                                 </center>
                                             </div>
-                                          </div>
-                     
-                     
+                                        </div>
+
+
                                     </div>
                                 </form>
                             </div>
-                        
+
                             <div class="card-body">
                                 <div class="table-responsive">
-                                   <table id="exampletable" class="table table-striped table-bordered text-nowrap w-100">
-                                      <thead>
-                                         <tr>
-                                            <th class="wd-15p">SL.No</th>
+                                    <table id="exampletable"
+                                        class="table table-striped table-bordered text-nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                <th class="wd-15p">SL.No</th>
 
-                                            <th class="wd-15p">Date</th>
-                                            <th class="wd-15p">Order Number</th>
-                                            
-                                            <th class="wd-15p">Store</th>
-                                            <th class="wd-15p">Delivery Boy</th>
-                                           
-                                            <th class="wd-15p">Subadmin</th>
-                                             <th class="wd-15p">Subadmin Phone</th>
-                                            
-                                            
-                                           
-                                            <th class="wd-15p">Total Amount</th>
-                                            <th class="wd-15p">Delivery Charge</th>
-                                            <th class="wd-15p">Packing Charge</th>
-                                            <th class="wd-15p">Admin<br>Points Used</th>
-                                            <th class="wd-15p">Store<br>Points Used</th>
-                                            <th class="wd-15p">Commission/Month</th>
-                                            <th class="wd-15p">Commission/Order</th>
-                                             <th class="wd-15p">Previous Commission</th>
-                                            <th class="wd-15p">Commission After order</th>
-                                             <th class="wd-15p">Delivery Date & Time</th>
+                                                <th class="wd-15p">Date</th>
+                                                <th class="wd-15p">Order Number</th>
 
-                                           
-                                            
-                                           
-                                            
-                                           
-                                            
-                                  
-                                         </tr>
-                                      </thead>
-                                      <tbody>
-                                          
-                                        @php
-                                       
-                                        //dd($total_count);
-                                        $i=0;
-                                        @endphp
-                                        @foreach ($data as $d)
-                                       
-                                        <tr>
-                                            <td>{{ ++$i }}</td>
-                                             @php
-                                       
-                                    
-                                        
-                                        
-                                       
+                                                <th class="wd-15p">Store</th>
+                                                <th class="wd-15p">Delivery Boy</th>
 
-                                        @endphp
-                                            <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
+                                                <th class="wd-15p">Subadmin</th>
+                                                <th class="wd-15p">Subadmin Phone</th>
 
-                                            <td>{{ $d->order_number }}</td>
-                                            
-                                             <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}} @endif</td>
-                                               <td>
-                                                @if(isset($d->delivery_boy_name))
-                                                 {{ $d->delivery_boy_name }}
-                                                 @else
-                                                 ---
-                                                 @endif
-                                            </td>
-                                            <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
-                                            <td>{{$d->subadmindetail->phone??'---'}}
-                                            <td>{{ $d->product_total_amount }}</td>
-                                            <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
-                                             <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
-                                             <td>
-                                                @if(isset($d->reward_points_used))
-                                                {{ $d->reward_points_used }}
-                                                @else
-                                                ---
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if(isset($d->reward_points_used))
-                                                {{ $d->reward_points_used_store }}
-                                                @else
-                                                ---
-                                                @endif
-                                            </td>
-                                            <td>{{ @$d->c_month??0.00 }}</td>
-                                            <td>{{ @$d->c_order??0.00 }}</td>
-                                            <td>{{ @$d->previous_amount+@$d->c_month??0.00 }}</td>
-                                            <td>{{ @$d->new_amount+@$d->c_month??0.00 }}</td>
-                                             <td>{{ @$d->delivery_date }},{{ @$d->delivery_time }}</td>
 
-                                          
-                                            
-                                           
 
-                                           
-                                           
-                                           
+                                                <th class="wd-15p">Total Amount</th>
+                                                <th class="wd-15p">Delivery Charge</th>
+                                                <th class="wd-15p">Packing Charge</th>
+                                                <th class="wd-15p">Admin<br>Points Used</th>
+                                                <th class="wd-15p">Store<br>Points Used</th>
+                                                <th class="wd-15p">Commission/Month</th>
+                                                <th class="wd-15p">Commission/Order</th>
+                                                <th class="wd-15p">Previous Commission</th>
+                                                <th class="wd-15p">Commission After order</th>
+                                                <th class="wd-15p">Delivery Date & Time</th>
 
-                                        </tr>
-                                        @endforeach
-                              
-                                   
-                                      </tbody>
-                                   </table>
+
+
+
+
+
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @php
+
+                                            //dd($total_count);
+                                            $i=0;
+                                            @endphp
+                                            @foreach ($data as $d)
+
+                                            <tr>
+                                                <td>{{ ++$i }}</td>
+                                                @php
+
+
+
+
+
+
+                                                @endphp
+                                                <td>{{ \Carbon\Carbon::parse($d->created_at)->format('d-m-Y')}}</td>
+
+                                                <td>{{ $d->order_number }}</td>
+
+                                                <td>{{ $d->store_name }}@if($d->store_code != NULL)-{{$d->store_code}}
+                                                    @endif</td>
+                                                <td>
+                                                    @if(isset($d->delivery_boy_name))
+                                                    {{ $d->delivery_boy_name }}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                                <td>{{ (new \App\Helpers\Helper)->subAdminName($d->subadmin_id) }}</td>
+                                                <td>{{$d->subadmindetail->phone??'---'}}
+                                                <td>{{ $d->product_total_amount }}</td>
+                                                <td>{{ number_format(@$d->delivery_charge,2)??0.00 }}</td>
+                                                <td>{{ number_format(@$d->packing_charge,2)??0.00 }}</td>
+                                                <td>
+                                                    @if(isset($d->reward_points_used))
+                                                    {{ $d->reward_points_used }}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($d->reward_points_used))
+                                                    {{ $d->reward_points_used_store }}
+                                                    @else
+                                                    ---
+                                                    @endif
+                                                </td>
+                                                <td>{{ @$d->c_month??0.00 }}</td>
+                                                <td>{{ @$d->c_order??0.00 }}</td>
+                                                <td>{{ @$d->previous_amount+@$d->c_month??0.00 }}</td>
+                                                <td>{{ @$d->new_amount+@$d->c_month??0.00 }}</td>
+                                                <td>{{ @$d->delivery_date }},{{ @$d->delivery_time }}</td>
+
+
+
+
+
+
+
+
+
+                                            </tr>
+                                            @endforeach
+
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                      </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -218,7 +233,7 @@
                 title: 'Delivery Boy Payout Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
                  },
                  orientation : 'landscape',
                 pageSize : 'LEGAL',
@@ -228,7 +243,7 @@
                 title: 'Delivery Boy Payout Report',
                 footer: true,
                 exportOptions: {
-                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+                     columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
                  }
             }
          ]
@@ -239,8 +254,6 @@
 
 
 <script>
-
-
     $(document).ready(function() {
         
         $("#subadminId").on('change', function(){    
@@ -389,4 +402,3 @@
 
 
 @endsection
-
