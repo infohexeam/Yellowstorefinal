@@ -439,7 +439,7 @@ class ProductController extends Controller
     {
         $data = array();
 
-        // try {
+        try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $validator = Validator::make(
                     $request->all(),
@@ -515,7 +515,7 @@ class ProductController extends Controller
 
                                 foreach ($productDetails as $product) {
                                     $var=\DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->where('is_base_variant',1)->first();
-                                    $product->stock_count=$var->stock_count;
+                                    $product->stock_count=$var->stock_count??0;
                                     $product->product_base_image = '/assets/uploads/products/base_product/base_image/' . $product->product_base_image;
                                     $product->variantCount = Helper::variantCount($product->product_id);
                                 }
@@ -550,13 +550,13 @@ class ProductController extends Controller
                 $data['message'] = "Store not found ";
                 return response($data);
             }
-        // } catch (\Exception $e) {
-        //     $response = ['status' => '0', 'message' => $e->getMessage()];
-        //     return response($response);
-        // } catch (\Throwable $e) {
-        //     $response = ['status' => '0', 'message' => $e->getMessage()];
-        //     return response($response);
-        // }
+        } catch (\Exception $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        } catch (\Throwable $e) {
+            $response = ['status' => '0', 'message' => $e->getMessage()];
+            return response($response);
+        }
     }
 
 
