@@ -5271,7 +5271,7 @@ class StoreController extends Controller
   public function savePOS(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
   {
     // try {
-     dd(1);
+    // dd(1);
       $j=0;
       $pro_variant = $request->get('product_varient_id');
       $single_quantity = $request->get('single_quantity');
@@ -5427,7 +5427,7 @@ class StoreController extends Controller
 
   public function savePOSLOCK(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
   {
-    dd(2);
+    //dd(2);
     // try {
      
       $j=0;
@@ -5550,7 +5550,7 @@ class StoreController extends Controller
         'tax_id'=>$taxData->tax_id,
         'tax_amount' => $total_tax[$i],
         'total_amount' => $total_amount[$i],
-        'discount_amount' => $discount_amount[$i]/$single_quantity_rate[$i],
+        'discount_amount' => 0,//$discount_amount[$i]/$single_quantity_rate[$i],
         'discount_percentage' => $discount_percentage[$i],
 
 
