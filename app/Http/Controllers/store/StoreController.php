@@ -5271,7 +5271,7 @@ class StoreController extends Controller
   public function savePOS(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
   {
     // try {
-     
+     dd(1);
       $j=0;
       $pro_variant = $request->get('product_varient_id');
       $single_quantity = $request->get('single_quantity');
@@ -5427,6 +5427,7 @@ class StoreController extends Controller
 
   public function savePOSLOCK(Request $request, Trn_store_order $store_order, Trn_store_order_item $order_item)
   {
+    dd(2);
     // try {
      
       $j=0;
