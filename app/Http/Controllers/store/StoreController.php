@@ -5549,7 +5549,7 @@ class StoreController extends Controller
         'tax_id'=>$taxData->tax_id,
         'tax_amount' => $total_tax[$i],
         'total_amount' => $total_amount[$i],
-        'discount_amount' => $discount_amount[$i],
+        'discount_amount' => $discount_amount[$i]/$single_quantity_rate[$i],
         'discount_percentage' => $discount_percentage[$i],
 
 
