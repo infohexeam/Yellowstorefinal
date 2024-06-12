@@ -439,7 +439,7 @@ class ProductController extends Controller
     {
         $data = array();
 
-        try {
+        // try {
             if (isset($request->store_id) && Mst_store::find($request->store_id)) {
                 $validator = Validator::make(
                     $request->all(),
@@ -550,13 +550,13 @@ class ProductController extends Controller
                 $data['message'] = "Store not found ";
                 return response($data);
             }
-        } catch (\Exception $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        } catch (\Throwable $e) {
-            $response = ['status' => '0', 'message' => $e->getMessage()];
-            return response($response);
-        }
+        // } catch (\Exception $e) {
+        //     $response = ['status' => '0', 'message' => $e->getMessage()];
+        //     return response($response);
+        // } catch (\Throwable $e) {
+        //     $response = ['status' => '0', 'message' => $e->getMessage()];
+        //     return response($response);
+        // }
     }
 
 
