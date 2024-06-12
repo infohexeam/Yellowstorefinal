@@ -5402,7 +5402,7 @@ class StoreController extends Controller
         'mrp'=>$productVarOlddata->product_varient_price,
         'tax_amount' => $total_tax[$i],
         'total_amount' => $total_amount[$i],
-        'discount_amount' => ($discount_amount[$i]/$single_quantity[$i]),
+        'discount_amount' => $discount_amount[$i]*1000,
         'discount_percentage' => $discount_percentage[$i],
 
 
