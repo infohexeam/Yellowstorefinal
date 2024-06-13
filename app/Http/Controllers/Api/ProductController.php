@@ -477,7 +477,7 @@ class ProductController extends Controller
 
                                     $stock_count_sum = \DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->sum('stock_count');
                                     $var=\DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->where('is_base_variant',1)->first();
-                                    $product->stock_count=$var->stock_count;
+                                    $product->stock_count=$var->stock_count??0;
                                     // $productStatus = '0';\DB::table('mst_store_product_varients')->where('product_id', $product->product_id)->sum('stock_count');
                                     // if ($stock_count_sum > 0) {
                                     //     $productStatus = $product->product_status;
